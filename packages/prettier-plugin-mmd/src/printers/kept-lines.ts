@@ -1497,6 +1497,30 @@ export function holdsJoiningRegion(
 }
 
 /**
+ * Where the text that the last region that joins lines takes ends, among the
+ * regions whose comment starts at or after `offset` on its line, or `offset`
+ * where there is none: the end of the region, and of the removed text (a
+ * directive line, say) that follows it. A layout that prints its joining
+ * regions as written (`BlockRules.joiningRegionsPrintedAsWritten`) keeps the
+ * gap up to there as written (`BlockRules.keptInlineGapEnd`): the region
+ * starts after a U+2028 or U+2029, which the gap holds, so the gap cannot be
+ * laid out again (docs/compatibility.md, A comment line after U+2028 or
+ * U+2029).
+ */
+export function findJoiningRegionEndInLine(
+  source: Source,
+  offset: number,
+): number {
+  const lineEnd = lineEndOf(source, offset)
+  let end = offset
+  for (const region of source.joiningRegions) {
+    if (offset <= region.comment.range[0] && region.comment.range[0] < lineEnd)
+      end = Math.max(end, skipRemoved(source, region.end))
+  }
+  return end
+}
+
+/**
  * The kept lines with the lines that hold a removed line feed added as
  * verbatim lines: a line that mermaid.js reads over several lines of the
  * source is printed as written, from its first line to its end. A layout that
@@ -1587,11 +1611,7 @@ const unusualStyleEndsBySource = new WeakMap<Source, ReadonlySet<number>>()
  * `styleEndCharactersKept` selects, also after a `;` that the line rule
  * ignores and after a directive. The statement holds the styles up to its
  * last token, and the printer leaves out the whitespace after it, which these
- * lines keep as written. A comment line that mermaid.js removes takes the
- * whitespace before it, which stands after the style too: the style of a
- * treemap `classDef` holds a U+2028 or U+2029 at its end, so a second one
- * before a comment starts the removed range right at the end of the statement
- * (docs/treemap.md, Semicolons).
+ * lines keep as written.
  */
 export function findLinesWithUnusualStyleEnd(
   source: Source,
@@ -1609,17 +1629,7 @@ export function findLinesWithUnusualStyleEnd(
     // reads the styles, and so does it with a directive, so the whitespace
     // after them is at the end of the last style too.
     while (end < source.text.length) {
-      const read = skipRemoved(source, end)
-      // The whitespace that starts a removed range is the whitespace before a
-      // removed comment line (`Source.removed`): it is after the style as well.
-      for (
-        let at = end;
-        at < read && isWhitespace(source.text.charAt(at));
-        at++
-      ) {
-        if (keeps?.(source.text.charAt(at)) === true) kept = true
-      }
-      end = read
+      end = skipRemoved(source, end)
       if (isAtLineEnd(source, end)) break
       const character = source.text.charAt(end)
       if (!isWhitespace(character)) break

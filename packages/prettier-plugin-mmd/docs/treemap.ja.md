@@ -469,38 +469,6 @@ CSS が空白として読まない文字があるときは別です。
 [test: keeps a form feed beside a character that CSS does not read as whitespace at the end of the classDef of a treemap]
 [test: prints a form feed before a comment as one space]
 
-`classDef` のスタイルの末尾にある U+2028 や U+2029 は、
-CSS が空白として読まない文字がすべてそうであるように、スタイルの一部です。
-その後ろ、同じ行の `%%` コメントの前にもう 1 つ U+2028 か U+2029 があるとき、
-その文字はスタイルのテキストではありません。
-mermaid.js はコメント行を、その前の空白ごと取り除くからです。
-詳しくは [コメント行](../../spec/docs/common.ja.md#コメント行)
-を参照してください。
-その文字があってもなくても、対象にするすべての版で図は同じです。
-これは図を描いて確かめました。
-規則 1 は、そのような文字を持つ隙間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-flowchart、class 図、agentflow は、この形の行を書かれたまま残します。
-flowchart が `style A fill:red`、U+2028、U+2029、空白、
-`%% d;` を書かれたまま残すのがその例です。
-そのためこの行も、コメントとその周りの空白を含めて、行の後ろに何が続いても、
-書かれたまま印字します。
-
-[test: treemap a U+2029 before a comment stays after the U+2028 that ends a style]
-[test: treemap a U+2028 before a comment stays after the U+2029 that ends a style]
-[test: treemap a U+2028 before a comment stays after the U+2028 that ends a style]
-[test: treemap a U+2029 before a comment stays after the U+2029 that ends a style]
-[test: treemap a comment that touches the second U+2028 or U+2029 of a style stays]
-[test: treemap a tab before the comment after two U+2028 or U+2029 of a style stays]
-[test: treemap spaces before the comment after two U+2028 or U+2029 of a style stay]
-[test: treemap spaces after the comment after two U+2028 or U+2029 of a style stay]
-[test: treemap a space between the two U+2028 or U+2029 of a style stays]
-[test: treemap a comment line after a comment after two U+2028 or U+2029 of a style]
-[test: treemap a directive line after a comment after two U+2028 or U+2029 of a style]
-[test: treemap a row after a comment after two U+2028 or U+2029 of a style]
-[test: treemap a classDef after a comment after two U+2028 or U+2029 of a style]
-[test: treemap a directive and a comment line after two U+2028 or U+2029 of a style]
-
 バックスラッシュでエスケープされた `,` はスタイルの一部です。
 文字列の引用符と `%` のテキストは書かれた値の一部で、文字列、コメント、
 `url(` の括弧の中の連続は保ちます。
@@ -677,6 +645,44 @@ U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も
 その行は書かれたまま印字します。
 
 [test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
+
+`title`、`accTitle`、`accDescr` の行、`classDef` の行で、
+コメントを終わらせる `;` は、
+mermaid.js の行の規則が無視することがある `;`
+です（[`;` を含む行](./compatibility.ja.md#-を含む行)を参照）。
+そのため、その前に立つものは書かれたまま残します。
+そのコメントの前の U+2028 や U+2029 も残ります。
+mermaid.js はコメント行を、その前の空白ごと取り除くので、
+文の終わりからコメントの終わりまでは、その文字、周りの空白、その前、間、
+後ろのディレクティブを、書かれたまま残します。
+規則 1 は、そのような文字を持つ隙間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+flowchart、class 図、sequence 図は、この形の行を書かれたまま印字します。
+flowchart が `A-->B`、U+2028、空白、
+`%% d;` を書かれたまま印字するのがその例です。
+
+[test: treemap a U+2029 before a comment stays after the U+2028 that ends a style]
+[test: treemap a U+2028 before a comment stays after the U+2029 that ends a style]
+[test: treemap a U+2028 before a comment stays after the U+2028 that ends a style]
+[test: treemap a U+2029 before a comment stays after the U+2029 that ends a style]
+[test: treemap a comment that touches the second U+2028 or U+2029 of a style stays]
+[test: treemap a tab before the comment after two U+2028 or U+2029 of a style stays]
+[test: treemap spaces before the comment after two U+2028 or U+2029 of a style stay]
+[test: treemap spaces after the comment after two U+2028 or U+2029 of a style stay]
+[test: treemap a space between the two U+2028 or U+2029 of a style stays]
+[test: treemap a comment line after a comment after two U+2028 or U+2029 of a style]
+[test: treemap a directive line after a comment after two U+2028 or U+2029 of a style]
+[test: treemap a row after a comment after two U+2028 or U+2029 of a style]
+[test: treemap a classDef after a comment after two U+2028 or U+2029 of a style]
+[test: treemap a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
+[test: treemap a title keeps one U+2028 before a comment that ends in a semicolon]
+[test: treemap an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
+[test: treemap an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
+[test: treemap a classDef with two styles stays as written with two U+2028 or U+2029 before a comment that ends in a semicolon]
+[test: treemap a classDef without a style keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
+[test: treemap a directive after two U+2028 or U+2029 and before a comment that ends in a semicolon]
+[test: treemap a directive before two U+2028 or U+2029 and a comment that ends in a semicolon]
+[test: treemap a directive between two U+2028 or U+2029 and a comment that ends in a semicolon]
 
 U+2028 か U+2029 が `;` の前にあり、間に空白があってもよく、
 その `;` の行にコメント行が続くときも、間に指令の行があっても、

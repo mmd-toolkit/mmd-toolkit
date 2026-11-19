@@ -6415,9 +6415,49 @@ describe("style semicolons", () => {
       'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029 %% d;\nclassDef yy color:blue\n',
     ],
     [
-      "treemap a directive and a comment line after two U+2028 or U+2029 of a style",
-      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029 %%{x}%%\n%% e\n',
-      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029 %%{x}%%\n  %% e\n',
+      "treemap a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028\u2029 %% d;\n",
+      "treemap\ntitle T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap a title keeps one U+2028 before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028 %% d;\n",
+      "treemap\ntitle T\u2028 %% d;\n",
+    ],
+    [
+      "treemap an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "treemap\naccTitle: T\u2028\u2029 %% d;\n",
+      "treemap\naccTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "treemap\naccDescr: T\u2028\u2029 %% d;\n",
+      "treemap\naccDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap a classDef with two styles stays as written with two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "treemap\nclassDef zz fill:red , color:blue\u2028\u2029 %% d;\n",
+      "treemap\n  classDef zz fill:red , color:blue\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap a classDef without a style keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "treemap\nclassDef zz\u2028\u2029 %% d;\n",
+      "treemap\n  classDef zz\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap a directive after two U+2028 or U+2029 and before a comment that ends in a semicolon",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029 %%{x}%% %% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029 %%{x}%% %% d;\n',
+    ],
+    [
+      "treemap a directive before two U+2028 or U+2029 and a comment that ends in a semicolon",
+      'treemap\n"A": 1\nclassDef zz color:red%%{x}%%\u2028\u2029 %% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red%%{x}%%\u2028\u2029 %% d;\n',
+    ],
+    [
+      "treemap a directive between two U+2028 or U+2029 and a comment that ends in a semicolon",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028%%{x}%%\u2029 %% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028%%{x}%%\u2029 %% d;\n',
     ],
     [
       "ER directives before comments on the same line",
