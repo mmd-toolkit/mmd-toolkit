@@ -753,6 +753,7 @@ agentflow のラベルコメントは、コメントの改行の後もラベル�
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
 [fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
 [fixture: labels/label-comment-ends-label]
+[fixture: labels/label-comment-ends-label-spaces-and-comment-lines]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
@@ -1054,6 +1055,7 @@ agentflow-beta TB
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
 [fixture: comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 [fixture: comments/trailing-comment-semicolon-trailing-whitespace]
+[fixture: comments/trailing-comment-semicolon-trailing-whitespace-statements]
 
 害のない末尾コメント前の隙間は空白1つにします。
 agentflowではセミコロンや説明の閉じ記号の後も実コメントです。

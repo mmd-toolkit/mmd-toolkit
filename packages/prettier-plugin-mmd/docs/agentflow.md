@@ -725,7 +725,9 @@ a change of the text that no rule of this document defines.
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
 [fixture: labels/slash-label-padding-kept] [fixture:
-labels/label-comment-ends-label] [fixture: labels/entity-kept]
+labels/label-comment-ends-label] [fixture:
+labels/label-comment-ends-label-spaces-and-comment-lines] [fixture:
+labels/entity-kept]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace
@@ -1007,7 +1009,8 @@ is printed `A %% c;`) and stay where it holds none.
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
 [fixture:
 comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
-[fixture: comments/trailing-comment-semicolon-trailing-whitespace]
+[fixture: comments/trailing-comment-semicolon-trailing-whitespace] [fixture:
+comments/trailing-comment-semicolon-trailing-whitespace-statements]
 
 A harmless trailing-comment gap becomes one space. Agentflow recognizes real
 comments after semicolons and description closers; ordinary separator semicolons

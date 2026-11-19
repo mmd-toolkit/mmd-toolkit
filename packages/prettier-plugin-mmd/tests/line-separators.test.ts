@@ -4921,6 +4921,45 @@ const titleEndsDroppedExamples: readonly (readonly [string, string, string])[] =
     ],
   ]
 
+/**
+ * The text of a statement that mermaid.js reads with a Jison grammar keeps a
+ * no-break space at its end (docs/compatibility.md, Texts after a keyword that
+ * are drawn the same).
+ */
+const textEndsExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "a no-break space at the end of the date format of a gantt diagram",
+    "gantt\ndateFormat YYYY-MM-DD\u00a0\nsection S\nTask :a1, 2024-01-01, 1d\n",
+    "gantt\n  dateFormat YYYY-MM-DD\u00a0\n  section S\n    Task : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "a no-break space at the end of the axis format of a gantt diagram",
+    "gantt\naxisFormat %Y\u00a0\nsection S\nTask :a1, 2024-01-01, 1d\n",
+    "gantt\n  axisFormat %Y\u00a0\n  section S\n    Task : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "a no-break space at the end of the last event of a line of a timeline",
+    "timeline\ntitle T\n2004 : a : b\u00a0\n",
+    "timeline\n  title T\n  2004 : a : b\u00a0\n",
+  ],
+  [
+    "a no-break space at the end of the accDescription of a C4 diagram",
+    'C4Context\naccDescription D\u00a0\nPerson(a, "A")\n',
+    'C4Context\n  accDescription D\u00a0\n  Person(a, "A")\n',
+  ],
+  [
+    "a no-break space at the end of the second description of a state with an alias",
+    'stateDiagram-v2\nstate "d" as A : x\u00a0\n',
+    'stateDiagram-v2\n  state "d" as A : x\u00a0\n',
+  ],
+]
+
+describe("the text of a statement with a no-break space at its end, read with a Jison grammar", () => {
+  it.each(textEndsExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
+
 describe("the title of a diagram that is read with a Langium grammar and has a whitespace character that is no space or tab at its ends", () => {
   it.each(titleEndsDroppedExamples)(
     "drops %s",
