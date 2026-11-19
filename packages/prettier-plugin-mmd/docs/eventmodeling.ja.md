@@ -311,7 +311,8 @@ tf 01 evt Alpha [[D]]
 タグは本文を JSON などとして解釈する指示ではありません。
 隠れた形と大域的な注釈類の境界は保ちます。
 タグの中のコメントと、タグの直後のコメントは、接していれば接したまま残し、
-空白とタブの連なりがあれば空白 1 つにします。
+その両側の空白とタブの連なりは空白 1 つにします。
+タグの部分の間の隙間は詰めたままです。
 詳しくは [コメント](#comments) を参照してください。
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
@@ -322,6 +323,7 @@ tf 01 evt Alpha [[D]]
 
 [fixture: eventmodeling/type-tags/tag-comments-retained]
 [fixture: eventmodeling/type-tags/tag-comments-spaced]
+[fixture: eventmodeling/type-tags/tag-comments-spaced-after]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -1060,6 +1062,9 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 [fixture: eventmodeling/comments/do-not-move-slash-comment-before-header]
 
 [fixture: eventmodeling/comments/comment-line-before-header-indented]
+[fixture: eventmodeling/comments/comment-line-before-header-tab]
+[fixture: eventmodeling/comments/comment-lines-before-header-several]
+[fixture: eventmodeling/comments/comment-line-before-header-after-frontmatter]
 
 [test: eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
 
@@ -1388,6 +1393,7 @@ entity Shop.Buy
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap]
 [fixture: eventmodeling/long-lines/break-next-to-comment]
 [fixture: eventmodeling/long-lines/break-next-to-directive]
+[fixture: eventmodeling/long-lines/break-next-to-percent-comment]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 

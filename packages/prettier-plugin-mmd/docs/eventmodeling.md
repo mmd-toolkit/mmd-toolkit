@@ -299,8 +299,9 @@ before its body. Tight tags distinguish the annotation from its value. Retain
 the presence or absence of a tag and all eight authored type words. A tag does
 not ask the formatter to parse its payload as JSON or another language; hidden
 forms and global trivia retain their boundaries. A comment inside a tag or right
-after it stays touching where it touches, and a run of spaces and tabs before it
-becomes one space, as under [Comments](#comments).
+after it stays touching where it touches, and a run of spaces and tabs on either
+side of it becomes one space, as under [Comments](#comments), while the gaps
+between the parts of the tag itself stay tight.
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -309,7 +310,8 @@ becomes one space, as under [Comments](#comments).
 [fixture: eventmodeling/type-tags/all-inline-tags-retained]
 
 [fixture: eventmodeling/type-tags/tag-comments-retained] [fixture:
-eventmodeling/type-tags/tag-comments-spaced]
+eventmodeling/type-tags/tag-comments-spaced] [fixture:
+eventmodeling/type-tags/tag-comments-spaced-after]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -1028,7 +1030,10 @@ eventmodeling/comments/standalone-native-comments]
 
 [fixture: eventmodeling/comments/do-not-move-slash-comment-before-header]
 
-[fixture: eventmodeling/comments/comment-line-before-header-indented]
+[fixture: eventmodeling/comments/comment-line-before-header-indented] [fixture:
+eventmodeling/comments/comment-line-before-header-tab] [fixture:
+eventmodeling/comments/comment-lines-before-header-several] [fixture:
+eventmodeling/comments/comment-line-before-header-after-frontmatter]
 
 [test: eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
 
@@ -1354,7 +1359,8 @@ into inline data.
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap] [fixture:
 eventmodeling/long-lines/break-next-to-comment] [fixture:
-eventmodeling/long-lines/break-next-to-directive]
+eventmodeling/long-lines/break-next-to-directive] [fixture:
+eventmodeling/long-lines/break-next-to-percent-comment]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 
