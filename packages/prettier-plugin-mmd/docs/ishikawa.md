@@ -531,7 +531,8 @@ them, since mermaid.js removes a directive before it reads the lines. A space or
 a tab that separates such a directive from a directive after it makes it part of
 the literal, which keeps its runs as written: `A  b %%{init: {`, a line break,
 `}}%%`, a space, and `%%{x}%%` is printed as it is, without the spaces and tabs
-after the last directive.
+after the last directive. A no-break space after such a directive stays as
+written, as at the end of any literal.
 
 [fixture: ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directive-lines-root-end-blanks-dropped]
@@ -546,7 +547,7 @@ ishikawa/trailing-whitespace/directives-lines-touching-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directive-semicolon-end-blanks-dropped]
 [fixture:
 ishikawa/trailing-whitespace/directive-lines-semicolon-end-blanks-dropped]
-[fixture:
+[test: ishikawa: U+00A0 after a directive over lines stays] [fixture:
 ishikawa/trailing-whitespace/directive-lines-before-directive-runs-kept]
 
 Only exterior header-line padding is dropped under [Header](#header) and

@@ -542,6 +542,8 @@ mermaid.js が行を読む前にディレクティブを除くためです。
 テキストの連なりを書かれたままにします。
 `A  b %%{init: {`、改行、`}}%%`、空白、`%%{x}%%` は、
 最後のディレクティブの後の空白とタブを除くだけで、そのまま印字します。
+そのようなディレクティブの後のノーブレークスペースは、
+どのテキストの末尾とも同じに、書かれたままにします。
 
 [fixture: ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directive-lines-root-end-blanks-dropped]
@@ -551,6 +553,7 @@ mermaid.js が行を読む前にディレクティブを除くためです。
 [fixture: ishikawa/trailing-whitespace/directives-lines-touching-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directive-semicolon-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directive-lines-semicolon-end-blanks-dropped]
+[test: ishikawa: U+00A0 after a directive over lines stays]
 [fixture: ishikawa/trailing-whitespace/directive-lines-before-directive-runs-kept]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、

@@ -580,6 +580,25 @@ export function endsWithDirectives(source: Source, [from, to]: Range): boolean {
 }
 
 /**
+ * Whether the text in `range` ends with directives that end its line: those
+ * that `endsWithDirectives` accepts, and those of which the last place holds a
+ * line break or a `;` (see `endsWithBreakingDirectives`). `isBlankAfter` says
+ * which characters after the range on its line are blanks, which the layout of
+ * the text drops: spaces and tabs by default, every whitespace for a text that
+ * is trimmed of whitespace as a usecase value is.
+ */
+export function endsTheLineWithDirectives(
+  source: Source,
+  range: Range,
+  isBlankAfter: (character: string) => boolean = isSpaceOrTab,
+): boolean {
+  return (
+    endsWithDirectives(source, range) ||
+    endsWithBreakingDirectives(source, range, isBlankAfter)
+  )
+}
+
+/**
  * Whether the text in `range` ends with directives as `endsWithDirectives`
  * says, except that the directives at its end that hold a line break or a `;`
  * do not end the text: the directives that touch each other at its end, with
@@ -587,20 +606,21 @@ export function endsWithDirectives(source: Source, [from, to]: Range): boolean {
  * a directive of that place is no part of the text. mermaid.js removes a
  * directive before it reads the lines, and a text whose last directive has no
  * whitespace after it ends before that directive, so the line is the same text
- * with and without the spaces and tabs after the directive. A line break or a
- * `;` in a directive before the place, which a space or a tab separates from
- * it, keeps the text as written, and so does a directive or a text after the
- * range on its line: the place is then not the end of the line, and the text
- * holds its directives. False where the place holds neither, which
- * `endsWithDirectives` decides, and where it holds a U+2028 or U+2029.
+ * with and without the blanks after the directive. A line break or a `;` in a
+ * directive before the place, which a space or a tab separates from it, keeps
+ * the text as written, and so does a directive or a text after the range on
+ * its line: the place is then not the end of the line, and the text holds its
+ * directives. False where the place holds neither, which `endsWithDirectives`
+ * decides, and where it holds a U+2028 or U+2029.
  */
-export function endsWithDirectivesOfAnyContent(
+function endsWithBreakingDirectives(
   source: Source,
   [from, to]: Range,
+  isBlankAfter: (character: string) => boolean,
 ): boolean {
   const lineEnd = lineEndOf(source, to, true)
   for (let offset = to; offset < lineEnd; offset++)
-    if (!isSpaceOrTab(source.text[offset])) return false
+    if (!isBlankAfter(source.text[offset])) return false
   let afterPlace = to
   while (afterPlace > from && isSpaceOrTab(source.text[afterPlace - 1]))
     afterPlace--

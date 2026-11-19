@@ -1102,7 +1102,11 @@ printed `accTitle: Column zero %%{x}%%`. A directive that holds a line break or
 a `;` ends the value like any other, where it is the last or touches the
 directives after it: `accDescr: A  b  %%{init: {`, a line break, and `}}%%` with
 a space and a tab after it is printed `accDescr: A b %%{init: {`, a line break,
-and `}}%%`.
+and `}}%%`. The value is trimmed of every whitespace character, so each of them
+after the last directive is a blank, as a space or a tab is: U+00A0, U+1680,
+U+2000 to U+200A, U+202F, U+205F, U+3000, U+FEFF, U+000B, and U+000C, alone or
+in a run with spaces, tabs, and each other. U+0085 and U+200B are no whitespace,
+and the line stays as written with them.
 
 [fixture:
 direction-and-accessibility/acctitle-directive-lines-end-blanks-dropped]
@@ -1110,6 +1114,32 @@ direction-and-accessibility/acctitle-directive-lines-end-blanks-dropped]
 direction-and-accessibility/accdescr-directive-lines-end-blanks-dropped]
 [fixture:
 direction-and-accessibility/acctitle-directive-semicolon-end-blanks-dropped]
+[test: usecase accTitle: U+00A0 after a directive over lines] [test: usecase
+accTitle: U+1680 after a directive over lines] [test: usecase accTitle: U+2000
+after a directive over lines] [test: usecase accTitle: U+2001 after a directive
+over lines] [test: usecase accTitle: U+2002 after a directive over lines] [test:
+usecase accTitle: U+2003 after a directive over lines] [test: usecase accTitle:
+U+2004 after a directive over lines] [test: usecase accTitle: U+2005 after a
+directive over lines] [test: usecase accTitle: U+2006 after a directive over
+lines] [test: usecase accTitle: U+2007 after a directive over lines] [test:
+usecase accTitle: U+2008 after a directive over lines] [test: usecase accTitle:
+U+2009 after a directive over lines] [test: usecase accTitle: U+200A after a
+directive over lines] [test: usecase accTitle: U+202F after a directive over
+lines] [test: usecase accTitle: U+205F after a directive over lines] [test:
+usecase accTitle: U+3000 after a directive over lines] [test: usecase accTitle:
+U+FEFF after a directive over lines] [test: usecase accTitle: U+000B after a
+directive over lines] [test: usecase accTitle: U+000C after a directive over
+lines] [test: usecase accTitle: a space and U+00A0 after a directive over lines]
+[test: usecase accTitle: U+00A0 and a space after a directive over lines] [test:
+usecase accTitle: a tab and U+00A0 after a directive over lines] [test: usecase
+accTitle: U+00A0 and U+3000 after a directive over lines] [test: usecase
+accDescr: U+00A0 after a directive over lines] [test: usecase accDescr: U+3000
+after a directive over lines] [test: usecase accTitle: U+00A0 after a directive
+with a `;`] [test: usecase accTitle: U+00A0 after a directive over lines with a
+`;`] [test: usecase accDescr: U+3000 after a directive with a `;`] [test:
+usecase accTitle: U+00A0 after two directives over lines that touch each other]
+[test: usecase accTitle: U+0085 after a directive over lines is no blank] [test:
+usecase accTitle: U+200B after a directive over lines is no blank]
 
 [fixture:
 direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
