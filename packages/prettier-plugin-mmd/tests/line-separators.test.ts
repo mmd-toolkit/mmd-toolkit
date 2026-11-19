@@ -4656,8 +4656,8 @@ const titleEndsExamples: readonly (readonly [string, string, string])[] = [
   ],
   [
     "a no-break space and U+3000 at both ends of the title of a C4 diagram",
-    "C4Context\ntitle \u00a0\u3000T\u3000\u00a0\nPerson(a,\"A\")\n",
-    "C4Context\n  title \u00a0\u3000T\u3000\u00a0\n  Person(a, \"A\")\n",
+    'C4Context\ntitle \u00a0\u3000T\u3000\u00a0\nPerson(a,"A")\n',
+    'C4Context\n  title \u00a0\u3000T\u3000\u00a0\n  Person(a, "A")\n',
   ],
 ]
 
