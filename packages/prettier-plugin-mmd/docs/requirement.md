@@ -1454,8 +1454,7 @@ Whitespace inside values and before the first line break of each gap stays.
 Joining regions keep their complete source. A line break stays where joining it,
 with one space or with nothing, could change which `;` the line rule ignores,
 and where a `;` ends the last line; any other line break is joined as usual,
-also in a statement that holds a `;`. A statement that keeps a line break keeps
-its styles as written.
+also in a statement that holds a `;`.
 
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]

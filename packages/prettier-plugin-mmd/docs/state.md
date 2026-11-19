@@ -1928,8 +1928,7 @@ stateDiagram-v2
 
 A line break stays where joining it, with one space or with nothing, could
 change which `;` the line rule ignores, and where a `;` ends the last line; any
-other line break is joined as usual, also in a statement that holds a `;`. A
-statement that keeps a line break keeps its styles as written.
+other line break is joined as usual, also in a statement that holds a `;`.
 
 [corpus fixture: state/db-style-semicolons] [corpus fixture:
 state/db-classdef-semicolons] [fixture:

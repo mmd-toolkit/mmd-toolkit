@@ -28,6 +28,16 @@ mermaid.js は `radar-beta:` と `radar-beta` を同じ見出しとして読み�
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+閉じたディレクティブの前、コロンの前、またはその両側にある空白とタブは、
+印字から除きます。
+`radar-beta %%{x}%%:`、`radar-beta%%{x}%% :`、
+`radar-beta %%{x}%% :` は `radar-beta%%{x}%%:` と印字し、
+空白の代わりにタブがあっても同じです。
+`radar-beta %%{x}%% %%{y}%% :` は `radar-beta%%{x}%%%%{y}%%:` と印字します。
+2 つのディレクティブの間の空白かタブも同じです。
+`radar-beta%%{x}%% %%{y}%%:` は `radar-beta%%{x}%%%%{y}%%:` と印字します。
+コロンがなければ空白は残ります。
+`radar-beta %%{x}%%` と `radar-beta%%{x}%% %%{y}%%` は変えません。
 閉じていないディレクティブの前でも、コロンを残します。
 `radar-beta:%%{x y`、改行、`axis North` を書かれたまま残すのは、
 mermaid.js がディレクティブを後ろの改行ごと取り除き、
@@ -44,6 +54,13 @@ mermaid.js がディレクティブを後ろの改行ごと取り除き、
 [fixture: radar/header/colon-yaml-kept]
 [fixture: radar/header/colon-directive-before-hidden-yaml-kept]
 [fixture: radar/header/joined-empty]
+[fixture: radar/header/colon-spaced-before-directive-dropped]
+[fixture: radar/header/colon-spaced-before-colon-dropped]
+[fixture: radar/header/colon-tabs-around-directive-dropped]
+[fixture: radar/header/colon-two-spaced-directives-dropped]
+[fixture: radar/header/directive-no-colon-space-kept]
+[fixture: radar/header/colon-between-directives-dropped]
+[fixture: radar/header/directives-no-colon-space-between-kept]
 
 [fixture: radar/header/join-separated-empty-alternative]
 

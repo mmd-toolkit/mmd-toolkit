@@ -423,11 +423,14 @@ spelling gives the same Db, and the five examples of its documentation write
 `<<...>>` after a space and touching its text
 ([the examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L141-L144),
 [two more](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L546-L549)).
-Where a directive or a comment stands at an end of the text, the whitespace
-beside it keeps its written side.
+Beside a directive, the whitespace is printed as the table of
+[Usecase native syntax and authored values](./compatibility.md#usecase-native-syntax-and-authored-values)
+gives, and a protected comment region keeps its whole value.
 
 [fixture: stereotypes/stereotype-spaced-once] [fixture:
-stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
+stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab] [test:
+usecase: a directive beside the text of a stereotype] [test: usecase:
+stereotype-comment-region-padding-kept]
 
 Actors and use cases follow the same rule, including relationship endpoints and
 declarations inside system boundaries. Mermaid trims the interior ends;
