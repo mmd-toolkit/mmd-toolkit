@@ -6158,7 +6158,8 @@ chooses the indentation, one step for a section and two for an item, and keeps
 what decides the roles. A run of whitespace inside a label, an icon, or a class
 text remains value text, and the spaces and tabs at the ends of a bare label, an
 icon, and a class text are dropped, and so are those after the bare id of a
-card, while those after the bare id of a column stay (see
+card, while those after the bare id of a column stay, and a bare label, an icon,
+or a class text of spaces and tabs only keeps one space (`A[ ]`) (see
 [Trailing whitespace](./kanban.md#trailing-whitespace)). Decorations align with
 their node; an inline-directive line keeps its directives and the gaps beside
 them, and the printer chooses the whitespace before the first one. A data block
@@ -6332,8 +6333,9 @@ inline percent text remain literals. Internal directive gaps and joined
 physical-line continuation columns stay written, including every trailing
 whitespace character other than a space or a tab, such as a no-break space, on
 ordinary and kept lines; the spaces and tabs at the end of a literal are dropped
-(see [Trailing whitespace](./ishikawa.md#trailing-whitespace)). The rest of the
-value is what was written; Db equality does not require erasing it, the same
+(see [Trailing whitespace](./ishikawa.md#trailing-whitespace)). A run of spaces
+and tabs inside a literal is printed as one space, and every other character of
+the value is what was written; Db equality does not require erasing it, the same
 choice as mindmap. Every semicolon stays, with whole crossing literals and
 trivia protected by the shared kept-stretch path.
 
