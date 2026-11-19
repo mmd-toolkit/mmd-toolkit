@@ -4759,6 +4759,71 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\n  a\n  style a fill: #f00\n  %% c\n  %% d\n",
   ],
   [
+    "block: style-ls-before-a-comment-line-an-empty-line-and-a-statement-keeps-the-ls-and-lowers-the-color",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n\nb\n",
+    "block-beta\n  a\n  style a fill:#f00\u2028%% c\n\n  b\n",
+  ],
+  [
+    "block: style-ls-before-a-comment-line-a-directive-line-and-a-statement-keeps-the-ls-and-lowers-the-color",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{x}%%\nb\n",
+    "block-beta\n  a\n  style a fill:#f00\u2028%% c\n%%{x}%%\n  b\n",
+  ],
+  [
+    "block: style-ls-before-a-comment-line-a-directive-line-and-a-comment-line-at-the-end-is-dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{x}%%\n%% d\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n  %%{x}%%\n  %% d\n",
+  ],
+  [
+    "block: style-ls-before-a-comment-line-a-directive-line-a-comment-line-and-a-statement-keeps-the-lines",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{x}%%\n%% d\nb\n",
+    "block-beta\n  a\n  style a fill:#F00\u2028%% c\n%%{x}%%\n%% d\nb\n",
+  ],
+  [
+    "block: style-ls-before-a-comment-line-a-directive-line-a-comment-line-and-a-directive-line-keeps-the-ls",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{x}%%\n%% d\n%%{y}%%\n",
+    "block-beta\n  a\n  style a fill:#f00\u2028%% c\n%%{x}%%\n%% d\n%%{y}%%\n",
+  ],
+  [
+    "block: a-run-of-spaces-after-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays",
+    "block-beta\nclassDef c \nfill:#F00,   stroke:#ABC;\n",
+    "block-beta\n  classDef c \n    fill:#f00,   stroke:#ABC;\n",
+  ],
+  [
+    "block: a-space-before-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays",
+    "block-beta\nclassDef c \nfill:#F00 ,stroke:#ABC;\n",
+    "block-beta\n  classDef c \n    fill:#f00 ,stroke:#ABC;\n",
+  ],
+  [
+    "block: a-run-of-spaces-around-the-colon-in-a-classdef-that-whitespace-and-a-line-break-join-stays",
+    "block-beta\nclassDef c \nfill :  #F00,stroke:#ABC;\n",
+    "block-beta\n  classDef c \n    fill :  #f00,stroke:#ABC;\n",
+  ],
+  [
+    "block: a-tab-after-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays",
+    "block-beta\nclassDef c \nfill:#F00,\tstroke:#ABC;\n",
+    "block-beta\n  classDef c \n    fill:#f00,\tstroke:#ABC;\n",
+  ],
+  [
+    "block: a-color-that-characters-follow-after-whitespace-in-a-classdef-that-whitespace-and-a-line-break-join-is-lower-case",
+    "block-beta\nclassDef c \nfill:#F00 x;\n",
+    "block-beta\n  classDef c \n    fill:#f00 x;\n",
+  ],
+  [
+    "block: a-color-before-a-space-and-a-comment-line-in-a-style-that-a-ls-comment-line-joins-is-lower-case",
+    "block-beta\na\nstyle a fill:#F00 x\u2028%% c\n y\n",
+    "block-beta\n  a\n  style a fill:#f00 x\u2028%% c\n y\n",
+  ],
+  [
+    "block: composite-head-spaces-after-the-colon-before-a-ls-comment-line-stay",
+    "block-beta\nblock:   \u2028%% keep\n group:2\nA\nend\n",
+    "block-beta\n  block:   \u2028%% keep\n group:2\n    A\n  end\n",
+  ],
+  [
+    "block: composite-head-space-after-the-name-before-a-ls-comment-line-stays",
+    "block-beta\nblock:G \u2028%% c\nA\nend\n",
+    "block-beta\n  block: G \u2028%% c\nA\n  end\n",
+  ],
+  [
     "block: composite-head-name-after-the-comment-line-stays-as-written",
     "block-beta\nblock:\u2028%% keep\ngroup:2\nA\nend\n",
     "block-beta\n  block:\u2028%% keep\ngroup:2\n    A\n  end\n",

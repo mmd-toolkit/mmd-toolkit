@@ -490,11 +490,14 @@ U+2028 と U+2029 はそのまま残します。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
 [journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
-たとえば、物理行を結ぶコメント領域や、`;` を含む行です。
+物理行を結ぶコメント領域と、`;` を含む行がそれです。
 最初の方向の前、`,` の前、`)` の前では、コメント行とディレクティブの行は、
 第 1 列か字下げされた、書かれた位置のままで、次の行も字下げしません。
 そこの空白は Db にあるからです（上を参照）。
-`,` の後では、コメント行やディレクティブの行と次の行を 1 段深く置きます。
+`,` の後では、そこの空白はどの方向にも入らないので、
+コメント行やディレクティブの行と次の行を 1 段深く置きます。
+[flowchart](./flowchart.ja.md#複数行の文)と
+[xychart](./xychart.ja.md#複数行の文)も、文の続きを 1 段深く置きます。
 方向の行にあるディレクティブは、`(` の後、`,` の前、`)` の前では、
 そこの空白が Db にあるので、接しているか離れているかを書かれたまま残します。
 `(right %%{x}%%, down)` と `(right%%{x}%%, down)` はそのままです。
@@ -996,6 +999,11 @@ composite の見出しなどの構造隙間では、注釈類の改行を保ち�
 block-arrow の方向は、`,` の後の空白を除いて原文のままです。
 
 [fixture: multi-line-statements/structural-trivia-continuations]
+[test: block: a-run-of-spaces-after-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays]
+[test: block: a-space-before-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays]
+[test: block: a-run-of-spaces-around-the-colon-in-a-classdef-that-whitespace-and-a-line-break-join-stays]
+[test: block: a-tab-after-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays]
+[test: block: a-color-that-characters-follow-after-whitespace-in-a-classdef-that-whitespace-and-a-line-break-join-is-lower-case]
 
 物理行を結ぶコメント領域は、元の配置を保ちます。
 U+2028 か U+2029 の後のコメント領域があると、
@@ -1007,22 +1015,32 @@ mermaid.js は前後の行を 1 行として読みます。
 コロンの行に名前があるときは、その間の隙間を普通のヘッドと同じに印字します。
 `block:G`、U+2028、`%% c` は `block: G`、U+2028、`%% c` に、
 `block:   G` は `block: G` に印字します。
+名前の後の空白は残ります（`block:G`、空白、U+2028、`%% c`）。
 コメント領域がコロンにすぐ続くときは、ヘッドを書かれたまま残します。
-`block:`、U+2028、`%% keep`、改行、`group:2` がその例です。
+コロンの後に空白があっても同じです。
+`block:`、U+2028、`%% keep`、改行、`group:2` と、
+U+2028 の前にコロンの後の空白が 3 つの `block:` がその例です。
 
 [test: block: ls-comment-in-composite-head]
 [test: block: ps-comment-in-composite-head]
 [test: block: ls-comment-after-composite-head-name]
 [test: block: ps-comment-after-composite-head-name]
 [test: block: composite-head-name-after-the-comment-line-stays-as-written]
+[test: block: composite-head-spaces-after-the-colon-before-a-ls-comment-line-stay]
+[test: block: composite-head-space-after-the-name-before-a-ls-comment-line-stays]
 [test: block: composite-head-spaces-before-the-name-before-a-ls-comment-line-are-one-space]
 
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
-改行が残る文は、スタイルの空白も書かれたままにし、
-色は[色](#色)と同じに印字します。
+改行が残る文は、スタイルの空白（連なりとタブも）を書かれたまま残します。
+色は、コンマが続くとき、
+空白の後に文字が続くとき（`fill:#F00 x;` は `fill:#f00 x;`
+になります）に小文字にします。
+行の規則が無視する `;` の前の色は書かれたまま残しますが、
+[色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
+規則による修正を待っています。
 [行](#行)と
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
 mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、その後の、
@@ -1180,7 +1198,7 @@ block-beta
 整形が分ける単位の隙間のディレクティブを後ろの単位と一緒に動かし、
 右側の接触か間隔を残し、左側の接触は切ります。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
-たとえば、文の後の閉じていないディレクティブです。
+文の後の閉じていないディレクティブがそれです。
 
 [fixture: block/directives/directive-after-columns]
 [fixture: block/directives/directive-after-columns-right-touching]
@@ -1402,28 +1420,41 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照）、コメント行の後にテキストが続くときは、
 その行の文の空白と改行は書かれたまま印字します。
-その行にある style の色は、
-その行でコンマが色に続くとき（空白を挟んでもです）と、
-文の最後の行の最後の色について、[色](#色)と同じに印字します。
-そこでは色は小文字になります。
-色の後ろにその行でコメント領域が続き、コメント行の後にテキストが続くときは、
-色を書かれたまま残します。
-次の行がコンマで始まるときも同じです。
-行の規則が無視する `;` が色に続くときと、空白の後に文字が続くときも同じです。
-コメント行の後にディレクティブの行が続くときは、
-U+2028 や U+2029 と行は書かれたまま残し、色は小文字にします。
-style の行の後にテキストの末尾までコメント行しか続かないときは、
-何もつながりません。
-`style` や `classDef` の末尾の U+2028 や U+2029 は、
-コメントやディレクティブの前の空白とともに落とし、
-文は普通の行と同じに印字します。
-`style a fill:#F00`、U+2028、テキストの末尾の `%% c` は、
-`style a fill: #f00` と `%% c` に印字します。
+コメント行の後に何が続くかが、残りを決めます。
+`style a fill:#F00`、U+2028、`%% c`、改行の後は、
+ブロック図は次のように印字します。
+
+| コメント行の後に続くもの                                             | U+2028 や U+2029 と行                                  | 色     |
+| -------------------------------------------------------------------- | ------------------------------------------------------ | ------ |
+| 何もなく、テキストの末尾                                             | 落とす。コメント行は、普通の行と同じに自分の行に置く   | `#f00` |
+| コメント行だけで、テキストの末尾                                     | 落とす。各コメント行は、普通の行と同じに自分の行に置く | `#f00` |
+| すぐに文（接する `b` か、空白の後の ` y`）                           | 残す。文はコメント行の次の行に、書かれたままで残る     | `#F00` |
+| 空行と文                                                             | 残す。文は離れて、文の段に置く                         | `#f00` |
+| ディレクティブの行で、テキストの末尾                                 | 残す                                                   | `#f00` |
+| ディレクティブの行と文                                               | 残す。文は離れて、文の段に置く                         | `#f00` |
+| ディレクティブの行とコメント行で、テキストの末尾                     | 落とす。どの行も、普通の行と同じに自分の行に置く       | `#f00` |
+| ディレクティブの行、コメント行、文                                   | 残す。文はコメント行の次の行に、書かれたままで残る     | `#F00` |
+| ディレクティブの行、コメント行、ディレクティブの行で、テキストの末尾 | 残す                                                   | `#f00` |
+
+flowchart、class、state、ER は、コメント行の後に何もないときに、
+その行を書かれたまま残し、その形は規則 2 が与えます。
+そのためブロック図は、最初の行を規則 2 に反して印字しており、
+規則による修正を待っています。
+空行かディレクティブの行が続くときは、U+2028 が残って色に接します。
+[色](./compatibility.ja.md#同じに描かれる色)の節は、
+その色を大文字のまま残すので、その行も、ブロック図は規則に反して印字しています。
+そのような行で、その行でコンマが続く色（空白を挟んでもです）と、
+最後の行の最後の色は、小文字にします。
+コメント行の後の行がコンマで始まるときの色は、書かれたまま残します（`#F00`、
+その後の `#abc` です）。
 ブロック図では、mermaid.js は U+2028 を行の終わりとして、
-`%% c` をコメントとして読むので、Db はその文字をスタイルに持たず、
-Db が違うのは、最初の `:` の後の空白と色の大文字小文字だけです。
+`%% c` をコメントとして読むので、Db はその文字をスタイルに持ちません。
+`style a fill:#F00`、U+2028、テキストの末尾の `%% c` は、
+Db が普通の行と違うのは、最初の `:` の後の空白と色の大文字小文字だけで、10.9.8、
+11.7.0、11.17.2、12.0.0、12.3.0 の描画は同じです。
 どちらも[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)と
 [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)が定めています。
+この記録に入っているのは、この形だけで、表のほかの行は入っていません。
 ラベルの中では文字で、そのまま残ります。
 
 [test: U+2028 between two statements of a row]
@@ -1450,6 +1481,12 @@ Db が違うのは、最初の `:` の後の空白と色の大文字小文字だ
 [test: block: style-ps-before-a-comment-and-a-directive-line-keeps-the-ps-and-lowers-the-color]
 [test: block: classdef-ls-before-a-comment-and-a-directive-line-keeps-the-ls-and-lowers-the-color]
 [test: block: style-ls-before-two-comment-lines-at-the-end-of-the-text-is-dropped]
+[test: block: style-ls-before-a-comment-line-an-empty-line-and-a-statement-keeps-the-ls-and-lowers-the-color]
+[test: block: style-ls-before-a-comment-line-a-directive-line-and-a-statement-keeps-the-ls-and-lowers-the-color]
+[test: block: style-ls-before-a-comment-line-a-directive-line-and-a-comment-line-at-the-end-is-dropped]
+[test: block: style-ls-before-a-comment-line-a-directive-line-a-comment-line-and-a-statement-keeps-the-lines]
+[test: block: style-ls-before-a-comment-line-a-directive-line-a-comment-line-and-a-directive-line-keeps-the-ls]
+[test: block: a-color-before-a-space-and-a-comment-line-in-a-style-that-a-ls-comment-line-joins-is-lower-case]
 [test: block: whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins]
 [test: U+2028 between a composite head and its body]
 

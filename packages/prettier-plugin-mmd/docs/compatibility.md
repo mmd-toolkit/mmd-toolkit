@@ -5963,28 +5963,28 @@ quadrant/lex-classdef-name-line-separator-comment-line] [corpus fixture:
 quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 
 A line that mermaid.js reads this way runs over several lines of the source. The
-formatter keeps its whitespace and its line breaks as written, from the start of
-its first statement to its end, with the statements that stand on it: it does
+formatter keeps the whitespace and the line breaks of such a line as written,
+from its first line to its end, with the statements that stand on it: it does
 not format the whitespace between them, and it does not indent the lines after
-the comment line. What the printer spells otherwise on a plain line, such as the
+the comment line. What else it prints on a statement of such a line, as the
 colors of a style, the words of a relationship, and the quotes of a name that is
-one plain word, is spelled as the document of the diagram type says (see
-[ER](./er.md#multi-line-statements) and [block](./block.md#line-separators)).
-This is one rule for every statement, block opening, and header, but for a
-mindmap, which puts the comment line of a node on a line of its own at the level
-of the node (see [Line separators](./mindmap.md#line-separators)), and for the
-head of a composite block of a block diagram, whose gap after the colon is
-printed as on a plain head where a name stands on the line of the colon, and
-which stays as written where the comment region follows the colon at once (see
+one plain word, is stated in the document of the diagram type (see
+[ER](./er.md#attribute-spacing) and [block](./block.md#line-separators)). This
+is one rule for every statement, block opening, and header, but for a mindmap,
+which puts the comment line of a node on a line of its own at the level of the
+node (see [Line separators](./mindmap.md#line-separators)), and for the head of
+a composite block of a block diagram, whose gap after the colon is printed as on
+a plain head where a name stands on the line of the colon, and which stays as
+written where the comment region follows the colon at once (see
 [Multi-line statements](./block.md#multi-line-statements)). A diagram comment
 that such a comment line cuts is printed as written as well (see
 [Line separators](./sequence.md#line-separators)). The same holds where the
 region lies inside a name, in an ER diagram and in a quadrant chart. In an ER
-diagram, the block of an entity on such a line is the one part that is not
-printed as written to its end: the line up to the `{` stays as written, as does
-what follows the `{` on its line in a nonempty block, and the attributes after
-it and the `}` stand as those of any entity, unless the `}` stands on a line
-that holds the start of such a comment line (see
+diagram, the block of an entity on such a line is the one part whose whitespace
+is not kept as written to its end: the line up to the `{` stays as written, as
+does what follows the `{` on its line in a nonempty block, and the attributes
+after it and the `}` stand as those of any entity, unless the `}` stands on a
+line that holds the start of such a comment line (see
 [ER](./er.md#multi-line-statements)).
 
 [test: a comment line after U+2028 inside the name of an ER entity with an
