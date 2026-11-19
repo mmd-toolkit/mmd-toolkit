@@ -737,7 +737,8 @@ of it: where it is, one space stands there, and where it touches, it keeps
 touching. The directives that end the text of a node or of a class are printed
 with one space before each that has spaces or tabs before it, and the spaces and
 tabs after the last one are left out, whatever the spaces and tabs at the end of
-the line (see
+the line, unless the last directive holds a line break or a `;`, where a bare
+node keeps the line as written (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]

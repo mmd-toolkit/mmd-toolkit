@@ -1442,9 +1442,10 @@ follow the text, each keeps whether spaces or tabs precede it, a run becoming
 one space, and the spaces and tabs after the last one are dropped like any
 spaces and tabs at the end of the line, so the line is printed alike whether or
 not spaces and tabs follow its last directive, as a directive at the end of a
-line is in the other diagrams (see [Directives](./flowchart.md#directives)):
-`title T  %%{x}%%  %%{y}%%` and `title T  %%{x}%%  %%{y}%%  ` are both printed
-`title T %%{x}%% %%{y}%%`, `title T%%{x}%%%%{y}%%  ` is printed
+line is in the other diagrams (see [Directives](./flowchart.md#directives)),
+unless that directive holds a line break or a `;` (see the paragraph after the
+first table): `title T  %%{x}%%  %%{y}%%` and `title T  %%{x}%%  %%{y}%%  ` are
+both printed `title T %%{x}%% %%{y}%%`, `title T%%{x}%%%%{y}%%  ` is printed
 `title T%%{x}%%%%{y}%%`, and `state "d" as A : x  %%{x}%%  ` is printed
 `state "d" as A : x %%{x}%%`. mermaid.js removes the directives before it reads
 the text, so the spaces and tabs around them are spaces and tabs at the end of
@@ -1476,83 +1477,86 @@ a tab, and `as written` stands for the written title). The Langium types are a
 pie chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph,
 a cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, and a
 railroad diagram; every type of a group prints the form of its column. A pie
-chart is left out of the rows marked `but a pie chart`: it prints one space
-there in this version, as the other Langium types do, and the form that its
-title keeps is stated with the pie rules.
+chart is left out of the rows marked `but a pie chart`, and the `accDescr:` line
+of a pie chart and of a gitGraph out of the rows of the second table marked
+likewise: the form that they keep is stated with the pie rules.
 
-| Written after `title `         | Langium types            | quadrant               | Gantt, journey, timeline, sequence | Venn, C4            |
-| ------------------------------ | ------------------------ | ---------------------- | ---------------------------------- | ------------------- |
-| `T  %%{x}%%  `                 | `T %%{x}%%`              | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`         |
-| `T  %%{x}%%  %% c  `           | `T %%{x}%% %% c  `       | `T  %%{x}%%  %% c`     | `T  %%{x}%%  %% c`                 | as written          |
-| `T %%{x}%%\u00a0`              | as written               | `T %%{x}%%`            | as written                         | as written          |
-| `T %%{x}%%\u3000`              | as written               | `T %%{x}%%`            | as written                         | as written          |
-| `T %%{x}%%\u2003`              | as written               | `T %%{x}%%`            | as written                         | as written          |
-| `%%{x}%%\u00a0T %%{y}%%`       | `%%{x}%%T %%{y}%%`       | `%%{x}%%T %%{y}%%`     | as written                         | as written          |
-| `%%{x}%%\u00a0T %%{y}%%\u00a0` | as written               | `%%{x}%%T %%{y}%%`     | as written                         | as written          |
-| `%%{x}%%\u00a0T %%{y}%% U`     | as written               | `%%{x}%%T %%{y}%% U`   | as written                         | as written          |
-| `%%{x}%%  T  `                 | `%%{x}%%T`               | `%%{x}%%T`             | `%%{x}%%T`                         | as written          |
-| `T %%{x}%% U  `                | as written               | `T %%{x}%% U`          | `T %%{x}%% U`                      | as written          |
-| `T %%{x}%%\u00a0U  `           | as written               | `T %%{x}%%\u00a0U`     | `T %%{x}%%\u00a0U`                 | as written          |
-| `T %%{x}%%  U  %%{y}%%  `      | as written               | `T %%{x}%%  U %%{y}%%` | `T %%{x}%%  U %%{y}%%`             | as written          |
-| `T\u00a0%%{x}%%`               | `T %%{x}%%`              | `T %%{x}%%`            | as written                         | as written          |
-| `T\u3000%%{x}%%`               | `T %%{x}%%`              | `T %%{x}%%`            | as written                         | as written          |
-| `T\u2003%%{x}%%`               | `T %%{x}%%`              | `T %%{x}%%`            | as written                         | as written          |
-| `T\t%%{x}%%\t`                 | `T %%{x}%%`              | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`         |
-| `T\u00a0%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
-| `T  %% c  `                    | `T %% c  `               | `T %% c`               | `T %% c`                           | `T %% c`            |
-| `T %%{x}%% %% c  `             | as written               | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | as written          |
-| `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`          | as written             | as written                         | as written          |
-| `%%{x}%%  `                    | as written               | `%%{x}%%`              | as written                         | as written          |
-| `%%{x}%%\t`                    | as written               | `%%{x}%%`              | as written                         | as written          |
-| `%%{x}%%  %%{y}%%  `           | as written               | `%%{x}%% %%{y}%%`      | as written                         | as written          |
-| `T  %%{x}%%  %%{y}%%  `        | `T %%{x}%% %%{y}%%`      | `T %%{x}%% %%{y}%%`    | `T %%{x}%% %%{y}%%`                | `T %%{x}%% %%{y}%%` |
-| `T  %%{x}%%  %%{y}%%`          | `T %%{x}%% %%{y}%%`      | `T %%{x}%% %%{y}%%`    | `T %%{x}%% %%{y}%%`                | `T %%{x}%% %%{y}%%` |
-| `T%%{x}%%%%{y}%%  `            | `T%%{x}%%%%{y}%%`        | `T%%{x}%%%%{y}%%`      | `T%%{x}%%%%{y}%%`                  | `T%%{x}%%%%{y}%%`   |
-| `T %%{x}%%\u2028  `            | as written               | `T %%{x}%%`            | `T %%{x}%%\u2028`                  | as written          |
-| `T %%{x}%%\u2029  `            | as written               | `T %%{x}%%`            | `T %%{x}%%\u2029`                  | as written          |
-| `T\u2028%%{x}%%`               | `T %%{x}%%`              | `T %%{x}%%`            | as written                         | as written          |
-| `T%% c`                        | as written               | as written             | as written                         | as written          |
-| `%%{x}%%  %% c  `              | as written               | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written          |
-| `%%{x}%%  %%{y}%%  %% c  `     | as written               | `%%{x}%%%%{y}%%%% c`   | `%%{x}%%%%{y}%%%% c`               | as written          |
-| `T %% c %%{x}%%`               | as written               | as written             | as written                         | as written          |
-| `T %%{x}%%\u00a0%% c`          | as written               | as written             | as written                         | as written          |
-| `T  %%{x}%%  %%{y}%%  %% c`    | `T %%{x}%% %%{y}%% %% c` | as written             | as written                         | as written          |
-| `T\t%% c`                      | `T %% c`                 | `T %% c`               | `T %% c`                           | `T %% c`            |
-| ` %%{x}%% T`                   | as written               | `%%{x}%%T`             | `%%{x}%%T`                         | as written          |
-| `\u00a0%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
-| `\u00a0%%{x}%%  `              | as written               | `%%{x}%%`              | `\u00a0%%{x}%%`                    | `\u00a0%%{x}%%`     |
-| `\u3000%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
-| `\u2003%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
-| `  %% c  `                     | `%% c  `                 | `%% c`                 | `%% c`                             | `%% c`              |
-| `\u00a0%% c`                   | `%% c`                   | `%% c`                 | as written                         | as written          |
-| ` %%{x}%%%% c`                 | `%%{x}%%%% c`            | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written          |
-| `T  %% c  %%{x}%%`             | `T %% c  %%{x}%%`        | `T %% c %%{x}%%`       | `T %% c %%{x}%%`                   | `T %% c %%{x}%%`    |
-| `T\u3000%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
-| `T\u2003%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
-| `T\u000b%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
-| `T\u000c%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
-| `T\ufeff%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
-| `T\u2028`                      | `T`                      | `T`                    | as written                         | as written          |
-| `T  \u2028`                    | `T`                      | `T`                    | as written                         | as written          |
-| `T\u2029`                      | `T`                      | `T`                    | as written                         | as written          |
-| `%%{x}%%\u00a0%% c`            | as written               | `%%{x}%%%% c`          | as written                         | as written          |
-| `%%{x}%%\u3000%% c`            | as written               | `%%{x}%%%% c`          | as written                         | as written          |
-| `%%{x}%%\u2003%% c`            | as written               | `%%{x}%%%% c`          | as written                         | as written          |
-| `%%{x}%%\t%% c`                | as written               | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written          |
-| `\u2028T`                      | `T`                      | as written             | as written                         | as written          |
-| `\u2029T`                      | `T`                      | as written             | as written                         | as written          |
-| `T\u2028  `                    | `T`                      | `T`                    | `T\u2028`                          | `T\u2028`           |
-| `\u2028%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
-| `\u2029%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
-| `\u000b%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
-| `\u000c%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
-| `\ufeff%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
-| `\u2028%%{x}%% T`              | as written               | as written             | as written                         | as written          |
-| `\u2029%%{x}%% T`              | as written               | as written             | as written                         | as written          |
-| `\u000cT`                      | `T`                      | `T`                    | as written                         | as written          |
-| `T\u000c`                      | `T`                      | `T`                    | as written                         | as written          |
-| `\u00a0%%{x}%%%% c`            | `%%{x}%%%% c`            | `%%{x}%%%% c`          | as written                         | as written          |
-| `\u00a0%%{x}%%  %% c  `        | as written               | `%%{x}%%%% c`          | `\u00a0%%{x}%%  %% c`              | as written          |
+| Written after `title `         | Langium types                   | quadrant               | Gantt, journey, timeline, sequence | Venn, C4              |
+| ------------------------------ | ------------------------------- | ---------------------- | ---------------------------------- | --------------------- |
+| `T  %%{x}%%  `                 | `T %%{x}%%`                     | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`           |
+| `T  %%{x}%%  %% c  `           | `T %%{x}%% %% c  `              | `T  %%{x}%%  %% c`     | `T  %%{x}%%  %% c`                 | as written            |
+| `T %%{x}%%\u00a0`              | as written                      | `T %%{x}%%`            | as written                         | as written            |
+| `T %%{x}%%\u3000`              | as written                      | `T %%{x}%%`            | as written                         | as written            |
+| `T %%{x}%%\u2003`              | as written                      | `T %%{x}%%`            | as written                         | as written            |
+| `%%{x}%%\u00a0T %%{y}%%`       | `%%{x}%%T %%{y}%%`              | `%%{x}%%T %%{y}%%`     | as written                         | as written            |
+| `%%{x}%%\u00a0T %%{y}%%\u00a0` | as written                      | `%%{x}%%T %%{y}%%`     | as written                         | as written            |
+| `%%{x}%%\u00a0T %%{y}%% U`     | as written                      | `%%{x}%%T %%{y}%% U`   | as written                         | as written            |
+| `%%{x}%%  T  `                 | `%%{x}%%T`                      | `%%{x}%%T`             | `%%{x}%%T`                         | as written            |
+| `T %%{x}%% U  `                | as written                      | `T %%{x}%% U`          | `T %%{x}%% U`                      | as written            |
+| `T %%{x}%%\u00a0U  `           | as written                      | `T %%{x}%%\u00a0U`     | `T %%{x}%%\u00a0U`                 | as written            |
+| `T %%{x}%%  U  %%{y}%%  `      | as written                      | `T %%{x}%%  U %%{y}%%` | `T %%{x}%%  U %%{y}%%`             | as written            |
+| `T\u00a0%%{x}%%`               | `T %%{x}%%`                     | `T %%{x}%%`            | as written                         | as written            |
+| `T\u3000%%{x}%%`               | `T %%{x}%%`                     | `T %%{x}%%`            | as written                         | as written            |
+| `T\u2003%%{x}%%`               | `T %%{x}%%`                     | `T %%{x}%%`            | as written                         | as written            |
+| `T\t%%{x}%%\t`                 | `T %%{x}%%`                     | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`           |
+| `T\u00a0%% c`                  | `T %% c` but a pie chart        | as written             | as written                         | as written            |
+| `T  %% c  `                    | `T %% c  `                      | `T %% c`               | `T %% c`                           | `T %% c`              |
+| `T %%{x}%% %% c  `             | as written                      | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | as written            |
+| `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c` but a pie chart | as written             | as written                         | as written            |
+| `%%{x}%%  `                    | as written                      | `%%{x}%%`              | as written                         | as written            |
+| `%%{x}%%\t`                    | as written                      | `%%{x}%%`              | as written                         | as written            |
+| `%%{x}%%  %%{y}%%  `           | as written                      | `%%{x}%% %%{y}%%`      | as written                         | as written            |
+| `T  %%{x}%%  %%{y}%%  `        | `T %%{x}%% %%{y}%%`             | `T %%{x}%% %%{y}%%`    | `T %%{x}%% %%{y}%%`                | `T %%{x}%% %%{y}%%`   |
+| `T  %%{x}%%  %%{y}%%`          | `T %%{x}%% %%{y}%%`             | `T %%{x}%% %%{y}%%`    | `T %%{x}%% %%{y}%%`                | `T %%{x}%% %%{y}%%`   |
+| `T%%{x}%%%%{y}%%  `            | `T%%{x}%%%%{y}%%`               | `T%%{x}%%%%{y}%%`      | `T%%{x}%%%%{y}%%`                  | `T%%{x}%%%%{y}%%`     |
+| `T %%{x}%%\u2028  `            | as written                      | `T %%{x}%%`            | `T %%{x}%%\u2028`                  | as written            |
+| `T %%{x}%%\u2029  `            | as written                      | `T %%{x}%%`            | `T %%{x}%%\u2029`                  | as written            |
+| `T\u2028%%{x}%%`               | `T %%{x}%%`                     | `T %%{x}%%`            | as written                         | as written            |
+| `T%% c`                        | as written                      | as written             | as written                         | as written            |
+| `%%{x}%%  %% c  `              | as written                      | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written            |
+| `%%{x}%%  %%{y}%%  %% c  `     | as written                      | `%%{x}%%%%{y}%%%% c`   | `%%{x}%%%%{y}%%%% c`               | as written            |
+| `T %% c %%{x}%%`               | as written                      | as written             | as written                         | as written            |
+| `T %%{x}%%\u00a0%% c`          | as written                      | as written             | as written                         | as written            |
+| `T  %%{x}%%  %%{y}%%  %% c`    | `T %%{x}%% %%{y}%% %% c`        | as written             | as written                         | as written            |
+| `T\t%% c`                      | `T %% c`                        | `T %% c`               | `T %% c`                           | `T %% c`              |
+| ` %%{x}%% T`                   | as written                      | `%%{x}%%T`             | `%%{x}%%T`                         | as written            |
+| `\u00a0%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | as written                         | as written            |
+| `\u00a0%%{x}%%  `              | as written                      | `%%{x}%%`              | `\u00a0%%{x}%%`                    | `\u00a0%%{x}%%`       |
+| `\u3000%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | as written                         | as written            |
+| `\u2003%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | as written                         | as written            |
+| `  %% c  `                     | `%% c  `                        | `%% c`                 | `%% c`                             | `%% c`                |
+| `\u00a0%% c`                   | `%% c`                          | `%% c`                 | as written                         | as written            |
+| ` %%{x}%%%% c`                 | `%%{x}%%%% c`                   | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written            |
+| `T  %% c  %%{x}%%`             | `T %% c  %%{x}%%`               | `T %% c %%{x}%%`       | `T %% c %%{x}%%`                   | `T %% c %%{x}%%`      |
+| `T\u3000%% c`                  | `T %% c` but a pie chart        | as written             | as written                         | as written            |
+| `T\u2003%% c`                  | `T %% c` but a pie chart        | as written             | as written                         | as written            |
+| `T\u000b%% c`                  | `T %% c` but a pie chart        | as written             | as written                         | as written            |
+| `T\u000c%% c`                  | `T %% c` but a pie chart        | as written             | as written                         | as written            |
+| `T\ufeff%% c`                  | `T %% c` but a pie chart        | as written             | as written                         | as written            |
+| `T\u2028`                      | `T`                             | `T`                    | as written                         | as written            |
+| `T  \u2028`                    | `T`                             | `T`                    | as written                         | as written            |
+| `T\u2029`                      | `T`                             | `T`                    | as written                         | as written            |
+| `%%{x}%%\u00a0%% c`            | as written                      | `%%{x}%%%% c`          | as written                         | as written            |
+| `%%{x}%%\u3000%% c`            | as written                      | `%%{x}%%%% c`          | as written                         | as written            |
+| `%%{x}%%\u2003%% c`            | as written                      | `%%{x}%%%% c`          | as written                         | as written            |
+| `%%{x}%%\t%% c`                | as written                      | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written            |
+| `\u2028T`                      | `T`                             | as written             | as written                         | as written            |
+| `\u2029T`                      | `T`                             | as written             | as written                         | as written            |
+| `T\u2028  `                    | `T`                             | `T`                    | `T\u2028`                          | `T\u2028`             |
+| `\u2028%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | as written                         | as written            |
+| `\u2029%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | as written                         | as written            |
+| `\u000b%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | as written                         | as written            |
+| `\u000c%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | as written                         | as written            |
+| `\ufeff%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | as written                         | as written            |
+| `\u2028%%{x}%% T`              | as written                      | as written             | as written                         | as written            |
+| `\u2029%%{x}%% T`              | as written                      | as written             | as written                         | as written            |
+| `\u000cT`                      | `T`                             | `T`                    | as written                         | as written            |
+| `T\u000c`                      | `T`                             | `T`                    | as written                         | as written            |
+| `\u00a0%%{x}%%%% c`            | `%%{x}%%%% c`                   | `%%{x}%%%% c`          | as written                         | as written            |
+| `\u00a0%%{x}%%  %% c  `        | as written                      | `%%{x}%%%% c`          | `\u00a0%%{x}%%  %% c`              | as written            |
+| `%%{x}%%  %% c `               | as written                      | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written            |
+| `\t%%{x}%%%% c`                | `%%{x}%%%% c`                   | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written            |
+| `T  %%{init: {a;b}}%%  `       | as written                      | `T %%{init: {a;b}}%%`  | `T %%{init: {a;b}}%%`              | `T %%{init: {a;b}}%%` |
 
 A title of directives only (`%%{x}%%  `, a directive and a tab, two directives
 and spaces) stays as written in every type but a quadrant chart, which leaves
@@ -1580,22 +1584,27 @@ quadrant chart and stays in the other types.
 A title of directives and a comment only (`%%{x}%%  %% c  `, and the same with
 two directives) is printed `%%{x}%%%% c` in a quadrant chart, a Gantt chart, a
 user journey, a timeline, and a sequence diagram, and stays as written in the
-other types: the two forms are drawn the same in every version that counts. A
-space before the directive of such a title (` %%{x}%%%% c`) is left out by every
-type but a Venn diagram and a C4 diagram. A whitespace character that is no
-space or tab and no U+2028 or U+2029 before the directive of such a title is
-left out by the Langium types and a quadrant chart and stays in the other types
-(`\u00a0%%{x}%%%% c`). With spaces around the comment (`\u00a0%%{x}%%  %% c  `),
-the Langium types, a Venn diagram, and a C4 diagram keep the title as written, a
-quadrant chart prints `%%{x}%%%% c`, and a Gantt chart, a user journey, a
-timeline, and a sequence diagram keep the character and the spaces before the
-comment and leave out the spaces after it. A tab between the directive and the
-comment is left out by a quadrant chart, a Gantt chart, a user journey, a
-timeline, and a sequence diagram, and stays in the other types, with the same
-drawing. A no-break space, U+3000, or U+2003 between them is left out by a
-quadrant chart and stays in the other types: the eleven Langium types draw the
-same with and without it, and a Gantt chart, a user journey, a timeline, a
-sequence diagram, a Venn diagram, and a C4 diagram draw other text without it.
+other types: the two forms are drawn the same in every version that counts.
+Where the comment touches the directive, spaces and tabs before the directive of
+such a title (` %%{x}%%%% c`) are left out by every type but a Venn diagram and
+a C4 diagram; with spaces between the directive and the comment
+(`%%{x}%%  %% c `), the Langium types, a Venn diagram, and a C4 diagram keep the
+title as written, and the other types print `%%{x}%%%% c`. A U+2028 or a U+2029
+before the directive of such a title keeps the title as written in every type,
+and the line after it too. A whitespace character that is no space or tab and no
+U+2028 or U+2029 before the directive of such a title is left out by the Langium
+types and a quadrant chart and stays in the other types (`\u00a0%%{x}%%%% c`).
+With spaces around the comment (`\u00a0%%{x}%%  %% c  `), the Langium types, a
+Venn diagram, and a C4 diagram keep the title as written, a quadrant chart
+prints `%%{x}%%%% c`, and a Gantt chart, a user journey, a timeline, and a
+sequence diagram keep the character and the spaces before the comment and leave
+out the spaces after it. A tab between the directive and the comment is left out
+by a quadrant chart, a Gantt chart, a user journey, a timeline, and a sequence
+diagram, and stays in the other types, with the same drawing. A no-break space,
+U+3000, or U+2003 between them is left out by a quadrant chart and stays in the
+other types: the eleven Langium types draw the same with and without it, and a
+Gantt chart, a user journey, a timeline, a sequence diagram, a Venn diagram, and
+a C4 diagram draw other text without it.
 
 After the text, two directives and a comment (`T  %%{x}%%  %%{y}%%  %% c`) are
 printed with one space before each by the Langium types, and stay as written in
@@ -1603,6 +1612,16 @@ the other types, with the same drawing. After the text, a comment and then a
 directive (`T %% c %%{x}%%`), and a no-break space between a directive and a
 comment (`T %%{x}%%\u00a0%% c`), stay as written in every type, and so does a
 comment that touches the text (`T%% c`).
+
+Where the last directive of a title holds a line break (`T  %%{init: {`, a line
+break, `}}%%`, and two spaces), a quadrant chart and a Venn diagram print the
+title without the spaces after the directive, and every other type keeps the
+line as written, the spaces included. Where it holds a `;`
+(`T  %%{init: {a;b}}%%  `), the Langium types keep the line as written and the
+other types print it without the spaces after the directive (the last row of the
+first table). A card of a kanban board and a bare mindmap node keep the line as
+written in both cases, and the text of a mindmap node after a shape prints
+without the spaces.
 
 A U+2028 or U+2029 at the end of a title with no directive, with the spaces
 before it, is left out by the Langium types and a quadrant chart and stays in
@@ -1643,51 +1662,51 @@ the form of the column (see the pie and gitGraph row of
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
 and [Accessibility lines](./pie.md#accessibility-lines)).
 
-| Written after `accTitle: ` or `accDescr: ` | Langium types            | quadrant, Gantt, journey, timeline, sequence, C4    |
-| ------------------------------------------ | ------------------------ | --------------------------------------------------- |
-| `T  %%{x}%%  `                             | `T %%{x}%%`              | `T %%{x}%%`                                         |
-| `T  %%{x}%%  %% c  `                       | `T %%{x}%% %% c  `       | `T  %%{x}%%  %% c`                                  |
-| `T %%{x}%%\u00a0`                          | as written               | `T %%{x}%%`                                         |
-| `T %%{x}%%\u3000`                          | as written               | `T %%{x}%%`                                         |
-| `T %%{x}%%\u2003`                          | as written               | `T %%{x}%%`                                         |
-| `%%{x}%%\u00a0T %%{y}%%`                   | as written               | `%%{x}%%T %%{y}%%`                                  |
-| `%%{x}%%\u00a0T %%{y}%%\u00a0`             | as written               | `%%{x}%%T %%{y}%%`                                  |
-| `%%{x}%%\u00a0T %%{y}%% U`                 | as written               | `%%{x}%%T %%{y}%% U`                                |
-| `%%{x}%%  T  `                             | as written               | `%%{x}%%T`                                          |
-| `T %%{x}%% U  `                            | as written               | `T %%{x}%% U`                                       |
-| `T %%{x}%%\u00a0U  `                       | as written               | `T %%{x}%%\u00a0U`                                  |
-| `T %%{x}%%  U  %%{y}%%  `                  | as written               | `T %%{x}%%  U %%{y}%%`                              |
-| `T\u00a0%%{x}%%`                           | `T %%{x}%%`              | `T %%{x}%%`                                         |
-| `T\u3000%%{x}%%`                           | `T %%{x}%%`              | `T %%{x}%%`                                         |
-| `T\u2003%%{x}%%`                           | `T %%{x}%%`              | `T %%{x}%%`                                         |
-| `T\t%%{x}%%\t`                             | `T %%{x}%%`              | `T %%{x}%%`                                         |
-| `T\u00a0%% c`                              | `T %% c`                 | as written                                          |
-| `T  %% c  `                                | `T %% c  `               | `T  %% c` for `accTitle:`, `T %% c` for `accDescr:` |
-| `T %%{x}%% %% c  `                         | as written               | `T %%{x}%% %% c`                                    |
-| `T\u00a0%%{x}%%%% c`                       | `T %%{x}%%%% c`          | as written                                          |
-| `T %%{x}%%\u2028  `                        | as written               | `T %%{x}%%`                                         |
-| `T %%{x}%%\u2029  `                        | as written               | `T %%{x}%%`                                         |
-| `T\u2028%%{x}%%`                           | `T %%{x}%%`              | `T %%{x}%%`                                         |
-| `T  %%{x}%%  %%{y}%%  `                    | `T %%{x}%% %%{y}%%`      | `T %%{x}%% %%{y}%%`                                 |
-| `T  %%{x}%%  %%{y}%%`                      | `T %%{x}%% %%{y}%%`      | `T %%{x}%% %%{y}%%`                                 |
-| `T%%{x}%%%%{y}%%  `                        | `T%%{x}%%%%{y}%%`        | `T%%{x}%%%%{y}%%`                                   |
-| `T%% c`                                    | as written               | as written                                          |
-| `T %% c %%{x}%%`                           | as written               | as written                                          |
-| `T %%{x}%%\u00a0%% c`                      | as written               | as written                                          |
-| `T  %%{x}%%  %%{y}%%  %% c`                | `T %%{x}%% %%{y}%% %% c` | as written                                          |
-| `T\t%% c`                                  | `T %% c`                 | `T\t%% c` for `accTitle:`, `T %% c` for `accDescr:` |
-| `T\u3000%% c`                              | `T %% c`                 | as written                                          |
-| `T\u2028`                                  | `T`                      | `T`                                                 |
-| `T  \u2028`                                | `T`                      | `T`                                                 |
-| `T\u2029`                                  | `T`                      | `T`                                                 |
-| `%%{x}%%  %% c  `                          | as written               | `%%{x}%%%% c`                                       |
-| `%%{x}%%\u00a0%% c`                        | as written               | `%%{x}%%%% c`                                       |
-| `%%{x}%%\u3000%% c`                        | as written               | `%%{x}%%%% c`                                       |
-| `%%{x}%%\u2003%% c`                        | as written               | `%%{x}%%%% c`                                       |
-| `%%{x}%%\t%% c`                            | as written               | `%%{x}%%%% c`                                       |
-| `T\u2028  `                                | `T`                      | `T`                                                 |
-| `\u2028T`                                  | `T`                      | as written                                          |
-| `\u2029T`                                  | `T`                      | as written                                          |
+| Written after `accTitle: ` or `accDescr: ` | Langium types                                                        | quadrant, Gantt, journey, timeline, sequence, C4    |
+| ------------------------------------------ | -------------------------------------------------------------------- | --------------------------------------------------- |
+| `T  %%{x}%%  `                             | `T %%{x}%%`                                                          | `T %%{x}%%`                                         |
+| `T  %%{x}%%  %% c  `                       | `T %%{x}%% %% c  `                                                   | `T  %%{x}%%  %% c`                                  |
+| `T %%{x}%%\u00a0`                          | as written                                                           | `T %%{x}%%`                                         |
+| `T %%{x}%%\u3000`                          | as written                                                           | `T %%{x}%%`                                         |
+| `T %%{x}%%\u2003`                          | as written                                                           | `T %%{x}%%`                                         |
+| `%%{x}%%\u00a0T %%{y}%%`                   | as written                                                           | `%%{x}%%T %%{y}%%`                                  |
+| `%%{x}%%\u00a0T %%{y}%%\u00a0`             | as written                                                           | `%%{x}%%T %%{y}%%`                                  |
+| `%%{x}%%\u00a0T %%{y}%% U`                 | as written                                                           | `%%{x}%%T %%{y}%% U`                                |
+| `%%{x}%%  T  `                             | as written                                                           | `%%{x}%%T`                                          |
+| `T %%{x}%% U  `                            | as written                                                           | `T %%{x}%% U`                                       |
+| `T %%{x}%%\u00a0U  `                       | as written                                                           | `T %%{x}%%\u00a0U`                                  |
+| `T %%{x}%%  U  %%{y}%%  `                  | as written                                                           | `T %%{x}%%  U %%{y}%%`                              |
+| `T\u00a0%%{x}%%`                           | `T %%{x}%%`                                                          | `T %%{x}%%`                                         |
+| `T\u3000%%{x}%%`                           | `T %%{x}%%`                                                          | `T %%{x}%%`                                         |
+| `T\u2003%%{x}%%`                           | `T %%{x}%%`                                                          | `T %%{x}%%`                                         |
+| `T\t%%{x}%%\t`                             | `T %%{x}%%`                                                          | `T %%{x}%%`                                         |
+| `T\u00a0%% c`                              | `T %% c` but the `accDescr:` of a pie chart and of a gitGraph        | as written                                          |
+| `T  %% c  `                                | `T %% c  `                                                           | `T  %% c` for `accTitle:`, `T %% c` for `accDescr:` |
+| `T %%{x}%% %% c  `                         | as written                                                           | `T %%{x}%% %% c`                                    |
+| `T\u00a0%%{x}%%%% c`                       | `T %%{x}%%%% c` but the `accDescr:` of a pie chart and of a gitGraph | as written                                          |
+| `T %%{x}%%\u2028  `                        | as written                                                           | `T %%{x}%%`                                         |
+| `T %%{x}%%\u2029  `                        | as written                                                           | `T %%{x}%%`                                         |
+| `T\u2028%%{x}%%`                           | `T %%{x}%%`                                                          | `T %%{x}%%`                                         |
+| `T  %%{x}%%  %%{y}%%  `                    | `T %%{x}%% %%{y}%%`                                                  | `T %%{x}%% %%{y}%%`                                 |
+| `T  %%{x}%%  %%{y}%%`                      | `T %%{x}%% %%{y}%%`                                                  | `T %%{x}%% %%{y}%%`                                 |
+| `T%%{x}%%%%{y}%%  `                        | `T%%{x}%%%%{y}%%`                                                    | `T%%{x}%%%%{y}%%`                                   |
+| `T%% c`                                    | as written                                                           | as written                                          |
+| `T %% c %%{x}%%`                           | as written                                                           | as written                                          |
+| `T %%{x}%%\u00a0%% c`                      | as written                                                           | as written                                          |
+| `T  %%{x}%%  %%{y}%%  %% c`                | `T %%{x}%% %%{y}%% %% c`                                             | as written                                          |
+| `T\t%% c`                                  | `T %% c`                                                             | `T\t%% c` for `accTitle:`, `T %% c` for `accDescr:` |
+| `T\u3000%% c`                              | `T %% c` but the `accDescr:` of a pie chart and of a gitGraph        | as written                                          |
+| `T\u2028`                                  | `T`                                                                  | `T`                                                 |
+| `T  \u2028`                                | `T`                                                                  | `T`                                                 |
+| `T\u2029`                                  | `T`                                                                  | `T`                                                 |
+| `%%{x}%%  %% c  `                          | as written                                                           | `%%{x}%%%% c`                                       |
+| `%%{x}%%\u00a0%% c`                        | as written                                                           | `%%{x}%%%% c`                                       |
+| `%%{x}%%\u3000%% c`                        | as written                                                           | `%%{x}%%%% c`                                       |
+| `%%{x}%%\u2003%% c`                        | as written                                                           | `%%{x}%%%% c`                                       |
+| `%%{x}%%\t%% c`                            | as written                                                           | `%%{x}%%%% c`                                       |
+| `T\u2028  `                                | `T`                                                                  | `T`                                                 |
+| `\u2028T`                                  | `T`                                                                  | as written                                          |
+| `\u2029T`                                  | `T`                                                                  | as written                                          |
 
 A directive that is not closed in a title takes the rest of the text.
 `title T %%{x` and `title T%%{x` are not changed in any type. The second table
@@ -1761,41 +1780,43 @@ directive that starts a title and text after it] [test: a form feed at the start
 of a title] [test: a form feed at the end of a title] [test: a no-break space
 before the directive of a title of a directive and a comment only] [test: a
 no-break space before the directive of a title of a directive and a comment
-only, with spaces around the comment] [test: runs and spaces around a directive
-that ends an accessibility line] [test: a comment and spaces after a directive
-that ends an accessibility line] [test: a no-break space after the last
-directive of an accessibility line] [test: U+3000 after the last directive of an
-accessibility line] [test: U+2003 after the last directive of an accessibility
-line] [test: a no-break space after a directive that starts an accessibility
-line and before another directive] [test: a no-break space after a directive
-that starts an accessibility line and after the last directive] [test: a
-no-break space after a directive that starts an accessibility line and text
-after the last directive] [test: spaces after a directive that starts an
-accessibility line] [test: text after a directive and spaces at the end of an
-accessibility line] [test: a no-break space after a directive and spaces at the
-end of an accessibility line] [test: text between two directives and spaces at
-the end of an accessibility line] [test: a no-break space between the text and a
-directive that ends an accessibility line] [test: U+3000 between the text and a
-directive that ends an accessibility line] [test: U+2003 between the text and a
-directive that ends an accessibility line] [test: a tab before and after the
-last directive of an accessibility line] [test: a no-break space before a
-comment after the text of an accessibility line] [test: runs and spaces around a
-comment after the text of an accessibility line] [test: a comment and spaces
-after a directive that follows the text of an accessibility line] [test: a
-no-break space before a directive and a comment after the text of an
-accessibility line] [test: U+2028 and spaces after the last directive of an
-accessibility line] [test: U+2029 and spaces after the last directive of an
-accessibility line] [test: U+2028 between the text and a directive that ends an
-accessibility line] [test: two directives after the text of an accessibility
-line and spaces] [test: two directives after the text of an accessibility line]
-[test: two directives touching after the text of an accessibility line and
-spaces] [test: a comment touching the text of an accessibility line] [test: a
-comment and then a directive after the text of an accessibility line] [test: a
-no-break space between a directive and a comment after the text of an
-accessibility line] [test: two directives and a comment after the text of an
-accessibility line] [test: a tab before a comment after the text of an
-accessibility line] [test: U+3000 before a comment after the text of an
-accessibility line] [test: U+2028 at the end of an accessibility line] [test:
+only, with spaces around the comment] [test: a space before a directive and
+spaces around a comment only as a title] [test: a tab before a directive and a
+comment only as a title] [test: a last directive that holds a semicolon, and
+spaces after it] [test: runs and spaces around a directive that ends an
+accessibility line] [test: a comment and spaces after a directive that ends an
+accessibility line] [test: a no-break space after the last directive of an
+accessibility line] [test: U+3000 after the last directive of an accessibility
+line] [test: U+2003 after the last directive of an accessibility line] [test: a
+no-break space after a directive that starts an accessibility line and before
+another directive] [test: a no-break space after a directive that starts an
+accessibility line and after the last directive] [test: a no-break space after a
+directive that starts an accessibility line and text after the last directive]
+[test: spaces after a directive that starts an accessibility line] [test: text
+after a directive and spaces at the end of an accessibility line] [test: a
+no-break space after a directive and spaces at the end of an accessibility line]
+[test: text between two directives and spaces at the end of an accessibility
+line] [test: a no-break space between the text and a directive that ends an
+accessibility line] [test: U+3000 between the text and a directive that ends an
+accessibility line] [test: U+2003 between the text and a directive that ends an
+accessibility line] [test: a tab before and after the last directive of an
+accessibility line] [test: a no-break space before a comment after the text of
+an accessibility line] [test: runs and spaces around a comment after the text of
+an accessibility line] [test: a comment and spaces after a directive that
+follows the text of an accessibility line] [test: a no-break space before a
+directive and a comment after the text of an accessibility line] [test: U+2028
+and spaces after the last directive of an accessibility line] [test: U+2029 and
+spaces after the last directive of an accessibility line] [test: U+2028 between
+the text and a directive that ends an accessibility line] [test: two directives
+after the text of an accessibility line and spaces] [test: two directives after
+the text of an accessibility line] [test: two directives touching after the text
+of an accessibility line and spaces] [test: a comment touching the text of an
+accessibility line] [test: a comment and then a directive after the text of an
+accessibility line] [test: a no-break space between a directive and a comment
+after the text of an accessibility line] [test: two directives and a comment
+after the text of an accessibility line] [test: a tab before a comment after the
+text of an accessibility line] [test: U+3000 before a comment after the text of
+an accessibility line] [test: U+2028 at the end of an accessibility line] [test:
 spaces and U+2028 at the end of an accessibility line] [test: U+2029 at the end
 of an accessibility line] [test: a directive and a comment only as an
 accessibility line] [test: a no-break space between a directive and a comment
@@ -1818,14 +1839,23 @@ a whitespace character that is no space or tab at the start and at the end of an
 accessibility line, in each group] [test: a whitespace character that is no
 space or tab at both ends of a title, in the Langium types and a quadrant chart]
 [test: a whitespace character that is no space or tab before a comment after the
-text of a title, in each group] [test: a whitespace character that is no space
-or tab before the directive of a title of a directive and a comment only, in
-each group] [test: a whitespace character that is no space or tab before the
-directive of a title of a directive and a comment only, with spaces around the
-comment, in each group] [test: a pie chart prints a whitespace character that is
-no space or tab before a comment after the text of a title as one space in this
-version] [test: an accessibility line of directives only stays as written in
-each type of the Langium grammar] [fixture:
+text of a title, in each group] [test: a title whose last directive holds a line
+break, with spaces after it, in each type] [test: a card of a kanban board and a
+node of a mindmap whose last directive holds a line break, with spaces after it]
+[test: a title whose last directive holds a semicolon, with spaces after it, in
+each group] [test: U+2028 before the directive of a title of a directive and a
+comment only in a pie chart] [test: U+2029 before the directive of a title of a
+directive and a comment only in a pie chart] [test: U+2028 before the directive
+of a title of a directive and a comment only in a quadrant chart] [test: U+2028
+before the directive of a title of a directive and a comment only in a Gantt
+chart] [test: U+2028 before the directive of a title of a directive and a
+comment only in a Venn diagram] [test: U+2028 before the directive of a title of
+a directive and a comment only in a C4 diagram] [test: a whitespace character
+that is no space or tab before the directive of a title of a directive and a
+comment only, in each group] [test: a whitespace character that is no space or
+tab before the directive of a title of a directive and a comment only, with
+spaces around the comment, in each group] [test: an accessibility line of
+directives only stays as written in each type of the Langium grammar] [fixture:
 pie/accessibility-lines/acc-title-percent-gap-kept] [fixture:
 gitgraph/title-and-common-values/acc-title-percent-gap-kept] [test: U+2003
 before a directive that is not closed in a title, at the end of the text] [test:

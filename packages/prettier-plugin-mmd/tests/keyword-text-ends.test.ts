@@ -891,6 +891,32 @@ const titleDirectiveCases: readonly TitleDirectiveCase[] = [
       gantt: "\u00a0%%{x}%%  %% c",
     },
   },
+  {
+    name: "a space before a directive and spaces around a comment only as a title",
+    written: " %%{x}%%  %% c  ",
+    printed: {
+      quadrant: "%%{x}%%%% c",
+      gantt: "%%{x}%%%% c",
+    },
+  },
+  {
+    name: "a tab before a directive and a comment only as a title",
+    written: "\t%%{x}%%%% c",
+    printed: {
+      langium: "%%{x}%%%% c",
+      quadrant: "%%{x}%%%% c",
+      gantt: "%%{x}%%%% c",
+    },
+  },
+  {
+    name: "a last directive that holds a semicolon, and spaces after it",
+    written: "T  %%{init: {a;b}}%%  ",
+    printed: {
+      quadrant: "T %%{init: {a;b}}%%",
+      gantt: "T %%{init: {a;b}}%%",
+      vennAndC4: "T %%{init: {a;b}}%%",
+    },
+  },
 ]
 
 const titleOpenDirectiveExamples: readonly (readonly [
@@ -2955,22 +2981,96 @@ describe("a whitespace character that is no space or tab before the first direct
       }
     }
   })
+})
 
-  it("a pie chart prints a whitespace character that is no space or tab before a comment after the text of a title as one space in this version", async () => {
-    const { input, output } = titleTypeNamed("a pie chart")
-    for (const row of titleDirectiveCases.filter(({ name }) =>
-      [
-        "a no-break space before a comment after the text of a title",
-        "U+3000 before a comment after the text of a title",
-        "U+2003 before a comment after the text of a title",
-        "a vertical tab before a comment after the text of a title",
-        "a form feed before a comment after the text of a title",
-        "U+FEFF before a comment after the text of a title",
-      ].includes(name),
-    ))
-      await expectKept(
-        input.replace("{title}", row.written),
-        output.replace("{title}", printedTitle(row, "langium")),
+/** What a last directive that holds a line break or a `;` leaves of the spaces after it (docs/compatibility.md, Texts after a keyword that are drawn the same). */
+describe("a last directive that holds a line break", () => {
+  it("a title whose last directive holds a line break, with spaces after it, in each type", async () => {
+    for (const { name, input, output } of titleTypes) {
+      const written = "T  %%{init: {\n}}%%  "
+      const printed = ["a quadrant chart", "a Venn diagram"].includes(name)
+        ? "T %%{init: {\n}}%%"
+        : written
+      expect(await formatMermaid(input.replace("{title}", written))).toBe(
+        output.replace("{title}", printed),
       )
+    }
   })
+
+  it("a card of a kanban board and a node of a mindmap whose last directive holds a line break, with spaces after it", async () => {
+    const written = "%%{init: {\n}}%%  "
+    for (const [input, output] of [
+      [
+        `kanban\n  S\n    A[x] ${written}\n`,
+        `kanban\n  S\n    A[x] ${written}\n`,
+      ],
+      [
+        `mindmap\n  root\n    a ${written}\n`,
+        `mindmap\n  root\n    a ${written}\n`,
+      ],
+      [
+        `mindmap\n  root\n    a[t] ${written}\n`,
+        "mindmap\n  root\n    a[t] %%{init: {\n}}%%\n",
+      ],
+    ])
+      expect(await formatMermaid(input)).toBe(output)
+  })
+
+  it("a title whose last directive holds a semicolon, with spaces after it, in each group", async () => {
+    for (const { group, input, output } of titleTypesOfEachGroup) {
+      const written = "T  %%{init: {a;b}}%%  "
+      const printed = group === "langium" ? written : "T %%{init: {a;b}}%%"
+      await expectKept(
+        input.replace("{title}", written),
+        output.replace("{title}", printed),
+      )
+    }
+  })
+})
+
+/** A U+2028 or U+2029 before the directive of a title of a directive and a comment only keeps the title and the line after it as written (docs/compatibility.md). */
+const lineSeparatorBeforeTheDirectiveExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 before the directive of a title of a directive and a comment only in a pie chart",
+    'pie\ntitle \u2028%%{x}%%%% c\n"a": 1\n',
+    'pie\n  title \u2028%%{x}%%%% c\n"a": 1\n',
+  ],
+  [
+    "U+2029 before the directive of a title of a directive and a comment only in a pie chart",
+    'pie\ntitle \u2029%%{x}%%%% c\n"a": 1\n',
+    'pie\n  title \u2029%%{x}%%%% c\n"a": 1\n',
+  ],
+  [
+    "U+2028 before the directive of a title of a directive and a comment only in a quadrant chart",
+    "quadrantChart\ntitle \u2028%%{x}%%%% c\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title \u2028%%{x}%%%% c\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "U+2028 before the directive of a title of a directive and a comment only in a Gantt chart",
+    "gantt\ntitle \u2028%%{x}%%%% c\n",
+    "gantt\n  title \u2028%%{x}%%%% c\n",
+  ],
+  [
+    "U+2028 before the directive of a title of a directive and a comment only in a Venn diagram",
+    "venn-beta\ntitle \u2028%%{x}%%%% c\nset A\n",
+    "venn-beta\n  title \u2028%%{x}%%%% c\nset A\n",
+  ],
+  [
+    "U+2028 before the directive of a title of a directive and a comment only in a C4 diagram",
+    'C4Context\ntitle \u2028%%{x}%%%% c\nPerson(a,"A")\n',
+    'C4Context\n  title \u2028%%{x}%%%% c\nPerson(a,"A")\n',
+  ],
+]
+
+describe("a line separator before the directive of a title of a directive and a comment only", () => {
+  it.each(lineSeparatorBeforeTheDirectiveExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
 })

@@ -750,6 +750,8 @@ mindmap
 それぞれの前に空白かタブがあれば空白 1 つを置き、
 最後のディレクティブの後の空白とタブは除きます。
 行末の空白とタブの有無で印字は変わりません。
+ただし、最後のディレクティブに改行か `;` があるときは、
+裸のノードは行を書かれたまま残します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
