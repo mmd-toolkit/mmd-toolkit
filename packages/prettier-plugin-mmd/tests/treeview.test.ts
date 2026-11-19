@@ -164,3 +164,305 @@ it("treeview split directives remain redrawable", async () => {
     }
   }
 })
+
+/**
+ * What a title and an `accTitle:` and an `accDescr:` line print for the text
+ * written after the keyword, where a directive (`%{x}%`, and `%{y}%` for a
+ * second one) stands in it (docs/treeview.md, Title and Accessibility lines).
+ */
+const directiveBesideTextRows: readonly {
+  readonly written: string
+  readonly title: string
+  readonly accTitle: string
+  readonly accDescr: string
+}[] = [
+  {
+    written: "T  %%{x}%%  ",
+    title: "T %%{x}%%",
+    accTitle: "T %%{x}%%",
+    accDescr: "T %%{x}%%",
+  },
+  {
+    written: "T  %%{x}%%  %%{y}%%  ",
+    title: "T %%{x}%% %%{y}%%",
+    accTitle: "T %%{x}%% %%{y}%%",
+    accDescr: "T %%{x}%% %%{y}%%",
+  },
+  {
+    written: "T  %%{x}%%  %% c",
+    title: "T %%{x}%% %% c",
+    accTitle: "T %%{x}%% %% c",
+    accDescr: "T %%{x}%% %% c",
+  },
+  {
+    written: "T  %%{x}%%%% c",
+    title: "T %%{x}%%%% c",
+    accTitle: "T %%{x}%%%% c",
+    accDescr: "T %%{x}%%%% c",
+  },
+  {
+    written: "T %%{x}%%  U  %%{y}%%  ",
+    title: "T %%{x}%%  U  %%{y}%%  ",
+    accTitle: "T %%{x}%%  U  %%{y}%%  ",
+    accDescr: "T %%{x}%%  U  %%{y}%%  ",
+  },
+  {
+    written: "T %%{x}%% U  ",
+    title: "T %%{x}%% U  ",
+    accTitle: "T %%{x}%% U  ",
+    accDescr: "T %%{x}%% U  ",
+  },
+  {
+    written: "T %%{x}%%\u00a0",
+    title: "T %%{x}%%\u00a0",
+    accTitle: "T %%{x}%%\u00a0",
+    accDescr: "T %%{x}%%\u00a0",
+  },
+  {
+    written: "T %%{x}%%\u3000",
+    title: "T %%{x}%%\u3000",
+    accTitle: "T %%{x}%%\u3000",
+    accDescr: "T %%{x}%%\u3000",
+  },
+  {
+    written: "T %%{x}%%\u2003",
+    title: "T %%{x}%%\u2003",
+    accTitle: "T %%{x}%%\u2003",
+    accDescr: "T %%{x}%%\u2003",
+  },
+  {
+    written: "T %%{x}%%\u0085",
+    title: "T %%{x}%%\u0085",
+    accTitle: "T %%{x}%%\u0085",
+    accDescr: "T %%{x}%%\u0085",
+  },
+  {
+    written: "T %%{x}%%\u2028",
+    title: "T %%{x}%%\u2028",
+    accTitle: "T %%{x}%%\u2028",
+    accDescr: "T %%{x}%%\u2028",
+  },
+  {
+    written: "T %%{x}%%\u2029",
+    title: "T %%{x}%%\u2029",
+    accTitle: "T %%{x}%%\u2029",
+    accDescr: "T %%{x}%%\u2029",
+  },
+  {
+    written: "T %%{x}%%;",
+    title: "T %%{x}%%;",
+    accTitle: "T %%{x}%%;",
+    accDescr: "T %%{x}%%;",
+  },
+  {
+    written: "T %%{x}%%\t",
+    title: "T %%{x}%%",
+    accTitle: "T %%{x}%%",
+    accDescr: "T %%{x}%%",
+  },
+  {
+    written: "T\u00a0%%{x}%%",
+    title: "T %%{x}%%",
+    accTitle: "T %%{x}%%",
+    accDescr: "T %%{x}%%",
+  },
+  {
+    written: "T\u2028%%{x}%%",
+    title: "T %%{x}%%",
+    accTitle: "T %%{x}%%",
+    accDescr: "T %%{x}%%",
+  },
+  {
+    written: "T\u2028%%{x}%%  ",
+    title: "T\u2028%%{x}%%  ",
+    accTitle: "T\u2028%%{x}%%  ",
+    accDescr: "T\u2028%%{x}%%  ",
+  },
+  {
+    written: "T\u2029%%{x}%%  ",
+    title: "T\u2029%%{x}%%  ",
+    accTitle: "T\u2029%%{x}%%  ",
+    accDescr: "T\u2029%%{x}%%  ",
+  },
+  {
+    written: "T\u0085%%{x}%%  ",
+    title: "T\u0085%%{x}%%",
+    accTitle: "T\u0085%%{x}%%",
+    accDescr: "T\u0085%%{x}%%",
+  },
+  {
+    written: "T\t%%{x}%%",
+    title: "T %%{x}%%",
+    accTitle: "T %%{x}%%",
+    accDescr: "T %%{x}%%",
+  },
+  {
+    written: "T\t%%{x}%%\t",
+    title: "T %%{x}%%",
+    accTitle: "T %%{x}%%",
+    accDescr: "T %%{x}%%",
+  },
+  {
+    written: "%%{x}%%  T  ",
+    title: "%%{x}%%T",
+    accTitle: "%%{x}%%  T  ",
+    accDescr: "%%{x}%%  T  ",
+  },
+  {
+    written: "%%{x}%% T",
+    title: "%%{x}%%T",
+    accTitle: "%%{x}%% T",
+    accDescr: "%%{x}%% T",
+  },
+  {
+    written: "%%{x}%%\tT",
+    title: "%%{x}%%T",
+    accTitle: "%%{x}%%\tT",
+    accDescr: "%%{x}%%\tT",
+  },
+  {
+    written: "%%{x}%%\u00a0T",
+    title: "%%{x}%%T",
+    accTitle: "%%{x}%%\u00a0T",
+    accDescr: "%%{x}%%\u00a0T",
+  },
+  {
+    written: "%%{x}%%\u3000T",
+    title: "%%{x}%%T",
+    accTitle: "%%{x}%%\u3000T",
+    accDescr: "%%{x}%%\u3000T",
+  },
+  {
+    written: "%%{x}%%\u2003T",
+    title: "%%{x}%%T",
+    accTitle: "%%{x}%%\u2003T",
+    accDescr: "%%{x}%%\u2003T",
+  },
+  {
+    written: "%%{x}%%  T\u00a0",
+    title: "%%{x}%%T",
+    accTitle: "%%{x}%%  T\u00a0",
+    accDescr: "%%{x}%%  T\u00a0",
+  },
+  {
+    written: "%%{x}%%\u2028T",
+    title: "%%{x}%%\u2028T",
+    accTitle: "%%{x}%%\u2028T",
+    accDescr: "%%{x}%%\u2028T",
+  },
+  {
+    written: "%%{x}%%\u2029T",
+    title: "%%{x}%%\u2029T",
+    accTitle: "%%{x}%%\u2029T",
+    accDescr: "%%{x}%%\u2029T",
+  },
+  {
+    written: "%%{x}%%\u0085T",
+    title: "%%{x}%%\u0085T",
+    accTitle: "%%{x}%%\u0085T",
+    accDescr: "%%{x}%%\u0085T",
+  },
+  {
+    written: "%%{x}%%  T\u2028",
+    title: "%%{x}%%T",
+    accTitle: "%%{x}%%  T\u2028",
+    accDescr: "%%{x}%%  T\u2028",
+  },
+  {
+    written: "%%{x}%%  T\u0085",
+    title: "%%{x}%%T\u0085",
+    accTitle: "%%{x}%%  T\u0085",
+    accDescr: "%%{x}%%  T\u0085",
+  },
+  {
+    written: "%%{x}%%  %%{y}%%  T  ",
+    title: "%%{x}%%  %%{y}%%  T  ",
+    accTitle: "%%{x}%%  %%{y}%%  T  ",
+    accDescr: "%%{x}%%  %%{y}%%  T  ",
+  },
+  {
+    written: "%%{x}%%  %%{y}%%  T",
+    title: "%%{x}%%  %%{y}%%  T",
+    accTitle: "%%{x}%%  %%{y}%%  T",
+    accDescr: "%%{x}%%  %%{y}%%  T",
+  },
+  {
+    written: "%%{x}%%%%{y}%%  T  ",
+    title: "%%{x}%%%%{y}%%T",
+    accTitle: "%%{x}%%%%{y}%%  T  ",
+    accDescr: "%%{x}%%%%{y}%%  T  ",
+  },
+  {
+    written: "%%{x}%%  %%{y}%%T  ",
+    title: "%%{x}%%  %%{y}%%T  ",
+    accTitle: "%%{x}%%  %%{y}%%T  ",
+    accDescr: "%%{x}%%  %%{y}%%T  ",
+  },
+  {
+    written: "%%{x}%% %%{y}%%T",
+    title: "%%{x}%% %%{y}%%T",
+    accTitle: "%%{x}%% %%{y}%%T",
+    accDescr: "%%{x}%% %%{y}%%T",
+  },
+  {
+    written: "%%{x}%%%%{y}%%T",
+    title: "%%{x}%%%%{y}%%T",
+    accTitle: "%%{x}%%%%{y}%%T",
+    accDescr: "%%{x}%%%%{y}%%T",
+  },
+  {
+    written: "%%{x}%%  ",
+    title: "%%{x}%%  ",
+    accTitle: "%%{x}%%  ",
+    accDescr: "%%{x}%%  ",
+  },
+  {
+    written: "%%{x}%%\t",
+    title: "%%{x}%%\t",
+    accTitle: "%%{x}%%\t",
+    accDescr: "%%{x}%%\t",
+  },
+  {
+    written: "%%{x}%%  %%{y}%%  ",
+    title: "%%{x}%%  %%{y}%%  ",
+    accTitle: "%%{x}%%  %%{y}%%  ",
+    accDescr: "%%{x}%%  %%{y}%%  ",
+  },
+]
+
+/** Formats the input as the output states, again to the same, with the Db kept. */
+async function expectDirectiveRowKept(
+  input: string,
+  output: string,
+): Promise<void> {
+  expect(await formatMermaid(input)).toBe(output)
+  expect(await formatMermaid(output)).toBe(output)
+  const embedded = defaultEmbedded()
+  expect(dbOfText(output, embedded)).toEqual(dbOfText(input, embedded))
+}
+
+describe("the whitespace beside a directive in a title and in an accessibility line", () => {
+  it("treeview: the whitespace beside a directive in a title", async () => {
+    for (const row of directiveBesideTextRows)
+      await expectDirectiveRowKept(
+        `treeView-beta\ntitle ${row.written}\nR\n`,
+        `treeView-beta\n  title ${row.title}\n  R\n`,
+      )
+  })
+
+  it("treeview: the whitespace beside a directive in an accTitle line", async () => {
+    for (const row of directiveBesideTextRows)
+      await expectDirectiveRowKept(
+        `treeView-beta\naccTitle: ${row.written}\nR\n`,
+        `treeView-beta\n  accTitle: ${row.accTitle}\n  R\n`,
+      )
+  })
+
+  it("treeview: the whitespace beside a directive in an accDescr line", async () => {
+    for (const row of directiveBesideTextRows)
+      await expectDirectiveRowKept(
+        `treeView-beta\naccDescr: ${row.written}\nR\n`,
+        `treeView-beta\n  accDescr: ${row.accDescr}\n  R\n`,
+      )
+  })
+})

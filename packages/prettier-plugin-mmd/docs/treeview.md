@@ -1750,15 +1750,72 @@ after the last one are left out (see
 `title T  %%{x}%%  %%{y}%%  ` is printed `title T %%{x}%% %%{y}%%`. A comment
 after the last directive stands after one space where whitespace separates them
 (`title T  %%{x}%%  %% c` is printed `title T %%{x}%% %% c`), and stays touching
-where it touches (`title T  %%{x}%%%% c` is printed `title T %%{x}%%%% c`). A
-title that starts with a directive and holds text after it loses the spaces
-after the directive and at its end: `title %%{x}%%  T  ` and `title %%{x}%% T`
-are printed `title %%{x}%%T`. The line stays as written where text stands after
-a directive that follows the text (`title T %%{x}%%  U  %%{y}%%  ` is not
-changed), where a no-break space, U+3000, U+2003, U+0085, U+2028, U+2029, a `;`,
-or text follows the last directive (the gap after `title` and the spaces before
-the directive stay), and where nothing but directives and spaces or a tab
-follows `title` (`title   %%{x}%%  ` is not changed).
+where it touches (`title T  %%{x}%%%% c` is printed `title T %%{x}%%%% c`). The
+other forms of a title with a directive, and the forms of an `accTitle:` and an
+`accDescr:` line (see [Accessibility lines](#accessibility-lines)), are printed
+as the table below gives: `%%{x}%%` and `%%{y}%%` are directives, `\u00a0` is a
+no-break space, and the other `\u` forms are the characters of that number.
+
+| Written after the keyword | `title `            | `accTitle: `        | `accDescr: `        |
+| ------------------------- | ------------------- | ------------------- | ------------------- |
+| `T  %%{x}%%  `            | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T  %%{x}%%  %%{y}%%  `   | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%` |
+| `T  %%{x}%%  %% c`        | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    |
+| `T  %%{x}%%%% c`          | `T %%{x}%%%% c`     | `T %%{x}%%%% c`     | `T %%{x}%%%% c`     |
+| `T %%{x}%%  U  %%{y}%%  ` | as written          | as written          | as written          |
+| `T %%{x}%% U  `           | as written          | as written          | as written          |
+| `T %%{x}%%\u00a0`         | as written          | as written          | as written          |
+| `T %%{x}%%\u3000`         | as written          | as written          | as written          |
+| `T %%{x}%%\u2003`         | as written          | as written          | as written          |
+| `T %%{x}%%\u0085`         | as written          | as written          | as written          |
+| `T %%{x}%%\u2028`         | as written          | as written          | as written          |
+| `T %%{x}%%\u2029`         | as written          | as written          | as written          |
+| `T %%{x}%%;`              | as written          | as written          | as written          |
+| `T %%{x}%%\t`             | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u00a0%%{x}%%`          | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u2028%%{x}%%`          | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u2028%%{x}%%  `        | as written          | as written          | as written          |
+| `T\u2029%%{x}%%  `        | as written          | as written          | as written          |
+| `T\u0085%%{x}%%  `        | `T\u0085%%{x}%%`    | `T\u0085%%{x}%%`    | `T\u0085%%{x}%%`    |
+| `T\t%%{x}%%`              | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\t%%{x}%%\t`            | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `%%{x}%%  T  `            | `%%{x}%%T`          | as written          | as written          |
+| `%%{x}%% T`               | `%%{x}%%T`          | as written          | as written          |
+| `%%{x}%%\tT`              | `%%{x}%%T`          | as written          | as written          |
+| `%%{x}%%\u00a0T`          | `%%{x}%%T`          | as written          | as written          |
+| `%%{x}%%\u3000T`          | `%%{x}%%T`          | as written          | as written          |
+| `%%{x}%%\u2003T`          | `%%{x}%%T`          | as written          | as written          |
+| `%%{x}%%  T\u00a0`        | `%%{x}%%T`          | as written          | as written          |
+| `%%{x}%%\u2028T`          | as written          | as written          | as written          |
+| `%%{x}%%\u2029T`          | as written          | as written          | as written          |
+| `%%{x}%%\u0085T`          | as written          | as written          | as written          |
+| `%%{x}%%  T\u2028`        | `%%{x}%%T`          | as written          | as written          |
+| `%%{x}%%  T\u0085`        | `%%{x}%%T\u0085`    | as written          | as written          |
+| `%%{x}%%  %%{y}%%  T  `   | as written          | as written          | as written          |
+| `%%{x}%%  %%{y}%%  T`     | as written          | as written          | as written          |
+| `%%{x}%%%%{y}%%  T  `     | `%%{x}%%%%{y}%%T`   | as written          | as written          |
+| `%%{x}%%  %%{y}%%T  `     | as written          | as written          | as written          |
+| `%%{x}%% %%{y}%%T`        | as written          | as written          | as written          |
+| `%%{x}%%%%{y}%%T`         | as written          | as written          | as written          |
+| `%%{x}%%  `               | as written          | as written          | as written          |
+| `%%{x}%%\t`               | as written          | as written          | as written          |
+| `%%{x}%%  %%{y}%%  `      | as written          | as written          | as written          |
+
+After the text, a tab after the last directive is left out like spaces, and a
+no-break space, U+3000, U+2003, U+0085, U+2028, U+2029, a `;`, and text after it
+stay (`T %%{x}%%\u00a0`, and text after a directive that follows the text,
+`T %%{x}%%  U  %%{y}%%  `, stay too). Before the last directive, a tab becomes
+one space, and so do a no-break space and a U+2028 where nothing follows the
+directive; where spaces follow it, a U+0085 stays and the spaces are left out,
+and a U+2028 and a U+2029 stay with the spaces. A title that starts with one
+directive and holds text after it loses the whitespace after the directive and
+at its end, but for a U+2028, a U+2029, and a U+0085 after the directive, which
+stay, and a U+0085 at the end; an `accTitle:` or `accDescr:` line stays as
+written there. A title that starts with two directives and spaces between them
+stays as written, and one whose directives touch loses the whitespace after the
+second and at its end where spaces follow it (`title %%{x}%%%%{y}%%  T  ` is
+printed `title %%{x}%%%%{y}%%T`); the lines stay as written in all these forms.
+A title of directives and spaces or a tab only stays as written.
 
 [fixture: title/title-directives-end-blanks-dropped] [test:
 treeview/title/directive-end-two-spaces] [test:
@@ -1779,7 +1836,10 @@ treeview/title/directive-then-text-gap-kept] [test:
 treeview/title/directive-end-comment-touching] [test:
 treeview/title/directive-leading-then-text-spaces] [test:
 treeview/title/directive-leading-then-text-space] [test:
-treeview/title/directive-text-between-directives-kept]
+treeview/title/directive-text-between-directives-kept] [test: treeview: the
+whitespace beside a directive in a title] [test: treeview: the whitespace beside
+a directive in an accTitle line] [test: treeview: the whitespace beside a
+directive in an accDescr line]
 
 This chooses consistent Db-equivalent outer spacing without taking a next-line
 value. Follow AST boundaries for `titlex` and `title"node"`; title still stays
@@ -1881,14 +1941,10 @@ printed as after the text of a title (see
 `accTitle: T  %%{x}%%  ` is printed `accTitle: T %%{x}%%`,
 `accDescr: T  %%{x}%%  %% c` is printed `accDescr: T %%{x}%% %% c`, and a
 comment that touches the directive stays touching (`accDescr: T  %%{x}%%%% c` is
-printed `accDescr: T %%{x}%%%% c`). The line stays as written where a no-break
-space, U+3000, U+2003, U+0085, U+2028, U+2029, a `;`, or text follows the last
-directive, where text stands between two directives
-(`accTitle: T %%{x}%%  U  %%{y}%%  ` is not changed), where a directive starts
-the value and text follows it (`accTitle: %%{x}%%  T  ` is not changed), and
-where nothing but directives and spaces stands in the value
-(`accTitle: %%{x}%%  ` is not changed); the gap after the colon and the spaces
-before the directive stay.
+printed `accDescr: T %%{x}%%%% c`). The table of [Title](#title) gives the other
+forms of these lines. They are printed as a title is, but for a value that
+starts with one directive and holds text after it, which stays as written
+(`accTitle: %%{x}%%  T  ` is not changed); the gap after the colon stays.
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [test:
 treeview/accessibility-lines/acctitle-directive-end-two-spaces] [test:
@@ -3127,15 +3183,16 @@ exceptions. Rule 1 names no mark for the end of a text that has an open
 directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [c4](./c4.md#final-newline) and [ishikawa](./ishikawa.md#final-newline)
-print an open directive on a line of its own without the spaces after its last
-character, and [kanban](./kanban.md#final-newline) does so on the line of a
-card, so treeView reads an open directive up to its last character that is no
-whitespace on a line of its own, on the line after a brace description block,
-and on the line of a node (a quoted name or a bare name), of a description
-(`## d`), of an icon, of a title, of an `accTitle:` or `accDescr:` line, of a
-class after `:::`, and of a node in box mode. After a quoted name or after a
-class the directive has to touch it: written after a space it is rejected.
-U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace here. The
+print an open directive on a line of its own without the whitespace after its
+last character, as treeView does here (kanban, which drops only spaces and tabs
+after the open directive on the line of a card, is no precedent for the other
+whitespace), so treeView reads an open directive up to its last character that
+is no whitespace on a line of its own, on the line after a brace description
+block, and on the line of a node (a quoted name or a bare name), of a
+description (`## d`), of an icon, of a title, of an `accTitle:` or `accDescr:`
+line, of a class after `:::`, and of a node in box mode. After a quoted name or
+after a class the directive has to touch it: written after a space it is
+rejected. U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace here. The
 whitespace after that character is dropped: U+0009 to U+000D (the tab, LF, the
 vertical tab, the form feed, and CR), U+0020, U+00A0, U+1680, U+2000 to U+200A,
 U+202F, U+205F, U+3000, and U+FEFF, and with them the empty lines. One line
