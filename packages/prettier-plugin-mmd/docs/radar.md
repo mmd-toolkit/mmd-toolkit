@@ -120,12 +120,16 @@ statement, so
 decides, as [er](./er.md#statements-one-per-line),
 [gantt](./gantt.md#statements-one-per-line), and
 [journey](./journey.md#statements-one-per-line) print each statement on a line
-of its own. A keyword's comma group remains one statement; never duplicate its
-keyword. Adjacent options without a comma are separate statements, including
-`ticks 7max 8`. A common line owns apparent keywords through physical EOL. Empty
-descriptions remain statements; protected header/body groups take precedence.
+of its own, where no other rule keeps it as written (a line that holds a `;`
+that the line rule ignores keeps its statements together; see
+[Semicolons](#semicolons)). A keyword's comma group remains one statement; never
+duplicate its keyword. Adjacent options without a comma are separate statements,
+including `ticks 7max 8`. A common line owns apparent keywords through physical
+EOL. Empty descriptions remain statements; protected header/body groups take
+precedence.
 
-[fixture: radar/statements-one-per-line/all-inline-kinds]
+[fixture: radar/statements-one-per-line/all-inline-kinds] [fixture:
+radar/statements-one-per-line/line-rule-semicolon-keeps-statements-together]
 
 [fixture: radar/statements-one-per-line/line-owns-keywords]
 
@@ -341,9 +345,11 @@ punctuation while giving equivalent padding a consistent form. The one curve of
 named entries in the examples of the documentation of mermaid.js writes a colon
 after each of its 3 names, and none writes one without. `North 4` and `North: 4`
 give the same Db and figure in the versions that count, and the formatter adds
-and removes no colon. Adding a colon is unsafe for axis names `accTitle` and
-`accDescr`: common composite tokens would take priority, and every version of
-mermaid.js that counts rejects `curve c{accTitle: 1, accDescr 2}` (see
+and removes no colon: the form as written stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Adding a colon is unsafe for axis names `accTitle` and `accDescr`: common
+composite tokens would take priority, and every version of mermaid.js that
+counts rejects `curve c{accTitle: 1, accDescr 2}` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/named-entries/named-colon-gap]
@@ -502,21 +508,26 @@ with one space before each that has spaces or tabs before it, and the spaces and
 tabs after the last one are left out, whatever the spaces and tabs at the end of
 the line. A no-break space or U+3000 between the text and directives that touch
 one another and then touch the end of the line or a comment is printed as one
-space with the rest of its run. Where a no-break space, U+3000, U+2028, or
-U+2029 follows the last directive, also after spaces or tabs, the line stays as
-written, and so does a title with a directive inside it and a title of
-directives only. Where a comment follows the last directive, a run of spaces and
-tabs before each directive and before the comment is printed as one space (see
+space with the rest of its run, and so is a U+2028 or U+2029 where the
+directives touch the end of the line. Where a space and another directive or a
+comment follow the directive, a no-break space or U+3000 before it stays. Where
+a no-break space, U+3000, U+2028, or U+2029 follows the last directive, also
+after spaces or tabs, the line stays as written, and so does a title with a
+directive inside it and a title of directives only. Where a comment follows the
+last directive, a run of spaces and tabs before each directive and before the
+comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 title/title-directives-end-tabs-dropped] [fixture:
 title/title-directives-in-the-text-kept] [fixture:
 title/title-directives-end-before-comment-line-and-empty-line] [fixture:
-title/title-directives-then-comment] [fixture: radar/title/title-edge-trim]
-[fixture: radar/title/title-lone-semicolon-kept] [fixture:
-radar/title/title-directive-semicolon-kept] [fixture:
-radar/title/title-two-semicolons-kept] [test: a no-break space after the last
+title/title-directives-then-comment] [fixture:
+title/title-directives-end-at-the-end-of-the-text] [fixture:
+radar/title/title-edge-trim] [fixture: radar/title/title-lone-semicolon-kept]
+[fixture: radar/title/title-directive-semicolon-kept] [fixture:
+radar/title/title-two-semicolons-kept] [fixture:
+radar/semicolons/semicolon-selected-kept] [test: a no-break space after the last
 directive of a title of a radar chart] [test: U+3000 after the last directive of
 a title of a radar chart] [test: U+2028 after the last directive of a title of a
 radar chart] [test: U+2029 after the last directive of a title of a radar chart]
@@ -527,7 +538,12 @@ of a radar chart] [test: U+3000 before the directive that ends a title of a
 radar chart] [test: a space, a no-break space, and a space before the directive
 that ends a title of a radar chart] [test: a no-break space before two
 directives that touch and end a title of a radar chart] [test: a no-break space
-before a directive that a comment touches in a title of a radar chart]
+before a directive that a comment touches in a title of a radar chart] [test:
+U+2028 before the directive that ends a title of a radar chart] [test: U+2029
+before the directive that ends a title of a radar chart] [test: a no-break space
+before a directive that a space and another directive follow in a title of a
+radar chart] [test: U+3000 before a directive that a space and a comment follow
+in a title of a radar chart]
 
 [fixture: radar/title/title-empty]
 
@@ -573,31 +589,41 @@ with one space before each that has spaces or tabs before it, and the spaces and
 tabs after the last one are left out, whatever the spaces and tabs at the end of
 the line. A no-break space or U+3000 between the text and directives that touch
 one another and then touch the end of the line or a comment is printed as one
-space with the rest of its run. Where a no-break space, U+3000, U+2028, or
-U+2029 follows the last directive, also after spaces or tabs, the line stays as
-written, and so does a value with a directive inside it and a value of
-directives only. Where a comment follows the last directive, a run of spaces and
-tabs before each directive and before the comment is printed as one space (see
+space with the rest of its run, and so is a U+2028 or U+2029 where the
+directives touch the end of the line. Where a space and another directive or a
+comment follow the directive, a no-break space or U+3000 before it stays. Where
+a no-break space, U+3000, U+2028, or U+2029 follows the last directive, also
+after spaces or tabs, the line stays as written, apart from the gap before the
+colon, and so does a value with a directive inside it and a value of directives
+only. Where a comment follows the last directive, a run of spaces and tabs
+before each directive and before the comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 accessibility-lines/acc-directives-end-tabs-dropped] [fixture:
 accessibility-lines/acc-directives-in-the-text-kept] [fixture:
 accessibility-lines/acc-directives-then-comment] [fixture:
-radar/accessibility-lines/a11y-lines-fixed] [test: a no-break space after the
-last directive of an accTitle line of a radar chart] [test: a no-break space
-before the directive that ends an accTitle line of a radar chart] [test: a
-no-break space after the last directive of an accDescr line of a radar chart]
-[test: a no-break space before the directive that ends an accDescr line of a
-radar chart]
-
-[fixture: radar/accessibility-lines/a11y-empty-next] [fixture:
+accessibility-lines/acctitle-directives-end-at-the-end-of-the-text] [fixture:
+accessibility-lines/accdescr-directives-end-at-the-end-of-the-text] [fixture:
+accessibility-lines/acc-directives-end-before-comment-line-and-empty-line]
+[fixture: radar/accessibility-lines/a11y-lines-fixed] [fixture:
 radar/accessibility-lines/acctitle-lone-semicolon-kept] [fixture:
 radar/accessibility-lines/acctitle-directive-semicolon-kept] [fixture:
 radar/accessibility-lines/acctitle-two-semicolons-kept] [fixture:
 radar/accessibility-lines/accdescr-lone-semicolon-kept] [fixture:
 radar/accessibility-lines/accdescr-directive-semicolon-kept] [fixture:
-radar/accessibility-lines/accdescr-two-semicolons-kept]
+radar/accessibility-lines/accdescr-two-semicolons-kept] [fixture:
+radar/semicolons/semicolon-selected-kept] [test: a no-break space after the last
+directive of an accTitle line of a radar chart] [test: a no-break space before
+the directive that ends an accTitle line of a radar chart] [test: a no-break
+space after the last directive of an accDescr line of a radar chart] [test: a
+no-break space before the directive that ends an accDescr line of a radar chart]
+[test: U+2028 before the directive that ends an accTitle line of a radar chart]
+[test: a no-break space before a directive that a space and a comment follow in
+an accDescr line of a radar chart] [test: the gap before the colon of an
+accTitle line with a no-break space after its last directive of a radar chart]
+
+[fixture: radar/accessibility-lines/a11y-empty-next]
 
 [fixture: radar/accessibility-lines/a11y-line-braces-fixed]
 
