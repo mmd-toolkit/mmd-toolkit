@@ -5923,6 +5923,116 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\na\nstyle a fill:#F00\u2028%% c\n%% d\n;\n",
     "block-beta\n  a\n  style a fill:#F00\u2028%% c\n%% d\n;\n",
   ],
+  [
+    "a node and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nb\u2028%% c\n",
+    "block-beta\n  a\n  b\n  %% c\n",
+  ],
+  [
+    "a node with a label and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped",
+    'block-beta\na\nb["x"]\u2028%% c\n',
+    'block-beta\n  a\n  b["x"]\n  %% c\n',
+  ],
+  [
+    "an edge and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nb-->c\u2028%% c\n",
+    "block-beta\n  a\n  b --> c\n  %% c\n",
+  ],
+  [
+    "a width and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\ncolumns 2\u2028%% c\n",
+    "block-beta\n  a\n  columns 2\n  %% c\n",
+  ],
+  [
+    "a node and a semicolon, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb;\u2028%% c\n",
+    "block-beta\n  a\n  b;\u2028%% c\n",
+  ],
+  [
+    "a node with a semicolon in its label, to the end of the text, after a U+2028: the U+2028 stays",
+    'block-beta\na\nb["x;y"]\u2028%% c\n',
+    'block-beta\n  a\n  b["x;y"]\u2028%% c\n',
+  ],
+  [
+    "an edge and a semicolon, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb-->c;\u2028%% c\n",
+    "block-beta\n  a\n  b-->c;\u2028%% c\n",
+  ],
+  [
+    "a width and a semicolon, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\ncolumns 2;\u2028%% c\n",
+    "block-beta\n  a\n  columns 2;\u2028%% c\n",
+  ],
+  [
+    "a node and a semicolon, to the end of the text, after a U+2029: the U+2029 stays",
+    "block-beta\na\nb;\u2029%% c\n",
+    "block-beta\n  a\n  b;\u2029%% c\n",
+  ],
+  [
+    "a semicolon inside a directive after a style, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nstyle a fill:#F00 %%{x;y}%%\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#f00 %%{x;y}%%\u2028%% c\n",
+  ],
+  [
+    "a semicolon inside a comment after a style, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nstyle a fill:#F00 %% x;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#f00 %% x;\u2028%% c\n",
+  ],
+  [
+    "a semicolon inside a comment after a directive after a style, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nstyle a fill:#F00 %%{x}%% %% y;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#f00 %%{x}%% %% y;\u2028%% c\n",
+  ],
+  [
+    "a semicolon inside a directive after a node, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb %%{x;y}%%\u2028%% c\n",
+    "block-beta\n  a\n  b %%{x;y}%%\u2028%% c\n",
+  ],
+  [
+    "two semicolons, then a space before the U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;; \u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;; \u2028%% c\n",
+  ],
+  [
+    "two semicolons that a space separates, then a space before the U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00; ; \u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00; ; \u2028%% c\n",
+  ],
+  [
+    "two semicolons, then a tab before the U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;;\t\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;;\t\u2028%% c\n",
+  ],
+  [
+    "two semicolons that a space separates, then a tab before the U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00; ;\t\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00; ;\t\u2028%% c\n",
+  ],
+  [
+    "two semicolons, then a vertical tab and a space before the U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;;\u000b \u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;;\u000b \u2028%% c\n",
+  ],
+  [
+    "two semicolons that a space separates, then a vertical tab and a space before the U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00; ;\u000b \u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00; ;\u000b \u2028%% c\n",
+  ],
+  [
+    "two semicolons, then a character before the U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;;x\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;;x\u2028%% c\n",
+  ],
+  [
+    "two semicolons that a space separates, then a character before the U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00; ;x\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00; ;x\u2028%% c\n",
+  ],
+  [
+    "two semicolons, then a space before the U+2028, a statement follows, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;; \u2028%% c\nb\n",
+    "block-beta\n  a\n  style a fill:#F00;; \u2028%% c\nb\n",
+  ],
 ]
 
 /**

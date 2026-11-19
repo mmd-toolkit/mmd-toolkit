@@ -1597,6 +1597,14 @@ U+2028 や U+2029 は、文が続かず、
 その前の行に `;` がないときに落とし、前の行に `;` があるとき、文が続くとき、
 または空白でない最後の行にディレクティブしかないときは残します。
 `;` だけの行、`;` と文字の行、ディレクティブと `;` の行は、ここでは文です。
+これは `style` と `classDef` に限らず、ブロック図のどの文でも同じです。
+`b`、`b["x"]`、`b-->c`、`columns 2` は、
+テキストの末尾のコメント行の前の U+2028 や U+2029 を落とし、`b;`、`b["x;y"]`、
+`b-->c;`、`columns 2;` は残します。
+`;` は、行のどこにあっても数え、ラベル、ディレクティブ、
+コメントの中でも同じです（`style a fill:#F00 %%{x;y}%%` と
+`style a fill:#F00 %% x;`、U+2028、`%% c` は、
+U+2028 を残して `#f00` と印字します）。
 文が続くときの色は、文がコメント行のすぐ後の行にあれば書かれたまま残り、空行、
 空白だけの行、ディレクティブの行が文のすぐ前にあれば小文字になります。
 flowchart、class、state、ER は、ブロック図が落とすどの行でも、
@@ -1611,8 +1619,9 @@ flowchart、class、state、ER は、ブロック図が落とすどの行でも�
 その後の `#abc` です）。
 空白、タブ、フォームフィードと文字が行で続く色は、小文字にします（`#F00 x`、
 U+2028、`%% c`、` y` は `#f00 x` になります）。
-行の規則が無視する `;` が接する色も書かれたまま残します（`#F00`、
-その後の `#ABC;` です）。
+行の規則が無視する `;` が、
+コメント行の後の行で接する色も書かれたまま残します（`#F00`、
+その後の `#ABC;` です。U+2028 の前の `;` は後で述べます）。
 空白、タブ、フォームフィード以外の文字がその `;` から離すときも同じです。
 [色](./compatibility.ja.md#同じに描かれる色)の規則はこれを小文字に印字するので、
 その形は規則に反して印字しており、規則による修正を待っています。
@@ -1629,14 +1638,16 @@ U+2028 とコメント行は、コメント行の後に何が続いても残り�
 または空行かディレクティブの行が文のすぐ前にあるときは、
 小文字になります（`style a fill:#F00;`、U+2028、`%% c` は、
 U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
-`;` と U+2028 の間に空白、タブ、フォームフィードがあるときは、
+その `;` と U+2028 の間に空白、タブ、フォームフィードがあるときは、
 色は何が続いても小文字になります。
 ほかの空白文字（垂直タブ、ノーブレークスペース）があるときの色は、
 `;` が接するときと同じです。
+この 2 つは、色の後ろの `;` が 1 つのときです。
 1 つ目の `;` の後ろに、
 間に何があっても 2 つ目の `;` が続くとき（`style a fill:#F00;;`、
-`style a fill:#F00; ;`、`style a fill:#F00;x;`）は、
-何が続いても色は書かれたまま残ります。
+`style a fill:#F00; ;`、`style a fill:#F00;x;`）は、何が続いても、
+また 2 つ目の `;` と U+2028 の間に何があっても（空白、タブ、垂直タブ、文字）、
+色は書かれたまま残ります。
 ブロック図では、mermaid.js は U+2028 を行の終わりとして、
 `%% c` をコメントとして読みます。
 `style a fill:#F00`、U+2028、テキストの末尾の `%% c` は、
@@ -1779,6 +1790,28 @@ U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
 [test: an empty line and a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is in lower case]
 [test: a directive line and a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is in lower case]
 [test: a comment line and a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is as written]
+[test: a node and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node with a label and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a width and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a semicolon, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a semicolon in its label, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a semicolon, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a semicolon, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a semicolon, to the end of the text, after a U+2029: the U+2029 stays]
+[test: a semicolon inside a directive after a style, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a semicolon inside a comment after a style, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a semicolon inside a comment after a directive after a style, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a semicolon inside a directive after a node, to the end of the text, after a U+2028: the U+2028 stays]
+[test: two semicolons, then a space before the U+2028, to the end of the text, the color stays as written]
+[test: two semicolons that a space separates, then a space before the U+2028, to the end of the text, the color stays as written]
+[test: two semicolons, then a tab before the U+2028, to the end of the text, the color stays as written]
+[test: two semicolons that a space separates, then a tab before the U+2028, to the end of the text, the color stays as written]
+[test: two semicolons, then a vertical tab and a space before the U+2028, to the end of the text, the color stays as written]
+[test: two semicolons that a space separates, then a vertical tab and a space before the U+2028, to the end of the text, the color stays as written]
+[test: two semicolons, then a character before the U+2028, to the end of the text, the color stays as written]
+[test: two semicolons that a space separates, then a character before the U+2028, to the end of the text, the color stays as written]
+[test: two semicolons, then a space before the U+2028, a statement follows, the color stays as written]
 
 ### 空白文字
 
