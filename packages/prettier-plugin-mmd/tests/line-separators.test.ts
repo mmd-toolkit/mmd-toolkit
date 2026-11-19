@@ -5344,6 +5344,21 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "timeline\n2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n2005 : YouTube\n",
     "timeline\n  2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n  2005 : YouTube\n",
   ],
+  [
+    "timeline: an event that a comment after U+2029 joins to a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2029 %%{x}%%  %% c  \n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2029 %%{x}%% %% c  \n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a comment line and a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %%{x}%%  %% c  \n%% d\n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %%{x}%% %% c  \n%% d\n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2029 joins to a comment line and a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2029 %% c\n%% d\n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2029 %% c\n%% d\n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
 ]
 
 /**

@@ -1695,6 +1695,9 @@ period の前でも同じです（詳しくは、
 [test: timeline: an event that a comment after U+2028 joins to an indented directive line, with an event after it]
 [test: timeline: an event that U+2028 ends before an indented directive line, with an event after it]
 [test: timeline: an event that a comment after U+2028 joins to a directive line, with a period after it]
+[test: timeline: an event that a comment after U+2029 joins to a directive line, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to a comment line and a directive line, with an event after it]
+[test: timeline: an event that a comment after U+2029 joins to a comment line and a directive line, with an event after it]
 
 ### 空白文字
 
