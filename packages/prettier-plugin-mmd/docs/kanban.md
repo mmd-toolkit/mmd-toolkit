@@ -679,14 +679,18 @@ not repair that. A gap that holds a diagram comment followed by an empty line,
 by another diagram comment, or by a U+2028 or U+2029 in the read text is kept
 whole as written: its empty lines and its comments, up to the indentation of the
 next statement, which the printer chooses (see [Indentation](#indentation)). A
-gap with only comment lines (`S`, `%% note`, an empty line, `A`) is formatted as
-usual, and the comment line is aligned (see [Comments](#comments)). A common
-comment after a directive containing a line feed, or after a native `%%`
-comment, is still removed before this decision and aligned as usual; a U+2028 or
-U+2029 inside that common comment is removed too and cannot make the gap stay as
-written.
+separator counts only where it ends the comment or stands before the last line
+feed of the gap; one after that line feed, in the indentation of the statement,
+does not make the gap a kept one (see [Comments](#comments)). A gap with only
+comment lines (`S`, `%% note`, an empty line, `A`) is formatted as usual, and
+the comment line is aligned (see [Comments](#comments)). A common comment after
+a directive containing a line feed, or after a native `%%` comment, is still
+removed before this decision and aligned as usual; a U+2028 or U+2029 inside
+that common comment is removed too and cannot make the gap stay as written.
 
-[test: kanban: comment-line-ls-taken] [fixture:
+[test: kanban: comment-line-ls-taken] [test: kanban: ls-ends-comment-kept]
+[test: kanban: ls-own-line-after-comment-kept] [test: kanban:
+ls-indentation-after-comment] [fixture:
 blank-lines/common-comment-after-multiline-directive] [fixture:
 blank-lines/native-then-common-comment]
 
@@ -780,8 +784,8 @@ its authored line, with eligible data-block margins following
 [fixture: data-blocks/indented-comment-line]
 
 A diagram comment that is followed by an empty line, by another comment, or by a
-U+2028 or U+2029 stays as written with the gap after it (see
-[Blank lines](#blank-lines)).
+U+2028 or U+2029 that ends it or stands before the last line feed of the gap
+stays as written with the gap after it (see [Blank lines](#blank-lines)).
 
 [fixture: comments/comments-align] [fixture:
 comments/bare-brace-comments-aligned] [fixture: comments/header-leading-comment]
@@ -791,12 +795,19 @@ A U+2028 or U+2029 in the indentation of the line after a diagram comment that a
 line feed ends is one character of that indentation (see
 [Whitespace characters](#whitespace-characters)), so it does not keep the gap:
 `S[x]  %% c`, a line feed, a U+2028, and three spaces and `A` print `S[x] %% c`
-and `A` with the indentation of its place. A separator that ends the comment
-keeps the gap as written, and so does an empty line after the comment.
+and `A` with the indentation of its place, and so do a comment after the header,
+after the shape of a card, after an icon, and after a data block. A separator
+that ends the comment, one on a line of its own after the comment, and an empty
+line after the comment keep the gap as written.
 
 [test: kanban: ls-indentation-after-comment] [test: kanban:
-ps-indentation-after-comment-tab] [test: kanban: ls-ends-comment-kept] [test:
-kanban: ls-indentation-after-comment-and-blank-line-kept]
+ps-indentation-after-comment-tab] [test: kanban:
+ls-indentation-after-comment-header] [test: kanban:
+ls-indentation-after-comment-card-shape] [test: kanban:
+ls-indentation-after-comment-icon] [test: kanban:
+ls-indentation-after-comment-data-block] [test: kanban: ls-ends-comment-kept]
+[test: kanban: ls-own-line-after-comment-kept] [test: kanban:
+ls-indentation-after-comment-and-blank-line-kept]
 
 A diagram comment after the header, a shape, an icon, or a data block stays on
 its line: it touches where it touches, and a run of spaces and tabs before it

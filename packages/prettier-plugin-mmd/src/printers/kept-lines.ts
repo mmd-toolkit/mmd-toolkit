@@ -1416,6 +1416,26 @@ export function lineStartOf(source: Source, offset: number): number {
 }
 
 /**
+ * Where the written indentation of the statement that follows a gap starts,
+ * for the gap from `start` to `end` before the statement: the first offset from
+ * which every character up to `end` is indentation, as `isIndentation` says for
+ * the character at an offset. The block prints that indentation, so what the
+ * source has there is no part of the gap that is kept as written, and does not
+ * make the gap a kept one: the printed text has none, and a second formatting
+ * would read a gap that is not kept. Each diagram type says which characters
+ * are indentation.
+ */
+export function findIndentationStart(
+  start: number,
+  end: number,
+  isIndentation: (offset: number) => boolean,
+): number {
+  let offset = end
+  while (offset > start && isIndentation(offset - 1)) offset--
+  return offset
+}
+
+/**
  * The offset of the line feed that ends the line holding `offset`, or the
  * end of the text: the first line feed from it that no comment or directive
  * spans and that no comment region that joins lines removes (see

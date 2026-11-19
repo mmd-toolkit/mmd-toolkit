@@ -14,6 +14,7 @@ import {
 } from "./indentation-lines.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import type { AtomLayout } from "./atoms.ts"
+import { findIndentationStart } from "./kept-lines.ts"
 import { expectToken, keptAsWritten } from "./layout.ts"
 import { keptWithDirectiveEnd } from "./statement-rules.ts"
 import { printAsWritten } from "./lines.ts"
@@ -262,10 +263,9 @@ function printKanbanText(source: Source, line: KanbanLine): string | undefined {
  * indentation of the statement that follows, which the printer decides, after
  * the U+2028 or U+2029 that ends a diagram comment when that is the last
  * thing before it; or the end of the gap at the end of the board. Undefined
- * for a gap that is formatted as usual. A U+2028 or U+2029 in the indentation
- * of the statement that follows is no part of what is kept, since the printer
- * decides that indentation, and does not make the gap a kept one: the printed
- * text has none, and a second formatting would read a gap that is not kept.
+ * for a gap that is formatted as usual. The indentation of the statement that
+ * follows is whitespace other than a line feed and a separator that ends a
+ * diagram comment (see `findIndentationStart`).
  */
 export function findKeptGapEnd(
   source: Source,
@@ -273,14 +273,16 @@ export function findKeptGapEnd(
   end: number,
   beforeStatement: boolean,
 ): number | undefined {
-  let keptEnd = end
-  if (beforeStatement) {
-    while (keptEnd > start && isWhitespace(source.text[keptEnd - 1])) {
-      const character = source.text[keptEnd - 1]
-      if (character === "\n" || isCommentEnd(source, keptEnd - 1)) break
-      keptEnd--
-    }
-  }
+  const keptEnd = beforeStatement
+    ? findIndentationStart(
+        start,
+        end,
+        (offset) =>
+          isWhitespace(source.text[offset]) &&
+          source.text[offset] !== "\n" &&
+          !isCommentEnd(source, offset),
+      )
+    : end
   return holdsKeptGap(source, start, end, keptEnd) ? keptEnd : undefined
 }
 
@@ -306,11 +308,7 @@ function holdsKeptGap(
     )
     .filter((comment) => textRead(source, ...comment.range) !== "")
   for (const comment of comments) {
-    const after = textRead(
-      source,
-      comment.range[1],
-      Math.max(comment.range[1], keptEnd),
-    )
+    const after = textRead(source, comment.range[1], keptEnd)
     if (after.includes("\u2028") || after.includes("\u2029")) return true
     if (comments.some((next) => next.range[0] >= comment.range[1])) return true
     const lines = after.split("\n")
