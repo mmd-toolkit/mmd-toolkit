@@ -735,8 +735,11 @@ arrow takes it as it is (see
 A statement keeps its whitespace as written, and its colors are printed as under
 [Colors](#colors), where a comment or a directive stands inside it, before the
 end of its last style, where a style is all whitespace, or where a style holds a
-line break or its line holds a kept `;`. A comment or a directive after the last
-style is no part of the statement, which is formatted as usual (see
+line break or its line holds a kept `;`, except that a color before a `;` that
+the line rule ignores stays as written, which the Colors rule prints in lower
+case: that form is printed against the rule and waits to be fixed by it. A
+comment or a directive after the last style is no part of the statement, which
+is formatted as usual (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 The whitespace at the end of the statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
@@ -748,7 +751,14 @@ styles/style-commas-spaced] [fixture: styles/class-definition-commas-spaced]
 [fixture: styles/class-definition-comma-spaced] [fixture:
 styles/class-definition-comma-beside-directive-kept] [fixture:
 styles/style-statement-commas-spaced] [test: U+2029 before the comma of a block
-classDef statement] [fixture: styles/class-ids-as-written]
+classDef statement] [test: block:
+a-directive-between-two-styles-keeps-the-whitespace-and-lowers-the-colors]
+[test: block: a-directive-inside-a-style-lowers-the-colors] [test: block:
+a-color-that-a-directive-and-a-character-follow-stays] [test: block:
+a-style-that-is-all-whitespace-keeps-the-whitespace-and-lowers-the-colors]
+[test: block:
+a-color-before-a-semicolon-that-the-line-rule-ignores-stays-in-a-style-that-holds-two-semicolons]
+[fixture: styles/class-ids-as-written]
 
 The class name of a `class` statement is read as words: a run of spaces and tabs
 inside it is printed as one space, so `class A c   d` is printed `class A c d`.
@@ -1355,38 +1365,44 @@ on those lines are kept as written. What follows the comment line decides the
 rest. After `style a fill:#F00`, a U+2028, `%% c`, and a line break, block
 prints:
 
-| What follows the comment line                                      | The U+2028 or U+2029 and the lines                                       | The color |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------------ | --------- |
-| Nothing, to the end of the text                                    | dropped; the comment line on a line of its own, as on a plain line       | `#f00`    |
-| Comment lines, to the end of the text                              | dropped; each comment line on a line of its own, as on a plain line      | `#f00`    |
-| A statement at once, touching (`b`) or after whitespace (` y`)     | kept; the statement stays on the line after the comment line, as written | `#F00`    |
-| An empty line, and a statement                                     | kept; the statement stands apart, at the level of the statements         | `#f00`    |
-| A directive line, to the end of the text                           | kept                                                                     | `#f00`    |
-| A directive line, and a statement                                  | kept; the statement stands apart, at the level of the statements         | `#f00`    |
-| A directive line and a comment line, to the end of the text        | dropped; every line on a line of its own, as on a plain line             | `#f00`    |
-| A directive line, a comment line, and a statement                  | kept; the statement stays on the line after the comment line, as written | `#F00`    |
-| A directive line, a comment line, and a directive line, to the end | kept                                                                     | `#f00`    |
+| What follows the comment line                                      | The U+2028 or U+2029 and the lines                                                | The color |
+| ------------------------------------------------------------------ | --------------------------------------------------------------------------------- | --------- |
+| Nothing, to the end of the text                                    | dropped; the comment line on a line of its own, as on a plain line                | `#f00`    |
+| Comment lines, to the end of the text                              | dropped; each comment line on a line of its own, as on a plain line               | `#f00`    |
+| An empty line, to the end of the text                              | dropped; the comment line on a line of its own, as on a plain line                | `#f00`    |
+| A whitespace-only line, to the end of the text                     | dropped; the comment line on a line of its own, as on a plain line                | `#f00`    |
+| An empty line and a comment line, to the end of the text           | dropped; every line on a line of its own, as on a plain line, the empty line kept | `#f00`    |
+| A statement at once, touching (`b`) or after whitespace (` y`)     | kept; the statement stays on the line after the comment line, as written          | `#F00`    |
+| Two comment lines, and a statement                                 | kept; the statement stays on the line after the comment lines, as written         | `#F00`    |
+| An empty line, and a statement                                     | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
+| A comment line, an empty line, and a statement                     | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
+| A whitespace-only line, and a statement                            | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
+| A directive line, to the end of the text                           | kept                                                                              | `#f00`    |
+| A directive line, and a statement                                  | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
+| A directive line and a comment line, to the end of the text        | dropped; every line on a line of its own, as on a plain line                      | `#f00`    |
+| A directive line, a comment line, and a statement                  | kept; the statement stays on the line after the comment line, as written          | `#F00`    |
+| A directive line, a comment line, and a directive line, to the end | kept                                                                              | `#f00`    |
 
 Flowchart, class, state, and ER keep the line as written where nothing follows
 the comment line, and rule 2 gives their form, so block prints the first row
-against rule 2 and waits to be fixed by the rule. Where an empty line or a
-directive line follows, the U+2028 stays and touches the color, which the
-[Colors](./compatibility.md#colors-that-are-drawn-the-same) section keeps upper
-case, so block prints those rows against it too. On such a line, a color before
-a comma on its line, also after whitespace, and the last color of the last line
-are in lower case, and a color before a comma at the start of the line after the
-comment line stays as written (`#F00`, and `#abc` after it). In a block diagram,
-mermaid.js reads the U+2028 as the end of the line and `%% c` as a comment, so
-the Db does not hold the character in the style. For `style a fill:#F00`, a
-U+2028, and `%% c` at the end of the text, the Db of 12.3.0 differs from that of
+against rule 2 and waits to be fixed by the rule. On such a line, a color before
+a comma on its line, also after whitespace, and the last color of the last line,
+where no `;` that the line rule ignores follows it, are in lower case; a color
+before a comma at the start of the line after the comment line stays as written
+(`#F00`, and `#abc` after it); and a color before a `;` that the line rule
+ignores stays as written (`#F00`, and `#ABC;` after it), which the
+[Colors](./compatibility.md#colors-that-are-drawn-the-same) rule prints in lower
+case, so that form is printed against the rule and waits to be fixed by it. In a
+block diagram, mermaid.js reads the U+2028 as the end of the line and `%% c` as
+a comment. For `style a fill:#F00`, a U+2028, and `%% c` at the end of the text,
+the Db of 12.3.0 holds neither of them in the style, and differs from that of
 the plain line only in the whitespace after the first `:` and in the case of the
 color, which
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
 define, and the drawings of 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 are the
-same; the other rows of the table are not in that record. In a label they are
-characters and stay.
+same; the record holds this row only. In a label they are characters and stay.
 
 [test: U+2028 between two statements of a row] [test: U+2029 between two
 statements of a row] [test: U+2028 around the arrow of an edge] [test: U+2028
@@ -1429,6 +1445,21 @@ style-ls-before-a-comment-line-a-directive-line-and-a-comment-line-at-the-end-is
 style-ls-before-a-comment-line-a-directive-line-a-comment-line-and-a-statement-keeps-the-lines]
 [test: block:
 style-ls-before-a-comment-line-a-directive-line-a-comment-line-and-a-directive-line-keeps-the-ls]
+[test: block: style-ls-before-two-comment-lines-and-a-statement-keeps-the-lines]
+[test: block:
+style-ls-before-a-comment-line-an-empty-line-after-it-and-a-statement-keeps-the-ls-and-lowers-the-color]
+[test: block:
+style-ls-before-a-comment-line-a-whitespace-only-line-and-a-statement-keeps-the-ls-and-lowers-the-color]
+[test: block:
+style-ls-before-a-comment-line-and-an-empty-line-at-the-end-is-dropped] [test:
+block:
+style-ls-before-a-comment-line-an-empty-line-and-a-comment-line-at-the-end-is-dropped]
+[test: block:
+style-ls-before-a-comment-line-and-a-whitespace-only-line-at-the-end-is-dropped]
+[test: block:
+last-color-before-a-semicolon-that-the-line-rule-ignores-on-the-line-after-a-ls-comment-line-in-a-style-stays]
+[test: block:
+last-color-before-a-semicolon-that-the-line-rule-ignores-on-the-line-after-a-ls-comment-line-in-a-classdef-stays]
 [test: block:
 a-color-before-a-space-and-a-comment-line-in-a-style-that-a-ls-comment-line-joins-is-lower-case]
 [test: block:

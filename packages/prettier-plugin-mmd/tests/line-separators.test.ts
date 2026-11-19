@@ -4784,6 +4784,71 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\n  a\n  style a fill:#f00\u2028%% c\n%%{x}%%\n%% d\n%%{y}%%\n",
   ],
   [
+    "block: style-ls-before-two-comment-lines-and-a-statement-keeps-the-lines",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%% d\nb\n",
+    "block-beta\n  a\n  style a fill:#F00\u2028%% c\n%% d\nb\n",
+  ],
+  [
+    "block: style-ls-before-a-comment-line-an-empty-line-after-it-and-a-statement-keeps-the-ls-and-lowers-the-color",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%% d\n\nb\n",
+    "block-beta\n  a\n  style a fill:#f00\u2028%% c\n%% d\n\n  b\n",
+  ],
+  [
+    "block: style-ls-before-a-comment-line-a-whitespace-only-line-and-a-statement-keeps-the-ls-and-lowers-the-color",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n  \nb\n",
+    "block-beta\n  a\n  style a fill:#f00\u2028%% c\n  \n  b\n",
+  ],
+  [
+    "block: style-ls-before-a-comment-line-and-an-empty-line-at-the-end-is-dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n",
+  ],
+  [
+    "block: style-ls-before-a-comment-line-an-empty-line-and-a-comment-line-at-the-end-is-dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n\n%% d\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n\n  %% d\n",
+  ],
+  [
+    "block: style-ls-before-a-comment-line-and-a-whitespace-only-line-at-the-end-is-dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n  \n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n",
+  ],
+  [
+    "block: last-color-before-a-semicolon-that-the-line-rule-ignores-on-the-line-after-a-ls-comment-line-in-a-style-stays",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n,stroke:#ABC;\n",
+    "block-beta\n  a\n  style a fill:#F00\u2028%% c\n,stroke:#ABC;\n",
+  ],
+  [
+    "block: last-color-before-a-semicolon-that-the-line-rule-ignores-on-the-line-after-a-ls-comment-line-in-a-classdef-stays",
+    "block-beta\nclassDef c fill:#F00\u2028%% c\n,stroke:#ABC;\n",
+    "block-beta\n  classDef c fill:#F00\u2028%% c\n,stroke:#ABC;\n",
+  ],
+  [
+    "block: a-directive-between-two-styles-keeps-the-whitespace-and-lowers-the-colors",
+    "block-beta\na\nstyle a fill:#F00   %%{x}%%  ,  stroke:#ABC\n",
+    "block-beta\n  a\n  style a fill:#f00   %%{x}%%  ,  stroke:#abc\n",
+  ],
+  [
+    "block: a-directive-inside-a-style-lowers-the-colors",
+    "block-beta\na\nstyle a fill:#F00,stroke:%%{x}%%#ABC\n",
+    "block-beta\n  a\n  style a fill:#f00,stroke:%%{x}%%#abc\n",
+  ],
+  [
+    "block: a-color-that-a-directive-and-a-character-follow-stays",
+    "block-beta\na\nstyle a fill:#F00  ,  stroke:#ABC%%{x}%%x\n",
+    "block-beta\n  a\n  style a fill:#f00  ,  stroke:#ABC%%{x}%%x\n",
+  ],
+  [
+    "block: a-style-that-is-all-whitespace-keeps-the-whitespace-and-lowers-the-colors",
+    "block-beta\na\nclassDef c fill:#F00 ,   ,  stroke:#ABC\n",
+    "block-beta\n  a\n  classDef c fill:#f00 ,   ,  stroke:#abc\n",
+  ],
+  [
+    "block: a-color-before-a-semicolon-that-the-line-rule-ignores-stays-in-a-style-that-holds-two-semicolons",
+    "block-beta\na\nstyle a fill:#F00 ,  stroke:#ABC;;\n",
+    "block-beta\n  a\n  style a fill:#f00 ,  stroke:#ABC;;\n",
+  ],
+  [
     "block: a-run-of-spaces-after-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays",
     "block-beta\nclassDef c \nfill:#F00,   stroke:#ABC;\n",
     "block-beta\n  classDef c \n    fill:#f00,   stroke:#ABC;\n",

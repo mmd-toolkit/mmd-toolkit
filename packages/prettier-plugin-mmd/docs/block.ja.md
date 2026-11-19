@@ -788,6 +788,9 @@ block arrow がそれを書かれたまま使うからです。
 最後のスタイルの終わりより前にコメントやディレクティブがある文、
 空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
 空白を書かれたままにし、色は[色](#色)と同じに印字します。
+ただし、行の規則が無視する `;` の前の色は書かれたまま残します。
+[色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
+規則による修正を待っています。
 最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
 文は普通に整形します。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
@@ -804,6 +807,11 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 [fixture: styles/class-definition-comma-beside-directive-kept]
 [fixture: styles/style-statement-commas-spaced]
 [test: U+2029 before the comma of a block classDef statement]
+[test: block: a-directive-between-two-styles-keeps-the-whitespace-and-lowers-the-colors]
+[test: block: a-directive-inside-a-style-lowers-the-colors]
+[test: block: a-color-that-a-directive-and-a-character-follow-stays]
+[test: block: a-style-that-is-all-whitespace-keeps-the-whitespace-and-lowers-the-colors]
+[test: block: a-color-before-a-semicolon-that-the-line-rule-ignores-stays-in-a-style-that-holds-two-semicolons]
 [fixture: styles/class-ids-as-written]
 
 `class` 文のクラス名は語として読むので、
@@ -1424,37 +1432,45 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 `style a fill:#F00`、U+2028、`%% c`、改行の後は、
 ブロック図は次のように印字します。
 
-| コメント行の後に続くもの                                             | U+2028 や U+2029 と行                                  | 色     |
-| -------------------------------------------------------------------- | ------------------------------------------------------ | ------ |
-| 何もなく、テキストの末尾                                             | 落とす。コメント行は、普通の行と同じに自分の行に置く   | `#f00` |
-| コメント行だけで、テキストの末尾                                     | 落とす。各コメント行は、普通の行と同じに自分の行に置く | `#f00` |
-| すぐに文（接する `b` か、空白の後の ` y`）                           | 残す。文はコメント行の次の行に、書かれたままで残る     | `#F00` |
-| 空行と文                                                             | 残す。文は離れて、文の段に置く                         | `#f00` |
-| ディレクティブの行で、テキストの末尾                                 | 残す                                                   | `#f00` |
-| ディレクティブの行と文                                               | 残す。文は離れて、文の段に置く                         | `#f00` |
-| ディレクティブの行とコメント行で、テキストの末尾                     | 落とす。どの行も、普通の行と同じに自分の行に置く       | `#f00` |
-| ディレクティブの行、コメント行、文                                   | 残す。文はコメント行の次の行に、書かれたままで残る     | `#F00` |
-| ディレクティブの行、コメント行、ディレクティブの行で、テキストの末尾 | 残す                                                   | `#f00` |
+| コメント行の後に続くもの                                             | U+2028 や U+2029 と行                                        | 色     |
+| -------------------------------------------------------------------- | ------------------------------------------------------------ | ------ |
+| 何もなく、テキストの末尾                                             | 落とす。コメント行は、普通の行と同じに自分の行に置く         | `#f00` |
+| コメント行だけで、テキストの末尾                                     | 落とす。各コメント行は、普通の行と同じに自分の行に置く       | `#f00` |
+| 空行で、テキストの末尾                                               | 落とす。コメント行は、普通の行と同じに自分の行に置く         | `#f00` |
+| 空白だけの行で、テキストの末尾                                       | 落とす。コメント行は、普通の行と同じに自分の行に置く         | `#f00` |
+| 空行とコメント行で、テキストの末尾                                   | 落とす。どの行も、普通の行と同じに自分の行に置く。空行は残す | `#f00` |
+| すぐに文（接する `b` か、空白の後の ` y`）                           | 残す。文はコメント行の次の行に、書かれたままで残る           | `#F00` |
+| コメント行 2 つと文                                                  | 残す。文はコメント行の次の行に、書かれたままで残る           | `#F00` |
+| 空行と文                                                             | 残す。文は離れて、文の段に置く                               | `#f00` |
+| コメント行、空行、文                                                 | 残す。文は離れて、文の段に置く                               | `#f00` |
+| 空白だけの行と文                                                     | 残す。文は離れて、文の段に置く                               | `#f00` |
+| ディレクティブの行で、テキストの末尾                                 | 残す                                                         | `#f00` |
+| ディレクティブの行と文                                               | 残す。文は離れて、文の段に置く                               | `#f00` |
+| ディレクティブの行とコメント行で、テキストの末尾                     | 落とす。どの行も、普通の行と同じに自分の行に置く             | `#f00` |
+| ディレクティブの行、コメント行、文                                   | 残す。文はコメント行の次の行に、書かれたままで残る           | `#F00` |
+| ディレクティブの行、コメント行、ディレクティブの行で、テキストの末尾 | 残す                                                         | `#f00` |
 
 flowchart、class、state、ER は、コメント行の後に何もないときに、
 その行を書かれたまま残し、その形は規則 2 が与えます。
 そのためブロック図は、最初の行を規則 2 に反して印字しており、
 規則による修正を待っています。
-空行かディレクティブの行が続くときは、U+2028 が残って色に接します。
-[色](./compatibility.ja.md#同じに描かれる色)の節は、
-その色を大文字のまま残すので、その行も、ブロック図は規則に反して印字しています。
 そのような行で、その行でコンマが続く色（空白を挟んでもです）と、
-最後の行の最後の色は、小文字にします。
+行の規則が無視する `;` が続かない、最後の行の最後の色は、小文字にします。
 コメント行の後の行がコンマで始まるときの色は、書かれたまま残します（`#F00`、
 その後の `#abc` です）。
+行の規則が無視する `;` の前の色も書かれたまま残します（`#F00`、
+その後の `#ABC;` です）。
+[色](./compatibility.ja.md#同じに描かれる色)の規則はこれを小文字に印字するので、
+その形は規則に反して印字しており、規則による修正を待っています。
 ブロック図では、mermaid.js は U+2028 を行の終わりとして、
-`%% c` をコメントとして読むので、Db はその文字をスタイルに持ちません。
+`%% c` をコメントとして読みます。
 `style a fill:#F00`、U+2028、テキストの末尾の `%% c` は、
-Db が普通の行と違うのは、最初の `:` の後の空白と色の大文字小文字だけで、10.9.8、
-11.7.0、11.17.2、12.0.0、12.3.0 の描画は同じです。
+12.3.0 の Db がその 2 つをスタイルに持たず、Db が普通の行と違うのは、
+最初の `:` の後の空白と色の大文字小文字だけで、10.9.8、11.7.0、11.17.2、12.0.0、
+12.3.0 の描画は同じです。
 どちらも[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)と
 [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)が定めています。
-この記録に入っているのは、この形だけで、表のほかの行は入っていません。
+この記録に入っているのは、この行だけです。
 ラベルの中では文字で、そのまま残ります。
 
 [test: U+2028 between two statements of a row]
@@ -1486,6 +1502,14 @@ Db が普通の行と違うのは、最初の `:` の後の空白と色の大文
 [test: block: style-ls-before-a-comment-line-a-directive-line-and-a-comment-line-at-the-end-is-dropped]
 [test: block: style-ls-before-a-comment-line-a-directive-line-a-comment-line-and-a-statement-keeps-the-lines]
 [test: block: style-ls-before-a-comment-line-a-directive-line-a-comment-line-and-a-directive-line-keeps-the-ls]
+[test: block: style-ls-before-two-comment-lines-and-a-statement-keeps-the-lines]
+[test: block: style-ls-before-a-comment-line-an-empty-line-after-it-and-a-statement-keeps-the-ls-and-lowers-the-color]
+[test: block: style-ls-before-a-comment-line-a-whitespace-only-line-and-a-statement-keeps-the-ls-and-lowers-the-color]
+[test: block: style-ls-before-a-comment-line-and-an-empty-line-at-the-end-is-dropped]
+[test: block: style-ls-before-a-comment-line-an-empty-line-and-a-comment-line-at-the-end-is-dropped]
+[test: block: style-ls-before-a-comment-line-and-a-whitespace-only-line-at-the-end-is-dropped]
+[test: block: last-color-before-a-semicolon-that-the-line-rule-ignores-on-the-line-after-a-ls-comment-line-in-a-style-stays]
+[test: block: last-color-before-a-semicolon-that-the-line-rule-ignores-on-the-line-after-a-ls-comment-line-in-a-classdef-stays]
 [test: block: a-color-before-a-space-and-a-comment-line-in-a-style-that-a-ls-comment-line-joins-is-lower-case]
 [test: block: whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins]
 [test: U+2028 between a composite head and its body]

@@ -5966,9 +5966,9 @@ A line that mermaid.js reads this way runs over several lines of the source. The
 formatter keeps the whitespace and the line breaks of such a line as written,
 from its first line to its end, with the statements that stand on it: it does
 not format the whitespace between them, and it does not indent the lines after
-the comment line. What else it prints on a statement of such a line, as the
-colors of a style, the words of a relationship, and the quotes of a name that is
-one plain word, is stated in the document of the diagram type (see
+the comment line. What else it prints on a statement of such a line in an ER or
+a block diagram, as the colors of a style, the words of a relationship, and the
+quotes of a name that is one plain word, is stated in their documents (see
 [ER](./er.md#attribute-spacing) and [block](./block.md#line-separators)). This
 is one rule for every statement, block opening, and header, but for a mindmap,
 which puts the comment line of a node on a line of its own at the level of the
