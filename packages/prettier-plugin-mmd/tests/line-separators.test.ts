@@ -3636,6 +3636,616 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\nA\nstyle A fill:#F00\t,\u2028%% c\n stroke:#ABC\n",
     "erDiagram\n  A\n  style A fill:#f00\t,\u2028%% c\n stroke:#abc\n",
   ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case",
+    "flowchart TD\nA\nstyle A fill:#F00\t,stroke:#ABC\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  style A fill:#f00\t,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case",
+    "flowchart TD\nA\nstyle A fill:#F00,x\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  style A fill:#f00,x\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case",
+    "flowchart TD\nA\nclassDef k fill:#F00,stroke:#ABC\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  classDef k fill:#f00,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case",
+    "flowchart TD\nA\nclassDef k fill:#F00 ,stroke:#ABC\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  classDef k fill:#f00 ,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case",
+    "flowchart TD\nA\nclassDef k fill:#F00\t,stroke:#ABC\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  classDef k fill:#f00\t,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a flowchart is printed in lower case",
+    "flowchart TD\nA\nclassDef k fill:#F00,x\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  classDef k fill:#f00,x\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma at once in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case",
+    "classDiagram\nclass k\nstyle k fill:#F00,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  style k fill:#f00,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma after a space in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case",
+    "classDiagram\nclass k\nstyle k fill:#F00 ,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  style k fill:#f00 ,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case",
+    "classDiagram\nclass k\nstyle k fill:#F00\t,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  style k fill:#f00\t,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case",
+    "classDiagram\nclass k\nstyle k fill:#F00,x\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  style k fill:#f00,x\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written",
+    "classDiagram\nclass k\nclassDef k fill:#F00,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  classDef k fill:#F00,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written",
+    "classDiagram\nclass k\nclassDef k fill:#F00 ,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  classDef k fill:#F00 ,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written",
+    "classDiagram\nclass k\nclassDef k fill:#F00\t,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  classDef k fill:#F00\t,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a class diagram stays as written",
+    "classDiagram\nclass k\nclassDef k fill:#F00,x\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  classDef k fill:#F00,x\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma at once in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nstyle A fill:#F00,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  style A fill:#f00,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a space in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nstyle A fill:#F00 ,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  style A fill:#f00 ,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nstyle A fill:#F00\t,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  style A fill:#f00\t,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a state diagram stays as written",
+    "stateDiagram-v2\nA\nstyle A fill:#F00,x\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  style A fill:#F00,x\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nclassDef k fill:#F00,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  classDef k fill:#f00,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nclassDef k fill:#F00 ,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  classDef k fill:#f00 ,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nclassDef k fill:#F00\t,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  classDef k fill:#f00\t,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nclassDef k fill:#F00,x\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  classDef k fill:#f00,x\u2028%% c\nB\n",
+  ],
+  [
+    "no whitespace between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00;\u2028%% c\nB\n",
+  ],
+  [
+    "no whitespace between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00;\u2028%% c\nB\n",
+  ],
+  [
+    "a space between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00 ;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00 ;\u2028%% c\nB\n",
+  ],
+  [
+    "a space between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00 ;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00 ;\u2028%% c\nB\n",
+  ],
+  [
+    "two spaces between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00  ;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00  ;\u2028%% c\nB\n",
+  ],
+  [
+    "two spaces between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00  ;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00  ;\u2028%% c\nB\n",
+  ],
+  [
+    "a tab between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\t;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\t;\u2028%% c\nB\n",
+  ],
+  [
+    "a tab between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\t;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\t;\u2028%% c\nB\n",
+  ],
+  [
+    "a vertical tab between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\u000b;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\u000b;\u2028%% c\nB\n",
+  ],
+  [
+    "a vertical tab between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\u000b;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u000b;\u2028%% c\nB\n",
+  ],
+  [
+    "a form feed between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\f;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\f;\u2028%% c\nB\n",
+  ],
+  [
+    "a form feed between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\f;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\f;\u2028%% c\nB\n",
+  ],
+  [
+    "a no-break space between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\u00a0;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\u00a0;\u2028%% c\nB\n",
+  ],
+  [
+    "a no-break space between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\u00a0;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u00a0;\u2028%% c\nB\n",
+  ],
+  [
+    "U+2003 between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\u2003;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2003;\u2028%% c\nB\n",
+  ],
+  [
+    "U+2003 between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\u2003;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u2003;\u2028%% c\nB\n",
+  ],
+  [
+    "U+3000 between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\u3000;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\u3000;\u2028%% c\nB\n",
+  ],
+  [
+    "U+3000 between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\u3000;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u3000;\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma in a class definition that a comment line after U+2028 joins is printed in lower case",
+    "erDiagram\nA\nclassDef c fill:#F00,stroke:#ABC\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#f00,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a space in a class definition that a comment line after U+2028 joins is printed in lower case",
+    "erDiagram\nA\nclassDef c fill:#F00 ,stroke:#ABC\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#f00 ,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a tab in a class definition that a comment line after U+2028 joins is printed in lower case",
+    "erDiagram\nA\nclassDef c fill:#F00\t,stroke:#ABC\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#f00\t,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "the last color of a class definition before a comment line after U+2028 stays as written",
+    "erDiagram\nA\nclassDef c fill:#ABC\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a semicolon that touches the last color of a class definition before a comment line after U+2028: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#ABC;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#ABC;\u2028%% c\nB\n",
+  ],
+  [
+    "two semicolons that touch the last color of a class definition before a comment line after U+2028: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#ABC;;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#ABC;;\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma and a semicolon that touches the last color in a class definition before a comment line after U+2028",
+    "erDiagram\nA\nclassDef c fill:#F00,stroke:#ABC;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#f00,stroke:#ABC;\u2028%% c\nB\n",
+  ],
+  [
+    "the last color of the last line of a class definition that a comment line after U+2028 cuts, where a statement follows it, is printed in lower case",
+    "erDiagram\nA\nclassDef c fill:#F00\u2028%% c\n,stroke:#ABC\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u2028%% c\n,stroke:#abc\n  B\n",
+  ],
+  [
+    "a color before a comma on the first line of a class definition that a comment line after U+2028 cuts is printed in lower case",
+    "erDiagram\nA\nclassDef c fill:#F00,\u2028%% c\n stroke:#ABC\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#f00,\u2028%% c\n stroke:#abc\n  B\n",
+  ],
+  [
+    "a color that a line break separates from a semicolon on a line of its own is printed in lower case in a style",
+    "erDiagram\nA\nstyle A fill:#F00,   stroke:#ABC \n;\n",
+    "erDiagram\n  A\n  style A fill:#f00, stroke:#abc \n;\n",
+  ],
+  [
+    "a vertical tab before a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u000b,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00 ,stroke:#ABC;\n",
+  ],
+  [
+    "a form feed before a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00\f,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00 ,stroke:#ABC;\n",
+  ],
+  [
+    "U+1680 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u1680,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u1680,stroke:#ABC;\n",
+  ],
+  [
+    "U+2000 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2000,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2000,stroke:#ABC;\n",
+  ],
+  [
+    "U+2001 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2001,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2001,stroke:#ABC;\n",
+  ],
+  [
+    "U+2002 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2002,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2002,stroke:#ABC;\n",
+  ],
+  [
+    "U+2003 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2003,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2003,stroke:#ABC;\n",
+  ],
+  [
+    "U+2004 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2004,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2004,stroke:#ABC;\n",
+  ],
+  [
+    "U+2005 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2005,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2005,stroke:#ABC;\n",
+  ],
+  [
+    "U+2006 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2006,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2006,stroke:#ABC;\n",
+  ],
+  [
+    "U+2007 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2007,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2007,stroke:#ABC;\n",
+  ],
+  [
+    "U+2008 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2008,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2008,stroke:#ABC;\n",
+  ],
+  [
+    "U+2009 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2009,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2009,stroke:#ABC;\n",
+  ],
+  [
+    "U+200A before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u200a,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u200a,stroke:#ABC;\n",
+  ],
+  [
+    "U+202F before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u202f,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u202f,stroke:#ABC;\n",
+  ],
+  [
+    "U+205F before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u205f,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u205f,stroke:#ABC;\n",
+  ],
+  [
+    "U+FEFF before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\ufeff,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\ufeff,stroke:#ABC;\n",
+  ],
+  [
+    "a vertical tab after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u000bstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "a form feed after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\fstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "a no-break space after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u00a0stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+1680 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u1680stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2000 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2000stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2001 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2001stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2002 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2002stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2003 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2003stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2004 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2004stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2005 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2005stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2006 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2006stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2007 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2007stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2008 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2008stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2009 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2009stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+200A after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u200astroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+202F after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u202fstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+205F after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u205fstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+FEFF after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\ufeffstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the opening brace of its attributes of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\u2028%%{x}%%  {\nint a\n}\n",
+    "erDiagram\n  A\u2028 %%{x}%%{\n    int a\n  }\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between an entity and the opening brace of its attributes of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\u2029%%{x}%%  {\nint a\n}\n",
+    "erDiagram\n  A\u2029 %%{x}%%{\n    int a\n  }\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name of a style statement and its styles of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nstyle A\u2028%%{x}%%  fill:red\n",
+    "erDiagram\n  A\n  style A\u2028 %%{x}%%fill:red\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the name of a style statement and its styles of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nstyle A\u2029%%{x}%%  fill:red\n",
+    "erDiagram\n  A\n  style A\u2029 %%{x}%%fill:red\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name of a class definition and its styles of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nclassDef c\u2028%%{x}%%  fill:red\n",
+    "erDiagram\n  A\n  classDef c\u2028 %%{x}%%fill:red\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the name of a class definition and its styles of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nclassDef c\u2029%%{x}%%  fill:red\n",
+    "erDiagram\n  A\n  classDef c\u2029 %%{x}%%fill:red\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name of a class statement and its class of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nclass A\u2028%%{x}%%  c\n",
+    "erDiagram\n  A\n  class A\u2028 %%{x}%%c\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the name of a class statement and its class of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nclass A\u2029%%{x}%%  c\n",
+    "erDiagram\n  A\n  class A\u2029 %%{x}%%c\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name of a relationship and its colon of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA ||--o{ B\u2028%%{x}%%  : y\n",
+    "erDiagram\n  A ||--o{ B\u2028 %%{x}%%: y\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the name of a relationship and its colon of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA ||--o{ B\u2029%%{x}%%  : y\n",
+    "erDiagram\n  A ||--o{ B\u2029 %%{x}%%: y\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name and the key of an attribute of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nT {\nint a\u2028%%{x}%%  PK\n}\n",
+    "erDiagram\n  T {\n    int a\u2028 %%{x}%%PK\n  }\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the name and the key of an attribute of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nT {\nint a\u2029%%{x}%%  PK\n}\n",
+    "erDiagram\n  T {\n    int a\u2029 %%{x}%%PK\n  }\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name and the comment of an attribute of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    'erDiagram\nT {\nint a\u2028%%{x}%%  "c"\n}\n',
+    'erDiagram\n  T {\n    int a\u2028 %%{x}%%"c"\n  }\n',
+  ],
+  [
+    "U+2029 and a directive in the gap between the name and the comment of an attribute of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    'erDiagram\nT {\nint a\u2029%%{x}%%  "c"\n}\n',
+    'erDiagram\n  T {\n    int a\u2029 %%{x}%%"c"\n  }\n',
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and its alias of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    'erDiagram\nA\u2028%%{x}%%  ["al"]\n',
+    'erDiagram\n  A\u2028%%{x}%%["al"]\n',
+  ],
+  [
+    "U+2029 and a directive in the gap between an entity and its alias of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    'erDiagram\nA\u2029%%{x}%%  ["al"]\n',
+    'erDiagram\n  A\u2029%%{x}%%["al"]\n',
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and its CSS class of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    "erDiagram\nA\u2028%%{x}%%  :::cls\n",
+    "erDiagram\n  A\u2028%%{x}%%:::cls\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between an entity and its CSS class of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    "erDiagram\nA\u2029%%{x}%%  :::cls\n",
+    "erDiagram\n  A\u2029%%{x}%%:::cls\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name of a subgraph and its title of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    'erDiagram\nsubgraph S\u2028%%{x}%%  ["t"]\nA\nend\n',
+    'erDiagram\n  subgraph S\u2028%%{x}%%["t"]\n    A\n  end\n',
+  ],
+  [
+    "U+2029 and a directive in the gap between the name of a subgraph and its title of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    'erDiagram\nsubgraph S\u2029%%{x}%%  ["t"]\nA\nend\n',
+    'erDiagram\n  subgraph S\u2029%%{x}%%["t"]\n    A\n  end\n',
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and another entity on its line of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA\u2028%%{x}%%  B\n",
+    "erDiagram\n  A\u2028\n  %%{x}%% B\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between an entity and another entity on its line of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA\u2029%%{x}%%  B\n",
+    "erDiagram\n  A\u2029\n  %%{x}%% B\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the colons of a CSS class and its name of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA:::\u2028%%{x}%%  cls\n",
+    "erDiagram\n  A:::\u2028\n  %%{x}%% cls\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the colons of a CSS class and its name of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA:::\u2029%%{x}%%  cls\n",
+    "erDiagram\n  A:::\u2029\n  %%{x}%% cls\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the keyword of a title and its text of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\ntitle\u2028%%{x}%%  T\nA\n",
+    "erDiagram\n  title\u2028\n  %%{x}%% T\n  A\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the keyword of a title and its text of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\ntitle\u2029%%{x}%%  T\nA\n",
+    "erDiagram\n  title\u2029\n  %%{x}%% T\n  A\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the colon of a relationship and its label of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA ||--o{ B :\u2028%%{x}%%  y\n",
+    "erDiagram\n  A ||--o{ B : \u2028\n  %%{x}%% y\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the colon of a relationship and its label of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA ||--o{ B :\u2029%%{x}%%  y\n",
+    "erDiagram\n  A ||--o{ B : \u2029\n  %%{x}%% y\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the keyword of a direction and its value of an ER diagram: the gap stays as written",
+    "erDiagram\ndirection\u2028%%{x}%%  LR\n",
+    "erDiagram\n  direction\u2028%%{x}%%  LR\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the keyword of a direction and its value of an ER diagram: the gap stays as written",
+    "erDiagram\ndirection\u2029%%{x}%%  LR\n",
+    "erDiagram\n  direction\u2029%%{x}%%  LR\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the colon of an accTitle and its text of an ER diagram: the gap stays as written",
+    "erDiagram\naccTitle:\u2028%%{x}%%  T\nA\n",
+    "erDiagram\n  accTitle:\u2028%%{x}%%  T\n  A\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the colon of an accTitle and its text of an ER diagram: the gap stays as written",
+    "erDiagram\naccTitle:\u2029%%{x}%%  T\nA\n",
+    "erDiagram\n  accTitle:\u2029%%{x}%%  T\n  A\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the keyword of a style statement and its name of an ER diagram: the gap stays as written",
+    "erDiagram\nA\nstyle\u2028%%{x}%%  A fill:red\n",
+    "erDiagram\n  A\n  style\u2028%%{x}%%  A fill:red\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the keyword of a style statement and its name of an ER diagram: the gap stays as written",
+    "erDiagram\nA\nstyle\u2029%%{x}%%  A fill:red\n",
+    "erDiagram\n  A\n  style\u2029%%{x}%%  A fill:red\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the keyword of a class definition and its name of an ER diagram: the gap stays as written",
+    "erDiagram\nA\nclassDef\u2028%%{x}%%  c fill:red\n",
+    "erDiagram\n  A\n  classDef\u2028%%{x}%%  c fill:red\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the keyword of a class definition and its name of an ER diagram: the gap stays as written",
+    "erDiagram\nA\nclassDef\u2029%%{x}%%  c fill:red\n",
+    "erDiagram\n  A\n  classDef\u2029%%{x}%%  c fill:red\n",
+  ],
+  [
+    "U+2029 and a directive with a space after it in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2029%%{x}%% a\n}\n",
+    "erDiagram\n  T {\n    int\u2029 %%{x}%%a\n  }\n",
+  ],
 ]
 
 /**

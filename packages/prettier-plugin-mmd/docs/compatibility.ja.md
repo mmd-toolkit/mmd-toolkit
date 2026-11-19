@@ -6258,6 +6258,11 @@ ER 図では、そのような行の文について、スタイルの色、関�
 [ER](./er.ja.md#属性の空白)が述べています。
 flowchart、class、state でも、そのような行で、コンマが色に直後に続くか、
 空白かタブを挟んで続くときは、色を小文字に印字します。
+ただし、[同じに描かれる色](#同じに描かれる色)が書かれたまま残す色は別です。
+class 図の `classDef` と、
+2 つ目以降のスタイルに `:` がない state 図の `style` です。
+class 図の `classDef k fill:#FFF,stroke:#ABC` と、
+state 図の `style A fill:#F00,x` は、色を書かれたまま残します。
 
 [test: a color before a comma in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
 [test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
@@ -6271,6 +6276,28 @@ flowchart、class、state でも、そのような行で、コンマが色に直
 [test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case]
 [test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case]
 [test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case]
+[test: a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case]
+[test: a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma at once in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written]
+[test: a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written]
+[test: a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written]
+[test: a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a class diagram stays as written]
+[test: a color before a comma at once in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a state diagram stays as written]
+[test: a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a state diagram is printed in lower case]
 
 [test: a comment line after U+2028 inside the name of an ER entity with an attribute block over several lines]
 [test: an attribute block of an entity that follows another entity on the line, after a comment line after U+2028]
