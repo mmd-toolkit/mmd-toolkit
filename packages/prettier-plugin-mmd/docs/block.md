@@ -1655,7 +1655,9 @@ first `:` and in the case of the color, which
 and
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
 define, and the drawings of 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 are the
-same; the record holds this row only. In a label they are characters and stay.
+same; so are the drawings of the twelve other rows of the table that drop the
+U+2028 after a style statement, and the record holds these thirteen rows. In a
+label they are characters and stay.
 
 [test: U+2028 between two statements of a row] [test: U+2029 between two
 statements of a row] [test: U+2028 around the arrow of an edge] [test: U+2028
