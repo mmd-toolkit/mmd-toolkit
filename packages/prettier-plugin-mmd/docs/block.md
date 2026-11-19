@@ -453,7 +453,15 @@ printed with the space.
 [fixture: shapes/block-arrow-comma-on-kept-line]
 
 A comment line or a directive there keeps its line, and a U+2028 or U+2029 stays
-where it is.
+where it is. Rule 1 names no mark for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the trivia lines one level deeper, where no other rule keeps the
+layout as written (a comment region that joins physical lines, a line that holds
+a `;`, and the like).
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [test: U+2028 after the comma between the
@@ -904,7 +912,11 @@ whitespace after a `,`.
 
 [fixture: multi-line-statements/structural-trivia-continuations]
 
-Joining comment regions retain their original layout.
+Joining comment regions retain their original layout. A comment region after
+U+2028 or U+2029 makes mermaid.js read the lines around it as one, and the
+formatter prints such a line as written from its first line to its end, as it
+does for every statement of every diagram type (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [test: block: ls-comment-in-composite-head] [test: block:
 ps-comment-in-composite-head]
@@ -1053,7 +1065,14 @@ directives/directive-after-columns] [fixture: directives/directive-after-end]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
-break its left contact.
+break its left contact. Rule 1 names no mark for a directive between two units,
+so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [flowchart](./flowchart.md#directives),
+[gantt](./gantt.md#directives), and [journey](./journey.md#directives) move a
+directive in the gap of units that formatting splits with the following unit,
+keep its right-side contact or separation, and break its left contact, where no
+other rule keeps the layout as written (a directive that is not closed after a
+statement, and the like).
 
 [fixture: block/directives/directive-after-columns]
 
@@ -1108,7 +1127,13 @@ keyword from its body: `accDescr{  }` becomes `accDescr {}`.
 Unicode and tab interiors]
 
 A block with a directive or comment line keeps its contents and line breaks,
-with standalone trivia one level inside and its closer at statement level.
+with standalone trivia one level inside and its closer at statement level. Rule
+1 names no mark for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [pie](./pie.md#description-blocks),
+[sequence](./sequence.md#multi-line-values), and
+[info](./info.md#description-blocks) stand a comment or directive line of a
+block one level inside and its closer at the level of its statement.
 
 [fixture: empty-description-blocks/trivia-continuations]
 

@@ -485,6 +485,14 @@ mermaid.js は向きの後の空白と、
 
 そこにあるコメント行やディレクティブは行ごと残り、
 U+2028 と U+2029 はそのまま残します。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
+[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
+その前の空白を残し、
+文の後続部分と間のコメントやディレクティブの行を 1 段深く置きます。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+たとえば、物理行を結ぶコメント領域や、`;` を含む行です。
 
 [fixture: shapes/block-arrow-comma-space]
 [fixture: shapes/block-arrow-comma-comment-line]
@@ -960,6 +968,13 @@ block-arrow の方向は、`,` の後の空白を除いて原文のままです�
 [fixture: multi-line-statements/structural-trivia-continuations]
 
 物理行を結ぶコメント領域は、元の配置を保ちます。
+U+2028 か U+2029 の後のコメント領域があると、
+mermaid.js は前後の行を 1 行として読みます。
+整形は、その行を最初の行から最後まで書かれたまま印字します。
+どの図種のどの文でも同じです。
+詳しくは
+[U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
 
 [test: block: ls-comment-in-composite-head]
 [test: block: ps-comment-in-composite-head]
@@ -1118,6 +1133,15 @@ block-beta
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
+規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#ディレクティブ)、
+[gantt](./gantt.ja.md#ディレクティブ)、
+[journey](./journey.ja.md#ディレクティブ)も、
+整形が分ける単位の隙間のディレクティブを後ろの単位と一緒に動かし、
+右側の接触か間隔を残し、左側の接触は切ります。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+たとえば、文の後の閉じていないディレクティブです。
 
 [fixture: block/directives/directive-after-columns]
 
@@ -1173,6 +1197,12 @@ block-beta
 [test: block Unicode and tab interiors]
 
 指令かコメント行を持つブロックは、内容と改行を保ち、独立した注釈類を 1 段内側、
+閉じ括弧を文の段に置きます。
+規則 1 は、ブロックの中の行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[pie](./pie.ja.md#description-blocks)、[sequence](./sequence.ja.md#複数行の値)、
+[info](./info.ja.md#description-blocks)も、
+ブロックのコメント行やディレクティブの行を 1 段内側に置き、
 閉じ括弧を文の段に置きます。
 
 [fixture: empty-description-blocks/trivia-continuations]
