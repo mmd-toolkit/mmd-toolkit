@@ -572,25 +572,33 @@ U+205F、U+3000、U+FEFF のどれかです。
   U+2028 か U+2029 を落とし、ディレクティブとコメントを別の行に置き、
   それらの間の隙間は、どの空白文字でも空白 1 つで印字し、
   それらの間の U+2028 か U+2029 はそこで行を終えます。
-  ディレクティブの行は、ディレクティブだけが、
+  後ろにコメント行が続かないとき、ディレクティブの行は、ディレクティブだけが、
   前にも間にも後にも空白なしで並ぶ行です（`%%{y}%%`、`%%{y}%%%%{z}%%`）。
   字下げのあるディレクティブ、後ろに空白が続くディレクティブ、
-  空白を挟んで別のディレクティブが続くディレクティブ、
-  後ろに文字が続くディレクティブは、文です。
+  空白が間にあるディレクティブ、後ろに文字が続くディレクティブは、
+  そこでは文です。
   コメント行は、コメントを含む行です（`%% d`、`  %% d`、`%%{y}%% %% e`）。
-  空白だけの行は、どの空白文字だけでもよく、
-  ノーブレークスペースと垂直タブも含みます。
+  空白だけの行は、空白、タブ、幅のある空白、U+2028、U+2029 だけの行です。
+  U+0085 と U+180E は空白ではなく、それを含む行は文です。
+  コメント行の前にある行は、空白、ディレクティブ、コメントだけを含むときは、
+  その並び方によらずコメント行とともに取り除かれます。
+  空行、空白だけの行、ディレクティブの行、字下げのあるディレクティブ、
+  後ろに空白が続くディレクティブ、空白が間にあるディレクティブ（`%%{y}%%`、
+  空白 2 つ、`%%{z}%%`）は取り除かれ、`;`、文字、U+0085、
+  U+180E を含む行は文です。
 - 幅のある空白がディレクティブの間にあるときは、
   最後のディレクティブの後に何が続いても、行を書かれたままにします。
   U+2028 か U+2029 がディレクティブの間にあり、その後に何も続かない、
   空白かタブが続く、
   または最後のディレクティブに接するコメントが続くときも同じです。
-  最後のディレクティブ、空白かタブ、
+  最後のディレクティブ、空白、タブ、幅のある空白、
   コメントが U+2028 か U+2029 の後に続くときは、
   項目 6 と同じようにコメント領域が次の行を結びます。
   項目 6 が行を書かれたままにする場合は書かれたままにし、
   項目 6 が行を分ける場合は、U+2028 か U+2029 を残し、
   コメントの前の連なりを空白 1 つで印字します。
+  ただし、行のもっと前に別の U+2028 か U+2029 があるときは、
+  一覧の後の段落が決めます。
 - `;` がディレクティブの前のテキスト（mermaid.js
   の行の規則が無視するものも含みます）にあるか、ディレクティブの中にあるとき、
   またはディレクティブの中に改行、U+2028、U+2029 があるときは、
@@ -612,12 +620,28 @@ U+205F、U+3000、U+FEFF のどれかです。
   その前に空白やタブがあっても、その後に何が続いても、行を書かれたままにします。
   U+2028 か U+2029 がそこにあり、その後に何も続かない、
   または接するコメントが続くときも同じです。
-  U+2028 か U+2029 の後に空白かタブとコメントが続くときは、
+  U+2028 か U+2029 の後に空白、タブ、幅のある空白とコメントが続くときは、
   項目 6 と同じようにコメント領域が次の行を結びます。
   項目 6 が行を書かれたままにする場合は書かれたままにし、
   項目 6 が行を分ける場合は、U+2028 か U+2029 を残し、
   コメントの前の連なりを空白 1 つで印字します。
+  ただし、行のもっと前に別の U+2028 か U+2029 があるときは、
+  一覧の後の段落が決めます。
   テキストの中にディレクティブのある題も、書かれたままです。
+
+U+2028 か U+2029 が 2 つのディレクティブの間にあり、
+最後のディレクティブの後にも別のものがあって、コメントが続き、
+項目 6 が行を分けるときは、最初のものは、前後の隙間も書かれたまま残り、
+後のものはどれも改行になります。
+改行の後のディレクティブは行を独立させ、コメントも、
+その前の空白を除いて行を独立させます（`title T %%{x}%%`、U+2028、`%%{y}%%`、
+U+2028、`%% c` は、`title T %%{x}%%`、U+2028、`%%{y}%%`、改行、
+`%% c` になります。ディレクティブが 3 つあるとき、`title T %%{x}%%`、U+2028、
+`%%{x}%%`、U+2028、`%%{y}%%`、U+2028、`%% c` は、`title T %%{x}%%`、U+2028、
+`%%{x}%%`、改行、`%%{y}%%`、改行、`%% c` になります）。
+ディレクティブの前にもあるときは、項目 6 が当たり、どれも改行になります。
+項目 6 が行を書かれたままにするときは、書かれたままにします。
+項目 7 と項目 10 は、そのような行には当たりません。
 
 最後のディレクティブの後にコメントが続き、
 テキストとコメントの間に U+2028 も U+2029 もなく、
@@ -646,14 +670,31 @@ U+205F、U+3000、U+FEFF のどれかです。
 ほかのテキストの行を印字するのと同じに印字するので、
 ディレクティブの前の空白とタブの連なり（キーワードの後のものも）はそれぞれ空白 1
 つになります。
-題がディレクティブだけで、最後のディレクティブの後に空白もタブも続かないときは、
-ディレクティブの間の `;` を、最初のディレクティブのすぐ後ろに置き、
-後ろに隙間があれば、どの空白文字でも空白 1 つにして印字します（`title`、空白、
-`%%{x}%%`、空白 2 つ、`;`、空白 2 つ、
-`%%{y}%%` は `title %%{x}%%; %%{y}%%` になります）。
-最後のディレクティブの後に空白かタブが続くときは、行を書かれたままにします。
-そのような題の最後のディレクティブの後の `;` は残し、行末の空白とタブは除き、
-コメントの前の連なりは空白 1 つにします。
+題がディレクティブだけで、`;` が 1 つ、2 つのディレクティブの間にあるときは、
+`;` の前の隙間は、空白、タブ、幅のある空白だけのときは除き、
+U+2028 か U+2029 を含むときは書かれたままにします。
+最後のディレクティブの後に何も続かないか、コメントが接するときは、
+`;` の後の隙間を、どの空白文字でも、U+2028 や U+2029 でも、
+空白 1 つで印字します（`title`、空白、`%%{x}%%`、空白 2 つ、`;`、空白 2 つ、
+`%%{y}%%` は `title %%{x}%%; %%{y}%%` に、`title`、空白、`%%{x}%%`、U+2028、
+`;`、空白 2 つ、`%%{y}%%` は `title %%{x}%%`、U+2028、`;`、空白、
+`%%{y}%%` になります）。
+最後のディレクティブの後に空白文字が続くとき、
+またはその後に空白を挟んでコメントが続くときは、行を書かれたままにします。
+そのような題の最後のディレクティブの後の `;` は、場所を変えず、
+その前の隙間は上と同じに除き、その後の空白は除き、
+コメントの前の隙間は空白 1 つにします（`title`、空白、`%%{x}%%`、空白 2 つ、
+`;`、空白 2 つ、`%% c` は `title %%{x}%%; %% c` になります）。
+そのような題に `;` かディレクティブがもっとあり、隙間が空白とタブだけのときは、
+`;` に隔てられない 2 つのディレクティブの間に空白かタブがあるとき、
+2 つの `;` の間にディレクティブがあるとき、
+または最後の `;` の後の最後のディレクティブに空白かタブが続くときは、
+行を書かれたままにします。
+それ以外のときは、最初の `;` の前の空白とタブを除き、
+`;` の後の空白とタブの連なりをそれぞれ空白 1 つで印字し、
+行末の空白とタブを除きます（`title`、空白、`%%{x}%%`、空白 2 つ、`;`、
+空白 2 つ、`;`、空白 2 つ、
+`%%{y}%%` は `title %%{x}%%; ; %%{y}%%` になります）。
 
 [fixture: title/title-directives-end-blanks-dropped]
 [fixture: title/title-directives-end-tabs-dropped]
@@ -1299,6 +1340,65 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: a U+2028 between two directives, spaces and a comment after the last one, a tab between the two directives, in a title of a radar chart]
 [test: a U+2028 between two directives, spaces and a comment after the last one, a no-break space between the two directives, in a title of a radar chart]
 [test: a U+2028 between two directives, spaces and a comment after the last one, no comment, in a title of a radar chart]
+[test: a directive, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a space, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a tab, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a no-break space, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, U+3000, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a vertical tab, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a form feed, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, U+2028, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, U+2029, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a space, U+2028, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, U+2028, a space, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, a space, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, a tab, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, a no-break space, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, U+3000, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, U+2028, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, U+2029, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, a space, U+2028, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, a space, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, two spaces, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, a tab, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, a no-break space, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, U+3000, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, a vertical tab, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, U+2028, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, U+2029, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, a comment, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, a space, a comment, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, a tab, a comment, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, a no-break space, a comment, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, in a title of directives only of a radar chart]
+[test: a directive, a `;`, two spaces, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, a comment, in a title of directives only of a radar chart]
+[test: a directive, a `;`, a space, a comment, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a comment, in a title of directives only of a radar chart]
+[test: a directive, a `;`, a comment, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, a tab, a comment, in a title of directives only of a radar chart]
+[test: a directive, a `;`, a `;`, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, a `;`, in a title of directives only of a radar chart]
+[test: a directive, a `;`, two spaces, a `;`, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a `;`, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a `;`, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a directive, two spaces, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, a directive, in a title of directives only of a radar chart]
+[test: a directive, a `;`, a directive, a `;`, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, two spaces, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, a `;`, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, two spaces, a `;`, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a directive, two spaces, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a directive, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a `;`, two spaces, a directive, two spaces, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a `;`, a directive, a `;`, in a title of directives only of a radar chart]
+[test: a `;`, a directive, in a title of directives only of a radar chart]
+[test: a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a `;`, two spaces, a `;`, two spaces, in a title of directives only of a radar chart]
+[test: a `;` in the comment after the last directive, two spaces around the `;` between two directives, in a title of directives only of a radar chart]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a radar chart]
@@ -1477,6 +1577,45 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: a U+2028 between two directives, spaces and a comment after the last one, a directive line follows, in a title of a radar chart]
 [test: a U+2028 between two directives, spaces and a comment after the last one, a comment line and a statement follow, in a title of a radar chart]
 [test: a U+2028 between two directives, spaces and a comment after the last one, an empty line and a statement follow, in a title of a radar chart]
+[test: a line of a directive, two spaces before a comment line after a U+2028 before two directives, the text ends, in a title of a radar chart]
+[test: a line of two spaces, a directive before a comment line after a U+2028 before two directives, the text ends, in a title of a radar chart]
+[test: a line of a tab, a directive before a comment line after a U+2028 before two directives, the text ends, in a title of a radar chart]
+[test: a line of a directive, a tab before a comment line after a U+2028 before two directives, the text ends, in a title of a radar chart]
+[test: a line of a no-break space, a directive before a comment line after a U+2028 before two directives, the text ends, in a title of a radar chart]
+[test: a line of a directive, a no-break space before a comment line after a U+2028 before two directives, the text ends, in a title of a radar chart]
+[test: a line of a directive, two spaces, a directive before a comment line after a U+2028 before two directives, the text ends, in a title of a radar chart]
+[test: a line of a directive, U+2028 before a comment line after a U+2028 before two directives, the text ends, in a title of a radar chart]
+[test: a line of a directive, a space, a comment before a comment line after a U+2028 before two directives, the text ends, in a title of a radar chart]
+[test: a line of a tab before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
+[test: a line of a no-break space before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
+[test: a line of U+3000 before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
+[test: a line of a vertical tab before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
+[test: a line of a form feed before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
+[test: a line of U+2028 before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
+[test: a line of U+2029 before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
+[test: a line of U+0085 before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
+[test: a line of U+180E before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
+[test: U+2028 between two directives and after the last, a comment touches it, the text ends, in a title of a radar chart]
+[test: U+2028 between two directives and after the last, a comment follows after spaces, the text ends, in a title of a radar chart]
+[test: U+2029 between two directives and after the last, a comment follows after spaces, the text ends, in a title of a radar chart]
+[test: U+2029 between two directives and U+2028 after the last, a comment follows after a tab, the text ends, in a title of a radar chart]
+[test: U+2028 between two directives and after the last, a comment follows after a no-break space, the text ends, in a title of a radar chart]
+[test: U+2028 between two directives and after the last, a comment follows after spaces, a statement follows, in a title of a radar chart]
+[test: U+2028 between two directives and after the last, a comment follows after spaces, an empty line and a statement follow, in a title of a radar chart]
+[test: U+2028 between two directives and after the last, a comment follows after spaces, a directive line and a statement follow, in a title of a radar chart]
+[test: U+2028 between two directives and after the last, a comment follows after spaces, a comment line and a statement follow, in a title of a radar chart]
+[test: U+2028 between two directives and after the last, a comment follows after spaces, a comment line follows and the text ends, in a title of a radar chart]
+[test: U+2028 between two directives and after the last, a comment follows after spaces, a directive line follows and the text ends, in a title of a radar chart]
+[test: U+2028 between the first and the second of three directives and between the second and the third, a comment touches the last, the text ends, in a title of a radar chart]
+[test: U+2028 between two directives, after the last, and before the directives, a comment touches the last, the text ends, in a title of a radar chart]
+[test: U+2028 between two directives of a title of directives only and after the last, a comment follows after spaces, the text ends, in a title of a radar chart]
+[test: U+2028 after the last directive, a no-break space and a comment after it, the text ends, in a title of a radar chart]
+[test: U+2028 between two directives, a no-break space and a comment after the last, the text ends, in a title of a radar chart]
+[test: U+2028 after the last directive, U+3000 and a comment after it, the text ends, in a title of a radar chart]
+[test: U+2028 between two directives, U+3000 and a comment after the last, the text ends, in a title of a radar chart]
+[test: U+2028 after the last directive, a space and a no-break space and a comment after it, the text ends, in a title of a radar chart]
+[test: U+2028 between two directives, a space and a no-break space and a comment after the last, the text ends, in a title of a radar chart]
+[test: U+2028 after the last directive, a no-break space and a comment after it, a statement follows, in a title of a radar chart]
 
 [fixture: radar/title/title-empty]
 
@@ -1531,6 +1670,8 @@ U+205F、U+3000、U+FEFF のどれかです。
 [題の一覧](#title)の項目 6 と同じに印字しますが、
 この一覧の項目 6 が先に決めます。
 題の一覧の項目 6 が行を分けるときは、以下の項目はその行に当たりません。
+`;` が本文かディレクティブの中にあり、題の一覧の項目 6 なら分ける行は、
+ここでは述べません。
 コロンはキーワードに接するので、コロンの前の隙間は、
 行を書かれたままにするときも、隙間なしで印字します。
 
@@ -1576,22 +1717,30 @@ U+205F、U+3000、U+FEFF のどれかです。
   U+2028 か U+2029 がディレクティブの間にあり、その後に何も続かない、
   空白かタブが続く、
   または最後のディレクティブに接するコメントが続くときも同じです。
-  最後のディレクティブ、空白かタブ、
+  最後のディレクティブ、空白、タブ、幅のある空白、
   コメントが U+2028 か U+2029 の後に続くときは、
   題の一覧の項目 6 と同じようにコメント領域が次の行を結びます。
   題の一覧の項目 6 が行を書かれたままにする場合は書かれたままにし、
   題の一覧の項目 6 が行を分ける場合は、U+2028 か U+2029 を残し、
   コメントの前の連なりを空白 1 つで印字します。
+  ただし、行のもっと前に別の U+2028 か U+2029 があるときは、
+  題の一覧の後の段落が決めます。
 - 最後のディレクティブの後に幅のある空白があるときは、
   その前に空白やタブがあっても、その後に何が続いても、行を書かれたままにします。
   U+2028 か U+2029 がそこにあり、その後に何も続かない、
   または接するコメントが続くときも同じです。
-  U+2028 か U+2029 の後に空白かタブとコメントが続くときは、
+  U+2028 か U+2029 の後に空白、タブ、幅のある空白とコメントが続くときは、
   題の一覧の項目 6 と同じようにコメント領域が次の行を結びます。
   題の一覧の項目 6 が行を書かれたままにする場合は書かれたままにし、
   題の一覧の項目 6 が行を分ける場合は、U+2028 か U+2029 を残し、
   コメントの前の連なりを空白 1 つで印字します。
+  ただし、行のもっと前に別の U+2028 か U+2029 があるときは、
+  題の一覧の後の段落が決めます。
   テキストの中にディレクティブのある値も、書かれたままです。
+
+U+2028 か U+2029 が 2 つのディレクティブの間にあり、
+最後のディレクティブの後にも別のものがあって、コメントが続くときは、
+[題の一覧](#title)の後の段落と同じに印字します。
 
 最後のディレクティブの後にコメントが続き、
 テキストとコメントの間に U+2028 も U+2029 もなく、
@@ -2243,6 +2392,10 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: a U+2028 between two directives, spaces and a comment after the last one, a directive line follows, in an accDescr line of a radar chart]
 [test: a U+2028 between two directives, spaces and a comment after the last one, a comment line and a statement follow, in an accDescr line of a radar chart]
 [test: a U+2028 between two directives, spaces and a comment after the last one, an empty line and a statement follow, in an accDescr line of a radar chart]
+[test: a directive that two spaces follow, before a comment line after a U+2028 before a directive, the text ends, in an accTitle line of a radar chart]
+[test: a directive that two spaces follow, before a comment line after a U+2028 before a directive, the text ends, in an accDescr line of a radar chart]
+[test: U+2028 between two directives and after the last, a comment follows after spaces, the text ends, in an accTitle line of a radar chart]
+[test: U+2028 between two directives and after the last, a comment follows after spaces, the text ends, in an accDescr line of a radar chart]
 
 [fixture: radar/accessibility-lines/a11y-empty-next]
 
