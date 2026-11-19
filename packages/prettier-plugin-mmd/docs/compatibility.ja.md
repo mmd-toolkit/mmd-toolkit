@@ -1556,6 +1556,58 @@ user journey
 [fixture: c4/title-and-accdescription/title-white-only]
 [fixture: state/aliases/second-description-trailing-whitespace-dropped]
 
+pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、
+treeView、info、railroad の図の `title`、`accTitle:`、`accDescr:` の行と、
+usecase の図の `accTitle:`、`accDescr:` の行は、
+最後のディレクティブの前の空白の連続を、
+どんな空白を含んでいても空白 1 つに印字します。
+U+00A0、U+3000、改ページなども同じで、
+そのディレクティブの後に空白とタブがあってもなくても同じです。
+`title T`、U+00A0、`%%{x}%%` は `title T %%{x}%%` と印字し、
+ディレクティブの後に空白が 2 つ続く同じ行も同じ形になります。
+これらは、mermaid.js が行のテキストの末尾の空白を、どんな空白でも、
+あってもなくても同じに描く図種です。
+これらの行の書かれたテキストと印字したテキストを、
+その図種の[対象にする版](#対象にする-mermaidjs-の版)で描きました。
+上の文字と U+1680、U+2003、U+000B、U+202F、U+FEFF を使い、
+テキストを受け入れるすべての版で、Db も SVG も同じでした。
+10.9.8 は、info 図と gitGraph のタイトルの、どちらのテキストも拒否します。
+別のディレクティブが続くディレクティブの前の連なりは、
+空白とタブ以外の空白を書かれたままにします。
+U+0085 は mermaid.js にとって空白ではないので、書かれたままです。
+`title T`、U+00A0、`%%{x}%%`、空白、`%%{y}%%` は、そのまま印字します。
+
+[test: radar title: U+00A0 before the directive]
+[test: architecture title: U+00A0 before the directive]
+[test: wardley title: U+00A0 before the directive]
+[test: pie title: U+00A0 before the directive]
+[test: info title: U+00A0 before the directive]
+[test: packet title: U+00A0 before the directive]
+[test: gitGraph title: U+00A0 before the directive]
+[test: treemap title: U+00A0 before the directive]
+[test: treeView title: U+00A0 before the directive]
+[test: cynefin title: U+00A0 before the directive]
+[test: railroad title: U+00A0 before the directive]
+[test: pie accTitle: U+00A0 before the directive]
+[test: pie accDescr: U+00A0 before the directive]
+[test: pie title: U+3000 before the directive]
+[test: pie title: U+2003 before the directive]
+[test: pie title: U+000C before the directive]
+[test: pie title: U+FEFF before the directive]
+[test: pie title: U+000B before the directive]
+[test: pie title: U+1680 before the directive]
+[test: pie title: U+202F before the directive]
+[test: pie title: a space and U+00A0 before the directive]
+[test: pie title: U+00A0 and a space before the directive]
+[test: pie title: a tab and U+00A0 before the directive]
+[test: pie title: U+00A0 before the first of two directives, a space between them]
+[test: pie title: U+0085 before the directive is no whitespace]
+[test: usecase accTitle: U+00A0 before the directive]
+[test: usecase accDescr: U+00A0 before the directive]
+[test: usecase accTitle: U+00A0 between two directives]
+[test: usecase accTitle: U+00A0 before, between and after two directives]
+[test: usecase accTitle: U+00A0 before the first of two directives, a space between them]
+
 mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db に残すので、
 印字したテキストの Db は、書かれたテキストの Db と違いますが、
 描かれる図は同じです。

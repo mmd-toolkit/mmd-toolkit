@@ -1489,6 +1489,49 @@ c4/title-and-accdescription/accdescription] [fixture:
 c4/title-and-accdescription/title-white-only] [fixture:
 state/aliases/second-description-trailing-whitespace-dropped]
 
+In the `title`, `accTitle:`, and `accDescr:` lines of a pie chart, a radar
+chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram,
+a treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram,
+and in the `accTitle:` and `accDescr:` lines of a usecase diagram, the run of
+whitespace before the last directive of the line is printed as one space
+whatever whitespace it holds, such as U+00A0, U+3000, or a form feed, with or
+without spaces and tabs after that directive: `title T`, U+00A0, and `%%{x}%%`
+is printed `title T %%{x}%%`, and so is the same line with two spaces after the
+directive. These are the diagram types where mermaid.js draws the text of the
+line the same with whitespace at its end as without it, whatever the whitespace.
+The written text and the printed text of each of these lines were drawn with the
+versions that count for the diagram type (see
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), with
+the characters above and U+1680, U+2003, U+000B, U+202F, and U+FEFF, and the Db
+and the SVG were the same, in all versions that accept the text; 10.9.8 rejects
+both texts of an info diagram and of the title of a gitGraph. The run before a
+directive that another directive follows keeps whitespace other than spaces and
+tabs as written, and so does U+0085, which is no whitespace to mermaid.js:
+`title T`, U+00A0, `%%{x}%%`, a space, and `%%{y}%%` is printed as it is.
+
+[test: radar title: U+00A0 before the directive] [test: architecture title:
+U+00A0 before the directive] [test: wardley title: U+00A0 before the directive]
+[test: pie title: U+00A0 before the directive] [test: info title: U+00A0 before
+the directive] [test: packet title: U+00A0 before the directive] [test: gitGraph
+title: U+00A0 before the directive] [test: treemap title: U+00A0 before the
+directive] [test: treeView title: U+00A0 before the directive] [test: cynefin
+title: U+00A0 before the directive] [test: railroad title: U+00A0 before the
+directive] [test: pie accTitle: U+00A0 before the directive] [test: pie
+accDescr: U+00A0 before the directive] [test: pie title: U+3000 before the
+directive] [test: pie title: U+2003 before the directive] [test: pie title:
+U+000C before the directive] [test: pie title: U+FEFF before the directive]
+[test: pie title: U+000B before the directive] [test: pie title: U+1680 before
+the directive] [test: pie title: U+202F before the directive] [test: pie title:
+a space and U+00A0 before the directive] [test: pie title: U+00A0 and a space
+before the directive] [test: pie title: a tab and U+00A0 before the directive]
+[test: pie title: U+00A0 before the first of two directives, a space between
+them] [test: pie title: U+0085 before the directive is no whitespace] [test:
+usecase accTitle: U+00A0 before the directive] [test: usecase accDescr: U+00A0
+before the directive] [test: usecase accTitle: U+00A0 between two directives]
+[test: usecase accTitle: U+00A0 before, between and after two directives] [test:
+usecase accTitle: U+00A0 before the first of two directives, a space between
+them]
+
 mermaid.js reads one whitespace character after the keyword and keeps the rest
 in the Db, so the Db of the printed text differs from the Db of the written
 text, but it draws the same figure. Each renderer puts the text into an SVG

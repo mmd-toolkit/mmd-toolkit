@@ -6875,3 +6875,178 @@ describe("requirement color words with rejected tabs", () => {
     await expect(format(input)).rejects.toThrow("Unexpected character")
   })
 })
+
+/**
+ * Each example is a title, an `accTitle:` line or an `accDescr:` line that
+ * ends with a directive, in a diagram type whose figure is the same whatever
+ * the whitespace at the end of a text, with whitespace other than spaces and
+ * tabs before the directive. A run of whitespace before the last directive of
+ * the line is one space, whatever it holds, and `{B}` stands for the spaces
+ * and tabs after the directive, which are left out: the line is printed the
+ * same with and without them (docs/compatibility.md, Texts after a keyword
+ * that are drawn the same).
+ */
+const textEndDirectiveExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "radar title: U+00A0 before the directive",
+      "radar-beta\ntitle T\u00a0%%{x}%%{B}\naxis a, b\ncurve c{1, 2}\n",
+      "radar-beta\n  title T %%{x}%%\n  axis a, b\n  curve c{1, 2}\n",
+    ],
+    [
+      "architecture title: U+00A0 before the directive",
+      "architecture-beta\ntitle T\u00a0%%{x}%%{B}\nservice a(server)[A]\n",
+      "architecture-beta\n  title T %%{x}%%\n  service a(server)[A]\n",
+    ],
+    [
+      "wardley title: U+00A0 before the directive",
+      "wardley-beta\ntitle T\u00a0%%{x}%%{B}\ncomponent A [0.5, 0.5]\n",
+      "wardley-beta\n  title T %%{x}%%\n  component A [0.5, 0.5]\n",
+    ],
+    [
+      "pie title: U+00A0 before the directive",
+      'pie\ntitle T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "info title: U+00A0 before the directive",
+      "info\ntitle T\u00a0%%{x}%%{B}\n",
+      "info\n  title T %%{x}%%\n",
+    ],
+    [
+      "packet title: U+00A0 before the directive",
+      'packet-beta\ntitle T\u00a0%%{x}%%{B}\n0-7: "x"\n',
+      'packet-beta\n  title T %%{x}%%\n  0-7: "x"\n',
+    ],
+    [
+      "gitGraph title: U+00A0 before the directive",
+      "gitGraph\ntitle T\u00a0%%{x}%%{B}\ncommit\n",
+      "gitGraph\n  title T %%{x}%%\n  commit\n",
+    ],
+    [
+      "treemap title: U+00A0 before the directive",
+      'treemap\ntitle T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'treemap\ntitle T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "treeView title: U+00A0 before the directive",
+      'treeView-beta\ntitle T\u00a0%%{x}%%{B}\n"R"\n',
+      'treeView-beta\n  title T %%{x}%%\n  "R"\n',
+    ],
+    [
+      "cynefin title: U+00A0 before the directive",
+      "cynefin-beta\ntitle T\u00a0%%{x}%%{B}\n",
+      "cynefin-beta\n  title T %%{x}%%\n",
+    ],
+    [
+      "railroad title: U+00A0 before the directive",
+      'railroad-abnf-beta\ntitle T\u00a0%%{x}%%{B}\nr = "a";\n',
+      'railroad-abnf-beta\n  title T %%{x}%%\n  r = "a";\n',
+    ],
+    [
+      "pie accTitle: U+00A0 before the directive",
+      'pie\naccTitle: T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'pie\n  accTitle: T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie accDescr: U+00A0 before the directive",
+      'pie\naccDescr: T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'pie\n  accDescr: T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+3000 before the directive",
+      'pie\ntitle T\u3000%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+2003 before the directive",
+      'pie\ntitle T\u2003%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+000C before the directive",
+      'pie\ntitle T\f%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+FEFF before the directive",
+      'pie\ntitle T\ufeff%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+000B before the directive",
+      'pie\ntitle T\v%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+1680 before the directive",
+      'pie\ntitle T\u1680%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+202F before the directive",
+      'pie\ntitle T\u202f%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: a space and U+00A0 before the directive",
+      'pie\ntitle T \u00a0%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+00A0 and a space before the directive",
+      'pie\ntitle T\u00a0 %%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: a tab and U+00A0 before the directive",
+      'pie\ntitle T\t\u00a0%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+00A0 before the first of two directives, a space between them",
+      'pie\ntitle T\u00a0%%{x}%% %%{y}%%{B}\n"A": 1\n',
+      'pie\n  title T\u00a0%%{x}%% %%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+0085 before the directive is no whitespace",
+      'pie\ntitle T\u0085%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T\u0085%%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "usecase accTitle: U+00A0 before the directive",
+      "usecase-beta\naccTitle: T\u00a0%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accDescr: U+00A0 before the directive",
+      "usecase-beta\naccDescr: T\u00a0%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accDescr: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+00A0 between two directives",
+      "usecase-beta\naccTitle: T %%{x}%%\u00a0%%{y}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%% %%{y}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+00A0 before, between and after two directives",
+      "usecase-beta\naccTitle: T\u00a0%%{x}%%\u00a0%%{y}%%\u00a0{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T\u00a0%%{x}%% %%{y}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+00A0 before the first of two directives, a space between them",
+      "usecase-beta\naccTitle: T\u00a0%%{x}%% %%{y}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T\u00a0%%{x}%% %%{y}%%\n  actor A\n",
+    ],
+  ]
+
+describe("a text that ends with a directive after whitespace that no fixture file holds", () => {
+  it.each(textEndDirectiveExamples)(
+    "prints %s alike whether or not blanks follow the directive",
+    async (_name, template, output) => {
+      for (const blanks of ["", " ", "\t", " \t"]) {
+        await expectKept(template.replace("{B}", blanks), output)
+      }
+    },
+  )
+})

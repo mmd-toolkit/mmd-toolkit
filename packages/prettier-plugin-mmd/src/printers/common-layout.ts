@@ -60,6 +60,7 @@ import {
   findStructuralToken,
   findTokensBetween,
   findTriviaBetween,
+  isInlineWhitespace,
   isSpaceOrTab,
   isStructural,
   isWhitespace,
@@ -270,6 +271,7 @@ export function layoutCommonLine(
       atoms,
       [valueStart, valueEnd],
       !statement.type.includes("AccTitle"),
+      isInlineWhitespace,
     )
   }
   // An ignored `;` at the trimmed end stays against the text, as when its

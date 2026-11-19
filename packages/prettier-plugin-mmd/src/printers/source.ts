@@ -142,6 +142,19 @@ export function isSpaceOrTab(character: string): boolean {
   return character === " " || character === "\t"
 }
 
+/**
+ * Whether a character is whitespace that does not end its line: `isWhitespace`
+ * without LF, CR, U+2028, and U+2029.
+ */
+export function isInlineWhitespace(character: string): boolean {
+  return (
+    isWhitespace(character) &&
+    character !== "\n" &&
+    character !== "\r" &&
+    !isLineSeparator(character)
+  )
+}
+
 /** Whether a character is whitespace in CSS, other than a line break: a space, a tab, or a form feed. */
 export function isCssWhitespace(character: string): boolean {
   return isSpaceOrTab(character) || character === "\u000c"
@@ -951,12 +964,14 @@ export function findTriviaBetween(
  * the directives at its end: directives that follow each other with spaces and
  * tabs only between them, the last of them followed by spaces and tabs only up
  * to `end`. That is the end of a title read to the end of its line, whose last
- * things are directives.
+ * things are directives. `isBlankCharacter` says which characters are the
+ * blanks.
  */
 export function hasTriviaBesidesTrailingDirectives(
   source: Source,
   start: number,
   end: number,
+  isBlankCharacter: (character: string) => boolean = isSpaceOrTab,
 ): boolean {
   let position = end
   const trivia = findTriviaBetween(source, start, end)
@@ -964,7 +979,7 @@ export function hasTriviaBesidesTrailingDirectives(
     const item = trivia[index]
     if (
       item.type !== "Directive" ||
-      ![...source.text.slice(item.range[1], position)].every(isSpaceOrTab)
+      ![...source.text.slice(item.range[1], position)].every(isBlankCharacter)
     )
       return true
     position = item.range[0]

@@ -33,6 +33,7 @@ import {
   findTokenEndingBefore,
   findTriviaBetween,
   findTokensBetween,
+  isInlineWhitespace,
   isStructural,
   isWhitespace,
 } from "./source.ts"
@@ -484,7 +485,7 @@ function layoutUsecaseAccessibility(
     // The directives that end the value are printed as those that end a title
     // (docs/compatibility.md, Texts after a keyword that are drawn the same).
     // The runs inside an `accTitle` stay.
-    if (endsWithDirectives(source, valueRange)) {
+    if (endsWithDirectives(source, valueRange, isInlineWhitespace)) {
       replaceInAtoms(
         source,
         atoms,
@@ -493,6 +494,7 @@ function layoutUsecaseAccessibility(
           valueRange[0],
           valueRange[1],
           statement.type === "UsecaseAccDescrStatement",
+          isInlineWhitespace,
         ),
       )
     }
