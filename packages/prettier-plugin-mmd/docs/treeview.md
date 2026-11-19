@@ -3031,12 +3031,15 @@ exceptions. Rule 1 names no mark for the end of a text that has an open
 directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [c4](./c4.md#final-newline), [ishikawa](./ishikawa.md#final-newline),
-and [kanban](./kanban.md#final-newline) keep an open directive that reaches the
-end of the text as written and add no line break after it. Rejected unused
-indentation runs are not trimmed into accepted input.
+and [kanban](./kanban.md#final-newline) keep an open directive that ends the
+text as written, with no line break added after it. Where whitespace follows the
+directive, the directive ends at its last character that is not whitespace, and
+one line break ends the text. Rejected unused indentation runs are not trimmed
+into accepted input.
 
 [fixture: treeview/final-newline/eof-node] [fixture:
-treeview/final-newline/eof-open-directive]
+treeview/final-newline/eof-open-directive] [fixture:
+treeview/final-newline/eof-open-directive-trailing-blanks]
 
 [fixture: treeview/final-newline/eof-comment]
 

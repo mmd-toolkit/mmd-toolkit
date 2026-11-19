@@ -3050,12 +3050,15 @@ EOF の未完ディレクティブと保護・原文保持の終端は共有の�
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [c4](./c4.ja.md#末尾の改行)、[ishikawa](./ishikawa.ja.md#final-newline)、
 [kanban](./kanban.ja.md#末尾の改行)は、
-テキストの終わりまで届く閉じていないディレクティブを、書かれたまま残し、
+テキストを終える閉じていないディレクティブを、書かれたまま残し、
 その後に改行を足しません。
+ディレクティブの後に空白が続くときは、
+ディレクティブは空白でない最後の文字で終わり、改行 1 つでテキストを終えます。
 拒否される未使用の字下げの連なりは、両端の空白を除いて受理させません。
 
 [fixture: treeview/final-newline/eof-node]
 [fixture: treeview/final-newline/eof-open-directive]
+[fixture: treeview/final-newline/eof-open-directive-trailing-blanks]
 
 [fixture: treeview/final-newline/eof-comment]
 
