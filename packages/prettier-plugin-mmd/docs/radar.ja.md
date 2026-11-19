@@ -517,7 +517,6 @@ radar-beta
 ただし、値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントやディレクティブを挟んでも、次の物理行から値を取りません。
-注釈類のある値と保護区間は原文の間隙を保ちます。
 題やアクセシビリティの行のテキストの後の `;` は残します。
 mermaid.js の行の規則がその行に働かないとき、
 たとえば `title T;` や `title T;;` だけの行では、テキストがその `;` を持ち、
@@ -1387,6 +1386,19 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: a U+2028 inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a radar chart]
 [test: a line break inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a radar chart]
 [test: a `;` inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a radar chart]
+[test: a `;` at the end of a title, spaces after the keyword, of a radar chart]
+[test: a `;` at the end of a title, a run of spaces inside the text, of a radar chart]
+[test: a `;` at the end of a title, spaces after it, of a radar chart]
+[test: a `;` after spaces at the end of a title, spaces after it, of a radar chart]
+[test: a text after the `;` of a title, spaces at the end, of a radar chart]
+[test: a `;` inside the comment after the text of a title, spaces at the end, of a radar chart]
+[test: a `;` at the end of a title, U+3000 after it, of a radar chart]
+[test: a U+2028 in the text of a title that ends with a `;`, of a radar chart]
+[test: a comment after the text of a title, spaces before it, of a radar chart]
+[test: a run of spaces inside the text of a title, of a radar chart]
+[test: a run of tabs inside the text of a title, spaces at the end, of a radar chart]
+[test: a run of spaces inside a quoted string in a title, of a radar chart]
+[test: a run of spaces beside a directive inside the text of a title, of a radar chart]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a radar chart]
@@ -1713,7 +1725,6 @@ radar-beta
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
 コロン後の波括弧は行値のままです。
-注釈類・隠れた形・セミコロンの保護を優先します。
 題やアクセシビリティの行のテキストの後の `;` は残します。
 mermaid.js の行の規則がその行に働かないとき、
 たとえば `accTitle: a;` や `accTitle: a;;` だけの行では、
@@ -2271,6 +2282,16 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: a directive that touches the colon of an accTitle line, a space and a text after it, of a radar chart]
 [test: a directive that starts the text of an accTitle line, two spaces and a text after it, spaces at the end, of a radar chart]
 [test: a directive that starts the text of an accDescr line, two spaces and a text after it, spaces at the end, of a radar chart]
+[test: a `;` at the end of a title, a tab after the keyword, spaces after the `;`, of a radar chart]
+[test: a `;` at the end of an accTitle line, a gap before the colon, of a radar chart]
+[test: a `;` at the end of an accDescr line, a run of spaces inside the text, of a radar chart]
+[test: a `;` at the end of an accTitle line, a tab after the colon, spaces after the `;`, of a radar chart]
+[test: a `;` at the end of an accDescr line, a gap before the colon, of a radar chart]
+[test: a comment after the text of an accTitle line, spaces before it, of a radar chart]
+[test: a comment after the text of an accDescr line, spaces before it, of a radar chart]
+[test: a run of spaces inside the text of an accDescr line, of a radar chart]
+[test: a run of spaces inside the text of an accTitle line, of a radar chart]
+[test: a run of spaces inside a quoted string in an accDescr line, of a radar chart]
 [test: U+2028 before a directive that a comment touches, a line follows, in an accTitle line of a radar chart]
 [test: U+2028 before a directive that a comment touches, the text ends, in an accTitle line of a radar chart]
 [test: U+2028 before a directive that a comment follows after spaces, a line follows, in an accTitle line of a radar chart]

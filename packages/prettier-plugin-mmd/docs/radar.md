@@ -494,12 +494,11 @@ from a run of spaces and tabs inside the value, which is printed as one space
 (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Never take a value from the next physical line, including across comments or
-directives. Trivia-bearing values and protected segments keep their source gaps.
-A `;` after the text of a title or of an accessibility line stays. Where the
-line rule of mermaid.js does not apply to the line, as in `title T;` and
-`title T;;` alone on their lines, the text holds the `;`, and the text with and
-without it differs in the Db of 12.3.0 and in the drawn text of every version
-that counts. Where the rule applies to the line (see
+directives. A `;` after the text of a title or of an accessibility line stays.
+Where the line rule of mermaid.js does not apply to the line, as in `title T;`
+and `title T;;` alone on their lines, the text holds the `;`, and the text with
+and without it differs in the Db of 12.3.0 and in the drawn text of every
+version that counts. Where the rule applies to the line (see
 [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)), it ignores a
 single `;`, which the text does not hold and which stays all the same
 (`title style:#red;`); where two `;` follow, it ignores the last, and removing
@@ -1639,22 +1638,35 @@ after it, spaces at the end, of a radar chart] [test: a line break inside the
 directive that starts the text of a title, two spaces and a text after it,
 spaces at the end, of a radar chart] [test: a `;` inside the directive that
 starts the text of a title, two spaces and a text after it, spaces at the end,
-of a radar chart] [test: U+2028 before a directive that a comment touches, a
-line follows, in a title of a radar chart] [test: U+2028 before a directive that
-a comment touches, the text ends, in a title of a radar chart] [test: U+2028
-before a directive that a comment touches, an empty line follows, in a title of
-a radar chart] [test: U+2028 before a directive that a comment follows after
-spaces, a line follows, in a title of a radar chart] [test: U+2028 before a
-directive that a comment follows after spaces, the text ends, in a title of a
-radar chart] [test: U+2028 before a directive that a comment follows after
-spaces, an empty line follows, in a title of a radar chart] [test: U+2029 before
-a directive that a comment touches, a line follows, in a title of a radar chart]
-[test: U+2029 before a directive that a comment touches, the text ends, in a
-title of a radar chart] [test: U+2029 before a directive that a comment touches,
-an empty line follows, in a title of a radar chart] [test: U+2029 before a
-directive that a comment follows after spaces, a line follows, in a title of a
-radar chart] [test: U+2029 before a directive that a comment follows after
-spaces, the text ends, in a title of a radar chart] [test: U+2029 before a
+of a radar chart] [test: a `;` at the end of a title, spaces after the keyword,
+of a radar chart] [test: a `;` at the end of a title, a run of spaces inside the
+text, of a radar chart] [test: a `;` at the end of a title, spaces after it, of
+a radar chart] [test: a `;` after spaces at the end of a title, spaces after it,
+of a radar chart] [test: a text after the `;` of a title, spaces at the end, of
+a radar chart] [test: a `;` inside the comment after the text of a title, spaces
+at the end, of a radar chart] [test: a `;` at the end of a title, U+3000 after
+it, of a radar chart] [test: a U+2028 in the text of a title that ends with a
+`;`, of a radar chart] [test: a comment after the text of a title, spaces before
+it, of a radar chart] [test: a run of spaces inside the text of a title, of a
+radar chart] [test: a run of tabs inside the text of a title, spaces at the end,
+of a radar chart] [test: a run of spaces inside a quoted string in a title, of a
+radar chart] [test: a run of spaces beside a directive inside the text of a
+title, of a radar chart] [test: U+2028 before a directive that a comment
+touches, a line follows, in a title of a radar chart] [test: U+2028 before a
+directive that a comment touches, the text ends, in a title of a radar chart]
+[test: U+2028 before a directive that a comment touches, an empty line follows,
+in a title of a radar chart] [test: U+2028 before a directive that a comment
+follows after spaces, a line follows, in a title of a radar chart] [test: U+2028
+before a directive that a comment follows after spaces, the text ends, in a
+title of a radar chart] [test: U+2028 before a directive that a comment follows
+after spaces, an empty line follows, in a title of a radar chart] [test: U+2029
+before a directive that a comment touches, a line follows, in a title of a radar
+chart] [test: U+2029 before a directive that a comment touches, the text ends,
+in a title of a radar chart] [test: U+2029 before a directive that a comment
+touches, an empty line follows, in a title of a radar chart] [test: U+2029
+before a directive that a comment follows after spaces, a line follows, in a
+title of a radar chart] [test: U+2029 before a directive that a comment follows
+after spaces, the text ends, in a title of a radar chart] [test: U+2029 before a
 directive that a comment follows after spaces, an empty line follows, in a title
 of a radar chart] [test: U+2028 before a directive that a comment touches, a
 comment line follows, in a title of a radar chart] [test: U+2028 before a
@@ -2183,15 +2195,15 @@ outer spacing does not rewrite internal text, except that a run of spaces and
 tabs inside the value of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
-tooltip. Braces after a colon remain line text. Trivia/hidden and semicolon
-protection take precedence. A `;` after the text of a title or of an
-accessibility line stays. Where the line rule of mermaid.js does not apply to
-the line, as in `accTitle: a;` and `accTitle: a;;` alone on their lines, the
-text holds the `;`, and the text with and without it differs in the Db of 12.3.0
-and in the drawn text of every version that counts. Where the rule applies to
-the line (see [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)),
-it ignores a single `;`, which the text does not hold and which stays all the
-same (`accTitle: style:#red;`); where two `;` follow, it ignores the last, and
+tooltip. Braces after a colon remain line text. A `;` after the text of a title
+or of an accessibility line stays. Where the line rule of mermaid.js does not
+apply to the line, as in `accTitle: a;` and `accTitle: a;;` alone on their
+lines, the text holds the `;`, and the text with and without it differs in the
+Db of 12.3.0 and in the drawn text of every version that counts. Where the rule
+applies to the line (see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)), it ignores a
+single `;`, which the text does not hold and which stays all the same
+(`accTitle: style:#red;`); where two `;` follow, it ignores the last, and
 removing one makes it ignore another (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). Where a value
 has text and no directive stands before its text or inside it, and no U+2028 or
@@ -2893,148 +2905,159 @@ line, a space and a text after it, of a radar chart] [test: a directive that
 starts the text of an accTitle line, two spaces and a text after it, spaces at
 the end, of a radar chart] [test: a directive that starts the text of an
 accDescr line, two spaces and a text after it, spaces at the end, of a radar
-chart] [test: U+2028 before a directive that a comment touches, a line follows,
-in an accTitle line of a radar chart] [test: U+2028 before a directive that a
-comment touches, the text ends, in an accTitle line of a radar chart] [test:
-U+2028 before a directive that a comment follows after spaces, a line follows,
-in an accTitle line of a radar chart] [test: U+2028 before a directive that a
-comment follows after spaces, the text ends, in an accTitle line of a radar
-chart] [test: U+2029 before a directive that a comment touches, a line follows,
-in an accTitle line of a radar chart] [test: U+2029 before a directive that a
-comment touches, the text ends, in an accTitle line of a radar chart] [test:
-U+2029 before a directive that a comment follows after spaces, a line follows,
-in an accTitle line of a radar chart] [test: U+2029 before a directive that a
-comment follows after spaces, the text ends, in an accTitle line of a radar
-chart] [test: U+2028 before a directive that a comment touches, a line follows,
-in an accDescr line of a radar chart] [test: U+2028 before a directive that a
-comment touches, the text ends, in an accDescr line of a radar chart] [test:
-U+2028 before a directive that a comment follows after spaces, a line follows,
-in an accDescr line of a radar chart] [test: U+2028 before a directive that a
-comment follows after spaces, the text ends, in an accDescr line of a radar
-chart] [test: U+2029 before a directive that a comment touches, a line follows,
-in an accDescr line of a radar chart] [test: U+2029 before a directive that a
-comment touches, the text ends, in an accDescr line of a radar chart] [test:
-U+2029 before a directive that a comment follows after spaces, a line follows,
-in an accDescr line of a radar chart] [test: U+2029 before a directive that a
-comment follows after spaces, the text ends, in an accDescr line of a radar
-chart] [test: a U+2028 inside the text, a directive, and a comment after spaces,
-in an accTitle line of a radar chart] [test: a U+2028 inside the text, a
-directive that a comment touches, in an accTitle line of a radar chart] [test: a
-U+2029 inside the text, a directive, and a comment after spaces, in an accDescr
-line of a radar chart] [test: a U+2028 inside the text, two directives that
-touch, and a comment after spaces, in an accDescr line of a radar chart] [test:
-a wide space before two directives that spaces separate, the text ends, in an
-accTitle line of a radar chart] [test: a wide space before two directives that
-spaces separate, the text ends, in an accDescr line of a radar chart] [test: a
+chart] [test: a `;` at the end of a title, a tab after the keyword, spaces after
+the `;`, of a radar chart] [test: a `;` at the end of an accTitle line, a gap
+before the colon, of a radar chart] [test: a `;` at the end of an accDescr line,
+a run of spaces inside the text, of a radar chart] [test: a `;` at the end of an
+accTitle line, a tab after the colon, spaces after the `;`, of a radar chart]
+[test: a `;` at the end of an accDescr line, a gap before the colon, of a radar
+chart] [test: a comment after the text of an accTitle line, spaces before it, of
+a radar chart] [test: a comment after the text of an accDescr line, spaces
+before it, of a radar chart] [test: a run of spaces inside the text of an
+accDescr line, of a radar chart] [test: a run of spaces inside the text of an
+accTitle line, of a radar chart] [test: a run of spaces inside a quoted string
+in an accDescr line, of a radar chart] [test: U+2028 before a directive that a
+comment touches, a line follows, in an accTitle line of a radar chart] [test:
+U+2028 before a directive that a comment touches, the text ends, in an accTitle
+line of a radar chart] [test: U+2028 before a directive that a comment follows
+after spaces, a line follows, in an accTitle line of a radar chart] [test:
+U+2028 before a directive that a comment follows after spaces, the text ends, in
+an accTitle line of a radar chart] [test: U+2029 before a directive that a
+comment touches, a line follows, in an accTitle line of a radar chart] [test:
+U+2029 before a directive that a comment touches, the text ends, in an accTitle
+line of a radar chart] [test: U+2029 before a directive that a comment follows
+after spaces, a line follows, in an accTitle line of a radar chart] [test:
+U+2029 before a directive that a comment follows after spaces, the text ends, in
+an accTitle line of a radar chart] [test: U+2028 before a directive that a
+comment touches, a line follows, in an accDescr line of a radar chart] [test:
+U+2028 before a directive that a comment touches, the text ends, in an accDescr
+line of a radar chart] [test: U+2028 before a directive that a comment follows
+after spaces, a line follows, in an accDescr line of a radar chart] [test:
+U+2028 before a directive that a comment follows after spaces, the text ends, in
+an accDescr line of a radar chart] [test: U+2029 before a directive that a
+comment touches, a line follows, in an accDescr line of a radar chart] [test:
+U+2029 before a directive that a comment touches, the text ends, in an accDescr
+line of a radar chart] [test: U+2029 before a directive that a comment follows
+after spaces, a line follows, in an accDescr line of a radar chart] [test:
+U+2029 before a directive that a comment follows after spaces, the text ends, in
+an accDescr line of a radar chart] [test: a U+2028 inside the text, a directive,
+and a comment after spaces, in an accTitle line of a radar chart] [test: a
+U+2028 inside the text, a directive that a comment touches, in an accTitle line
+of a radar chart] [test: a U+2029 inside the text, a directive, and a comment
+after spaces, in an accDescr line of a radar chart] [test: a U+2028 inside the
+text, two directives that touch, and a comment after spaces, in an accDescr line
+of a radar chart] [test: a wide space before two directives that spaces
+separate, the text ends, in an accTitle line of a radar chart] [test: a wide
+space before two directives that spaces separate, the text ends, in an accDescr
+line of a radar chart] [test: a wide space before a directive that spaces and a
+comment follow, the text ends, in an accTitle line of a radar chart] [test: a
 wide space before a directive that spaces and a comment follow, the text ends,
-in an accTitle line of a radar chart] [test: a wide space before a directive
-that spaces and a comment follow, the text ends, in an accDescr line of a radar
-chart] [test: a wide space before two directives that touch and a comment that
-touches the last, the text ends, in an accTitle line of a radar chart] [test: a
-wide space before two directives that touch and a comment that touches the last,
-the text ends, in an accDescr line of a radar chart] [test: a U+2028 before two
-directives that touch, the text ends, in an accTitle line of a radar chart]
-[test: a U+2028 before two directives that touch, the text ends, in an accDescr
-line of a radar chart] [test: a U+2028 before a directive that spaces follow,
-the text ends, in an accTitle line of a radar chart] [test: a U+2028 before a
-directive that spaces follow, the text ends, in an accDescr line of a radar
+in an accDescr line of a radar chart] [test: a wide space before two directives
+that touch and a comment that touches the last, the text ends, in an accTitle
+line of a radar chart] [test: a wide space before two directives that touch and
+a comment that touches the last, the text ends, in an accDescr line of a radar
+chart] [test: a U+2028 before two directives that touch, the text ends, in an
+accTitle line of a radar chart] [test: a U+2028 before two directives that
+touch, the text ends, in an accDescr line of a radar chart] [test: a U+2028
+before a directive that spaces follow, the text ends, in an accTitle line of a
+radar chart] [test: a U+2028 before a directive that spaces follow, the text
+ends, in an accDescr line of a radar chart] [test: a U+2028 before two
+directives that spaces separate, the text ends, in an accTitle line of a radar
 chart] [test: a U+2028 before two directives that spaces separate, the text
-ends, in an accTitle line of a radar chart] [test: a U+2028 before two
-directives that spaces separate, the text ends, in an accDescr line of a radar
-chart] [test: a directive that holds a line break, spaces before it, the text
-ends, in an accTitle line of a radar chart] [test: a directive that holds a line
-break, spaces before it, the text ends, in an accDescr line of a radar chart]
-[test: a directive that holds a U+2028, spaces before it, the text ends, in an
-accTitle line of a radar chart] [test: a directive that holds a U+2028, spaces
-before it, the text ends, in an accDescr line of a radar chart] [test: a U+2028
-inside the text, spaces before the directive, the text ends, in an accTitle line
-of a radar chart] [test: a U+2028 inside the text, spaces before the directive,
-the text ends, in an accDescr line of a radar chart] [test: a value of
-directives only, spaces after the directive, the text ends, in an accTitle line
+ends, in an accDescr line of a radar chart] [test: a directive that holds a line
+break, spaces before it, the text ends, in an accTitle line of a radar chart]
+[test: a directive that holds a line break, spaces before it, the text ends, in
+an accDescr line of a radar chart] [test: a directive that holds a U+2028,
+spaces before it, the text ends, in an accTitle line of a radar chart] [test: a
+directive that holds a U+2028, spaces before it, the text ends, in an accDescr
+line of a radar chart] [test: a U+2028 inside the text, spaces before the
+directive, the text ends, in an accTitle line of a radar chart] [test: a U+2028
+inside the text, spaces before the directive, the text ends, in an accDescr line
 of a radar chart] [test: a value of directives only, spaces after the directive,
-the text ends, in an accDescr line of a radar chart] [test: a directive inside
-the text, spaces before and after the last directive, the text ends, in an
-accTitle line of a radar chart] [test: a directive inside the text, spaces
-before and after the last directive, the text ends, in an accDescr line of a
-radar chart] [test: a `;` in the text, spaces before the directive, the text
-ends, in an accTitle line of a radar chart] [test: a `;` in the text, spaces
-before the directive, the text ends, in an accDescr line of a radar chart]
-[test: a `;` in the text, spaces between two directives, the text ends, in an
-accTitle line of a radar chart] [test: a `;` in the text, spaces between two
-directives, the text ends, in an accDescr line of a radar chart] [test: a `;`
-between two directives, spaces around it, the text ends, in an accTitle line of
-a radar chart] [test: a `;` between two directives, spaces around it, the text
-ends, in an accDescr line of a radar chart] [test: a `;` after the last
-directive, the text ends, in an accTitle line of a radar chart] [test: a `;`
-after the last directive, the text ends, in an accDescr line of a radar chart]
-[test: a U+2028 before a directive that spaces and a comment follow, the text
-ends, in an accTitle line of a radar chart] [test: a U+2028 before a directive
-that spaces and a comment follow, a comment line follows, in an accTitle line of
-a radar chart] [test: a U+2028 before a directive that spaces and a comment
-follow, an empty line follows, in an accTitle line of a radar chart] [test: a
-U+2028 before a directive that spaces and a comment follow, a line of whitespace
-follows, in an accTitle line of a radar chart] [test: a U+2028 before a
-directive that spaces and a comment follow, a directive line follows, in an
-accTitle line of a radar chart] [test: a U+2028 before a directive that spaces
-and a comment follow, a comment line and a statement follow, in an accTitle line
+the text ends, in an accTitle line of a radar chart] [test: a value of
+directives only, spaces after the directive, the text ends, in an accDescr line
+of a radar chart] [test: a directive inside the text, spaces before and after
+the last directive, the text ends, in an accTitle line of a radar chart] [test:
+a directive inside the text, spaces before and after the last directive, the
+text ends, in an accDescr line of a radar chart] [test: a `;` in the text,
+spaces before the directive, the text ends, in an accTitle line of a radar
+chart] [test: a `;` in the text, spaces before the directive, the text ends, in
+an accDescr line of a radar chart] [test: a `;` in the text, spaces between two
+directives, the text ends, in an accTitle line of a radar chart] [test: a `;` in
+the text, spaces between two directives, the text ends, in an accDescr line of a
+radar chart] [test: a `;` between two directives, spaces around it, the text
+ends, in an accTitle line of a radar chart] [test: a `;` between two directives,
+spaces around it, the text ends, in an accDescr line of a radar chart] [test: a
+`;` after the last directive, the text ends, in an accTitle line of a radar
+chart] [test: a `;` after the last directive, the text ends, in an accDescr line
 of a radar chart] [test: a U+2028 before a directive that spaces and a comment
-follow, an empty line and a statement follow, in an accTitle line of a radar
-chart] [test: a U+2028 before a directive that spaces and a comment follow, the
-text ends, in an accDescr line of a radar chart] [test: a U+2028 before a
-directive that spaces and a comment follow, a comment line follows, in an
-accDescr line of a radar chart] [test: a U+2028 before a directive that spaces
-and a comment follow, an empty line follows, in an accDescr line of a radar
-chart] [test: a U+2028 before a directive that spaces and a comment follow, a
-line of whitespace follows, in an accDescr line of a radar chart] [test: a
-U+2028 before a directive that spaces and a comment follow, a directive line
-follows, in an accDescr line of a radar chart] [test: a U+2028 before a
+follow, the text ends, in an accTitle line of a radar chart] [test: a U+2028
+before a directive that spaces and a comment follow, a comment line follows, in
+an accTitle line of a radar chart] [test: a U+2028 before a directive that
+spaces and a comment follow, an empty line follows, in an accTitle line of a
+radar chart] [test: a U+2028 before a directive that spaces and a comment
+follow, a line of whitespace follows, in an accTitle line of a radar chart]
+[test: a U+2028 before a directive that spaces and a comment follow, a directive
+line follows, in an accTitle line of a radar chart] [test: a U+2028 before a
 directive that spaces and a comment follow, a comment line and a statement
-follow, in an accDescr line of a radar chart] [test: a U+2028 before a directive
+follow, in an accTitle line of a radar chart] [test: a U+2028 before a directive
 that spaces and a comment follow, an empty line and a statement follow, in an
-accDescr line of a radar chart] [test: a U+2028 before two directives that a
-wide space separates, a comment after them, the text ends, in an accTitle line
-of a radar chart] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, a comment line follows, in an accTitle line of
-a radar chart] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, an empty line follows, in an accTitle line of a
-radar chart] [test: a U+2028 before two directives that a wide space separates,
-a comment after them, a line of whitespace follows, in an accTitle line of a
-radar chart] [test: a U+2028 before two directives that a wide space separates,
-a comment after them, a directive line follows, in an accTitle line of a radar
-chart] [test: a U+2028 before two directives that a wide space separates, a
-comment after them, a comment line and a statement follow, in an accTitle line
-of a radar chart] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, an empty line and a statement follow, in an
+accTitle line of a radar chart] [test: a U+2028 before a directive that spaces
+and a comment follow, the text ends, in an accDescr line of a radar chart]
+[test: a U+2028 before a directive that spaces and a comment follow, a comment
+line follows, in an accDescr line of a radar chart] [test: a U+2028 before a
+directive that spaces and a comment follow, an empty line follows, in an
+accDescr line of a radar chart] [test: a U+2028 before a directive that spaces
+and a comment follow, a line of whitespace follows, in an accDescr line of a
+radar chart] [test: a U+2028 before a directive that spaces and a comment
+follow, a directive line follows, in an accDescr line of a radar chart] [test: a
+U+2028 before a directive that spaces and a comment follow, a comment line and a
+statement follow, in an accDescr line of a radar chart] [test: a U+2028 before a
+directive that spaces and a comment follow, an empty line and a statement
+follow, in an accDescr line of a radar chart] [test: a U+2028 before two
+directives that a wide space separates, a comment after them, the text ends, in
+an accTitle line of a radar chart] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, a comment line follows, in an
 accTitle line of a radar chart] [test: a U+2028 before two directives that a
-wide space separates, a comment after them, the text ends, in an accDescr line
-of a radar chart] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, a comment line follows, in an accDescr line of
-a radar chart] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, an empty line follows, in an accDescr line of a
-radar chart] [test: a U+2028 before two directives that a wide space separates,
-a comment after them, a line of whitespace follows, in an accDescr line of a
-radar chart] [test: a U+2028 before two directives that a wide space separates,
-a comment after them, a directive line follows, in an accDescr line of a radar
-chart] [test: a U+2028 before two directives that a wide space separates, a
-comment after them, a comment line and a statement follow, in an accDescr line
-of a radar chart] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, an empty line and a statement follow, in an
-accDescr line of a radar chart] [test: a U+2028 before a directive that a wide
-space and a comment follow, the text ends, in an accTitle line of a radar chart]
-[test: a U+2028 before a directive that a wide space and a comment follow, a
-comment line follows, in an accTitle line of a radar chart] [test: a U+2028
-before a directive that a wide space and a comment follow, an empty line
-follows, in an accTitle line of a radar chart] [test: a U+2028 before a
-directive that a wide space and a comment follow, a line of whitespace follows,
-in an accTitle line of a radar chart] [test: a U+2028 before a directive that a
-wide space and a comment follow, a directive line follows, in an accTitle line
-of a radar chart] [test: a U+2028 before a directive that a wide space and a
-comment follow, a comment line and a statement follow, in an accTitle line of a
+wide space separates, a comment after them, an empty line follows, in an
+accTitle line of a radar chart] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, a line of whitespace follows, in an
+accTitle line of a radar chart] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, a directive line follows, in an
+accTitle line of a radar chart] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, a comment line and a statement
+follow, in an accTitle line of a radar chart] [test: a U+2028 before two
+directives that a wide space separates, a comment after them, an empty line and
+a statement follow, in an accTitle line of a radar chart] [test: a U+2028 before
+two directives that a wide space separates, a comment after them, the text ends,
+in an accDescr line of a radar chart] [test: a U+2028 before two directives that
+a wide space separates, a comment after them, a comment line follows, in an
+accDescr line of a radar chart] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, an empty line follows, in an
+accDescr line of a radar chart] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, a line of whitespace follows, in an
+accDescr line of a radar chart] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, a directive line follows, in an
+accDescr line of a radar chart] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, a comment line and a statement
+follow, in an accDescr line of a radar chart] [test: a U+2028 before two
+directives that a wide space separates, a comment after them, an empty line and
+a statement follow, in an accDescr line of a radar chart] [test: a U+2028 before
+a directive that a wide space and a comment follow, the text ends, in an
+accTitle line of a radar chart] [test: a U+2028 before a directive that a wide
+space and a comment follow, a comment line follows, in an accTitle line of a
 radar chart] [test: a U+2028 before a directive that a wide space and a comment
-follow, an empty line and a statement follow, in an accTitle line of a radar
-chart] [test: a U+2028 before a directive that a wide space and a comment
-follow, the text ends, in an accDescr line of a radar chart] [test: a U+2028
-before a directive that a wide space and a comment follow, a comment line
+follow, an empty line follows, in an accTitle line of a radar chart] [test: a
+U+2028 before a directive that a wide space and a comment follow, a line of
+whitespace follows, in an accTitle line of a radar chart] [test: a U+2028 before
+a directive that a wide space and a comment follow, a directive line follows, in
+an accTitle line of a radar chart] [test: a U+2028 before a directive that a
+wide space and a comment follow, a comment line and a statement follow, in an
+accTitle line of a radar chart] [test: a U+2028 before a directive that a wide
+space and a comment follow, an empty line and a statement follow, in an accTitle
+line of a radar chart] [test: a U+2028 before a directive that a wide space and
+a comment follow, the text ends, in an accDescr line of a radar chart] [test: a
+U+2028 before a directive that a wide space and a comment follow, a comment line
 follows, in an accDescr line of a radar chart] [test: a U+2028 before a
 directive that a wide space and a comment follow, an empty line follows, in an
 accDescr line of a radar chart] [test: a U+2028 before a directive that a wide
