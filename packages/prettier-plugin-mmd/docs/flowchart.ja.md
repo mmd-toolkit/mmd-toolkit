@@ -179,6 +179,9 @@ direction 行はそれより前へは届きません。
 先頭の桁に残します。
 字下げすると、mermaid.js が空の説明を読むからです。
 その行で方向の値より後ろにあるテキストは文ではなく、書かれたまま残します。
+その行の最後の `;` を除くと、その前の `;` が無視される `;` になります。
+詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)
+を参照してください。
 
 [fixture: indentation/verbatim-direction-description]
 [fixture: indentation/verbatim-direction-description-in-subgraph]
@@ -2386,9 +2389,24 @@ flowchart LR
 入れ子の YAML を含む行どうしの字下げの差を保ち、内側にも外側にも動かします。
 単独行の `}` は文の段に揃え、
 本文の後の `}` はその行に残して行と一緒に動かします。
+リテラルスカラーや折りたたみスカラー（`|`、`|-`、`|+`、`>`、`>-`、
+`>+`）のテキストの後の `}` は、その行に残します。
+独立した行に置くと、Db のスカラーのテキストの末尾が変わり、
+整形は Db を変えないからです。
+図は同じですが、この隙間を覆う種類の例外は、
+[整形の形の決め方](./printed-form.ja.md#確かめ方とdb-を変える整形)
+に定められていません。
+整形はスカラーの種類を見ないので、
+普通のスカラーのテキストの後の `}` も残ります。
 
 [fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
 [fixture: data-blocks/closing-after-text]
+[fixture: data-blocks/closing-after-literal-text]
+[fixture: data-blocks/closing-after-folded-text]
+[fixture: data-blocks/closing-after-folded-strip-text]
+[fixture: data-blocks/closing-after-folded-keep-text]
+[fixture: data-blocks/closing-after-strip-text]
+[fixture: data-blocks/closing-after-keep-text]
 
 次の条件をすべて満たす場合だけ動かし、満たさなければ書かれた桁を保ちます。
 
@@ -3165,6 +3183,9 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 `subgraph style:[ #x; ]` は `subgraph style:[ #x;]` になり、
 `subgraph a: [ #x; ]` は、
 `:` の前に `style` がないので `subgraph a:[#x;]` になります。
+`:` と後ろの `#` の間に空白があるかどうかで、
+行の規則が `;` を無視するかどうかが決まります。
+詳しくは [セミコロン](#セミコロン) を参照してください。
 
 [fixture: subgraph-header/title-padding-on-line-rule-line]
 
