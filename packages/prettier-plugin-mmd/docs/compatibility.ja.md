@@ -1556,31 +1556,48 @@ user journey
 [fixture: c4/title-and-accdescription/title-white-only]
 [fixture: state/aliases/second-description-trailing-whitespace-dropped]
 
-行のテキストは、書かれたままになることがあります。
-（[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
-そのとき、最後のディレクティブの後の空白の有無で、行の印字が同じになりません。
-最後のディレクティブの後に空白が続かないときは、その前の隙間を書かれたままにし、
-空白が続くときは、その前の隙間を空白 1 つにします。
-`title A  <b  %%{z}%%` はそのまま印字し、
+書かれたままになるテキストは、
+同じに描かれるテキスト中の空白の連なりの
+[節](#同じに描かれるテキスト中の空白の連なり)が定めます。
+Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、Venn 図、
+C4 図のタイトル、C4 図の `accDescription`、ishikawa 図のリテラルでは、
+そのテキストは、最後のディレクティブの後の空白の有無で、
+行の印字が同じになりません。
+mermaid.js は行の最後のディレクティブを、
+後に空白が続くときだけテキストの一部として読むためです。
+空白が続かないときは、テキストがディレクティブの前で終わり、
+その前の隙間を書かれたままにします。
+空白が続くときは、ディレクティブがテキストの一部になり、
+その前の隙間を空白 1 つにします。
+上の節が書かれたままになる理由として挙げるものは、どれもこの形にします。
+次は例です。
+`<`: `title A  <b  %%{z}%%` はそのまま印字し、
 `title A  <b  %%{z}%%  ` は `title A  <b %%{z}%%` と印字します。
-テキストが書かれたままになるのは、
-HTML タグが空白を保つかもしれない `<` を含むとき、
-図が `white-space` を含むとき、U+2028 か U+2029 を含むとき、
-単語の間にディレクティブがあるとき、
-シーケンス図では前にディレクティブがあるときです。
-理由ごとに、次の行で示します。
-`<`: Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、Venn 図、
-C4 図のタイトル、C4 図の `accDescription`、ishikawa 図のリテラル。
-`white-space`: Gantt 図のタイトルと ishikawa 図のリテラル。
-U+2028: `<` の行のうち ishikawa 図のリテラルを除く行。
+行の規則が無視する `;`: Gantt 図とタイムラインの
+`title style:#x;  b  C  %%{z}%%`。
+図のどこかにある `white-space`:
+ユーザージャーニーのタイトル（`title A  b  %%{z}%%`）、Gantt 図のタイトル、
+ishikawa 図のリテラル。
 単語の間のディレクティブ: Gantt 図、ユーザージャーニー、タイムライン、
 シーケンス図のタイトル。
-テキストの前のディレクティブ: シーケンス図のタイトル。
-改行を含み、テキストを終えるディレクティブは、この理由ではありません。
-Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、C4 図のタイトルと、
-C4 図の `accDescription` では、`title A  b  %%{init: {`、改行、
-`}}%%` は `title A b %%{init: {`、改行、`}}%%` と印字します。
-ただし、その後に空白が続くときは、テキスト全体を書かれたままにします。
+テキストの中の U+2028 か U+2029: ここに挙げた行のうち ishikawa
+図のリテラルを除く行。
+シーケンス図のタイトルでは、
+テキストの前にあるディレクティブがテキストの中にあります。
+mermaid.js がこのタイトルをキーワードから読むためで、
+そのディレクティブの後のテキストは、それだけでは書かれたままになりません。
+`title %%{x}%%  A  b  %%{z}%%` は `title %%{x}%%A  b  %%{z}%%` と印字します。
+最後のディレクティブの後に空白が続くときは、
+その前の空白とタブの連なりも空白 1 つにして、
+`title %%{x}%%  A  b  %%{z}%%  ` を `title %%{x}%%A b %%{z}%%` と印字します。
+改行を含み、テキストを終えるディレクティブは、
+後に空白が続くときだけテキストの一部になり、
+そのときだけテキストを書かれたままにします。
+`title A  b  %%{init: {`、改行、`}}%%` は `title A b %%{init: {`、改行、
+`}}%%` と印字し、`}}%%` の後に空白が続くときは、
+テキスト全体を書かれたままにします。
+Venn 図のタイトルと ishikawa 図のリテラルは、空白が続くときも続かないときも、
+前の形でテキストを印字します。
 
 [fixture: gantt/titles-and-sections/title-angle-text-gap-kept]
 [fixture: gantt/titles-and-sections/title-angle-text-blanks-gap-one-space]
@@ -1638,6 +1655,30 @@ C4 図の `accDescription` では、`title A  b  %%{init: {`、改行、
 [test: C4 title with a U+2028 in its text and a directive at its end, two spaces after the directive]
 [test: C4 accDescription with a U+2028 in its text and a directive at its end, no blanks after the directive]
 [test: C4 accDescription with a U+2028 in its text and a directive at its end, two spaces after the directive]
+[fixture: gantt/titles-and-sections/title-ignored-semicolon-gap-kept]
+[fixture: gantt/titles-and-sections/title-ignored-semicolon-blanks-gap-one-space]
+[fixture: timeline/titles-and-sections/title-ignored-semicolon-gap-kept]
+[fixture: timeline/titles-and-sections/title-ignored-semicolon-blanks-gap-one-space]
+[fixture: journey/titles-and-sections/title-white-space-text-gap-kept]
+[fixture: journey/titles-and-sections/title-white-space-text-blanks-gap-one-space]
+[fixture: sequence/title/title-leading-directive-inner-run-gap-kept]
+[fixture: sequence/title/title-leading-directive-inner-run-blanks-runs-collapsed]
+[fixture: venn/title/title-ending-line-break-directive-blanks-runs-collapsed]
+[fixture: ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped]
+[test: Gantt title with a U+2029 in its text and a directive at its end, no blanks after the directive]
+[test: Gantt title with a U+2029 in its text and a directive at its end, two spaces after the directive]
+[test: journey title with a U+2029 in its text and a directive at its end, no blanks after the directive]
+[test: journey title with a U+2029 in its text and a directive at its end, two spaces after the directive]
+[test: timeline title with a U+2029 in its text and a directive at its end, no blanks after the directive]
+[test: timeline title with a U+2029 in its text and a directive at its end, two spaces after the directive]
+[test: sequence title with a U+2029 in its text and a directive at its end, no blanks after the directive]
+[test: sequence title with a U+2029 in its text and a directive at its end, two spaces after the directive]
+[test: Venn title with a U+2029 in its text and a directive at its end, no blanks after the directive]
+[test: Venn title with a U+2029 in its text and a directive at its end, two spaces after the directive]
+[test: C4 title with a U+2029 in its text and a directive at its end, no blanks after the directive]
+[test: C4 title with a U+2029 in its text and a directive at its end, two spaces after the directive]
+[test: C4 accDescription with a U+2029 in its text and a directive at its end, no blanks after the directive]
+[test: C4 accDescription with a U+2029 in its text and a directive at its end, two spaces after the directive]
 
 mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db に残すので、
 印字したテキストの Db は、書かれたテキストの Db と違いますが、
@@ -1766,7 +1807,7 @@ mermaid.js はタイトルを読む前にディレクティブを除くためで
 書かれたままにします。
 タイトルを終える、改行を含むディレクティブは、前にディレクティブがないとき、
 そうしません。
-ただし、その後に空白が続くときは別です（上の段落を参照）。
+ただし、その後に空白が続くときは別で、ディレクティブがテキストの一部になります。
 タイトルの中の空白とタブの連なりは、ディレクティブが接していても、
 空白で隔てられていても、空白 1 つにして印字します。
 テキストの後にコメントが続くとき、テキストが終わるとき、

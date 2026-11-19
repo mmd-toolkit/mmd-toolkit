@@ -7290,11 +7290,89 @@ const directiveAfterSeparatorTextExamples: readonly (readonly [
   ],
 ]
 
+/** The same examples with a U+2029 where each one has a U+2028. */
+const directiveAfterParagraphSeparatorTextExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "Gantt title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "gantt\ntitle A\u2029  b  %%{z}%%\nsection S\nA : a1, 2024-01-01, 1d\n",
+    "gantt\n  title A\u2029  b  %%{z}%%\n  section S\n    A : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "Gantt title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "gantt\ntitle A\u2029  b  %%{z}%%  \nsection S\nA : a1, 2024-01-01, 1d\n",
+    "gantt\n  title A\u2029  b %%{z}%%\n  section S\n    A : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "journey title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "journey\ntitle A\u2029  b  %%{z}%%\nsection S\nT: 5: Me\n",
+    "journey\n  title A\u2029  b  %%{z}%%\n  section S\n    T: 5: Me\n",
+  ],
+  [
+    "journey title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "journey\ntitle A\u2029  b  %%{z}%%  \nsection S\nT: 5: Me\n",
+    "journey\n  title A\u2029  b %%{z}%%\n  section S\n    T: 5: Me\n",
+  ],
+  [
+    "timeline title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "timeline\ntitle A\u2029  b  %%{z}%%\n2020 : e\n",
+    "timeline\n  title A\u2029  b  %%{z}%%\n  2020 : e\n",
+  ],
+  [
+    "timeline title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "timeline\ntitle A\u2029  b  %%{z}%%  \n2020 : e\n",
+    "timeline\n  title A\u2029  b %%{z}%%\n  2020 : e\n",
+  ],
+  [
+    "sequence title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "sequenceDiagram\ntitle A\u2029  b  %%{z}%%\nA->>B: hi\n",
+    "sequenceDiagram\n  title A\u2029  b  %%{z}%%\n  A ->> B: hi\n",
+  ],
+  [
+    "sequence title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "sequenceDiagram\ntitle A\u2029  b  %%{z}%%  \nA->>B: hi\n",
+    "sequenceDiagram\n  title A\u2029  b %%{z}%%\n  A ->> B: hi\n",
+  ],
+  [
+    "Venn title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "venn-beta\nset A\ntitle A\u2029  b  %%{z}%%\n",
+    "venn-beta\n  set A\n  title A\u2029  b  %%{z}%%\n",
+  ],
+  [
+    "Venn title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "venn-beta\nset A\ntitle A\u2029  b  %%{z}%%  \n",
+    "venn-beta\n  set A\n  title A\u2029  b %%{z}%%\n",
+  ],
+  [
+    "C4 title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    'C4Context\ntitle A\u2029  b  %%{z}%%\nPerson(a,"A")\n',
+    'C4Context\n  title A\u2029  b  %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    'C4Context\ntitle A\u2029  b  %%{z}%%  \nPerson(a,"A")\n',
+    'C4Context\n  title A\u2029  b %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 accDescription with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    'C4Context\naccDescription A\u2029  b  %%{z}%%\nPerson(a,"A")\n',
+    'C4Context\n  accDescription A\u2029  b  %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 accDescription with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    'C4Context\naccDescription A\u2029  b  %%{z}%%  \nPerson(a,"A")\n',
+    'C4Context\n  accDescription A\u2029  b %%{z}%%\n  Person(a, "A")\n',
+  ],
+]
+
 describe("a title that holds a line separator and ends with a directive", () => {
-  it.each(directiveAfterSeparatorTextExamples)(
-    "keeps %s",
-    async (_name, input, output) => {
-      await expectKept(input, output)
-    },
-  )
+  it.each([
+    ...directiveAfterSeparatorTextExamples,
+    ...directiveAfterParagraphSeparatorTextExamples,
+  ])("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
 })

@@ -596,12 +596,12 @@ export function endsWithDirectives(source: Source, [from, to]: Range): boolean {
  *   timeline after the first directive that follows the keyword and its
  *   whitespace, so the second printing, with the directives touching the text,
  *   has its runs printed as one space by the rule of the texts, and the first
- *   printing has to print them so too. The
- *   titles of a Venn diagram and a C4 diagram and the accessibility lines take
- *   a directive before the text too, but their printers keep that line as
- *   written, so they never reach the trim with a directive before the text, and
- *   have only the rule of the texts and the runs before the directives that end
- *   it to print, which is the same here.
+ *   printing has to print them so too. The titles of a Venn diagram and a C4
+ *   diagram and the accessibility lines take a directive before the text too,
+ *   but their printers keep that line as written, so they never reach the trim
+ *   with a directive before the text, and have only the rule of the texts and
+ *   the runs before the directives that end it to print, which is the same
+ *   here.
  * - `"collapsedBeforeEndingDirectives"`: all of them where no directive
  *   precedes the text; where one does, only those before the directives that
  *   end it, and the runs after the directive that precedes it stay. The title
