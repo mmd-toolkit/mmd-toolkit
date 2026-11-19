@@ -1744,7 +1744,10 @@ as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Where only directives follow the text of a title, they are printed with one
 space before each that has spaces or tabs before it, and the spaces and tabs
-after the last one are left out (see
+after the last one are left out, unless a directive of the line holds a line
+break, a `;`, a U+2028, or a U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `title T  %%{x}%%  ` is printed `title T %%{x}%%`, and
 `title T  %%{x}%%  %%{y}%%  ` is printed `title T %%{x}%% %%{y}%%`. A comment
@@ -2088,7 +2091,10 @@ but not that of an `accTitle`, which the browser shows as a tooltip, and retain
 brace-looking line values and trivia boundaries. The common converter permits
 these equivalent outer gaps. Never borrow text from the next line. Where only
 directives follow the text of an `accTitle:` or `accDescr:` line, they are
-printed as after the text of a title (see
+printed as after the text of a title, unless a directive of the line holds a
+line break, a `;`, a U+2028, or a U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `accTitle: T  %%{x}%%  ` is printed `accTitle: T %%{x}%%`,
 `accDescr: T  %%{x}%%  %% c` is printed `accDescr: T %%{x}%% %% c`, and a

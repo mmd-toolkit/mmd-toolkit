@@ -60,6 +60,8 @@ texts of Prettier are JavaScript where no language is named.
 | A colon inside a name                    | the selector `a:hover` of CSS stays `a:hover`          | none on either side          | `a : R -- L : b` in an architecture diagram | `a:R -- L:b`                  |
 | Another mark between two things          | `x = a+b` is printed `x = a + b;`                      | one space on each side       | `A-->B` in a flowchart                      | `A --> B`                     |
 | Parentheses and square brackets          | `f( a )` is printed `f(a);`                            | none inside                  | `A( text )` in a flowchart                  | `A(text)`                     |
+| A `;` that ends a statement              | `a ;` is printed `a;`                                  | none before                  | `r="a" ;` in a railroad diagram             | `r = "a";`                    |
+| The `(` of a call                        | `f (a)` is printed `f(a);`                             | none before                  | `terminal ("x")` in a railroad diagram      | `terminal("x")`               |
 | Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                 | one space inside             | `curve c{m: 60, s: 70}` in a radar chart    | `curve c{ m: 60, s: 70 }`     |
 | Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                | none inside                  | `curve d{ 85, 90 }` in a radar chart        | `curve d{85, 90}`             |
 | Braces that hold nothing                 | `x = { }` is printed `x = {};`                         | none inside                  | `accDescr { }` in a Gantt chart             | `accDescr {}`                 |
@@ -293,12 +295,15 @@ are:
   and tabs between the words of a style, which become one space, and the
   whitespace at the end of a style, defined in
   [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same);
-- the whitespace at the start and at the end of a title, of the date format and
-  the axis format of a Gantt chart, and of a description of a C4 diagram, and at
-  the end of a period and of an event of a timeline, of the second description
-  of an alias of a state diagram, of the name of a task of a Gantt chart, and of
-  the description of a task of a user journey, which is the whitespace before
-  its first colon, defined in
+- the spaces and tabs at the start and at the end of a title, of the date format
+  and the axis format of a Gantt chart, and of a description of a C4 diagram,
+  and at the end of a period and of an event of a timeline, of the second
+  description of an alias of a state diagram, of the name of a task of a Gantt
+  chart, and of the description of a task of a user journey, which is the spaces
+  and tabs before its first colon, and the whitespace of the specification (a
+  no-break space and U+3000 among it) at the end of the title of the Langium
+  types and of a quadrant chart, and at its start but for a U+2028 and a U+2029
+  in a quadrant chart, defined in
   [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
 - the runs of spaces and tabs inside the texts that mermaid.js draws without
   them: titles, accessibility descriptions, and the labels of the diagram types

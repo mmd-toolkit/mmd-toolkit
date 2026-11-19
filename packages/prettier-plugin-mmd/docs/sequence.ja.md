@@ -503,6 +503,11 @@ mermaid.js がその位置でブロック形式のマッピングの行を拒否
 ブロックの両端に空白は足しません。
 `participant A   @{ x }` と `actor B@{x}` はそのまま残り、
 `participant C@{ y }   %% c` の `%%` の前の空白も残ります。
+この空白に版の理由があるのは `participant` だけです。
+`%%` の前を空白 1 つにすると、10.9.8 と 11.7.0 は別の名前を描きます。
+`actor` の `%%` の前の空白と、`create` が作る参加者の `%%` の前の空白は、
+対象にする版に別の図を描くものがなくても、書かれたまま残します。
+ブロックの後の `#` コメントは通常のコメントなので、前は空白 1 つにします。
 mermaid.js は名前を読む前にディレクティブを除きます。
 そのため、名前はその空白の中のディレクティブの上を越えて続きます。
 閉じていないディレクティブでも同じで、ディレクティブの両側の空白が残ります。
@@ -524,6 +529,7 @@ mermaid.js は名前を読む前にディレクティブを除きます。
 [fixture: whitespace-between-tokens/data-block-name-end-characters-padded]
 [fixture: whitespace-between-tokens/data-block-name-created-kept]
 [fixture: whitespace-between-tokens/data-block-name-created-comment-gap-kept]
+[fixture: whitespace-between-tokens/data-block-hash-comment-one-space]
 [test: data blocks: sequence name block with a no-break space before a comment]
 [test: data blocks: sequence name block with an ideographic space before a comment]
 [test: data blocks: sequence name block with a form feed before a comment]
@@ -1057,7 +1063,7 @@ sequenceDiagram
 ### タイトル
 
 `title` と `title:` の後には空白を 1 つ置き、
-行の残りは先頭と末尾の空白を除いて書かれたまま残します。
+行の残りは先頭と末尾の空白とタブを除いて書かれたまま残します。
 `title   My diagram  ` は `title My diagram` と印字します。
 テキストの中の空白とタブの連なりも、空白 1 つで印字します。
 `accDescr` も同じです。
@@ -1081,15 +1087,15 @@ sequenceDiagram
 キーワードとその後の空白 1 文字の間のディレクティブは、
 キーワードに接したまま残します。
 `title%%{init: {}}%% U` と `title:%%{init: {}}%% V` は変えません。
-その 1 文字の後のディレクティブはテキストの一部で、テキストの先頭の空白は、
-ディレクティブの前後の空白も除きます。
+その 1 文字の後のディレクティブはテキストの一部で、
+テキストの先頭の空白とタブは、ディレクティブの前後のものも除きます。
 `title %%{init: {}}%% T` は `title %%{init: {}}%%T` と印字します。
 
 [fixture: title/directive-after-keyword-kept]
 
 mermaid.js はキーワードの後の空白 1 文字を読み、それは改行でもよく、
 その後のすべてを、先頭と末尾の空白も含めてタイトルに入れ、
-先頭と末尾の空白を除いてタイトルを描きます。
+先頭と末尾の空白とタブを除いてタイトルを描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 そのため、`title`、改行、`A->>B: x` は `title A->>B: x` と印字し、
 次の行がタイトルになることが見えます。
@@ -1099,7 +1105,7 @@ mermaid.js はそのように読みます。
 [corpus fixture: sequence/db-title-next-line-indented]
 [fixture: title/tab-and-colon-line-break] [fixture: title/line-break-indented]
 
-タイトルの末尾の空白は、後ろに `;` がある場合も除きます。
+タイトルの末尾の空白とタブは、後ろに `;` がある場合も除きます。
 行のほかの文に引き金があるために、行の規則が無視する `;` も、
 その後ろの空白とともに、タイトルのテキストではありません。
 `accDescr {style:#x} title x;` の後に空白が 2 つ続くときは、
@@ -1198,12 +1204,33 @@ sequenceDiagram
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
-mermaid.js は `autonumber 5%% c` を数 5 なしで読み、
-`%%` の前に空白を入れると数を読むからです。
+規則 1 は、コメントの前の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[requirement](./requirement.ja.md#コメント)、[c4](./c4.ja.md#コメント)、
+[journey](./journey.ja.md#コメント)も、接するコメントは接したまま残します。
+ほかの規則が空白を書かれたまま残す所は別で、どの図の文書も、
+その所を自分の節で挙げています。
+この図では、`autonumber 5%% c` のように、空白が、
+対象にする版の mermaid.js のすべてで意味を持ちます。
+詳しくは [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+を参照してください。
 印の前の空白の連なりは、空白 1 つで印字します。
-（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+詳しくは
+[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+を参照してください。
+ただし、ほかの規則が空白を書かれたまま残す所は別です。
+たとえば、ID の後、ある版が名前の一部として読む参加者のデータブロックの後の、
+`%%` コメントの前、`accTitle` の値の後では、空白が ID、ブロック、
+値に属するので、書かれたまま残します。
+詳しくは [トークンの間の空白](#トークンの間の空白) を参照してください。
 
-[fixture: comments/mark-run-one-space] [fixture: comments/kept]
+[fixture: comments/mark-run-one-space]
+[fixture: comments/mark-touching-kept-after-each-statement]
+[fixture: comments/mark-run-one-space-after-each-statement]
+[fixture: comments/mark-run-kept-after-an-id-and-acctitle]
+[fixture: whitespace-between-tokens/data-block-name-comment-gap-kept]
+[fixture: whitespace-between-tokens/data-block-name-created-comment-gap-kept]
+[fixture: comments/kept]
 [corpus fixture: sequence/lex-percent-comment-takes-number]
 [fixture: comments/mark-whitespace-kept]
 [fixture: comments/after-last-statement-without-line-break]
@@ -1490,8 +1517,15 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
 を参照）。
 
 - `box` のテキストの末尾で、その前に空白があっても、そこまで。
-  テキストにこの文字がある box は、塗りが `transparent` で名前がなくなります。
-  なければ `box aqua` の塗りは `aqua` です。
+  テキストにこの文字がある box は、12.3.0 の Db で塗りが `transparent` になり、
+  なければ `box red` の塗りは `red` です。
+  描画の塗りは、10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 のすべてで違います。
+  規則 1 は、テキストの末尾の印を挙げていないので、
+  [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+  [journey](./journey.ja.md#行区切り文字) はタイトルの末尾で、
+  [timeline](./timeline.ja.md#行区切り文字) はタイトルの末尾と行の最後の event
+  の末尾で、U+2028 と U+2029 をテキストの文字として残し、
+  その後の空白は除きます。
   最後の文字より後の空白は落とします。
   `box` 以外のブロックの見出しは、mermaid.js がテキストの両端を取り除くので、
   文字は、テキストの末尾の空白と一緒に落とします（`loop x`、U+2028、
@@ -1517,6 +1551,23 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   木はコメントを並べますが、印字処理は 1 つの行として読みます。
   [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
   を参照してください。
+  `#` のコメントはコメント行ではなく、行をつなぎません。
+  その前の U+2028 と U+2029 は、文の後のコメントの前の空白とタブと同じく、
+  空白 1 つで印字します（[コメント](#コメント)を参照）。
+  ただし、次の単位の後では、mermaid.js がこの文字を、
+  またはこの文字と `#` 以降を、その単位の一部として読むので、
+  この文字を書かれたまま残します（`autonumber 5`、U+2028 か U+2029、
+  `#` コメントは、対象にする版の mermaid.js のすべてが拒否し、整形しません）。
+
+  - 別名もデータブロックもない `participant` と `actor`（`create` の後も同じ）、
+    および `destroy`、`activate`、`deactivate` の ID。
+    `A`、U+2028、`# c` が 1 つの ID です。
+  - `accTitle` と `accDescr` の 1 行。
+    `#` とそれ以降は値の一部です。
+  - `title` と、テキストのある `box`。
+    テキストがこの文字を含みます。
+    12.3.0 の Db の title はこの文字で終わり、
+    この文字を含む box の fill もその Db で `transparent` です。
 
   [test: a `#` comment after U+2028, which joins no lines]
   [test: a `%%` comment line after U+2028, which joins the next line]
@@ -1526,6 +1577,45 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: U+2028 after a `%%` comment that a comment line follows]
   [test: U+2029 after a `%` comment that a comment line follows]
   [test: a `#` comment and a comment line after U+2028 inside a message text]
+  [test: a `#` comment after U+2028 after a note]
+  [test: a `#` comment after U+2028 after a block header]
+  [test: a `#` comment after U+2028 after a link]
+  [test: a `#` comment after U+2028 after a participant with an alias]
+  [test: a `#` comment after U+2028 after the header of the diagram]
+  [test: a `#` comment after U+2028 after autonumber]
+  [test: a `#` comment after U+2028 after a box without a text]
+  [test: a `#` comment after U+2028 after the id of a participant]
+  [test: a `#` comment after U+2028 after the id of a create]
+  [test: a `#` comment after U+2028 after the id of a destroy]
+  [test: a `#` comment after U+2028 after activate and deactivate]
+  [test: a `#` comment after U+2028 after accTitle]
+  [test: a `#` comment after U+2028 after an accDescr line]
+  [test: a `#` comment after U+2028 after a title]
+  [test: a `#` comment after U+2028 after a box with a text]
+  [test: a `#` comment after U+2028 after an actor and a data block]
+  [test: a `#` comment after U+2028 after links, properties, and details]
+  [test: a `#` comment after U+2028 after block headers and end]
+  [test: a `#` comment after U+2028 after an accDescr block]
+  [test: a `#` comment after U+2028 after autonumber off]
+  [test: a `#` comment after U+2029 after a message and a note]
+  [test: a `#` comment after U+2029 where the character stays]
+  [test: a `#` comment after U+2029 after an actor and a data block]
+  [test: a `#` comment after U+2029 after links, properties, and details]
+  [test: a `#` comment after U+2029 after block headers and end]
+  [test: a `#` comment after U+2029 after an accDescr block]
+  [test: a `#` comment after U+2029 after autonumber off]
+  [test: a `#` comment after U+2029 after a link, an alias, and the header]
+  [test: a `#` comment after U+2028 after the id of an actor]
+  [test: a `#` comment after U+2029 after the id of a create and a destroy]
+  [test: a `#` comment after U+2028 after autonumber 5 and a space]
+  [test: a `#` comment after U+2029 after autonumber 5 and a space]
+  [test: a `#` comment after U+2028 after a create with an alias]
+  [test: a `#` comment after U+2029 after the id of an actor]
+  [test: a `#` comment after U+2029 after autonumber]
+  [test: a `#` comment after U+2029 after a box without a text]
+  [test: a `#` comment after U+2028 and U+2029 after a data block
+  that is read as a name] [test: autonumber 5, U+2028, and a `#` comment]
+  [test: autonumber 5, U+2029, and a `#` comment]
 
 - 閉じていないディレクティブの直後。
   そのようなディレクティブのテキストはこの文字の手前で止まり、
@@ -1946,6 +2036,6 @@ sequenceDiagram
 次のテキストは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
 表にないキーワードの大文字小文字です。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-上に挙げたコメントの印の前に空白があるかどうかは、
-`autonumber 5` のような文の後では mermaid.js の読みを決めます。
-ほかの文の後では Db が同じですが、規則を 1 つにするために空白の有無を保ちます。
+上に挙げたコメントの印の前に空白があるかどうかは、選択ではなく、
+規則 2 が与えます（[コメント](#コメント)を参照）。
+`autonumber 5` のような文の後では、mermaid.js の読みも決めます。

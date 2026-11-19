@@ -209,6 +209,8 @@ requirementDiagram
 の手順 2 を参照してください。
 コメントかディレクティブがあれば改行を残し、
 構造の続きの行と間の注釈をフィールドより 1 段深く置きます。
+理由は[複数行の文](#複数行の文)にあるものと同じです。
+規則 2 が、文の後続部分と間の注釈類の行を、文より 1 段深く置きます。
 
 [fixture: fields/comment-and-directive-continuations]
 [fixture: fields/colon-touches-keyword]
@@ -652,6 +654,8 @@ style の文脈では、単位の中のディレクティブを拒否するか�
 [fixture: styles-and-classes/class-name-with-directive-kept]
 
 コメント行の隣の改行は残し、コメントと構造の続きの行を 1 段深く置きます。
+理由は[複数行の文](#複数行の文)にあるものと同じです。
+規則 2 が、文の後続部分と間の注釈類の行を、文より 1 段深く置きます。
 
 [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
@@ -766,13 +770,18 @@ requirementDiagram
 方向の行は、`direction` とその値、
 その前後にある mermaid.js が読まないテキストからなります。
 テキストは書かれたまま残します。
+木がそのテキストを丸ごと持つからです。
+詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+を参照してください。
 テキストと `direction` の間は、離れて書かれていれば空白 1 つ、
 `direction` と値の間も空白 1 つにし、値の `lr` は `LR` と印字します。
 例が `LR` だけを使うので、ほかの値は書かれた大文字小文字のまま残します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 
 [fixture: direction/spacing] [fixture: direction/spaces-around]
-[fixture: direction/text-kept] [fixture: direction/case-one-form]
+[fixture: direction/text-kept] [fixture: direction/text-inner-whitespace-kept]
+[fixture: direction/text-both-sides-inner-whitespace-kept]
+[fixture: direction/case-one-form]
 
 次の行に書かれた値は、`direction` の後ろに寄せて 1 行にします。
 
@@ -780,6 +789,11 @@ requirementDiagram
 
 ディレクティブやコメント行を含む方向の行は改行を残し、
 構造の続きの行を 1 段深く置きます。
+理由は[複数行の文](#複数行の文)にあるものと同じです。
+規則 2 が、文の後続部分と間の注釈類の行を、文より 1 段深く置きます。
+二つの単位の間のディレクティブは、通常の隙間の空白の後に、
+次の単位に接して置きます。
+[flowchart](./flowchart.ja.md#ディレクティブ)と同じです。
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -845,8 +859,20 @@ mermaid.js は同じ行に続く文を読みます。
 [fixture: statements-one-per-line/empty-description-blocks]
 
 2 つの文の間のディレクティブは、後ろの文と一緒に動きます。
+規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#ディレクティブ)、
+[gantt](./gantt.ja.md#ディレクティブ)、
+[journey](./journey.ja.md#ディレクティブ)も、
+整形が分ける単位の隙間のディレクティブを後ろの単位と一緒に動かし、
+右側の接触か間隔を残し、左側の接触は切ります。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+たとえば、文の後の閉じていないディレクティブです。
 
 [fixture: statements-one-per-line/directive-after-statement]
+[fixture: statements-one-per-line/directive-after-statement-right-touching]
+[fixture: statements-one-per-line/directive-after-statement-left-touching]
+[fixture: directives/unclosed-after-statement-kept]
 
 `style`・`classDef`・`class` 文の後も字句解析器は style の文脈にあるので、
 その行の文字列が次の文を始め、その後の改行は `newline` ではなく、
@@ -1062,10 +1088,17 @@ ER 図が mermaid.js の読まないテキストをブロックの中の自分�
 [fixture: empty-description-blocks/in-body-alone]
 
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
+Prettier が `x = { }` を `x = {}`
+と印字するのと同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-キーワードと開始括弧の間には空白を 1 つ置きます。
+キーワードと開始括弧の間には空白を 1 つ置き、
 `accDescr{  }` は `accDescr {}` にします。
+規則 1 は、キーワードと開き括弧の間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[gantt](./gantt.ja.md#空の説明ブロック)、
+[class](./class.ja.md#空の説明ブロック)、
+[journey](./journey.ja.md#空の説明ブロック)も、ここを空白 1 個で印字します。
 
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: requirement Unicode and tab interiors]
@@ -1190,6 +1223,11 @@ requirementDiagram
 `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
 説明の設定関数がこの字下げを捨てるためです。
+規則 1 は、ブロックの中の行の字下げの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#複数行の値)、[class](./class.ja.md#複数行の値)、
+[state](./state.ja.md#複数行の値)も、`accDescr { ... }` の本文の行を、
+文より 1 段内側に揃えます。
 改行とディレクティブの内部は保ちます。
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
@@ -1426,7 +1464,6 @@ style の文脈の改行の後で続きます。
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
-改行が残る文は、スタイルも書かれたままにします。
 
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]
