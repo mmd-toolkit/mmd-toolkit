@@ -762,16 +762,43 @@ describe("the whitespace before the last directive of a title and of an accessib
     }
   })
 
-  it("treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces after it or a mark after a space", async () => {
+  it("treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces or a tab after it, or a mark after a space", async () => {
     for (const directive of lineBreakOrSemicolonDirectives) {
       for (const keyword of keywordsOfTheTitleLines) {
         for (const before of ["", "  ", "\t", "\u00a0", "\u2028", "\u0085"]) {
-          for (const after of ["  ", " %% c", " %%{y}%%"]) {
+          for (const after of ["  ", "\t", " %% c", " %%{y}%%"]) {
             const line = `T${before}${directive}${after}`
             const next = before === "\u2028" && after === " %% c" ? "R" : "  R"
             await expectDirectiveRowKept(
               `treeView-beta\n${keyword} ${line}\nR\n`,
               `treeView-beta\n  ${keyword} ${line}\n${next}\n`,
+            )
+          }
+        }
+      }
+    }
+  })
+
+  it("treeview: a run of whitespace before the last directive follows the column of its characters", async () => {
+    const runs = [
+      ["\t ", " \t"],
+      [" \u00a0", "\u00a0 ", "\u00a0\u00a0", "\u00a0\u3000"],
+      [" \u2028", "\u2028 "],
+      [" \u0085"],
+    ] as const
+    for (const row of whitespaceBeforeTheLastDirectiveRows.slice(0, 9)) {
+      const forms = [row.tab, row.like, row.separator, row.nel]
+      for (const keyword of keywordsOfTheTitleLines) {
+        for (const [index, columnRuns] of runs.entries()) {
+          const printed = forms[index]
+          if (printed === null || printed === undefined) continue
+          for (const run of columnRuns) {
+            const line = row.written.replace("{w}", run)
+            const next =
+              index === 2 && row.separatorStartsALine === true ? "R" : "  R"
+            await expectDirectiveRowKept(
+              `treeView-beta\n${keyword} ${line}\nR\n`,
+              `treeView-beta\n  ${keyword} ${printedBeforeTheLastDirective(line, printed, run)}\n${next}\n`,
             )
           }
         }

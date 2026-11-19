@@ -1883,18 +1883,28 @@ U+1680、U+2000〜U+200A、U+202F、U+205F、U+3000、U+FEFF）、U+2028 と U+2
 title の次の行は字下げせず、
 `title T\u2028%%{x}%%%% c` とその下のノード `R` は書かれたまま印字し、
 `R` は 1 桁目になります。
-title がテキストの最後の文のときは、U+2028 か U+2029 の後ろの、
-ディレクティブとコメントを、
+title がテキストの最後の文のときは、
+ディレクティブの前の U+2028 か U+2029 の後ろの、ディレクティブとコメントを、
 次の行に置いて印字します（`title T\u2028%%{x}%%%% c` は `title T` と、
 次の行の `%%{x}%%%% c` と印字します）。
+ディレクティブとコメントの間の U+2028 か U+2029 は、
+それらと一緒に書かれたまま残ります。
 
 最後のディレクティブが改行か `;` を含むとき（`%%{init: {`、改行、`}}%%`、
 または `%%{init: {a;b}}%%`）、表のとおりに印字するのは、
 ディレクティブの後ろに何も続かない形と、
 コメントか 2 つ目のディレクティブが接する形です。
-後ろに空白が続く形と、
+後ろに空白かタブが続く形と、
 空白をはさんでコメントか 2 つ目のディレクティブが続く形は、
 ディレクティブの前に何があっても書かれたまま残ります。
+
+最後のディレクティブの前の空白の連なりは、
+その中の空白でもタブでもない文字の列に従い、
+空白とタブだけの連なりは最初の列に従います。
+ただし、
+空白でもタブでもない文字がすべて同じ列のものである連なりに限ります（`T`、空白、
+改行しない空白、`%%{x}%%%% c` は `T %%{x}%%%% c` と、`T`、空白、U+2028、
+`%%{x}%%` は `T %%{x}%%` と印字します）。
 
 [test: treeview: the whitespace before the last directive, with nothing after it]
 [test: treeview: the whitespace before the last directive, with spaces after it]
@@ -1907,8 +1917,9 @@ title がテキストの最後の文のときは、U+2028 か U+2029 の後ろ�
 [test: treeview: the whitespace before the last directive, with text after a space]
 [test: treeview: the whitespace between the last directive and a comment]
 [test: treeview: the whitespace before the last directive where the line is the last statement of the text]
+[test: treeview: a run of whitespace before the last directive follows the column of its characters]
 [test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with nothing or a mark that touches it after it]
-[test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces after it or a mark after a space]
+[test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces or a tab after it, or a mark after a space]
 
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。
