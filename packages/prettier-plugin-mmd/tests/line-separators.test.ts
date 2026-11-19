@@ -6065,6 +6065,105 @@ describe("Venn whitespace and line boundaries", () => {
   })
 })
 
+/**
+ * A no-break space, U+3000, U+2028, and U+2029 beside the directives that end
+ * the title or the value of an accessibility line of a Wardley map (docs/wardley.md,
+ * Title and Accessibility lines).
+ */
+const wardleyDirectiveEndExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a no-break space after the last directive of a title of a Wardley map",
+    "title T  %%{x}%%\u00a0",
+    "title T  %%{x}%%\u00a0",
+  ],
+  [
+    "U+3000 after the last directive of a title of a Wardley map",
+    "title T  %%{x}%%\u3000",
+    "title T  %%{x}%%\u3000",
+  ],
+  [
+    "U+2028 after the last directive of a title of a Wardley map",
+    "title T  %%{x}%%\u2028",
+    "title T  %%{x}%%\u2028",
+  ],
+  [
+    "U+2029 after the last directive of a title of a Wardley map",
+    "title T  %%{x}%%\u2029",
+    "title T  %%{x}%%\u2029",
+  ],
+  [
+    "a space and a no-break space after the last directive of a title of a Wardley map",
+    "title T  %%{x}%% \u00a0",
+    "title T  %%{x}%% \u00a0",
+  ],
+  [
+    "a no-break space after the last of two directives of a title of a Wardley map",
+    "title T  %%{x}%%   %%{y}%%\u00a0",
+    "title T  %%{x}%%   %%{y}%%\u00a0",
+  ],
+  [
+    "a no-break space before the directive that ends a title of a Wardley map",
+    "title T\u00a0%%{x}%%",
+    "title T %%{x}%%",
+  ],
+  [
+    "U+3000 before the directive that ends a title of a Wardley map",
+    "title T\u3000%%{x}%%",
+    "title T %%{x}%%",
+  ],
+  [
+    "a space, a no-break space, and a space before the directive that ends a title of a Wardley map",
+    "title T \u00a0 %%{x}%%",
+    "title T %%{x}%%",
+  ],
+  [
+    "a no-break space before two directives that touch and end a title of a Wardley map",
+    "title T\u00a0%%{x}%%%%{y}%%",
+    "title T %%{x}%%%%{y}%%",
+  ],
+  [
+    "a no-break space before a directive that a comment touches in a title of a Wardley map",
+    "title T\u00a0%%{x}%%%% c",
+    "title T %%{x}%%%% c",
+  ],
+  [
+    "a no-break space after the last directive of an accTitle line of a Wardley map",
+    "accTitle: T  %%{x}%%\u00a0",
+    "accTitle: T  %%{x}%%\u00a0",
+  ],
+  [
+    "a no-break space before the directive that ends an accTitle line of a Wardley map",
+    "accTitle: T\u00a0%%{x}%%",
+    "accTitle: T %%{x}%%",
+  ],
+  [
+    "a no-break space after the last directive of an accDescr line of a Wardley map",
+    "accDescr: T  %%{x}%%\u00a0",
+    "accDescr: T  %%{x}%%\u00a0",
+  ],
+  [
+    "a no-break space before the directive that ends an accDescr line of a Wardley map",
+    "accDescr: T\u00a0%%{x}%%",
+    "accDescr: T %%{x}%%",
+  ],
+]
+
+describe("the directives that end the title or the value of an accessibility line of a Wardley map", () => {
+  it.each(wardleyDirectiveEndExamples)(
+    "keeps %s as printed",
+    async (_name, line, expected) => {
+      await expectKept(
+        `wardley-beta\n${line}\ncomponent A [0.5, 0.5]\n`,
+        `wardley-beta\n  ${expected}\n  component A [0.5, 0.5]\n`,
+      )
+    },
+  )
+})
+
 /** Style terminators retain Unicode line-rule and directive boundaries. */
 describe("style semicolons", () => {
   it.each([

@@ -92,12 +92,15 @@ wardley-beta
 ### 文を 1 行ずつにする
 
 普通の文は 1 行ずつにして、必須の EOL を保ちます。
-mermaid.js は、文と同じ行にある 2 つ目の文と、文の後の `;` を拒否するので、
-各文はその行で終わります。
+mermaid.js は文の後に改行かテキストの終わりを期待するので、
+文と同じ行にある 2 つ目の文（U+2028 や U+2029 の後も同じで、
+改行ではありません）と、パイプラインを開く `{` と同じ行にある文と、
+文の後の `;` を拒否するので、各文はその行で終わります。
 Wardley のセミコロンは文の区切りではないので足しません。
 値の内部の見かけの文は、木が区別した値のテキストとして残します。
 
 [fixture: wardley/statements-one-per-line/statement-eol]
+[corpus fixture: wardley/line-ls-gap] [corpus fixture: wardley/line-ps-gap]
 [corpus fixture: wardley/tail-component-semicolon]
 [corpus fixture: wardley/gram-pipeline-inline]
 
@@ -327,25 +330,19 @@ Prettier と同じです（[規則 1](./printed-form.ja.md#1-記号の横の空�
 キーワードやタイトルの後の `[` の前に、
 書かれたとおりに接していても空白 1 つを置き、
 wardley もラベルの位置のずれの `[` の前に空白 1 つを置きます。
-括弧の中の戦略、`inertia`、装飾どうしの間の隙間には、それがありません。
-それらはコンポーネントの座標の組かラベルの位置のずれの後に、
-独立した語として立ちます。
-[architecture](./architecture.ja.md#declaration-spacing) の service
-`a(server)[A]` は、アイコンとタイトルを id に接して印字しますが、
-それは付いた部分を 1 つのノードとして読ませる選択で、
-装飾どうしの隙間ではありません。
-その隙間は[規則 3](./printed-form.ja.md#3-綴り)が決めます。
-mermaid.js のドキュメントの wardley の例 19 件（corpus の
-`docs-syntax-wardley-*`）では、ラベルの位置のずれは 2 回すべて、
-括弧の中の戦略は 10 回すべて、`(inertia)` は 2 回すべてが空白の後に書かれ、
-前のテキストに接するものはありません。
-そのため、規則 3 が装飾の前に空白 1 つを与えます。
+括弧の中の戦略、`(inertia)`、括弧なしの `inertia` の前の隙間と、
+装飾どうしの間の隙間には、それがないので、
+リリース済みの版が印字する空白 1 つの形を、隙間が決まるまで保ちます。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 括弧なしの `inertia` と `(inertia)`、`build`、`buy`、`outsource`、
 `market` を保ちます。
 inertia の両形は Db が同じでも、変更すると書かれたノード形を失います。
 既定値は補いません。
 
 [fixture: wardley/decorations/decorations-all]
+[fixture: wardley/decorations/decorations-spaced]
 
 [fixture: wardley/decorations/decorations-bare]
 
@@ -648,13 +645,40 @@ wardley-beta
 外端の通常の共通空白は除き、閉じない引用符も内部の文字として保ちます。
 空の title は空のままで、次の行を値にしません。
 値を引用文字列として扱わず、Db が同じ端の形を簡潔にします。
-題の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
+最後のディレクティブの後が空白とタブだけのときは、題の終わりのディレクティブを、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
 行末の空白とタブの有無にかかわらず、
 最後のディレクティブの後の空白とタブを除いて印字します。
+互いに接して行末かコメントに接するディレクティブがあるとき、
+その前のテキストとの間にあるノーブレークスペースや U+3000 は、
+同じ連なりの残りとともに空白 1 つで印字します。
+最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
+U+2029 のどれかがあるときは、その前に空白やタブがあっても、
+行を書かれたままにします。
+中にディレクティブのある題と、ディレクティブだけの題も、書かれたままです。
+最後のディレクティブの後にコメントが続くときは、
+それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
+空白 1 つで印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title/title-directives-end-blanks-dropped]
+[fixture: title/title-directives-end-tabs-dropped]
+[fixture: title/title-directives-in-the-text-kept]
+[fixture: title/title-directives-end-before-comment-line-and-empty-line]
+[fixture: title/title-directives-then-comment]
 [fixture: wardley/title/title-trim]
+[test: a no-break space after the last directive of a title of a Wardley map]
+[test: U+3000 after the last directive of a title of a Wardley map]
+[test: U+2028 after the last directive of a title of a Wardley map]
+[test: U+2029 after the last directive of a title of a Wardley map]
+[test: a space and a no-break space after the last directive of a title of a Wardley map]
+[test: a no-break space after the last of two directives of a title of a Wardley map]
+[test: a no-break space before the directive that ends a title of a Wardley map]
+[test: U+3000 before the directive that ends a title of a Wardley map]
+[test: a space, a no-break space, and a space before the directive that ends a title of a Wardley map]
+[test: a no-break space before two directives that touch and end a title of a Wardley map]
+[test: a no-break space before a directive that a comment touches in a title of a Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -680,12 +704,32 @@ accTitle: Value と accDescr: Value は共有の行配置を使います。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が `accTitle: text`
 の形を与えます。
 コロンの前に空白を置かず、後ろに空白を 1 つ置きます。
-値の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+値にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
+最後のディレクティブの後が空白とタブだけのときは、値の終わりのディレクティブを、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+行末の空白とタブの有無にかかわらず、
 最後のディレクティブの後の空白とタブを除いて印字します。
+互いに接して行末かコメントに接するディレクティブがあるとき、
+その前のテキストとの間にあるノーブレークスペースや U+3000 は、
+同じ連なりの残りとともに空白 1 つで印字します。
+最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
+U+2029 のどれかがあるときは、その前に空白やタブがあっても、
+行を書かれたままにします。
+中にディレクティブのある値と、ディレクティブだけの値も、書かれたままです。
+最後のディレクティブの後にコメントが続くときは、
+それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
+空白 1 つで印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [test: wardley/accessibility/unicode-empty-description]
 [fixture: accessibility/acc-directives-end-blanks-dropped]
+[fixture: accessibility/acc-directives-end-tabs-dropped]
+[fixture: accessibility/acc-directives-in-the-text-kept]
+[fixture: accessibility/acc-directives-then-comment]
+[test: a no-break space after the last directive of an accTitle line of a Wardley map]
+[test: a no-break space before the directive that ends an accTitle line of a Wardley map]
+[test: a no-break space after the last directive of an accDescr line of a Wardley map]
+[test: a no-break space before the directive that ends an accDescr line of a Wardley map]
 [fixture: wardley/accessibility/access-lines]
 [fixture: wardley/accessibility/access-empty]
 [fixture: wardley/accessibility/access-colon-touching]
