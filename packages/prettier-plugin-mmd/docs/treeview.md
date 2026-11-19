@@ -1908,13 +1908,24 @@ only the run of spaces and tabs just before the directive as one space (`T`, a
 tab, a no-break space, and `%%{x}%% %% c` stay as written, and `T`, a no-break
 space, a tab, and `%%{x}%% %% c` are printed `T`, a no-break space, a space, and
 `%%{x}%% %% c`). In all three lines the whole run becomes one space where the
-column of its other characters prints one space, and the run stays as written
-before a `;` and before text. A tab before a U+0085 stays in an `accTitle:`
-line, and a tab after it becomes one space. An `accDescr:` line with a tab
-before a U+0085 is printed as a title is (`accDescr: T`, a tab, and U+0085 are
-printed `accDescr: T`, a space, and U+0085): its Db has the tab where the
-printed line has a space, which mermaid.js draws the same (see
+column of its other characters prints one space, as the paragraph above gives
+for a run of one column, and the run stays as written before a `;` and before
+text. A run that holds a tab and a character of the column of the no-break space
+has no printed form where spaces or a tab follow the last directive, which the
+table marks with a dash. A tab before a U+0085 stays in an `accTitle:` line, and
+a tab after it becomes one space. An `accDescr:` line with a tab before a U+0085
+is printed as a title is (`accDescr: T`, a tab, and U+0085 are printed
+`accDescr: T`, a space, and U+0085): its Db has the tab where the printed line
+has a space, which mermaid.js draws the same (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+
+Between the last directive and a comment, a run of spaces and tabs is printed as
+one space, and a run that holds another whitespace character stays as written, a
+tab in it included (`T`, `%%{x}%%`, a tab, a no-break space, and `%% c` are not
+changed). Where the title is the last statement of the text, the spaces and tabs
+after a U+2028 or a U+2029 there are printed as one space too
+(`title T %%{x}%%`, a U+2028, two spaces, and `%% c` are printed with one space
+after the U+2028).
 
 [test: treeview: the whitespace before the last directive, with nothing after
 it] [test: treeview: the whitespace before the last directive, with spaces after
@@ -1927,11 +1938,16 @@ whitespace before the last directive, with a second directive after a space]
 [test: treeview: the whitespace before the last directive, with a semicolon
 after it] [test: treeview: the whitespace before the last directive, with text
 after a space] [test: treeview: the whitespace between the last directive and a
-comment] [test: treeview: the whitespace before the last directive where the
-line is the last statement of the text] [test: treeview: a run of whitespace
-before the last directive follows the column of its characters] [test: treeview:
-a run that holds a tab and other whitespace before the last directive] [test:
-treeview: a run that holds a tab and other whitespace before the last directive]
+comment] [test: treeview: a run between the last directive and a comment] [test:
+treeview: a run between the last directive and a comment where the line is the
+last statement of the text] [test: treeview: the whitespace before the last
+directive where the line is the last statement of the text] [test: treeview: a
+run of whitespace before the last directive follows the column of its
+characters] [test: treeview: a run of whitespace before the last directive
+follows the column of its characters where the line is the last statement of the
+text] [test: treeview: a run that holds a tab and other whitespace before the
+last directive] [test: treeview: a run that holds a tab and other whitespace
+before the last directive where the line is the last statement of the text]
 [test: treeview: the whitespace around a last directive that holds a line break
 or a semicolon, with nothing or a mark that touches it after it] [test:
 treeview: the whitespace around a last directive that holds a line break or a

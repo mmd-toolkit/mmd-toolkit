@@ -719,6 +719,38 @@ const whitespaceColumns = [
   ["\u0085"],
 ] as const
 
+/**
+ * The runs of whitespace before the last directive whose characters that are no
+ * space or tab are all of one column, by that column: a tab, a no-break space,
+ * a U+2028 or a U+2029, and a U+0085. A run of spaces and tabs only follows the
+ * first column (docs/treeview.md, Title).
+ */
+const runsOfOneColumn = [
+  ["\t ", " \t"],
+  [" \u00a0", "\u00a0 ", "\u00a0\u00a0", "\u00a0\u3000"],
+  [" \u2028", "\u2028 ", "\t\u2028", "\u2028\t", "\t\u2029", "\u2029\t"],
+  [" \u0085"],
+] as const
+
+/**
+ * The runs that hold a tab and a character of the column of the no-break space
+ * or of U+0085, by that column (docs/treeview.md, Title).
+ */
+const runsOfATabAndAnotherColumn = [
+  [
+    "\t\u00a0",
+    "\u00a0\t",
+    "\t\t\u00a0",
+    " \t\u00a0",
+    "\t\u00a0\t",
+    "\t\u00a0 ",
+    "\u00a0\t\u00a0",
+    "\t\u3000",
+    "\u3000\t",
+  ],
+  ["\t\u0085", "\u0085\t"],
+] as const
+
 /** The text with each run of spaces and tabs in it as one space. */
 function withEachRunOfSpacesAndTabsAsOneSpace(text: string): string {
   let result = ""
@@ -751,6 +783,150 @@ function printedBeforeTheLastDirective(
   return printed === "as written"
     ? written.replace("{w}", character)
     : printed.replace("{w}", character)
+}
+
+/**
+ * A run of whitespace before the last directive follows the column of its
+ * characters that are no space or tab, with a statement after the line or with
+ * the line as the last statement of the text (docs/treeview.md, Title).
+ */
+async function expectRunsOfOneColumn(statementAfter: boolean): Promise<void> {
+  for (const row of whitespaceBeforeTheLastDirectiveRows.slice(0, 9)) {
+    const forms = [
+      row.tab,
+      row.like,
+      statementAfter ? row.separator : (row.separatorAtTheEnd ?? row.separator),
+      row.nel,
+    ]
+    for (const keyword of keywordsOfTheTitleLines) {
+      for (const [index, columnRuns] of runsOfOneColumn.entries()) {
+        const printed = forms[index]
+        if (printed === null || printed === undefined) continue
+        for (const run of columnRuns) {
+          const line = row.written.replace("{w}", run)
+          const next = !statementAfter
+            ? ""
+            : index === 2 && row.separatorStartsALine === true
+              ? "R\n"
+              : "  R\n"
+          await expectDirectiveRowKept(
+            `treeView-beta\n${keyword} ${line}\n${statementAfter ? "R\n" : ""}`,
+            `treeView-beta\n  ${keyword} ${printedBeforeTheLastDirective(line, printed, run)}\n${next}`,
+          )
+        }
+      }
+    }
+  }
+}
+
+/**
+ * A run that holds a tab and a character of the column of the no-break space
+ * or of U+0085, with a statement after the line or with the line as the last
+ * statement of the text (docs/treeview.md, Title).
+ */
+async function expectRunsOfATabAndAnotherColumn(
+  statementAfter: boolean,
+): Promise<void> {
+  for (const row of whitespaceBeforeTheLastDirectiveRows.slice(0, 9)) {
+    for (const keyword of keywordsOfTheTitleLines) {
+      for (const [index, columnRuns] of runsOfATabAndAnotherColumn.entries()) {
+        const printed = [row.like, row.nel][index]
+        if (printed === null || printed === undefined) continue
+        for (const run of columnRuns) {
+          const line = row.written.replace("{w}", run)
+          const kept =
+            row.tab === "as written"
+              ? run
+              : keyword === "accTitle:"
+                ? withTheLastRunOfSpacesAndTabsAsOneSpace(run)
+                : withEachRunOfSpacesAndTabsAsOneSpace(run)
+          const form =
+            printed === "as written"
+              ? row.written.replace("{w}", kept)
+              : printed.replace("{w}", kept)
+          await expectDirectiveRowKeptUpToRuns(
+            `treeView-beta\n${keyword} ${line}\n${statementAfter ? "R\n" : ""}`,
+            `treeView-beta\n  ${keyword} ${form}\n${statementAfter ? "  R\n" : ""}`,
+          )
+        }
+      }
+    }
+  }
+}
+
+/**
+ * The runs between the last directive and a comment, with the form each
+ * prints: a run of spaces and tabs is one space, and a run that holds another
+ * whitespace character stays as written (docs/treeview.md, Title).
+ */
+const runsBetweenTheLastDirectiveAndAComment = {
+  oneSpace: ["  ", "\t ", " \t", "\t\t"],
+  asWritten: [
+    " \u00a0",
+    "\u00a0 ",
+    "\t\u00a0",
+    "\u00a0\t",
+    " \t\u00a0",
+    "\t\u3000",
+    " \u0085",
+    "\t\u0085",
+    "\u0085\t",
+    " \u2028",
+    "\t\u2028",
+    "  \u2028",
+    " \u2029",
+    "\t\u2029",
+  ],
+  /** Spaces and tabs after a line separator, as the last statement prints them. */
+  afterASeparator: [
+    ["\u2028 ", "\u2028 "],
+    ["\u2028  ", "\u2028 "],
+    ["\u2028\t", "\u2028 "],
+    ["\u2029 ", "\u2029 "],
+    ["\u2029  ", "\u2029 "],
+    ["\u2029\t", "\u2029 "],
+  ],
+} as const
+
+/** A title line with a run of whitespace between the last directive and a comment. */
+function lineBetween(keyword: string, run: string): string {
+  return `${keyword} T %%{x}%%${run}%% c`
+}
+
+/**
+ * A run between the last directive and a comment, with a statement after the
+ * line or with the line as the last statement of the text (docs/treeview.md,
+ * Title).
+ */
+async function expectRunsBetweenTheLastDirectiveAndAComment(
+  statementAfter: boolean,
+): Promise<void> {
+  const after = statementAfter ? "R\n" : ""
+  const { oneSpace, asWritten, afterASeparator } =
+    runsBetweenTheLastDirectiveAndAComment
+  for (const keyword of keywordsOfTheTitleLines) {
+    for (const run of oneSpace) {
+      await expectDirectiveRowKept(
+        `treeView-beta\n${lineBetween(keyword, run)}\n${after}`,
+        `treeView-beta\n  ${lineBetween(keyword, " ")}\n${statementAfter ? "  R\n" : ""}`,
+      )
+    }
+    for (const run of asWritten) {
+      // The line after a comment that follows a U+2028 or a U+2029 is not
+      // indented.
+      const startsALine = run.includes("\u2028") || run.includes("\u2029")
+      await expectDirectiveRowKept(
+        `treeView-beta\n${lineBetween(keyword, run)}\n${after}`,
+        `treeView-beta\n  ${lineBetween(keyword, run)}\n${statementAfter ? (startsALine ? "R\n" : "  R\n") : ""}`,
+      )
+    }
+    for (const [run, lastStatement] of afterASeparator) {
+      await expectDirectiveRowKept(
+        `treeView-beta\n${lineBetween(keyword, run)}\n${after}`,
+        `treeView-beta\n  ${lineBetween(keyword, statementAfter ? run : lastStatement)}\n${statementAfter ? "R\n" : ""}`,
+      )
+    }
+  }
 }
 
 describe("the whitespace before the last directive of a title and of an accessibility line, by what follows the directive", () => {
@@ -826,72 +1002,27 @@ describe("the whitespace before the last directive of a title and of an accessib
   })
 
   it("treeview: a run of whitespace before the last directive follows the column of its characters", async () => {
-    const runs = [
-      ["\t ", " \t"],
-      [" \u00a0", "\u00a0 ", "\u00a0\u00a0", "\u00a0\u3000"],
-      [" \u2028", "\u2028 "],
-      [" \u0085"],
-    ] as const
-    for (const row of whitespaceBeforeTheLastDirectiveRows.slice(0, 9)) {
-      const forms = [row.tab, row.like, row.separator, row.nel]
-      for (const keyword of keywordsOfTheTitleLines) {
-        for (const [index, columnRuns] of runs.entries()) {
-          const printed = forms[index]
-          if (printed === null || printed === undefined) continue
-          for (const run of columnRuns) {
-            const line = row.written.replace("{w}", run)
-            const next =
-              index === 2 && row.separatorStartsALine === true ? "R" : "  R"
-            await expectDirectiveRowKept(
-              `treeView-beta\n${keyword} ${line}\nR\n`,
-              `treeView-beta\n  ${keyword} ${printedBeforeTheLastDirective(line, printed, run)}\n${next}\n`,
-            )
-          }
-        }
-      }
-    }
+    await expectRunsOfOneColumn(true)
+  })
+
+  it("treeview: a run of whitespace before the last directive follows the column of its characters where the line is the last statement of the text", async () => {
+    await expectRunsOfOneColumn(false)
   })
 
   it("treeview: a run that holds a tab and other whitespace before the last directive", async () => {
-    const runs = [
-      [
-        "\t\u00a0",
-        "\u00a0\t",
-        "\t\t\u00a0",
-        " \t\u00a0",
-        "\t\u00a0\t",
-        "\t\u00a0 ",
-        "\u00a0\t\u00a0",
-        "\t\u3000",
-        "\u3000\t",
-      ],
-      ["\t\u0085", "\u0085\t"],
-    ] as const
-    for (const row of whitespaceBeforeTheLastDirectiveRows.slice(0, 9)) {
-      for (const keyword of keywordsOfTheTitleLines) {
-        for (const [index, columnRuns] of runs.entries()) {
-          const printed = [row.like, row.nel][index]
-          if (printed === null || printed === undefined) continue
-          for (const run of columnRuns) {
-            const line = row.written.replace("{w}", run)
-            const kept =
-              row.tab === "as written"
-                ? run
-                : keyword === "accTitle:"
-                  ? withTheLastRunOfSpacesAndTabsAsOneSpace(run)
-                  : withEachRunOfSpacesAndTabsAsOneSpace(run)
-            const form =
-              printed === "as written"
-                ? row.written.replace("{w}", kept)
-                : printed.replace("{w}", kept)
-            await expectDirectiveRowKeptUpToRuns(
-              `treeView-beta\n${keyword} ${line}\nR\n`,
-              `treeView-beta\n  ${keyword} ${form}\n  R\n`,
-            )
-          }
-        }
-      }
-    }
+    await expectRunsOfATabAndAnotherColumn(true)
+  })
+
+  it("treeview: a run that holds a tab and other whitespace before the last directive where the line is the last statement of the text", async () => {
+    await expectRunsOfATabAndAnotherColumn(false)
+  })
+
+  it("treeview: a run between the last directive and a comment", async () => {
+    await expectRunsBetweenTheLastDirectiveAndAComment(true)
+  })
+
+  it("treeview: a run between the last directive and a comment where the line is the last statement of the text", async () => {
+    await expectRunsBetweenTheLastDirectiveAndAComment(false)
   })
 
   it("treeview: the whitespace before the last directive where the line is the last statement of the text", async () => {

@@ -1916,15 +1916,26 @@ title と `accDescr:` の行では、連なりの中の空白とタブの連な�
 ディレクティブの直前の空白とタブの連なりだけを空白 1 つにします（`T`、タブ、
 改行しない空白、`%%{x}%% %% c` は書かれたままで、`T`、改行しない空白、タブ、
 `%%{x}%% %% c` は `T`、改行しない空白、空白、`%%{x}%% %% c` と印字します）。
-3 つの行のどれでも、
-ほかの文字の列が空白 1 つを印字する所では連なり全体を空白 1 つにし、
+3 つの行のどれでも、ほかの文字の列が空白 1 つを印字する所では、
+上の段落が 1 つの列の連なりについて示すとおり連なり全体を空白 1 つにし、
 `;` の前とテキストの前では書かれたまま残します。
+タブと改行しない空白の列の文字からなる連なりは、
+最後のディレクティブの後に空白かタブが続く形では印字した形がなく、
+表のダッシュと同じです。
 `accTitle:` の行では、U+0085 の前のタブは残り、後ろのタブは空白 1 つになります。
 `accDescr:` の行でタブが U+0085 の前にあるものは、
 title と同じに印字します（`accDescr: T`、タブ、U+0085 は `accDescr: T`、空白、
 U+0085 と印字します）。
 Db にはタブがあり、印字した行には空白がありますが、mermaid.js は同じに描きます。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+
+最後のディレクティブとコメントの間の、
+空白とタブだけの連なりは空白 1 つにして印字し、ほかの空白文字を含む連なりは、
+タブがあっても書かれたまま残します（`T`、`%%{x}%%`、タブ、改行しない空白、
+`%% c` は変えません）。
+title がテキストの最後の文のときは、そこの U+2028 か U+2029 の後の空白とタブも、
+空白 1 つにして印字します（`title T %%{x}%%`、U+2028、空白 2 つ、`%% c` は、
+U+2028 の後を空白 1 つにして印字します）。
 
 [test: treeview: the whitespace before the last directive, with nothing after it]
 [test: treeview: the whitespace before the last directive, with spaces after it]
@@ -1936,9 +1947,13 @@ Db にはタブがあり、印字した行には空白がありますが、merma
 [test: treeview: the whitespace before the last directive, with a semicolon after it]
 [test: treeview: the whitespace before the last directive, with text after a space]
 [test: treeview: the whitespace between the last directive and a comment]
+[test: treeview: a run between the last directive and a comment]
+[test: treeview: a run between the last directive and a comment where the line is the last statement of the text]
 [test: treeview: the whitespace before the last directive where the line is the last statement of the text]
 [test: treeview: a run of whitespace before the last directive follows the column of its characters]
+[test: treeview: a run of whitespace before the last directive follows the column of its characters where the line is the last statement of the text]
 [test: treeview: a run that holds a tab and other whitespace before the last directive]
+[test: treeview: a run that holds a tab and other whitespace before the last directive where the line is the last statement of the text]
 [test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with nothing or a mark that touches it after it]
 [test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces or a tab after it, or a mark after a space]
 
