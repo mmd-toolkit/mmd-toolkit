@@ -4530,6 +4530,36 @@ const ganttLineSeparatorExamples: readonly (readonly [
     "gantt\ndateFormat X  \u2029  \n",
     "gantt\n  dateFormat X  \u2029\n",
   ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to the next line, and a section with padding after it",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long               :a2, after a1, 2d\n  section B\n    Other                     :a3, after a2, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n  section B\n    Other : a3, after a2, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment only after U+2028 joins to the next line, and a section with padding after it",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %% c\n\n    Task B long               :a2, after a1, 2d\n  section B\n    Other                     :a3, after a2, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %% c\n\n    Task B long : a2, after a1, 2d\n  section B\n    Other : a3, after a2, 1d\n",
+  ],
+  [
+    "Gantt: a section with padding, and a section whose task a comment after U+2028 joins to the next line",
+    "gantt\n  section A\n    Other                     :a3, 1d\n  section B\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long               :a2, after a1, 2d\n",
+    "gantt\n  section A\n    Other : a3, 1d\n  section B\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to the next line, and two sections with padding after it",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long               :a2, after a1, 2d\n  section B\n    Other                     :a3, after a2, 1d\n  section C\n    Third                     :a4, after a3, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n  section B\n    Other : a3, after a2, 1d\n  section C\n    Third : a4, after a3, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2029 joins to the next line, and a section with padding after it",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2029 %%{x}%%  %% c  \n\n    Task B long               :a2, after a1, 2d\n  section B\n    Other                     :a3, after a2, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2029 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n  section B\n    Other : a3, after a2, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to the next line, with its colon at the column of the group",
+    "gantt\n  section A\n    Task A      :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long :a2, after a1, 2d\n  section B\n    Other       :a3, after a2, 1d\n",
+    "gantt\n  section A\n    Task A      :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n  section B\n    Other       : a3, after a2, 1d\n",
+  ],
 ]
 
 /**

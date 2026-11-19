@@ -4,7 +4,7 @@ import { util } from "prettier"
 import type { MermaidAst } from "../parser.ts"
 import { maxOf } from "./collections.ts"
 import type { KeptLines } from "./kept-lines.ts"
-import { lineEndOf, lineStartOf } from "./kept-lines.ts"
+import { completeKeptLines, lineEndOf, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findTokensBetween,
@@ -29,6 +29,11 @@ interface TaskRow {
   /** Whether the name holds a tab, whose width is up to the editor. */
   readonly holdsTab: boolean
   readonly widthFromColon: number
+  /**
+   * Whether the printer prints the line as written, as it prints a line that
+   * mermaid.js reads over several lines: its colon stays where it is.
+   */
+  readonly staysAsWritten: boolean
 }
 
 /** The places of the colons of the tasks of a chart, for the options used. */
@@ -133,12 +138,11 @@ export function findColonColumns(
   for (const section of padded) {
     if (grouped.has(section)) continue
     const column = commonColumn(section)
-    const group =
+    let group =
       column === null
         ? [section]
         : padded.filter((other) => commonColumn(other) === column)
-    for (const member of group) grouped.add(member)
-    const unchanged =
+    let unchanged =
       column === null
         ? []
         : after.filter(
@@ -147,12 +151,41 @@ export function findColonColumns(
               isSingleSpaced(other) &&
               commonColumn(other) === column,
           )
+    // A section with a line that stays as written, whose colon is not at the
+    // column of the group, has its colons in more than one column once the
+    // others are moved, so it is alone, as the second formatting finds it.
+    for (;;) {
+      const target = maxOf([...group, ...unchanged].map(longestName)) + 1
+      const apart = group.filter((member) =>
+        holdsColonApartFrom(member, target),
+      )
+      if (apart.length === 0) break
+      group = group.filter((member) => !apart.includes(member))
+      if (apart.includes(section)) {
+        group = [section]
+        unchanged = []
+        break
+      }
+    }
+    for (const member of group) grouped.add(member)
     align(group, maxOf([...group, ...unchanged].map(longestName)) + 1, 2)
   }
   for (const row of taskSections.flat())
     if (touchesItsColon(row) && !columns.has(row.task))
       columns.set(row.task, row.nameWidth + 1)
   return columns
+}
+
+/**
+ * Whether a section holds a line that stays as written with its colon not at
+ * `column`, so that the colons of the section are not all in `column` once the
+ * printer has moved the others.
+ */
+function holdsColonApartFrom(
+  section: readonly TaskRow[],
+  column: number,
+): boolean {
+  return section.some((row) => row.staysAsWritten && row.column !== column)
 }
 
 /** Whether the colon of a row stands right after its name. */
@@ -193,11 +226,12 @@ function findSections(
   statements: readonly GanttStatement[],
   kept: KeptLines,
 ): TaskRow[][] {
+  const stays = completeKeptLines(source, kept)
   const sections: TaskRow[][] = [[]]
   for (const statement of statements) {
     if (statement.type === "GanttSectionStatement") sections.push([])
     else if (statement.type === "GanttTaskStatement") {
-      const row = toRow(source, statement, kept)
+      const row = toRow(source, statement, kept, stays)
       if (row !== null) sections.at(-1)!.push(row)
     }
   }
@@ -287,6 +321,7 @@ function toRow(
   source: Source,
   task: GanttTaskStatement,
   kept: KeptLines,
+  stays: KeptLines,
 ): TaskRow | null {
   // A task whose name does not stand at the start of its printed line is left,
   // since its colon would not line up with the others. This also leaves the
@@ -342,5 +377,6 @@ function toRow(
     padded: padding !== "" && padding !== " ",
     holdsTab: source.text.slice(from, nameEnd).includes("\t"),
     widthFromColon: util.getStringWidth(source.text.slice(colon, dataEnd)),
+    staysAsWritten: stays.verbatim.has(lineStartOf(source, task.range[0])),
   }
 }

@@ -392,6 +392,23 @@ task-data/colon-column-sections-in-different-columns] [fixture:
 task-data/colon-column-before-first-section] [fixture:
 task-data/colon-column-sections-and-preamble]
 
+A section with a task that the printer prints as written, as it prints the line
+of a task that a comment line after U+2028 or U+2029 joins to the next line, is
+on its own where the colon of that task is not in the column of the group: the
+printer moves the colons of the other tasks and leaves that one, so the colons
+of the section are in more than one column, and a second formatting would find
+it on its own.
+
+[test: Gantt: a task that a comment after U+2028 joins to the next line, and a
+section with padding after it] [test: Gantt: a task that a comment only after
+U+2028 joins to the next line, and a section with padding after it] [test:
+Gantt: a section with padding, and a section whose task a comment after U+2028
+joins to the next line] [test: Gantt: a task that a comment after U+2028 joins
+to the next line, and two sections with padding after it] [test: Gantt: a task
+that a comment after U+2029 joins to the next line, and a section with padding
+after it] [test: Gantt: a task that a comment after U+2028 joins to the next
+line, with its colon at the column of the group]
+
 The colons stay where they are in these cases, since moving them could change
 the figure. A section in which no name has more than one space before its colon
 is left: no colon moves, and a name that touches its colon gets its one space as
