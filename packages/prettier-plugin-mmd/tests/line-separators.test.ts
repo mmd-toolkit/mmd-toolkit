@@ -2197,6 +2197,66 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  classDef c fill:#ABC\u2028%% c\n,stroke:#DEF;\n",
   ],
   [
+    "a color that characters follow after whitespace in a style on a line that a comment line after U+2028 joins with the next line",
+    "erDiagram\nA\nstyle A fill:#F00 x\u2028%% c\n y\n",
+    "erDiagram\n  A\n  style A fill:#F00 x\u2028%% c\n y\n",
+  ],
+  [
+    "the last color of the last line of a style that a comment line after U+2028 cuts, where a statement follows it",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC\nx\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#abc\n  x\n",
+  ],
+  [
+    "a run of spaces after a comma in a style on a line that a comment line after U+2028 joins stays as written",
+    "erDiagram\nA\nstyle A fill:#F00,   stroke:#ABC\u2028%% c\n x\n",
+    "erDiagram\n  A\n  style A fill:#f00,   stroke:#ABC\u2028%% c\n x\n",
+  ],
+  [
+    "a run of spaces after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,   stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "a tab after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\tstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "a run of spaces after a comma on the first line of a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c fill:#F00,   stroke:#ABC \n,x:1;\n",
+    "erDiagram\n  A\n  classDef c fill:#f00, stroke:#abc \n    ,x:1;\n",
+  ],
+  [
+    "a run of spaces before a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00   ,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00 ,stroke:#ABC;\n",
+  ],
+  [
+    "a run of spaces around the colon of a style in a class definition that whitespace and a line break join stays as written",
+    "erDiagram\nA\nclassDef c \nfill  :   #F00,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill  :   #f00,stroke:#ABC;\n",
+  ],
+  [
+    "a run of spaces inside the text of a style in a class definition that whitespace and a line break join stays as written",
+    "erDiagram\nA\nclassDef c \nfont-family:a   b,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    font-family:a   b,stroke:#ABC;\n",
+  ],
+  [
+    "the last color of a style that a comment line cuts from its keyword, where the text ends after it",
+    "erDiagram\nA\nstyle A \n%% c\nfill:#F00,stroke:#ABC\n",
+    "erDiagram\n  A\n  style A \n    %% c\n    fill:#f00,stroke:#abc\n",
+  ],
+  [
+    "a color that characters follow after whitespace in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#F00 x;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00 x;\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2029%%{x}%% a\n}\n",
+    "erDiagram\n  T {\n    int\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
     "whitespace between the statements of a line that a comment line after U+2028 joins with the next line",
     "erDiagram\nA   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",
     "erDiagram\n  A   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",

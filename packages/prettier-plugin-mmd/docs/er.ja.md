@@ -487,12 +487,19 @@ ER の実体のブロックなど）は別です。
 関係のカーディナリティと線は、普通の行と同じく記号で印字し、
 その間の空白は書かれたままにします。
 `A only one to zero or more B` は `A || -- o{ B` と印字します。
-style や classDef の色は、その行でコンマが色に続くとき（空白を挟んでもです）と、
+そのような行の style や classDef の色は、
+その行でコンマが色に続くとき（空白を挟んでもです）と、
 文の最後の行の最後の色について、[色](#色)と同じに印字します。
 そこでは色は小文字になります。
-色の後ろにその行でコメント領域が続くときは、色を書かれたまま残します。
+色に空白の後で文字が続くときは、コメント行の後でも、色を書かれたまま残します。
+色の後ろにその行でコメント領域が続くときも、色を書かれたまま残します。
 次の行がコンマで始まるときと、コメント行の後でテキストが終わるときも同じです。
-行の規則が無視する `;` が色に続くときと、空白の後に文字が続くときも同じです。
+スタイルのテキストが色の後ろに保つ U+2028 や U+2029 が、
+色をその文字と接する語にするからです。
+詳しくは [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)
+を参照してください。
+スタイルの中の空白は書かれたままです（`style A fill:#F00,   stroke:#ABC`、
+U+2028、`%% c` は、コンマの後の連なりを残します）。
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
 [test: a color before a comma in a style on a line that a comment line after U+2028 joins with the next line]
@@ -505,6 +512,9 @@ style や classDef の色は、その行でコンマが色に続くとき（空�
 [test: a color before the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
 [test: a color before the semicolon that the line rule ignores on the line after a comment line after U+2028 in a class definition]
 [test: whitespace between the statements of a line that a comment line after U+2028 joins with the next line]
+[test: a color that characters follow after whitespace in a style on a line that a comment line after U+2028 joins with the next line]
+[test: the last color of the last line of a style that a comment line after U+2028 cuts, where a statement follows it]
+[test: a run of spaces after a comma in a style on a line that a comment line after U+2028 joins stays as written]
 [test: ER the quotes of the names of a relationship on a line that a comment line after U+2028 joins]
 [test: ER the quotes of the label of a relationship on a line that a comment line after U+2028 joins]
 [test: ER the quotes of the alias of an entity on a line that a comment line after U+2028 joins]
@@ -640,9 +650,8 @@ flowchart、sequence、class、state も 1 行に 1 つの文を印字します�
 
 無視される `;` は、行規則がそれを無視する根拠となる行に残します。
 `"style:#x" end;` の `end` は、前の実体と同じ行に、大文字でも残します。
-`end;` を独立した行に置くと、`;` は行規則が無視するものではなくなるので、
-対象にするどの版も拒否します。
-詳しくは [`;` を含む行](./compatibility.ja.md#-を含む行) を参照してください。
+`end;` を独立した行に置くと、対象にするどの版も拒否します。
+`end` だけなら、どの版も受け入れます。
 `class` や `subgraph` と最初の名前の間に無視される `;` があるときは、
 隙間全体を書かれたまま残します。
 `class;-A a`、`subgraph;-x`、`subgraph;é` は、
@@ -2219,8 +2228,13 @@ erDiagram
 [class](./class.ja.md#ディレクティブ)、
 [sequence](./sequence.ja.md#ディレクティブ)、
 [state](./state.ja.md#ディレクティブ)も、隙間を同じように印字します。
-ほかの規則が配置を書かれたまま残す所（閉じていないディレクティブなど、
-次の段落で挙げます）は別です。
+ほかの規則が配置を書かれたまま残す所は別です。
+閉じていないディレクティブ（次の段落で挙げます）と、
+コメント領域が結ぶ行（[複数行の文](#複数行の文)を参照）と、
+U+2028 や U+2029 を含む隙間です。
+隙間では、その文字は残り、ディレクティブはその後の空白 1 つの後ろに置きます。
+属性の `int`、U+2029、`%%{x}%%`、`a` は、`int`、U+2029、空白、
+`%%{x}%%a` に印字します。
 
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
@@ -2229,6 +2243,7 @@ erDiagram
 [fixture: directives/touching-one-side]
 [fixture: directives/after-statement-at-end-of-line]
 [fixture: directives/in-blocks]
+[test: U+2029 and a directive in the gap between the type and the name of an ER attribute]
 
 閉じていないディレクティブはテキストの残りを取り込むので、書かれたまま残します。
 
@@ -2244,7 +2259,7 @@ erDiagram
 [wardley](./wardley.ja.md#global-directive) も、
 整形が分ける単位の隙間のディレクティブを同じように置きます。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
-たとえば、文の後の閉じていないディレクティブです。
+文の後の閉じていないディレクティブがそれです。
 
 [fixture: er/directives/whitespace-on-both-sides]
 
@@ -2789,13 +2804,30 @@ mermaid.js が複数行にわたって読む文は、改行が、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
-改行が残る文は、スタイルの空白も書かれたままにし、
-色は[色](#色)と同じに印字します。
+改行が残る文は、2 つのスタイルの間のコンマの横にある空白とタブの連なりを、
+最初の行でも、その後の行でも、空白 1 つに印字します。
+スタイルのコロンの周りと、スタイルのテキストの中の連なりは、
+書かれたまま残します。
+色は、コンマが色に続くとき（空白と改行を挟んでもです）と、
+`;` が続かない文の最後の色について、[色](#色)と同じに印字します。
+色に空白の後で文字が続くときは、[色](#色)と同じく書かれたまま残します。
+行の規則が無視する `;` の前の色も書かれたまま残しますが、
+[色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
+規則による修正を待っています。
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/style-comment-continuation]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
+[test: a color before the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: a run of spaces after a comma in a class definition that whitespace and a line break join is printed as one space]
+[test: a tab after a comma in a class definition that whitespace and a line break join is printed as one space]
+[test: a run of spaces after a comma on the first line of a class definition that whitespace and a line break join is printed as one space]
+[test: a run of spaces before a comma in a class definition that whitespace and a line break join is printed as one space]
+[test: a run of spaces around the colon of a style in a class definition that whitespace and a line break join stays as written]
+[test: a run of spaces inside the text of a style in a class definition that whitespace and a line break join stays as written]
+[test: the last color of a style that a comment line cuts from its keyword, where the text ends after it]
+[test: a color that characters follow after whitespace in a class definition that whitespace and a line break join]
 
 コメントで結合される領域をまたいで続く名前も、そのような文の一部です。
 `A`、U+2028、`%% c`、行 `Bar` は、1 つの名前 `A`、U+2028、`Bar` です。
