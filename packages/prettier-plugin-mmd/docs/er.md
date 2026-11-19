@@ -2358,8 +2358,15 @@ entities on a line, after the colons of a CSS class, between `title` and its
 text, and between the colon of a relationship and its label, the character ends
 the line, and the directive and the text after it stand on the next line. After
 `direction`, after the colon of `accTitle`, and after the keyword of a `style`
-or a `classDef` statement, the gap stays as written. The other places are not
-stated here.
+or a `classDef` statement, the gap stays as written: rule 2 gives that form,
+since [flowchart](./flowchart.md#directives),
+[class](./class.md#whitespace-between-tokens), and
+[state](./state.md#whitespace-between-tokens) keep a gap that holds U+2028 or
+U+2029 at these places as written, and
+[sequence](./sequence.md#whitespace-between-tokens),
+[journey](./journey.md#line-separators), and
+[timeline](./timeline.md#line-separators) after the colon of `accTitle`. The
+other places are not stated here.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
