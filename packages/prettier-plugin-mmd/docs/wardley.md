@@ -90,17 +90,14 @@ wardley-beta
 
 ### Statements one per line
 
-Put ordinary statements on separate lines and keep their required EOL. Rule 1
-names no mark for the end of a statement, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [er](./er.md#statements-one-per-line),
-[gantt](./gantt.md#statements-one-per-line), and
-[journey](./journey.md#statements-one-per-line) print each statement on a line
-of its own. Add no semicolon: Wardley does not use semicolons as statement
-separators. Apparent statements inside values remain value text; the source tree
-already distinguishes them.
+Put ordinary statements on separate lines and keep their required EOL.
+mermaid.js rejects a second statement on the line of a statement and a `;` after
+a statement, so each statement ends its line. Add no semicolon: Wardley does not
+use semicolons as statement separators. Apparent statements inside values remain
+value text; the source tree already distinguishes them.
 
-[fixture: wardley/statements-one-per-line/statement-eol]
+[fixture: wardley/statements-one-per-line/statement-eol] [corpus fixture:
+wardley/tail-component-semicolon] [corpus fixture: wardley/gram-pipeline-inline]
 
 Input (escaped):
 `"wardley-beta\nanchor Sep [0.8,0.2]\ncomponent Step [0.2,0.4]"`.
@@ -312,13 +309,17 @@ wardley-beta
 Keep every authored label offset, strategy and inertia decoration in grammar
 order. Separate decorations by one space and compact parenthesized interiors.
 Prettier prints no space inside parentheses
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Of the 19 wardley
-examples in the documentation of mermaid.js, a label offset follows a space in
-each of its 2 uses and a strategy in parentheses in each of its 10, and none
-touches the text before it, so [rule 3](./printed-form.md#3-a-spelling) gives
-one space before a decoration. Keep bare inertia and (inertia) distinct, along
-with build, buy, outsource and market. The inertia forms can share a Db, but
-converting them loses an authored node form; do not supply defaults.
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 1 names no
+mark for the gap before a decoration, and rule 2 has no gap of that kind to
+follow, since no other diagram type writes a label offset or a strategy word
+after a name, so [rule 3](./printed-form.md#3-a-spelling) decides. Of the 19
+wardley examples in the documentation of mermaid.js (the corpus fixtures
+`docs-syntax-wardley-*`), a label offset follows a space in each of its 2 uses
+and a strategy in parentheses in each of its 10, and none touches the text
+before it, so rule 3 gives one space before a decoration. Keep bare inertia and
+(inertia) distinct, along with build, buy, outsource and market. The inertia
+forms can share a Db, but converting them loses an authored node form; do not
+supply defaults.
 
 [fixture: wardley/decorations/decorations-all]
 
@@ -644,8 +645,7 @@ wardley-beta
 
 Use the shared accessibility line layout for accTitle: Value and accDescr:
 Value, retaining empty assignments. The colon of `accTitle` and `accDescr` is
-the colon of a key (the title and the description of a diagram in
-[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), so
+the colon of a key , so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it. The
 directives that end the value are printed with one space before each that has
@@ -655,7 +655,9 @@ whitespace before it, and the whitespace after the last one is left out (see
 [test: wardley/accessibility/unicode-empty-description] [fixture:
 accessibility/acc-directives-end-blanks-dropped] [fixture:
 wardley/accessibility/access-lines] [fixture:
-wardley/accessibility/access-empty]
+wardley/accessibility/access-empty] [fixture:
+wardley/accessibility/access-colon-touching] [fixture:
+wardley/accessibility/description-directive-line]
 
 A description block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
@@ -941,9 +943,12 @@ comment line, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#comments) and
 [timeline](./timeline.md#comments) stand a comment on a line of its own at the
-level of the statement after it, which in a pipeline is its child. Enclosing
-strings, flows and link labels retain percent text. Common comment-region joins
-keep their source columns, preventing text from changing owner.
+level of the statement after it, and at the end of the text at the level of the
+last statement. In a pipeline the statements are the children: a comment before
+a child stands at the level of the children, and so does one after the last
+child. Enclosing strings, flows and link labels retain percent text. Common
+comment-region joins keep their source columns, preventing text from changing
+owner.
 
 [test: wardley/comments/native-separators] [fixture:
 wardley/comments/comment-standalone]
@@ -953,7 +958,9 @@ wardley/comments/comment-standalone]
 [fixture: wardley/comments/comment-inline-separated] [fixture:
 wardley/comments/inline-gap-run-before-comment]
 
-[fixture: wardley/comments/comment-pipeline]
+[fixture: wardley/comments/comment-pipeline] [fixture:
+wardley/comments/comment-pipeline-after-last-child] [fixture:
+wardley/comments/comment-at-end-of-text]
 
 [fixture: wardley/comments/comment-triple-bare]
 

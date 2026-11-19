@@ -92,14 +92,14 @@ wardley-beta
 ### 文を 1 行ずつにする
 
 普通の文は 1 行ずつにして、必須の EOL を保ちます。
-規則 1 は、文の終わりの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[er](./er.ja.md#1-行に-1-文)、[gantt](./gantt.ja.md#1-行に-1-文)、
-[journey](./journey.ja.md#1-行に-1-文)も、各文を自分の行に印字します。
+mermaid.js は、文と同じ行にある 2 つ目の文と、文の後の `;` を拒否するので、
+各文はその行で終わります。
 Wardley のセミコロンは文の区切りではないので足しません。
 値の内部の見かけの文は、木が区別した値のテキストとして残します。
 
 [fixture: wardley/statements-one-per-line/statement-eol]
+[corpus fixture: wardley/tail-component-semicolon]
+[corpus fixture: wardley/gram-pipeline-inline]
 
 入力（エスケープ表記）:
 `"wardley-beta\nanchor Sep [0.8,0.2]\ncomponent Step [0.2,0.4]"`
@@ -319,11 +319,15 @@ wardley-beta
 装飾の外側は空白 1 つ、括弧の内側は詰めます。
 括弧の内側に空白を置かないのは、
 Prettier と同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-mermaid.js のドキュメントの wardley の例 19 件では、
-ラベルの位置のずれは 2 回すべて、
+規則 1 は、装飾の前の隙間の印を挙げていません。
+規則 2 が従う同じ種類の隙間もありません。
+ほかの図種は、ラベルの位置のずれや戦略の語を名前の後に書かないからです。
+そのため、[規則 3](./printed-form.ja.md#3-綴り)が決めます。
+mermaid.js のドキュメントの wardley の例 19 件（corpus の
+`docs-syntax-wardley-*`）では、ラベルの位置のずれは 2 回すべて、
 括弧の中の戦略は 10 回すべてが空白の後に書かれ、
 前のテキストに接するものはありません。
-そのため、[規則 3](./printed-form.ja.md#3-綴り)が装飾の前に空白 1 つを与えます。
+そのため、規則 3 が装飾の前に空白 1 つを与えます。
 括弧なしの `inertia` と `(inertia)`、`build`、`buy`、`outsource`、
 `market` を保ちます。
 inertia の両形は Db が同じでも、変更すると書かれたノード形を失います。
@@ -671,6 +675,8 @@ accTitle: Value と accDescr: Value は共有の行配置を使います。
 [fixture: accessibility/acc-directives-end-blanks-dropped]
 [fixture: wardley/accessibility/access-lines]
 [fixture: wardley/accessibility/access-empty]
+[fixture: wardley/accessibility/access-colon-touching]
+[fixture: wardley/accessibility/description-directive-line]
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
@@ -964,8 +970,10 @@ mermaid.js の読みを変える空白です）。
 規則 1 は、コメント行の字下げの印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [journey](./journey.ja.md#コメント) と [timeline](./timeline.ja.md#コメント)
-も、自分の行にあるコメントを後ろの文の段に置きます。
-pipeline の中では、後ろの文は子文です。
+も、自分の行にあるコメントを後ろの文の段に置き、
+テキストの終わりでは最後の文の段に置きます。
+pipeline の中の文は子文です。
+子文の前のコメントも、最後の子文の後のコメントも、子文の段に置きます。
 文字列、flow、link ラベルの `%` テキストはその値に残します。
 共通のコメント領域の結合は原文の列を保ち、所属先の変化を防ぎます。
 
@@ -978,6 +986,8 @@ pipeline の中では、後ろの文は子文です。
 [fixture: wardley/comments/inline-gap-run-before-comment]
 
 [fixture: wardley/comments/comment-pipeline]
+[fixture: wardley/comments/comment-pipeline-after-last-child]
+[fixture: wardley/comments/comment-at-end-of-text]
 
 [fixture: wardley/comments/comment-triple-bare]
 
