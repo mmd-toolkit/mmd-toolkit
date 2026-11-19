@@ -1745,8 +1745,9 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 間に空白かタブがあれば空白 1 つの後に置き、接していれば接したままにします。
 `title T  %%{x}%%  %% c` は `title T %%{x}%% %% c` と、
 `title T  %%{x}%%%% c` は `title T %%{x}%%%% c` と印字します。
-間に改行しない空白か U+3000 があるときは、
-行は書かれたまま残ります（`T %%{x}%%\u00a0%% c`）。
+間にある空白は、
+後の 2 番目の表のとおりに印字します（改行しない空白があるときは、
+行は書かれたまま残ります。`T %%{x}%%\u00a0%% c`）。
 ディレクティブのある title のほかの形と、
 `accTitle:` と `accDescr:`
 の行の形（[Accessibility lines](#accessibility-lines)を参照）は、
@@ -1812,12 +1813,7 @@ U+3000、U+2003、U+0085、U+2028、U+2029、`;`、
 テキストは残します（`T %%{x}%%\u00a0`。
 テキストの後のディレクティブの後にテキストが続く `T %%{x}%%  U  %%{y}%%  `
 も残ります）。
-最後のディレクティブの前では、タブは空白 1 つになり、後ろに何も続かなければ、
-空白でもタブでもない仕様の空白文字（U+000B、U+000C、改行しない空白、U+1680、
-U+2000〜U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、
-U+FEFF）も空白 1 つになり、U+0085 は残ります。
-後ろに空白が続くときは、U+0085 は残して空白を除き、
-U+2028 と U+2029 は空白と一緒に残ります。
+最後のディレクティブの前の空白は、後の 2 番目の表のとおりに印字します。
 ディレクティブで始まり、その後にテキストが続く title は、
 ディレクティブの後と末尾の空白文字を除きます。
 ただし、ディレクティブの後の U+2028、U+2029、U+0085 と、
@@ -1857,6 +1853,62 @@ U+2028 と U+2029 は空白と一緒に残ります。
 [test: treeview: the whitespace beside a directive in an accTitle line]
 [test: treeview: the whitespace beside a directive in an accDescr line]
 [test: treeview: each whitespace character before the last directive of a title and of an accessibility line]
+
+title、`accTitle:`、`accDescr:` の行で、最後のディレクティブの前の空白は、
+ディレクティブの後ろに何が続くかによって、同じように次の表のとおりに印字します。
+`{w}` は、テキスト `T` と最後のディレクティブの間に書かれた空白で、
+最後の行ではディレクティブとコメントの間に書かれた空白です。
+列はその空白の文字で、タブ、
+空白でもタブでも行区切りでもない空白文字（改行しない空白、U+000B、U+000C、
+U+1680、U+2000〜U+200A、U+202F、U+205F、U+3000、U+FEFF）、U+2028 と U+2029、
+仕様の空白ではない U+0085 です。
+ダッシュは、1 回目と 2 回目で印字が変わり、ここには形がないことを表します。
+
+| キーワードの後に書かれた形 | タブ                | 改行しない空白など | U+2028、U+2029     | U+0085           |
+| -------------------------- | ------------------- | ------------------ | ------------------ | ---------------- |
+| `T{w}%%{x}%%`              | `T %%{x}%%`         | `T %%{x}%%`        | `T %%{x}%%`        | 書かれたまま     |
+| `T{w}%%{x}%%  `            | `T %%{x}%%`         | –                  | 書かれたまま       | `T\u0085%%{x}%%` |
+| `T{w}%%{x}%%\t`            | `T %%{x}%%`         | –                  | 書かれたまま       | `T\u0085%%{x}%%` |
+| `T{w}%%{x}%%%% c`          | `T %%{x}%%%% c`     | `T %%{x}%%%% c`    | 書かれたまま       | 書かれたまま     |
+| `T{w}%%{x}%% %% c`         | `T %%{x}%% %% c`    | 書かれたまま       | 書かれたまま       | 書かれたまま     |
+| `T{w}%%{x}%%%%{y}%%`       | `T %%{x}%%%%{y}%%`  | `T %%{x}%%%%{y}%%` | `T %%{x}%%%%{y}%%` | 書かれたまま     |
+| `T{w}%%{x}%% %%{y}%%`      | `T %%{x}%% %%{y}%%` | 書かれたまま       | 書かれたまま       | 書かれたまま     |
+| `T{w}%%{x}%%;`             | 書かれたまま        | 書かれたまま       | 書かれたまま       | 書かれたまま     |
+| `T{w}%%{x}%% U`            | 書かれたまま        | 書かれたまま       | 書かれたまま       | 書かれたまま     |
+| `T %%{x}%%{w}%% c`         | `T %%{x}%% %% c`    | 書かれたまま       | 書かれたまま       | 書かれたまま     |
+
+最後のディレクティブの前、
+またはディレクティブとコメントの間にある U+2028 と U+2029 は、
+コメントが続くとき、title の後の行の字下げを止めます。
+title の次の行は字下げせず、
+`title T\u2028%%{x}%%%% c` とその下のノード `R` は書かれたまま印字し、
+`R` は 1 桁目になります。
+title がテキストの最後の文のときは、U+2028 か U+2029 の後ろの、
+ディレクティブとコメントを、
+次の行に置いて印字します（`title T\u2028%%{x}%%%% c` は `title T` と、
+次の行の `%%{x}%%%% c` と印字します）。
+
+最後のディレクティブが改行か `;` を含むとき（`%%{init: {`、改行、`}}%%`、
+または `%%{init: {a;b}}%%`）、表のとおりに印字するのは、
+ディレクティブの後ろに何も続かない形と、
+コメントか 2 つ目のディレクティブが接する形です。
+後ろに空白が続く形と、
+空白をはさんでコメントか 2 つ目のディレクティブが続く形は、
+ディレクティブの前に何があっても書かれたまま残ります。
+
+[test: treeview: the whitespace before the last directive, with nothing after it]
+[test: treeview: the whitespace before the last directive, with spaces after it]
+[test: treeview: the whitespace before the last directive, with a tab after it]
+[test: treeview: the whitespace before the last directive, with a comment that touches it]
+[test: treeview: the whitespace before the last directive, with a comment after a space]
+[test: treeview: the whitespace before the last directive, with a second directive that touches it]
+[test: treeview: the whitespace before the last directive, with a second directive after a space]
+[test: treeview: the whitespace before the last directive, with a semicolon after it]
+[test: treeview: the whitespace before the last directive, with text after a space]
+[test: treeview: the whitespace between the last directive and a comment]
+[test: treeview: the whitespace before the last directive where the line is the last statement of the text]
+[test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with nothing or a mark that touches it after it]
+[test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces after it or a mark after a space]
 
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。

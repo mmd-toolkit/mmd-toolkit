@@ -559,3 +559,246 @@ describe("the whitespace beside a directive in a title and in an accessibility l
       )
   })
 })
+
+const keywordsOfTheTitleLines = ["title", "accTitle:", "accDescr:"] as const
+
+/** A directive that holds a line break, and one that holds a semicolon. */
+const lineBreakOrSemicolonDirectives = [
+  "%%{init: {\n}}%%",
+  "%%{init: {a;b}}%%",
+] as const
+
+/**
+ * The whitespace characters that are no space, tab, or line separator, among
+ * them the no-break space (docs/treeview.md, Title).
+ */
+const whitespaceLikeANoBreakSpace = whitespaceBeforeTheLastDirective.filter(
+  (character) => !["\t", "\u2028", "\u2029"].includes(character),
+)
+
+/**
+ * What a title, an accTitle: line, and an accDescr: line print for the
+ * whitespace `{w}` before the last directive, or between it and a comment, by
+ * what follows the directive (docs/treeview.md, Title). Each form is what is
+ * printed for a tab, for the whitespace characters like a no-break space, for a
+ * U+2028 and a U+2029, and for a U+0085, as the text after the keyword, or
+ * "as written"; `null` is a form with no printed form, since the first pass and
+ * the second differ.
+ */
+interface WhitespaceBeforeTheLastDirectiveRow {
+  readonly name: string
+  readonly written: string
+  readonly tab: string | null
+  readonly like: string | null
+  readonly separator: string | null
+  readonly nel: string | null
+  /** The line after a U+2028 or a U+2029 before a comment stays at column one. */
+  readonly separatorStartsALine?: true
+  /** What a U+2028 and a U+2029 print where the line is the last statement. */
+  readonly separatorAtTheEnd?: string
+}
+
+const whitespaceBeforeTheLastDirectiveRows: readonly WhitespaceBeforeTheLastDirectiveRow[] =
+  [
+    {
+      name: "treeview: the whitespace before the last directive, with nothing after it",
+      written: "T{w}%%{x}%%",
+      tab: "T %%{x}%%",
+      like: "T %%{x}%%",
+      separator: "T %%{x}%%",
+      nel: "as written",
+    },
+    {
+      name: "treeview: the whitespace before the last directive, with spaces after it",
+      written: "T{w}%%{x}%%  ",
+      tab: "T %%{x}%%",
+      like: null,
+      separator: "as written",
+      nel: "T{w}%%{x}%%",
+    },
+    {
+      name: "treeview: the whitespace before the last directive, with a tab after it",
+      written: "T{w}%%{x}%%\t",
+      tab: "T %%{x}%%",
+      like: null,
+      separator: "as written",
+      nel: "T{w}%%{x}%%",
+    },
+    {
+      name: "treeview: the whitespace before the last directive, with a comment that touches it",
+      written: "T{w}%%{x}%%%% c",
+      tab: "T %%{x}%%%% c",
+      like: "T %%{x}%%%% c",
+      separator: "as written",
+      nel: "as written",
+      separatorStartsALine: true,
+      separatorAtTheEnd: "T\n%%{x}%%%% c",
+    },
+    {
+      name: "treeview: the whitespace before the last directive, with a comment after a space",
+      written: "T{w}%%{x}%% %% c",
+      tab: "T %%{x}%% %% c",
+      like: "as written",
+      separator: "as written",
+      nel: "as written",
+      separatorStartsALine: true,
+      separatorAtTheEnd: "T\n%%{x}%% %% c",
+    },
+    {
+      name: "treeview: the whitespace before the last directive, with a second directive that touches it",
+      written: "T{w}%%{x}%%%%{y}%%",
+      tab: "T %%{x}%%%%{y}%%",
+      like: "T %%{x}%%%%{y}%%",
+      separator: "T %%{x}%%%%{y}%%",
+      nel: "as written",
+    },
+    {
+      name: "treeview: the whitespace before the last directive, with a second directive after a space",
+      written: "T{w}%%{x}%% %%{y}%%",
+      tab: "T %%{x}%% %%{y}%%",
+      like: "as written",
+      separator: "as written",
+      nel: "as written",
+    },
+    {
+      name: "treeview: the whitespace before the last directive, with a semicolon after it",
+      written: "T{w}%%{x}%%;",
+      tab: "as written",
+      like: "as written",
+      separator: "as written",
+      nel: "as written",
+    },
+    {
+      name: "treeview: the whitespace before the last directive, with text after a space",
+      written: "T{w}%%{x}%% U",
+      tab: "as written",
+      like: "as written",
+      separator: "as written",
+      nel: "as written",
+    },
+    {
+      name: "treeview: the whitespace between the last directive and a comment",
+      written: "T %%{x}%%{w}%% c",
+      tab: "T %%{x}%% %% c",
+      like: "as written",
+      separator: "as written",
+      nel: "as written",
+      separatorStartsALine: true,
+      separatorAtTheEnd: "as written",
+    },
+  ]
+
+/** The characters of each column of the rows, in the order of their forms. */
+const whitespaceColumns = [
+  ["\t"],
+  whitespaceLikeANoBreakSpace,
+  ["\u2028", "\u2029"],
+  ["\u0085"],
+] as const
+
+/** The text after the keyword that a printed form gives for a character. */
+function printedBeforeTheLastDirective(
+  written: string,
+  printed: string,
+  character: string,
+): string {
+  return printed === "as written"
+    ? written.replace("{w}", character)
+    : printed.replace("{w}", character)
+}
+
+describe("the whitespace before the last directive of a title and of an accessibility line, by what follows the directive", () => {
+  it.each(whitespaceBeforeTheLastDirectiveRows.map((row) => [row.name, row]))(
+    "%s",
+    async (_name, row) => {
+      const forms = [row.tab, row.like, row.separator, row.nel]
+      for (const keyword of keywordsOfTheTitleLines) {
+        for (const [index, characters] of whitespaceColumns.entries()) {
+          const printed = forms[index]
+          if (printed === null || printed === undefined) continue
+          for (const character of characters) {
+            const next =
+              index === 2 && row.separatorStartsALine === true ? "R" : "  R"
+            await expectDirectiveRowKept(
+              `treeView-beta\n${keyword} ${row.written.replace("{w}", character)}\nR\n`,
+              `treeView-beta\n  ${keyword} ${printedBeforeTheLastDirective(row.written.replace("{w}", character), printed, character)}\n${next}\n`,
+            )
+          }
+        }
+      }
+    },
+  )
+
+  it("treeview: the whitespace around a last directive that holds a line break or a semicolon, with nothing or a mark that touches it after it", async () => {
+    for (const directive of lineBreakOrSemicolonDirectives) {
+      for (const row of [0, 3, 5].map(
+        (index) => whitespaceBeforeTheLastDirectiveRows[index],
+      )) {
+        if (row === undefined) continue
+        const forms = [row.tab, row.like, row.separator, row.nel]
+        for (const keyword of keywordsOfTheTitleLines) {
+          for (const [index, characters] of whitespaceColumns.entries()) {
+            const printed = forms[index]
+            if (printed === null || printed === undefined) continue
+            for (const character of characters.slice(0, 2)) {
+              const line = row.written
+                .replace("{w}", character)
+                .replace("%%{x}%%", directive)
+              const printedLine = printedBeforeTheLastDirective(
+                line,
+                printed.replace("%%{x}%%", directive),
+                character,
+              )
+              const next =
+                index === 2 && row.separatorStartsALine === true ? "R" : "  R"
+              await expectDirectiveRowKept(
+                `treeView-beta\n${keyword} ${line}\nR\n`,
+                `treeView-beta\n  ${keyword} ${printedLine}\n${next}\n`,
+              )
+            }
+          }
+        }
+      }
+    }
+  })
+
+  it("treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces after it or a mark after a space", async () => {
+    for (const directive of lineBreakOrSemicolonDirectives) {
+      for (const keyword of keywordsOfTheTitleLines) {
+        for (const before of ["", "  ", "\t", "\u00a0", "\u2028", "\u0085"]) {
+          for (const after of ["  ", " %% c", " %%{y}%%"]) {
+            const line = `T${before}${directive}${after}`
+            const next = before === "\u2028" && after === " %% c" ? "R" : "  R"
+            await expectDirectiveRowKept(
+              `treeView-beta\n${keyword} ${line}\nR\n`,
+              `treeView-beta\n  ${keyword} ${line}\n${next}\n`,
+            )
+          }
+        }
+      }
+    }
+  })
+
+  it("treeview: the whitespace before the last directive where the line is the last statement of the text", async () => {
+    for (const row of whitespaceBeforeTheLastDirectiveRows) {
+      const forms = [
+        row.tab,
+        row.like,
+        row.separatorAtTheEnd ?? row.separator,
+        row.nel,
+      ]
+      for (const keyword of keywordsOfTheTitleLines) {
+        for (const [index, characters] of whitespaceColumns.entries()) {
+          const printed = forms[index]
+          if (printed === null || printed === undefined) continue
+          for (const character of characters) {
+            await expectDirectiveRowKept(
+              `treeView-beta\n${keyword} ${row.written.replace("{w}", character)}\n`,
+              `treeView-beta\n  ${keyword} ${printedBeforeTheLastDirective(row.written.replace("{w}", character), printed, character)}\n`,
+            )
+          }
+        }
+      }
+    }
+  })
+})

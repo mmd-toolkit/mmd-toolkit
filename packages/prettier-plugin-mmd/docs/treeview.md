@@ -1751,9 +1751,10 @@ after the last one are left out (see
 after the last directive stands after one space where spaces or tabs separate
 them (`title T  %%{x}%%  %% c` is printed `title T %%{x}%% %% c`), and stays
 touching where it touches (`title T  %%{x}%%%% c` is printed
-`title T %%{x}%%%% c`); a no-break space or a U+3000 between them keeps the line
-as written (`T %%{x}%%\u00a0%% c`). The other forms of a title with a directive,
-and the forms of an `accTitle:` and an `accDescr:` line (see
+`title T %%{x}%%%% c`); the whitespace between them is printed as the second
+table below gives (a no-break space keeps the line as written,
+`T %%{x}%%\u00a0%% c`). The other forms of a title with a directive, and the
+forms of an `accTitle:` and an `accDescr:` line (see
 [Accessibility lines](#accessibility-lines)), are printed as the table below
 gives: `%%{x}%%` and `%%{y}%%` are directives, `\u00a0` is a no-break space, and
 the other `\u` forms are the characters of that number.
@@ -1814,21 +1815,16 @@ the other `\u` forms are the characters of that number.
 After the text, a tab after the last directive is left out like spaces, and a
 no-break space, U+3000, U+2003, U+0085, U+2028, U+2029, a `;`, and text after it
 stay (`T %%{x}%%\u00a0`, and text after a directive that follows the text,
-`T %%{x}%%  U  %%{y}%%  `, stay too). Before the last directive, a tab becomes
-one space, and so does each whitespace character of the specification that is no
-space or tab (U+000B, U+000C, a no-break space, U+1680, U+2000 to U+200A,
-U+2028, U+2029, U+202F, U+205F, U+3000, and U+FEFF) where nothing follows the
-directive, while a U+0085 stays; where spaces follow it, a U+0085 stays and the
-spaces are left out, and a U+2028 and a U+2029 stay with the spaces. A title
-that starts with one directive and holds text after it loses the whitespace
-after the directive and at its end, but for a U+2028, a U+2029, and a U+0085
-after the directive, which stay, and a U+0085 at the end; an `accTitle:` or
-`accDescr:` line stays as written there. A title that starts with two directives
-and spaces between them stays as written, and one whose directives touch loses
-the whitespace after the second and at its end where spaces follow it
-(`title %%{x}%%%%{y}%%  T  ` is printed `title %%{x}%%%%{y}%%T`); the lines stay
-as written in all these forms. A title of directives and spaces or a tab only
-stays as written.
+`T %%{x}%%  U  %%{y}%%  `, stay too). The whitespace before the last directive
+is printed as the second table below gives. A title that starts with one
+directive and holds text after it loses the whitespace after the directive and
+at its end, but for a U+2028, a U+2029, and a U+0085 after the directive, which
+stay, and a U+0085 at the end; an `accTitle:` or `accDescr:` line stays as
+written there. A title that starts with two directives and spaces between them
+stays as written, and one whose directives touch loses the whitespace after the
+second and at its end where spaces follow it (`title %%{x}%%%%{y}%%  T  ` is
+printed `title %%{x}%%%%{y}%%T`); the lines stay as written in all these forms.
+A title of directives and spaces or a tab only stays as written.
 
 [fixture: title/title-directives-end-blanks-dropped] [test:
 treeview/title/directive-end-two-spaces] [test:
@@ -1854,6 +1850,62 @@ whitespace beside a directive in a title] [test: treeview: the whitespace beside
 a directive in an accTitle line] [test: treeview: the whitespace beside a
 directive in an accDescr line] [test: treeview: each whitespace character before
 the last directive of a title and of an accessibility line]
+
+The whitespace before the last directive of a title, an `accTitle:` line, and an
+`accDescr:` line is printed alike, as the table below gives, by what follows the
+directive. `{w}` is the whitespace written between the text `T` and the last
+directive, and in the last row between the directive and a comment. The columns
+are the characters it is: a tab; a no-break space or another whitespace
+character that is no space, tab, or line separator (U+000B, U+000C, U+1680,
+U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF); a U+2028 or a U+2029; and
+a U+0085, which is no whitespace of the specification. A dash marks a form that
+the first pass prints one way and the second pass another, which has no form
+here.
+
+| Written after the keyword | A tab               | A no-break space and the like | U+2028, U+2029     | U+0085           |
+| ------------------------- | ------------------- | ----------------------------- | ------------------ | ---------------- |
+| `T{w}%%{x}%%`             | `T %%{x}%%`         | `T %%{x}%%`                   | `T %%{x}%%`        | as written       |
+| `T{w}%%{x}%%  `           | `T %%{x}%%`         | –                             | as written         | `T\u0085%%{x}%%` |
+| `T{w}%%{x}%%\t`           | `T %%{x}%%`         | –                             | as written         | `T\u0085%%{x}%%` |
+| `T{w}%%{x}%%%% c`         | `T %%{x}%%%% c`     | `T %%{x}%%%% c`               | as written         | as written       |
+| `T{w}%%{x}%% %% c`        | `T %%{x}%% %% c`    | as written                    | as written         | as written       |
+| `T{w}%%{x}%%%%{y}%%`      | `T %%{x}%%%%{y}%%`  | `T %%{x}%%%%{y}%%`            | `T %%{x}%%%%{y}%%` | as written       |
+| `T{w}%%{x}%% %%{y}%%`     | `T %%{x}%% %%{y}%%` | as written                    | as written         | as written       |
+| `T{w}%%{x}%%;`            | as written          | as written                    | as written         | as written       |
+| `T{w}%%{x}%% U`           | as written          | as written                    | as written         | as written       |
+| `T %%{x}%%{w}%% c`        | `T %%{x}%% %% c`    | as written                    | as written         | as written       |
+
+A U+2028 or a U+2029 before the last directive, or between it and a comment,
+ends the line for what follows the title where a comment follows it: the line
+after the title is not indented (`title T\u2028%%{x}%%%% c` and the node `R`
+under it are printed as they are, `R` at column one), and where the title is the
+last statement of the text, the directive and the comment that follow a U+2028
+or a U+2029 are printed on a line of their own (`title T\u2028%%{x}%%%% c` is
+printed `title T` and `%%{x}%%%% c` on the next line).
+
+Where the last directive holds a line break or a `;` (`%%{init: {`, a line
+break, and `}}%%`, or `%%{init: {a;b}}%%`), the table gives the forms with
+nothing after the directive and with a comment or a second directive that
+touches it, while the forms with spaces after it, and with a comment or a second
+directive after a space, stay as written, whatever stands before the directive.
+
+[test: treeview: the whitespace before the last directive, with nothing after
+it] [test: treeview: the whitespace before the last directive, with spaces after
+it] [test: treeview: the whitespace before the last directive, with a tab after
+it] [test: treeview: the whitespace before the last directive, with a comment
+that touches it] [test: treeview: the whitespace before the last directive, with
+a comment after a space] [test: treeview: the whitespace before the last
+directive, with a second directive that touches it] [test: treeview: the
+whitespace before the last directive, with a second directive after a space]
+[test: treeview: the whitespace before the last directive, with a semicolon
+after it] [test: treeview: the whitespace before the last directive, with text
+after a space] [test: treeview: the whitespace between the last directive and a
+comment] [test: treeview: the whitespace before the last directive where the
+line is the last statement of the text] [test: treeview: the whitespace around a
+last directive that holds a line break or a semicolon, with nothing or a mark
+that touches it after it] [test: treeview: the whitespace around a last
+directive that holds a line break or a semicolon, with spaces after it or a mark
+after a space]
 
 This chooses consistent Db-equivalent outer spacing without taking a next-line
 value. Follow AST boundaries for `titlex` and `title"node"`; title still stays
