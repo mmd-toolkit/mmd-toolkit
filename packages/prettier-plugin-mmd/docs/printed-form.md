@@ -299,12 +299,15 @@ are:
   and tabs between the words of a style, which become one space, and the
   whitespace at the end of a style, defined in
   [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same);
-- the whitespace at the start and at the end of a title, of the date format and
-  the axis format of a Gantt chart, and of a description of a C4 diagram, and at
-  the end of a period and of an event of a timeline, of the second description
-  of an alias of a state diagram, of the name of a task of a Gantt chart, and of
-  the description of a task of a user journey, which is the whitespace before
-  its first colon, defined in
+- the spaces and tabs at the start and at the end of a title, of the date format
+  and the axis format of a Gantt chart, and of a description of a C4 diagram,
+  and at the end of a period and of an event of a timeline, of the second
+  description of an alias of a state diagram, of the name of a task of a Gantt
+  chart, and of the description of a task of a user journey, which is the spaces
+  and tabs before its first colon, and the whitespace of the specification (a
+  no-break space and U+3000 among it) at the end of the title of the Langium
+  types and of a quadrant chart, and at its start but for a U+2028 and a U+2029
+  in a quadrant chart, defined in
   [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
 - the runs of spaces and tabs inside the texts that mermaid.js draws without
   them: titles, accessibility descriptions, and the labels of the diagram types
