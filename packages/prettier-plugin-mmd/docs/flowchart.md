@@ -2320,8 +2320,8 @@ move lines inward or outward. A `}` alone on its line aligns with the statement;
 a `}` after body text stays there and moves with that line. A `}` after the text
 of a literal or folded scalar (`|`, `|-`, `|+`, `>`, `>-`, and `>+`) stays on
 its line: on a line of its own it changes the end of the text of the scalar in
-the Db of 12.3.0, and formatting does not change the Db. The drawing is the
-same, but no kind of exception that
+the Db, and formatting does not change the Db. The drawing is the same, but no
+kind of exception that
 [How the printed form is decided](./printed-form.md#the-check-and-formatting-that-changes-the-db)
 defines covers that gap. The formatter does not look at the kind of scalar, so a
 `}` after the text of a plain scalar stays too.
