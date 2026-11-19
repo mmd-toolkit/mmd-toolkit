@@ -649,7 +649,7 @@ architecture-beta
 `null` と空白だけの値は `title` とし、同じ意味の外側の空白を詰めます。
 注釈類を挟んでも次の物理行を値にしません。
 mermaid.js は次の行を独立した文として読むので、つなぐと、その文が title に入り、
-その文が宣言するノードがなくなります。
+その文が宣言するもの（ノード、グループ、ジャンクション、エッジ）がなくなります。
 architecture の要約が title を公開しなくても、文と内容を保ちます。
 注釈類のある値と保護された隠れた形の境界は原文の隙間を保ちます。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
@@ -697,7 +697,8 @@ architecture-beta
 これにより外側の空白を統一します。
 次行の文を取り込まず、コロン後の波括弧は行値のまま保ちます。
 mermaid.js は次の行を独立した文として読むので、つなぐと、
-その文が title や description に入り、その文が宣言するノードがなくなります。
+その文が title や description に入り、その文が宣言するもの（ノード、グループ、
+ジャンクション、エッジ）がなくなります。
 保護された注釈類と隠れた形の隙間を優先します。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
@@ -763,6 +764,7 @@ Db で LF 後の字下げが取り除かれるためです。
 独立する閉じは文の位置に揃え、最初の閉じ波括弧が値を終える規則も保ちます。
 
 [fixture: architecture/description-blocks/asymmetric]
+[fixture: architecture/description-blocks/directive-line-between-keyword-and-brace]
 [fixture: description-blocks/block-trailing-whitespace]
 [fixture: description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 

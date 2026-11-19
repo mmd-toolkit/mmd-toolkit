@@ -622,12 +622,13 @@ Use shared common-line layout: `title value` trims only common-whitespace edges,
 and null or whitespace-only values print `title`. This compacts equivalent outer
 padding. Never read the next physical line as a value, even across trivia.
 mermaid.js reads the next line as a statement of its own, so joining it would
-put that statement into the title, and the node that it declares would
-disappear. Keep occurrences and content even though the architecture summary
-does not publish title. Trivia-bearing values and protected hidden boundaries
-keep their source gaps. The directives that end a title are printed with one
-space before each that has whitespace before it, and the whitespace after the
-last one is left out, whatever the whitespace at the end of the line (see
+put that statement into the title, and what it declares (a node, a group, a
+junction, or an edge) would disappear. Keep occurrences and content even though
+the architecture summary does not publish title. Trivia-bearing values and
+protected hidden boundaries keep their source gaps. The directives that end a
+title are printed with one space before each that has whitespace before it, and
+the whitespace after the last one is left out, whatever the whitespace at the
+end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [corpus fixture:
@@ -669,11 +670,11 @@ Reuse shared `accTitle: value` and `accDescr: value`: the colon touches its
 keyword, with one space before a trimmed nonempty value; empty values end at the
 colon. This keeps consistent outer spacing. Never join a next-line statement.
 mermaid.js reads the next line as a statement of its own, so joining it would
-put that statement into the title or the description, and the node that it
-declares would disappear. Braces after a colon remain line text, and protected
-trivia/hidden gaps take precedence. The directives that end the value are
-printed with one space before each that has whitespace before it, and the
-whitespace after the last one is left out (see
+put that statement into the title or the description, and what it declares (a
+node, a group, a junction, or an edge) would disappear. Braces after a colon
+remain line text, and protected trivia/hidden gaps take precedence. The
+directives that end the value are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
@@ -735,7 +736,8 @@ shared removed comment regions keep their complete source. A separate closer
 aligns with the statement; the first closing brace still ends the value.
 
 [fixture: architecture/description-blocks/asymmetric] [fixture:
-description-blocks/block-trailing-whitespace] [fixture:
+architecture/description-blocks/directive-line-between-keyword-and-brace]
+[fixture: description-blocks/block-trailing-whitespace] [fixture:
 description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: architecture/description-blocks/block-empty-fixed]
