@@ -1497,14 +1497,18 @@ last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final
 comment after a statement in a kanban board] [test: a last line that holds a
 U+2028 or a U+2029, alone or beside whitespace, a final comment after a card in
 a kanban board] [test: a last line that holds a U+2028 or a U+2029, alone or
-beside whitespace, a final comment on the header line of a kanban board] [test:
-a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final
-line of %% alone in a kanban board] [test: a last line that holds a U+2028 or a
-U+2029, alone or beside whitespace, a final comment on a line of its own in a
-kanban board] [test: a last line of one space after an empty line and a line
-break after a final comment on a line of its own in a kanban board] [test: an
-open directive on the header line of a kanban board] [test: an open directive on
-the header line of a kanban board and empty lines] [fixture:
+beside whitespace, a final comment after a card with a data block in a kanban
+board] [test: a last line that holds a U+2028 or a U+2029, alone or beside
+whitespace, a final comment after an icon line in a kanban board] [test: a last
+line that holds a U+2028 or a U+2029, alone or beside whitespace, a final
+comment on the header line of a kanban board] [test: a last line that holds a
+U+2028 or a U+2029, alone or beside whitespace, a final line of %% alone in a
+kanban board] [test: a last line that holds a U+2028 or a U+2029, alone or
+beside whitespace, a final comment on a line of its own in a kanban board]
+[test: a last line of one space after an empty line and a line break after a
+final comment on a line of its own in a kanban board] [test: an open directive
+on the header line of a kanban board] [test: an open directive on the header
+line of a kanban board and empty lines] [fixture:
 blank-lines/comment-blank-trailing] [test: kanban: selected-terminal-separator]
 
 Input

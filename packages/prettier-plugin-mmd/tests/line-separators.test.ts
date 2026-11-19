@@ -8524,6 +8524,18 @@ const lastLineWithASeparatorPlaces = [
     kept: true,
   },
   {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after a card with a data block in a kanban board",
+    base: "kanban\n  S\n    A[y]@{ assigned: 'x' } %% c\n",
+    printed: "kanban\n  S\n    A[y]@{ assigned: 'x' } %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an icon line in a kanban board",
+    base: "kanban\n  S\n    A\n    ::icon(fa) %% c\n",
+    printed: "kanban\n  S\n    A\n    ::icon(fa) %% c\n",
+    kept: true,
+  },
+  {
     name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment on the header line of a kanban board",
     base: "kanban %% c\n",
     printed: "kanban %% c\n",
@@ -8546,6 +8558,27 @@ const lastLineWithASeparatorPlaces = [
     base: 'C4Context\nPerson(a, "A")\nPerson(b, "B")\nRel(a, b, "x") %% c\n',
     printed:
       'C4Context\n  Person(a, "A")\n  Person(b, "B")\n  Rel(a, b, "x") %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an UpdateElementStyle call in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\nUpdateElementStyle(a, $fontColor="red") %% c\n',
+    printed:
+      'C4Context\n  Person(a, "A")\n  UpdateElementStyle(a, $fontColor = "red") %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an UpdateRelStyle call in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\nPerson(b, "B")\nRel(a, b, "x")\nUpdateRelStyle(a, b, $textColor="red") %% c\n',
+    printed:
+      'C4Context\n  Person(a, "A")\n  Person(b, "B")\n  Rel(a, b, "x")\n  UpdateRelStyle(a, b, $textColor = "red") %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an UpdateLayoutConfig call in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\nUpdateLayoutConfig($c4ShapeInRow="3") %% c\n',
+    printed:
+      'C4Context\n  Person(a, "A")\n  UpdateLayoutConfig($c4ShapeInRow = "3") %% c\n',
     kept: true,
   },
   {
