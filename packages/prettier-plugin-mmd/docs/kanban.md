@@ -557,7 +557,10 @@ Apply the movement and safety conditions of
 shallowest text one level inside its node. A section's body is two levels below
 the header, an item's three; nested YAML keeps its relative indentation. A
 separate `}` aligns with the node, even if it had no margin; a closer after text
-stays on that line.
+stays on that line. A `}` after text is a character of its line, and moving it
+to a line of its own would add a last line of spaces to the block text, which a
+literal or folded scalar keeps, as under
+[Data blocks](./flowchart.md#data-blocks).
 
 [fixture: data-blocks/section-and-item-margins] [fixture:
 data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text]
@@ -649,10 +652,15 @@ nothing in the Db between nodes, before decorations, and at the end of the board
 (diagrams/kanban.md, Blank lines). Runs of empty lines between statements become
 one empty line, whitespace-only lines are empty lines, and empty lines at the
 start and at the end of the board are dropped, as in the other diagram types:
-`kanban`, two empty lines, and ` S` print `kanban` and `  S`. Whitespace after
-`kanban` on a header line with nothing else is dropped, whatever the character
-(a space, a tab, a U+00A0, a U+3000, a U+FEFF, a form feed, a vertical tab, a
-U+2028, a U+2029).
+`kanban`, two empty lines, and ` S` print `kanban` and `  S`. Rule 1 names no
+mark for an empty line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [gantt](./gantt.md#blank-lines),
+[journey](./journey.md#blank-lines), and [sankey](./sankey.md#blank-lines) print
+a run of empty lines as one and drop the empty lines at the start and at the end
+of the board. Whitespace after `kanban` on a header line with nothing else is
+dropped, whatever the character (a space, a tab, a U+00A0, a U+3000, a U+FEFF, a
+form feed, a vertical tab, a U+2028, a U+2029).
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/blank-body-end] [fixture:
 blank-lines/gram-grid-lf-header-line] [fixture:
@@ -1300,12 +1308,17 @@ the last line: `kanban`, a line break, and ` S` without a final line break print
 `  S` and a line break. An empty board is `kanban` and a line break. The
 exception is a gap that stays whole under [Blank lines](#blank-lines) at the end
 of the board: the output then ends with that gap, and the printer adds no line
-break after it. The spaces at the end of a last bare id are part of the id and
-stay (`S   ` prints with its spaces, then the line break). When a directive that
-is not closed reaches the end of the text, it takes the rest, and the printer
-adds nothing after it. In Markdown, the indentation of the code fence or of its
-list item is the indentation of the host, and is not part of the indentation of
-the board.
+break after it. Rule 1 names no mark for the end of a text after a diagram
+comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [c4](./c4.md#final-newline) and [ishikawa](./ishikawa.md#final-newline)
+keep the whole terminal gap after a final diagram comment as written and add no
+line break after it. The spaces at the end of a last bare id are part of the id
+and stay (`S   ` prints with its spaces, then the line break). When a directive
+that is not closed reaches the end of the text, it takes the rest, and the
+printer adds nothing after it. In Markdown, the indentation of the code fence or
+of its list item is the indentation of the host, and is not part of the
+indentation of the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
