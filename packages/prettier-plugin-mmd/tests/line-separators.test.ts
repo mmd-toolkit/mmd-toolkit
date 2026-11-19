@@ -2152,6 +2152,26 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  style A\u2028%% c\nBar fill:#f00\n",
   ],
   [
+    "a color before a comma in a style on a line that a comment line after U+2028 joins with the next line",
+    "erDiagram\nA\nstyle A fill:#F00,stroke:#000\u2028%% c\n x\n",
+    "erDiagram\n  A\n  style A fill:#f00,stroke:#000\u2028%% c\n x\n",
+  ],
+  [
+    "a color before a comma in a class definition on a line that a comment line after U+2029 joins with the next line",
+    "erDiagram\nA\nclassDef c fill:#F00,color:#ABC\u2029%% c\n x\n",
+    "erDiagram\n  A\n  classDef c fill:#f00,color:#ABC\u2029%% c\n x\n",
+  ],
+  [
+    "the last color of a style that the line after a comment line after U+2028 goes on with",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n x\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n x\n",
+  ],
+  [
+    "whitespace between the statements of a line that a comment line after U+2028 joins with the next line",
+    "erDiagram\nA   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",
+    "erDiagram\n  A   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",
+  ],
+  [
     "an empty line after a comment line after U+2028 inside the name of an ER entity",
     "erDiagram\nA\u2028%% c\n\nBar\n",
     "erDiagram\n  A\u2028%% c\n\n  Bar\n",

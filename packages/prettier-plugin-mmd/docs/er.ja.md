@@ -474,14 +474,20 @@ Db が保つからです。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 U+2028 か U+2029 の後のコメント領域があると、
 mermaid.js は前後の行を 1 行として読みます。
-整形は、その行を最初の行から最後まで書かれたまま印字します。
-ただし、節が挙げる 2 つは別です。
-mindmap のノードのコメント行と、ER の実体のブロックです。
+整形は、その行の空白と改行を最初の行から最後まで書かれたまま印字します。
+ただし、節が挙げるもの（mindmap のノードのコメント行と、
+ER の実体のブロックなど）は別です。
 詳しくは
 [U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照してください。
+そのような行にある style や classDef の色は、[色](#色)と同じに印字します。
+コンマの前の色は小文字にし、空白の後に文字が続く色は書かれたままにします。
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
+[test: a color before a comma in a style on a line that a comment line after U+2028 joins with the next line]
+[test: a color before a comma in a class definition on a line that a comment line after U+2029 joins with the next line]
+[test: the last color of a style that the line after a comment line after U+2028 goes on with]
+[test: whitespace between the statements of a line that a comment line after U+2028 joins with the next line]
 
 属性の部分の間にあるディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)と同じに置きます。
@@ -2190,6 +2196,8 @@ erDiagram
 [class](./class.ja.md#ディレクティブ)、
 [sequence](./sequence.ja.md#ディレクティブ)、
 [state](./state.ja.md#ディレクティブ)も、隙間を同じように印字します。
+ほかの規則が配置を書かれたまま残す所（閉じていないディレクティブなど、
+次の段落で挙げます）は別です。
 
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]

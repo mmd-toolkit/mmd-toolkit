@@ -498,12 +498,22 @@ Semicolons alone do not prevent alignment of a continuation.
 
 Comment regions that join physical lines retain their original layout. A comment
 region after U+2028 or U+2029 makes mermaid.js read the lines around it as one,
-and the formatter prints such a line as written from its first line to its end,
-apart from the two cases that the section names: the comment line of a mindmap
-node, and the block of an ER entity (see
+and the formatter keeps the whitespace and the line breaks of such a line as
+written from its first line to its end, apart from the cases that the section
+names (the comment line of a mindmap node, and the block of an ER entity, among
+them; see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+The colors of a style or a class definition on such a line are printed as under
+[Colors](#colors): a color before a comma is in lower case, and one that
+characters follow after whitespace stays as written.
 
-[test: er/attribute-spacing/comment-region-continuation-kept]
+[test: er/attribute-spacing/comment-region-continuation-kept] [test: a color
+before a comma in a style on a line that a comment line after U+2028 joins with
+the next line] [test: a color before a comma in a class definition on a line
+that a comment line after U+2029 joins with the next line] [test: the last color
+of a style that the line after a comment line after U+2028 goes on with] [test:
+whitespace between the statements of a line that a comment line after U+2028
+joins with the next line]
 
 A directive between the parts of an attribute is placed as under
 [Directives](./flowchart.md#directives): mermaid.js removes a directive before
@@ -2202,7 +2212,8 @@ gap, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [class](./class.md#directives),
 [sequence](./sequence.md#directives), and [state](./state.md#directives) print
-the gap in the same way.
+the gap in the same way, where no other rule keeps the layout as written (a
+directive that is not closed, below, and the like).
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
