@@ -445,10 +445,13 @@ Use the shared common-line layout: trim ordinary outer common whitespace, insert
 one space before a nonempty value and retain its internal text. Empty or
 whitespace-only values print as bare title and never take text from the next
 line. This chooses a compact Db-equal edge without interpreting quotes as string
-delimiters. Preserve empty resets and trivia contact. The directives that end a
-title are printed with one space before each that has whitespace before it, and
-the whitespace after the last one is left out, whatever the whitespace at the
-end of the line (see
+delimiters. Preserve empty resets and trivia contact. Where only directives
+follow the text of a title, they are printed with one space before each that has
+spaces or tabs before it, and the spaces and tabs after the last one are left
+out, unless a directive of the line holds a line break, a `;`, a U+2028, or a
+U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped]
@@ -499,9 +502,13 @@ Use shared accTitle: value and accDescr: value layouts, attaching the colon and
 adding one space before a nonempty value. Empty assignments end at the colon and
 never join the next line. Trim ordinary outer whitespace, retain internal text
 and trivia contact, and keep braces after a colon as line-value text. These
-compact common forms do not reinterpret authored values. The directives that end
-the value are printed with one space before each that has whitespace before it,
-and the whitespace after the last one is left out (see
+compact common forms do not reinterpret authored values. Where only directives
+follow the text of the value, they are printed with one space before each that
+has spaces or tabs before it, and the spaces and tabs after the last one are
+left out, unless a directive of the line holds a line break, a `;`, a U+2028, or
+a U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:

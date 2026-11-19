@@ -1017,7 +1017,10 @@ lines of multi-line values. This is the distinction of
 [mindmap](./mindmap.md#node-text), with the data block added, and with the id of
 a column kept. On a kept line the same holds. The directives that end the text
 of a card are printed with one space before each that has whitespace before it,
-and the whitespace after the last one is left out (see
+and the whitespace after the last one is left out, unless a directive of the
+line holds a line break or a `;` (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same));
 those that end the id of a column stay as written, since the figure depends on
 its whitespace.
