@@ -1190,10 +1190,11 @@ title keyword] [test: U+2028 at the end of a title] [test: U+2028 in the name of
 a point] [test: U+2028 in an accessibility text] [test: U+2028 in a string]
 [test: U+2028 around the arrow of an axis] [test: U+2028 in the name of a class]
 [test: U+2028 at the start of a title] [test: U+2029 at the start of a title]
-[test: U+2028 before the directive of a title of directives only] [test: a
-whitespace character that is no space or tab at the start of a title, in each
-group] [test: a whitespace character that is no space or tab at the start and at
-the end of an accessibility line, in each group]
+[test: U+2028 before the directive of a title of directives only] [test: U+2029
+before the directive of a title of directives only] [test: a whitespace
+character that is no space or tab at the start of a title, in each group] [test:
+a whitespace character that is no space or tab at the start and at the end of an
+accessibility line, in each group]
 
 ### Whitespace characters
 

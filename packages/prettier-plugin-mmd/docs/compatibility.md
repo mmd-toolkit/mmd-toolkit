@@ -1406,7 +1406,7 @@ U+2028 or a U+2029 at its start where text follows it, and drops any other
 whitespace character there, since it keeps a gap that holds a U+2028 or a U+2029
 as written (`\u2028T`, `\u2029T`, and `\u2028%%{x}%% T` in the first table
 below; see [Line separators](./quadrant.md#line-separators)); a title of
-directives only loses them there as the other types do (`\u2028%%{x}%%`, the
+directives only loses them there in a quadrant chart too (`\u2028%%{x}%%`, the
 separator touching the directive with nothing after it, where a statement
 follows the title directly or the text ends after it). The whitespace is U+0009
 to U+000D, U+0020, U+00A0, U+1680, U+2000 to U+200A, U+2028, U+2029, U+202F,
