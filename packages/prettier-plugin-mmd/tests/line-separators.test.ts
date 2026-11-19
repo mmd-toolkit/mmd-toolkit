@@ -5319,6 +5319,31 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
     "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
   ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %%{x}%%  %% c  \n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %%{x}%% %% c  \n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment alone after U+2028 joins to a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %% c  \n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to an indented directive line, with an event after it",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %% c  \n   %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %% c  \n %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that U+2028 ends before an indented directive line, with an event after it",
+    "timeline\n  2004 : Facebook\n       : Google \u2028\n   %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028\n       %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a directive line, with a period after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n  2005 : YouTube\n",
+  ],
 ]
 
 /**

@@ -1683,6 +1683,19 @@ period の前でも同じです（詳しくは、
 
 [test: a line separator and a comment line after the closing brace of a description block that starts on the line of the timeline header, before a period]
 
+ピリオドの中で、U+2028 か U+2029 に続くコメント行の後のディレクティブは、
+コメント行が次の行をその行につなぐので、イベントの行にあります。
+ディレクティブの前の空白は、イベントのテキストの一部です。
+印字は空白を足さないので、行頭に書かれたディレクティブはそこにとどまり、
+前に空白が書かれていれば、ほかのテキストと同じく空白 1 つにします。
+ディレクティブは、文のほかの行の字下げでは印字しません。
+
+[test: timeline: an event that a comment after U+2028 joins to a directive line, with an event after it]
+[test: timeline: an event that a comment alone after U+2028 joins to a directive line, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to an indented directive line, with an event after it]
+[test: timeline: an event that U+2028 ends before an indented directive line, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to a directive line, with a period after it]
+
 ### 空白文字
 
 U+00A0、U+3000、U+FEFF は、字句解析器にとって空白です。

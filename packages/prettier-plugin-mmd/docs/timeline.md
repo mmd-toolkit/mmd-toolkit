@@ -1679,6 +1679,22 @@ starts on the line of the header, and before a period (see
 description block that starts on the line of the timeline header, before a
 period]
 
+A directive after a comment line that follows a U+2028 or U+2029 inside a period
+is on the line of the event, since the comment line joins the next line to its
+line, and the whitespace before the directive is part of the text of the event:
+the printer adds none, so a directive written at the start of its line stays
+there, and where whitespace is written before it, it is one space, as in any
+text. The directive is not printed at the indentation of the other lines of the
+statement.
+
+[test: timeline: an event that a comment after U+2028 joins to a directive line,
+with an event after it] [test: timeline: an event that a comment alone after
+U+2028 joins to a directive line, with an event after it] [test: timeline: an
+event that a comment after U+2028 joins to an indented directive line, with an
+event after it] [test: timeline: an event that U+2028 ends before an indented
+directive line, with an event after it] [test: timeline: an event that a comment
+after U+2028 joins to a directive line, with a period after it]
+
 ### Whitespace characters
 
 U+00A0, U+3000, and U+FEFF are whitespace to the lexer. Where a rule reads one
