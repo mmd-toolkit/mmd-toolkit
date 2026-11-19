@@ -1671,9 +1671,36 @@ These stay as written:
   or U+2029 in it, whose lines and marks mermaid.js reads by their place; a
   directive that stands only at the start or at the end of the text is no such
   mark, and the text is printed as it is without it (see
-  [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+  [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same));
+  nor is a comment that ends the text: the runs before it are printed as one
+  space in the title of a pie chart, a radar chart, a packet diagram, an
+  architecture diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map,
+  a treeView, an info diagram, a railroad diagram, a quadrant chart, a Gantt
+  chart, a user journey, a timeline, a sequence diagram, a Venn diagram, and a
+  C4 diagram, and in an ishikawa literal (`title A  b  %% c` is printed
+  `title A b %% c`, and `A  b  %% c` is printed `A b %% c`), and stay as written
+  in a mindmap node, a kanban card, and a treeView node.
 
-  [fixture: pie/directives-and-semicolons/global-value]
+  [fixture: pie/directives-and-semicolons/global-value] [test: runs before a
+  comment that ends the text of a pie chart] [test: runs before a comment that
+  ends the text of a radar chart] [test: runs before a comment that ends the
+  text of a packet diagram] [test: runs before a comment that ends the text of
+  an architecture diagram] [test: runs before a comment that ends the text of a
+  gitGraph] [test: runs before a comment that ends the text of a cynefin
+  diagram] [test: runs before a comment that ends the text of a treemap] [test:
+  runs before a comment that ends the text of a Wardley map] [test: runs before
+  a comment that ends the text of a treeView] [test: runs before a comment that
+  ends the text of an info diagram] [test: runs before a comment that ends the
+  text of a railroad diagram] [test: runs before a comment that ends the text of
+  a quadrant chart] [test: runs before a comment that ends the text of a Gantt
+  chart] [test: runs before a comment that ends the text of a user journey]
+  [test: runs before a comment that ends the text of a timeline] [test: runs
+  before a comment that ends the text of a sequence diagram] [test: runs before
+  a comment that ends the text of a Venn diagram] [test: runs before a comment
+  that ends the text of a C4 diagram] [test: runs before a comment that ends the
+  text of an ishikawa literal] [test: runs before a comment that ends the text
+  of a mindmap node] [test: runs before a comment that ends the text of a kanban
+  card] [test: runs before a comment that ends the text of a treeView node]
 
 - A text with a `<`, which may start an HTML tag that keeps the whitespace
   (`<pre>`), and every text of a diagram that holds `white-space` anywhere, also
@@ -2804,14 +2831,19 @@ times in each, and with it never, so the colon is removed, and what follows it
 on the line goes to the next line as it does after a header without the colon.
 The colon stays where a `;`, the `---` of a hidden YAML block, or a directive
 that is not closed touches it, and where a directive that is closed stands
-between the keyword and the colon: `cynefin-beta%%{x}%%:` is not changed. A
-radar header in which spaces or tabs stand before that directive, and before the
-colon, is printed with the directive touching the keyword and the colon after it
-(`radar-beta %%{x}%% :` is printed `radar-beta%%{x}%%:`); a cynefin header with
-whitespace before the directive or before the colon is rejected. A radar header
-may have spaces or tabs before the colon, which are removed with it
-(`radar-beta :` is printed `radar-beta`); a cynefin header with whitespace
-before the colon is rejected.
+between the keyword and the colon: `cynefin-beta%%{x}%%:` and
+`radar-beta%%{x}%%:` are not changed. A radar header with spaces or tabs before
+that directive, before the colon, or on both sides is printed without them:
+`radar-beta %%{x}%%:`, `radar-beta%%{x}%% :`, and `radar-beta %%{x}%% :` are
+printed `radar-beta%%{x}%%:`, and so are the same headers with a tab for the
+space; `radar-beta %%{x}%% %%{y}%% :` is printed `radar-beta%%{x}%%%%{y}%%:`. A
+radar header with no colon keeps the space before the directive:
+`radar-beta %%{x}%%` is not changed. A radar header may have spaces or tabs
+before the colon with no directive, which are removed with it (`radar-beta :` is
+printed `radar-beta`). A cynefin header with whitespace before the directive,
+before the colon, or on both sides (`cynefin-beta %%{x}%%:`,
+`cynefin-beta%%{x}%% :`, and `cynefin-beta :`) is rejected by 11.16.1, 11.17.2,
+12.0.0, and 12.3.0, and `cynefin-beta %%{x}%%` with no colon is not changed.
 
 [fixture: cynefin/header/colon-removed] [fixture:
 cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
@@ -2821,7 +2853,16 @@ radar/header/colon-unclosed-directive-kept] [fixture:
 radar/header/colon-spaces-before-removed] [fixture:
 radar/header/colon-after-directive-kept] [fixture:
 cynefin/header/colon-after-directive-kept] [fixture:
-radar/header/colon-after-spaced-directive-kept]
+radar/header/colon-after-spaced-directive-kept] [fixture:
+radar/header/colon-spaced-before-directive-dropped] [fixture:
+radar/header/colon-spaced-before-colon-dropped] [fixture:
+radar/header/colon-tabs-around-directive-dropped] [fixture:
+radar/header/colon-two-spaced-directives-dropped] [fixture:
+radar/header/directive-no-colon-space-kept] [fixture:
+cynefin/header/directive-no-colon-space-kept] [test: a space before a directive
+between the header and the colon of a cynefin diagram] [test: a space before the
+colon after a directive of a cynefin diagram] [test: a space before the colon of
+a cynefin diagram]
 
 A treemap header takes no colon. Each of 11.8.1, 11.17.2, 12.0.0 and 12.3.0
 rejects `treemap:` and `treemap-beta:`, and reads and draws the header without

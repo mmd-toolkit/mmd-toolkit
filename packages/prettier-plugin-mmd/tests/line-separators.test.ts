@@ -6669,3 +6669,148 @@ describe("requirement color words with rejected tabs", () => {
     await expect(format(input)).rejects.toThrow("Unexpected character")
   })
 })
+
+/**
+ * The runs of spaces and tabs before a comment that ends the text of a title
+ * and of a node (docs/compatibility.md, Runs of whitespace in a text that are
+ * drawn the same).
+ */
+const commentEndsTextExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "runs before a comment that ends the text of a pie chart",
+      'pie\ntitle A  b  %% c\n"a": 1\n',
+      'pie\n  title A b %% c\n  "a": 1\n',
+    ],
+    [
+      "runs before a comment that ends the text of a radar chart",
+      "radar-beta\ntitle A  b  %% c\naxis a, b\ncurve c{1, 2}\n",
+      "radar-beta\n  title A b %% c\n  axis a, b\n  curve c{1, 2}\n",
+    ],
+    [
+      "runs before a comment that ends the text of a packet diagram",
+      'packet-beta\ntitle A  b  %% c\n0-7: "x"\n',
+      'packet-beta\n  title A b %% c\n  0-7: "x"\n',
+    ],
+    [
+      "runs before a comment that ends the text of an architecture diagram",
+      "architecture-beta\ntitle A  b  %% c\nservice a(server)[A]\n",
+      "architecture-beta\n  title A b %% c\n  service a(server)[A]\n",
+    ],
+    [
+      "runs before a comment that ends the text of a gitGraph",
+      "gitGraph\ntitle A  b  %% c\ncommit\n",
+      "gitGraph\n  title A b %% c\n  commit\n",
+    ],
+    [
+      "runs before a comment that ends the text of a cynefin diagram",
+      "cynefin-beta\ntitle A  b  %% c\n",
+      "cynefin-beta\n  title A b %% c\n",
+    ],
+    [
+      "runs before a comment that ends the text of a treemap",
+      'treemap-beta\ntitle A  b  %% c\n"A": 1\n',
+      'treemap\ntitle A b %% c\n  "A": 1\n',
+    ],
+    [
+      "runs before a comment that ends the text of a Wardley map",
+      "wardley-beta\ntitle A  b  %% c\ncomponent A [0.5, 0.5]\n",
+      "wardley-beta\n  title A b %% c\n  component A [0.5, 0.5]\n",
+    ],
+    [
+      "runs before a comment that ends the text of a treeView",
+      "treeView-beta\ntitle A  b  %% c\nroot\n",
+      "treeView-beta\n  title A b %% c\n  root\n",
+    ],
+    [
+      "runs before a comment that ends the text of an info diagram",
+      "info\ntitle A  b  %% c\n",
+      "info\n  title A b %% c\n",
+    ],
+    [
+      "runs before a comment that ends the text of a railroad diagram",
+      'railroad-abnf-beta\ntitle A  b  %% c\nr="a";\n',
+      'railroad-abnf-beta\n  title A b %% c\n  r = "a";\n',
+    ],
+    [
+      "runs before a comment that ends the text of a quadrant chart",
+      "quadrantChart\ntitle A  b  %% c\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+      "quadrantChart\n  title A b %% c\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+    ],
+    [
+      "runs before a comment that ends the text of a Gantt chart",
+      "gantt\ntitle A  b  %% c\n",
+      "gantt\n  title A b %% c\n",
+    ],
+    [
+      "runs before a comment that ends the text of a user journey",
+      "journey\ntitle A  b  %% c\n",
+      "journey\n  title A b %% c\n",
+    ],
+    [
+      "runs before a comment that ends the text of a timeline",
+      "timeline\ntitle A  b  %% c\n",
+      "timeline\n  title A b %% c\n",
+    ],
+    [
+      "runs before a comment that ends the text of a sequence diagram",
+      "sequenceDiagram\ntitle A  b  %% c\nA->>B: x\n",
+      "sequenceDiagram\n  title A b %% c\n  A ->> B: x\n",
+    ],
+    [
+      "runs before a comment that ends the text of a Venn diagram",
+      "venn-beta\ntitle A  b  %% c\nset A\n",
+      "venn-beta\n  title A b %% c\n  set A\n",
+    ],
+    [
+      "runs before a comment that ends the text of a C4 diagram",
+      'C4Context\ntitle A  b  %% c\nPerson(a,"A")\n',
+      'C4Context\n  title A b %% c\n  Person(a, "A")\n',
+    ],
+    [
+      "runs before a comment that ends the text of an ishikawa literal",
+      "ishikawa\n  R\n    A  b  %% c\n",
+      "ishikawa\n  R\n    A b %% c\n",
+    ],
+    [
+      "runs before a comment that ends the text of a mindmap node",
+      "mindmap\n  root\n    A  b  %% c\n",
+      "mindmap\n  root\n    A  b  %% c\n",
+    ],
+    [
+      "runs before a comment that ends the text of a kanban card",
+      "kanban\n  S\n    A  b  %% c\n",
+      "kanban\n  S\n    A  b  %% c\n",
+    ],
+    [
+      "runs before a comment that ends the text of a treeView node",
+      "treeView-beta\nR\n  A  b  %% c\n",
+      "treeView-beta\n  R\n    A  b  %% c\n",
+    ],
+  ]
+
+describe("the runs before a comment that ends a text", () => {
+  it.each(commentEndsTextExamples)(
+    "prints %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** Cynefin headers with whitespace before a directive or the colon, which every version that counts rejects (docs/compatibility.md, The colon after a header). */
+describe("a cynefin header with whitespace before a directive or the colon", () => {
+  it.each([
+    [
+      "a space before a directive between the header and the colon of a cynefin diagram",
+      "cynefin-beta %%{x}%%:\n",
+    ],
+    [
+      "a space before the colon after a directive of a cynefin diagram",
+      "cynefin-beta%%{x}%% :\n",
+    ],
+    ["a space before the colon of a cynefin diagram", "cynefin-beta :\n"],
+  ])("rejects %s", async (_name, input) => {
+    await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
+  })
+})

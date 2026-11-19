@@ -1754,8 +1754,40 @@ railroad 図の文字列と特殊シーケンスです。
   詳しくは
   [同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)
   を参照してください。
+  テキストを終えるコメントも、そのような印ではありません。
+  その前の連なりは、
+  次のタイトルと ishikawa のリテラルでは空白 1 つにして印字します。
+  タイトルは、pie、radar、packet、architecture、gitGraph、cynefin、treemap、
+  Wardley、treeView、info、railroad、quadrant、Gantt、user journey、timeline、
+  sequence、Venn、C4 の図のものです。
+  `title A  b  %% c` は `title A b %% c` と、
+  `A  b  %% c` は `A b %% c` と印字します。
+  mindmap のノード、kanban のカード、treeView のノードでは、
+  その連なりは書かれたまま残ります。
 
   [fixture: pie/directives-and-semicolons/global-value]
+  [test: runs before a comment that ends the text of a pie chart]
+  [test: runs before a comment that ends the text of a radar chart]
+  [test: runs before a comment that ends the text of a packet diagram]
+  [test: runs before a comment that ends the text of an architecture diagram]
+  [test: runs before a comment that ends the text of a gitGraph]
+  [test: runs before a comment that ends the text of a cynefin diagram]
+  [test: runs before a comment that ends the text of a treemap]
+  [test: runs before a comment that ends the text of a Wardley map]
+  [test: runs before a comment that ends the text of a treeView]
+  [test: runs before a comment that ends the text of an info diagram]
+  [test: runs before a comment that ends the text of a railroad diagram]
+  [test: runs before a comment that ends the text of a quadrant chart]
+  [test: runs before a comment that ends the text of a Gantt chart]
+  [test: runs before a comment that ends the text of a user journey]
+  [test: runs before a comment that ends the text of a timeline]
+  [test: runs before a comment that ends the text of a sequence diagram]
+  [test: runs before a comment that ends the text of a Venn diagram]
+  [test: runs before a comment that ends the text of a C4 diagram]
+  [test: runs before a comment that ends the text of an ishikawa literal]
+  [test: runs before a comment that ends the text of a mindmap node]
+  [test: runs before a comment that ends the text of a kanban card]
+  [test: runs before a comment that ends the text of a treeView node]
 
 - `<` を含むテキスト。
   空白を保つ HTML タグ（`<pre>`）を始めるかもしれないからです。
@@ -2974,15 +3006,23 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 `;`、隠れた YAML ブロックの `---`、
 閉じていないディレクティブが接するコロンは残します。
 閉じたディレクティブがキーワードとコロンの間にあるときも残し、
-`cynefin-beta%%{x}%%:` は変えません。
-radar のヘッダーでそのディレクティブの前と、コロンの前に空白かタブがあるときは、
-ディレクティブをキーワードに接して印字し、
-コロンはその後に残します（`radar-beta %%{x}%% :` は `radar-beta%%{x}%%:`
-と印字します）。
-cynefin のヘッダーは、ディレクティブの前かコロンの前に空白があると拒否されます。
-radar のヘッダーはコロンの前に空白かタブがあってもよく、
+`cynefin-beta%%{x}%%:` と `radar-beta%%{x}%%:` は変えません。
+radar のヘッダーで、そのディレクティブの前、コロンの前、
+またはその両方に空白かタブがあるときは、それらを除いて印字します。
+`radar-beta %%{x}%%:`、`radar-beta%%{x}%% :`、
+`radar-beta %%{x}%% :` は `radar-beta%%{x}%%:` と印字し、
+空白をタブにした形も同じです。
+`radar-beta %%{x}%% %%{y}%% :` は `radar-beta%%{x}%%%%{y}%%:` と印字します。
+コロンのない radar のヘッダーは、ディレクティブの前の空白を残します。
+`radar-beta %%{x}%%` は変えません。
+radar のヘッダーは、
+ディレクティブがないときコロンの前に空白かタブがあってもよく、
 それはコロンと一緒に除きます（`radar-beta :` は `radar-beta` と印字します）。
-cynefin のヘッダーはコロンの前に空白があると拒否されます。
+cynefin のヘッダーは、ディレクティブの前、コロンの前、
+またはその両方に空白があると、11.16.1、11.17.2、12.0.0、
+12.3.0 のどれにも拒否されます（`cynefin-beta %%{x}%%:`、
+`cynefin-beta%%{x}%% :`、`cynefin-beta :`）。
+コロンのない `cynefin-beta %%{x}%%` は変えません。
 
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
@@ -2993,6 +3033,15 @@ cynefin のヘッダーはコロンの前に空白があると拒否されます
 [fixture: radar/header/colon-after-directive-kept]
 [fixture: cynefin/header/colon-after-directive-kept]
 [fixture: radar/header/colon-after-spaced-directive-kept]
+[fixture: radar/header/colon-spaced-before-directive-dropped]
+[fixture: radar/header/colon-spaced-before-colon-dropped]
+[fixture: radar/header/colon-tabs-around-directive-dropped]
+[fixture: radar/header/colon-two-spaced-directives-dropped]
+[fixture: radar/header/directive-no-colon-space-kept]
+[fixture: cynefin/header/directive-no-colon-space-kept]
+[test: a space before a directive between the header and the colon of a cynefin diagram]
+[test: a space before the colon after a directive of a cynefin diagram]
+[test: a space before the colon of a cynefin diagram]
 
 treemap の見出しにはコロンを付けません。
 11.8.1、11.17.2、12.0.0、12.3.0 のどれも、
