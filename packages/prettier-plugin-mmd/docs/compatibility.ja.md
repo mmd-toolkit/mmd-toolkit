@@ -1448,21 +1448,22 @@ C4 図の説明 `accDescription` も同じです。
 title、軸の書式、`accDescription`、
 別名を持つ state の 2 つ目の説明の両端にあると、
 対象にするどの版も別のテキストか形状を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 ただし、Gantt、user journey、timeline、sequence、C4 の title と、
 Gantt の軸の書式と、
 C4 の `accDescription` の先頭か末尾にあるフォームフィードは、
 あってもなくても同じに描かれ、それでも書かれたままです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 gantt の日付の書式の末尾と、timeline の行の最後の event の末尾にあると、
 12.3.0 の Db だけが違い、描画は対象にするどの版でも同じです。
 そこでも書かれたままです。
 pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、
 treeView、info、railroad、quadrant の図の title は、末尾の空白文字を除き、
 先頭の空白文字も、quadrant 図を除いて除きます。
-quadrant 図は、U+2028 か U+2029 を含む間を書かれたままにするので、
-後ろにテキストが続く先頭の U+2028 と U+2029 を残します（下の最初の表の
+quadrant 図は、後ろにテキストが続く先頭の U+2028 と U+2029 を残し、
+先頭のそのほかの空白文字は除きます。
+U+2028 か U+2029 を含む間を書かれたままにするからです（下の最初の表の
 `\u2028T`、`\u2029T`、`\u2028%%{x}%% T`。
 [行区切り文字](./quadrant.ja.md#行区切り文字)を参照）。
 ディレクティブだけのタイトルは、
@@ -1520,7 +1521,9 @@ mermaid.js はテキストを読む前にディレクティブを除くので、
 radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、
 info、railroad の図のタイトル、
 それらの図種（この行がない Venn 図を除く）と usecase 図の `accTitle:` と
-`accDescr:` の行、ishikawa 図、mindmap、treeView のノードのテキスト、
+`accDescr:` の行、mindmap、treeView のノードのテキスト、
+ishikawa 図のノードのテキスト（連なりが書かれたままになる場合は除く。
+[Inline directives](./ishikawa.ja.md#inline-directives)を参照）、
 kanban ボードのカードのテキスト（図が依存する列の id は除く）、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event と、period およびコロンの前の event が足す空白、
@@ -6516,12 +6519,13 @@ mermaid.js は拒否します（既知の差異
 [データブロック](./kanban.ja.md#データブロック)に従います。
 データブロックの付着位置と内容、隣接するブロック、間のディレクティブも保ちます。
 YAML 整形は、保護条件付きのフロントマターだけです。
-`%%` だけの行の後と、見出しの行か、形、アイコン、
-データブロックで終わる行を終えるコメントの後の、空行とコメントの隙間は、
-末尾も含め、`blank-line-after-header-or-comments` のもとで全体を保ちます。
-テキストのあるコメントだけの行の後と、
-裸の id かクラスの行のコメントの後（そこでは `%%` はテキストです）では、
-空行の連なりは 1 行になり、ボードの末尾には残りません。
+`%%` だけの行の後と、見出しの行、形かデータブロックで終わる行、
+カードのアイコンの行（`::icon(fa) %% c`）を終えるコメントの後の、
+空行とコメントの隙間は、末尾も含め、
+`blank-line-after-header-or-comments` のもとで全体を保ちます。
+テキストのあるコメントだけの行の後と、裸の id の行と、
+カードのクラスの行（`:::cls %% c`）のコメントの後（そこでは `%%`
+はテキストです）では、空行の連なりは 1 行になり、ボードの末尾には残りません。
 素の mermaid.js が拒否する入力に素の Db はなく、
 コーパスは仕様の読み方を確かめます。
 
@@ -6532,7 +6536,7 @@ YAML 整形は、保護条件付きのフロントマターだけです。
 [test: a final comment with text and empty lines in a kanban board]
 [test: a comment after a shape and empty lines in a kanban board]
 [test: a comment after a shape and empty lines at the end of a kanban board]
-[test: a comment after an icon and empty lines in a kanban board]
+[test: a comment after a data block that holds an icon and empty lines in a kanban board]
 [test: a comment after a data block and empty lines in a kanban board]
 [test: a comment after the header and empty lines in a kanban board]
 [test: a comment after a shape of a column and empty lines in a kanban board]
@@ -6541,6 +6545,10 @@ YAML 整形は、保護条件付きのフロントマターだけです。
 [test: a comment after a bare id of a column and a line of spaces in a kanban board]
 [test: a comment after a bare id of a column and a line of spaces at the end of a kanban board]
 [test: a comment after a class of a card and empty lines in a kanban board]
+[test: a comment after the icon line of a card and empty lines in a kanban board]
+[test: a comment after the icon line of a card and empty lines at the end of a kanban board]
+[test: a comment after the class line of a card and empty lines in a kanban board]
+[test: a comment after the class line of a card and empty lines at the end of a kanban board]
 [test: a comment on a line of its own and empty lines at the end of a kanban board]
 
 共通の `style`・`classDef` の行規則で保持する行は、区間全体、空白、コメント、

@@ -533,11 +533,14 @@ ishikawa/trailing-whitespace/trailing-directive-gap-collapsed] [fixture:
 ishikawa/trailing-whitespace/trailing-directive-continuation] [fixture:
 ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
 
-A no-break space or a U+3000 beside a directive stays, with the spaces and tabs
-after the last directive left out: `A %%{x}%%`, a U+3000, and two spaces are
-printed `A %%{x}%%` and the U+3000, and so are `A`, a no-break space, `%%{x}%%`,
-and two spaces (`A`, the no-break space, and `%%{x}%%`). A run of spaces and
-tabs inside the comment that ends a literal is printed as one space too where no
+A whitespace character that is no space or tab (U+000B, U+000C, a no-break
+space, U+1680, U+2000 to U+200A, U+2028, U+2029, U+202F, U+205F, U+3000, or
+U+FEFF) beside a directive stays, since mermaid.js draws other text without it,
+with the spaces and tabs after the last directive left out: `A %%{x}%%`, a
+U+3000, and two spaces are printed `A %%{x}%%` and the U+3000, and so are `A`, a
+no-break space, `%%{x}%%`, and two spaces (`A`, the no-break space, and
+`%%{x}%%`), and a character between two directives. A run of spaces and tabs
+inside the comment that ends a literal is printed as one space too where no
 directive stands before the comment (`A %% c  d` is printed `A %% c d`, and so
 is `A %% c`, two tabs, and `d`), also before a no-break space (`A %% c`, two
 spaces, a no-break space, and `d` print `A %% c`, a space, the no-break space,
@@ -549,10 +552,12 @@ space or a run of tabs in it.
 between two directives of an ishikawa literal] [test: U+3000 before the first
 directive of an ishikawa literal] [test: a no-break space after the last
 directive of an ishikawa literal] [test: a no-break space before the first
-directive of an ishikawa literal] [test: ishikawa: comment-run-collapsed] [test:
-ishikawa: comment-run-before-nbsp-collapsed] [test: ishikawa:
-comment-tab-run-collapsed] [test: ishikawa: comment-run-after-directive-kept]
-[test: ishikawa: comment-run-after-text-and-directive-kept] [test: ishikawa:
+directive of an ishikawa literal] [test: a whitespace character that is no space
+or tab beside the directives of an ishikawa literal] [test: ishikawa:
+comment-run-collapsed] [test: ishikawa: comment-run-before-nbsp-collapsed]
+[test: ishikawa: comment-tab-run-collapsed] [test: ishikawa:
+comment-run-after-directive-kept] [test: ishikawa:
+comment-run-after-text-and-directive-kept] [test: ishikawa:
 comment-run-before-nbsp-after-directive-kept] [test: ishikawa:
 comment-tab-run-after-directive-kept]
 

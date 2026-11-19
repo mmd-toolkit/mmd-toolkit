@@ -1379,11 +1379,16 @@ break ends the text: `A[x] %%{unfinished` and two spaces print
 space, and nothing else print the no-break space after it and a line break, and
 `A[x] %%{unfinished`, U+3000, and two spaces print them as written, with a line
 break after them. After the comment of a statement, a last line of whitespace
-only that has no line break after it is left out (`S[x] %% c`, a line break, and
-a line of two spaces print `S[x] %% c` and a line break), while one that a line
-break follows stays. In Markdown, the indentation of the code fence or of its
-list item is the indentation of the host, and is not part of the indentation of
-the board.
+only that has no line break after it and no empty line before it is left out
+(`S[x] %% c`, a line break, and a line of two spaces print `S[x] %% c` and a
+line break), while one that a line break follows stays, and so does one after an
+empty line, with a line break added after it (`S[x] %% c`, a line break, an
+empty line, and a line of two spaces print `S[x] %% c`, the empty line, and the
+line of two spaces with a line break after it). On the header line, an open
+directive takes the rest as on a line of its own: `kanban %%{unfinished` and two
+spaces print `kanban %%{unfinished` and a line break. In Markdown, the
+indentation of the code fence or of its list item is the indentation of the
+host, and is not part of the indentation of the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
@@ -1444,8 +1449,12 @@ U+2029 in a kanban board] [test: a final comment after a statement and a last
 line of two spaces without a line break in a kanban board] [test: a final
 comment after a statement and a last line of one space after a line break in a
 kanban board] [test: a final comment with text and empty lines in a kanban
-board] [fixture: blank-lines/comment-blank-trailing] [test: kanban:
-selected-terminal-separator]
+board] [test: a final comment after a statement, an empty line, and a last line
+of one space in a kanban board] [test: a final comment after a statement, two
+empty lines, and a last line of two spaces in a kanban board] [test: an open
+directive on the header line of a kanban board] [test: an open directive on the
+header line of a kanban board and empty lines] [fixture:
+blank-lines/comment-blank-trailing] [test: kanban: selected-terminal-separator]
 
 Input
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

@@ -7525,7 +7525,7 @@ const kanbanGapAfterCommentExamples: readonly (readonly [
     "kanban\n  S\n    A[x] %% c\n\n\n",
   ],
   [
-    "a comment after an icon and empty lines in a kanban board",
+    "a comment after a data block that holds an icon and empty lines in a kanban board",
     "kanban\n  S\n    A[x]@{ icon: i } %% c\n\n\n    B\n",
     "kanban\n  S\n    A[x]@{ icon: i } %% c\n\n\n    B\n",
   ],
@@ -8071,4 +8071,168 @@ describe("the directives and comments on the lines of a kanban board, a mindmap,
       await expectKept(input, output)
     },
   )
+})
+
+/** The last line of whitespace only after a final comment (docs/kanban.md and docs/c4.md, Final newline). */
+const lastLineAfterCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a final comment after a statement, an empty line, and a last line of one space in a kanban board",
+    "kanban\n  S[x] %% c\n\n ",
+    "kanban\n  S[x] %% c\n\n \n",
+  ],
+  [
+    "a final comment after a statement, two empty lines, and a last line of two spaces in a kanban board",
+    "kanban\n  S[x] %% c\n\n\n  ",
+    "kanban\n  S[x] %% c\n\n\n  \n",
+  ],
+  [
+    "a final comment after a statement, an empty line, and a last line of one space in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n\n ',
+    'C4Context\n  Person(a, "A") %% c\n\n \n',
+  ],
+  [
+    "a final comment after the brace that closes a boundary, an empty line, and a last line of one space in a C4 diagram",
+    'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n\n ',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n\n \n',
+  ],
+  [
+    "a final comment after the brace that closes a boundary and a last line of one space in a C4 diagram",
+    'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n ',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n',
+  ],
+]
+
+describe("the last line of whitespace only after a final comment", () => {
+  it.each(lastLineAfterCommentExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** What follows a final comment on a line of C4 that has a directive before the comment (docs/c4.md, Final newline). */
+describe("each whitespace character that follows a final comment after a directive of a C4 diagram", () => {
+  it("a final comment after a directive on the line of a call, a relation, or the brace that closes a boundary and each whitespace character in a C4 diagram", async () => {
+    const forms = [
+      [
+        (c: string) => `C4Context\nPerson(a, "A") %%{x}%% %% c${c}`,
+        (c: string) => `C4Context\n  Person(a, "A") %%{x}%% %% c${c}\n`,
+      ],
+      [
+        (c: string) =>
+          `C4Context\nPerson(a, "A")\nPerson(b, "B")\nRel(a, b, "x") %%{x}%% %% c${c}`,
+        (c: string) =>
+          `C4Context\n  Person(a, "A")\n  Person(b, "B")\n  Rel(a, b, "x") %%{x}%% %% c${c}\n`,
+      ],
+      [
+        (c: string) =>
+          `C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %%{x}%% %% c${c}`,
+        (c: string) =>
+          `C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %%{x}%% %% c${c}\n`,
+      ],
+    ] as const
+    for (const [input, output] of forms) {
+      for (const character of ["  ", "\t"])
+        await expectKept(input(character), output(""))
+      for (const character of afterFinalCommentCharacters)
+        await expectKept(input(character), output(character))
+    }
+  })
+})
+
+/** The empty lines after a comment on the icon line and on the class line of a card (docs/compatibility.md, Kanban). */
+const kanbanGapAfterDecorationExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a comment after the icon line of a card and empty lines in a kanban board",
+    "kanban\n  S\n    A\n    ::icon(fa) %% c\n\n\n    B\n",
+    "kanban\n  S\n    A\n    ::icon(fa) %% c\n\n\n    B\n",
+  ],
+  [
+    "a comment after the icon line of a card and empty lines at the end of a kanban board",
+    "kanban\n  S\n    A\n    ::icon(fa) %% c\n\n\n",
+    "kanban\n  S\n    A\n    ::icon(fa) %% c\n\n\n",
+  ],
+  [
+    "a comment after the class line of a card and empty lines in a kanban board",
+    "kanban\n  S\n    A\n    :::cls %% c\n\n\n    B\n",
+    "kanban\n  S\n    A\n    :::cls %% c\n\n    B\n",
+  ],
+  [
+    "a comment after the class line of a card and empty lines at the end of a kanban board",
+    "kanban\n  S\n    A\n    :::cls %% c\n\n\n",
+    "kanban\n  S\n    A\n    :::cls %% c\n",
+  ],
+  [
+    "an open directive on the header line of a kanban board",
+    "kanban %%{unfinished  ",
+    "kanban %%{unfinished\n",
+  ],
+  [
+    "an open directive on the header line of a kanban board and empty lines",
+    "kanban %%{unfinished\n\n  ",
+    "kanban %%{unfinished\n",
+  ],
+]
+
+describe("the lines of a card and the header line of a kanban board that a comment or an open directive ends", () => {
+  it.each(kanbanGapAfterDecorationExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** The whitespace of the specification that is no space, tab, or line terminator (docs/mindmap.md, Directives, and docs/ishikawa.md, Trailing whitespace). */
+const whitespaceBesideADirective: readonly string[] =
+  afterFinalCommentCharacters.slice(0, 21)
+
+describe("a whitespace character that is no space or tab before the first directive of a mindmap node and beside the directives of an ishikawa literal", () => {
+  it("a whitespace character that is no space or tab before the directive that follows a shape or an icon of a mindmap node", async () => {
+    for (const character of whitespaceBesideADirective) {
+      await expectKept(
+        `mindmap\n  root\n    a[t]${character}%%{x}%%\n`,
+        "mindmap\n  root\n    a[t] %%{x}%%\n",
+      )
+      await expectKept(
+        `mindmap\n  root\n    a[t]\n    ::icon(fa)${character}%%{x}%%\n`,
+        "mindmap\n  root\n    a[t]\n    ::icon(fa) %%{x}%%\n",
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before the directive of a bare mindmap node and of the root text", async () => {
+    for (const character of whitespaceBesideADirective) {
+      const bare = `mindmap\n  root\n    a${character}%%{x}%%\n`
+      await expectKept(bare, bare)
+      const root = `mindmap\n  root${character}%%{x}%%\n`
+      await expectKept(root, root)
+    }
+  })
+
+  it("a whitespace character that is no space or tab beside the directives of an ishikawa literal", async () => {
+    for (const character of whitespaceBesideADirective) {
+      await expectKept(
+        `ishikawa\n  R\n    A${character}%%{x}%%  \n`,
+        `ishikawa\n  R\n    A${character}%%{x}%%\n`,
+      )
+      await expectKept(
+        `ishikawa\n  R\n    A %%{x}%%${character}  \n`,
+        `ishikawa\n  R\n    A %%{x}%%${character}\n`,
+      )
+      await expectKept(
+        `ishikawa\n  R\n    A %%{x}%%${character}%%{y}%%  \n`,
+        `ishikawa\n  R\n    A %%{x}%%${character}%%{y}%%\n`,
+      )
+    }
+  })
 })

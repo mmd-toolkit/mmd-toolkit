@@ -541,8 +541,11 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
 [fixture: ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
 
-ディレクティブの隣の改行しない空白と U+3000 は残り、
+ディレクティブの隣の、空白でもタブでもない空白文字（U+000B、U+000C、
+改行しない空白、U+1680、U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、
+U+3000、U+FEFF）は、それがないと mermaid.js が別のテキストを描くので残り、
 最後のディレクティブの後の空白とタブは除きます。
+2 つのディレクティブの間の文字も残ります。
 `A %%{x}%%`、U+3000、空白 2 つは `A %%{x}%%` と U+3000 に、`A`、改行しない空白、
 `%%{x}%%`、空白 2 つも `A`、改行しない空白、`%%{x}%%` になります。
 リテラルを終えるコメントの中の空白とタブの連なりは、
@@ -559,6 +562,7 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 [test: U+3000 before the first directive of an ishikawa literal]
 [test: a no-break space after the last directive of an ishikawa literal]
 [test: a no-break space before the first directive of an ishikawa literal]
+[test: a whitespace character that is no space or tab beside the directives of an ishikawa literal]
 [test: ishikawa: comment-run-collapsed]
 [test: ishikawa: comment-run-before-nbsp-collapsed]
 [test: ishikawa: comment-tab-run-collapsed]

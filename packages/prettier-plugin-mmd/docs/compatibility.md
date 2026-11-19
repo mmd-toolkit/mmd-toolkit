@@ -1380,37 +1380,38 @@ written, and so does a text of spaces and tabs only. A no-break space, U+3000,
 or another whitespace character that is no space or tab at the start or at the
 end of the text stays too, since the Db of 12.3.0 holds it: with one at the ends
 of a title, an axis format, an `accDescription`, or the second description of a
-state alias, every version that counts draws other text or geometry, but for a
-form feed at the start or at the end of a title of a Gantt chart, a user
-journey, a timeline, a sequence diagram, or a C4 diagram, of the axis format of
-a Gantt chart, and of the `accDescription` of a C4 diagram, which are drawn the
-same with and without it and stay as written all the same (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-With one at the end of the date format of a Gantt chart or of the last event of
-a line of a timeline, the drawing is the same in every version that counts and
-only the Db of 12.3.0 differs, and it stays as written there too. The title of a
-pie chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph,
-a cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, a
-railroad diagram, and a quadrant chart loses the whitespace of the specification
-at its end, and at its start in every one of them but a quadrant chart, which
-keeps a gap that holds a U+2028 or a U+2029 as written, so a U+2028 and a U+2029
-at its start stay where text follows them (`\u2028T`, `\u2029T`, and
-`\u2028%%{x}%% T` in the first table below; see
-[Line separators](./quadrant.md#line-separators)), while a title of directives
-only loses them there as the other types do (`\u2028%%{x}%%`). The whitespace is
-U+0009 to U+000D, U+0020, U+00A0, U+1680, U+2000 to U+200A, U+2028, U+2029,
-U+202F, U+205F, U+3000, and U+FEFF, the characters that `String.prototype.trim`
-removes (see [Notation](../../spec/docs/common.md#notation)). The title loses
-them because the Db of 12.3.0 is the same with and without them and the drawing
-is the same in every version that counts. This holds for a title in which no
-directive and no comment stands; beside one, a whitespace character that is no
-space or tab is printed as the tables below say. The last event of a line of a
-timeline and the second description of a state with an alias lose the spaces and
-tabs at their end in the same way, not the whitespace at their start, which
-aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
-`state "d" as A : x   ` is printed `state "d" as A : x`. A period of a timeline,
-and an event that another colon follows, gain one space at their end where they
-end without whitespace, which stands before that colon: `2004: a: b` is printed
+state alias, every version that counts draws other text or geometry (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
+but for a form feed at the start or at the end of a title of a Gantt chart, a
+user journey, a timeline, a sequence diagram, or a C4 diagram, of the axis
+format of a Gantt chart, and of the `accDescription` of a C4 diagram, which are
+drawn the same with and without it and stay as written all the same. With one at
+the end of the date format of a Gantt chart or of the last event of a line of a
+timeline, the drawing is the same in every version that counts and only the Db
+of 12.3.0 differs, and it stays as written there too. The title of a pie chart,
+a radar chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin
+diagram, a treemap, a Wardley map, a treeView, an info diagram, a railroad
+diagram, and a quadrant chart loses the whitespace of the specification at its
+end, and at its start in every one of them but a quadrant chart, which keeps a
+U+2028 or a U+2029 at its start where text follows it, and drops any other
+whitespace character there, since it keeps a gap that holds a U+2028 or a U+2029
+as written (`\u2028T`, `\u2029T`, and `\u2028%%{x}%% T` in the first table
+below; see [Line separators](./quadrant.md#line-separators)); a title of
+directives only loses them there as the other types do (`\u2028%%{x}%%`). The
+whitespace is U+0009 to U+000D, U+0020, U+00A0, U+1680, U+2000 to U+200A,
+U+2028, U+2029, U+202F, U+205F, U+3000, and U+FEFF, the characters that
+`String.prototype.trim` removes (see
+[Notation](../../spec/docs/common.md#notation)). The title loses them because
+the Db of 12.3.0 is the same with and without them and the drawing is the same
+in every version that counts. This holds for a title in which no directive and
+no comment stands; beside one, a whitespace character that is no space or tab is
+printed as the tables below say. The last event of a line of a timeline and the
+second description of a state with an alias lose the spaces and tabs at their
+end in the same way, not the whitespace at their start, which aligns the colons
+of a timeline: `2020 : e   ` is printed `2020 : e`, and `state "d" as A : x   `
+is printed `state "d" as A : x`. A period of a timeline, and an event that
+another colon follows, gain one space at their end where they end without
+whitespace, which stands before that colon: `2004: a: b` is printed
 `2004 : a : b`, except after the word `title` or `section` as the period, where
 a space would make the line a title or a section. The description of a task of a
 user journey loses the spaces and tabs before its first colon
@@ -1444,13 +1445,14 @@ C4 diagram, a quadrant chart, a pie chart, a radar chart, a packet diagram, an
 architecture diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map, a
 treeView, an info diagram, and a railroad diagram, for the `accTitle:` and
 `accDescr:` lines of those diagram types, except a Venn diagram, which has none,
-and of a usecase diagram, for the text of a node of an ishikawa diagram, a
-mindmap, and a treeView, and of a card of a kanban board (not the id of a
-column, which the figure depends on), for the date format and the axis format of
-a Gantt chart, for the `accDescription` of a C4 diagram, for the last event of a
-line of a timeline and the space that a period and an event before a colon gain,
-for the description of a task of a user journey, except that a task whose
-description holds a directive stays as written (see
+and of a usecase diagram, for the text of a node of a mindmap and a treeView,
+and of an ishikawa diagram where its runs do not stay under
+[Inline directives](./ishikawa.md#inline-directives), and of a card of a kanban
+board (not the id of a column, which the figure depends on), for the date format
+and the axis format of a Gantt chart, for the `accDescription` of a C4 diagram,
+for the last event of a line of a timeline and the space that a period and an
+event before a colon gain, for the description of a task of a user journey,
+except that a task whose description holds a directive stays as written (see
 [Task data](./journey.md#task-data)), and for the second description of a state
 alias. The runs of spaces and tabs inside a date format, an axis format, or the
 value of an `accTitle:` line stay as written before the directives as they do
@@ -6230,12 +6232,13 @@ and the spaces at the ends of a block on one line in
 [Data blocks](./kanban.md#data-blocks), and their attachment, including touching
 adjacent blocks and intervening directives; YAML formatting applies only to
 guarded frontmatter. Complete blank/comment gaps after a line of `%%` alone and
-after a comment that ends the header line or a line that ends in a shape, an
-icon, or a data block, terminal gaps included, stay as written under
-`blank-line-after-header-or-comments`; after a comment with text on a line of
-its own, and after a comment on the line of a bare id or of a class, where `%%`
-is text, a run of empty lines becomes one, and none stays at the end of the
-board. A raw rejection has no raw Db; the corpus checks the specified reading.
+after a comment that ends the header line, a line that ends in a shape or in a
+data block, or the icon line of a card (`::icon(fa) %% c`), terminal gaps
+included, stay as written under `blank-line-after-header-or-comments`; after a
+comment with text on a line of its own, and after a comment on the line of a
+bare id or on the class line of a card (`:::cls %% c`), where `%%` is text, a
+run of empty lines becomes one, and none stays at the end of the board. A raw
+rejection has no raw Db; the corpus checks the specified reading.
 
 [fixture: kanban/data-blocks/adjacent] [fixture:
 kanban/data-blocks/data-adjacent-directive] [fixture:
@@ -6243,17 +6246,22 @@ kanban/blank-lines/div-between-comment-blank] [fixture:
 kanban/blank-lines/comment-blank-trailing] [test: a final comment with text and
 empty lines in a kanban board] [test: a comment after a shape and empty lines in
 a kanban board] [test: a comment after a shape and empty lines at the end of a
-kanban board] [test: a comment after an icon and empty lines in a kanban board]
-[test: a comment after a data block and empty lines in a kanban board] [test: a
-comment after the header and empty lines in a kanban board] [test: a comment
-after a shape of a column and empty lines in a kanban board] [test: a comment
-after a bare id of a card and empty lines in a kanban board] [test: a comment
-after a bare id of a card and empty lines at the end of a kanban board] [test: a
-comment after a bare id of a column and a line of spaces in a kanban board]
-[test: a comment after a bare id of a column and a line of spaces at the end of
-a kanban board] [test: a comment after a class of a card and empty lines in a
-kanban board] [test: a comment on a line of its own and empty lines at the end
-of a kanban board]
+kanban board] [test: a comment after a data block that holds an icon and empty
+lines in a kanban board] [test: a comment after a data block and empty lines in
+a kanban board] [test: a comment after the header and empty lines in a kanban
+board] [test: a comment after a shape of a column and empty lines in a kanban
+board] [test: a comment after a bare id of a card and empty lines in a kanban
+board] [test: a comment after a bare id of a card and empty lines at the end of
+a kanban board] [test: a comment after a bare id of a column and a line of
+spaces in a kanban board] [test: a comment after a bare id of a column and a
+line of spaces at the end of a kanban board] [test: a comment after a class of a
+card and empty lines in a kanban board] [test: a comment after the icon line of
+a card and empty lines in a kanban board] [test: a comment after the icon line
+of a card and empty lines at the end of a kanban board] [test: a comment after
+the class line of a card and empty lines in a kanban board] [test: a comment
+after the class line of a card and empty lines at the end of a kanban board]
+[test: a comment on a line of its own and empty lines at the end of a kanban
+board]
 
 Lines kept because of the shared `style`/`classDef` line rule retain their
 complete segments, whitespace, comments, and directives. Kanban keeps `;`,

@@ -753,7 +753,12 @@ mindmap
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 形かアイコンの後では、最後のディレクティブの後の、
 空白でもタブでもない空白文字（U+000B、U+000C、改行しない空白、U+1680、
-U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF）も除きます。
+U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF）も除き、
+最初のディレクティブの前のそれは空白 1 つにして印字します（`a[t]`、
+改行しない空白、`%%{x}%%` は `a[t] %%{x}%%` と印字し、`::icon(fa)`、U+2003、
+`%%{x}%%` も同じです）。
+裸のノードかルートのテキストの後のそれは、
+それがないと mermaid.js が別のテキストを描くので残ります。
 裸のノード、クラス、ルートのテキストの後では、
 最後のディレクティブの後にそのような文字があるときと、
 ディレクティブの後にテキストがあるときは、ディレクティブの後の空白を含め、
@@ -788,6 +793,8 @@ U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF）も
 [test: a whitespace character that is no space or tab after the directive that follows an icon of a mindmap node]
 [test: a whitespace character that is no space or tab after the directive of a bare mindmap node, a class, and the root text]
 [test: a comment that touches the directive that follows a shape of a mindmap node]
+[test: a whitespace character that is no space or tab before the directive that follows a shape or an icon of a mindmap node]
+[test: a whitespace character that is no space or tab before the directive of a bare mindmap node and of the root text]
 
 2 つの単位の間のディレクティブは、その場に残します。
 テキストの中のディレクティブは、テキストの一部です。

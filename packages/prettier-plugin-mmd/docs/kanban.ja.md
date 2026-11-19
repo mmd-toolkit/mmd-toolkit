@@ -1474,9 +1474,15 @@ U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF と�
 `A[x] %%{unfinished` と U+00A0 は、U+00A0 とその後の改行を印字し、
 `A[x] %%{unfinished`、U+3000、空白 2 つは、そのまま印字して、
 その後に改行を足します。
-文の行のコメントの後で、改行が後ろにない最後の空白だけの行は落とします。
+文の行のコメントの後で、改行が後ろになく、
+前に空行もない最後の空白だけの行は落とします。
 `S[x] %% c`、改行、空白 2 つの行は、`S[x] %% c` と改行を印字し、
-後ろに改行がある空白だけの行は残します。
+後ろに改行がある空白だけの行と、空行の後の空白だけの行は残します。
+空行の後の行には、後ろに改行を足します（`S[x] %% c`、改行、空行、
+空白 2 つの行は、`S[x] %% c`、空行、空白 2 つの行と、
+その後ろの改行を印字します）。
+見出しの行の閉じていないディレクティブも、単独の行と同じにその後ろを取ります。
+`kanban %%{unfinished` と空白 2 つは `kanban %%{unfinished` と改行を印字します。
 Markdown では、コードフェンスやリスト項目の字下げはホストの字下げで、
 ボードの字下げには入りません。
 
@@ -1550,6 +1556,10 @@ Markdown では、コードフェンスやリスト項目の字下げはホス�
 [test: a final comment after a statement and a last line of two spaces without a line break in a kanban board]
 [test: a final comment after a statement and a last line of one space after a line break in a kanban board]
 [test: a final comment with text and empty lines in a kanban board]
+[test: a final comment after a statement, an empty line, and a last line of one space in a kanban board]
+[test: a final comment after a statement, two empty lines, and a last line of two spaces in a kanban board]
+[test: an open directive on the header line of a kanban board]
+[test: an open directive on the header line of a kanban board and empty lines]
 [fixture: blank-lines/comment-blank-trailing]
 [test: kanban: selected-terminal-separator]
 
