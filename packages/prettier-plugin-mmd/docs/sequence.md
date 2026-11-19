@@ -487,11 +487,16 @@ it, the whitespace inside it, and the whitespace before a `%%` comment after it,
 whatever whitespace characters it holds but a line break. So the gap before the
 block, the block, and that gap before the comment stay as written, and the block
 is not padded: `participant A   @{ x }` and `actor B@{x}` stay, and so does the
-whitespace before the `%%` in `participant C@{ y }   %% c`. mermaid.js removes
-the directives before it reads the name, so the name runs over a directive in
-that whitespace, one that is not closed included, and the whitespace on both
-sides of it stays: `participant B@{x}   %%{init: {}}%%   %% c`. A directive that
-ends the line, with no comment after it, is an ordinary gap, printed
+whitespace before the `%%` in `participant C@{ y }   %% c`. The reason of the
+versions holds for a `participant`: with one space before the `%%`, 10.9.8 and
+11.7.0 draw another name. The whitespace before the `%%` of an `actor` and after
+a `create` stays as written too, though no version that counts draws another
+figure for it. After the block, a `#` comment is a comment like any other, and
+one space stands before it. mermaid.js removes the directives before it reads
+the name, so the name runs over a directive in that whitespace, one that is not
+closed included, and the whitespace on both sides of it stays:
+`participant B@{x}   %%{init: {}}%%   %% c`. A directive that ends the line,
+with no comment after it, is an ordinary gap, printed
 `participant E@{z} %%{init: {}}%%`. A block with one of these characters or with
 a line break is printed as above (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -1145,7 +1150,8 @@ that counts, as `autonumber 5%% c` shows (see
 A run of whitespace before the mark is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 except where another rule keeps the whitespace as written, as after an id, after
-the data block of a participant that a version reads as a part of its name (see
+the data block of a participant that a version reads as a part of its name,
+before a `%%` comment (see
 [Whitespace between tokens](#whitespace-between-tokens)), and after the value of
 an `accTitle`, where the whitespace belongs to the id, to the block, or to the
 value.
