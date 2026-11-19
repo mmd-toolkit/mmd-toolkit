@@ -1141,6 +1141,31 @@ usecase accTitle: U+00A0 after two directives over lines that touch each other]
 [test: usecase accTitle: U+0085 after a directive over lines is no blank] [test:
 usecase accTitle: U+200B after a directive over lines is no blank]
 
+The text before the directives that end the value may hold a `;`, a directive of
+its own, or a U+2028 or U+2029, and the end is printed the same:
+`accTitle: A;b  %%{z}%%  ` is printed `accTitle: A;b %%{z}%%`. The runs of the
+text of an `accDescr:` line are printed as one space where no directive stands
+in the text, and stay where one does: `accDescr: A;  b  %%{z}%%  ` is printed
+`accDescr: A; b %%{z}%%`. A directive that a space or a tab separates from the
+last of them stays as written, and only the gap before the last is printed as
+one space: `accTitle: A;b  %%{x}%%  %%{z}%%  ` is printed
+`accTitle: A;b  %%{x}%% %%{z}%%`. Directives that precede the text change
+nothing: `accTitle: %%{x}%% T  %%{init: {`, a line break, `}}%%`, and two spaces
+is printed `accTitle: %%{x}%% T %%{init: {`, a line break, and `}}%%`.
+
+[fixture:
+direction-and-accessibility/acctitle-directive-after-semicolon-text-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/accdescr-directive-after-semicolon-run-text-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/acctitle-directive-after-inner-directive-text-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/acctitle-directives-after-semicolon-text-last-gap-printed]
+[fixture:
+direction-and-accessibility/acctitle-directive-before-text-directive-lines-end-blanks-dropped]
+[test: usecase accTitle: U+2028 in the text before the last directive] [test:
+usecase accDescr: U+2029 in the text before the last directive]
+
 [fixture:
 direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: direction-and-accessibility/direction-values] [fixture:

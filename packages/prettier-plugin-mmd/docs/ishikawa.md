@@ -550,6 +550,24 @@ ishikawa/trailing-whitespace/directive-lines-semicolon-end-blanks-dropped]
 [test: ishikawa: U+00A0 after a directive over lines stays] [fixture:
 ishikawa/trailing-whitespace/directive-lines-before-directive-runs-kept]
 
+A `;` in the literal before the directives that end it changes nothing:
+`A;b  %%{z}%%  ` is printed `A;b %%{z}%%`, and the runs of the literal are
+printed as one space, `A;  b  %%{z}%%  ` as `A; b %%{z}%%`. A literal that holds
+a directive between its words, or a U+2028 or U+2029, stays as written, with the
+spaces and tabs after the last directive left out, as does one whose last
+directive a space or a tab separates from the directive before it:
+`A;b  %%{x}%%  %%{z}%%  ` is printed `A;b  %%{x}%%  %%{z}%%`.
+
+[fixture:
+ishikawa/trailing-whitespace/directive-after-semicolon-text-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-semicolon-run-text-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-inner-directive-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directives-after-semicolon-text-gap-kept]
+[test: ishikawa: U+2028 in the literal before the last directive] [test:
+ishikawa: U+2029 in the literal before the last directive]
+
 Only exterior header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value.
 

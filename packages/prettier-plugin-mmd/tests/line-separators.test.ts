@@ -7159,3 +7159,48 @@ describe("the title of a Gantt chart after directives that whitespace separates"
     },
   )
 })
+
+/**
+ * Each example is a line of a usecase diagram or an ishikawa literal whose text
+ * holds a U+2028 or U+2029, which no fixture file holds, before a last
+ * directive that spaces follow. The usecase line prints the last directive as
+ * the line without those spaces does, one space after the text; the ishikawa
+ * literal stays as written, as it does without them, and loses the spaces
+ * after the last directive only (docs/usecase.md, Direction and accessibility;
+ * docs/ishikawa.md, Trailing whitespace).
+ */
+const textWithSeparatorBeforeDirectiveExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "usecase accTitle: U+2028 in the text before the last directive",
+    "usecase-beta\naccTitle: A\u2028 b  %%{z}%%  \nactor A\n",
+    "usecase-beta\n  accTitle: A\u2028 b %%{z}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+2029 in the text before the last directive",
+    "usecase-beta\naccDescr: A  \u2029b  %%{z}%%  \nactor A\n",
+    "usecase-beta\n  accDescr: A  \u2029b %%{z}%%\n  actor A\n",
+  ],
+  [
+    "ishikawa: U+2028 in the literal before the last directive",
+    "ishikawa\nP\n  A\u2028 b  %%{z}%%  \n",
+    "ishikawa\n  P\n    A\u2028 b  %%{z}%%\n",
+  ],
+  [
+    "ishikawa: U+2029 in the literal before the last directive",
+    "ishikawa\nP\n  A  \u2029b  %%{z}%%  \n",
+    "ishikawa\n  P\n    A  \u2029b  %%{z}%%\n",
+  ],
+]
+
+describe("a text with a line separator before a last directive that spaces follow", () => {
+  it.each(textWithSeparatorBeforeDirectiveExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})

@@ -599,6 +599,102 @@ export function endsTheLineWithDirectives(
 }
 
 /**
+ * What the text before the place at the end of a line may hold (see
+ * `endsWithPlaceAfterText`): a `;` only, or anything.
+ */
+export type TextBeforePlace = "semicolons" | "anything"
+
+/**
+ * Whether the line in `range` ends with a place, after a text that
+ * `endsWithDirectives` leaves out because it holds a `;`, a line break or
+ * separator, or a directive of its own. The directives that touch each other
+ * at the end of the line, with spaces and tabs only after the last, are one
+ * place (see `endsWithBreakingDirectives`). mermaid.js reads the last
+ * directive as part of the text only where whitespace follows it, so the same
+ * line without that whitespace has the place after its text, and the gap
+ * before it is printed as one space, which the line with the whitespace must
+ * print too (see `collectPlaceEdits`). The text before the place, and the
+ * directives in it that whitespace separates from the place, stay as written.
+ * `textBefore` tells what the text may hold.
+ */
+export function endsWithPlaceAfterText(
+  source: Source,
+  [from, to]: Range,
+  isBlankAfter: (character: string) => boolean,
+  textBefore: TextBeforePlace,
+): boolean {
+  const lineEnd = lineEndOf(source, to, true)
+  for (let offset = to; offset < lineEnd; offset++)
+    if (!isBlankAfter(source.text[offset])) return false
+  const { placeStart, afterPlace } = findPlace(source, [from, to])
+  if (
+    placeStart === afterPlace ||
+    [...source.text.slice(placeStart, afterPlace)].some(isLineSeparator)
+  )
+    return false
+  let headEnd = placeStart
+  while (headEnd > from && isSpaceOrTab(source.text[headEnd - 1])) headEnd--
+  if (headEnd <= from) return false
+  return (
+    textBefore === "anything" ||
+    (findTriviaBetween(source, from, headEnd).length === 0 &&
+      ![...source.text.slice(from, headEnd)].some(
+        (character) =>
+          character === "\n" ||
+          character === "\r" ||
+          isLineSeparator(character),
+      ))
+  )
+}
+
+/**
+ * The edits that print the end of a line that `endsWithPlaceAfterText` accepts:
+ * the spaces and tabs after the place are left out, and those before it are
+ * printed as one space, as the gap before a directive that ends a line is.
+ * `collapsesRuns` tells that the runs of spaces and tabs in the text before the
+ * place are printed as one space too, which the collapse of the runs in the
+ * texts prints for the same text when the place stands after it, and which it
+ * does not reach while the place is in the text.
+ */
+export function collectPlaceEdits(
+  source: Source,
+  range: Range,
+  collapsesRuns: boolean,
+): TextEdit[] {
+  const [from, to] = range
+  const { placeStart, afterPlace } = findPlace(source, range)
+  const edits: TextEdit[] = []
+  if (afterPlace < to) edits.push({ range: [afterPlace, to], replacement: "" })
+  let headEnd = placeStart
+  while (headEnd > from && isSpaceOrTab(source.text[headEnd - 1])) headEnd--
+  if (headEnd < placeStart)
+    edits.push({ range: [headEnd, placeStart], replacement: " " })
+  if (collapsesRuns) appendItems(edits, collapseRunEdits(source, from, headEnd))
+  return edits
+}
+
+/**
+ * The place at the end of `[from, to)`: the directives that touch each other
+ * after the spaces and tabs at its end. `afterPlace` is where the place ends,
+ * `placeStart` where it starts, the same offset where there is none.
+ */
+function findPlace(
+  source: Source,
+  [from, to]: Range,
+): { readonly placeStart: number; readonly afterPlace: number } {
+  let afterPlace = to
+  while (afterPlace > from && isSpaceOrTab(source.text[afterPlace - 1]))
+    afterPlace--
+  let placeStart = afterPlace
+  for (;;) {
+    const directive = findDirectiveEndingAt(source, placeStart)
+    if (directive === undefined || directive.range[0] <= from) break
+    placeStart = directive.range[0]
+  }
+  return { placeStart, afterPlace }
+}
+
+/**
  * Whether the text in `range` ends with directives as `endsWithDirectives`
  * says, except that the directives at its end that hold a line break or a `;`
  * do not end the text: the directives that touch each other at its end, with
@@ -621,15 +717,7 @@ function endsWithBreakingDirectives(
   const lineEnd = lineEndOf(source, to, true)
   for (let offset = to; offset < lineEnd; offset++)
     if (!isBlankAfter(source.text[offset])) return false
-  let afterPlace = to
-  while (afterPlace > from && isSpaceOrTab(source.text[afterPlace - 1]))
-    afterPlace--
-  let placeStart = afterPlace
-  for (;;) {
-    const directive = findDirectiveEndingAt(source, placeStart)
-    if (directive === undefined || directive.range[0] <= from) break
-    placeStart = directive.range[0]
-  }
+  const { placeStart, afterPlace } = findPlace(source, [from, to])
   const place = [...source.text.slice(placeStart, afterPlace)]
   if (
     place.some(isLineSeparator) ||

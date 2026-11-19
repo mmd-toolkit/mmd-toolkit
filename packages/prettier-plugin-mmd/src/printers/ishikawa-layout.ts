@@ -14,8 +14,10 @@ import type { LeadingDirectives } from "./indentation-lines.ts"
 import { keptAsWritten, replaceInAtoms } from "./layout.ts"
 import type { TextEdit } from "./layout.ts"
 import {
+  collectPlaceEdits,
   collectTextEndEdits,
   endsTheLineWithDirectives,
+  endsWithPlaceAfterText,
   trimmedTextEnd,
 } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
@@ -130,7 +132,11 @@ export function layoutIshikawaLine(
   const textEnd = trimmedTextEnd(source, start, line.range[1], isSpaceOrTab)
   let end = textEnd.end
   const atoms: Atom[] = []
-  if (endsTheLineWithDirectives(source, [start, end])) {
+  const endsWithDirectives = endsTheLineWithDirectives(source, [start, end])
+  if (
+    endsWithDirectives ||
+    endsWithPlaceAfterText(source, [start, end], isSpaceOrTab, "semicolons")
+  ) {
     // The literal ends with directives, which are printed as at the end of a
     // line, with the whitespace before them as the same literal has when the
     // directives stand after it: one space each (docs/ishikawa.md, Trailing
@@ -140,7 +146,9 @@ export function layoutIshikawaLine(
     replaceInAtoms(
       source,
       atoms,
-      collectTextEndEdits(source, start, line.range[1], true),
+      endsWithDirectives
+        ? collectTextEndEdits(source, start, line.range[1], true)
+        : collectPlaceEdits(source, [start, line.range[1]], true),
     )
   } else {
     // The gap before a directive that follows the literal is that of the

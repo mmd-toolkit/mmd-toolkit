@@ -1218,6 +1218,29 @@ U+0085 と U+200B は空白ではないので、その行は書かれたまま�
 [test: usecase accTitle: U+0085 after a directive over lines is no blank]
 [test: usecase accTitle: U+200B after a directive over lines is no blank]
 
+値の末尾のディレクティブの前のテキストが、`;`、テキスト自身のディレクティブ、
+U+2028、U+2029 を含んでも、末尾は同じに印字します。
+`accTitle: A;b  %%{z}%%  ` は `accTitle: A;b %%{z}%%` と印字します。
+`accDescr:` の行のテキストの連なりは、
+テキストの中にディレクティブがなければ空白 1 つにし、
+あれば書かれたままにします。
+`accDescr: A;  b  %%{z}%%  ` は `accDescr: A; b %%{z}%%` と印字します。
+空白かタブで最後のディレクティブから隔てられたディレクティブは書かれたままにし、
+最後のディレクティブの前の隙間だけを空白 1 つにします。
+`accTitle: A;b  %%{x}%%  %%{z}%%  ` は `accTitle: A;b  %%{x}%% %%{z}%%`
+と印字します。
+テキストの前のディレクティブは何も変えません。
+`accTitle: %%{x}%% T  %%{init: {`、改行、`}}%%`、空白 2 つは、
+`accTitle: %%{x}%% T %%{init: {`、改行、`}}%%` と印字します。
+
+[fixture: direction-and-accessibility/acctitle-directive-after-semicolon-text-end-blanks-dropped]
+[fixture: direction-and-accessibility/accdescr-directive-after-semicolon-run-text-end-blanks-dropped]
+[fixture: direction-and-accessibility/acctitle-directive-after-inner-directive-text-end-blanks-dropped]
+[fixture: direction-and-accessibility/acctitle-directives-after-semicolon-text-last-gap-printed]
+[fixture: direction-and-accessibility/acctitle-directive-before-text-directive-lines-end-blanks-dropped]
+[test: usecase accTitle: U+2028 in the text before the last directive]
+[test: usecase accDescr: U+2029 in the text before the last directive]
+
 [fixture: direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: direction-and-accessibility/direction-values]
 [fixture: direction-and-accessibility/a11y-padding]

@@ -42,8 +42,10 @@ import {
   addNameListRules,
   addWordGapEdits,
   classStatementRules,
+  collectPlaceEdits,
   collectTextEndEdits,
   endsTheLineWithDirectives,
+  endsWithPlaceAfterText,
   skipBlanksAndDirectives,
   trimmedTextEnd,
   styleUnitsCanCompact,
@@ -491,23 +493,25 @@ function layoutUsecaseAccessibility(
     // trimmed of every whitespace character (see `trimmedLiteralRange`), so any
     // of them after its last directive is a blank, as a space or a tab is.
     const textStart = skipBlanksAndDirectives(source, valueRange, isWhitespace)
+    const textRange: Range = [textStart, valueRange[1]]
+    const endsWithDirectives = endsTheLineWithDirectives(
+      source,
+      textRange,
+      isWhitespace,
+    )
     if (
-      endsTheLineWithDirectives(
-        source,
-        [textStart, valueRange[1]],
-        isWhitespace,
-      )
+      endsWithDirectives ||
+      endsWithPlaceAfterText(source, textRange, isWhitespace, "anything")
     ) {
+      const collapsesRuns =
+        statement.type === "UsecaseAccDescrStatement" &&
+        textStart === valueRange[0]
       replaceInAtoms(
         source,
         atoms,
-        collectTextEndEdits(
-          source,
-          textStart,
-          valueRange[1],
-          statement.type === "UsecaseAccDescrStatement" &&
-            textStart === valueRange[0],
-        ),
+        endsWithDirectives
+          ? collectTextEndEdits(source, textStart, valueRange[1], collapsesRuns)
+          : collectPlaceEdits(source, textRange, collapsesRuns),
       )
     }
   }

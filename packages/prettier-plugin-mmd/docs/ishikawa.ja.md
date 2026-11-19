@@ -556,6 +556,23 @@ mermaid.js が行を読む前にディレクティブを除くためです。
 [test: ishikawa: U+00A0 after a directive over lines stays]
 [fixture: ishikawa/trailing-whitespace/directive-lines-before-directive-runs-kept]
 
+末尾のディレクティブの前のリテラルが `;` を含んでも、何も変わりません。
+`A;b  %%{z}%%  ` は `A;b %%{z}%%` と印字し、
+リテラルの連なりも空白 1 つにします。
+`A;  b  %%{z}%%  ` は `A; b %%{z}%%` です。
+単語の間にディレクティブがあるリテラルと、U+2028 か U+2029 を含むリテラルは、
+最後のディレクティブの後の空白とタブを除くだけで、書かれたままにします。
+最後のディレクティブが、
+空白かタブで前のディレクティブから隔てられているリテラルも同じです。
+`A;b  %%{x}%%  %%{z}%%  ` は `A;b  %%{x}%%  %%{z}%%` と印字します。
+
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-run-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-after-inner-directive-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directives-after-semicolon-text-gap-kept]
+[test: ishikawa: U+2028 in the literal before the last directive]
+[test: ishikawa: U+2029 in the literal before the last directive]
+
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。
 
