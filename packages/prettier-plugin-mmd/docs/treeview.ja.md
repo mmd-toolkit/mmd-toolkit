@@ -64,8 +64,9 @@ mermaid.js のドキュメントの木の図 13 件のうち、10 件は字下�
 字下げで書かれた入力は字下げモードのままです。
 これらの入力には、罫線の形がないものがあります。
 罫線のモードで書くと、複数行の引用名や別の行の注釈のように、
-枝の前置部分を持たずに続く行は拒否され、
-その前に `│` を付けると `│` という名前のノードが増えます。
+枝の前置部分を持たずに続く行は拒否されます。
+注釈の前に `│` を付けると `│` という名前のノードが増え、
+引用名の 2 行目の前に付けた `│` は名前の文字になります。
 モードは見出し後の論理 LF 行で判定し、値の内部も調べます。
 空白だけ、コメント形、メタデータ形、縦線だけの行を除きます。
 前置部分の有無だけでは判定しません。
@@ -81,6 +82,7 @@ mermaid.js のドキュメントの木の図 13 件のうち、10 件は字下�
 [corpus fixture: treeview/box-written-tree]
 [corpus fixture: treeview/box-entity-mixed-indent]
 [corpus fixture: treeview/box-quoted-indent-error]
+[corpus fixture: treeview/box-multiline-quoted]
 [corpus fixture: treeview/box-decoration-annotation-gap]
 [corpus fixture: treeview/box-decoration-only]
 
@@ -2780,6 +2782,7 @@ HTML の引用符の危険と囲みの区切りを作る本文は保ちます。
 本文の `---` は名前のまま、拒否される保持 YAML は昇格も修復もしません。
 
 [fixture: treeview/frontmatter-yaml/frontmatter-safe]
+[fixture: treeview/frontmatter-yaml/frontmatter-colon-spacing]
 
 [fixture: treeview/frontmatter-yaml/frontmatter-zero-scalar]
 
@@ -3058,14 +3061,16 @@ EOF の未完ディレクティブと保護・原文保持の終端は共有の�
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [c4](./c4.ja.md#末尾の改行)、[ishikawa](./ishikawa.ja.md#final-newline)、
 [kanban](./kanban.ja.md#末尾の改行)は、
-テキストを終える閉じていないディレクティブを、空白でない最後の文字まで読みます。
-ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数え、
-treeView も同じです。
-テキストがその文字の直後で終わるときは、その後ろに何も足しません。
-後ろに空白（空白、タブ、U+00A0、U+3000、U+FEFF、改ページ、垂直タブ、改行、
-空行）が続くときは、空白を落とし、改行 1 つでテキストを終えます。
-`%%{unfinished` と空白 2 つは `%%{unfinished` と改行を印字し、`%%{unfinished`、
-U+2028、空白は `%%{unfinished`、U+2028、改行を印字します。
+単独の行にある閉じていないディレクティブを、空白でない最後の文字まで読みます。
+treeView も同じで、ノードの行にあるときもそうです。
+ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
+その文字の後ろの空白（空白、タブ、U+00A0、U+3000、U+FEFF、U+2003、改ページ、
+垂直タブ、改行、空行）は落とし、改行 1 つでテキストを終えます。
+何も足さないのは、テキストがその文字の直後で終わり、
+その文字が U+2028 でも U+2029 でもないときだけです。
+`%%{unfinished` と空白 2 つは `%%{unfinished` と改行を、
+`%%{unfinished` と U+2028 は `%%{unfinished`、U+2028、改行を、
+`"R"%%{unfinished` と空白 2 つは `"R"%%{unfinished` と改行を印字します。
 拒否される未使用の字下げの連なりは、両端の空白を除いて受理させません。
 
 [fixture: treeview/final-newline/eof-node]
@@ -3090,6 +3095,13 @@ U+2028、空白は `%%{unfinished`、U+2028、改行を印字します。
 [test: treeview/final-newline/open-directive-u2028-space]
 [test: treeview/final-newline/open-directive-nel]
 [test: treeview/final-newline/open-directive-zero-width-space]
+[test: treeview/final-newline/open-directive-u180e]
+[test: treeview/final-newline/open-directive-u2003]
+[test: treeview/final-newline/open-directive-after-node-nothing-after]
+[test: treeview/final-newline/open-directive-after-node-two-spaces]
+[test: treeview/final-newline/open-directive-after-node-tab]
+[test: treeview/final-newline/open-directive-after-node-u2028]
+[test: treeview/final-newline/open-directive-after-node-line-break-spaces]
 
 [fixture: treeview/final-newline/eof-comment]
 

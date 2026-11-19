@@ -63,15 +63,16 @@ characters, so [rule 3](./printed-form.md#3-a-spelling) gives the indentation
 form, and an input written with indentation stays in indentation mode. Some of
 these inputs have no box form: written in box mode, a line that goes on without
 a branch prefix, such as a quoted name over several lines or an annotation on a
-line of its own, is rejected, and a `│` put before it adds a node named `│`. The
-mode test still examines logical LF lines after the header, including value
-interiors, excluding whitespace-only, comment-shaped, metadata-shaped and
-vertical-only lines. Prefix presence alone is insufficient. In box mode redraw
-ordinary outer structure from the AST forest; do not convert indentation-mode
-input into a box diagram. Preserve the mode and the reading of enclosed box
-forms, using the body-retention conditions in Branch prefixes. Common statement
-prefixes are removed and ordinary common statements use column one, so they do
-not appear as children.
+line of its own, is rejected; a `│` put before an annotation adds a node named
+`│`, while a `│` put before the second line of a quoted name is a character of
+the name. The mode test still examines logical LF lines after the header,
+including value interiors, excluding whitespace-only, comment-shaped,
+metadata-shaped and vertical-only lines. Prefix presence alone is insufficient.
+In box mode redraw ordinary outer structure from the AST forest; do not convert
+indentation-mode input into a box diagram. Preserve the mode and the reading of
+enclosed box forms, using the body-retention conditions in Branch prefixes.
+Common statement prefixes are removed and ordinary common statements use column
+one, so they do not appear as children.
 
 Box characters inside a comment line do not select box mode; in indentation mode
 that comment aligns with the following statement.
@@ -79,6 +80,7 @@ that comment aligns with the following statement.
 [fixture: treeview/modes/comment-excluded] [corpus fixture:
 treeview/box-written-tree] [corpus fixture: treeview/box-entity-mixed-indent]
 [corpus fixture: treeview/box-quoted-indent-error] [corpus fixture:
+treeview/box-multiline-quoted] [corpus fixture:
 treeview/box-decoration-annotation-gap] [corpus fixture:
 treeview/box-decoration-only]
 
@@ -2760,7 +2762,8 @@ trivia uses root placement; a second-scan Comment and its inner Root directive
 print once. Body `---` stays a name, and rejected retained YAML is never
 promoted or repaired.
 
-[fixture: treeview/frontmatter-yaml/frontmatter-safe]
+[fixture: treeview/frontmatter-yaml/frontmatter-safe] [fixture:
+treeview/frontmatter-yaml/frontmatter-colon-spacing]
 
 [fixture: treeview/frontmatter-yaml/frontmatter-zero-scalar]
 
@@ -3037,16 +3040,17 @@ exceptions. Rule 1 names no mark for the end of a text that has an open
 directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [c4](./c4.md#final-newline), [ishikawa](./ishikawa.md#final-newline),
-and [kanban](./kanban.md#final-newline) read an open directive that ends the
-text up to its last character that is not whitespace, where U+2028, U+2029,
-U+0085, U+180E, and U+200B count as characters that are not whitespace, and so
-does a treeView. Where the text ends right after that character, nothing is
-added after it. Where whitespace follows it (spaces, tabs, a U+00A0, a U+3000, a
-U+FEFF, a form feed, a vertical tab, line breaks, empty lines), the whitespace
-is dropped and one line break ends the text: `%%{unfinished` and two spaces
-print `%%{unfinished` and a line break, and `%%{unfinished`, U+2028, and a space
-print `%%{unfinished`, U+2028, and a line break. Rejected unused indentation
-runs are not trimmed into accepted input.
+and [kanban](./kanban.md#final-newline) read an open directive on a line of its
+own up to its last character that is no whitespace, and treeView does too, also
+after a node on its line. U+2028, U+2029, U+0085, U+180E, and U+200B are no
+whitespace here. The whitespace after that character is dropped (spaces, tabs, a
+U+00A0, a U+3000, a U+FEFF, a U+2003, a form feed, a vertical tab, line breaks,
+empty lines), and one line break ends the text; nothing is added only where the
+text ends right after the character and it is no U+2028 or U+2029.
+`%%{unfinished` and two spaces print `%%{unfinished` and a line break,
+`%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line break, and
+`"R"%%{unfinished` and two spaces print `"R"%%{unfinished` and a line break.
+Rejected unused indentation runs are not trimmed into accepted input.
 
 [fixture: treeview/final-newline/eof-node] [fixture:
 treeview/final-newline/eof-open-directive] [fixture:
@@ -3069,7 +3073,14 @@ treeview/final-newline/open-directive-u2029] [test:
 treeview/final-newline/open-directive-space-u2028] [test:
 treeview/final-newline/open-directive-u2028-space] [test:
 treeview/final-newline/open-directive-nel] [test:
-treeview/final-newline/open-directive-zero-width-space]
+treeview/final-newline/open-directive-zero-width-space] [test:
+treeview/final-newline/open-directive-u180e] [test:
+treeview/final-newline/open-directive-u2003] [test:
+treeview/final-newline/open-directive-after-node-nothing-after] [test:
+treeview/final-newline/open-directive-after-node-two-spaces] [test:
+treeview/final-newline/open-directive-after-node-tab] [test:
+treeview/final-newline/open-directive-after-node-u2028] [test:
+treeview/final-newline/open-directive-after-node-line-break-spaces]
 
 [fixture: treeview/final-newline/eof-comment]
 

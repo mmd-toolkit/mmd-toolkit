@@ -10,6 +10,48 @@ interface TreeviewCase {
 
 export const treeviewCases: readonly TreeviewCase[] = [
   {
+    name: "treeview/final-newline/open-directive-u180e",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u180e',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\u180e',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-u2003",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u2003',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-node-nothing-after",
+    input: 'treeView-beta\n"R"%%{unfinished',
+    output: 'treeView-beta\n  "R"%%{unfinished',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-node-two-spaces",
+    input: 'treeView-beta\n"R"%%{unfinished  ',
+    output: 'treeView-beta\n  "R"%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-node-tab",
+    input: 'treeView-beta\n"R"%%{unfinished\u0009',
+    output: 'treeView-beta\n  "R"%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-node-u2028",
+    input: 'treeView-beta\n"R"%%{unfinished\u2028',
+    output: 'treeView-beta\n  "R"%%{unfinished\u2028\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-node-line-break-spaces",
+    input: 'treeView-beta\n"R"%%{unfinished\n  ',
+    output: 'treeView-beta\n  "R"%%{unfinished\n',
+    options: {},
+  },
+  {
     name: "treeview/final-newline/open-directive-nothing-after",
     input: 'treeView-beta\n"R"\n%%{unfinished',
     output: 'treeView-beta\n  "R"\n%%{unfinished',
