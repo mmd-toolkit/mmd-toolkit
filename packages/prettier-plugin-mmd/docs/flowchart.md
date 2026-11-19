@@ -171,7 +171,9 @@ This includes a line that stays as written because an ignored `;` stands next to
 another `;`: `accDescr {style:#x} direction LR;;` stays at the first column,
 also in a subgraph and in a swimlane diagram, since mermaid.js reads an empty
 description where it is indented. The text after the direction value on that
-line is not a statement, and stays as written.
+line is not a statement, and stays as written. Dropping the last `;` of the line
+would make the one before it the ignored one (see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)).
 
 [fixture: indentation/verbatim-direction-description] [fixture:
 indentation/verbatim-direction-description-in-subgraph] [fixture:
@@ -1201,7 +1203,10 @@ parentheses, as under [Directives](#directives).
 [fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
 
 A statement written over several lines is kept as written, so it keeps the line
-break between the parentheses and a comment line there.
+break between the parentheses and a comment line there. mermaid.js keeps the
+text between the parentheses of a call in the Db, and the arguments that are
+drawn the same do not include one with a line break (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
 
 [fixture: whitespace-between-tokens/callback-blank-parentheses-lines]
 
@@ -2315,7 +2320,9 @@ For an eligible multiline block, move every body line by the same number of
 ASCII spaces until the shallowest line with text stands one level inside its
 statement. This preserves relative indentation, including nested YAML, and can
 move lines inward or outward. A `}` alone on its line aligns with the statement;
-a `}` after body text stays there and moves with that line.
+a `}` after body text stays there and moves with that line. A `}` after body
+text is a character of its line, and moving it to a line of its own would add a
+last line of spaces to the block text, which a literal or folded scalar keeps.
 
 [fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
 [fixture: data-blocks/closing-after-text]
@@ -2520,7 +2527,12 @@ statement `;` beside the block keep their own rules. CRLF and CR follow
 data blocks: flowchart U+2029]
 
 An indented comment line inside an eligible block moves with the other body
-lines, keeping its authored line and text.
+lines, keeping its authored line and text. Rule 1 names no mark for a comment
+line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#empty-description-blocks) and
+[block](./block.md#empty-description-blocks) stand a comment line of a block one
+level inside and keep its contents and line breaks.
 
 [fixture: data-blocks/indented-comment-line]
 
@@ -3061,7 +3073,9 @@ title of a flowchart subgraph header]
 On a line that the line rule may read, the whitespace after the `[` of a title
 that follows `style:` stays: `subgraph style:[ #x; ]` is printed
 `subgraph style:[ #x;]`, while `subgraph a: [ #x; ]` is printed
-`subgraph a:[#x;]`, since no `style` stands before its `:`.
+`subgraph a:[#x;]`, since no `style` stands before its `:`. Whether whitespace
+stands between the `:` and a later `#` decides whether the line rule ignores the
+`;` (see [Semicolons](#semicolons)).
 
 [fixture: subgraph-header/title-padding-on-line-rule-line]
 

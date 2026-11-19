@@ -179,6 +179,9 @@ direction 行はそれより前へは届きません。
 先頭の桁に残します。
 字下げすると、mermaid.js が空の説明を読むからです。
 その行で方向の値より後ろにあるテキストは文ではなく、書かれたまま残します。
+その行の最後の `;` を除くと、その前の `;` が無視される `;` になります。
+詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)
+を参照してください。
 
 [fixture: indentation/verbatim-direction-description]
 [fixture: indentation/verbatim-direction-description-in-subgraph]
@@ -1243,6 +1246,11 @@ mermaid.js はどちらも引数のない同じ呼び出しとして読むから
 [fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
 
 複数行に書かれた文は書かれたまま残すので、括弧の間の改行とコメント行も残ります。
+mermaid.js は呼び出しの括弧の間のテキストを Db に保ちます。
+同じに描かれる引数に、改行を含むものはありません。
+詳しくは
+[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)
+を参照してください。
 
 [fixture: whitespace-between-tokens/callback-blank-parentheses-lines]
 
@@ -2386,6 +2394,9 @@ flowchart LR
 入れ子の YAML を含む行どうしの字下げの差を保ち、内側にも外側にも動かします。
 単独行の `}` は文の段に揃え、
 本文の後の `}` はその行に残して行と一緒に動かします。
+本文の後の `}` はその行の文字であり、`}` を独立した行に動かすと、
+ブロックのテキストの最後に空白だけの行が増えます。
+リテラルスカラーや折りたたみスカラーは、その行を保ちます。
 
 [fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
 [fixture: data-blocks/closing-after-text]
@@ -2603,6 +2614,11 @@ CRLF と CR は `endOfLine` に従い、値の U+2028 と U+2029 は文字とし
 
 移動できるブロック内の字下げしたコメント行は、ほかの本文行と一緒に動かし、
 書かれた行とテキストを保ちます。
+規則 1 は、ブロックの中のコメント行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[xychart](./xychart.ja.md#空の説明ブロック) と
+[block](./block.ja.md#空の説明ブロック) も、
+ブロックのコメント行を 1 段内側に置き、内容と改行を保ちます。
 
 [fixture: data-blocks/indented-comment-line]
 
@@ -3165,6 +3181,9 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 `subgraph style:[ #x; ]` は `subgraph style:[ #x;]` になり、
 `subgraph a: [ #x; ]` は、
 `:` の前に `style` がないので `subgraph a:[#x;]` になります。
+`:` と後ろの `#` の間に空白があるかどうかで、
+行の規則が `;` を無視するかどうかが決まります。
+詳しくは [セミコロン](#セミコロン) を参照してください。
 
 [fixture: subgraph-header/title-padding-on-line-rule-line]
 
