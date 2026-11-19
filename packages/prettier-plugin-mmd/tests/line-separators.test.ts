@@ -4829,6 +4829,27 @@ describe("a sequence diagram with a line separator that is rejected", () => {
   )
 })
 
+/** Texts that mermaid.js rejects: the text ends in the style context after a directive that follows whitespace (docs/er.md, Line separators). */
+const rejectedErStyleExamples: readonly (readonly [string, string])[] = [
+  [
+    "ER a style, two U+2028 or U+2029, a space, and a directive at the end of the text",
+    "erDiagram\nA\nstyle A fill:red\u2028\u2029 %%{init: {}}%%\n",
+  ],
+  [
+    "ER a classDef, two U+2028 or U+2029, a space, and a directive at the end of the text",
+    "erDiagram\nA:::k\nclassDef k fill:red\u2028\u2029 %%{init: {}}%%\n",
+  ],
+]
+
+describe("an ER style that is rejected", () => {
+  it.each(rejectedErStyleExamples)(
+    "reports a syntax error for %s",
+    async (_name, input) => {
+      await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
+    },
+  )
+})
+
 describe("a flowchart with a line separator", () => {
   it.each(flowchartExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
@@ -6748,6 +6769,21 @@ describe("style semicolons", () => {
       "ER a style that no semicolon ends keeps the U+2028 that a no-break space follows",
       "erDiagram\nA\nstyle A fill:red\u2028\u00a0\nx\n",
       "erDiagram\n  A\n  style A fill:red\u2028\u00a0\n  x\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 and a space before a directive that a statement follows",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029 %%{init: {}}%%\nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029 %%{init: {}}%%\nx\n",
+    ],
+    [
+      "ER a classDef that no semicolon ends keeps two U+2028 or U+2029 and a space before a directive that a statement follows",
+      "erDiagram\nA:::k\nclassDef k fill:red\u2028\u2029 %%{init: {}}%%\nx\n",
+      "erDiagram\n  A:::k\n  classDef k fill:red\u2028\u2029 %%{init: {}}%%\nx\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 and a space before a directive that a comment line and a statement follow",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029 %%{init: {}}%%\n%% c\nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029 %%{init: {}}%%\n%% c\nx\n",
     ],
     [
       "flowchart directive, direct, NBSP and bare percent controls",

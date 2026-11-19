@@ -2660,6 +2660,9 @@ mermaid.js は style 自身の行にあるコメントを拒否し、
 コメント行がテキストの終わりに続くと、文字のないテキストは拒否されます。
 文が続くときは、style のテキストがその文を取り込みます。
 文字と改行の間に空白があるとき、コメント行の後に文が続くときも同じです。
+そのようなディレクティブの直後でテキストが終わると、ディレクティブが空白を残し、
+テキストが style の文脈で終わるので、mermaid.js も拒否し、整形も拒否します。
+
 文字に接するディレクティブは何も残しません。
 `style A fill:red`、U+2028、ディレクティブは、書かれたまま印字します。
 落とす文字の前の色は、すぐに小文字で印字します。
@@ -2673,6 +2676,11 @@ mermaid.js は style 自身の行にあるコメントを拒否し、
 [test: ER a style that no semicolon ends is printed without the U+2028 that ends it before several comment lines at the end of the text]
 [test: ER a classDef that no semicolon ends is printed without the U+2029 and the space after it before a comment line at the end of the text]
 [test: ER a style that no semicolon ends keeps the U+2028 that a no-break space follows]
+[test: ER a style that no semicolon ends keeps two U+2028 or U+2029 and a space before a directive that a statement follows]
+[test: ER a classDef that no semicolon ends keeps two U+2028 or U+2029 and a space before a directive that a statement follows]
+[test: ER a style that no semicolon ends keeps two U+2028 or U+2029 and a space before a directive that a comment line and a statement follow]
+[test: ER a style, two U+2028 or U+2029, a space, and a directive at the end of the text]
+[test: ER a classDef, two U+2028 or U+2029, a space, and a directive at the end of the text]
 [test: ER a style that no semicolon ends keeps the U+2028 and the no-break space after it where the text ends]
 [test: ER a style that no semicolon ends is printed without the U+2028 and the no-break space after it before a comment line at the end of the text]
 [test: ER a terminator after U+2028 and whitespace of another kind is dropped with all of them]

@@ -2670,10 +2670,12 @@ read and leaves its whitespace behind: where whitespace stands between the
 character and the directive, the text without the character is rejected where
 comment lines end the text, and where a statement follows, the style takes the
 statement into its text, as it does after whitespace between the character and
-the line break and after a comment line. A directive that touches the character
-leaves nothing behind: `style A fill:red`, U+2028, and a directive are printed
-as written. A color before a dropped character is printed in lower case at once:
-`fill:#F9F` and U+2028 is printed `fill: #f9f`.
+the line break and after a comment line. A text that ends right after such a
+directive is rejected, by mermaid.js too, since the directive leaves its
+whitespace behind and the text ends in the style context. A directive that
+touches the character leaves nothing behind: `style A fill:red`, U+2028, and a
+directive are printed as written. A color before a dropped character is printed
+in lower case at once: `fill:#F9F` and U+2028 is printed `fill: #f9f`.
 
 [test: ER a style that no semicolon ends is printed without the U+2028 or U+2029
 that ends it, before a statement and at the end of the text] [test: ER a style
@@ -2687,81 +2689,88 @@ semicolon ends is printed without the U+2028 that ends it before several comment
 lines at the end of the text] [test: ER a classDef that no semicolon ends is
 printed without the U+2029 and the space after it before a comment line at the
 end of the text] [test: ER a style that no semicolon ends keeps the U+2028 that
-a no-break space follows] [test: ER a style that no semicolon ends keeps the
-U+2028 and the no-break space after it where the text ends] [test: ER a style
-that no semicolon ends is printed without the U+2028 and the no-break space
-after it before a comment line at the end of the text] [test: ER a terminator
-after U+2028 and whitespace of another kind is dropped with all of them] [test:
-ER a style that no semicolon ends keeps the U+2028 that a comment follows on its
-line] [test: ER a style that no semicolon ends prints two spaces between the
-U+2028 and a comment on its line as one space] [test: ER a style that no
-semicolon ends prints a tab between the U+2028 and a comment on its line as one
-space] [test: ER a style that no semicolon ends keeps two U+2028 or U+2029 that
-a comment follows on its line] [test: ER a style that no semicolon ends keeps
-the two characters before a comment on their line that a statement follows]
-[test: ER a style that no semicolon ends keeps the U+2028 that whitespace and a
-directive follow on its line] [test: ER a style that no semicolon ends prints
-two spaces between the U+2028 and a directive that comment lines follow as one
-space] [test: ER a style that no semicolon ends keeps the two characters before
-a directive that a comment line and a statement follow] [test: ER a style that
-no semicolon ends prints two spaces between the U+2028 and a directive and a
-comment on their line as one space] [test: ER a classDef that no semicolon ends
-keeps U+2029 and U+2028 before a directive and a comment at the end of the text]
-[test: ER a style that no semicolon ends keeps the U+2028 that a comment line
-and then a directive line follow] [test: ER a style that no semicolon ends is
-printed without the U+2028 that a directive line and then a comment line follow]
-[test: ER a style that no semicolon ends is printed without the U+2028 that a
-blank line and then a comment line follow] [test: ER a style that no semicolon
-ends keeps the U+2028 that a comment line, a blank line, and a statement follow]
-[test: ER a style that no semicolon ends keeps the two characters before a
-directive that a comment line and then a directive line follow] [test: ER a
-style that no semicolon ends keeps the U+2028 before a directive and a comment
-on its line that a statement follows] [test: ER a style that no semicolon ends
-is printed without the U+2028 that a directive line and then a statement follow]
-[test: ER a style that no semicolon ends keeps the two characters before a
-directive and a comment that a statement follows] [test: ER a style that no
-semicolon ends keeps the U+2028 that a directive touches] [test: ER a style that
-no semicolon ends keeps the U+2028 that a directive touches before a comment
-line] [test: ER a style that no semicolon ends keeps the U+2028 that a directive
-touches where a comment line and a statement follow] [test: ER a style that no
-semicolon ends keeps the two characters that a directive touches before a
-comment line] [test: ER a style that no semicolon ends keeps the two characters
-that a directive touches where a directive line follows] [test: ER a style that
-no semicolon ends keeps the two characters that a directive touches where the
-text ends] [test: ER a style that no semicolon ends keeps a no-break space and
-the U+2028 that a directive touches] [test: ER a classDef that no semicolon ends
-keeps a no-break space and the U+2028 that a directive touches] [test: ER a
-style that no semicolon ends keeps the whitespace inside its styles and prints a
-run between its parts as one space before two U+2028 or U+2029 and a comment]
+a no-break space follows] [test: ER a style that no semicolon ends keeps two
+U+2028 or U+2029 and a space before a directive that a statement follows] [test:
+ER a classDef that no semicolon ends keeps two U+2028 or U+2029 and a space
+before a directive that a statement follows] [test: ER a style that no semicolon
+ends keeps two U+2028 or U+2029 and a space before a directive that a comment
+line and a statement follow] [test: ER a style, two U+2028 or U+2029, a space,
+and a directive at the end of the text] [test: ER a classDef, two U+2028 or
+U+2029, a space, and a directive at the end of the text] [test: ER a style that
+no semicolon ends keeps the U+2028 and the no-break space after it where the
+text ends] [test: ER a style that no semicolon ends is printed without the
+U+2028 and the no-break space after it before a comment line at the end of the
+text] [test: ER a terminator after U+2028 and whitespace of another kind is
+dropped with all of them] [test: ER a style that no semicolon ends keeps the
+U+2028 that a comment follows on its line] [test: ER a style that no semicolon
+ends prints two spaces between the U+2028 and a comment on its line as one
+space] [test: ER a style that no semicolon ends prints a tab between the U+2028
+and a comment on its line as one space] [test: ER a style that no semicolon ends
+keeps two U+2028 or U+2029 that a comment follows on its line] [test: ER a style
+that no semicolon ends keeps the two characters before a comment on their line
+that a statement follows] [test: ER a style that no semicolon ends keeps the
+U+2028 that whitespace and a directive follow on its line] [test: ER a style
+that no semicolon ends prints two spaces between the U+2028 and a directive that
+comment lines follow as one space] [test: ER a style that no semicolon ends
+keeps the two characters before a directive that a comment line and a statement
+follow] [test: ER a style that no semicolon ends prints two spaces between the
+U+2028 and a directive and a comment on their line as one space] [test: ER a
+classDef that no semicolon ends keeps U+2029 and U+2028 before a directive and a
+comment at the end of the text] [test: ER a style that no semicolon ends keeps
+the U+2028 that a comment line and then a directive line follow] [test: ER a
+style that no semicolon ends is printed without the U+2028 that a directive line
+and then a comment line follow] [test: ER a style that no semicolon ends is
+printed without the U+2028 that a blank line and then a comment line follow]
+[test: ER a style that no semicolon ends keeps the U+2028 that a comment line, a
+blank line, and a statement follow] [test: ER a style that no semicolon ends
+keeps the two characters before a directive that a comment line and then a
+directive line follow] [test: ER a style that no semicolon ends keeps the U+2028
+before a directive and a comment on its line that a statement follows] [test: ER
+a style that no semicolon ends is printed without the U+2028 that a directive
+line and then a statement follow] [test: ER a style that no semicolon ends keeps
+the two characters before a directive and a comment that a statement follows]
+[test: ER a style that no semicolon ends keeps the U+2028 that a directive
+touches] [test: ER a style that no semicolon ends keeps the U+2028 that a
+directive touches before a comment line] [test: ER a style that no semicolon
+ends keeps the U+2028 that a directive touches where a comment line and a
+statement follow] [test: ER a style that no semicolon ends keeps the two
+characters that a directive touches before a comment line] [test: ER a style
+that no semicolon ends keeps the two characters that a directive touches where a
+directive line follows] [test: ER a style that no semicolon ends keeps the two
+characters that a directive touches where the text ends] [test: ER a style that
+no semicolon ends keeps a no-break space and the U+2028 that a directive
+touches] [test: ER a classDef that no semicolon ends keeps a no-break space and
+the U+2028 that a directive touches] [test: ER a style that no semicolon ends
+keeps the whitespace inside its styles and prints a run between its parts as one
+space before two U+2028 or U+2029 and a comment] [test: ER a style that no
+semicolon ends keeps two U+2028 or U+2029 that a comment touches] [test: ER a
+style that no semicolon ends keeps the whitespace between two U+2028 or U+2029
+and a comment] [test: ER a style that no semicolon ends keeps two U+2028 or
+U+2029 before a directive that a comment line follows] [test: ER a classDef that
+no semicolon ends keeps two U+2028 or U+2029 and a no-break space before a
+comment] [test: ER a style that no semicolon ends keeps U+2029 before a comment
+and a comment line] [test: ER a style that no semicolon ends keeps the two
+characters that a directive touches where a statement follows] [test: ER a style
+that no semicolon ends keeps the two characters that a directive touches where a
+directive line and then a comment line follow] [test: ER a style that no
+semicolon ends keeps the two characters that a directive touches where a
+directive line and then a statement follow] [test: ER a classDef that no
+semicolon ends keeps the U+2029 that a directive touches] [test: ER a style that
+no semicolon ends keeps two U+2028 or U+2029 that a comment with a semicolon
+follows on its line] [test: ER a style that no semicolon ends keeps two U+2028
+or U+2029 that a comment with a semicolon follows on its line before a comment
+line] [test: ER a style that no semicolon ends keeps the U+2028 that a comment
+with a semicolon follows on its line] [test: ER a style that no semicolon ends
+keeps the two characters before a comment with a semicolon on their line that a
+statement follows] [test: ER a style that no semicolon ends keeps two U+2028 or
+U+2029 that a directive and a comment with a semicolon follow on their line]
 [test: ER a style that no semicolon ends keeps two U+2028 or U+2029 that a
-comment touches] [test: ER a style that no semicolon ends keeps the whitespace
-between two U+2028 or U+2029 and a comment] [test: ER a style that no semicolon
-ends keeps two U+2028 or U+2029 before a directive that a comment line follows]
-[test: ER a classDef that no semicolon ends keeps two U+2028 or U+2029 and a
-no-break space before a comment] [test: ER a style that no semicolon ends keeps
-U+2029 before a comment and a comment line] [test: ER a style that no semicolon
-ends keeps the two characters that a directive touches where a statement
-follows] [test: ER a style that no semicolon ends keeps the two characters that
-a directive touches where a directive line and then a comment line follow]
-[test: ER a style that no semicolon ends keeps the two characters that a
-directive touches where a directive line and then a statement follow] [test: ER
-a classDef that no semicolon ends keeps the U+2029 that a directive touches]
-[test: ER a style that no semicolon ends keeps two U+2028 or U+2029 that a
-comment with a semicolon follows on its line] [test: ER a style that no
+comment with a semicolon follows on its line, with a color] [test: ER a style
+that no semicolon ends keeps the two characters of a style that holds a
+semicolon before a comment with a semicolon] [test: ER a classDef that no
 semicolon ends keeps two U+2028 or U+2029 that a comment with a semicolon
-follows on its line before a comment line] [test: ER a style that no semicolon
-ends keeps the U+2028 that a comment with a semicolon follows on its line]
-[test: ER a style that no semicolon ends keeps the two characters before a
-comment with a semicolon on their line that a statement follows] [test: ER a
-style that no semicolon ends keeps two U+2028 or U+2029 that a directive and a
-comment with a semicolon follow on their line] [test: ER a style that no
-semicolon ends keeps two U+2028 or U+2029 that a comment with a semicolon
-follows on its line, with a color] [test: ER a style that no semicolon ends
-keeps the two characters of a style that holds a semicolon before a comment with
-a semicolon] [test: ER a classDef that no semicolon ends keeps two U+2028 or
-U+2029 that a comment with a semicolon follows on its line] [test: ER a style
-that no semicolon ends is printed with its color in lower case once the U+2028
-is dropped]
+follows on its line] [test: ER a style that no semicolon ends is printed with
+its color in lower case once the U+2028 is dropped]
 
 mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
 text of that style. The printer drops it only where nothing but whitespace
