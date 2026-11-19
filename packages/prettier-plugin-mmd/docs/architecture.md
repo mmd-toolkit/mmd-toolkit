@@ -627,16 +627,18 @@ junction, or an edge) would disappear. Keep occurrences and content even though
 the architecture summary does not publish title. Trivia-bearing values and
 protected hidden boundaries keep their source gaps. Where a title has text and
 no directive stands before its text or inside it, the directives that end it are
-printed as follows, by what stands before them and after them:
+printed as follows, by what stands before them and after them. A wide space is
+one of U+000B, U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000,
+and U+FEFF:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them, and nothing but spaces and tabs follow the
   last one, one space is printed before each directive that has spaces or tabs
   before it, and the spaces and tabs after the last one are left out, whatever
   the spaces and tabs at the end of the line.
-- Where a no-break space or U+3000 stands before the directives, they touch one
-  another, and the end of the line or a comment touches the last one, the
-  character is printed as one space with the rest of its run.
+- Where a wide space stands before the directives, they touch one another, and
+  the end of the line or a comment touches the last one, the character is
+  printed as one space with the rest of its run.
 - Where a no-break space or U+3000 stands before the directives and a space and
   another directive or a comment follow the first one, the character stays.
 - Where a U+2028 or U+2029 stands before the directives, they touch one another,
@@ -644,23 +646,31 @@ printed as follows, by what stands before them and after them:
 - Where a U+2028 or U+2029 stands before the directives and spaces or tabs
   follow the last one, or a space and another directive follow the first one,
   the line stays as written.
-- Where one of U+000B, U+000C, U+1680, U+2000 to U+200A, U+202F, U+205F, and
-  U+FEFF stands before a directive and nothing follows it, it is printed as one
-  space.
-- Where a no-break space, U+3000, U+2028, or U+2029 stands between two
-  directives, the line stays as written, the spaces after the last directive
-  included.
-- Where a `;` stands in the text before the directives, the line stays as
-  written if spaces or tabs follow the last directive; if nothing follows it,
-  the spaces or the no-break space between the `;` and the directive are printed
-  as one space.
+- Where a U+2028 or U+2029 stands before the directives and a comment follows
+  the last one, the comment region joins the next line of the source (see
+  [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+  When a line with text follows, the line and that line stay as written. When
+  the text ends or an empty line follows, the U+2028 or U+2029 is dropped, the
+  directives and the comment stand on a line of their own, and a run before the
+  comment is one space.
+- Where a wide space, U+2028, or U+2029 stands between two directives and
+  nothing follows the last one, the line stays as written; so it does where
+  spaces follow the last one, for a no-break space, U+3000, U+2028, or U+2029.
+- Where a `;` stands in the line before the directives, whether the line rule of
+  mermaid.js ignores it or not, the line stays as written if spaces or tabs
+  follow the last directive, or if a space and a comment follow it. If nothing
+  follows it, a space, a tab, a wide space, U+2028, or U+2029 between the `;`
+  and the directive is printed as one space, and so are spaces where a comment
+  touches it.
 - A `;` after the last directive, or touching it, keeps the line as written.
-- A no-break space, U+3000, U+2028, or U+2029 after the last directive, also
-  after spaces or tabs, keeps the line as written, and so does a title with a
-  directive inside it and a title of directives only.
+- A wide space, U+2028, or U+2029 after the last directive keeps the line as
+  written; so does a no-break space, U+3000, U+2028, or U+2029 after spaces or
+  tabs after the last directive. A title with a directive inside it and a title
+  of directives only stay as written too.
 
-Where a comment follows the last directive, a run of spaces and tabs before each
-directive and before the comment is printed as one space (see
+Where a comment follows the last directive, and none of items 5, 6, 8 applies, a
+run of spaces and tabs before each directive and before the comment is printed
+as one space, also where the comment holds a `;` (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -743,6 +753,137 @@ semicolon touching the last directive of a title of an architecture diagram]
 [test: U+202F before the directive that ends a title of an architecture diagram]
 [test: U+205F before the directive that ends a title of an architecture diagram]
 [test: U+FEFF before the directive that ends a title of an architecture diagram]
+[test: U+000B before two directives that touch and end a title of an
+architecture diagram] [test: U+000B before a directive that a comment touches in
+a title of an architecture diagram] [test: U+000B between two directives that
+end a title of an architecture diagram] [test: U+000B after the last directive
+of a title of an architecture diagram] [test: a semicolon and U+000B before the
+directive that ends a title of an architecture diagram] [test: U+000C before two
+directives that touch and end a title of an architecture diagram] [test: U+000C
+before a directive that a comment touches in a title of an architecture diagram]
+[test: U+000C between two directives that end a title of an architecture
+diagram] [test: U+000C after the last directive of a title of an architecture
+diagram] [test: a semicolon and U+000C before the directive that ends a title of
+an architecture diagram] [test: U+1680 before two directives that touch and end
+a title of an architecture diagram] [test: U+1680 before a directive that a
+comment touches in a title of an architecture diagram] [test: U+1680 between two
+directives that end a title of an architecture diagram] [test: U+1680 after the
+last directive of a title of an architecture diagram] [test: a semicolon and
+U+1680 before the directive that ends a title of an architecture diagram] [test:
+U+2000 before two directives that touch and end a title of an architecture
+diagram] [test: U+2000 before a directive that a comment touches in a title of
+an architecture diagram] [test: U+2000 between two directives that end a title
+of an architecture diagram] [test: U+2000 after the last directive of a title of
+an architecture diagram] [test: a semicolon and U+2000 before the directive that
+ends a title of an architecture diagram] [test: U+2001 before two directives
+that touch and end a title of an architecture diagram] [test: U+2001 before a
+directive that a comment touches in a title of an architecture diagram] [test:
+U+2001 between two directives that end a title of an architecture diagram]
+[test: U+2001 after the last directive of a title of an architecture diagram]
+[test: a semicolon and U+2001 before the directive that ends a title of an
+architecture diagram] [test: U+2002 before two directives that touch and end a
+title of an architecture diagram] [test: U+2002 before a directive that a
+comment touches in a title of an architecture diagram] [test: U+2002 between two
+directives that end a title of an architecture diagram] [test: U+2002 after the
+last directive of a title of an architecture diagram] [test: a semicolon and
+U+2002 before the directive that ends a title of an architecture diagram] [test:
+U+2003 before two directives that touch and end a title of an architecture
+diagram] [test: U+2003 before a directive that a comment touches in a title of
+an architecture diagram] [test: U+2003 between two directives that end a title
+of an architecture diagram] [test: U+2003 after the last directive of a title of
+an architecture diagram] [test: a semicolon and U+2003 before the directive that
+ends a title of an architecture diagram] [test: U+2004 before two directives
+that touch and end a title of an architecture diagram] [test: U+2004 before a
+directive that a comment touches in a title of an architecture diagram] [test:
+U+2004 between two directives that end a title of an architecture diagram]
+[test: U+2004 after the last directive of a title of an architecture diagram]
+[test: a semicolon and U+2004 before the directive that ends a title of an
+architecture diagram] [test: U+2005 before two directives that touch and end a
+title of an architecture diagram] [test: U+2005 before a directive that a
+comment touches in a title of an architecture diagram] [test: U+2005 between two
+directives that end a title of an architecture diagram] [test: U+2005 after the
+last directive of a title of an architecture diagram] [test: a semicolon and
+U+2005 before the directive that ends a title of an architecture diagram] [test:
+U+2006 before two directives that touch and end a title of an architecture
+diagram] [test: U+2006 before a directive that a comment touches in a title of
+an architecture diagram] [test: U+2006 between two directives that end a title
+of an architecture diagram] [test: U+2006 after the last directive of a title of
+an architecture diagram] [test: a semicolon and U+2006 before the directive that
+ends a title of an architecture diagram] [test: U+2007 before two directives
+that touch and end a title of an architecture diagram] [test: U+2007 before a
+directive that a comment touches in a title of an architecture diagram] [test:
+U+2007 between two directives that end a title of an architecture diagram]
+[test: U+2007 after the last directive of a title of an architecture diagram]
+[test: a semicolon and U+2007 before the directive that ends a title of an
+architecture diagram] [test: U+2008 before two directives that touch and end a
+title of an architecture diagram] [test: U+2008 before a directive that a
+comment touches in a title of an architecture diagram] [test: U+2008 between two
+directives that end a title of an architecture diagram] [test: U+2008 after the
+last directive of a title of an architecture diagram] [test: a semicolon and
+U+2008 before the directive that ends a title of an architecture diagram] [test:
+U+2009 before two directives that touch and end a title of an architecture
+diagram] [test: U+2009 before a directive that a comment touches in a title of
+an architecture diagram] [test: U+2009 between two directives that end a title
+of an architecture diagram] [test: U+2009 after the last directive of a title of
+an architecture diagram] [test: a semicolon and U+2009 before the directive that
+ends a title of an architecture diagram] [test: U+200A before two directives
+that touch and end a title of an architecture diagram] [test: U+200A before a
+directive that a comment touches in a title of an architecture diagram] [test:
+U+200A between two directives that end a title of an architecture diagram]
+[test: U+200A after the last directive of a title of an architecture diagram]
+[test: a semicolon and U+200A before the directive that ends a title of an
+architecture diagram] [test: U+202F before two directives that touch and end a
+title of an architecture diagram] [test: U+202F before a directive that a
+comment touches in a title of an architecture diagram] [test: U+202F between two
+directives that end a title of an architecture diagram] [test: U+202F after the
+last directive of a title of an architecture diagram] [test: a semicolon and
+U+202F before the directive that ends a title of an architecture diagram] [test:
+U+205F before two directives that touch and end a title of an architecture
+diagram] [test: U+205F before a directive that a comment touches in a title of
+an architecture diagram] [test: U+205F between two directives that end a title
+of an architecture diagram] [test: U+205F after the last directive of a title of
+an architecture diagram] [test: a semicolon and U+205F before the directive that
+ends a title of an architecture diagram] [test: a semicolon and U+3000 before
+the directive that ends a title of an architecture diagram] [test: U+FEFF before
+two directives that touch and end a title of an architecture diagram] [test:
+U+FEFF before a directive that a comment touches in a title of an architecture
+diagram] [test: U+FEFF between two directives that end a title of an
+architecture diagram] [test: U+FEFF after the last directive of a title of an
+architecture diagram] [test: a semicolon and U+FEFF before the directive that
+ends a title of an architecture diagram] [test: a semicolon and U+2028 before
+the directive that ends a title of an architecture diagram] [test: a semicolon
+and U+2029 before the directive that ends a title of an architecture diagram]
+[test: a semicolon and a tab before the directive that ends a title of an
+architecture diagram] [test: a semicolon that the line rule ignores and spaces
+before the directive that ends a title of an architecture diagram] [test: a
+semicolon that the line rule ignores before the directive of a title of an
+architecture diagram, spaces after it] [test: a semicolon before the directive
+of a title of an architecture diagram, a space and a comment after it] [test: a
+semicolon and spaces before a directive that a comment touches in a title of an
+architecture diagram] [test: a comment that ends with a semicolon after the last
+directive of a title of an architecture diagram] [test: a comment that has a
+space before its semicolon after the last directive of a title of an
+architecture diagram] [test: a comment that starts with a semicolon after the
+last directive of a title of an architecture diagram] [test: U+2028 before a
+directive that a comment touches, a line follows, in a title of an architecture
+diagram] [test: U+2028 before a directive that a comment touches, the text ends,
+in a title of an architecture diagram] [test: U+2028 before a directive that a
+comment touches, an empty line follows, in a title of an architecture diagram]
+[test: U+2028 before a directive that a comment follows after spaces, a line
+follows, in a title of an architecture diagram] [test: U+2028 before a directive
+that a comment follows after spaces, the text ends, in a title of an
+architecture diagram] [test: U+2028 before a directive that a comment follows
+after spaces, an empty line follows, in a title of an architecture diagram]
+[test: U+2029 before a directive that a comment touches, a line follows, in a
+title of an architecture diagram] [test: U+2029 before a directive that a
+comment touches, the text ends, in a title of an architecture diagram] [test:
+U+2029 before a directive that a comment touches, an empty line follows, in a
+title of an architecture diagram] [test: U+2029 before a directive that a
+comment follows after spaces, a line follows, in a title of an architecture
+diagram] [test: U+2029 before a directive that a comment follows after spaces,
+the text ends, in a title of an architecture diagram] [test: U+2029 before a
+directive that a comment follows after spaces, an empty line follows, in a title
+of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -785,7 +926,8 @@ node, a group, a junction, or an edge) would disappear. Braces after a colon
 remain line text, and protected trivia/hidden gaps take precedence. Where a
 value has text and no directive stands before its text or inside it, the
 directives that end it are printed as follows, by what stands before them and
-after them:
+after them. The colon touches the keyword, so a gap before it is printed as no
+gap even where the line stays as written:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them, and nothing but spaces and tabs follow the
@@ -794,22 +936,25 @@ after them:
   the spaces and tabs at the end of the line.
 - Where a no-break space, U+3000, U+2028, or U+2029 stands before the last
   directive and nothing follows it, the character is printed as one space.
-- Where a no-break space stands before a directive that a space and a comment
-  follow, the character stays.
+- Where a no-break space or U+3000 stands before a directive that a space and a
+  comment follow, the character stays.
 - Where a U+2028 or U+2029 stands before the last directive and spaces or tabs
   follow it, the line stays as written.
-- Where a `;` stands in the text before the directive, the line stays as written
-  if spaces or tabs follow it; if nothing follows it, the spaces between the `;`
-  and the directive are printed as one space.
+- Where a `;` stands in the line before the directive, whether the line rule of
+  mermaid.js ignores it or not, the line stays as written if spaces or tabs
+  follow the last directive, or if a space and a comment follow it. If nothing
+  follows it, the spaces between the `;` and the directive are printed as one
+  space, and so they are where a comment touches it.
 - A `;` after the last directive keeps the line as written.
 - A no-break space, U+3000, U+2028, or U+2029 after the last directive, also
-  after spaces or tabs, keeps the line as written, and so does a value with a
-  directive inside it and a value of directives only. Where it keeps the line, a
-  gap before the colon is printed as no gap.
+  after spaces or tabs, keeps the line as written. A value with a directive
+  inside it and a value of directives only stay as written too.
 
-Where a comment follows the last directive, a run of spaces and tabs before each
-directive and before the comment is printed as one space (see
+Where a comment follows the last directive, and none of items 4, 5 applies, a
+run of spaces and tabs before each directive and before the comment is printed
+as one space, also where the comment holds a `;` (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Nothing more is stated for an accessibility line.
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 accessibility-lines/acc-directives-end-tabs-dropped] [fixture:
@@ -879,6 +1024,90 @@ semicolon before the directive of an accDescr line of an architecture diagram,
 spaces after it] [test: a semicolon and spaces before the directive that ends an
 accDescr line of an architecture diagram] [test: a semicolon after the last
 directive of an accDescr line of an architecture diagram, spaces around it]
+[test: a semicolon before the directive of an accTitle line of an architecture
+diagram, a space and a comment after it] [test: a semicolon and spaces before a
+directive that a comment touches in an accTitle line of an architecture diagram]
+[test: a comment that ends with a semicolon after the last directive of an
+accTitle line of an architecture diagram] [test: a comment that has a space
+before its semicolon after the last directive of an accTitle line of an
+architecture diagram] [test: a comment that starts with a semicolon after the
+last directive of an accTitle line of an architecture diagram] [test: a
+semicolon before the directive of an accDescr line of an architecture diagram, a
+space and a comment after it] [test: a semicolon and spaces before a directive
+that a comment touches in an accDescr line of an architecture diagram] [test: a
+comment that ends with a semicolon after the last directive of an accDescr line
+of an architecture diagram] [test: a comment that has a space before its
+semicolon after the last directive of an accDescr line of an architecture
+diagram] [test: a comment that starts with a semicolon after the last directive
+of an accDescr line of an architecture diagram] [test: U+3000 before a directive
+that a space and a comment follow in an accTitle line of an architecture
+diagram] [test: the gap before the colon of an accTitle line with U+2028 before
+the last directive, a space and a tab after it of an architecture diagram]
+[test: the gap before the colon of an accTitle line with U+2029 before the last
+directive, a space and a tab after it of an architecture diagram] [test: the gap
+before the colon of an accTitle line with a semicolon before the directive,
+spaces after it of an architecture diagram] [test: the gap before the colon of
+an accTitle line with a semicolon and spaces before the directive that ends it
+of an architecture diagram] [test: the gap before the colon of an accTitle line
+with a semicolon after the last directive of an architecture diagram] [test: the
+gap before the colon of an accTitle line with a space, a tab, and a no-break
+space after the last directive of an architecture diagram] [test: the gap before
+the colon of an accTitle line with a space, a tab, and U+3000 after the last
+directive of an architecture diagram] [test: the gap before the colon of an
+accTitle line with a space, a tab, and U+2028 after the last directive of an
+architecture diagram] [test: the gap before the colon of an accTitle line with a
+space, a tab, and U+2029 after the last directive of an architecture diagram]
+[test: a semicolon that the line rule ignores before the directive of an
+accTitle line of an architecture diagram, spaces after it] [test: U+3000 before
+a directive that a space and a comment follow in an accDescr line of an
+architecture diagram] [test: the gap before the colon of an accDescr line with
+U+2028 before the last directive, a space and a tab after it of an architecture
+diagram] [test: the gap before the colon of an accDescr line with U+2029 before
+the last directive, a space and a tab after it of an architecture diagram]
+[test: the gap before the colon of an accDescr line with a semicolon before the
+directive, spaces after it of an architecture diagram] [test: the gap before the
+colon of an accDescr line with a semicolon and spaces before the directive that
+ends it of an architecture diagram] [test: the gap before the colon of an
+accDescr line with a semicolon after the last directive of an architecture
+diagram] [test: the gap before the colon of an accDescr line with a space, a
+tab, and a no-break space after the last directive of an architecture diagram]
+[test: the gap before the colon of an accDescr line with a space, a tab, and
+U+3000 after the last directive of an architecture diagram] [test: the gap
+before the colon of an accDescr line with a space, a tab, and U+2028 after the
+last directive of an architecture diagram] [test: the gap before the colon of an
+accDescr line with a space, a tab, and U+2029 after the last directive of an
+architecture diagram] [test: a semicolon that the line rule ignores before the
+directive of an accDescr line of an architecture diagram, spaces after it]
+[test: the gap before the colon of an accTitle line that holds only `a;` of an
+architecture diagram] [test: the gap before the colon of an accDescr line that
+holds only `a;` of an architecture diagram] [test: the gap before the colon of
+an accTitle line that holds only `style:#x;` of an architecture diagram] [test:
+U+2028 before a directive that a comment touches, a line follows, in an accTitle
+line of an architecture diagram] [test: U+2028 before a directive that a comment
+touches, the text ends, in an accTitle line of an architecture diagram] [test:
+U+2028 before a directive that a comment follows after spaces, a line follows,
+in an accTitle line of an architecture diagram] [test: U+2028 before a directive
+that a comment follows after spaces, the text ends, in an accTitle line of an
+architecture diagram] [test: U+2029 before a directive that a comment touches, a
+line follows, in an accTitle line of an architecture diagram] [test: U+2029
+before a directive that a comment touches, the text ends, in an accTitle line of
+an architecture diagram] [test: U+2029 before a directive that a comment follows
+after spaces, a line follows, in an accTitle line of an architecture diagram]
+[test: U+2029 before a directive that a comment follows after spaces, the text
+ends, in an accTitle line of an architecture diagram] [test: U+2028 before a
+directive that a comment touches, a line follows, in an accDescr line of an
+architecture diagram] [test: U+2028 before a directive that a comment touches,
+the text ends, in an accDescr line of an architecture diagram] [test: U+2028
+before a directive that a comment follows after spaces, a line follows, in an
+accDescr line of an architecture diagram] [test: U+2028 before a directive that
+a comment follows after spaces, the text ends, in an accDescr line of an
+architecture diagram] [test: U+2029 before a directive that a comment touches, a
+line follows, in an accDescr line of an architecture diagram] [test: U+2029
+before a directive that a comment touches, the text ends, in an accDescr line of
+an architecture diagram] [test: U+2029 before a directive that a comment follows
+after spaces, a line follows, in an accDescr line of an architecture diagram]
+[test: U+2029 before a directive that a comment follows after spaces, the text
+ends, in an accDescr line of an architecture diagram]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 
@@ -923,18 +1152,35 @@ decides, as [sequence](./sequence.md#multi-line-statements),
 other rule keeps the layout as written. A U+2028 or U+2029 after `accDescr`,
 with or without a space before it, is printed as a line break when a comment
 follows it, with the comment on a line of its own one level deeper, and as one
-space when a directive follows it, with the directive on the line of `accDescr`.
+space when only a directive follows it, with the directive on the line of
+`accDescr`. When a comment follows the directive, the directive and the comment
+stand on a line of their own one level deeper, as the comment does.
 
 The line that holds the `{` after a comment or a directive stands at the level
-of its statement. Of the other diagram types that accept the form, c4, class,
+of its statement. Of the 23 other diagram types that accept the form, c4, class,
 er, flowchart, gantt, journey, quadrant, requirement, sequence, state, timeline,
 and xychart print it one level deeper, with the comment line, and cynefin,
-gitgraph, info, ishikawa, packet, pie, radar, treemap, treeview, and wardley
-print it at the level of the statement. Rule 2 gives no one form for it, so the
-released form stays until it is decided.
+gitgraph, info, ishikawa, packet, pie, radar, railroad, treemap, treeview, and
+wardley print it at the level of the statement. Rule 2 gives no one form for it,
+so the released form stays until it is decided.
 
 [fixture: architecture/description-blocks/opener-trivia] [test:
-architecture/description-blocks/keyword-u2028-before-comment] [test:
+architecture/description-blocks/keyword-u2028-before-directive-touching-comment]
+[test:
+architecture/description-blocks/keyword-u2029-before-directive-touching-comment]
+[test:
+architecture/description-blocks/keyword-u2028-before-directive-and-comment]
+[test:
+architecture/description-blocks/keyword-u2029-before-directive-and-comment]
+[test:
+architecture/description-blocks/keyword-space-u2028-before-directive-touching-comment]
+[test:
+architecture/description-blocks/keyword-space-u2029-before-directive-touching-comment]
+[test:
+architecture/description-blocks/keyword-space-u2028-before-directive-and-comment]
+[test:
+architecture/description-blocks/keyword-space-u2029-before-directive-and-comment]
+[test: architecture/description-blocks/keyword-u2028-before-comment] [test:
 architecture/description-blocks/keyword-u2029-before-comment] [test:
 architecture/description-blocks/keyword-u2028-before-directive] [test:
 architecture/description-blocks/keyword-u2029-before-directive] [test:

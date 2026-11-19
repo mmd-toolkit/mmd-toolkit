@@ -106,6 +106,54 @@ export const architectureCases: readonly ArchitectureCase[] = [
     options: {},
   },
   {
+    name: "architecture/description-blocks/keyword-u2028-before-directive-touching-comment",
+    input: "architecture-beta\naccDescr\u2028%%{x}%%%% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %%{x}%%%% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-u2029-before-directive-touching-comment",
+    input: "architecture-beta\naccDescr\u2029%%{x}%%%% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %%{x}%%%% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-u2028-before-directive-and-comment",
+    input: "architecture-beta\naccDescr\u2028%%{x}%%  %% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %%{x}%% %% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-u2029-before-directive-and-comment",
+    input: "architecture-beta\naccDescr\u2029%%{x}%%  %% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %%{x}%% %% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-space-u2028-before-directive-touching-comment",
+    input: "architecture-beta\naccDescr \u2028%%{x}%%%% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %%{x}%%%% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-space-u2029-before-directive-touching-comment",
+    input: "architecture-beta\naccDescr \u2029%%{x}%%%% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %%{x}%%%% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-space-u2028-before-directive-and-comment",
+    input: "architecture-beta\naccDescr \u2028%%{x}%%  %% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %%{x}%% %% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-space-u2029-before-directive-and-comment",
+    input: "architecture-beta\naccDescr \u2029%%{x}%%  %% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %%{x}%% %% c\n  { D }\n",
+    options: {},
+  },
+  {
     name: "architecture/comments/ls-ps-content",
     input:
       "architecture-beta\n%%! X\u2028service swallowed\u2029Y\nservice visible\n",
