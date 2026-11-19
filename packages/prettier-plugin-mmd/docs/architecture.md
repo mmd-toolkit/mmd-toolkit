@@ -924,15 +924,16 @@ ends a title of an architecture diagram] [test: a semicolon and U+2028 before
 the directive that ends a title of an architecture diagram] [test: a semicolon
 and U+2029 before the directive that ends a title of an architecture diagram]
 [test: a semicolon and a tab before the directive that ends a title of an
-architecture diagram] [test: a semicolon that the line rule ignores and spaces
-before the directive that ends a title of an architecture diagram] [test: a
-semicolon that the line rule ignores before the directive of a title of an
-architecture diagram, spaces after it] [test: a semicolon before the directive
-of a title of an architecture diagram, a space and a comment after it] [test: a
-semicolon and spaces before a directive that a comment touches in a title of an
-architecture diagram] [test: a comment that ends with a semicolon after the last
-directive of a title of an architecture diagram] [test: a comment that has a
-space before its semicolon after the last directive of a title of an
+architecture diagram] [test: released output that the document does not state: a
+semicolon that the line rule ignores and spaces before the directive that ends a
+title of an architecture diagram] [test: released output that the document does
+not state: a semicolon that the line rule ignores before the directive of a
+title of an architecture diagram, spaces after it] [test: a semicolon before the
+directive of a title of an architecture diagram, a space and a comment after it]
+[test: a semicolon and spaces before a directive that a comment touches in a
+title of an architecture diagram] [test: a comment that ends with a semicolon
+after the last directive of a title of an architecture diagram] [test: a comment
+that has a space before its semicolon after the last directive of a title of an
 architecture diagram] [test: a comment that starts with a semicolon after the
 last directive of a title of an architecture diagram] [test: a semicolon inside
 the directive that ends a title, spaces after it, of an architecture diagram]
@@ -967,105 +968,118 @@ directives in a title, of an architecture diagram] [test: a semicolon between
 two directives in a title, spaces around it, of an architecture diagram] [test:
 a semicolon touching the last of two directives in a title, of an architecture
 diagram] [test: a semicolon after the last of two directives in a title, spaces
-around it and a comment after it, of an architecture diagram] [test: a second
-semicolon touching the semicolon that the line rule ignores, spaces and a
-directive after them, in a title of an architecture diagram] [test: a second
-semicolon touching the semicolon that the line rule ignores, a directive and
-spaces after them, in a title of an architecture diagram] [test: a second
-semicolon touching the semicolon that the line rule ignores, a directive
-touching them, in a title of an architecture diagram] [test: a second semicolon
-touching the semicolon that the line rule ignores, a directive that a comment
-touches, in a title of an architecture diagram] [test: a second semicolon
-touching the semicolon that the line rule ignores, a directive and a space and a
-comment, in a title of an architecture diagram] [test: spaces and a second
+around it and a comment after it, of an architecture diagram] [test: released
+output that the document does not state: a second semicolon touching the
+semicolon that the line rule ignores, spaces and a directive after them, in a
+title of an architecture diagram] [test: released output that the document does
+not state: a second semicolon touching the semicolon that the line rule ignores,
+a directive and spaces after them, in a title of an architecture diagram] [test:
+released output that the document does not state: a second semicolon touching
+the semicolon that the line rule ignores, a directive touching them, in a title
+of an architecture diagram] [test: released output that the document does not
+state: a second semicolon touching the semicolon that the line rule ignores, a
+directive that a comment touches, in a title of an architecture diagram] [test:
+released output that the document does not state: a second semicolon touching
+the semicolon that the line rule ignores, a directive and a space and a comment,
+in a title of an architecture diagram] [test: released output that the document
+does not state: spaces and a second semicolon after the semicolon that the line
+rule ignores, a directive after them, in a title of an architecture diagram]
+[test: released output that the document does not state: a space and a second
 semicolon after the semicolon that the line rule ignores, a directive after
-them, in a title of an architecture diagram] [test: a space and a second
-semicolon after the semicolon that the line rule ignores, a directive after
-them, in a title of an architecture diagram] [test: a tab and a second semicolon
-after the semicolon that the line rule ignores, a directive after them, in a
-title of an architecture diagram] [test: a no-break space and a second semicolon
-after the semicolon that the line rule ignores, a directive after them, in a
-title of an architecture diagram] [test: a second semicolon touching the
+them, in a title of an architecture diagram] [test: released output that the
+document does not state: a tab and a second semicolon after the semicolon that
+the line rule ignores, a directive after them, in a title of an architecture
+diagram] [test: released output that the document does not state: a no-break
+space and a second semicolon after the semicolon that the line rule ignores, a
+directive after them, in a title of an architecture diagram] [test: released
+output that the document does not state: a second semicolon touching the
 semicolon that the line rule ignores, a no-break space and a directive after
-them, in a title of an architecture diagram] [test: a second semicolon touching
-the semicolon that the line rule ignores, U+2028 and a directive after them, in
-a title of an architecture diagram] [test: two semicolons after the semicolon
-that the line rule ignores, a directive after them, in a title of an
-architecture diagram] [test: U+2028 and a directive after the semicolon that the
-line rule ignores, in a title of an architecture diagram] [test: U+2029 and a
-directive after the semicolon that the line rule ignores, in a title of an
-architecture diagram] [test: U+2028, a directive and spaces after the semicolon
-that the line rule ignores, in a title of an architecture diagram] [test: two
-semicolons that the line rule does not ignore, spaces and a directive after
-them, in a title of an architecture diagram] [test: text and a semicolon after
-the semicolon that the line rule does not ignore, spaces and a directive after
-them, in a title of an architecture diagram] [test: a tab and a directive after
-the semicolon that the line rule ignores, in a title of an architecture diagram]
-[test: a no-break space and a directive after the semicolon that the line rule
-ignores, in a title of an architecture diagram] [test: spaces and a directive
-that a comment touches after the semicolon that the line rule ignores, in a
-title of an architecture diagram] [test: spaces and two directives with spaces
-between them after the semicolon that the line rule ignores, in a title of an
-architecture diagram] [test: a semicolon at the end of a title with whitespace
-around its text, of an architecture diagram] [test: a semicolon in the text of a
-title, spaces and a directive after it, of an architecture diagram] [test:
-spaces around a semicolon in the text of a title, a directive after it, of an
-architecture diagram] [test: U+000B between two directives, spaces after the
-last, in a title of an architecture diagram] [test: U+000B after the last
-directive and spaces of a title of an architecture diagram] [test: U+000C
-between two directives, spaces after the last, in a title of an architecture
-diagram] [test: U+000C after the last directive and spaces of a title of an
-architecture diagram] [test: a no-break space after the last directive and
-spaces of a title of an architecture diagram] [test: U+1680 between two
+them, in a title of an architecture diagram] [test: released output that the
+document does not state: a second semicolon touching the semicolon that the line
+rule ignores, U+2028 and a directive after them, in a title of an architecture
+diagram] [test: released output that the document does not state: two semicolons
+after the semicolon that the line rule ignores, a directive after them, in a
+title of an architecture diagram] [test: released output that the document does
+not state: U+2028 and a directive after the semicolon that the line rule
+ignores, in a title of an architecture diagram] [test: released output that the
+document does not state: U+2029 and a directive after the semicolon that the
+line rule ignores, in a title of an architecture diagram] [test: released output
+that the document does not state: U+2028, a directive and spaces after the
+semicolon that the line rule ignores, in a title of an architecture diagram]
+[test: two semicolons that the line rule does not ignore, spaces and a directive
+after them, in a title of an architecture diagram] [test: released output that
+the document does not state: text and a semicolon after the semicolon that the
+line rule does not ignore, spaces and a directive after them, in a title of an
+architecture diagram] [test: released output that the document does not state: a
+tab and a directive after the semicolon that the line rule ignores, in a title
+of an architecture diagram] [test: released output that the document does not
+state: a no-break space and a directive after the semicolon that the line rule
+ignores, in a title of an architecture diagram] [test: released output that the
+document does not state: spaces and a directive that a comment touches after the
+semicolon that the line rule ignores, in a title of an architecture diagram]
+[test: released output that the document does not state: spaces and two
+directives with spaces between them after the semicolon that the line rule
+ignores, in a title of an architecture diagram] [test: a semicolon at the end of
+a title with whitespace around its text, of an architecture diagram] [test: a
+semicolon in the text of a title, spaces and a directive after it, of an
+architecture diagram] [test: spaces around a semicolon in the text of a title, a
+directive after it, of an architecture diagram] [test: U+000B between two
 directives, spaces after the last, in a title of an architecture diagram] [test:
-U+1680 after the last directive and spaces of a title of an architecture
-diagram] [test: U+2000 between two directives, spaces after the last, in a title
-of an architecture diagram] [test: U+2000 after the last directive and spaces of
-a title of an architecture diagram] [test: U+2001 between two directives, spaces
-after the last, in a title of an architecture diagram] [test: U+2001 after the
-last directive and spaces of a title of an architecture diagram] [test: U+2002
+U+000B after the last directive and spaces of a title of an architecture
+diagram] [test: U+000C between two directives, spaces after the last, in a title
+of an architecture diagram] [test: U+000C after the last directive and spaces of
+a title of an architecture diagram] [test: a no-break space after the last
+directive and spaces of a title of an architecture diagram] [test: U+1680
 between two directives, spaces after the last, in a title of an architecture
-diagram] [test: U+2002 after the last directive and spaces of a title of an
-architecture diagram] [test: U+2003 between two directives, spaces after the
-last, in a title of an architecture diagram] [test: U+2003 after the last
-directive and spaces of a title of an architecture diagram] [test: U+2004
+diagram] [test: U+1680 after the last directive and spaces of a title of an
+architecture diagram] [test: U+2000 between two directives, spaces after the
+last, in a title of an architecture diagram] [test: U+2000 after the last
+directive and spaces of a title of an architecture diagram] [test: U+2001
 between two directives, spaces after the last, in a title of an architecture
-diagram] [test: U+2004 after the last directive and spaces of a title of an
-architecture diagram] [test: U+2005 between two directives, spaces after the
-last, in a title of an architecture diagram] [test: U+2005 after the last
-directive and spaces of a title of an architecture diagram] [test: U+2006
+diagram] [test: U+2001 after the last directive and spaces of a title of an
+architecture diagram] [test: U+2002 between two directives, spaces after the
+last, in a title of an architecture diagram] [test: U+2002 after the last
+directive and spaces of a title of an architecture diagram] [test: U+2003
 between two directives, spaces after the last, in a title of an architecture
-diagram] [test: U+2006 after the last directive and spaces of a title of an
-architecture diagram] [test: U+2007 between two directives, spaces after the
-last, in a title of an architecture diagram] [test: U+2007 after the last
-directive and spaces of a title of an architecture diagram] [test: U+2008
+diagram] [test: U+2003 after the last directive and spaces of a title of an
+architecture diagram] [test: U+2004 between two directives, spaces after the
+last, in a title of an architecture diagram] [test: U+2004 after the last
+directive and spaces of a title of an architecture diagram] [test: U+2005
 between two directives, spaces after the last, in a title of an architecture
-diagram] [test: U+2008 after the last directive and spaces of a title of an
-architecture diagram] [test: U+2009 between two directives, spaces after the
-last, in a title of an architecture diagram] [test: U+2009 after the last
-directive and spaces of a title of an architecture diagram] [test: U+200A
+diagram] [test: U+2005 after the last directive and spaces of a title of an
+architecture diagram] [test: U+2006 between two directives, spaces after the
+last, in a title of an architecture diagram] [test: U+2006 after the last
+directive and spaces of a title of an architecture diagram] [test: U+2007
 between two directives, spaces after the last, in a title of an architecture
-diagram] [test: U+200A after the last directive and spaces of a title of an
-architecture diagram] [test: U+202F between two directives, spaces after the
-last, in a title of an architecture diagram] [test: U+202F after the last
-directive and spaces of a title of an architecture diagram] [test: U+205F
+diagram] [test: U+2007 after the last directive and spaces of a title of an
+architecture diagram] [test: U+2008 between two directives, spaces after the
+last, in a title of an architecture diagram] [test: U+2008 after the last
+directive and spaces of a title of an architecture diagram] [test: U+2009
 between two directives, spaces after the last, in a title of an architecture
-diagram] [test: U+205F after the last directive and spaces of a title of an
-architecture diagram] [test: U+3000 after the last directive and spaces of a
-title of an architecture diagram] [test: U+FEFF between two directives, spaces
-after the last, in a title of an architecture diagram] [test: U+FEFF after the
-last directive and spaces of a title of an architecture diagram] [test: U+2028
-after the last directive and spaces of a title of an architecture diagram]
-[test: U+2029 after the last directive and spaces of a title of an architecture
-diagram] [test: a no-break space between two directives, a comment touching the
-last, in a title of an architecture diagram] [test: a no-break space between two
-directives, a space and a comment after the last, in a title of an architecture
-diagram] [test: a no-break space between two directives, spaces and a comment
-after the last, in a title of an architecture diagram] [test: a no-break space
-after the last directive, a comment touching it, in a title of an architecture
-diagram] [test: a no-break space after the last directive, spaces and a comment
-after it, in a title of an architecture diagram] [test: a no-break space after
-the last directive and spaces, spaces and a comment after it, in a title of an
+diagram] [test: U+2009 after the last directive and spaces of a title of an
+architecture diagram] [test: U+200A between two directives, spaces after the
+last, in a title of an architecture diagram] [test: U+200A after the last
+directive and spaces of a title of an architecture diagram] [test: U+202F
+between two directives, spaces after the last, in a title of an architecture
+diagram] [test: U+202F after the last directive and spaces of a title of an
+architecture diagram] [test: U+205F between two directives, spaces after the
+last, in a title of an architecture diagram] [test: U+205F after the last
+directive and spaces of a title of an architecture diagram] [test: U+3000 after
+the last directive and spaces of a title of an architecture diagram] [test:
+U+FEFF between two directives, spaces after the last, in a title of an
+architecture diagram] [test: U+FEFF after the last directive and spaces of a
+title of an architecture diagram] [test: U+2028 after the last directive and
+spaces of a title of an architecture diagram] [test: U+2029 after the last
+directive and spaces of a title of an architecture diagram] [test: a no-break
+space between two directives, a comment touching the last, in a title of an
+architecture diagram] [test: a no-break space between two directives, a space
+and a comment after the last, in a title of an architecture diagram] [test: a
+no-break space between two directives, spaces and a comment after the last, in a
+title of an architecture diagram] [test: a no-break space after the last
+directive, a comment touching it, in a title of an architecture diagram] [test:
+a no-break space after the last directive, spaces and a comment after it, in a
+title of an architecture diagram] [test: a no-break space after the last
+directive and spaces, spaces and a comment after it, in a title of an
 architecture diagram] [test: a no-break space after the last directive and a
 tab, spaces and a comment after it, in a title of an architecture diagram]
 [test: U+2003 between two directives, a comment touching the last, in a title of
@@ -1082,202 +1096,212 @@ architecture diagram] [test: a semicolon in the text, a no-break space between
 two directives, in a title of an architecture diagram] [test: a semicolon in the
 text, a no-break space after the last directive, in a title of an architecture
 diagram] [test: a semicolon inside the directive, a no-break space after it, in
-a title of an architecture diagram] [test: U+000B between a semicolon that the
-line rule ignores and a second semicolon, a directive after them, in a title of
-an architecture diagram] [test: U+000C between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+1680 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+2000 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+2001 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+2002 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+2003 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+2004 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+2005 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+2006 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+2007 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+2008 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+2009 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+200A between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+202F between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+205F between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+3000 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+FEFF between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in a title of an
-architecture diagram] [test: U+000B before the first of two directives that a
-space separates, in a title of an architecture diagram] [test: U+000B before the
-first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+000B before a directive that spaces and a comment follow in a
-title of an architecture diagram] [test: U+000C before the first of two
-directives that a space separates, in a title of an architecture diagram] [test:
-U+000C before the first of two directives that spaces separate, in a title of an
-architecture diagram] [test: U+000C before a directive that spaces and a comment
-follow in a title of an architecture diagram] [test: a no-break space before the
-first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+1680 before the first of two directives that a space
-separates, in a title of an architecture diagram] [test: U+1680 before the first
-of two directives that spaces separate, in a title of an architecture diagram]
-[test: U+1680 before a directive that spaces and a comment follow in a title of
-an architecture diagram] [test: U+2000 before the first of two directives that a
-space separates, in a title of an architecture diagram] [test: U+2000 before the
-first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+2000 before a directive that spaces and a comment follow in a
-title of an architecture diagram] [test: U+2001 before the first of two
-directives that a space separates, in a title of an architecture diagram] [test:
-U+2001 before the first of two directives that spaces separate, in a title of an
-architecture diagram] [test: U+2001 before a directive that spaces and a comment
-follow in a title of an architecture diagram] [test: U+2002 before the first of
+a title of an architecture diagram] [test: released output that the document
+does not state: U+000B between a semicolon that the line rule ignores and a
+second semicolon, a directive after them, in a title of an architecture diagram]
+[test: released output that the document does not state: U+000C between a
+semicolon that the line rule ignores and a second semicolon, a directive after
+them, in a title of an architecture diagram] [test: released output that the
+document does not state: U+1680 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in a title of an architecture
+diagram] [test: released output that the document does not state: U+2000 between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in a title of an architecture diagram] [test: released output that the
+document does not state: U+2001 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in a title of an architecture
+diagram] [test: released output that the document does not state: U+2002 between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in a title of an architecture diagram] [test: released output that the
+document does not state: U+2003 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in a title of an architecture
+diagram] [test: released output that the document does not state: U+2004 between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in a title of an architecture diagram] [test: released output that the
+document does not state: U+2005 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in a title of an architecture
+diagram] [test: released output that the document does not state: U+2006 between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in a title of an architecture diagram] [test: released output that the
+document does not state: U+2007 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in a title of an architecture
+diagram] [test: released output that the document does not state: U+2008 between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in a title of an architecture diagram] [test: released output that the
+document does not state: U+2009 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in a title of an architecture
+diagram] [test: released output that the document does not state: U+200A between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in a title of an architecture diagram] [test: released output that the
+document does not state: U+202F between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in a title of an architecture
+diagram] [test: released output that the document does not state: U+205F between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in a title of an architecture diagram] [test: released output that the
+document does not state: U+3000 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in a title of an architecture
+diagram] [test: released output that the document does not state: U+FEFF between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in a title of an architecture diagram] [test: U+000B before the first of
 two directives that a space separates, in a title of an architecture diagram]
-[test: U+2002 before the first of two directives that spaces separate, in a
-title of an architecture diagram] [test: U+2002 before a directive that spaces
-and a comment follow in a title of an architecture diagram] [test: U+2003 before
+[test: U+000B before the first of two directives that spaces separate, in a
+title of an architecture diagram] [test: U+000B before a directive that spaces
+and a comment follow in a title of an architecture diagram] [test: U+000C before
 the first of two directives that a space separates, in a title of an
-architecture diagram] [test: U+2003 before the first of two directives that
-spaces separate, in a title of an architecture diagram] [test: U+2003 before a
+architecture diagram] [test: U+000C before the first of two directives that
+spaces separate, in a title of an architecture diagram] [test: U+000C before a
 directive that spaces and a comment follow in a title of an architecture
-diagram] [test: U+2004 before the first of two directives that a space
-separates, in a title of an architecture diagram] [test: U+2004 before the first
-of two directives that spaces separate, in a title of an architecture diagram]
-[test: U+2004 before a directive that spaces and a comment follow in a title of
-an architecture diagram] [test: U+2005 before the first of two directives that a
-space separates, in a title of an architecture diagram] [test: U+2005 before the
-first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+2005 before a directive that spaces and a comment follow in a
-title of an architecture diagram] [test: U+2006 before the first of two
-directives that a space separates, in a title of an architecture diagram] [test:
-U+2006 before the first of two directives that spaces separate, in a title of an
-architecture diagram] [test: U+2006 before a directive that spaces and a comment
-follow in a title of an architecture diagram] [test: U+2007 before the first of
-two directives that a space separates, in a title of an architecture diagram]
-[test: U+2007 before the first of two directives that spaces separate, in a
-title of an architecture diagram] [test: U+2007 before a directive that spaces
-and a comment follow in a title of an architecture diagram] [test: U+2008 before
+diagram] [test: a no-break space before the first of two directives that spaces
+separate, in a title of an architecture diagram] [test: U+1680 before the first
+of two directives that a space separates, in a title of an architecture diagram]
+[test: U+1680 before the first of two directives that spaces separate, in a
+title of an architecture diagram] [test: U+1680 before a directive that spaces
+and a comment follow in a title of an architecture diagram] [test: U+2000 before
 the first of two directives that a space separates, in a title of an
-architecture diagram] [test: U+2008 before the first of two directives that
-spaces separate, in a title of an architecture diagram] [test: U+2008 before a
+architecture diagram] [test: U+2000 before the first of two directives that
+spaces separate, in a title of an architecture diagram] [test: U+2000 before a
 directive that spaces and a comment follow in a title of an architecture
-diagram] [test: U+2009 before the first of two directives that a space
-separates, in a title of an architecture diagram] [test: U+2009 before the first
+diagram] [test: U+2001 before the first of two directives that a space
+separates, in a title of an architecture diagram] [test: U+2001 before the first
 of two directives that spaces separate, in a title of an architecture diagram]
-[test: U+2009 before a directive that spaces and a comment follow in a title of
-an architecture diagram] [test: U+200A before the first of two directives that a
-space separates, in a title of an architecture diagram] [test: U+200A before the
+[test: U+2001 before a directive that spaces and a comment follow in a title of
+an architecture diagram] [test: U+2002 before the first of two directives that a
+space separates, in a title of an architecture diagram] [test: U+2002 before the
 first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+200A before a directive that spaces and a comment follow in a
-title of an architecture diagram] [test: U+202F before the first of two
+diagram] [test: U+2002 before a directive that spaces and a comment follow in a
+title of an architecture diagram] [test: U+2003 before the first of two
 directives that a space separates, in a title of an architecture diagram] [test:
-U+202F before the first of two directives that spaces separate, in a title of an
-architecture diagram] [test: U+202F before a directive that spaces and a comment
-follow in a title of an architecture diagram] [test: U+205F before the first of
+U+2003 before the first of two directives that spaces separate, in a title of an
+architecture diagram] [test: U+2003 before a directive that spaces and a comment
+follow in a title of an architecture diagram] [test: U+2004 before the first of
 two directives that a space separates, in a title of an architecture diagram]
-[test: U+205F before the first of two directives that spaces separate, in a
-title of an architecture diagram] [test: U+205F before a directive that spaces
-and a comment follow in a title of an architecture diagram] [test: U+3000 before
-the first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+FEFF before the first of two directives that a space
-separates, in a title of an architecture diagram] [test: U+FEFF before the first
+[test: U+2004 before the first of two directives that spaces separate, in a
+title of an architecture diagram] [test: U+2004 before a directive that spaces
+and a comment follow in a title of an architecture diagram] [test: U+2005 before
+the first of two directives that a space separates, in a title of an
+architecture diagram] [test: U+2005 before the first of two directives that
+spaces separate, in a title of an architecture diagram] [test: U+2005 before a
+directive that spaces and a comment follow in a title of an architecture
+diagram] [test: U+2006 before the first of two directives that a space
+separates, in a title of an architecture diagram] [test: U+2006 before the first
 of two directives that spaces separate, in a title of an architecture diagram]
-[test: U+FEFF before a directive that spaces and a comment follow in a title of
-an architecture diagram] [test: a run before the directive after a U+2028 inside
-the text of a title of an architecture diagram] [test: spaces after the
-directive after a U+2028 inside the text of a title of an architecture diagram]
-[test: spaces after the directive after a U+2029 inside the text of a title of
-an architecture diagram] [test: spaces between two directives after a U+2028
-inside the text of a title of an architecture diagram] [test: a tab after the
-directive after a U+2028 inside the text of a title of an architecture diagram]
-[test: a run before two directives that touch after a U+2028 inside the text of
-a title of an architecture diagram] [test: U+000B and spaces before the first of
-two directives that spaces separate, in a title of an architecture diagram]
-[test: U+000C and spaces before the first of two directives that spaces
-separate, in a title of an architecture diagram] [test: a no-break space and
-spaces before the first of two directives that spaces separate, in a title of an
-architecture diagram] [test: U+1680 and spaces before the first of two
+[test: U+2006 before a directive that spaces and a comment follow in a title of
+an architecture diagram] [test: U+2007 before the first of two directives that a
+space separates, in a title of an architecture diagram] [test: U+2007 before the
+first of two directives that spaces separate, in a title of an architecture
+diagram] [test: U+2007 before a directive that spaces and a comment follow in a
+title of an architecture diagram] [test: U+2008 before the first of two
+directives that a space separates, in a title of an architecture diagram] [test:
+U+2008 before the first of two directives that spaces separate, in a title of an
+architecture diagram] [test: U+2008 before a directive that spaces and a comment
+follow in a title of an architecture diagram] [test: U+2009 before the first of
+two directives that a space separates, in a title of an architecture diagram]
+[test: U+2009 before the first of two directives that spaces separate, in a
+title of an architecture diagram] [test: U+2009 before a directive that spaces
+and a comment follow in a title of an architecture diagram] [test: U+200A before
+the first of two directives that a space separates, in a title of an
+architecture diagram] [test: U+200A before the first of two directives that
+spaces separate, in a title of an architecture diagram] [test: U+200A before a
+directive that spaces and a comment follow in a title of an architecture
+diagram] [test: U+202F before the first of two directives that a space
+separates, in a title of an architecture diagram] [test: U+202F before the first
+of two directives that spaces separate, in a title of an architecture diagram]
+[test: U+202F before a directive that spaces and a comment follow in a title of
+an architecture diagram] [test: U+205F before the first of two directives that a
+space separates, in a title of an architecture diagram] [test: U+205F before the
+first of two directives that spaces separate, in a title of an architecture
+diagram] [test: U+205F before a directive that spaces and a comment follow in a
+title of an architecture diagram] [test: U+3000 before the first of two
 directives that spaces separate, in a title of an architecture diagram] [test:
-U+2000 and spaces before the first of two directives that spaces separate, in a
-title of an architecture diagram] [test: U+2001 and spaces before the first of
-two directives that spaces separate, in a title of an architecture diagram]
-[test: U+2002 and spaces before the first of two directives that spaces
-separate, in a title of an architecture diagram] [test: U+2003 and spaces before
+U+FEFF before the first of two directives that a space separates, in a title of
+an architecture diagram] [test: U+FEFF before the first of two directives that
+spaces separate, in a title of an architecture diagram] [test: U+FEFF before a
+directive that spaces and a comment follow in a title of an architecture
+diagram] [test: a run before the directive after a U+2028 inside the text of a
+title of an architecture diagram] [test: spaces after the directive after a
+U+2028 inside the text of a title of an architecture diagram] [test: spaces
+after the directive after a U+2029 inside the text of a title of an architecture
+diagram] [test: spaces between two directives after a U+2028 inside the text of
+a title of an architecture diagram] [test: a tab after the directive after a
+U+2028 inside the text of a title of an architecture diagram] [test: a run
+before two directives that touch after a U+2028 inside the text of a title of an
+architecture diagram] [test: U+000B and spaces before the first of two
+directives that spaces separate, in a title of an architecture diagram] [test:
+U+000C and spaces before the first of two directives that spaces separate, in a
+title of an architecture diagram] [test: a no-break space and spaces before the
+first of two directives that spaces separate, in a title of an architecture
+diagram] [test: U+1680 and spaces before the first of two directives that spaces
+separate, in a title of an architecture diagram] [test: U+2000 and spaces before
 the first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+2004 and spaces before the first of two directives that spaces
-separate, in a title of an architecture diagram] [test: U+2005 and spaces before
+diagram] [test: U+2001 and spaces before the first of two directives that spaces
+separate, in a title of an architecture diagram] [test: U+2002 and spaces before
 the first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+2006 and spaces before the first of two directives that spaces
-separate, in a title of an architecture diagram] [test: U+2007 and spaces before
+diagram] [test: U+2003 and spaces before the first of two directives that spaces
+separate, in a title of an architecture diagram] [test: U+2004 and spaces before
 the first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+2008 and spaces before the first of two directives that spaces
-separate, in a title of an architecture diagram] [test: U+2009 and spaces before
+diagram] [test: U+2005 and spaces before the first of two directives that spaces
+separate, in a title of an architecture diagram] [test: U+2006 and spaces before
 the first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+200A and spaces before the first of two directives that spaces
-separate, in a title of an architecture diagram] [test: U+202F and spaces before
+diagram] [test: U+2007 and spaces before the first of two directives that spaces
+separate, in a title of an architecture diagram] [test: U+2008 and spaces before
 the first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+205F and spaces before the first of two directives that spaces
-separate, in a title of an architecture diagram] [test: U+3000 and spaces before
+diagram] [test: U+2009 and spaces before the first of two directives that spaces
+separate, in a title of an architecture diagram] [test: U+200A and spaces before
 the first of two directives that spaces separate, in a title of an architecture
-diagram] [test: U+FEFF and spaces before the first of two directives that spaces
-separate, in a title of an architecture diagram] [test: a no-break space and a
-tab before the first of two directives that a space separates, in a title of an
-architecture diagram] [test: a no-break space before the first of two directives
-that a tab separates, in a title of an architecture diagram] [test: U+2003 and a
-tab before the first of two directives that a space separates, in a title of an
-architecture diagram] [test: U+2003 before the first of two directives that a
-tab separates, in a title of an architecture diagram] [test: U+2028 before the
+diagram] [test: U+202F and spaces before the first of two directives that spaces
+separate, in a title of an architecture diagram] [test: U+205F and spaces before
+the first of two directives that spaces separate, in a title of an architecture
+diagram] [test: U+3000 and spaces before the first of two directives that spaces
+separate, in a title of an architecture diagram] [test: U+FEFF and spaces before
+the first of two directives that spaces separate, in a title of an architecture
+diagram] [test: a no-break space and a tab before the first of two directives
+that a space separates, in a title of an architecture diagram] [test: a no-break
+space before the first of two directives that a tab separates, in a title of an
+architecture diagram] [test: U+2003 and a tab before the first of two directives
+that a space separates, in a title of an architecture diagram] [test: U+2003
+before the first of two directives that a tab separates, in a title of an
+architecture diagram] [test: U+2028 before the first of two directives that a
+tab separates, in a title of an architecture diagram] [test: U+2029 before the
 first of two directives that a tab separates, in a title of an architecture
-diagram] [test: U+2029 before the first of two directives that a tab separates,
-in a title of an architecture diagram] [test: a U+2028 inside the directive that
-ends a title, spaces before it, of an architecture diagram] [test: a U+2028
-inside the directive that ends a title, spaces after it, of an architecture
-diagram] [test: a U+2029 inside the directive that ends a title, spaces before
-it, of an architecture diagram] [test: a U+2029 inside the directive that ends a
-title, spaces after it, of an architecture diagram] [test: a line break inside
-the directive that ends a title, spaces before it, of an architecture diagram]
-[test: a line break inside the directive that ends a title, spaces after it, of
-an architecture diagram] [test: a U+2028 inside the first of two directives that
-spaces separate, in a title of an architecture diagram] [test: a U+2028 inside
-the last of two directives, spaces before both, in a title of an architecture
-diagram] [test: a U+2028 inside the first of two directives that touch, spaces
-before them, in a title of an architecture diagram] [test: a U+2028 inside the
-directive that ends a title, a no-break space before it, of an architecture
-diagram] [test: a U+2028 inside a directive that a comment touches in a title,
-spaces before it, of an architecture diagram] [test: a U+2028 inside a directive
-that spaces and a comment follow in a title, of an architecture diagram] [test:
-a line break inside the first of two directives that spaces separate, in a title
-of an architecture diagram] [test: a line break inside the last of two
+diagram] [test: a U+2028 inside the directive that ends a title, spaces before
+it, of an architecture diagram] [test: a U+2028 inside the directive that ends a
+title, spaces after it, of an architecture diagram] [test: a U+2029 inside the
+directive that ends a title, spaces before it, of an architecture diagram]
+[test: a U+2029 inside the directive that ends a title, spaces after it, of an
+architecture diagram] [test: a line break inside the directive that ends a
+title, spaces before it, of an architecture diagram] [test: a line break inside
+the directive that ends a title, spaces after it, of an architecture diagram]
+[test: a U+2028 inside the first of two directives that spaces separate, in a
+title of an architecture diagram] [test: a U+2028 inside the last of two
 directives, spaces before both, in a title of an architecture diagram] [test: a
-line break inside the first of two directives that touch, spaces before them, in
-a title of an architecture diagram] [test: a line break inside the directive
-that ends a title, a no-break space before it, of an architecture diagram]
-[test: a line break inside a directive that a comment touches in a title, spaces
-before it, of an architecture diagram] [test: a line break inside a directive
-that spaces and a comment follow in a title, of an architecture diagram] [test:
-a tab between the keyword and the directive of a title of directives only of an
-architecture diagram] [test: spaces between the keyword and the directive of a
-title of directives only of an architecture diagram] [test: spaces after the
-directive of a title of directives only of an architecture diagram] [test:
-spaces on both sides of the directive of a title of directives only of an
-architecture diagram] [test: two directives that spaces separate, a title of
-directives only of an architecture diagram] [test: two directives that touch,
-spaces before them, a title of directives only of an architecture diagram]
-[test: a comment that touches the directive of a title of directives only of an
-architecture diagram] [test: a space and a comment after the directive of a
-title of directives only of an architecture diagram] [test: a wide space before
-two directives that spaces separate, one space before the first directive, in a
-title of an architecture diagram] [test: a wide space before two directives that
-spaces separate, a run of spaces before the first directive, in a title of an
+U+2028 inside the first of two directives that touch, spaces before them, in a
+title of an architecture diagram] [test: a U+2028 inside the directive that ends
+a title, a no-break space before it, of an architecture diagram] [test: a U+2028
+inside a directive that a comment touches in a title, spaces before it, of an
+architecture diagram] [test: a U+2028 inside a directive that spaces and a
+comment follow in a title, of an architecture diagram] [test: a line break
+inside the first of two directives that spaces separate, in a title of an
+architecture diagram] [test: a line break inside the last of two directives,
+spaces before both, in a title of an architecture diagram] [test: a line break
+inside the first of two directives that touch, spaces before them, in a title of
+an architecture diagram] [test: a line break inside the directive that ends a
+title, a no-break space before it, of an architecture diagram] [test: a line
+break inside a directive that a comment touches in a title, spaces before it, of
+an architecture diagram] [test: a line break inside a directive that spaces and
+a comment follow in a title, of an architecture diagram] [test: a tab between
+the keyword and the directive of a title of directives only of an architecture
+diagram] [test: spaces between the keyword and the directive of a title of
+directives only of an architecture diagram] [test: spaces after the directive of
+a title of directives only of an architecture diagram] [test: spaces on both
+sides of the directive of a title of directives only of an architecture diagram]
+[test: two directives that spaces separate, a title of directives only of an
+architecture diagram] [test: two directives that touch, spaces before them, a
+title of directives only of an architecture diagram] [test: a comment that
+touches the directive of a title of directives only of an architecture diagram]
+[test: a space and a comment after the directive of a title of directives only
+of an architecture diagram] [test: a wide space before two directives that
+spaces separate, one space before the first directive, in a title of an
+architecture diagram] [test: a wide space before two directives that spaces
+separate, a run of spaces before the first directive, in a title of an
 architecture diagram] [test: a wide space before two directives that spaces
 separate, a tab before the first directive, in a title of an architecture
 diagram] [test: a wide space before two directives that spaces separate, U+2028
@@ -1863,104 +1887,109 @@ title, spaces after the keyword, of an architecture diagram] [test: a `;` at the
 end of a title, a run of spaces inside the text, of an architecture diagram]
 [test: a `;` at the end of a title, spaces after it, of an architecture diagram]
 [test: a `;` after spaces at the end of a title, spaces after it, of an
-architecture diagram] [test: released output that the document does not state: a
-text after the `;` of a title, spaces at the end, of an architecture diagram]
-[test: released output that the document does not state: a `;` inside the
-comment after the text of a title, spaces at the end, of an architecture
-diagram] [test: released output that the document does not state: a `;` at the
-end of a title, U+3000 after it, of an architecture diagram] [test: released
-output that the document does not state: a U+2028 in the text of a title that
-ends with a `;`, of an architecture diagram] [test: a comment after the text of
-a title, spaces before it, of an architecture diagram] [test: a run of spaces
-inside the text of a title, of an architecture diagram] [test: a run of tabs
-inside the text of a title, spaces at the end, of an architecture diagram]
-[test: a run of spaces inside a quoted string in a title, of an architecture
-diagram] [test: a run of spaces beside a directive inside the text of a title,
+architecture diagram] [test: a text after the `;` of a title, spaces at the end,
 of an architecture diagram] [test: released output that the document does not
-state: text after the `;` that the line rule ignores in a title, runs before and
-after it, of an architecture diagram] [test: released output that the document
-does not state: text touching the `;` that the line rule ignores in a title, a
-run before it, of an architecture diagram] [test: released output that the
-document does not state: text and a run after the `;` that the line rule ignores
-in a title, spaces at the end, of an architecture diagram] [test: released
-output that the document does not state: two touching `;` that the line rule
-reads in a title, a run before them, of an architecture diagram] [test: released
-output that the document does not state: two `;` with spaces between them that
-the line rule reads in a title, a run before them, of an architecture diagram]
-[test: released output that the document does not state: text after the last of
-two `;` that the line rule reads in a title, runs around them, of an
-architecture diagram] [test: released output that the document does not state:
-text after the `;` that the line rule ignores after classDef in a title, of an
-architecture diagram] [test: nothing after the `;` that the line rule ignores in
-a title, runs before it, of an architecture diagram] [test: a run inside the
-stretch of the line rule, nothing after the `;` in a title, spaces at the end,
-of an architecture diagram] [test: released output that the document does not
-state: nothing after the last of two `;` that the line rule reads in a title, of
+state: a `;` inside the comment after the text of a title, spaces at the end, of
+an architecture diagram] [test: a `;` at the end of a title, U+3000 after it, of
 an architecture diagram] [test: released output that the document does not
-state: a comment after the `;` that the line rule ignores in a title, of an
-architecture diagram] [test: released output that the document does not state: a
-`;` inside the comment at the end of a title, a run and spaces at the end, of an
-architecture diagram] [test: nothing after the `;` that the line rule ignores in
-a title, spaces at the end, of an architecture diagram] [test: a run after the
-keyword of a title, nothing after the `;` that the line rule ignores, of an
-architecture diagram] [test: the literal style without the trigger and a `;` at
-the end of a title, spaces at the end, of an architecture diagram] [test: the
-word Style with a capital and a `;` at the end of a title, spaces at the end, of
-an architecture diagram] [test: U+2028 before a directive that a comment
-touches, a line follows, in a title of an architecture diagram] [test: U+2028
-before a directive that a comment touches, the text ends, in a title of an
-architecture diagram] [test: U+2028 before a directive that a comment touches,
-an empty line follows, in a title of an architecture diagram] [test: U+2028
-before a directive that a comment follows after spaces, a line follows, in a
-title of an architecture diagram] [test: U+2028 before a directive that a
-comment follows after spaces, the text ends, in a title of an architecture
-diagram] [test: U+2028 before a directive that a comment follows after spaces,
-an empty line follows, in a title of an architecture diagram] [test: U+2029
-before a directive that a comment touches, a line follows, in a title of an
-architecture diagram] [test: U+2029 before a directive that a comment touches,
-the text ends, in a title of an architecture diagram] [test: U+2029 before a
-directive that a comment touches, an empty line follows, in a title of an
-architecture diagram] [test: U+2029 before a directive that a comment follows
-after spaces, a line follows, in a title of an architecture diagram] [test:
-U+2029 before a directive that a comment follows after spaces, the text ends, in
-a title of an architecture diagram] [test: U+2029 before a directive that a
-comment follows after spaces, an empty line follows, in a title of an
+state: a U+2028 in the text of a title that ends with a `;`, of an architecture
+diagram] [test: a comment after the text of a title, spaces before it, of an
+architecture diagram] [test: a run of spaces inside the text of a title, of an
+architecture diagram] [test: a run of tabs inside the text of a title, spaces at
+the end, of an architecture diagram] [test: a run of spaces inside a quoted
+string in a title, of an architecture diagram] [test: a run of spaces beside a
+directive inside the text of a title, of an architecture diagram] [test:
+released output that the document does not state: text after the `;` that the
+line rule ignores in a title, runs before and after it, of an architecture
+diagram] [test: released output that the document does not state: text touching
+the `;` that the line rule ignores in a title, a run before it, of an
+architecture diagram] [test: released output that the document does not state:
+text and a run after the `;` that the line rule ignores in a title, spaces at
+the end, of an architecture diagram] [test: released output that the document
+does not state: two touching `;` that the line rule reads in a title, a run
+before them, of an architecture diagram] [test: released output that the
+document does not state: two `;` with spaces between them that the line rule
+reads in a title, a run before them, of an architecture diagram] [test: released
+output that the document does not state: text after the last of two `;` that the
+line rule reads in a title, runs around them, of an architecture diagram] [test:
+released output that the document does not state: text after the `;` that the
+line rule ignores after classDef in a title, of an architecture diagram] [test:
+nothing after the `;` that the line rule ignores in a title, runs before it, of
+an architecture diagram] [test: a run inside the stretch of the line rule,
+nothing after the `;` in a title, spaces at the end, of an architecture diagram]
+[test: released output that the document does not state: nothing after the last
+of two `;` that the line rule reads in a title, of an architecture diagram]
+[test: released output that the document does not state: a comment after the `;`
+that the line rule ignores in a title, of an architecture diagram] [test:
+released output that the document does not state: a `;` inside the comment at
+the end of a title, a run and spaces at the end, of an architecture diagram]
+[test: nothing after the `;` that the line rule ignores in a title, spaces at
+the end, of an architecture diagram] [test: a run after the keyword of a title,
+nothing after the `;` that the line rule ignores, of an architecture diagram]
+[test: the literal style without the trigger and a `;` at the end of a title,
+spaces at the end, of an architecture diagram] [test: the word Style with a
+capital and a `;` at the end of a title, spaces at the end, of an architecture
+diagram] [test: a tab after the `;` that the line rule ignores in a title, runs
+before it, of an architecture diagram] [test: a classDef trigger with nothing
+after the `;` in a title, runs before it, of an architecture diagram] [test: the
+literal classDef and a `;` at the end of a title, spaces at the end, of an
+architecture diagram] [test: the literal style inside a word and a `;` at the
+end of a title, spaces at the end, of an architecture diagram] [test: the word
+classdef in lower case and a `;` at the end of a title, spaces at the end, of an
 architecture diagram] [test: U+2028 before a directive that a comment touches, a
-comment line follows, in a title of an architecture diagram] [test: U+2028
-before a directive that a comment touches, a line of whitespace follows, in a
-title of an architecture diagram] [test: U+2028 before a directive that a
-comment touches, a directive line follows, in a title of an architecture
+line follows, in a title of an architecture diagram] [test: U+2028 before a
+directive that a comment touches, the text ends, in a title of an architecture
+diagram] [test: U+2028 before a directive that a comment touches, an empty line
+follows, in a title of an architecture diagram] [test: U+2028 before a directive
+that a comment follows after spaces, a line follows, in a title of an
+architecture diagram] [test: U+2028 before a directive that a comment follows
+after spaces, the text ends, in a title of an architecture diagram] [test:
+U+2028 before a directive that a comment follows after spaces, an empty line
+follows, in a title of an architecture diagram] [test: U+2029 before a directive
+that a comment touches, a line follows, in a title of an architecture diagram]
+[test: U+2029 before a directive that a comment touches, the text ends, in a
+title of an architecture diagram] [test: U+2029 before a directive that a
+comment touches, an empty line follows, in a title of an architecture diagram]
+[test: U+2029 before a directive that a comment follows after spaces, a line
+follows, in a title of an architecture diagram] [test: U+2029 before a directive
+that a comment follows after spaces, the text ends, in a title of an
+architecture diagram] [test: U+2029 before a directive that a comment follows
+after spaces, an empty line follows, in a title of an architecture diagram]
+[test: U+2028 before a directive that a comment touches, a comment line follows,
+in a title of an architecture diagram] [test: U+2028 before a directive that a
+comment touches, a line of whitespace follows, in a title of an architecture
 diagram] [test: U+2028 before a directive that a comment touches, a directive
-line and a comment line follow, in a title of an architecture diagram] [test:
-U+2028 before a directive that a comment touches, an empty line and a comment
-line follow, in a title of an architecture diagram] [test: U+2028 before a
-directive that a comment touches, a directive line, an empty line, and a comment
-line follow, in a title of an architecture diagram] [test: U+2028 before a
-directive that a comment touches, an empty line and a directive line follow, in
+line follows, in a title of an architecture diagram] [test: U+2028 before a
+directive that a comment touches, a directive line and a comment line follow, in
 a title of an architecture diagram] [test: U+2028 before a directive that a
-comment touches, a directive line follows and the text ends, in a title of an
-architecture diagram] [test: U+2028 before two directives with spaces between
-them that a comment touches, the text ends, in a title of an architecture
-diagram] [test: U+2028 before two directives with a tab between them that a
-comment follows after spaces, the text ends, in a title of an architecture
-diagram] [test: U+2029 before a directive that a comment touches, a directive
-line and a comment line follow, in a title of an architecture diagram] [test:
-U+2028 after the last directive, spaces and a comment after it, a comment line
-follows, in a title of an architecture diagram] [test: U+2028 after the last
-directive, spaces and a comment after it, a line of whitespace follows, in a
-title of an architecture diagram] [test: U+2028 after the last directive, spaces
-and a comment after it, a directive line follows, in a title of an architecture
-diagram] [test: U+2028 after the last directive, spaces and a comment after it,
-a directive line and a comment line follow, in a title of an architecture
-diagram] [test: U+2028 after the last directive, spaces and a comment after it,
-an empty line and a comment line follow, in a title of an architecture diagram]
-[test: U+2028 after the last directive, spaces and a comment after it, a
+comment touches, an empty line and a comment line follow, in a title of an
+architecture diagram] [test: U+2028 before a directive that a comment touches, a
 directive line, an empty line, and a comment line follow, in a title of an
-architecture diagram] [test: U+2028 after the last directive, spaces and a
-comment after it, an empty line and a directive line follow, in a title of an
-architecture diagram] [test: U+2028 after the last directive, spaces and a
-comment after it, a directive line follows and the text ends, in a title of an
-architecture diagram] [test: U+2028 after the last directive, spaces and a
+architecture diagram] [test: U+2028 before a directive that a comment touches,
+an empty line and a directive line follow, in a title of an architecture
+diagram] [test: U+2028 before a directive that a comment touches, a directive
+line follows and the text ends, in a title of an architecture diagram] [test:
+U+2028 before two directives with spaces between them that a comment touches,
+the text ends, in a title of an architecture diagram] [test: U+2028 before two
+directives with a tab between them that a comment follows after spaces, the text
+ends, in a title of an architecture diagram] [test: U+2029 before a directive
+that a comment touches, a directive line and a comment line follow, in a title
+of an architecture diagram] [test: U+2028 after the last directive, spaces and a
+comment after it, a comment line follows, in a title of an architecture diagram]
+[test: U+2028 after the last directive, spaces and a comment after it, a line of
+whitespace follows, in a title of an architecture diagram] [test: U+2028 after
+the last directive, spaces and a comment after it, a directive line follows, in
+a title of an architecture diagram] [test: U+2028 after the last directive,
+spaces and a comment after it, a directive line and a comment line follow, in a
+title of an architecture diagram] [test: U+2028 after the last directive, spaces
+and a comment after it, an empty line and a comment line follow, in a title of
+an architecture diagram] [test: U+2028 after the last directive, spaces and a
+comment after it, a directive line, an empty line, and a comment line follow, in
+a title of an architecture diagram] [test: U+2028 after the last directive,
+spaces and a comment after it, an empty line and a directive line follow, in a
+title of an architecture diagram] [test: U+2028 after the last directive, spaces
+and a comment after it, a directive line follows and the text ends, in a title
+of an architecture diagram] [test: U+2028 after the last directive, spaces and a
 comment after it, the text ends, in a title of an architecture diagram] [test:
 U+2028 after the last directive, spaces and a comment after it, an empty line
 follows, in a title of an architecture diagram] [test: U+2028 after the last
@@ -2674,208 +2703,226 @@ directive of an architecture diagram] [test: the gap before the colon of an
 accTitle line with a space, a tab, and U+2028 after the last directive of an
 architecture diagram] [test: the gap before the colon of an accTitle line with a
 space, a tab, and U+2029 after the last directive of an architecture diagram]
-[test: a semicolon that the line rule ignores before the directive of an
-accTitle line of an architecture diagram, spaces after it] [test: U+3000 before
-a directive that a space and a comment follow in an accDescr line of an
-architecture diagram] [test: the gap before the colon of an accDescr line with
-U+2028 before the last directive, a space and a tab after it of an architecture
-diagram] [test: the gap before the colon of an accDescr line with U+2029 before
-the last directive, a space and a tab after it of an architecture diagram]
-[test: the gap before the colon of an accDescr line with a semicolon before the
-directive, spaces after it of an architecture diagram] [test: the gap before the
-colon of an accDescr line with a semicolon and spaces before the directive that
-ends it of an architecture diagram] [test: the gap before the colon of an
-accDescr line with a semicolon after the last directive of an architecture
-diagram] [test: the gap before the colon of an accDescr line with a space, a
-tab, and a no-break space after the last directive of an architecture diagram]
-[test: the gap before the colon of an accDescr line with a space, a tab, and
-U+3000 after the last directive of an architecture diagram] [test: the gap
-before the colon of an accDescr line with a space, a tab, and U+2028 after the
+[test: released output that the document does not state: a semicolon that the
+line rule ignores before the directive of an accTitle line of an architecture
+diagram, spaces after it] [test: U+3000 before a directive that a space and a
+comment follow in an accDescr line of an architecture diagram] [test: the gap
+before the colon of an accDescr line with U+2028 before the last directive, a
+space and a tab after it of an architecture diagram] [test: the gap before the
+colon of an accDescr line with U+2029 before the last directive, a space and a
+tab after it of an architecture diagram] [test: the gap before the colon of an
+accDescr line with a semicolon before the directive, spaces after it of an
+architecture diagram] [test: the gap before the colon of an accDescr line with a
+semicolon and spaces before the directive that ends it of an architecture
+diagram] [test: the gap before the colon of an accDescr line with a semicolon
+after the last directive of an architecture diagram] [test: the gap before the
+colon of an accDescr line with a space, a tab, and a no-break space after the
 last directive of an architecture diagram] [test: the gap before the colon of an
-accDescr line with a space, a tab, and U+2029 after the last directive of an
-architecture diagram] [test: a semicolon that the line rule ignores before the
-directive of an accDescr line of an architecture diagram, spaces after it]
-[test: the gap before the colon of an accTitle line that holds only `a;` of an
-architecture diagram] [test: the gap before the colon of an accDescr line that
-holds only `a;` of an architecture diagram] [test: the gap before the colon of
-an accTitle line that holds only `style:#x;` of an architecture diagram] [test:
-the gap before the colon of an accTitle line with a semicolon inside the
-directive, spaces after it, of an architecture diagram] [test: the gap before
-the colon of an accDescr line with a semicolon inside the directive that ends
-it, of an architecture diagram] [test: a semicolon inside the directive of an
-accDescr line, spaces and a comment after it, of an architecture diagram] [test:
-a semicolon inside the directive that ends an accTitle line, spaces before it,
-of an architecture diagram] [test: a second semicolon touching the semicolon
-that the line rule ignores, a tab and a directive after them, in an accTitle
-line of an architecture diagram] [test: spaces and a second semicolon after the
-semicolon that the line rule ignores, a directive after them, in an accTitle
-line of an architecture diagram] [test: a second semicolon touching the
-semicolon that the line rule ignores, spaces and a directive after them, in an
-accDescr line of an architecture diagram] [test: U+2029 and a directive after
-the semicolon that the line rule ignores, in an accTitle line of an architecture
-diagram] [test: U+2028 and a directive after the semicolon that the line rule
-ignores, in an accDescr line of an architecture diagram] [test: spaces and a
+accDescr line with a space, a tab, and U+3000 after the last directive of an
+architecture diagram] [test: the gap before the colon of an accDescr line with a
+space, a tab, and U+2028 after the last directive of an architecture diagram]
+[test: the gap before the colon of an accDescr line with a space, a tab, and
+U+2029 after the last directive of an architecture diagram] [test: released
+output that the document does not state: a semicolon that the line rule ignores
+before the directive of an accDescr line of an architecture diagram, spaces
+after it] [test: the gap before the colon of an accTitle line that holds only
+`a;` of an architecture diagram] [test: the gap before the colon of an accDescr
+line that holds only `a;` of an architecture diagram] [test: the gap before the
+colon of an accTitle line that holds only `style:#x;` of an architecture
+diagram] [test: the gap before the colon of an accTitle line with a semicolon
+inside the directive, spaces after it, of an architecture diagram] [test: the
+gap before the colon of an accDescr line with a semicolon inside the directive
+that ends it, of an architecture diagram] [test: a semicolon inside the
+directive of an accDescr line, spaces and a comment after it, of an architecture
+diagram] [test: a semicolon inside the directive that ends an accTitle line,
+spaces before it, of an architecture diagram] [test: released output that the
+document does not state: a second semicolon touching the semicolon that the line
+rule ignores, a tab and a directive after them, in an accTitle line of an
+architecture diagram] [test: released output that the document does not state:
+spaces and a second semicolon after the semicolon that the line rule ignores, a
+directive after them, in an accTitle line of an architecture diagram] [test:
+released output that the document does not state: a second semicolon touching
+the semicolon that the line rule ignores, spaces and a directive after them, in
+an accDescr line of an architecture diagram] [test: released output that the
+document does not state: U+2029 and a directive after the semicolon that the
+line rule ignores, in an accTitle line of an architecture diagram] [test:
+released output that the document does not state: U+2028 and a directive after
+the semicolon that the line rule ignores, in an accDescr line of an architecture
+diagram] [test: released output that the document does not state: spaces and a
 directive after the semicolon that the line rule ignores, in an accDescr line of
-an architecture diagram] [test: a no-break space and a directive after the
-semicolon that the line rule ignores, in an accDescr line of an architecture
-diagram] [test: a tab before the text of a title that ends with a semicolon, of
-an architecture diagram] [test: spaces before the text of an accTitle line that
-ends with a semicolon, of an architecture diagram] [test: no gap before the text
-of an accTitle line that ends with a semicolon, of an architecture diagram]
-[test: a tab before the text of an accDescr line that ends with a semicolon, of
-an architecture diagram] [test: the gap before the colon of an accTitle line
-that ends with a semicolon, of an architecture diagram] [test: the gap before
-the colon of an accDescr line with a semicolon inside the last of two
-directives, of an architecture diagram] [test: U+000B before the directive that
-ends an accTitle line of an architecture diagram] [test: U+000B before a
-directive that a space and a comment follow in an accDescr line of an
-architecture diagram] [test: U+000B after the last directive of an accTitle line
-of an architecture diagram] [test: U+000B after the last directive and spaces of
-an accDescr line, spaces after it, of an architecture diagram] [test: U+000C
-before the directive that ends an accTitle line of an architecture diagram]
-[test: U+000C before a directive that a space and a comment follow in an
-accDescr line of an architecture diagram] [test: U+000C after the last directive
-of an accTitle line of an architecture diagram] [test: U+000C after the last
-directive and spaces of an accDescr line, spaces after it, of an architecture
-diagram] [test: a no-break space after the last directive and spaces of an
-accDescr line, spaces after it, of an architecture diagram] [test: U+1680 before
-the directive that ends an accTitle line of an architecture diagram] [test:
-U+1680 before a directive that a space and a comment follow in an accDescr line
-of an architecture diagram] [test: U+1680 after the last directive of an
-accTitle line of an architecture diagram] [test: U+1680 after the last directive
-and spaces of an accDescr line, spaces after it, of an architecture diagram]
-[test: U+2000 before the directive that ends an accTitle line of an architecture
-diagram] [test: U+2000 before a directive that a space and a comment follow in
-an accDescr line of an architecture diagram] [test: U+2000 after the last
-directive of an accTitle line of an architecture diagram] [test: U+2000 after
+an architecture diagram] [test: released output that the document does not
+state: a no-break space and a directive after the semicolon that the line rule
+ignores, in an accDescr line of an architecture diagram] [test: a tab before the
+text of a title that ends with a semicolon, of an architecture diagram] [test:
+spaces before the text of an accTitle line that ends with a semicolon, of an
+architecture diagram] [test: no gap before the text of an accTitle line that
+ends with a semicolon, of an architecture diagram] [test: a tab before the text
+of an accDescr line that ends with a semicolon, of an architecture diagram]
+[test: the gap before the colon of an accTitle line that ends with a semicolon,
+of an architecture diagram] [test: the gap before the colon of an accDescr line
+with a semicolon inside the last of two directives, of an architecture diagram]
+[test: U+000B before the directive that ends an accTitle line of an architecture
+diagram] [test: U+000B before a directive that a space and a comment follow in
+an accDescr line of an architecture diagram] [test: U+000B after the last
+directive of an accTitle line of an architecture diagram] [test: U+000B after
 the last directive and spaces of an accDescr line, spaces after it, of an
-architecture diagram] [test: U+2001 before the directive that ends an accTitle
-line of an architecture diagram] [test: U+2001 before a directive that a space
+architecture diagram] [test: U+000C before the directive that ends an accTitle
+line of an architecture diagram] [test: U+000C before a directive that a space
 and a comment follow in an accDescr line of an architecture diagram] [test:
-U+2001 after the last directive of an accTitle line of an architecture diagram]
-[test: U+2001 after the last directive and spaces of an accDescr line, spaces
-after it, of an architecture diagram] [test: U+2002 before the directive that
-ends an accTitle line of an architecture diagram] [test: U+2002 before a
-directive that a space and a comment follow in an accDescr line of an
-architecture diagram] [test: U+2002 after the last directive of an accTitle line
-of an architecture diagram] [test: U+2002 after the last directive and spaces of
-an accDescr line, spaces after it, of an architecture diagram] [test: U+2003
-before the directive that ends an accTitle line of an architecture diagram]
-[test: U+2003 before a directive that a space and a comment follow in an
-accDescr line of an architecture diagram] [test: U+2003 after the last directive
-of an accTitle line of an architecture diagram] [test: U+2003 after the last
+U+000C after the last directive of an accTitle line of an architecture diagram]
+[test: U+000C after the last directive and spaces of an accDescr line, spaces
+after it, of an architecture diagram] [test: a no-break space after the last
 directive and spaces of an accDescr line, spaces after it, of an architecture
-diagram] [test: U+2004 before the directive that ends an accTitle line of an
-architecture diagram] [test: U+2004 before a directive that a space and a
-comment follow in an accDescr line of an architecture diagram] [test: U+2004
+diagram] [test: U+1680 before the directive that ends an accTitle line of an
+architecture diagram] [test: U+1680 before a directive that a space and a
+comment follow in an accDescr line of an architecture diagram] [test: U+1680
 after the last directive of an accTitle line of an architecture diagram] [test:
-U+2004 after the last directive and spaces of an accDescr line, spaces after it,
-of an architecture diagram] [test: U+2005 before the directive that ends an
-accTitle line of an architecture diagram] [test: U+2005 before a directive that
+U+1680 after the last directive and spaces of an accDescr line, spaces after it,
+of an architecture diagram] [test: U+2000 before the directive that ends an
+accTitle line of an architecture diagram] [test: U+2000 before a directive that
 a space and a comment follow in an accDescr line of an architecture diagram]
-[test: U+2005 after the last directive of an accTitle line of an architecture
-diagram] [test: U+2005 after the last directive and spaces of an accDescr line,
-spaces after it, of an architecture diagram] [test: U+2006 before the directive
-that ends an accTitle line of an architecture diagram] [test: U+2006 before a
+[test: U+2000 after the last directive of an accTitle line of an architecture
+diagram] [test: U+2000 after the last directive and spaces of an accDescr line,
+spaces after it, of an architecture diagram] [test: U+2001 before the directive
+that ends an accTitle line of an architecture diagram] [test: U+2001 before a
 directive that a space and a comment follow in an accDescr line of an
-architecture diagram] [test: U+2006 after the last directive of an accTitle line
-of an architecture diagram] [test: U+2006 after the last directive and spaces of
-an accDescr line, spaces after it, of an architecture diagram] [test: U+2007
+architecture diagram] [test: U+2001 after the last directive of an accTitle line
+of an architecture diagram] [test: U+2001 after the last directive and spaces of
+an accDescr line, spaces after it, of an architecture diagram] [test: U+2002
 before the directive that ends an accTitle line of an architecture diagram]
-[test: U+2007 before a directive that a space and a comment follow in an
-accDescr line of an architecture diagram] [test: U+2007 after the last directive
-of an accTitle line of an architecture diagram] [test: U+2007 after the last
+[test: U+2002 before a directive that a space and a comment follow in an
+accDescr line of an architecture diagram] [test: U+2002 after the last directive
+of an accTitle line of an architecture diagram] [test: U+2002 after the last
 directive and spaces of an accDescr line, spaces after it, of an architecture
-diagram] [test: U+2008 before the directive that ends an accTitle line of an
-architecture diagram] [test: U+2008 before a directive that a space and a
-comment follow in an accDescr line of an architecture diagram] [test: U+2008
+diagram] [test: U+2003 before the directive that ends an accTitle line of an
+architecture diagram] [test: U+2003 before a directive that a space and a
+comment follow in an accDescr line of an architecture diagram] [test: U+2003
 after the last directive of an accTitle line of an architecture diagram] [test:
-U+2008 after the last directive and spaces of an accDescr line, spaces after it,
-of an architecture diagram] [test: U+2009 before the directive that ends an
-accTitle line of an architecture diagram] [test: U+2009 before a directive that
+U+2003 after the last directive and spaces of an accDescr line, spaces after it,
+of an architecture diagram] [test: U+2004 before the directive that ends an
+accTitle line of an architecture diagram] [test: U+2004 before a directive that
 a space and a comment follow in an accDescr line of an architecture diagram]
-[test: U+2009 after the last directive of an accTitle line of an architecture
-diagram] [test: U+2009 after the last directive and spaces of an accDescr line,
-spaces after it, of an architecture diagram] [test: U+200A before the directive
-that ends an accTitle line of an architecture diagram] [test: U+200A before a
+[test: U+2004 after the last directive of an accTitle line of an architecture
+diagram] [test: U+2004 after the last directive and spaces of an accDescr line,
+spaces after it, of an architecture diagram] [test: U+2005 before the directive
+that ends an accTitle line of an architecture diagram] [test: U+2005 before a
 directive that a space and a comment follow in an accDescr line of an
-architecture diagram] [test: U+200A after the last directive of an accTitle line
-of an architecture diagram] [test: U+200A after the last directive and spaces of
-an accDescr line, spaces after it, of an architecture diagram] [test: U+202F
+architecture diagram] [test: U+2005 after the last directive of an accTitle line
+of an architecture diagram] [test: U+2005 after the last directive and spaces of
+an accDescr line, spaces after it, of an architecture diagram] [test: U+2006
 before the directive that ends an accTitle line of an architecture diagram]
-[test: U+202F before a directive that a space and a comment follow in an
-accDescr line of an architecture diagram] [test: U+202F after the last directive
-of an accTitle line of an architecture diagram] [test: U+202F after the last
+[test: U+2006 before a directive that a space and a comment follow in an
+accDescr line of an architecture diagram] [test: U+2006 after the last directive
+of an accTitle line of an architecture diagram] [test: U+2006 after the last
 directive and spaces of an accDescr line, spaces after it, of an architecture
-diagram] [test: U+205F before the directive that ends an accTitle line of an
-architecture diagram] [test: U+205F before a directive that a space and a
-comment follow in an accDescr line of an architecture diagram] [test: U+205F
+diagram] [test: U+2007 before the directive that ends an accTitle line of an
+architecture diagram] [test: U+2007 before a directive that a space and a
+comment follow in an accDescr line of an architecture diagram] [test: U+2007
 after the last directive of an accTitle line of an architecture diagram] [test:
-U+205F after the last directive and spaces of an accDescr line, spaces after it,
-of an architecture diagram] [test: U+3000 after the last directive and spaces of
-an accDescr line, spaces after it, of an architecture diagram] [test: U+FEFF
+U+2007 after the last directive and spaces of an accDescr line, spaces after it,
+of an architecture diagram] [test: U+2008 before the directive that ends an
+accTitle line of an architecture diagram] [test: U+2008 before a directive that
+a space and a comment follow in an accDescr line of an architecture diagram]
+[test: U+2008 after the last directive of an accTitle line of an architecture
+diagram] [test: U+2008 after the last directive and spaces of an accDescr line,
+spaces after it, of an architecture diagram] [test: U+2009 before the directive
+that ends an accTitle line of an architecture diagram] [test: U+2009 before a
+directive that a space and a comment follow in an accDescr line of an
+architecture diagram] [test: U+2009 after the last directive of an accTitle line
+of an architecture diagram] [test: U+2009 after the last directive and spaces of
+an accDescr line, spaces after it, of an architecture diagram] [test: U+200A
 before the directive that ends an accTitle line of an architecture diagram]
-[test: U+FEFF before a directive that a space and a comment follow in an
-accDescr line of an architecture diagram] [test: U+FEFF after the last directive
-of an accTitle line of an architecture diagram] [test: U+FEFF after the last
+[test: U+200A before a directive that a space and a comment follow in an
+accDescr line of an architecture diagram] [test: U+200A after the last directive
+of an accTitle line of an architecture diagram] [test: U+200A after the last
 directive and spaces of an accDescr line, spaces after it, of an architecture
-diagram] [test: a no-break space after the last directive of an accTitle line, a
-comment touching it, of an architecture diagram] [test: a no-break space after
-the last directive of an accDescr line, spaces and a comment after it, of an
-architecture diagram] [test: U+2003 after the last directive of an accTitle
-line, a comment touching it, of an architecture diagram] [test: U+2003 after the
-last directive of an accDescr line, spaces and a comment after it, of an
-architecture diagram] [test: a semicolon in the text, two directives with spaces
-between them, an accTitle line, of an architecture diagram] [test: a semicolon
-in the text, two directives that touch, spaces before them, an accTitle line, of
-an architecture diagram] [test: a semicolon inside the first of two directives,
-a space between them, an accDescr line, of an architecture diagram] [test: a
-semicolon inside the last of two directives, spaces after it, an accDescr line,
-of an architecture diagram] [test: a semicolon inside the last of two directives
-that end an accTitle line, spaces before both, of an architecture diagram]
-[test: a semicolon that touches two directives in an accTitle line, of an
-architecture diagram] [test: a semicolon after the last of two directives in an
-accDescr line, spaces around it and a comment after it, of an architecture
-diagram] [test: a semicolon in the text, a no-break space after the last
-directive, an accTitle line, of an architecture diagram] [test: a semicolon
-inside the directive, a no-break space after it, an accDescr line, of an
-architecture diagram] [test: U+000B between a semicolon that the line rule
+diagram] [test: U+202F before the directive that ends an accTitle line of an
+architecture diagram] [test: U+202F before a directive that a space and a
+comment follow in an accDescr line of an architecture diagram] [test: U+202F
+after the last directive of an accTitle line of an architecture diagram] [test:
+U+202F after the last directive and spaces of an accDescr line, spaces after it,
+of an architecture diagram] [test: U+205F before the directive that ends an
+accTitle line of an architecture diagram] [test: U+205F before a directive that
+a space and a comment follow in an accDescr line of an architecture diagram]
+[test: U+205F after the last directive of an accTitle line of an architecture
+diagram] [test: U+205F after the last directive and spaces of an accDescr line,
+spaces after it, of an architecture diagram] [test: U+3000 after the last
+directive and spaces of an accDescr line, spaces after it, of an architecture
+diagram] [test: U+FEFF before the directive that ends an accTitle line of an
+architecture diagram] [test: U+FEFF before a directive that a space and a
+comment follow in an accDescr line of an architecture diagram] [test: U+FEFF
+after the last directive of an accTitle line of an architecture diagram] [test:
+U+FEFF after the last directive and spaces of an accDescr line, spaces after it,
+of an architecture diagram] [test: a no-break space after the last directive of
+an accTitle line, a comment touching it, of an architecture diagram] [test: a
+no-break space after the last directive of an accDescr line, spaces and a
+comment after it, of an architecture diagram] [test: U+2003 after the last
+directive of an accTitle line, a comment touching it, of an architecture
+diagram] [test: U+2003 after the last directive of an accDescr line, spaces and
+a comment after it, of an architecture diagram] [test: a semicolon in the text,
+two directives with spaces between them, an accTitle line, of an architecture
+diagram] [test: a semicolon in the text, two directives that touch, spaces
+before them, an accTitle line, of an architecture diagram] [test: a semicolon
+inside the first of two directives, a space between them, an accDescr line, of
+an architecture diagram] [test: a semicolon inside the last of two directives,
+spaces after it, an accDescr line, of an architecture diagram] [test: a
+semicolon inside the last of two directives that end an accTitle line, spaces
+before both, of an architecture diagram] [test: a semicolon that touches two
+directives in an accTitle line, of an architecture diagram] [test: a semicolon
+after the last of two directives in an accDescr line, spaces around it and a
+comment after it, of an architecture diagram] [test: a semicolon in the text, a
+no-break space after the last directive, an accTitle line, of an architecture
+diagram] [test: a semicolon inside the directive, a no-break space after it, an
+accDescr line, of an architecture diagram] [test: released output that the
+document does not state: U+000B between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in an accTitle line of an
+architecture diagram] [test: released output that the document does not state:
+U+000C between a semicolon that the line rule ignores and a second semicolon, a
+directive after them, in an accTitle line of an architecture diagram] [test:
+released output that the document does not state: a no-break space between a
+semicolon that the line rule ignores and a second semicolon, a directive after
+them, in an accTitle line of an architecture diagram] [test: released output
+that the document does not state: U+1680 between a semicolon that the line rule
 ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+000C between a semicolon that the line rule
+an architecture diagram] [test: released output that the document does not
+state: U+2000 between a semicolon that the line rule ignores and a second
+semicolon, a directive after them, in an accTitle line of an architecture
+diagram] [test: released output that the document does not state: U+2001 between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in an accTitle line of an architecture diagram] [test: released output
+that the document does not state: U+2002 between a semicolon that the line rule
 ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: a no-break space between a semicolon that the
-line rule ignores and a second semicolon, a directive after them, in an accTitle
-line of an architecture diagram] [test: U+1680 between a semicolon that the line
-rule ignores and a second semicolon, a directive after them, in an accTitle line
-of an architecture diagram] [test: U+2000 between a semicolon that the line rule
+an architecture diagram] [test: released output that the document does not
+state: U+2003 between a semicolon that the line rule ignores and a second
+semicolon, a directive after them, in an accTitle line of an architecture
+diagram] [test: released output that the document does not state: U+2004 between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in an accTitle line of an architecture diagram] [test: released output
+that the document does not state: U+2005 between a semicolon that the line rule
 ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+2001 between a semicolon that the line rule
+an architecture diagram] [test: released output that the document does not
+state: U+2006 between a semicolon that the line rule ignores and a second
+semicolon, a directive after them, in an accTitle line of an architecture
+diagram] [test: released output that the document does not state: U+2007 between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in an accTitle line of an architecture diagram] [test: released output
+that the document does not state: U+2008 between a semicolon that the line rule
 ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+2002 between a semicolon that the line rule
+an architecture diagram] [test: released output that the document does not
+state: U+2009 between a semicolon that the line rule ignores and a second
+semicolon, a directive after them, in an accTitle line of an architecture
+diagram] [test: released output that the document does not state: U+200A between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in an accTitle line of an architecture diagram] [test: released output
+that the document does not state: U+202F between a semicolon that the line rule
 ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+2003 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+2004 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+2005 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+2006 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+2007 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+2008 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+2009 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+200A between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+202F between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+205F between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+3000 between a semicolon that the line rule
-ignores and a second semicolon, a directive after them, in an accTitle line of
-an architecture diagram] [test: U+FEFF between a semicolon that the line rule
+an architecture diagram] [test: released output that the document does not
+state: U+205F between a semicolon that the line rule ignores and a second
+semicolon, a directive after them, in an accTitle line of an architecture
+diagram] [test: released output that the document does not state: U+3000 between
+a semicolon that the line rule ignores and a second semicolon, a directive after
+them, in an accTitle line of an architecture diagram] [test: released output
+that the document does not state: U+FEFF between a semicolon that the line rule
 ignores and a second semicolon, a directive after them, in an accTitle line of
 an architecture diagram] [test: U+000B before two directives that touch and end
 an accTitle line of an architecture diagram] [test: U+000C before two directives
@@ -3154,99 +3201,111 @@ the directive of an accTitle line of directives only of an architecture diagram]
 [test: a directive that touches the keyword of a title of directives only of an
 architecture diagram] [test: the gap before the colon of an accDescr line of
 directives only of an architecture diagram] [test: spaces after the directive of
-an accDescr line of directives only of an architecture diagram] [test: U+000B
-between a semicolon that the line rule ignores and a second semicolon, a
-directive after them, in an accDescr line of an architecture diagram] [test:
-U+000C between a semicolon that the line rule ignores and a second semicolon, a
-directive after them, in an accDescr line of an architecture diagram] [test: a
-no-break space between a semicolon that the line rule ignores and a second
+an accDescr line of directives only of an architecture diagram] [test: released
+output that the document does not state: U+000B between a semicolon that the
+line rule ignores and a second semicolon, a directive after them, in an accDescr
+line of an architecture diagram] [test: released output that the document does
+not state: U+000C between a semicolon that the line rule ignores and a second
 semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+1680 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+2000 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+2001 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+2002 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+2003 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+2004 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+2005 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+2006 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+2007 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+2008 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+2009 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+200A between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+202F between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+205F between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+3000 between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: U+FEFF between a semicolon that the line rule ignores and a
-second semicolon, a directive after them, in an accDescr line of an architecture
-diagram] [test: spaces between two directives after a U+2028 inside the text of
-an accTitle line of an architecture diagram] [test: spaces after the directive
-after a U+2029 inside the text of an accTitle line of an architecture diagram]
-[test: a run before the directive after a U+2029 inside the text of an accTitle
-line of an architecture diagram] [test: a run before two directives that touch
+diagram] [test: released output that the document does not state: a no-break
+space between a semicolon that the line rule ignores and a second semicolon, a
+directive after them, in an accDescr line of an architecture diagram] [test:
+released output that the document does not state: U+1680 between a semicolon
+that the line rule ignores and a second semicolon, a directive after them, in an
+accDescr line of an architecture diagram] [test: released output that the
+document does not state: U+2000 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in an accDescr line of an
+architecture diagram] [test: released output that the document does not state:
+U+2001 between a semicolon that the line rule ignores and a second semicolon, a
+directive after them, in an accDescr line of an architecture diagram] [test:
+released output that the document does not state: U+2002 between a semicolon
+that the line rule ignores and a second semicolon, a directive after them, in an
+accDescr line of an architecture diagram] [test: released output that the
+document does not state: U+2003 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in an accDescr line of an
+architecture diagram] [test: released output that the document does not state:
+U+2004 between a semicolon that the line rule ignores and a second semicolon, a
+directive after them, in an accDescr line of an architecture diagram] [test:
+released output that the document does not state: U+2005 between a semicolon
+that the line rule ignores and a second semicolon, a directive after them, in an
+accDescr line of an architecture diagram] [test: released output that the
+document does not state: U+2006 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in an accDescr line of an
+architecture diagram] [test: released output that the document does not state:
+U+2007 between a semicolon that the line rule ignores and a second semicolon, a
+directive after them, in an accDescr line of an architecture diagram] [test:
+released output that the document does not state: U+2008 between a semicolon
+that the line rule ignores and a second semicolon, a directive after them, in an
+accDescr line of an architecture diagram] [test: released output that the
+document does not state: U+2009 between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in an accDescr line of an
+architecture diagram] [test: released output that the document does not state:
+U+200A between a semicolon that the line rule ignores and a second semicolon, a
+directive after them, in an accDescr line of an architecture diagram] [test:
+released output that the document does not state: U+202F between a semicolon
+that the line rule ignores and a second semicolon, a directive after them, in an
+accDescr line of an architecture diagram] [test: released output that the
+document does not state: U+205F between a semicolon that the line rule ignores
+and a second semicolon, a directive after them, in an accDescr line of an
+architecture diagram] [test: released output that the document does not state:
+U+3000 between a semicolon that the line rule ignores and a second semicolon, a
+directive after them, in an accDescr line of an architecture diagram] [test:
+released output that the document does not state: U+FEFF between a semicolon
+that the line rule ignores and a second semicolon, a directive after them, in an
+accDescr line of an architecture diagram] [test: spaces between two directives
 after a U+2028 inside the text of an accTitle line of an architecture diagram]
-[test: spaces between two directives after a U+2028 inside the text of an
-accDescr line of an architecture diagram] [test: spaces after the directive
-after a U+2029 inside the text of an accDescr line of an architecture diagram]
-[test: a run before the directive after a U+2029 inside the text of an accDescr
-line of an architecture diagram] [test: a run before two directives that touch
+[test: spaces after the directive after a U+2029 inside the text of an accTitle
+line of an architecture diagram] [test: a run before the directive after a
+U+2029 inside the text of an accTitle line of an architecture diagram] [test: a
+run before two directives that touch after a U+2028 inside the text of an
+accTitle line of an architecture diagram] [test: spaces between two directives
 after a U+2028 inside the text of an accDescr line of an architecture diagram]
-[test: a wide space before two directives that spaces separate, in an accDescr
-line of an architecture diagram] [test: a wide space before two directives that
-touch and a comment that touches the last, in an accTitle line of an
-architecture diagram] [test: a wide space before two directives that touch and a
-comment that touches the last, in an accDescr line of an architecture diagram]
-[test: a U+2028 before two directives that touch, in an accDescr line of an
-architecture diagram] [test: a U+2028 before a directive that spaces follow, in
-an accTitle line of an architecture diagram] [test: a U+2028 before a directive
-that spaces follow, in an accDescr line of an architecture diagram] [test: a
-U+2028 before two directives that spaces separate, in an accDescr line of an
-architecture diagram] [test: a U+2028 inside the text, spaces before the
-directive, in an accDescr line of an architecture diagram] [test: a value of
-directives only, spaces after the directive, in an accTitle line of an
-architecture diagram] [test: a directive inside the text, spaces before and
-after the last directive, in an accTitle line of an architecture diagram] [test:
-a directive inside the text, spaces before and after the last directive, in an
-accDescr line of an architecture diagram] [test: a `;` in the text, spaces
-between two directives, in an accDescr line of an architecture diagram] [test: a
-`;` between two directives, spaces around it, in an accTitle line of an
-architecture diagram] [test: a `;` between two directives, spaces around it, in
-an accDescr line of an architecture diagram] [test: a `;` after the last
-directive, in an accTitle line of an architecture diagram] [test: a `;` after
-the last directive, in an accDescr line of an architecture diagram] [test: a `;`
-after the last directive, a U+2028 before the directives, a comment after it, in
-an accTitle line of an architecture diagram] [test: a `;` after the last
-directive, a U+2028 before the directives, a comment after it, in an accDescr
-line of an architecture diagram] [test: a `;` between two directives, a U+2028
-before the directives, a comment after them, in an accTitle line of an
-architecture diagram] [test: a `;` between two directives, a U+2028 before the
-directives, a comment after them, in an accDescr line of an architecture
-diagram] [test: two U+2028 before the directive that ends an accTitle line, of
-an architecture diagram] [test: U+2029 and U+2028 before the directive that ends
-an accDescr line, of an architecture diagram] [test: two U+2028 before the
-directive that ends an accTitle line, spaces after it, of an architecture
-diagram] [test: two U+2029 before a directive that a space and another directive
-follow in an accDescr line, of an architecture diagram] [test: a U+2028 inside
-the directive that ends an accDescr line, spaces before it, a comment after two
-spaces, of an architecture diagram] [test: a line break inside the directive
-that ends an accTitle line, a comment after two spaces, of an architecture
-diagram] [test: a directive that starts the text of a title, tabs before and
-after it, of an architecture diagram] [test: a directive that touches the
-keyword of a title, a space and a text after it, of an architecture diagram]
+[test: spaces after the directive after a U+2029 inside the text of an accDescr
+line of an architecture diagram] [test: a run before the directive after a
+U+2029 inside the text of an accDescr line of an architecture diagram] [test: a
+run before two directives that touch after a U+2028 inside the text of an
+accDescr line of an architecture diagram] [test: a wide space before two
+directives that spaces separate, in an accDescr line of an architecture diagram]
+[test: a wide space before two directives that touch and a comment that touches
+the last, in an accTitle line of an architecture diagram] [test: a wide space
+before two directives that touch and a comment that touches the last, in an
+accDescr line of an architecture diagram] [test: a U+2028 before two directives
+that touch, in an accDescr line of an architecture diagram] [test: a U+2028
+before a directive that spaces follow, in an accTitle line of an architecture
+diagram] [test: a U+2028 before a directive that spaces follow, in an accDescr
+line of an architecture diagram] [test: a U+2028 before two directives that
+spaces separate, in an accDescr line of an architecture diagram] [test: a U+2028
+inside the text, spaces before the directive, in an accDescr line of an
+architecture diagram] [test: a value of directives only, spaces after the
+directive, in an accTitle line of an architecture diagram] [test: a directive
+inside the text, spaces before and after the last directive, in an accTitle line
+of an architecture diagram] [test: a directive inside the text, spaces before
+and after the last directive, in an accDescr line of an architecture diagram]
+[test: a `;` in the text, spaces between two directives, in an accDescr line of
+an architecture diagram] [test: a `;` between two directives, spaces around it,
+in an accTitle line of an architecture diagram] [test: a `;` between two
+directives, spaces around it, in an accDescr line of an architecture diagram]
+[test: a `;` after the last directive, in an accTitle line of an architecture
+diagram] [test: a `;` after the last directive, in an accDescr line of an
+architecture diagram] [test: a `;` after the last directive, a U+2028 before the
+directives, a comment after it, in an accTitle line of an architecture diagram]
+[test: a `;` after the last directive, a U+2028 before the directives, a comment
+after it, in an accDescr line of an architecture diagram] [test: a `;` between
+two directives, a U+2028 before the directives, a comment after them, in an
+accTitle line of an architecture diagram] [test: a `;` between two directives, a
+U+2028 before the directives, a comment after them, in an accDescr line of an
+architecture diagram] [test: two U+2028 before the directive that ends an
+accTitle line, of an architecture diagram] [test: U+2029 and U+2028 before the
+directive that ends an accDescr line, of an architecture diagram] [test: two
+U+2028 before the directive that ends an accTitle line, spaces after it, of an
+architecture diagram] [test: two U+2029 before a directive that a space and
+another directive follow in an accDescr line, of an architecture diagram] [test:
+a U+2028 inside the directive that ends an accDescr line, spaces before it, a
+comment after two spaces, of an architecture diagram] [test: a line break inside
+the directive that ends an accTitle line, a comment after two spaces, of an
+architecture diagram] [test: a directive that starts the text of a title, tabs
+before and after it, of an architecture diagram] [test: a directive that touches
+the keyword of a title, a space and a text after it, of an architecture diagram]
 [test: a directive that touches the colon of an accTitle line, a space and a
 text after it, of an architecture diagram] [test: a directive that starts the
 text of an accTitle line, two spaces and a text after it, spaces at the end, of
@@ -4268,16 +4327,18 @@ formatted like one on a single line.
 [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
 semicolons/no-stretch-formatted] [fixture: semicolons/crossing-comment]
 
-A title or an accessibility line to which the line rule applies is not stated.
-Its form depends on the text after the `;` that the rule ignores, on a second
-`;`, on a directive, on a comment, on a U+2028 or U+2029, and on the gap after
-the keyword; no rule of [How the printed form is decided](./printed-form.md)
-gives these forms, and the released version prints them as it prints them until
-they are decided (see
+A title or an accessibility line to which the line rule applies is not stated,
+but in one case (the line rule is in
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). Its form
+depends on the text after the `;` that the rule ignores, on a second `;`, on a
+directive, on a comment, on a U+2028 or U+2029, and on the gap after the
+keyword, and no rule of [How the printed form is decided](./printed-form.md)
+gives these forms; the released version prints them as it prints them until they
+are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
-The ordinary rules give the form of a line that holds one `;`, which ends it
-(spaces and tabs may follow it), and no directive, comment, U+2028, or U+2029:
-`title a   b   style:#x;` is printed `title a b style:#x;`.
+The ordinary rules decide the one case: a line that holds one `;`, which ends it
+(spaces and tabs may follow it), and no directive, comment, U+2028, or U+2029
+(`title a   b   style:#x;` is printed `title a b style:#x;`).
 
 [test: nothing after the `;` that the line rule ignores in a title, runs before
 it, of an architecture diagram] [test: a run inside the stretch of the line
@@ -4288,7 +4349,10 @@ that the line rule ignores in a title, spaces at the end, of an architecture
 diagram] [test: a run after the keyword of a title, nothing after the `;` that
 the line rule ignores, of an architecture diagram] [test: a gap before and after
 the colon of an accTitle line, nothing after the `;` that the line rule ignores,
-of an architecture diagram]
+of an architecture diagram] [test: a tab after the `;` that the line rule
+ignores in a title, runs before it, of an architecture diagram] [test: a
+classDef trigger with nothing after the `;` in a title, runs before it, of an
+architecture diagram]
 
 Protected header/first-statement groups stay together. Removing one selected
 semicolon or moving style/classDef triggers can select another and change the
