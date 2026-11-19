@@ -573,13 +573,18 @@ with the spaces and tabs after the last directive left out: `A %%{x}%%`, a
 U+3000, and two spaces are printed `A %%{x}%%` and the U+3000, and so are `A`, a
 no-break space, `%%{x}%%`, and two spaces (`A`, the no-break space, and
 `%%{x}%%`), and a character between two directives. A run of spaces and tabs
-inside the comment that ends a literal is printed as one space too where no
-directive stands before the comment (`A %% c  d` is printed `A %% c d`, and so
-is `A %% c`, two tabs, and `d`), also before a no-break space (`A %% c`, two
-spaces, a no-break space, and `d` print `A %% c`, a space, the no-break space,
-and `d`). After a directive the comment stays as written: `A %%{x}%%  %% c  d`
-and `A  b %%{x}%% %% c  d` are not changed, nor is the run before a no-break
-space or a run of tabs in it.
+inside the comment that ends a literal is printed as one space too, except in a
+literal in which a directive has text before it, where every run stays as
+written (see [Inline directives](#inline-directives)): `A %% c  d` is printed
+`A %% c d`, and so is `A %% c`, two tabs, and `d`, also before a no-break space
+(`A %% c`, two spaces, a no-break space, and `d` print `A %% c`, a space, the
+no-break space, and `d`), and so is `%%{x}%% A  b %% c  d`, whose only directive
+stands at its start, which is printed `%%{x}%% A b %% c d`. Where a directive
+has text before it, the comment stays as written: `A %%{x}%%  %% c  d`,
+`A %%{x}%% b %% c  d`, `A  b %%{x}%% %% c  d`, and `%%{x}%% A %%{y}%% b %% c  d`
+are not changed, nor is the run before a no-break space or a run of tabs in it.
+A comment that follows the directives at the start of the literal with no text
+between them stays as written too (`%%{x}%% %% c  d`).
 
 [test: U+3000 after the last directive of an ishikawa literal] [test: U+3000
 between two directives of an ishikawa literal] [test: U+3000 before the first
@@ -592,7 +597,11 @@ comment-run-collapsed] [test: ishikawa: comment-run-before-nbsp-collapsed]
 comment-run-after-directive-kept] [test: ishikawa:
 comment-run-after-text-and-directive-kept] [test: ishikawa:
 comment-run-before-nbsp-after-directive-kept] [test: ishikawa:
-comment-tab-run-after-directive-kept]
+comment-tab-run-after-directive-kept] [test: ishikawa:
+comment-run-after-leading-directive-collapsed] [test: ishikawa:
+comment-run-after-directive-between-words-kept] [test: ishikawa:
+comment-run-after-leading-and-between-directives-kept] [test: ishikawa:
+comment-run-directly-after-leading-directive-kept]
 
 Only exterior header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value.

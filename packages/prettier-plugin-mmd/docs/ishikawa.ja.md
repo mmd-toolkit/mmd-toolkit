@@ -584,13 +584,21 @@ U+3000、U+FEFF）は、それがないと mermaid.js が別のテキストを�
 `A %%{x}%%`、U+3000、空白 2 つは `A %%{x}%%` と U+3000 に、`A`、改行しない空白、
 `%%{x}%%`、空白 2 つも `A`、改行しない空白、`%%{x}%%` になります。
 リテラルを終えるコメントの中の空白とタブの連なりは、
-コメントの前にディレクティブがなければ空白 1 つにして印字します（`A %% c  d` は
-`A %% c d` と印字し、`A %% c`、タブ 2 つ、`d` も同じです）。
+前にテキストのあるディレクティブがあるリテラルを除いて、
+空白 1 つにして印字します（そのリテラルでは、
+すべての連なりを書かれたままにします。
+[Inline directives](#inline-directives) を参照）。
+`A %% c  d` は `A %% c d` と印字し、`A %% c`、タブ 2 つ、`d` も同じです。
 改行しない空白の前でも同じです（`A %% c`、空白 2 つ、改行しない空白、`d` は、
 `A %% c`、空白 1 つ、改行しない空白、`d` と印字します）。
-ディレクティブの後のコメントは書かれたまま残ります。
-`A %%{x}%%  %% c  d` と `A  b %%{x}%% %% c  d` は変えず、
+ディレクティブが先頭にしかない `%%{x}%% A  b %% c  d` も同じで、
+`%%{x}%% A b %% c d` と印字します。
+前にテキストのあるディレクティブがあるときは、コメントは書かれたまま残ります。
+`A %%{x}%%  %% c  d`、`A %%{x}%% b %% c  d`、`A  b %%{x}%% %% c  d`、
+`%%{x}%% A %%{y}%% b %% c  d` は変えず、
 改行しない空白の前の連なりとタブの連なりも変えません。
+リテラルの先頭のディレクティブの直後に、テキストを挟まずに続くコメントも、
+書かれたまま残ります（`%%{x}%% %% c  d`）。
 
 [test: U+3000 after the last directive of an ishikawa literal]
 [test: U+3000 between two directives of an ishikawa literal]
@@ -605,6 +613,10 @@ U+3000、U+FEFF）は、それがないと mermaid.js が別のテキストを�
 [test: ishikawa: comment-run-after-text-and-directive-kept]
 [test: ishikawa: comment-run-before-nbsp-after-directive-kept]
 [test: ishikawa: comment-tab-run-after-directive-kept]
+[test: ishikawa: comment-run-after-leading-directive-collapsed]
+[test: ishikawa: comment-run-after-directive-between-words-kept]
+[test: ishikawa: comment-run-after-leading-and-between-directives-kept]
+[test: ishikawa: comment-run-directly-after-leading-directive-kept]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。
