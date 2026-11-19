@@ -632,18 +632,22 @@ each that has spaces or tabs before it, and the spaces and tabs after the last
 one are left out, whatever the spaces and tabs at the end of the line. A
 no-break space or U+3000 between the text and directives that touch one another
 and then touch the end of the line or a comment is printed as one space with the
-rest of its run. Where a no-break space, U+3000, U+2028, or U+2029 follows the
-last directive, also after spaces or tabs, the line stays as written, and so
-does a title with a directive inside it and a title of directives only. Where a
-comment follows the last directive, a run of spaces and tabs before each
-directive and before the comment is printed as one space (see
+rest of its run, and so is a U+2028 or U+2029 where the directives touch the end
+of the line. Where a space and another directive or a comment follow the
+directive, a no-break space or U+3000 before it stays. Where a no-break space,
+U+3000, U+2028, or U+2029 follows the last directive, also after spaces or tabs,
+the line stays as written, and so does a title with a directive inside it and a
+title of directives only. Where a comment follows the last directive, a run of
+spaces and tabs before each directive and before the comment is printed as one
+space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 title/title-directives-end-tabs-dropped] [fixture:
 title/title-directives-in-the-text-kept] [fixture:
 title/title-directives-end-before-comment-line-and-empty-line] [fixture:
-title/title-directives-then-comment] [corpus fixture:
+title/title-directives-then-comment] [fixture:
+title/title-directives-end-at-the-end-of-the-text] [corpus fixture:
 architecture/directive-fields] [test: a no-break space after the last directive
 of a title of an architecture diagram] [test: U+3000 after the last directive of
 a title of an architecture diagram] [test: U+2028 after the last directive of a
@@ -657,6 +661,11 @@ diagram] [test: a space, a no-break space, and a space before the directive that
 ends a title of an architecture diagram] [test: a no-break space before two
 directives that touch and end a title of an architecture diagram] [test: a
 no-break space before a directive that a comment touches in a title of an
+architecture diagram] [test: U+2028 before the directive that ends a title of an
+architecture diagram] [test: U+2029 before the directive that ends a title of an
+architecture diagram] [test: a no-break space before a directive that a space
+and another directive follow in a title of an architecture diagram] [test:
+U+3000 before a directive that a space and a comment follow in a title of an
 architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
@@ -704,23 +713,34 @@ with one space before each that has spaces or tabs before it, and the spaces and
 tabs after the last one are left out, whatever the spaces and tabs at the end of
 the line. A no-break space or U+3000 between the text and directives that touch
 one another and then touch the end of the line or a comment is printed as one
-space with the rest of its run. Where a no-break space, U+3000, U+2028, or
-U+2029 follows the last directive, also after spaces or tabs, the line stays as
-written, and so does a value with a directive inside it and a value of
-directives only. Where a comment follows the last directive, a run of spaces and
-tabs before each directive and before the comment is printed as one space (see
+space with the rest of its run, and so is a U+2028 or U+2029 where the
+directives touch the end of the line. Where a space and another directive or a
+comment follow the directive, a no-break space or U+3000 before it stays. Where
+a no-break space, U+3000, U+2028, or U+2029 follows the last directive, also
+after spaces or tabs, the line stays as written, apart from the gap before the
+colon, and so does a value with a directive inside it and a value of directives
+only. Where a comment follows the last directive, a run of spaces and tabs
+before each directive and before the comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 accessibility-lines/acc-directives-end-tabs-dropped] [fixture:
 accessibility-lines/acc-directives-in-the-text-kept] [fixture:
 accessibility-lines/acc-directives-then-comment] [fixture:
-architecture/accessibility-lines/a11y-empty-comment-gap] [test: a no-break space
-after the last directive of an accTitle line of an architecture diagram] [test:
-a no-break space before the directive that ends an accTitle line of an
-architecture diagram] [test: a no-break space after the last directive of an
-accDescr line of an architecture diagram] [test: a no-break space before the
-directive that ends an accDescr line of an architecture diagram]
+accessibility-lines/acctitle-directives-end-at-the-end-of-the-text] [fixture:
+accessibility-lines/accdescr-directives-end-at-the-end-of-the-text] [fixture:
+accessibility-lines/acc-directives-end-before-comment-line-and-empty-line]
+[fixture: architecture/accessibility-lines/a11y-empty-comment-gap] [test: a
+no-break space after the last directive of an accTitle line of an architecture
+diagram] [test: a no-break space before the directive that ends an accTitle line
+of an architecture diagram] [test: a no-break space after the last directive of
+an accDescr line of an architecture diagram] [test: a no-break space before the
+directive that ends an accDescr line of an architecture diagram] [test: U+2028
+before the directive that ends an accTitle line of an architecture diagram]
+[test: a no-break space before a directive that a space and a comment follow in
+an accDescr line of an architecture diagram] [test: the gap before the colon of
+an accTitle line with a no-break space after its last directive of an
+architecture diagram]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 
@@ -762,8 +782,13 @@ decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep such a line break, where no
 other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`, and the like). Keep comment/directive-only
-interiors. Rule 1 names no mark for a line inside a block, so
+lines, a line that holds a `;`, and the like). The line that holds the `{` after
+a comment or a directive stands at the level of its statement, where those three
+print it one level deeper; no rule gives that level, so the form that the
+released version prints stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Keep comment/directive-only interiors. Rule 1 names no mark for a line inside a
+block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line

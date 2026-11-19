@@ -660,6 +660,9 @@ architecture の要約が title を公開しなくても、文と内容を保ち
 互いに接して行末かコメントに接するディレクティブがあるとき、
 その前のテキストとの間にあるノーブレークスペースや U+3000 は、
 同じ連なりの残りとともに空白 1 つで印字します。
+ディレクティブが行末に接するときは、U+2028 や U+2029 も同じです。
+ディレクティブの後に空白と別のディレクティブかコメントが続くときは、
+その前のノーブレークスペースや U+3000 は残ります。
 最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
 U+2029 のどれかがあるときは、その前に空白やタブがあっても、
 行を書かれたままにします。
@@ -674,6 +677,7 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [fixture: title/title-directives-in-the-text-kept]
 [fixture: title/title-directives-end-before-comment-line-and-empty-line]
 [fixture: title/title-directives-then-comment]
+[fixture: title/title-directives-end-at-the-end-of-the-text]
 [corpus fixture: architecture/directive-fields]
 [test: a no-break space after the last directive of a title of an architecture diagram]
 [test: U+3000 after the last directive of a title of an architecture diagram]
@@ -686,6 +690,10 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: a space, a no-break space, and a space before the directive that ends a title of an architecture diagram]
 [test: a no-break space before two directives that touch and end a title of an architecture diagram]
 [test: a no-break space before a directive that a comment touches in a title of an architecture diagram]
+[test: U+2028 before the directive that ends a title of an architecture diagram]
+[test: U+2029 before the directive that ends a title of an architecture diagram]
+[test: a no-break space before a directive that a space and another directive follow in a title of an architecture diagram]
+[test: U+3000 before a directive that a space and a comment follow in a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -736,9 +744,12 @@ mermaid.js は次の行を独立した文として読むので、つなぐと、
 互いに接して行末かコメントに接するディレクティブがあるとき、
 その前のテキストとの間にあるノーブレークスペースや U+3000 は、
 同じ連なりの残りとともに空白 1 つで印字します。
+ディレクティブが行末に接するときは、U+2028 や U+2029 も同じです。
+ディレクティブの後に空白と別のディレクティブかコメントが続くときは、
+その前のノーブレークスペースや U+3000 は残ります。
 最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
 U+2029 のどれかがあるときは、その前に空白やタブがあっても、
-行を書かれたままにします。
+コロンの前の隙間を除いて、行を書かれたままにします。
 中にディレクティブのある値と、ディレクティブだけの値も、書かれたままです。
 最後のディレクティブの後にコメントが続くときは、
 それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
@@ -749,11 +760,17 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [fixture: accessibility-lines/acc-directives-end-tabs-dropped]
 [fixture: accessibility-lines/acc-directives-in-the-text-kept]
 [fixture: accessibility-lines/acc-directives-then-comment]
+[fixture: accessibility-lines/acctitle-directives-end-at-the-end-of-the-text]
+[fixture: accessibility-lines/accdescr-directives-end-at-the-end-of-the-text]
+[fixture: accessibility-lines/acc-directives-end-before-comment-line-and-empty-line]
 [fixture: architecture/accessibility-lines/a11y-empty-comment-gap]
 [test: a no-break space after the last directive of an accTitle line of an architecture diagram]
 [test: a no-break space before the directive that ends an accTitle line of an architecture diagram]
 [test: a no-break space after the last directive of an accDescr line of an architecture diagram]
 [test: a no-break space before the directive that ends an accDescr line of an architecture diagram]
+[test: U+2028 before the directive that ends an accTitle line of an architecture diagram]
+[test: a no-break space before a directive that a space and a comment follow in an accDescr line of an architecture diagram]
+[test: the gap before the colon of an accTitle line with a no-break space after its last directive of an architecture diagram]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 
@@ -795,6 +812,12 @@ architecture-beta
 [journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
 たとえば、物理行を結ぶコメント領域や、`;` を含む行です。
+コメントやディレクティブの後の `{` を持つ行は、文と同じ段に置きます。
+その 3 つは 1 段深く置くので、この段を与える規則はなく、
+公開した版が印字する形を、決まるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 コメント・ディレクティブだけの内側を保ちます。
 規則 1 は、ブロックの中の行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
