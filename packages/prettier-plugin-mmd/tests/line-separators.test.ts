@@ -5275,6 +5275,97 @@ describe("kanban whitespace and line boundaries", () => {
   })
 })
 
+/**
+ * A no-break space, U+3000, U+2028, U+2029, and the other whitespace
+ * characters beside a comment after a statement or inside a type tag of an
+ * eventmodeling diagram (docs/eventmodeling.md, Type tags and Comments).
+ */
+const eventmodelingCommentGapExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a no-break space before a `%%` comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u00a0%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+3000 before a `//` comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u3000// c\n",
+    "eventmodeling\ntf 01 evt Alpha // c\n",
+  ],
+  [
+    "U+2028 before a slash comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2028/*c*/\n",
+    "eventmodeling\ntf 01 evt Alpha /*c*/\n",
+  ],
+  [
+    "U+2029 before a `%%` comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2029%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "an em space before a `//` comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2003// c\n",
+    "eventmodeling\ntf 01 evt Alpha // c\n",
+  ],
+  [
+    "a no-break space before a comment inside a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json\u00a0/*a*/`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json /*a*/` {x}\n",
+  ],
+  [
+    "U+3000 before a comment inside a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json\u3000/*a*/`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json /*a*/` {x}\n",
+  ],
+  [
+    "U+2028 before a comment inside a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json\u2028/*a*/`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json /*a*/` {x}\n",
+  ],
+  [
+    "U+2029 before a comment inside a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json\u2029/*a*/`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json /*a*/` {x}\n",
+  ],
+  [
+    "a no-break space after a comment inside a type tag, before its next part, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/\u00a0json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/ json` {x}\n",
+  ],
+  [
+    "a no-break space after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/\u00a0`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/ ` {x}\n",
+  ],
+  [
+    "a no-break space before a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`\u00a0/*c*/ {x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` /*c*/ {x}\n",
+  ],
+  [
+    "a no-break space after a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/\u00a0{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/ {x}\n",
+  ],
+  [
+    "a no-break space between the parts of a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u00a0json\u00a0`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` {x}\n",
+  ],
+]
+
+describe("the whitespace beside a comment of an eventmodeling diagram", () => {
+  it.each(eventmodelingCommentGapExamples)(
+    "%s",
+    async (_name, input, expected) => {
+      await expectKept(input, expected)
+    },
+  )
+})
+
 /** Fixed escaped cases of uniform data-block indentation and line endings. */
 const dataBlockExamples: readonly (readonly [
   string,

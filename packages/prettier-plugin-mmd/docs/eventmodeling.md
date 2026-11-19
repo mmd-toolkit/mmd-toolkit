@@ -299,10 +299,11 @@ before its body. Tight tags distinguish the annotation from its value. Retain
 the presence or absence of a tag and all eight authored type words. A tag does
 not ask the formatter to parse its payload as JSON or another language; hidden
 forms and global trivia retain their boundaries. A comment inside a tag or right
-after it stays touching where it touches, and a run of spaces and tabs before it
-becomes one space, as under [Comments](#comments). A run of spaces and tabs
-after a comment inside the tag becomes one space too, while the gaps between the
-parts of the tag itself stay tight.
+after it stays touching where it touches, and a run of whitespace before it
+becomes one space, as under [Comments](#comments). A run of whitespace after a
+comment inside the tag becomes one space too, while the gaps between the parts
+of the tag itself stay tight, whichever whitespace characters they hold (spaces,
+tabs, a no-break space, U+3000, U+2028, U+2029, and the others).
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -314,7 +315,17 @@ parts of the tag itself stay tight.
 eventmodeling/type-tags/tag-comments-spaced] [fixture:
 eventmodeling/type-tags/tag-comments-spaced-after] [fixture:
 eventmodeling/type-tags/tag-comments-tab-before] [fixture:
-eventmodeling/type-tags/tag-comments-tab-after]
+eventmodeling/type-tags/tag-comments-tab-after] [test: a no-break space before a
+comment inside a type tag of an eventmodeling diagram] [test: U+3000 before a
+comment inside a type tag of an eventmodeling diagram] [test: U+2028 before a
+comment inside a type tag of an eventmodeling diagram] [test: U+2029 before a
+comment inside a type tag of an eventmodeling diagram] [test: a no-break space
+after a comment inside a type tag, before its next part, of an eventmodeling
+diagram] [test: a no-break space after a comment inside a type tag, before its
+closing backtick, of an eventmodeling diagram] [test: a no-break space before a
+comment after a type tag of an eventmodeling diagram] [test: a no-break space
+after a comment after a type tag of an eventmodeling diagram] [test: a no-break
+space between the parts of a type tag of an eventmodeling diagram]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -995,8 +1006,9 @@ tf 02 evt Beta
 
 Align ordinary standalone comments with their owning body; between GWT items
 this is item depth. Within a printed line, a comment that touches stays
-touching, and a run of spaces and tabs before it becomes one space. Rule 1 names
-no mark before a comment, so
+touching, and a run of whitespace before it becomes one space, whichever
+whitespace characters it holds (spaces, tabs, a no-break space, U+3000, U+2028,
+U+2029, and the others). Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
@@ -1021,7 +1033,13 @@ decides, as [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), and [c4](./c4.md#comments) print it so.
 
 [fixture: eventmodeling/comments/inline-gap-run-and-touching] [fixture:
-eventmodeling/comments/standalone-native-comments]
+eventmodeling/comments/standalone-native-comments] [test: a no-break space
+before a `%%` comment after a statement of an eventmodeling diagram] [test:
+U+3000 before a `//` comment after a statement of an eventmodeling diagram]
+[test: U+2028 before a slash comment after a statement of an eventmodeling
+diagram] [test: U+2029 before a `%%` comment after a statement of an
+eventmodeling diagram] [test: an em space before a `//` comment after a
+statement of an eventmodeling diagram]
 
 [fixture: eventmodeling/comments/inline-comments-keep-contact]
 

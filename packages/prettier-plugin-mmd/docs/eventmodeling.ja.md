@@ -311,10 +311,12 @@ tf 01 evt Alpha [[D]]
 タグは本文を JSON などとして解釈する指示ではありません。
 隠れた形と大域的な注釈類の境界は保ちます。
 タグの中のコメントと、タグの直後のコメントは、接していれば接したまま残し、
-その前の空白とタブの連なりは空白 1 つにします。
+その前の空白文字の連なりは空白 1 つにします。
 詳しくは [コメント](#comments) を参照してください。
-タグの中のコメントの後の空白とタブの連なりも空白 1 つにします。
+タグの中のコメントの後の空白文字の連なりも空白 1 つにします。
 タグの部分の間の隙間は詰めたままです。
+これらの連なりと隙間は、空白、タブ、ノーブレークスペース、U+3000、U+2028、
+U+2029 など、どの空白文字でも同じです。
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -327,6 +329,15 @@ tf 01 evt Alpha [[D]]
 [fixture: eventmodeling/type-tags/tag-comments-spaced-after]
 [fixture: eventmodeling/type-tags/tag-comments-tab-before]
 [fixture: eventmodeling/type-tags/tag-comments-tab-after]
+[test: a no-break space before a comment inside a type tag of an eventmodeling diagram]
+[test: U+3000 before a comment inside a type tag of an eventmodeling diagram]
+[test: U+2028 before a comment inside a type tag of an eventmodeling diagram]
+[test: U+2029 before a comment inside a type tag of an eventmodeling diagram]
+[test: a no-break space after a comment inside a type tag, before its next part, of an eventmodeling diagram]
+[test: a no-break space after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram]
+[test: a no-break space before a comment after a type tag of an eventmodeling diagram]
+[test: a no-break space after a comment after a type tag of an eventmodeling diagram]
+[test: a no-break space between the parts of a type tag of an eventmodeling diagram]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -1023,8 +1034,9 @@ tf 02 evt Beta
 ### Comments
 
 普通の独立コメントは所属本文の段に揃え、GWT 項目間では項目の段にします。
-同じ印字行では、接するコメントは接したまま残し、
-前の空白とタブの連なりは空白 1 つにします。
+同じ印字行では、接するコメントは接したまま残し、前の空白文字の連なりは、空白、
+タブ、ノーブレークスペース、U+3000、U+2028、U+2029 など、
+どの空白文字でも空白 1 つにします。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
@@ -1053,6 +1065,11 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 
 [fixture: eventmodeling/comments/inline-gap-run-and-touching]
 [fixture: eventmodeling/comments/standalone-native-comments]
+[test: a no-break space before a `%%` comment after a statement of an eventmodeling diagram]
+[test: U+3000 before a `//` comment after a statement of an eventmodeling diagram]
+[test: U+2028 before a slash comment after a statement of an eventmodeling diagram]
+[test: U+2029 before a `%%` comment after a statement of an eventmodeling diagram]
+[test: an em space before a `//` comment after a statement of an eventmodeling diagram]
 
 [fixture: eventmodeling/comments/inline-comments-keep-contact]
 
