@@ -1175,8 +1175,9 @@ values do, and the printer drops them there, but for a U+2028 or a U+2029 at the
 start of a title or of an accessibility text that text follows, which stays with
 the gap that holds it (`title`, a space, U+2028, and `T` is not changed), and
 which a title of directives only loses (`title`, a space, U+2028, and `%%{x}%%`
-is printed `title %%{x}%%`). A gap that holds one is printed as written, and so
-is the text that holds one. Rule 1 names no mark for a gap that holds one, so
+is printed `title %%{x}%%` where a statement follows the title directly or the
+text ends after it). A gap that holds one is printed as written, and so is the
+text that holds one. Rule 1 names no mark for a gap that holds one, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#line-separators) and
 [timeline](./timeline.md#line-separators) print such a gap as written.

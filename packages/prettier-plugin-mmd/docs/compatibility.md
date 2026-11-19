@@ -1412,39 +1412,41 @@ U+2028, U+2029, U+202F, U+205F, U+3000, and U+FEFF, the characters that
 `String.prototype.trim` removes (see
 [Notation](../../spec/docs/common.md#notation)). The title loses them because
 the Db of 12.3.0 is the same with and without them and the drawing is the same
-in every version that counts. This holds for a title in which no directive and
-no comment stands; beside one, a whitespace character that is no space or tab is
-printed as the tables below say. The last event of a line of a timeline and the
-second description of a state with an alias lose the spaces and tabs at their
-end in the same way, not the whitespace at their start, which aligns the colons
-of a timeline: `2020 : e   ` is printed `2020 : e`, and `state "d" as A : x   `
-is printed `state "d" as A : x`. A period of a timeline, and an event that
-another colon follows, gain one space at their end where they end without
-whitespace, which stands before that colon: `2004: a: b` is printed
-`2004 : a : b`, except after the word `title` or `section` as the period, where
-a space would make the line a title or a section. The description of a task of a
-user journey loses the spaces and tabs before its first colon
-(`Make tea : 5: Me` is printed `Make tea: 5: Me`), except in a section whose
-descriptions are padded to line the colons up, and stays as written where a
-character that is no space or tab stands among them (`Make tea`, a no-break
-space, `: 5: Me`). Where spaces or tabs stand between the text of a title and a
-comment that follows it on its line, they are printed as one space, and a
-comment that touches the text stays touching. A whitespace character that is no
-space or tab and no U+2028 or U+2029, among them a no-break space, U+3000, and
-U+2003, is printed as one space by the Langium types but a pie chart
-(`T\u3000%% c` is printed `T %% c` in a radar chart), and stays as written in a
-quadrant chart, a Gantt chart, a user journey, a timeline, a sequence diagram, a
-Venn diagram, and a C4 diagram. The form with one space draws other text or
-other geometry in every version that counts in each of these seven types, but
-for a form feed, which draws the same in a quadrant chart, a Gantt chart, a user
-journey, a timeline, a sequence diagram, and a C4 diagram. Where only directives
-follow the text, each keeps whether spaces or tabs precede it, a run becoming
-one space, and the spaces and tabs after the last one are dropped like any
-spaces and tabs at the end of the line, so the line is printed alike whether or
-not spaces and tabs follow its last directive, as a directive at the end of a
-line is in the other diagrams (see [Directives](./flowchart.md#directives)),
-unless a directive of the line holds a line break, a `;`, a U+2028, or a U+2029
-(see
+in every version that counts. A U+2028 or a U+2029 that a title loses, at its
+end or before a directive, is lost where a statement follows the title directly
+or the text ends after it (see the nine rows named before the first table
+below). This holds for a title in which no directive and no comment stands;
+beside one, a whitespace character that is no space or tab is printed as the
+tables below say. The last event of a line of a timeline and the second
+description of a state with an alias lose the spaces and tabs at their end in
+the same way, not the whitespace at their start, which aligns the colons of a
+timeline: `2020 : e   ` is printed `2020 : e`, and `state "d" as A : x   ` is
+printed `state "d" as A : x`. A period of a timeline, and an event that another
+colon follows, gain one space at their end where they end without whitespace,
+which stands before that colon: `2004: a: b` is printed `2004 : a : b`, except
+after the word `title` or `section` as the period, where a space would make the
+line a title or a section. The description of a task of a user journey loses the
+spaces and tabs before its first colon (`Make tea : 5: Me` is printed
+`Make tea: 5: Me`), except in a section whose descriptions are padded to line
+the colons up, and stays as written where a character that is no space or tab
+stands among them (`Make tea`, a no-break space, `: 5: Me`). Where spaces or
+tabs stand between the text of a title and a comment that follows it on its
+line, they are printed as one space, and a comment that touches the text stays
+touching. A whitespace character that is no space or tab and no U+2028 or
+U+2029, among them a no-break space, U+3000, and U+2003, is printed as one space
+by the Langium types but a pie chart (`T\u3000%% c` is printed `T %% c` in a
+radar chart), and stays as written in a quadrant chart, a Gantt chart, a user
+journey, a timeline, a sequence diagram, a Venn diagram, and a C4 diagram. The
+form with one space draws other text or other geometry in every version that
+counts in each of these seven types, but for a form feed, which draws the same
+in a quadrant chart, a Gantt chart, a user journey, a timeline, a sequence
+diagram, and a C4 diagram. Where only directives follow the text, each keeps
+whether spaces or tabs precede it, a run becoming one space, and the spaces and
+tabs after the last one are dropped like any spaces and tabs at the end of the
+line, so the line is printed alike whether or not spaces and tabs follow its
+last directive, as a directive at the end of a line is in the other diagrams
+(see [Directives](./flowchart.md#directives)), unless a directive of the line
+holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](#directives-that-hold-a-line-break-or-a-semicolon)):
 `title T  %%{x}%%  %%{y}%%` and `title T  %%{x}%%  %%{y}%%  ` are both printed
 `title T %%{x}%% %%{y}%%`, `title T%%{x}%%%%{y}%%  ` is printed
@@ -1482,7 +1484,14 @@ a cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, and a
 railroad diagram; every type of a group prints the form of its column. A pie
 chart is left out of the rows marked `but a pie chart`, and the `accDescr:` line
 of a pie chart and of a gitGraph out of the rows of the second table marked
-likewise: the form that they keep is stated with the pie rules.
+likewise: the form that they keep is stated with the pie rules. The nine rows
+`T\u2028`, `T  \u2028`, `T\u2029`, `T\u2028  `, `\u2028%%{x}%%`,
+`\u2029%%{x}%%`, `T\u2028%%{x}%%`, `T %%{x}%%\u2028  `, and `T %%{x}%%\u2029  `
+are for a title that a statement follows directly or after which the text ends.
+With another line after the title (an empty line, a line of spaces, a comment
+line, or a line of a directive), no form is stated for them, and the forms that
+the released version prints stay until they are decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 | Written after `title `         | Langium types                   | quadrant               | Gantt, journey, timeline, sequence | Venn, C4              |
 | ------------------------------ | ------------------------------- | ---------------------- | ---------------------------------- | --------------------- |
@@ -1571,11 +1580,12 @@ that counts rejects the title without the whitespace after the directive, and in
 a timeline it draws another figure. A whitespace character that is no space or
 tab before the first directive of such a title, a U+2028 and a U+2029 among
 them, is left out by the Langium types and a quadrant chart and stays in the
-other types (`\u00a0%%{x}%%`, `\u2028%%{x}%%`). Where text follows that
-directive, every type but a quadrant chart keeps the title as written, and a
-quadrant chart leaves out the character and the space after the directive, but
-for a U+2028 and a U+2029, which stay (`\u00a0%%{x}%% T` is printed `%%{x}%%T`,
-and `\u2028%%{x}%% T` is not changed). With spaces after the directive
+other types (`\u00a0%%{x}%%`, and `\u2028%%{x}%%` where a statement follows the
+title directly or the text ends after it). Where text follows that directive,
+every type but a quadrant chart keeps the title as written, and a quadrant chart
+leaves out the character and the space after the directive, but for a U+2028 and
+a U+2029, which stay (`\u00a0%%{x}%% T` is printed `%%{x}%%T`, and
+`\u2028%%{x}%% T` is not changed). With spaces after the directive
 (`\u00a0%%{x}%%  `), a quadrant chart leaves out the character and the spaces, a
 Gantt chart, a user journey, a timeline, a sequence diagram, a Venn diagram, and
 a C4 diagram leave out the spaces and keep the character, and the Langium types
@@ -1616,10 +1626,12 @@ nothing else. Every other title line (a directive or text before the U+2028 or
 U+2029, two separators, a directive that holds a line break, a `;`, a U+2028, or
 a U+2029, a comment that holds a `;`, a second directive, a directive without a
 comment, a comment without a directive, other whitespace around the separator or
-the comment), a line after the title that is not written in the first column,
-and the other sequences of lines after the title are outside the table. No form
-is stated for them, and the forms that the released version prints stay until
-they are decided (see
+the comment), a line after the title that the first column of the table does not
+write, and the other sequences of lines after the title are outside the table,
+and no form of this table is stated for them. A title of a directive without a
+comment is in the first table above, where a statement follows it directly or
+the text ends after it. The forms that the released version prints for the
+others stay until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 An info diagram rejects a statement after an empty line, a line of spaces, or a
 line of a directive (mermaid.js rejects it too), so the rows that put a
@@ -1682,36 +1694,41 @@ comment that touches the text (`T%% c`).
 
 A U+2028 or U+2029 at the end of a title with no directive, with the spaces
 before it, is left out by the Langium types and a quadrant chart and stays in
-the other types.
+the other types, where a statement follows the title directly or the text ends
+after it.
 
 An `accTitle:` or `accDescr:` line that holds text is printed as the next table
 gives: the Langium types as in the first table, except that a directive that
 starts the value stays with what follows it, and the other types as its last
-column (a Venn diagram has no such line). A line of directives only is not in
-the table: the Langium types print it as written, mermaid.js rejects it in a
-Gantt chart, a user journey, and a timeline, and in a quadrant chart, a sequence
-diagram, and a C4 diagram the next line is its value. In a C4 diagram, the Db of
-12.3.0 has an empty `accTitle` for an `accTitle:` line of directives only and
-the next line as the title of the diagram (`accTitle:` sets the title of a C4
-diagram), and the next line as the `accDescr` for an `accDescr:` line; the
-formatter prints the next line as written, one level deeper. A line of a
-directive and a comment with no text is in the last rows of the table: the types
-of the last column print `%%{x}%%%% c`, and the Langium types keep the line as
-written, the written and the printed forms being drawn the same in every version
-that counts. In a quadrant chart, a Gantt chart, a user journey, a timeline, a
-sequence diagram, and a C4 diagram, the Db of 12.3.0 and the drawing are the
-same with and without a no-break space, U+3000, U+2003, U+2028, or U+2029 at the
-start or at the end of the value of these lines, once the directives are
-removed, whereas the same characters at the ends of the `title` of a Gantt
-chart, a user journey, a timeline, a sequence diagram, and a C4 diagram change
-the Db and the drawing (a form feed does not, as above), so the last column
-leaves them out at the end where the title of the same type keeps them. At the
-start, a quadrant chart, a Gantt chart, a user journey, a timeline, a sequence
-diagram, and a C4 diagram leave out every such character but a U+2028 and a
-U+2029, which stay (`\u2028T` and `\u2029T` in the table). The `accTitle:` line
-of a pie chart and of a gitGraph stays as written in the rows with a comment
-that stands after the text or after a directive, after two directives, or after
-a tab (`T  %%{x}%%  %% c  `, `T`, a no-break space, `%% c`, `T  %% c  `, `T`, a
+column (a Venn diagram has no such line). The rows of that table that hold a
+U+2028 or a U+2029 (`T %%{x}%%\u2028  `, `T %%{x}%%\u2029  `, `T\u2028%%{x}%%`,
+`T\u2028`, `T  \u2028`, `T\u2029`, and `T\u2028  `) are for a line that a
+statement follows directly or after which the text ends, as the same rows of the
+first table are. A line of directives only is not in the table: the Langium
+types print it as written, mermaid.js rejects it in a Gantt chart, a user
+journey, and a timeline, and in a quadrant chart, a sequence diagram, and a C4
+diagram the next line is its value. In a C4 diagram, the Db of 12.3.0 has an
+empty `accTitle` for an `accTitle:` line of directives only and the next line as
+the title of the diagram (`accTitle:` sets the title of a C4 diagram), and the
+next line as the `accDescr` for an `accDescr:` line; the formatter prints the
+next line as written, one level deeper. A line of a directive and a comment with
+no text is in the last rows of the table: the types of the last column print
+`%%{x}%%%% c`, and the Langium types keep the line as written, the written and
+the printed forms being drawn the same in every version that counts. In a
+quadrant chart, a Gantt chart, a user journey, a timeline, a sequence diagram,
+and a C4 diagram, the Db of 12.3.0 and the drawing are the same with and without
+a no-break space, U+3000, U+2003, U+2028, or U+2029 at the start or at the end
+of the value of these lines, once the directives are removed, whereas the same
+characters at the ends of the `title` of a Gantt chart, a user journey, a
+timeline, a sequence diagram, and a C4 diagram change the Db and the drawing (a
+form feed does not, as above), so the last column leaves them out at the end
+where the title of the same type keeps them. At the start, a quadrant chart, a
+Gantt chart, a user journey, a timeline, a sequence diagram, and a C4 diagram
+leave out every such character but a U+2028 and a U+2029, which stay (`\u2028T`
+and `\u2029T` in the table). The `accTitle:` line of a pie chart and of a
+gitGraph stays as written in the rows with a comment that stands after the text
+or after a directive, after two directives, or after a tab
+(`T  %%{x}%%  %% c  `, `T`, a no-break space, `%% c`, `T  %% c  `, `T`, a
 no-break space, `%%{x}%%%% c`, `T  %%{x}%%  %%{y}%%  %% c`, and `T`, a tab,
 U+3000, U+2003, a vertical tab, a form feed, or U+FEFF, `%% c`), since 10.9.8
 reads the `%%` and what follows as part of the title and draws other text for
