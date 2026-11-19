@@ -1741,10 +1741,12 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `title T  %%{x}%%  ` は `title T %%{x}%%` と、
 `title T  %%{x}%%  %%{y}%%  ` は `title T %%{x}%% %%{y}%%` と印字します。
-最後のディレクティブの後のコメントは、間に空白があれば空白 1 つの後に置き、
-接していれば接したままにします。
+最後のディレクティブの後のコメントは、
+間に空白かタブがあれば空白 1 つの後に置き、接していれば接したままにします。
 `title T  %%{x}%%  %% c` は `title T %%{x}%% %% c` と、
 `title T  %%{x}%%%% c` は `title T %%{x}%%%% c` と印字します。
+間に改行しない空白か U+3000 があるときは、
+行は書かれたまま残ります（`T %%{x}%%\u00a0%% c`）。
 ディレクティブのある title のほかの形と、
 `accTitle:` と `accDescr:`
 の行の形（[Accessibility lines](#accessibility-lines)を参照）は、
@@ -1773,6 +1775,14 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 | `T\u2028%%{x}%%  `         | 書かれたまま        | 書かれたまま        | 書かれたまま        |
 | `T\u2029%%{x}%%  `         | 書かれたまま        | 書かれたまま        | 書かれたまま        |
 | `T\u0085%%{x}%%  `         | `T\u0085%%{x}%%`    | `T\u0085%%{x}%%`    | `T\u0085%%{x}%%`    |
+| `T\u3000%%{x}%%`           | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u2003%%{x}%%`           | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u2029%%{x}%%`           | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u0085%%{x}%%`           | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\u00a0%% c`      | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\u3000%% c`      | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\t%% c`          | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    |
+| `T %%{x}%%  %% c`          | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    |
 | `T\t%%{x}%%`               | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
 | `T\t%%{x}%%\t`             | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
 | `%%{x}%%  T  `             | `%%{x}%%T`          | 書かれたまま        | 書かれたまま        |
@@ -1803,7 +1813,9 @@ U+3000、U+2003、U+0085、U+2028、U+2029、`;`、
 テキストの後のディレクティブの後にテキストが続く `T %%{x}%%  U  %%{y}%%  `
 も残ります）。
 最後のディレクティブの前では、タブは空白 1 つになり、後ろに何も続かなければ、
-改行しない空白と U+2028 も空白 1 つになります。
+空白でもタブでもない仕様の空白文字（U+000B、U+000C、改行しない空白、U+1680、
+U+2000〜U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、
+U+FEFF）も空白 1 つになり、U+0085 は残ります。
 後ろに空白が続くときは、U+0085 は残して空白を除き、
 U+2028 と U+2029 は空白と一緒に残ります。
 ディレクティブで始まり、その後にテキストが続く title は、
@@ -1844,6 +1856,7 @@ U+2028 と U+2029 は空白と一緒に残ります。
 [test: treeview: the whitespace beside a directive in a title]
 [test: treeview: the whitespace beside a directive in an accTitle line]
 [test: treeview: the whitespace beside a directive in an accDescr line]
+[test: treeview: each whitespace character before the last directive of a title and of an accessibility line]
 
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。

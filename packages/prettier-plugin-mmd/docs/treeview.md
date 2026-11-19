@@ -1748,13 +1748,15 @@ after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `title T  %%{x}%%  ` is printed `title T %%{x}%%`, and
 `title T  %%{x}%%  %%{y}%%  ` is printed `title T %%{x}%% %%{y}%%`. A comment
-after the last directive stands after one space where whitespace separates them
-(`title T  %%{x}%%  %% c` is printed `title T %%{x}%% %% c`), and stays touching
-where it touches (`title T  %%{x}%%%% c` is printed `title T %%{x}%%%% c`). The
-other forms of a title with a directive, and the forms of an `accTitle:` and an
-`accDescr:` line (see [Accessibility lines](#accessibility-lines)), are printed
-as the table below gives: `%%{x}%%` and `%%{y}%%` are directives, `\u00a0` is a
-no-break space, and the other `\u` forms are the characters of that number.
+after the last directive stands after one space where spaces or tabs separate
+them (`title T  %%{x}%%  %% c` is printed `title T %%{x}%% %% c`), and stays
+touching where it touches (`title T  %%{x}%%%% c` is printed
+`title T %%{x}%%%% c`); a no-break space or a U+3000 between them keeps the line
+as written (`T %%{x}%%\u00a0%% c`). The other forms of a title with a directive,
+and the forms of an `accTitle:` and an `accDescr:` line (see
+[Accessibility lines](#accessibility-lines)), are printed as the table below
+gives: `%%{x}%%` and `%%{y}%%` are directives, `\u00a0` is a no-break space, and
+the other `\u` forms are the characters of that number.
 
 | Written after the keyword | `title `            | `accTitle: `        | `accDescr: `        |
 | ------------------------- | ------------------- | ------------------- | ------------------- |
@@ -1777,6 +1779,14 @@ no-break space, and the other `\u` forms are the characters of that number.
 | `T\u2028%%{x}%%  `        | as written          | as written          | as written          |
 | `T\u2029%%{x}%%  `        | as written          | as written          | as written          |
 | `T\u0085%%{x}%%  `        | `T\u0085%%{x}%%`    | `T\u0085%%{x}%%`    | `T\u0085%%{x}%%`    |
+| `T\u3000%%{x}%%`          | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u2003%%{x}%%`          | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u2029%%{x}%%`          | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u0085%%{x}%%`          | as written          | as written          | as written          |
+| `T %%{x}%%\u00a0%% c`     | as written          | as written          | as written          |
+| `T %%{x}%%\u3000%% c`     | as written          | as written          | as written          |
+| `T %%{x}%%\t%% c`         | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    |
+| `T %%{x}%%  %% c`         | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    |
 | `T\t%%{x}%%`              | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
 | `T\t%%{x}%%\t`            | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
 | `%%{x}%%  T  `            | `%%{x}%%T`          | as written          | as written          |
@@ -1805,17 +1815,20 @@ After the text, a tab after the last directive is left out like spaces, and a
 no-break space, U+3000, U+2003, U+0085, U+2028, U+2029, a `;`, and text after it
 stay (`T %%{x}%%\u00a0`, and text after a directive that follows the text,
 `T %%{x}%%  U  %%{y}%%  `, stay too). Before the last directive, a tab becomes
-one space, and so do a no-break space and a U+2028 where nothing follows the
-directive; where spaces follow it, a U+0085 stays and the spaces are left out,
-and a U+2028 and a U+2029 stay with the spaces. A title that starts with one
-directive and holds text after it loses the whitespace after the directive and
-at its end, but for a U+2028, a U+2029, and a U+0085 after the directive, which
-stay, and a U+0085 at the end; an `accTitle:` or `accDescr:` line stays as
-written there. A title that starts with two directives and spaces between them
-stays as written, and one whose directives touch loses the whitespace after the
-second and at its end where spaces follow it (`title %%{x}%%%%{y}%%  T  ` is
-printed `title %%{x}%%%%{y}%%T`); the lines stay as written in all these forms.
-A title of directives and spaces or a tab only stays as written.
+one space, and so does each whitespace character of the specification that is no
+space or tab (U+000B, U+000C, a no-break space, U+1680, U+2000 to U+200A,
+U+2028, U+2029, U+202F, U+205F, U+3000, and U+FEFF) where nothing follows the
+directive, while a U+0085 stays; where spaces follow it, a U+0085 stays and the
+spaces are left out, and a U+2028 and a U+2029 stay with the spaces. A title
+that starts with one directive and holds text after it loses the whitespace
+after the directive and at its end, but for a U+2028, a U+2029, and a U+0085
+after the directive, which stay, and a U+0085 at the end; an `accTitle:` or
+`accDescr:` line stays as written there. A title that starts with two directives
+and spaces between them stays as written, and one whose directives touch loses
+the whitespace after the second and at its end where spaces follow it
+(`title %%{x}%%%%{y}%%  T  ` is printed `title %%{x}%%%%{y}%%T`); the lines stay
+as written in all these forms. A title of directives and spaces or a tab only
+stays as written.
 
 [fixture: title/title-directives-end-blanks-dropped] [test:
 treeview/title/directive-end-two-spaces] [test:
@@ -1839,7 +1852,8 @@ treeview/title/directive-leading-then-text-space] [test:
 treeview/title/directive-text-between-directives-kept] [test: treeview: the
 whitespace beside a directive in a title] [test: treeview: the whitespace beside
 a directive in an accTitle line] [test: treeview: the whitespace beside a
-directive in an accDescr line]
+directive in an accDescr line] [test: treeview: each whitespace character before
+the last directive of a title and of an accessibility line]
 
 This chooses consistent Db-equivalent outer spacing without taking a next-line
 value. Follow AST boundaries for `titlex` and `title"node"`; title still stays

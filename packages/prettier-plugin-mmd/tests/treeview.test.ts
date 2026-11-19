@@ -428,6 +428,54 @@ const directiveBesideTextRows: readonly {
     accTitle: "%%{x}%%  %%{y}%%  ",
     accDescr: "%%{x}%%  %%{y}%%  ",
   },
+  {
+    written: "T\u3000%%{x}%%",
+    title: "T %%{x}%%",
+    accTitle: "T %%{x}%%",
+    accDescr: "T %%{x}%%",
+  },
+  {
+    written: "T\u2003%%{x}%%",
+    title: "T %%{x}%%",
+    accTitle: "T %%{x}%%",
+    accDescr: "T %%{x}%%",
+  },
+  {
+    written: "T\u2029%%{x}%%",
+    title: "T %%{x}%%",
+    accTitle: "T %%{x}%%",
+    accDescr: "T %%{x}%%",
+  },
+  {
+    written: "T\u0085%%{x}%%",
+    title: "T\u0085%%{x}%%",
+    accTitle: "T\u0085%%{x}%%",
+    accDescr: "T\u0085%%{x}%%",
+  },
+  {
+    written: "T %%{x}%%\u00a0%% c",
+    title: "T %%{x}%%\u00a0%% c",
+    accTitle: "T %%{x}%%\u00a0%% c",
+    accDescr: "T %%{x}%%\u00a0%% c",
+  },
+  {
+    written: "T %%{x}%%\u3000%% c",
+    title: "T %%{x}%%\u3000%% c",
+    accTitle: "T %%{x}%%\u3000%% c",
+    accDescr: "T %%{x}%%\u3000%% c",
+  },
+  {
+    written: "T %%{x}%%\t%% c",
+    title: "T %%{x}%% %% c",
+    accTitle: "T %%{x}%% %% c",
+    accDescr: "T %%{x}%% %% c",
+  },
+  {
+    written: "T %%{x}%%  %% c",
+    title: "T %%{x}%% %% c",
+    accTitle: "T %%{x}%% %% c",
+    accDescr: "T %%{x}%% %% c",
+  },
 ]
 
 /** Formats the input as the output states, again to the same, with the Db kept. */
@@ -441,6 +489,37 @@ async function expectDirectiveRowKept(
   expect(dbOfText(output, embedded)).toEqual(dbOfText(input, embedded))
 }
 
+/**
+ * The whitespace that becomes one space before the last directive of a title
+ * and of an accessibility line, where nothing follows the directive: the tab and
+ * the whitespace of the specification that is no space, tab, or line terminator
+ * (docs/treeview.md, Title).
+ */
+const whitespaceBeforeTheLastDirective: readonly string[] = [
+  "\t",
+  "\u000b",
+  "\u000c",
+  "\u00a0",
+  "\u1680",
+  "\u2000",
+  "\u2001",
+  "\u2002",
+  "\u2003",
+  "\u2004",
+  "\u2005",
+  "\u2006",
+  "\u2007",
+  "\u2008",
+  "\u2009",
+  "\u200a",
+  "\u2028",
+  "\u2029",
+  "\u202f",
+  "\u205f",
+  "\u3000",
+  "\ufeff",
+]
+
 describe("the whitespace beside a directive in a title and in an accessibility line", () => {
   it("treeview: the whitespace beside a directive in a title", async () => {
     for (const row of directiveBesideTextRows)
@@ -448,6 +527,20 @@ describe("the whitespace beside a directive in a title and in an accessibility l
         `treeView-beta\ntitle ${row.written}\nR\n`,
         `treeView-beta\n  title ${row.title}\n  R\n`,
       )
+  })
+
+  it("treeview: each whitespace character before the last directive of a title and of an accessibility line", async () => {
+    for (const keyword of ["title", "accTitle:", "accDescr:"]) {
+      for (const character of whitespaceBeforeTheLastDirective)
+        await expectDirectiveRowKept(
+          `treeView-beta\n${keyword} T${character}%%{x}%%\nR\n`,
+          `treeView-beta\n  ${keyword} T %%{x}%%\n  R\n`,
+        )
+      await expectDirectiveRowKept(
+        `treeView-beta\n${keyword} T\u0085%%{x}%%\nR\n`,
+        `treeView-beta\n  ${keyword} T\u0085%%{x}%%\n  R\n`,
+      )
+    }
   })
 
   it("treeview: the whitespace beside a directive in an accTitle line", async () => {
