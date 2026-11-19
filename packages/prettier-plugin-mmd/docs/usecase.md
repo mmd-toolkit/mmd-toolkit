@@ -1149,10 +1149,23 @@ in the text, and stay where one does: `accDescr: A;  b  %%{z}%%  ` is printed
 `accDescr: A; b %%{z}%%`. A directive that a space or a tab separates from the
 last of them stays as written, and only the gap before the last is printed as
 one space: `accTitle: A;b  %%{x}%%  %%{z}%%  ` is printed
-`accTitle: A;b  %%{x}%% %%{z}%%`. Directives that precede the text change
-nothing: `accTitle: %%{x}%% T  %%{init: {`, a line break, `}}%%`, and two spaces
-is printed `accTitle: %%{x}%% T %%{init: {`, a line break, and `}}%%`.
+`accTitle: A;b  %%{x}%% %%{z}%%`. Directives that precede the text change one
+thing only: the runs of an `accDescr:` text, which are printed as one space,
+stay. `accDescr: A  b  %%{z}%%  ` is printed `accDescr: A b %%{z}%%`, and
+`accDescr: %%{x}%% A  b  %%{z}%%  ` is printed `accDescr: %%{x}%% A  b %%{z}%%`.
+The gap before the last directive is printed as one space either way:
+`accTitle: %%{x}%% T  %%{init: {`, a line break, `}}%%`, and two spaces is
+printed `accTitle: %%{x}%% T %%{init: {`, a line break, and `}}%%`. The gap
+before a directive that a space or a tab separates from the last stays as
+written: `accTitle: %%{x}%% T  %%{y}%%  %%{z}%%  ` is printed
+`accTitle: %%{x}%% T  %%{y}%% %%{z}%%`.
 
+[fixture:
+direction-and-accessibility/accdescr-trailing-directive-blanks-dropped]
+[fixture:
+direction-and-accessibility/acctitle-directives-before-text-end-directives-gap-kept]
+[fixture:
+direction-and-accessibility/accdescr-directive-before-text-trailing-directive-blanks-dropped]
 [fixture:
 direction-and-accessibility/acctitle-directive-after-semicolon-text-end-blanks-dropped]
 [fixture:

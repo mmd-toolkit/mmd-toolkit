@@ -1229,10 +1229,23 @@ U+2028、U+2029 を含んでも、末尾は同じに印字します。
 最後のディレクティブの前の隙間だけを空白 1 つにします。
 `accTitle: A;b  %%{x}%%  %%{z}%%  ` は `accTitle: A;b  %%{x}%% %%{z}%%`
 と印字します。
-テキストの前のディレクティブは何も変えません。
+テキストの前のディレクティブが変えるのは、1 つだけです。
+`accDescr:` のテキストの連なりは、空白 1 つにして印字しますが、
+ディレクティブが前にあると書かれたままにします。
+`accDescr: A  b  %%{z}%%  ` は `accDescr: A b %%{z}%%` と印字し、
+`accDescr: %%{x}%% A  b  %%{z}%%  ` は `accDescr: %%{x}%% A  b %%{z}%%`
+と印字します。
+最後のディレクティブの前の隙間は、どちらでも空白 1 つにします。
 `accTitle: %%{x}%% T  %%{init: {`、改行、`}}%%`、空白 2 つは、
 `accTitle: %%{x}%% T %%{init: {`、改行、`}}%%` と印字します。
+空白かタブで最後のディレクティブから隔てられたディレクティブの前の隙間は、
+書かれたままにします。
+`accTitle: %%{x}%% T  %%{y}%%  %%{z}%%  ` は
+`accTitle: %%{x}%% T  %%{y}%% %%{z}%%` と印字します。
 
+[fixture: direction-and-accessibility/accdescr-trailing-directive-blanks-dropped]
+[fixture: direction-and-accessibility/acctitle-directives-before-text-end-directives-gap-kept]
+[fixture: direction-and-accessibility/accdescr-directive-before-text-trailing-directive-blanks-dropped]
 [fixture: direction-and-accessibility/acctitle-directive-after-semicolon-text-end-blanks-dropped]
 [fixture: direction-and-accessibility/accdescr-directive-after-semicolon-run-text-end-blanks-dropped]
 [fixture: direction-and-accessibility/acctitle-directive-after-inner-directive-text-end-blanks-dropped]

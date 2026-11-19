@@ -212,6 +212,7 @@ export function layoutTimelineStatement(
     atoms,
     statement.type === "TimelineTitleStatement" ? statement.value.range : null,
     true,
+    true,
   )
   return {
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>

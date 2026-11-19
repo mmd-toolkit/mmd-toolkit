@@ -17,11 +17,7 @@ import {
   protectSemicolonPrefixes,
   replaceInAtoms,
 } from "./layout.ts"
-import {
-  collectTextEndEdits,
-  endsTheLineWithDirectives,
-  trimmedTextEnd,
-} from "./statement-rules.ts"
+import { collectLineEndEdits, trimmedTextEnd } from "./statement-rules.ts"
 import type { TreeviewBoxPlan } from "./treeview-box.ts"
 import { treeviewContentStart } from "./treeview-box.ts"
 import {
@@ -255,16 +251,18 @@ function treeviewNodeParts(node: TreeviewNode): readonly Node[] {
  */
 function trimAtomEnd(source: Source, atom: Atom): Atom {
   const textEnd = trimmedTextEnd(source, atom.start, atom.end, isSpaceOrTab)
-  if (endsTheLineWithDirectives(source, [atom.start, textEnd.end])) {
+  const lineEnd = collectLineEndEdits(
+    source,
+    [atom.start, textEnd.end],
+    { collapsesRuns: false },
+    atom.end,
+  )
+  if (lineEnd !== null) {
     // The atom ends with directives, printed as at the end of a line (see
     // `collectTextEndEdits`). One that holds a line break or a `;` is among
     // them: the atom ends before it where no whitespace follows it.
     const atoms = [atom]
-    replaceInAtoms(
-      source,
-      atoms,
-      collectTextEndEdits(source, atom.start, atom.end, false),
-    )
+    replaceInAtoms(source, atoms, lineEnd)
     return atoms[0]
   }
   if (findTriviaAt(source, atom.end - 1) !== undefined) return atom

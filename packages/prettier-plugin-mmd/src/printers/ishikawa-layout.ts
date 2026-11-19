@@ -13,13 +13,7 @@ import {
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import { keptAsWritten, replaceInAtoms } from "./layout.ts"
 import type { TextEdit } from "./layout.ts"
-import {
-  collectPlaceEdits,
-  collectTextEndEdits,
-  endsTheLineWithDirectives,
-  endsWithPlaceAfterText,
-  trimmedTextEnd,
-} from "./statement-rules.ts"
+import { collectLineEndEdits, trimmedTextEnd } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import {
   findTriviaBetween,
@@ -132,24 +126,20 @@ export function layoutIshikawaLine(
   const textEnd = trimmedTextEnd(source, start, line.range[1], isSpaceOrTab)
   let end = textEnd.end
   const atoms: Atom[] = []
-  const endsWithDirectives = endsTheLineWithDirectives(source, [start, end])
-  if (
-    endsWithDirectives ||
-    endsWithPlaceAfterText(source, [start, end], isSpaceOrTab, "semicolons")
-  ) {
+  const lineEnd = collectLineEndEdits(
+    source,
+    [start, end],
+    { collapsesRuns: true, textBefore: "semicolons" },
+    line.range[1],
+  )
+  if (lineEnd !== null) {
     // The literal ends with directives, which are printed as at the end of a
     // line, with the whitespace before them as the same literal has when the
     // directives stand after it: one space each (docs/ishikawa.md, Trailing
     // whitespace). A directive that holds a line break or a `;` is one of
     // them: the literal ends before it where no whitespace follows it.
     atoms.push({ start, end: line.range[1] })
-    replaceInAtoms(
-      source,
-      atoms,
-      endsWithDirectives
-        ? collectTextEndEdits(source, start, line.range[1], true)
-        : collectPlaceEdits(source, [start, line.range[1]], true),
-    )
+    replaceInAtoms(source, atoms, lineEnd)
   } else {
     // The gap before a directive that follows the literal is that of the
     // directive, so the literal keeps its end there.

@@ -42,11 +42,7 @@ import {
   addNameListRules,
   addWordGapEdits,
   classStatementRules,
-  collectPlaceEdits,
-  collectTextEndEdits,
-  endsTheLineWithDirectives,
-  endsWithPlaceAfterText,
-  skipBlanksAndDirectives,
+  collectLineEndEdits,
   trimmedTextEnd,
   styleUnitsCanCompact,
 } from "./statement-rules.ts"
@@ -486,34 +482,15 @@ function layoutUsecaseAccessibility(
     joinedBefore.add(valueRange[0])
     // The directives that end the value are printed as those that end a title
     // (docs/compatibility.md, Texts after a keyword that are drawn the same).
-    // The directives that precede the text are removed before it is read, so
-    // its end is looked for after them. The runs inside an `accTitle` stay, and
-    // so do those of a text that directives precede, which the collapse of the
-    // runs in the texts does not reach whatever stands at its end. The value is
-    // trimmed of every whitespace character (see `trimmedLiteralRange`), so any
-    // of them after its last directive is a blank, as a space or a tab is.
-    const textStart = skipBlanksAndDirectives(source, valueRange, isWhitespace)
-    const textRange: Range = [textStart, valueRange[1]]
-    const endsWithDirectives = endsTheLineWithDirectives(
-      source,
-      textRange,
-      isWhitespace,
-    )
-    if (
-      endsWithDirectives ||
-      endsWithPlaceAfterText(source, textRange, isWhitespace, "anything")
-    ) {
-      const collapsesRuns =
-        statement.type === "UsecaseAccDescrStatement" &&
-        textStart === valueRange[0]
-      replaceInAtoms(
-        source,
-        atoms,
-        endsWithDirectives
-          ? collectTextEndEdits(source, textStart, valueRange[1], collapsesRuns)
-          : collectPlaceEdits(source, textRange, collapsesRuns),
-      )
-    }
+    // The runs inside an `accTitle` stay. The value is trimmed of every
+    // whitespace character (see `trimmedLiteralRange`), so any of them after
+    // its last directive is a blank, as a space or a tab is.
+    const lineEnd = collectLineEndEdits(source, valueRange, {
+      isBlank: isWhitespace,
+      collapsesRuns: statement.type === "UsecaseAccDescrStatement",
+      textBefore: "anything",
+    })
+    if (lineEnd !== null) replaceInAtoms(source, atoms, lineEnd)
   }
   return {
     atoms: protectSemicolonPrefixes(source, start, end, atoms),

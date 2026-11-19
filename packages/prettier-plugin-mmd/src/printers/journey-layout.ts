@@ -152,6 +152,7 @@ export function layoutJourneyStatement(
     atoms,
     statement.type === "JourneyTitleStatement" ? statement.value.range : null,
     true,
+    true,
   )
   if (statement.type === "JourneyTaskStatement") {
     dropDescriptionBlanks(source, statement, atoms)
