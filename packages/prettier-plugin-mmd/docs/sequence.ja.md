@@ -1520,8 +1520,8 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
     `#` とそれ以降は値の一部です。
   - `title` と、テキストのある `box`。
     テキストがこの文字を含みます。
-    Db の title はこの文字で終わり、この文字を含む box の fill は、
-    12.3.0 の Db で `transparent` です。
+    12.3.0 の Db の title はこの文字で終わり、
+    この文字を含む box の fill もその Db で `transparent` です。
 
   [test: a `#` comment after U+2028, which joins no lines]
   [test: a `%%` comment line after U+2028, which joins the next line]

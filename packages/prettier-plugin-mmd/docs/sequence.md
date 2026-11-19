@@ -1494,8 +1494,8 @@ characters as escapes too (see
   - `accTitle` and a line of `accDescr`: the `#` and what follows are part of
     the value.
   - A `title`, and a `box` that has a text: the text holds the character. The
-    title of the Db ends with it, and the fill of a box whose text holds it is
-    `transparent` in the Db of 12.3.0.
+    title of the Db of 12.3.0 ends with it, and the fill of a box whose text
+    holds it is `transparent` in that Db.
 
   [test: a `#` comment after U+2028, which joins no lines] [test: a `%%` comment
   line after U+2028, which joins the next line] [test: a `%%` comment line after
