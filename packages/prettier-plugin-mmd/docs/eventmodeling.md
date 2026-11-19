@@ -305,10 +305,12 @@ tabs after a comment inside the tag becomes one space too, while the gaps
 between the parts of the tag itself stay tight, whichever whitespace they hold
 (spaces, tabs, a no-break space, U+3000, U+2028, or U+2029). A no-break space,
 U+3000, U+2028, or U+2029 before a comment inside the tag, right after the
-opening backtick, and after a comment inside the tag also becomes one space, and
-no rule gives that form: no other diagram type has a type tag, and the printers
-that [Comments](#comments) cites print these characters before a comment
-differently. The released form stays until it is decided (see
+opening backtick, after a comment inside the tag, and before and after a comment
+that follows the tag also becomes one space; nothing is stated for the other
+characters of the set of [Comments](#comments) at these places. No rule gives
+that form: no other diagram type has a type tag, and the printers that
+[Comments](#comments) cites print these characters before a comment differently.
+The released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
@@ -872,14 +874,18 @@ equal comparison Db would not justify rewriting the public EM_TITLE terminal.
 
 [fixture: eventmodeling/title/title-exact-padding-and-quotes]
 
-A `%%` that follows the text of a `title`, an `accTitle:`, or an `accDescr:` on
-the header line or on the line of a frame statement is text of the value, not a
-comment: `title T  %% c` stays as written, with its two spaces.
+A `%%`, a `//`, or a `/*` that follows the text of a `title`, an `accTitle:`, or
+an `accDescr:` on the header line or on the line of a frame statement is text of
+the value, not a comment: `title T  %% c`, `title T  // c`, and
+`title T  /* c */` stay as written, with their two spaces.
 
 [fixture: eventmodeling/title/header-line-title-comment-mark-is-text] [fixture:
 eventmodeling/title/header-line-acctitle-comment-mark-is-text] [fixture:
 eventmodeling/title/header-line-accdescr-comment-mark-is-text] [fixture:
-eventmodeling/title/frame-line-titles-comment-mark-is-text]
+eventmodeling/title/frame-line-titles-comment-mark-is-text] [fixture:
+eventmodeling/title/header-line-title-slash-comment-mark-is-text] [fixture:
+eventmodeling/title/header-line-accdescr-block-comment-mark-is-text] [fixture:
+eventmodeling/title/frame-line-titles-slash-comment-marks-are-text]
 
 [fixture: eventmodeling/title/title-normalized-invisible-to-comparison-db]
 
@@ -1053,8 +1059,8 @@ Align ordinary standalone comments with their owning body; between GWT items
 this is item depth. Within a printed line, a comment that touches stays
 touching, and a run of spaces and tabs before it becomes one space, except in
 the title, the accTitle, and the accDescr of the header line and of a frame
-statement, where `%% c` is text of the value (see [Title](#title)). Rule 1 names
-no mark before a comment, so
+statement, where a comment mark after the text is text of the value (see
+[Title](#title)). Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments) after a message and
 [journey](./journey.md#comments) and [timeline](./timeline.md#comments) after
@@ -1065,18 +1071,20 @@ whitespace as written; each of them names those cases in its own sections or in
 that changes what mermaid.js reads). Before a comment after a frame statement at
 the end of the text, a vertical tab, a form feed, a no-break space, U+1680,
 U+2000 to U+200A, U+2028, U+2029, U+202F, U+205F, U+3000, and U+FEFF also become
-one space; U+0085, U+180E, and U+200B are rejected there. A no-break space,
-U+3000, U+2028, or U+2029 before a comment becomes one space also where a
-statement follows the comment, and after the header line, a GWT header, a GWT
-item, a clause keyword, a data declaration, a note declaration, an entity
-declaration, a data reference, an inline body, a source reference, and the
-closing brace of a block. The printers above print these four characters
-otherwise: sequence keeps a no-break space or U+3000 after a message as written,
-and journey and timeline print them after their header as one space; before
-U+2028 or U+2029, sequence, journey, and timeline keep the line as written where
-a statement follows the comment and put the comment on a line of its own where
-the text ends. So no rule gives the form of these characters, and the form that
-the released version prints, one space, stays until it is decided (see
+one space; mermaid.js rejects U+0085, U+180E, and U+200B there with a lexer
+error, so the parser rejects them too. A no-break space, U+3000, U+2028, or
+U+2029 before a comment becomes one space also where a statement follows the
+comment, and after the header line, a GWT header, a GWT item, a clause keyword,
+a data declaration, a note declaration, an entity declaration, a data reference,
+an inline body, a source reference, and the closing brace of a block. Nothing is
+stated for the other characters of that set at these places. The printers above
+print these four characters otherwise: sequence keeps a no-break space or U+3000
+after a message as written, and journey and timeline print them after their
+header as one space; before U+2028 or U+2029, sequence, journey, and timeline
+keep the line as written where a statement follows the comment and put the
+comment on a line of its own where the text ends. So no rule gives the form of
+these characters, and the form that the released version prints, one space,
+stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 When units split into separate lines, attach intervening inline comments to the
 following unit, in the same direction as directives. Use this shared placement

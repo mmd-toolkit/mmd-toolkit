@@ -316,9 +316,12 @@ tf 01 evt Alpha [[D]]
 タグの中のコメントの後の空白とタブの連なりも空白 1 つにします。
 タグの部分の間の隙間は、空白、タブ、ノーブレークスペース、U+3000、U+2028、
 U+2029 のどれを含んでいても詰めたままです。
-タグの中のコメントの前、開始のバッククォートの直後、
-タグの中のコメントの後のノーブレークスペース、U+3000、U+2028、
-U+2029 も空白 1 つにしますが、その形を与える規則はありません。
+タグの中のコメントの前、開始のバッククォートの直後、タグの中のコメントの後、
+タグの後のコメントの前と後のノーブレークスペース、U+3000、U+2028、
+U+2029 も空白 1 つにします。
+それらの場所での、[Comments](#comments) の集合のほかの文字については、
+何も述べません。
+その形を与える規則はありません。
 型タグを持つほかの図はなく、[Comments](#comments) が挙げる印字器は、
 コメントの前のこれらの文字を別々に印字するからです。
 公開済みの版が印字する形を、決めるまで残します。
@@ -896,13 +899,18 @@ title の前置空白、1 個の区切り、本文、末尾テキストを原文
 [fixture: eventmodeling/title/title-exact-padding-and-quotes]
 
 ヘッダー行とフレーム文の行の `title`、`accTitle:`、
-`accDescr:` のテキストの後の `%%` は、コメントではなく値のテキストです。
-`title T  %% c` は、空白 2 つも含めて書かれたまま残します。
+`accDescr:` のテキストの後の `%%`、`//`、`/*` は、
+コメントではなく値のテキストです。
+`title T  %% c`、`title T  // c`、`title T  /* c */` は、
+空白 2 つも含めて書かれたまま残します。
 
 [fixture: eventmodeling/title/header-line-title-comment-mark-is-text]
 [fixture: eventmodeling/title/header-line-acctitle-comment-mark-is-text]
 [fixture: eventmodeling/title/header-line-accdescr-comment-mark-is-text]
 [fixture: eventmodeling/title/frame-line-titles-comment-mark-is-text]
+[fixture: eventmodeling/title/header-line-title-slash-comment-mark-is-text]
+[fixture: eventmodeling/title/header-line-accdescr-block-comment-mark-is-text]
+[fixture: eventmodeling/title/frame-line-titles-slash-comment-marks-are-text]
 
 [fixture: eventmodeling/title/title-normalized-invisible-to-comparison-db]
 
@@ -1096,12 +1104,14 @@ mermaid.js の読みを変える空白です）。
 フレーム文の後ろでテキストが終わるとき、コメントの前にある垂直タブ、
 フォームフィード、ノーブレークスペース、U+1680、U+2000 から U+200A、U+2028、
 U+2029、U+202F、U+205F、U+3000、U+FEFF も、空白 1 つにします。
-そこでは U+0085、U+180E、U+200B は拒否されます。
+mermaid.js は、そこでは U+0085、U+180E、
+U+200B を字句解析のエラーで拒否するので、パーサーも拒否します。
 コメントの前にあるノーブレークスペース、U+3000、U+2028、U+2029 は、
 コメントに文が続くときも、空白 1 つにします。
 ヘッダー行、GWT のヘッダー、GWT の項目、節のキーワード、data の宣言、
 note の宣言、entity の宣言、data の参照、行内の本体、ソースの参照、
 ブロックの閉じ括弧の後ろでも、空白 1 つにします。
+それらの場所での、その集合のほかの文字については、何も述べません。
 前に挙げた図は、この 4 つの文字をそう印字しません。
 sequence は、
 メッセージの後ろのノーブレークスペースと U+3000 を書かれたまま残します。
