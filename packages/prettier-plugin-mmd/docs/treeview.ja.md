@@ -1919,8 +1919,12 @@ title と `accDescr:` の行では、連なりの中の空白とタブの連な�
 3 つの行のどれでも、
 ほかの文字の列が空白 1 つを印字する所では連なり全体を空白 1 つにし、
 `;` の前とテキストの前では書かれたまま残します。
-`accDescr:` の行でタブが U+0085 の前にあるものと、
-`accTitle:` の行でタブと U+0085 があるものは載せていません。
+`accTitle:` の行では、U+0085 の前のタブは残り、後ろのタブは空白 1 つになります。
+`accDescr:` の行でタブが U+0085 の前にあるものは、
+title と同じに印字します（`accDescr: T`、タブ、U+0085 は `accDescr: T`、空白、
+U+0085 と印字します）。
+Db にはタブがあり、印字した行には空白がありますが、mermaid.js は同じに描きます。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 
 [test: treeview: the whitespace before the last directive, with nothing after it]
 [test: treeview: the whitespace before the last directive, with spaces after it]

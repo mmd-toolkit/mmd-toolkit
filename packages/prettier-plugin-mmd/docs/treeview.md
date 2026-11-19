@@ -1909,8 +1909,12 @@ tab, a no-break space, and `%%{x}%% %% c` stay as written, and `T`, a no-break
 space, a tab, and `%%{x}%% %% c` are printed `T`, a no-break space, a space, and
 `%%{x}%% %% c`). In all three lines the whole run becomes one space where the
 column of its other characters prints one space, and the run stays as written
-before a `;` and before text. An `accDescr:` line with a tab before a U+0085,
-and an `accTitle:` line with a tab and a U+0085, are not given.
+before a `;` and before text. A tab before a U+0085 stays in an `accTitle:`
+line, and a tab after it becomes one space. An `accDescr:` line with a tab
+before a U+0085 is printed as a title is (`accDescr: T`, a tab, and U+0085 are
+printed `accDescr: T`, a space, and U+0085): its Db has the tab where the
+printed line has a space, which mermaid.js draws the same (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 
 [test: treeview: the whitespace before the last directive, with nothing after
 it] [test: treeview: the whitespace before the last directive, with spaces after

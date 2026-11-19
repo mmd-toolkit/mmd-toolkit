@@ -10,6 +10,7 @@ import {
   writtenEmbeddedTexts,
   writtenTextKeptUpToSeparators,
 } from "./db-reading.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
 import { treeviewCases } from "./treeview-cases.ts"
 import { loadFormatFixtures } from "./fixtures.ts"
 import { treeviewLines } from "../src/printers/treeview-layout.ts"
@@ -490,6 +491,28 @@ async function expectDirectiveRowKept(
 }
 
 /**
+ * Formats the input as the output states, again to the same, with the Db kept
+ * up to the runs of whitespace that mermaid.js draws as one space.
+ */
+async function expectDirectiveRowKeptUpToRuns(
+  input: string,
+  output: string,
+): Promise<void> {
+  expect(await formatMermaid(input)).toBe(output)
+  expect(await formatMermaid(output)).toBe(output)
+  const embedded = defaultEmbedded()
+  const before = dbOfText(input, embedded)
+  expect(
+    dbForFormattingComparison(
+      before,
+      dbOfText(output, embedded),
+      input,
+      output,
+    ),
+  ).toEqual(before)
+}
+
+/**
  * The whitespace that becomes one space before the last directive of a title
  * and of an accessibility line, where nothing follows the directive: the tab and
  * the whitespace of the specification that is no space, tab, or line terminator
@@ -850,12 +873,6 @@ describe("the whitespace before the last directive of a title and of an accessib
           const printed = [row.like, row.nel][index]
           if (printed === null || printed === undefined) continue
           for (const run of columnRuns) {
-            // A tab before a U+0085 in an accDescr: line is not given (the Db of the
-            // line has the tab, which the printed space does not), nor is a tab
-            // with a U+0085 in an accTitle: line (a form that draws other text
-            // is a defect that a fix removes).
-            if (keyword === "accDescr:" && run === "\t\u0085") continue
-            if (keyword === "accTitle:" && index === 1) continue
             const line = row.written.replace("{w}", run)
             const kept =
               row.tab === "as written"
@@ -867,7 +884,7 @@ describe("the whitespace before the last directive of a title and of an accessib
               printed === "as written"
                 ? row.written.replace("{w}", kept)
                 : printed.replace("{w}", kept)
-            await expectDirectiveRowKept(
+            await expectDirectiveRowKeptUpToRuns(
               `treeView-beta\n${keyword} ${line}\nR\n`,
               `treeView-beta\n  ${keyword} ${form}\n  R\n`,
             )
