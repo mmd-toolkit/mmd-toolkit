@@ -11233,6 +11233,76 @@ const architectureDirectiveEndExamples: readonly (readonly [
     "title  %%{x\u2028y}%%  ",
     "title  %%{x\u2028y}%%  ",
   ],
+  [
+    "a directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram",
+    "title %%{x}%%  T  ",
+    "title %%{x}%%T",
+  ],
+  [
+    "a directive that starts the text of a title, a space and a text after it, of an architecture diagram",
+    "title %%{x}%% T",
+    "title %%{x}%%T",
+  ],
+  [
+    "a directive that starts the text of a title, tabs before and after it, of an architecture diagram",
+    "title\t%%{x}%%\tT",
+    "title %%{x}%%T",
+  ],
+  [
+    "two directives that touch and start the text of a title, two spaces and a text after them, spaces at the end, of an architecture diagram",
+    "title %%{x}%%%%{y}%%  T  ",
+    "title %%{x}%%%%{y}%%T",
+  ],
+  [
+    "two directives that touch and start the text of a title, a tab and a text after them, of an architecture diagram",
+    "title %%{x}%%%%{y}%%\tT",
+    "title %%{x}%%%%{y}%%T",
+  ],
+  [
+    "a directive that starts the text of a title, a text with a run of spaces inside it, spaces at the end, of an architecture diagram",
+    "title %%{x}%%  T  U  ",
+    "title %%{x}%%T U",
+  ],
+  [
+    "a directive that starts the text of a title, a text with a tab inside it, a tab at the end, of an architecture diagram",
+    "title %%{x}%%  T\tU\t",
+    "title %%{x}%%T U",
+  ],
+  [
+    "a directive that touches the keyword of a title, a space and a text after it, of an architecture diagram",
+    "title%%{x}%% T",
+    "title %%{x}%%T",
+  ],
+  [
+    "two spaces before the directive that starts the text of a title, of an architecture diagram",
+    "title  %%{x}%% T",
+    "title  %%{x}%% T",
+  ],
+  [
+    "two directives with spaces between them that start the text of a title, of an architecture diagram",
+    "title %%{x}%%  %%{y}%%  T  ",
+    "title %%{x}%%  %%{y}%%  T  ",
+  ],
+  [
+    "a directive that starts the text of a title and a directive that ends it, of an architecture diagram",
+    "title %%{x}%% T %%{y}%%  ",
+    "title %%{x}%%T %%{y}%%",
+  ],
+  [
+    "a directive that touches the colon of an accTitle line, a space and a text after it, of an architecture diagram",
+    "accTitle:%%{x}%% T",
+    "accTitle: %%{x}%%T",
+  ],
+  [
+    "a directive that starts the text of an accTitle line, two spaces and a text after it, spaces at the end, of an architecture diagram",
+    "accTitle: %%{x}%%  T  ",
+    "accTitle: %%{x}%%  T  ",
+  ],
+  [
+    "a directive that starts the text of an accDescr line, two spaces and a text after it, spaces at the end, of an architecture diagram",
+    "accDescr: %%{x}%%  T  ",
+    "accDescr: %%{x}%%  T  ",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of an architecture diagram", () => {
@@ -13681,6 +13751,21 @@ const architectureDirectiveCommentExamples: readonly (readonly [
     "a comment after the last directive after two spaces, a comment line that holds a `;` follows, in an accTitle line of an architecture diagram",
     "architecture-beta\naccTitle: T  %%{x}%%  %% c\n%% e;\n\nservice a(server)[A]\n",
     "architecture-beta\n  accTitle: T %%{x}%% %% c\n  %% e;\n\n  service a(server)[A]\n",
+  ],
+  [
+    "a directive that starts the text, two spaces and a text after it, spaces at the end, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle %%{x}%%  T  \n",
+    "architecture-beta\n  title %%{x}%%T\n",
+  ],
+  [
+    "two directives that touch and start the text, a text after them, spaces at the end, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle %%{x}%%%%{y}%%  T  \n",
+    "architecture-beta\n  title %%{x}%%%%{y}%%T\n",
+  ],
+  [
+    "a directive that starts the text, two spaces and a text after it, spaces at the end, a statement follows, in a title of an architecture diagram",
+    "architecture-beta\ntitle %%{x}%%  T  \nservice a(server)[A]\n",
+    "architecture-beta\n  title %%{x}%%T\n  service a(server)[A]\n",
   ],
 ]
 

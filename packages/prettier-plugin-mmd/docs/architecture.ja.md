@@ -652,11 +652,13 @@ mermaid.js は次の行を独立した文として読むので、つなぐと、
 その文が宣言するもの（ノード、グループ、ジャンクション、エッジ）がなくなります。
 architecture の要約が title を公開しなくても、文と内容を保ちます。
 注釈類のある値と保護された隠れた形の境界は原文の隙間を保ちます。
+ただし、テキストがディレクティブで始まる題とアクセシビリティの行は、
+この節の終わりの段落が述べるとおりです。
 題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
 テキストの中に U+2028 も U+2029 もないとき、題の終わりのディレクティブは、
 その前と後に何があるかで、次のように印字します。
 ただし、未決の行は除きます。
-未決の行とは、ディレクティブのほかに、
+未決の行とは、ディレクティブのある行のうち、ディレクティブのほかに、
 コメントの外の `;`（ディレクティブの中のものも含みます）がある行、
 コメントの中の `;` と U+2028 か U+2029 がある行、
 最初のディレクティブの中か後に U+2028 か U+2029 がある行、
@@ -753,9 +755,31 @@ U+205F、U+3000、U+FEFF のどれかです。
 [どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
 のとおり、決めるまでそのままです。
 行に U+2028 も U+2029 もないとき、
-行そのもののコメントの中の `;` は行を変えないので、
-`;` がそこだけにある行は未決ではありません。
+行そのもののコメントの中の `;` は行を変えないので、`;` がそこだけにある行は、
+後の行に `;` がある場合（条件の最後の場合）を除き、未決ではありません。
 整形が投げる行は、そこでは述べません。
+
+題のテキストが、キーワードの後の空白 1 つかタブ 1 つの後で、ディレクティブか、
+互いに接するディレクティブで始まり、行のそれ以外の部分にディレクティブ、
+コメント、`;`、幅のある空白、U+2028、U+2029 がないときは、
+ディレクティブとそれ以外のテキストの間の空白とタブを除き、
+行末の空白とタブも除きます（`title %%{x}%%  T  ` は `title %%{x}%%T` に、
+`title %%{x}%%%%{y}%%  T  ` は `title %%{x}%%%%{y}%%T` になります）。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+sequence 図の[題](./sequence.ja.md#タイトル)も同じで、
+`title %%{init: {}}%% T` を `title %%{init: {}}%%T` と印字します。
+mermaid.js はテキストを読む前にディレクティブを除き、
+題をその先頭の空白なしで描くからです。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+ディレクティブがテキストの前にあるほかの題は述べません。
+ディレクティブがキーワードに接する題、
+最初のディレクティブの前に空白文字が 2 つ続く題、
+2 つのディレクティブの間に空白がある題、行のほかの所にディレクティブ、コメント、
+`;`、幅のある空白、U+2028、U+2029 がある題、
+テキストがディレクティブで始まる `accTitle:` と `accDescr:` の行です。
+そこでリリース済みの版が印字する形は、
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+のとおり、決めるまでそのままです。
 
 [fixture: title/title-directives-end-blanks-dropped]
 [fixture: title/title-directives-end-tabs-dropped]
@@ -1470,6 +1494,15 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: two U+2028 before a directive that a space and another directive follow in a title, of an architecture diagram]
 [test: a U+2028 inside the directive that ends a title, spaces before it, a comment after two spaces, of an architecture diagram]
 [test: a U+2028 inside the directive of a title of directives only, spaces before and after it, of an architecture diagram]
+[test: a directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram]
+[test: a directive that starts the text of a title, a space and a text after it, of an architecture diagram]
+[test: two directives that touch and start the text of a title, two spaces and a text after them, spaces at the end, of an architecture diagram]
+[test: two directives that touch and start the text of a title, a tab and a text after them, of an architecture diagram]
+[test: a directive that starts the text of a title, a text with a run of spaces inside it, spaces at the end, of an architecture diagram]
+[test: a directive that starts the text of a title, a text with a tab inside it, a tab at the end, of an architecture diagram]
+[test: two spaces before the directive that starts the text of a title, of an architecture diagram]
+[test: two directives with spaces between them that start the text of a title, of an architecture diagram]
+[test: a directive that starts the text of a title and a directive that ends it, of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of an architecture diagram]
@@ -1759,6 +1792,9 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: a comment after the last directive after two spaces, a comment line that holds a `;` and an empty line follow, a statement follows, in a title of an architecture diagram]
 [test: a U+2028 before a directive that a comment follows after two spaces, a comment line that holds a `;` follows, a statement follows, in a title of an architecture diagram]
 [test: a comment after the last directive after two spaces, a directive line that holds a `;` and an empty line follow, a statement follows, in a title of an architecture diagram]
+[test: a directive that starts the text, two spaces and a text after it, spaces at the end, the text ends, in a title of an architecture diagram]
+[test: two directives that touch and start the text, a text after them, spaces at the end, the text ends, in a title of an architecture diagram]
+[test: a directive that starts the text, two spaces and a text after it, spaces at the end, a statement follows, in a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -1875,8 +1911,8 @@ U+205F、U+3000、U+FEFF のどれかです。
 [どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
 のとおり、決めるまでそのままです。
 行に U+2028 も U+2029 もないとき、
-行そのもののコメントの中の `;` は行を変えないので、
-`;` がそこだけにある行は未決ではありません。
+行そのもののコメントの中の `;` は行を変えないので、`;` がそこだけにある行は、
+後の行に `;` がある場合（条件の最後の場合）を除き、未決ではありません。
 整形が投げる行は、そこでは述べません。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
@@ -2331,6 +2367,11 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: two U+2029 before a directive that a space and another directive follow in an accDescr line, of an architecture diagram]
 [test: a U+2028 inside the directive that ends an accDescr line, spaces before it, a comment after two spaces, of an architecture diagram]
 [test: a line break inside the directive that ends an accTitle line, a comment after two spaces, of an architecture diagram]
+[test: a directive that starts the text of a title, tabs before and after it, of an architecture diagram]
+[test: a directive that touches the keyword of a title, a space and a text after it, of an architecture diagram]
+[test: a directive that touches the colon of an accTitle line, a space and a text after it, of an architecture diagram]
+[test: a directive that starts the text of an accTitle line, two spaces and a text after it, spaces at the end, of an architecture diagram]
+[test: a directive that starts the text of an accDescr line, two spaces and a text after it, spaces at the end, of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, a line follows, in an accTitle line of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, the text ends, in an accTitle line of an architecture diagram]
 [test: U+2028 before a directive that a comment follows after spaces, a line follows, in an accTitle line of an architecture diagram]

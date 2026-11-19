@@ -625,17 +625,20 @@ mermaid.js reads the next line as a statement of its own, so joining it would
 put that statement into the title, and what it declares (a node, a group, a
 junction, or an edge) would disappear. Keep occurrences and content even though
 the architecture summary does not publish title. Trivia-bearing values and
-protected hidden boundaries keep their source gaps. Where a title has text and
-no directive stands before its text or inside it, and no U+2028 or U+2029 stands
-inside the text, the directives that end it are printed as follows, by what
-stands before them and after them, except for the undecided lines. A line is
-undecided when, besides its directives, it holds a `;` outside a comment (also
-inside a directive), when it holds a `;` inside a comment and a U+2028 or
-U+2029, when a U+2028 or U+2029 stands inside or after its first directive, when
-a directive holds a line break, or when a line between it and the next statement
-holds a `;` inside a comment or a directive. A wide space is one of U+000B,
-U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF.
-Where item 6 splits a line, none of the other items applies to it:
+protected hidden boundaries keep their source gaps, except for a title or an
+accessibility line whose text starts with a directive (see the paragraph on a
+directive before the text, at the end of this section). Where a title has text
+and no directive stands before its text or inside it, and no U+2028 or U+2029
+stands inside the text, the directives that end it are printed as follows, by
+what stands before them and after them, except for the undecided lines. A line
+with directives is undecided when, besides its directives, it holds a `;`
+outside a comment (also inside a directive), when it holds a `;` inside a
+comment and a U+2028 or U+2029, when a U+2028 or U+2029 stands inside or after
+its first directive, when a directive holds a line break, or when a line between
+it and the next statement holds a `;` inside a comment or a directive. A wide
+space is one of U+000B, U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F,
+U+205F, U+3000, and U+FEFF. Where item 6 splits a line, none of the other items
+applies to it:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them or inside one of them, no directive holds a
@@ -715,8 +718,30 @@ these gaps, and the diagram types do not print them alike. The forms that the
 released version prints there stay until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Where no U+2028 or U+2029 stands in the line, a `;` inside its comment makes no
-difference to it, so a line that holds one only there is not undecided. The
-lines that make the formatter throw there are not stated.
+difference to it, so a line that holds one only there is not undecided, unless a
+line after it holds a `;` (the last case of the condition). The lines that make
+the formatter throw there are not stated.
+
+Where the text of a title starts with a directive, or with directives that touch
+one another, after the one space or tab that follows the keyword, and the rest
+of the line holds no directive, comment, `;`, wide space, U+2028, or U+2029, the
+spaces and tabs between the directives and the rest of the text are left out,
+with the spaces and tabs at the end of the line: `title %%{x}%%  T  ` is printed
+`title %%{x}%%T`, and `title %%{x}%%%%{y}%%  T  ` is printed
+`title %%{x}%%%%{y}%%T`.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as the Title of [a sequence diagram](./sequence.md#title) does, which
+prints `title %%{init: {}}%% T` as `title %%{init: {}}%%T`: mermaid.js removes
+the directives before it reads the text, and it draws the title without the
+whitespace at its start (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+The other titles that hold a directive before their text are not stated: a
+directive that touches the keyword, a second whitespace character before the
+first directive, whitespace between two directives, and a directive, a comment,
+a `;`, a wide space, a U+2028, or a U+2029 elsewhere in the line, and the
+`accTitle:` and `accDescr:` lines whose text starts with a directive. The
+released version prints them as it prints them until they are decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 title/title-directives-end-tabs-dropped] [fixture:
@@ -1814,11 +1839,25 @@ follow in a title, of an architecture diagram] [test: a U+2028 inside the
 directive that ends a title, spaces before it, a comment after two spaces, of an
 architecture diagram] [test: a U+2028 inside the directive of a title of
 directives only, spaces before and after it, of an architecture diagram] [test:
-U+2028 before a directive that a comment touches, a line follows, in a title of
-an architecture diagram] [test: U+2028 before a directive that a comment
-touches, the text ends, in a title of an architecture diagram] [test: U+2028
-before a directive that a comment touches, an empty line follows, in a title of
-an architecture diagram] [test: U+2028 before a directive that a comment follows
+a directive that starts the text of a title, two spaces and a text after it,
+spaces at the end, of an architecture diagram] [test: a directive that starts
+the text of a title, a space and a text after it, of an architecture diagram]
+[test: two directives that touch and start the text of a title, two spaces and a
+text after them, spaces at the end, of an architecture diagram] [test: two
+directives that touch and start the text of a title, a tab and a text after
+them, of an architecture diagram] [test: a directive that starts the text of a
+title, a text with a run of spaces inside it, spaces at the end, of an
+architecture diagram] [test: a directive that starts the text of a title, a text
+with a tab inside it, a tab at the end, of an architecture diagram] [test: two
+spaces before the directive that starts the text of a title, of an architecture
+diagram] [test: two directives with spaces between them that start the text of a
+title, of an architecture diagram] [test: a directive that starts the text of a
+title and a directive that ends it, of an architecture diagram] [test: U+2028
+before a directive that a comment touches, a line follows, in a title of an
+architecture diagram] [test: U+2028 before a directive that a comment touches,
+the text ends, in a title of an architecture diagram] [test: U+2028 before a
+directive that a comment touches, an empty line follows, in a title of an
+architecture diagram] [test: U+2028 before a directive that a comment follows
 after spaces, a line follows, in a title of an architecture diagram] [test:
 U+2028 before a directive that a comment follows after spaces, the text ends, in
 a title of an architecture diagram] [test: U+2028 before a directive that a
@@ -2358,7 +2397,12 @@ directive that a comment follows after two spaces, a comment line that holds a
 `;` follows, a statement follows, in a title of an architecture diagram] [test:
 a comment after the last directive after two spaces, a directive line that holds
 a `;` and an empty line follow, a statement follows, in a title of an
-architecture diagram]
+architecture diagram] [test: a directive that starts the text, two spaces and a
+text after it, spaces at the end, the text ends, in a title of an architecture
+diagram] [test: two directives that touch and start the text, a text after them,
+spaces at the end, the text ends, in a title of an architecture diagram] [test:
+a directive that starts the text, two spaces and a text after it, spaces at the
+end, a statement follows, in a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -2464,8 +2508,9 @@ these gaps, and the diagram types do not print them alike. The forms that the
 released version prints there stay until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Where no U+2028 or U+2029 stands in the line, a `;` inside its comment makes no
-difference to it, so a line that holds one only there is not undecided. The
-lines that make the formatter throw there are not stated.
+difference to it, so a line that holds one only there is not undecided, unless a
+line after it holds a `;` (the last case of the condition). The lines that make
+the formatter throw there are not stated.
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 accessibility-lines/acc-directives-end-tabs-dropped] [fixture:
@@ -3138,6 +3183,14 @@ follow in an accDescr line, of an architecture diagram] [test: a U+2028 inside
 the directive that ends an accDescr line, spaces before it, a comment after two
 spaces, of an architecture diagram] [test: a line break inside the directive
 that ends an accTitle line, a comment after two spaces, of an architecture
+diagram] [test: a directive that starts the text of a title, tabs before and
+after it, of an architecture diagram] [test: a directive that touches the
+keyword of a title, a space and a text after it, of an architecture diagram]
+[test: a directive that touches the colon of an accTitle line, a space and a
+text after it, of an architecture diagram] [test: a directive that starts the
+text of an accTitle line, two spaces and a text after it, spaces at the end, of
+an architecture diagram] [test: a directive that starts the text of an accDescr
+line, two spaces and a text after it, spaces at the end, of an architecture
 diagram] [test: U+2028 before a directive that a comment touches, a line
 follows, in an accTitle line of an architecture diagram] [test: U+2028 before a
 directive that a comment touches, the text ends, in an accTitle line of an
