@@ -1888,23 +1888,26 @@ line); a second U+2028 or U+2029 between the directive and the comment puts the
 comment on a line of its own after the directive (`title T`, a U+2028,
 `%%{x}%%`, a U+2029, and `%% c` are printed `title T`, `%%{x}%%`, and `%% c` on
 three lines), while a U+2028 or a U+2029 between the directive and the comment
-alone, with none before the directive, stays with them as written, and the
-whitespace after it is printed as the paragraph on that run says. A U+0085 after
-the first U+2028 or U+2029, outside the directives and up to the comment, keeps
-the line as written, with the run between the directive and the comment printed
-as that paragraph says. With a statement directly after the title or after a
-comment line, with a line of spaces after it (alone or then a statement), with a
-line of a directive alone, or with a line of a directive after a space (alone or
-then a statement), the title stays as written, the whitespace between the
-directive and the comment included. Other sequences of lines between the title
-and the next statement are not given, and one region of them has forms that no
-rule gives: where an empty line, or a line of a directive that stands alone at
-the first column, lies between the next statement and a title, an `accTitle:`
-line, or an `accDescr:` line that holds a U+2028 or a U+2029 with a directive
-and a comment, the whitespace around the separators and between the directive
-and the comment is printed in forms that depend on each character beside each
-separator, and an `accDescr:` line differs from the other two. The forms that
-the released version prints stay until they are decided (see
+alone, with none before the directive, stays with them as written, and, with
+nothing after the line, the whitespace after it is printed as the paragraph on
+that run says. A U+0085 after the first U+2028 or U+2029, outside the directives
+and up to the comment, keeps the line as written (with nothing after the line,
+the run between the directive and the comment is printed as that paragraph
+says). For a title line with a directive and a comment after it, with a
+statement directly after the title or after a comment line, with a line of
+spaces after it (with nothing after the line of spaces, or then a statement),
+with a line of a directive with nothing after it, or with a line of a directive
+after a space (with nothing after it, or then a statement), the title stays as
+written, the whitespace between the directive and the comment included. Other
+sequences of lines between the title and the next statement are not given, and
+one region of them has forms that no rule gives: where an empty line, or a line
+of a directive that stands alone at the first column, lies between the next
+statement and a title, an `accTitle:` line, or an `accDescr:` line that holds a
+U+2028 or a U+2029 with a directive and a comment, the whitespace around the
+separators and between the directive and the comment is printed in forms that
+depend on each character beside each separator, and an `accDescr:` line differs
+from the other two. The forms that the released version prints stay until they
+are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 Where the last directive holds a line break or a `;` (`%%{init: {`, a line
