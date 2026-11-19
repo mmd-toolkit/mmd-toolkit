@@ -1433,12 +1433,14 @@ SVG と画素を比べてから、例外を残します。
 
 Gantt、user journey、timeline、sequence、Venn、C4 の図では、タイトル、
 Gantt 図の日付書式と軸の書式を、キーワードの後に空白を 1 つ置き、
-テキストの先頭と末尾の空白を除いて印字します。
+テキストの先頭と末尾の空白とタブを除いて印字します。
 C4 図の説明 `accDescription` も同じです。
 `title   Plan  ` は `title Plan` と印字し、
 `dateFormat   YYYY-MM-DD` は `dateFormat YYYY-MM-DD` と印字します。
 テキストの中の空白は書かれたままにし、
 空白とタブだけのテキストも書かれたままにします。
+テキストの先頭と末尾にある、改行しない空白や U+3000 など、
+空白とタブ以外の空白文字も書かれたままです。
 timeline の行の最後の event と、別名を持つ state の 2 つ目の説明も、
 同じように末尾の空白を除きますが、先頭の空白は除きません。
 その空白は timeline のコロンをそろえます。
@@ -1482,6 +1484,16 @@ user journey
 ディレクティブがない場合と同じように書かれたままにします。
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
+[test: a no-break space and U+3000 at both ends of the title of
+a gantt diagram] [test: a no-break space and U+3000 at both ends of the title of
+a user journey diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a timeline diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a sequence diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a Venn diagram] [test: a no-break space and U+3000 at both ends of the title of
+a C4 diagram]
 [fixture: usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: treeview/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: gantt/settings/format-runs-kept-before-directives]

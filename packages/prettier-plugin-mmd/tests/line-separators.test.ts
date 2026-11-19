@@ -4623,6 +4623,50 @@ describe("a sequence diagram with a line separator", () => {
   })
 })
 
+/**
+ * The title of a diagram that mermaid.js reads with a Jison grammar loses the
+ * spaces and tabs at its ends and keeps any other whitespace character
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ */
+const titleEndsExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "a no-break space and U+3000 at both ends of the title of a gantt diagram",
+    "gantt\ntitle \u00a0\u3000T\u3000\u00a0\n",
+    "gantt\n  title \u00a0\u3000T\u3000\u00a0\n",
+  ],
+  [
+    "a no-break space and U+3000 at both ends of the title of a user journey diagram",
+    "journey\ntitle \u00a0\u3000T\u3000\u00a0\n",
+    "journey\n  title \u00a0\u3000T\u3000\u00a0\n",
+  ],
+  [
+    "a no-break space and U+3000 at both ends of the title of a timeline diagram",
+    "timeline\ntitle \u00a0\u3000T\u3000\u00a0\n",
+    "timeline\n  title \u00a0\u3000T\u3000\u00a0\n",
+  ],
+  [
+    "a no-break space and U+3000 at both ends of the title of a sequence diagram",
+    "sequenceDiagram\ntitle \u00a0\u3000T\u3000\u00a0\nA->>B: x\n",
+    "sequenceDiagram\n  title \u00a0\u3000T\u3000\u00a0\n  A ->> B: x\n",
+  ],
+  [
+    "a no-break space and U+3000 at both ends of the title of a Venn diagram",
+    "venn-beta\ntitle \u00a0\u3000T\u3000\u00a0\nset A\n",
+    "venn-beta\n  title \u00a0\u3000T\u3000\u00a0\n  set A\n",
+  ],
+  [
+    "a no-break space and U+3000 at both ends of the title of a C4 diagram",
+    "C4Context\ntitle \u00a0\u3000T\u3000\u00a0\nPerson(a,\"A\")\n",
+    "C4Context\n  title \u00a0\u3000T\u3000\u00a0\n  Person(a, \"A\")\n",
+  ],
+]
+
+describe("the title of a diagram with a whitespace character that is no space or tab at its ends", () => {
+  it.each(titleEndsExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
+
 describe("a flowchart with a line separator", () => {
   it.each(flowchartExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)

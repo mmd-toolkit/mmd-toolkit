@@ -726,8 +726,19 @@ Mermaidが捨てる通常の裸のラベルの外側空白を取り除きます�
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-agentflowのラベルコメントの直前の空白とタブは値の文字なので保ちます。
+agentflow のラベルコメントは、コメントの改行の後もラベルが続く場合、
+直前の空白とタブがラベルの中身です（`A[before  %% c`、改行、
+`after]` のテキストは `before  \nafter` です）。
+そのため、この空白とタブも保ちます。
 コメント、LF、後続行の桁位置も保ちます。
+コメントの改行の後に閉じ括弧だけがある場合は、
+ラベルはコメントの前で終わります（`A[x  %% c`、改行、
+`]` のテキストは `x` です）。
+そのため、コメントの前の空白とタブの連なりは空白 1 つにし、
+接するコメントは接したまま残し、裸のラベルは引用符で囲んで印字します。
+閉じ括弧は自分の行に、頂点より 1 段深く置きます。
+詳しくは [同じに描かれるラベル](./compatibility.ja.md#同じに描かれるラベル)
+を参照してください。
 コメント内の閉じ括弧は形を閉じないので、コメントの文字のままです。
 チルダは文字です。
 形、実体参照とHTMLの綴りも保ちます。
@@ -741,6 +752,7 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
 [fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
+[fixture: labels/label-comment-ends-label]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
@@ -1035,9 +1047,13 @@ agentflow-beta TB
 
 [コメント](./flowchart.ja.md#コメント)と同じ理由で、
 独立したコメントを近隣の文に揃え、著者の全文と末尾空白を保ちます。
+ただし、文の後ろのコメントは、
+`;` を含む場合にだけ末尾の空白とタブを落とします（`A %% c;  ` は `A %% c;`
+と印字します）。
 
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
 [fixture: comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
+[fixture: comments/trailing-comment-semicolon-trailing-whitespace]
 
 害のない末尾コメント前の隙間は空白1つにします。
 agentflowではセミコロンや説明の閉じ記号の後も実コメントです。
@@ -1089,7 +1105,8 @@ Dbは同じで、agentflowだけ見出しに付ける理由がないためです
 [fixture: directives/directive-value] [fixture: directives/directives-align]
 
 EOFまで未閉鎖の末尾と、ディレクティブを止めるセミコロンを保ちます。
-名前の文字、最初のstyleの空白、ラベルコメント脇の空白が一般規則に優先します。
+名前の文字、最初のstyleの空白、
+ラベルが続くラベルコメントの前の空白が一般規則に優先します。
 トークン内のディレクティブは仕様の拒否のままで、
 受理する文字やデータを修復しません。
 

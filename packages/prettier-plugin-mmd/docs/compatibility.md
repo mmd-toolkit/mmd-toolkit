@@ -1368,51 +1368,60 @@ and the pixels before the exception stays.
 ## Texts after a keyword that are drawn the same
 
 A title, and the date format and the axis format of a Gantt chart, are printed
-with one space after their keyword and without the whitespace at the start or at
-the end of their text, in Gantt, user journey, timeline, sequence, Venn, and C4
-diagrams (the description `accDescription` of a C4 diagram too):
+with one space after their keyword and without the spaces and tabs at the start
+or at the end of their text, in Gantt, user journey, timeline, sequence, Venn,
+and C4 diagrams (the description `accDescription` of a C4 diagram too):
 `title   Plan  ` is printed `title Plan`, and `dateFormat   YYYY-MM-DD` is
 printed `dateFormat YYYY-MM-DD`. The whitespace inside the text stays as
-written, and so does a text of spaces and tabs only. The last event of a line of
-a timeline and the second description of a state with an alias lose the
-whitespace at their end in the same way, not the whitespace at their start,
-which aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
-`state "d" as A : x   ` is printed `state "d" as A : x`. A period of a timeline,
-and an event that another colon follows, gain one space at their end where they
-end without whitespace, which stands before that colon: `2004: a: b` is printed
-`2004 : a : b`, except after the word `title` or `section` as the period, where
-a space would make the line a title or a section. The description of a task of a
-user journey loses the whitespace before its first colon (`Make tea : 5: Me` is
-printed `Make tea: 5: Me`), except in a section whose descriptions are padded to
-line the colons up. Where a comment follows the text on its line, one space
-separates it from the text. Where directives do, each keeps whether whitespace
-precedes it, a run becoming one space, and the whitespace after the last one is
-dropped like any whitespace at the end of the line, so the line is printed alike
-whether or not whitespace follows its last directive, as a directive at the end
-of a line is in the other diagrams (see
-[Directives](./flowchart.md#directives)): `title T  %%{x}%%  %%{y}%%` and
-`title T  %%{x}%%  %%{y}%%  ` are both printed `title T %%{x}%% %%{y}%%`,
-`title T%%{x}%%%%{y}%%  ` is printed `title T%%{x}%%%%{y}%%`, and
-`state "d" as A : x  %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`.
-mermaid.js removes the directives before it reads the text, so the whitespace
-around them is whitespace at the end of the text, which it draws the same
-whatever it is. This holds for the title of a Gantt chart, a user journey, a
-timeline, a sequence diagram, a Venn diagram, a C4 diagram, a pie chart, a radar
-chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram,
-a treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram,
-for the `accTitle:` and `accDescr:` lines of those diagram types and of a
-usecase diagram, for the text of a node of an ishikawa diagram, a mindmap, and a
-treeView, and of a card of a kanban board (not the id of a column, which the
-figure depends on), for the date format and the axis format of a Gantt chart,
-for the `accDescription` of a C4 diagram, for the last event of a line of a
-timeline and the space that a period and an event before a colon gain, for the
-description of a task of a user journey, except that a task whose description
-holds a directive stays as written (see [Task data](./journey.md#task-data)),
-and for the second description of a state alias. The runs of spaces and tabs
-inside a date format, an axis format, or the value of an `accTitle:` line stay
-as written before the directives as they do without them.
+written, and so does a text of spaces and tabs only. A no-break space, U+3000,
+or another whitespace character that is no space or tab at the start or at the
+end of the text stays too. The last event of a line of a timeline and the second
+description of a state with an alias lose the whitespace at their end in the
+same way, not the whitespace at their start, which aligns the colons of a
+timeline: `2020 : e   ` is printed `2020 : e`, and `state "d" as A : x   ` is
+printed `state "d" as A : x`. A period of a timeline, and an event that another
+colon follows, gain one space at their end where they end without whitespace,
+which stands before that colon: `2004: a: b` is printed `2004 : a : b`, except
+after the word `title` or `section` as the period, where a space would make the
+line a title or a section. The description of a task of a user journey loses the
+whitespace before its first colon (`Make tea : 5: Me` is printed
+`Make tea: 5: Me`), except in a section whose descriptions are padded to line
+the colons up. Where a comment follows the text on its line, one space separates
+it from the text. Where directives do, each keeps whether whitespace precedes
+it, a run becoming one space, and the whitespace after the last one is dropped
+like any whitespace at the end of the line, so the line is printed alike whether
+or not whitespace follows its last directive, as a directive at the end of a
+line is in the other diagrams (see [Directives](./flowchart.md#directives)):
+`title T  %%{x}%%  %%{y}%%` and `title T  %%{x}%%  %%{y}%%  ` are both printed
+`title T %%{x}%% %%{y}%%`, `title T%%{x}%%%%{y}%%  ` is printed
+`title T%%{x}%%%%{y}%%`, and `state "d" as A : x  %%{x}%%  ` is printed
+`state "d" as A : x %%{x}%%`. mermaid.js removes the directives before it reads
+the text, so the whitespace around them is whitespace at the end of the text,
+which it draws the same whatever it is. This holds for the title of a Gantt
+chart, a user journey, a timeline, a sequence diagram, a Venn diagram, a C4
+diagram, a pie chart, a radar chart, a packet diagram, an architecture diagram,
+a gitGraph, a cynefin diagram, a treemap, a Wardley map, a treeView, an info
+diagram, and a railroad diagram, for the `accTitle:` and `accDescr:` lines of
+those diagram types and of a usecase diagram, for the text of a node of an
+ishikawa diagram, a mindmap, and a treeView, and of a card of a kanban board
+(not the id of a column, which the figure depends on), for the date format and
+the axis format of a Gantt chart, for the `accDescription` of a C4 diagram, for
+the last event of a line of a timeline and the space that a period and an event
+before a colon gain, for the description of a task of a user journey, except
+that a task whose description holds a directive stays as written (see
+[Task data](./journey.md#task-data)), and for the second description of a state
+alias. The runs of spaces and tabs inside a date format, an axis format, or the
+value of an `accTitle:` line stay as written before the directives as they do
+without them.
 
-[fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
+[fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [test: a
+no-break space and U+3000 at both ends of the title of a gantt diagram] [test: a
+no-break space and U+3000 at both ends of the title of a user journey diagram]
+[test: a no-break space and U+3000 at both ends of the title of a timeline
+diagram] [test: a no-break space and U+3000 at both ends of the title of a
+sequence diagram] [test: a no-break space and U+3000 at both ends of the title
+of a Venn diagram] [test: a no-break space and U+3000 at both ends of the title
+of a C4 diagram] [fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: treeview/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 gantt/settings/format-runs-kept-before-directives] [fixture:
