@@ -461,15 +461,25 @@ decides, as [sequence](./sequence.md#multi-line-statements),
 [journey](./journey.md#multi-line-statements) keep such a line break, where no
 other rule keeps the layout as written (a comment region that joins physical
 lines, a line that holds a `;`, and the like). Before the first direction,
-before a `,`, and before the `)`, the comment line stands at column one and the
-next line is not indented, since the whitespace there is in the Db (see above);
-after a `,` the comment line and the next line stand one level deeper.
+before a `,`, and before the `)`, a comment line or a directive line stays where
+it is written, at column one or indented, and the next line is not indented,
+since the whitespace there is in the Db (see above); after a `,` the comment
+line and the next line stand one level deeper. A directive on the line of the
+direction stays touching or separated as written (`(right %%{x}%%, down)` and
+`(right%%{x}%%, down)` stay).
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
-shapes/block-arrow-comma-comment-line] [test: U+2028 after the comma between the
-directions of a block arrow] [test: U+2029 after the comma between the
-directions of a block arrow] [test: U+2028 before the comma between the
-directions of a block arrow] [test: U+2029 before the comma between the
+shapes/block-arrow-comma-comment-line] [fixture:
+shapes/block-arrow-first-direction-comment-line] [fixture:
+shapes/block-arrow-comma-comment-line-indented] [fixture:
+shapes/block-arrow-closing-comment-line] [fixture:
+shapes/block-arrow-comma-directive-line] [fixture:
+shapes/block-arrow-comma-directive-line-indented] [fixture:
+shapes/block-arrow-directive-before-comma] [fixture:
+shapes/block-arrow-directive-touching-before-comma] [test: U+2028 after the
+comma between the directions of a block arrow] [test: U+2029 after the comma
+between the directions of a block arrow] [test: U+2028 before the comma between
+the directions of a block arrow] [test: U+2029 before the comma between the
 directions of a block arrow] [fixture: shapes/block-arrow-touches-the-id]
 [fixture: shapes/block-arrow-parenthesis-touches-the-closing] [fixture:
 shapes/block-arrow-directions-as-written] [fixture:
@@ -918,9 +928,13 @@ Joining comment regions retain their original layout. A comment region after
 U+2028 or U+2029 makes mermaid.js read the lines around it as one. How the
 formatter prints such a line, and the cases that it prints otherwise, are in
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029).
+A composite head is one more case: `block:G`, U+2028, and `%% c` print
+`block: G`, U+2028, and `%% c`, with the space after the colon that the head has
+without the comment region.
 
 [test: block: ls-comment-in-composite-head] [test: block:
-ps-comment-in-composite-head]
+ps-comment-in-composite-head] [test: block:
+ls-comment-after-composite-head-name]
 
 A line break stays where joining it, with one space or with nothing, could
 change which `;` the line rule ignores, and where a `;` ends the last line; any

@@ -491,13 +491,22 @@ U+2028 と U+2029 はそのまま残します。
 [journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
 たとえば、物理行を結ぶコメント領域や、`;` を含む行です。
-最初の方向の前、`,` の前、`)` の前では、コメント行は第 1 列に立ち、
-次の行も字下げしません。
+最初の方向の前、`,` の前、`)` の前では、コメント行とディレクティブの行は、
+第 1 列か字下げされた、書かれた位置のままで、次の行も字下げしません。
 そこの空白は Db にあるからです（上を参照）。
 `,` の後では、コメント行と次の行を 1 段深く置きます。
+方向の行にあるディレクティブは、接しているか離れているかを書かれたまま残します。
+`(right %%{x}%%, down)` と `(right%%{x}%%, down)` はそのままです。
 
 [fixture: shapes/block-arrow-comma-space]
 [fixture: shapes/block-arrow-comma-comment-line]
+[fixture: shapes/block-arrow-first-direction-comment-line]
+[fixture: shapes/block-arrow-comma-comment-line-indented]
+[fixture: shapes/block-arrow-closing-comment-line]
+[fixture: shapes/block-arrow-comma-directive-line]
+[fixture: shapes/block-arrow-comma-directive-line-indented]
+[fixture: shapes/block-arrow-directive-before-comma]
+[fixture: shapes/block-arrow-directive-touching-before-comma]
 [test: U+2028 after the comma between the directions of a block arrow]
 [test: U+2029 after the comma between the directions of a block arrow]
 [test: U+2028 before the comma between the directions of a block arrow]
@@ -975,9 +984,13 @@ mermaid.js は前後の行を 1 行として読みます。
 整形がその行をどう印字するか、別に印字する場合は、
 [U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 にあります。
+複合ヘッドはもう 1 つの場合です。
+`block:G`、U+2028、`%% c` は、`block: G`、U+2028、`%% c` と印字し、
+コメント領域がないときのヘッドと同じに、コロンの後に空白を置きます。
 
 [test: block: ls-comment-in-composite-head]
 [test: block: ps-comment-in-composite-head]
+[test: block: ls-comment-after-composite-head-name]
 
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、

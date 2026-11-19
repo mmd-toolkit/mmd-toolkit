@@ -4694,6 +4694,11 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\n  block:\u2028%% keep\n group:2\n    A\n  end\n",
   ],
   [
+    "block: ls-comment-after-composite-head-name",
+    "block-beta\nblock:G\u2028%% c\n  a\nend\n",
+    "block-beta\n  block: G\u2028%% c\n  a\n  end\n",
+  ],
+  [
     "block: ps-comment-in-composite-head",
     "block-beta\nblock:\u2029%% keep\n group:2\nA\nend\n",
     "block-beta\n  block:\u2029%% keep\n group:2\n    A\n  end\n",
