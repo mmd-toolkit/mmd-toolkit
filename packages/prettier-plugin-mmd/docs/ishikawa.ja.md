@@ -425,8 +425,16 @@ U+2028、U+2029、そのほかの仕様の空白文字。
 `%% c  d` も同じです）。
 ディレクティブに接するコメントは、接したままです。
 ヘッダーの行も同じですが、U+2028 か U+2029 を含む隙間は書かれたまま残ります。
-テキストのない行の 2 つのディレクティブの間も同じです（`%%{x}%%  %%{y}%%` は
-`%%{x}%% %%{y}%%` と印字し、接する 2 つは接したままです）。
+テキストのない行の 2 つのディレクティブの間は、どの空白も空白 1 つにして印字し、
+接する 2 つは接したままです（`%%{x}%%  %%{y}%%` は `%%{x}%% %%{y}%%`
+と印字します）。
+ヘッダーの行と根の前の行でも同じで、
+U+2028 と U+2029 も空白 1 つにします（`ishikawa %%{x}%%`、U+2029、
+`%%{y}%%` は `ishikawa %%{x}%% %%{y}%%` と印字します）。
+そこでは、書かれたテキストも印字したテキストも、mermaid.js は受け付けません。
+これは既知の相違
+[`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)
+で、コーパスの fixture `ishikawa/div-header-space-directive-node` が示します。
 
 [test: ishikawa: comment-line-after-a-directive-kept]
 [test: ishikawa: comment-line-after-a-directive-gap-collapsed]
@@ -435,6 +443,8 @@ U+2028、U+2029、そのほかの仕様の空白文字。
 [test: a whitespace character between a directive and the comment on a line of a directive of an ishikawa diagram]
 [test: spaces and tabs between a directive and the comment on a line of a directive of an ishikawa diagram, and a comment that touches the directive]
 [test: a whitespace character between two directives on a line of an ishikawa diagram with no text]
+[test: a whitespace character between two directives on the header line and on the line before the root of an ishikawa diagram]
+[corpus fixture: ishikawa/div-header-space-directive-node]
 
 入力（エスケープ表記）:
 

@@ -8579,6 +8579,29 @@ describe("the whitespace between a directive and the comment on a line of a dire
     }
   })
 
+  it("a whitespace character between two directives on the header line and on the line before the root of an ishikawa diagram", async () => {
+    for (const character of ishikawaGapCharacters) {
+      for (const written of [character, `${character}${character}`, "  "]) {
+        await expectKept(
+          `ishikawa %%{x}%%${written}%%{y}%%\n  R\n    A\n`,
+          "ishikawa %%{x}%% %%{y}%%\n  R\n    A\n",
+        )
+        await expectKept(
+          `ishikawa\n  %%{x}%%${written}%%{y}%%\n  R\n    A\n`,
+          "ishikawa\n  %%{x}%% %%{y}%%\n  R\n    A\n",
+        )
+      }
+    }
+    await expectKept(
+      "ishikawa %%{x}%%%%{y}%%\n  R\n    A\n",
+      "ishikawa %%{x}%%%%{y}%%\n  R\n    A\n",
+    )
+    await expectKept(
+      "ishikawa\n  %%{x}%%%%{y}%%\n  R\n    A\n",
+      "ishikawa\n  %%{x}%%%%{y}%%\n  R\n    A\n",
+    )
+  })
+
   it("a whitespace character between two directives on a line of an ishikawa diagram with no text", async () => {
     for (const character of ishikawaGapCharacters) {
       for (const written of [character, `${character}${character}`, "  "]) {

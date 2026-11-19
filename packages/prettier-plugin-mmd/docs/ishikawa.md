@@ -417,9 +417,15 @@ U+2029, and the other whitespace of the specification) is printed as one space
 (`%%{x}%%  %% c  d` is printed `%%{x}%% %% c  d`, and so are `%%{x}%%`, a
 U+3000, and `%% c  d`), and a comment that touches the directive stays touching.
 The same holds on the header line, but for a gap that holds a U+2028 or a
-U+2029, which stays as written, and between two directives on a line with no
-text (`%%{x}%%  %%{y}%%` is printed `%%{x}%% %%{y}%%`, and two directives that
-touch stay touching).
+U+2029, which stays as written. Between two directives on a line with no text,
+any whitespace is printed as one space, and two directives that touch stay
+touching (`%%{x}%%  %%{y}%%` is printed `%%{x}%% %%{y}%%`). This holds on the
+header line and on the line before the root too, a U+2028 and a U+2029 among the
+whitespace (`ishikawa %%{x}%%`, a U+2029, and `%%{y}%%` is printed
+`ishikawa %%{x}%% %%{y}%%`); there mermaid.js rejects the written text and the
+printed text alike, which is the known divergence
+[`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.md),
+as the corpus fixture `ishikawa/div-header-space-directive-node` shows.
 
 [test: ishikawa: comment-line-after-a-directive-kept] [test: ishikawa:
 comment-line-after-a-directive-gap-collapsed] [test: ishikawa:
@@ -429,7 +435,9 @@ directive and the comment on a line of a directive of an ishikawa diagram]
 [test: spaces and tabs between a directive and the comment on a line of a
 directive of an ishikawa diagram, and a comment that touches the directive]
 [test: a whitespace character between two directives on a line of an ishikawa
-diagram with no text]
+diagram with no text] [test: a whitespace character between two directives on
+the header line and on the line before the root of an ishikawa diagram] [corpus
+fixture: ishikawa/div-header-space-directive-node]
 
 Input (escaped):
 
