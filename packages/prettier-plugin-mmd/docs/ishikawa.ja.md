@@ -975,13 +975,47 @@ ishikawa
 [fixture: ishikawa/final-newline/multiple-final-lf]
 
 拒否される裸の見出しを、改行の追加で救済しません。
-最後の図コメントの隙間全体と EOF までの開いたディレクティブは、
-書かれた終わりを保ちます。
+最後の `%%` だけの行は、その後ろの隙間を書かれたまま残し、
+改行 1 つでテキストを終えます。
+隙間が改行で終わっていないときは、印字が改行を足します。
+最後のテキストつきのコメントは、
+テキストの後の空白とタブをコメントだけの行では残し、空行を落とし、
+改行 1 つでテキストを終えます。
+閉じていないディレクティブはテキストの終わりまで届き、
+空白でない最後の文字までの残りを取ります。
+ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
+その後ろの空白は、文の行でも落とします。
+テキストがその文字の直後で終わるときは、印字は何も足さず、
+そうでなければ改行 1 つでテキストを終えます。
 末尾のテキストの余白は、末尾の空白に従い除きます。
 
 [fixture: ishikawa/final-newline/final-comment]
 [corpus fixture: ishikawa/directive-open-root-eof]
 [fixture: ishikawa/final-newline/final-value-spaces]
+[fixture: ishikawa/final-newline/open-directive-trailing-blanks]
+[test: an open directive with nothing after it]
+[test: an open directive followed by two spaces]
+[test: an open directive followed by a tab]
+[test: an open directive followed by a no-break space]
+[test: an open directive followed by U+3000]
+[test: an open directive followed by U+FEFF]
+[test: an open directive followed by a vertical tab]
+[test: an open directive followed by a form feed]
+[test: an open directive followed by a line break]
+[test: an open directive followed by CR and LF]
+[test: an open directive followed by spaces and a line break]
+[test: an open directive followed by empty lines]
+[test: an open directive followed by a line break and spaces]
+[test: an open directive followed by U+2028]
+[test: an open directive followed by U+2029]
+[test: an open directive followed by a space and U+2028]
+[test: an open directive followed by U+2028 and a space]
+[test: an open directive followed by U+0085]
+[test: an open directive followed by U+200B]
+[test: a final line of %% alone, two empty lines, and a space in an ishikawa diagram]
+[test: a final line of %% alone and U+2028 in an ishikawa diagram]
+[test: a final comment with text and a tab on a line of its own in an ishikawa diagram]
+[test: a final comment with text and empty lines in an ishikawa diagram]
 
 入力（エスケープ表記）:
 

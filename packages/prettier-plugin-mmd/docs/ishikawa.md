@@ -952,13 +952,39 @@ ishikawa/header-only-blank] [corpus fixture: ishikawa/header-only-lf] [fixture:
 ishikawa/final-newline/accepted-spaces-header] [fixture:
 ishikawa/final-newline/multiple-final-lf]
 
-Rejected bare headers gain no rescuing newline. Complete terminal
-diagram-comment gaps and open directives reaching EOF keep their endings;
-terminal literal padding is left out under Trailing whitespace.
+Rejected bare headers gain no rescuing newline. A final line of `%%` alone keeps
+the gap after it as written, and one line break ends the text, which the printer
+adds where the gap does not end with one; after a final comment with text, the
+spaces and tabs after its text stay on a line of its own, the empty lines are
+dropped, and one line break ends the text. A directive that is not closed
+reaches the end of the text and takes the rest up to its last character that is
+not whitespace, where U+2028, U+2029, U+0085, U+180E, and U+200B count as
+characters that are not whitespace; the whitespace after it is dropped, on the
+line of a statement too. Where the text ends right after that character, the
+printer adds nothing; otherwise one line break ends the text. Terminal literal
+padding is left out under Trailing whitespace.
 
 [fixture: ishikawa/final-newline/final-comment] [corpus fixture:
 ishikawa/directive-open-root-eof] [fixture:
-ishikawa/final-newline/final-value-spaces]
+ishikawa/final-newline/final-value-spaces] [fixture:
+ishikawa/final-newline/open-directive-trailing-blanks] [test: an open directive
+with nothing after it] [test: an open directive followed by two spaces] [test:
+an open directive followed by a tab] [test: an open directive followed by a
+no-break space] [test: an open directive followed by U+3000] [test: an open
+directive followed by U+FEFF] [test: an open directive followed by a vertical
+tab] [test: an open directive followed by a form feed] [test: an open directive
+followed by a line break] [test: an open directive followed by CR and LF] [test:
+an open directive followed by spaces and a line break] [test: an open directive
+followed by empty lines] [test: an open directive followed by a line break and
+spaces] [test: an open directive followed by U+2028] [test: an open directive
+followed by U+2029] [test: an open directive followed by a space and U+2028]
+[test: an open directive followed by U+2028 and a space] [test: an open
+directive followed by U+0085] [test: an open directive followed by U+200B]
+[test: a final line of %% alone, two empty lines, and a space in an ishikawa
+diagram] [test: a final line of %% alone and U+2028 in an ishikawa diagram]
+[test: a final comment with text and a tab on a line of its own in an ishikawa
+diagram] [test: a final comment with text and empty lines in an ishikawa
+diagram]
 
 Input (escaped):
 

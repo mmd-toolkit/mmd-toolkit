@@ -1027,8 +1027,8 @@ comment, and inside labels, icons, data blocks, directives, and the continuation
 lines of multi-line values. This is the distinction of
 [mindmap](./mindmap.md#node-text), with the data block added, and with the id of
 a column kept. On a kept line the same holds. The directives that end the text
-of a card are printed with one space before each that has whitespace before it,
-and the whitespace after the last one is left out (see
+of a card are printed with one space before each that has spaces or tabs before
+it, and the spaces and tabs after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same));
 those that end the id of a column stay as written, since the figure depends on
 its whitespace.
@@ -1310,25 +1310,60 @@ The output ends with one line break, the one of the `endOfLine` option, after
 the last line: `kanban`, a line break, and ` S` without a final line break print
 `  S` and a line break. An empty board is `kanban` and a line break. The
 exception is a gap that stays whole under [Blank lines](#blank-lines) at the end
-of the board: the output then ends with that gap, and the printer adds no line
-break after it. Rule 1 names no mark for the end of a text after a diagram
-comment, so
+of the board: the output then ends with that gap, and the printer adds a line
+break after it only where it does not end with one: `kanban`, ` S`, a line of
+`%%`, an empty line, and a line of one space print `  S`, `%%`, the empty line,
+and the line of one space with a line break after it. Rule 1 names no mark for
+the end of a text after a diagram comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [c4](./c4.md#final-newline) and [ishikawa](./ishikawa.md#final-newline)
-keep the whole terminal gap after a final diagram comment as written and add no
-line break after it. The spaces at the end of a last bare id are part of the id
-and stay (`S   ` prints with its spaces, then the line break). When a directive
-that is not closed reaches the end of the text, it takes the rest up to its last
-character that is not whitespace: where the text ends right after it, the
-printer adds nothing after it, and where whitespace follows it, the whitespace
-is dropped and one line break ends the text. In Markdown, the indentation of the
-code fence or of its list item is the indentation of the host, and is not part
-of the indentation of the board.
+end the text with one line break after a final comment too, which the printer
+adds where the text ends without one, also where it ends with a U+2028 or a
+U+2029. The spaces at the end of a last bare id are part of the id and stay
+(`S   ` prints with its spaces, then the line break). When a directive that is
+not closed reaches the end of the text, it takes the rest up to its last
+character that is not whitespace, where U+2028, U+2029, U+0085, U+180E, and
+U+200B count as characters that are not whitespace. Where the text ends right
+after that character, the printer adds nothing after it. Where whitespace
+follows it (spaces, tabs, a U+00A0, a U+3000, a U+FEFF, a form feed, a vertical
+tab, line breaks, empty lines), the whitespace is dropped and one line break
+ends the text: `%%{unfinished` and two spaces print `%%{unfinished` and a line
+break, and `%%{unfinished`, U+2028, and a space print `%%{unfinished`, U+2028,
+and a line break. On the line of a statement, the whitespace after the directive
+stays up to the first line break, and one line break ends the text:
+`S[x] %%{unfinished` and two spaces print as written, with a line break after
+them. In Markdown, the indentation of the code fence or of its list item is the
+indentation of the host, and is not part of the indentation of the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
 [fixture: final-newline/open-directive-at-eof-trailing-blanks] [fixture:
-blank-lines/comment-blank-trailing] [test: kanban: selected-terminal-separator]
+final-newline/open-directive-at-eof-after-statement] [fixture:
+final-newline/comment-gap-without-final-line-break] [test: an open directive
+with nothing after it] [test: an open directive followed by two spaces] [test:
+an open directive followed by a tab] [test: an open directive followed by a
+no-break space] [test: an open directive followed by U+3000] [test: an open
+directive followed by U+FEFF] [test: an open directive followed by a vertical
+tab] [test: an open directive followed by a form feed] [test: an open directive
+followed by a line break] [test: an open directive followed by CR and LF] [test:
+an open directive followed by spaces and a line break] [test: an open directive
+followed by empty lines] [test: an open directive followed by a line break and
+spaces] [test: an open directive followed by U+2028] [test: an open directive
+followed by U+2029] [test: an open directive followed by a space and U+2028]
+[test: an open directive followed by U+2028 and a space] [test: an open
+directive followed by U+0085] [test: an open directive followed by U+200B]
+[test: an open directive after a statement and followed by two spaces] [test: an
+open directive after a statement and followed by a tab] [test: an open directive
+after a statement and followed by a no-break space] [test: an open directive
+after a statement and followed by spaces and a line break] [test: an open
+directive after a statement and followed by empty lines] [test: an open
+directive after a statement and followed by a line break and spaces] [test: an
+open directive after a statement and followed by U+2028] [test: an open
+directive after a statement and followed by U+2028 and a space] [test: a final
+line of %% alone, two empty lines, and a space in a kanban board] [test: a final
+line of %% alone and U+2029 in a kanban board] [test: a final comment with text
+and U+2029 in a kanban board] [fixture: blank-lines/comment-blank-trailing]
+[test: kanban: selected-terminal-separator]
 
 Input
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

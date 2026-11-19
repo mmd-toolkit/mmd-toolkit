@@ -1097,8 +1097,8 @@ Db が保ち、図がその空白に依存する所では残します。
 データブロックを加え、列の id は残します。
 保つ行でも同じです。
 カードのテキストを終えるディレクティブは、
-それぞれの前に空白があれば空白 1 つを置き、
-最後のディレクティブの後の空白は除きます。
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブは除きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 列の id を終えるディレクティブは、図がその空白に依存するので、
 書かれたまま残します。
@@ -1398,18 +1398,29 @@ kanban
 最後の改行のない `kanban`、改行、` S` は、`  S` と改行を出力します。
 空のボードは `kanban` と改行です。
 例外は、ボードの終わりで[空行](#空行)に従って全体を残す隙間で、
-出力はその隙間で終わり、印字はその後ろに改行を足しません。
+出力はその隙間で終わり、印字は、隙間が改行で終わっていないときだけ、
+その後ろに改行を足します。
+`kanban`、` S`、`%%` だけの行、空行、空白 1 つだけの行は、`  S`、`%%`、空行、
+空白 1 つだけの行と、その後ろの改行を印字します。
 規則 1 は、図のコメントの後のテキストの終わりの印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [c4](./c4.ja.md#末尾の改行) と [ishikawa](./ishikawa.ja.md#final-newline) も、
-最後の図のコメントの後の終端の隙間全体を書かれたまま残し、
-その後に改行を足しません。
+最後のコメントの後は改行 1 つでテキストを終え、
+テキストが改行なしで終わっているときは印字が足します。
+U+2028 や U+2029 で終わっているときも同じです。
 最後の裸の id の末尾の空白は id の一部なので残ります（`S   `
 は空白つきで印字し、その後に改行が来ます）。
 閉じていないディレクティブがテキストの終わりまで届くときは、
 空白でない最後の文字までの残りを取ります。
-テキストがその直後で終わるなら、印字はその後ろに何も足しません。
-後ろに空白が続くなら、空白を落とし、改行 1 つでテキストを終えます。
+ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
+テキストがその文字の直後で終わるなら、印字はその後ろに何も足しません。
+後ろに空白（空白、タブ、U+00A0、U+3000、U+FEFF、改ページ、垂直タブ、改行、
+空行）が続くなら、空白を落とし、改行 1 つでテキストを終えます。
+`%%{unfinished` と空白 2 つは `%%{unfinished` と改行を印字し、`%%{unfinished`、
+U+2028、空白は `%%{unfinished`、U+2028、改行を印字します。
+文の行にあるときは、ディレクティブの後の空白を最初の改行まで残し、
+改行 1 つでテキストを終えます。
+`S[x] %%{unfinished` と空白 2 つは書かれたまま印字し、その後に改行が来ます。
 Markdown では、コードフェンスやリスト項目の字下げはホストの字下げで、
 ボードの字下げには入りません。
 
@@ -1417,6 +1428,38 @@ Markdown では、コードフェンスやリスト項目の字下げはホス�
 [fixture: final-newline/empty-board]
 [fixture: final-newline/open-directive-at-eof]
 [fixture: final-newline/open-directive-at-eof-trailing-blanks]
+[fixture: final-newline/open-directive-at-eof-after-statement]
+[fixture: final-newline/comment-gap-without-final-line-break]
+[test: an open directive with nothing after it]
+[test: an open directive followed by two spaces]
+[test: an open directive followed by a tab]
+[test: an open directive followed by a no-break space]
+[test: an open directive followed by U+3000]
+[test: an open directive followed by U+FEFF]
+[test: an open directive followed by a vertical tab]
+[test: an open directive followed by a form feed]
+[test: an open directive followed by a line break]
+[test: an open directive followed by CR and LF]
+[test: an open directive followed by spaces and a line break]
+[test: an open directive followed by empty lines]
+[test: an open directive followed by a line break and spaces]
+[test: an open directive followed by U+2028]
+[test: an open directive followed by U+2029]
+[test: an open directive followed by a space and U+2028]
+[test: an open directive followed by U+2028 and a space]
+[test: an open directive followed by U+0085]
+[test: an open directive followed by U+200B]
+[test: an open directive after a statement and followed by two spaces]
+[test: an open directive after a statement and followed by a tab]
+[test: an open directive after a statement and followed by a no-break space]
+[test: an open directive after a statement and followed by spaces and a line break]
+[test: an open directive after a statement and followed by empty lines]
+[test: an open directive after a statement and followed by a line break and spaces]
+[test: an open directive after a statement and followed by U+2028]
+[test: an open directive after a statement and followed by U+2028 and a space]
+[test: a final line of %% alone, two empty lines, and a space in a kanban board]
+[test: a final line of %% alone and U+2029 in a kanban board]
+[test: a final comment with text and U+2029 in a kanban board]
 [fixture: blank-lines/comment-blank-trailing]
 [test: kanban: selected-terminal-separator]
 

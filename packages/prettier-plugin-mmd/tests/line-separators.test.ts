@@ -6875,3 +6875,215 @@ describe("requirement color words with rejected tabs", () => {
     await expect(format(input)).rejects.toThrow("Unexpected character")
   })
 })
+
+/**
+ * What follows a directive that is not closed at the end of the text, as
+ * written and as printed: the whitespace after it is dropped and one line break
+ * ends the text, except where the text ends right after its last character
+ * that is not whitespace, which includes U+2028 and U+2029
+ * (docs/kanban.md, Final newline).
+ */
+const openDirectiveTails: readonly (readonly [string, string, string])[] = [
+  ["an open directive with nothing after it", "", ""],
+  ["an open directive followed by two spaces", "  ", "\n"],
+  ["an open directive followed by a tab", "\t", "\n"],
+  ["an open directive followed by a no-break space", "\u00a0", "\n"],
+  ["an open directive followed by U+3000", "\u3000", "\n"],
+  ["an open directive followed by U+FEFF", "\ufeff", "\n"],
+  ["an open directive followed by a vertical tab", "\u000b", "\n"],
+  ["an open directive followed by a form feed", "\u000c", "\n"],
+  ["an open directive followed by a line break", "\n", "\n"],
+  ["an open directive followed by CR and LF", "\u000d\n", "\n"],
+  ["an open directive followed by spaces and a line break", "  \n", "\n"],
+  ["an open directive followed by empty lines", "\n\n", "\n"],
+  ["an open directive followed by a line break and spaces", "\n  ", "\n"],
+  ["an open directive followed by U+2028", "\u2028", "\u2028\n"],
+  ["an open directive followed by U+2029", "\u2029", "\u2029\n"],
+  ["an open directive followed by a space and U+2028", " \u2028", " \u2028\n"],
+  ["an open directive followed by U+2028 and a space", "\u2028 ", "\u2028\n"],
+  ["an open directive followed by U+0085", "\u0085", "\u0085"],
+  ["an open directive followed by U+200B", "\u200b", "\u200b"],
+]
+
+/** The same on the line of a statement of a kanban board, which keeps the whitespace up to the first line break. */
+const kanbanStatementOpenDirectiveTails: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "an open directive after a statement and followed by two spaces",
+    "  ",
+    "  \n",
+  ],
+  ["an open directive after a statement and followed by a tab", "\t", "\t\n"],
+  [
+    "an open directive after a statement and followed by a no-break space",
+    "\u00a0",
+    "\u00a0\n",
+  ],
+  [
+    "an open directive after a statement and followed by spaces and a line break",
+    "  \n",
+    "  \n",
+  ],
+  [
+    "an open directive after a statement and followed by empty lines",
+    "\n\n",
+    "\n",
+  ],
+  [
+    "an open directive after a statement and followed by a line break and spaces",
+    "\n  ",
+    "\n",
+  ],
+  [
+    "an open directive after a statement and followed by U+2028",
+    "\u2028",
+    "\u2028\n",
+  ],
+  [
+    "an open directive after a statement and followed by U+2028 and a space",
+    "\u2028 ",
+    "\u2028 \n",
+  ],
+]
+
+const openDirectiveDiagrams: readonly (readonly [
+  string,
+  string,
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a kanban board",
+    "kanban\n  S[x]\n%%{unfinished{tail}",
+    "kanban\n  S[x]\n  %%{unfinished{tail}",
+    "kanban\n  S[x] %%{unfinished{tail}",
+    "kanban\n  S[x] %%{unfinished{tail}",
+  ],
+  [
+    "a C4 diagram",
+    'C4Context\nPerson(a, "A")\n%%{unfinished{tail}',
+    'C4Context\n  Person(a, "A")\n  %%{unfinished{tail}',
+    'C4Context\nPerson(a, "A") %%{unfinished{tail}',
+    'C4Context\n  Person(a, "A") %%{unfinished{tail}',
+  ],
+  [
+    "an ishikawa diagram",
+    "ishikawa\nR\n  A\n%%{unfinished{tail}",
+    "ishikawa\n  R\n    A\n    %%{unfinished{tail}",
+    "ishikawa\nR\n  A %%{unfinished{tail}",
+    "ishikawa\n  R\n    A %%{unfinished{tail}",
+  ],
+]
+
+describe.each(openDirectiveDiagrams)(
+  "%s that ends with an open directive",
+  (_diagram, ownInput, ownOutput) => {
+    it.each(openDirectiveTails)(
+      "prints %s on a line of its own",
+      async (_case, written, printed) => {
+        await expectKept(
+          ownInput.replace("{tail}", written),
+          ownOutput.replace("{tail}", printed),
+        )
+      },
+    )
+  },
+)
+
+describe.each(openDirectiveDiagrams.slice(1))(
+  "%s that ends with an open directive after a statement",
+  (_diagram, _ownInput, _ownOutput, statementInput, statementOutput) => {
+    it.each(openDirectiveTails)(
+      "prints %s",
+      async (_case, written, printed) => {
+        await expectKept(
+          statementInput.replace("{tail}", written),
+          statementOutput.replace("{tail}", printed),
+        )
+      },
+    )
+  },
+)
+
+describe("a kanban board that ends with an open directive after a statement", () => {
+  const [, , , statementInput, statementOutput] = openDirectiveDiagrams[0]
+  it.each(kanbanStatementOpenDirectiveTails)(
+    "keeps %s up to the first line break",
+    async (_case, written, printed) => {
+      await expectKept(
+        statementInput.replace("{tail}", written),
+        statementOutput.replace("{tail}", printed),
+      )
+    },
+  )
+})
+
+/** The gap after a final comment: one line break ends the text, which the printer adds where the text ends without one (docs/kanban.md, Final newline). */
+const terminalCommentExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "a final line of %% alone, two empty lines, and a space in a kanban board",
+      "kanban\n S\n%%\n\n ",
+      "kanban\n  S\n%%\n\n \n",
+    ],
+    [
+      "a final line of %% alone and U+2029 in a kanban board",
+      "kanban\n S\n%%\u2029",
+      "kanban\n  S\n  %%\u2029\n",
+    ],
+    [
+      "a final comment with text and U+2029 in a kanban board",
+      "kanban\n  S[x]\n%% c\u2029",
+      "kanban\n  S[x]\n  %% c\u2029\n",
+    ],
+    [
+      "a final comment after a statement and U+2029 in a C4 diagram",
+      'C4Context\nPerson(a, "A") %% c\u2029',
+      'C4Context\n  Person(a, "A") %% c\u2029\n',
+    ],
+    [
+      "a final comment after a statement and a tab in a C4 diagram",
+      'C4Context\nPerson(a, "A") %% c\t',
+      'C4Context\n  Person(a, "A") %% c\t\n',
+    ],
+    [
+      "a final comment after a statement and empty lines in a C4 diagram",
+      'C4Context\nPerson(a, "A") %% c\n\n\n',
+      'C4Context\n  Person(a, "A") %% c\n\n\n',
+    ],
+    [
+      "a final comment on a line of its own and empty lines in a C4 diagram",
+      'C4Context\nPerson(a, "A")\n%% c\n\n\n',
+      'C4Context\n  Person(a, "A")\n  %% c\n',
+    ],
+    [
+      "a final line of %% alone, two empty lines, and a space in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%%\n\n ",
+      "ishikawa\n  R\n    A\n    %%\n\n \n",
+    ],
+    [
+      "a final line of %% alone and U+2028 in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%%\u2028",
+      "ishikawa\n  R\n    A\n    %%\u2028\n",
+    ],
+    [
+      "a final comment with text and a tab on a line of its own in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\t",
+      "ishikawa\n  R\n    A\n    %% c\t\n",
+    ],
+    [
+      "a final comment with text and empty lines in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\n\n\n",
+      "ishikawa\n  R\n    A\n    %% c\n",
+    ],
+  ]
+
+describe("the gap after a final comment", () => {
+  it.each(terminalCommentExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
