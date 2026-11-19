@@ -244,7 +244,9 @@ ishikawa
 見出しに付く図のコメントの後も同じで、見出しに接していても、
 空白で離れていても変わりません（[コメント](#comments) を参照）。
 コメントの前のディレクティブに mermaid.js が取り除く改行があっても同じです。
-最後の図コメントの後の隙間は、末尾まで全体を保ちます。
+最後の `%%` だけの行の後の隙間は、末尾まで全体を書かれたまま残し、
+テキストつきの最後のコメントの後の空行は落とします。
+詳しくは [Final newline](#final-newline) を参照してください。
 
 [fixture: ishikawa/blank-lines/blank-comment-accepted]
 [fixture: ishikawa/blank-lines/blank-header-comment-accepted]
@@ -984,9 +986,9 @@ ishikawa
 閉じていないディレクティブはテキストの終わりまで届き、
 空白でない最後の文字までの残りを取ります。
 ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
-その後ろの空白は、文の行でも落とします。
-テキストがその文字の直後で終わるときは、印字は何も足さず、
-そうでなければ改行 1 つでテキストを終えます。
+その文字の後ろの空白は、文の行でも落とし、改行 1 つでテキストを終えます。
+何も足さないのは、テキストがその文字の直後で終わり、
+その文字が U+2028 でも U+2029 でもないときだけです。
 末尾のテキストの余白は、末尾の空白に従い除きます。
 
 [fixture: ishikawa/final-newline/final-comment]
@@ -1012,6 +1014,8 @@ ishikawa
 [test: an open directive followed by U+2028 and a space]
 [test: an open directive followed by U+0085]
 [test: an open directive followed by U+200B]
+[test: an open directive followed by U+180E]
+[test: an open directive followed by U+2003]
 [test: a final line of %% alone, two empty lines, and a space in an ishikawa diagram]
 [test: a final line of %% alone and U+2028 in an ishikawa diagram]
 [test: a final comment with text and a tab on a line of its own in an ishikawa diagram]

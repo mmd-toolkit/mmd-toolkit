@@ -557,20 +557,22 @@ Apply the movement and safety conditions of
 shallowest text one level inside its node. A section's body is two levels below
 the header, an item's three; nested YAML keeps its relative indentation. A
 separate `}` aligns with the node, even if it had no margin; a closer after text
-stays on that line. A `}` after the text of a literal or folded scalar (`|` and
-`>`, with or without `-` or `+` after them) stays on its line: on a line of its
-own it changes the end of the text of the scalar, which 11.7.0 to 12.3.0 draw
-differently (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The formatter does not look at the kind of scalar, so a `}` after the text of a
-plain scalar stays too.
+stays on that line. A `}` after the text of a literal or folded scalar (`|`,
+`|-`, `|+`, `>`, `>-`, and `>+`) stays on its line: on a line of its own it
+changes the end of the text of the scalar in the Db of 12.3.0, and formatting
+does not change the Db. The drawing is the same, but no kind of exception that
+[How the printed form is decided](./printed-form.md#the-check-and-formatting-that-changes-the-db)
+defines covers that gap. The formatter does not look at the kind of scalar, so a
+`}` after the text of a plain scalar stays too.
 
 [fixture: data-blocks/section-and-item-margins] [fixture:
 data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text] [fixture:
 data-blocks/closing-after-literal-text] [fixture:
 data-blocks/closing-after-folded-text] [fixture:
 data-blocks/closing-after-strip-text] [fixture:
-data-blocks/closing-after-keep-text]
+data-blocks/closing-after-keep-text] [fixture:
+data-blocks/closing-after-folded-strip-text] [fixture:
+data-blocks/closing-after-folded-keep-text]
 
 Move space-only lines by the same amount, making them empty when no spaces
 remain, and leave empty lines empty. Keep trailing spaces: literal block scalars
@@ -1033,12 +1035,20 @@ lines of multi-line values. This is the distinction of
 [mindmap](./mindmap.md#node-text), with the data block added, and with the id of
 a column kept. On a kept line the same holds. The directives that end the text
 of a card are printed with one space before each that has spaces or tabs before
-it, and the spaces and tabs after the last one are left out (see
+it, and the spaces and tabs after the last one are left out, while a no-break
+space or U+3000 before or after one stays (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same));
 those that end the id of a column stay as written, since the figure depends on
 its whitespace.
 
-[fixture: trailing-whitespace/directives-end-blanks-dropped] [test: kanban:
+[fixture: trailing-whitespace/directives-end-blanks-dropped] [test: a tab after
+the directive that ends the text of a card] [test: a tab before the directive
+that ends the text of a card] [test: spaces before and after the directive that
+ends the text of a card] [test: a no-break space before the directive that ends
+the text of a card] [test: U+3000 before the directive that ends the text of a
+card] [test: a no-break space after the directive that ends the text of a card]
+[test: U+3000 after the directive that ends the text of a card] [test: tabs
+around the directive that ends the bare id of a card] [test: kanban:
 bare-trailing-trim] [test: kanban: closed-trailing-trim] [test: kanban:
 closed-whitespace-trim] [fixture: trailing-whitespace/class-trailing-trim]
 [fixture: trailing-whitespace/lex-after-quoted-spaces] [fixture:
@@ -1327,18 +1337,19 @@ adds where the text ends without one, also where it ends with a U+2028 or a
 U+2029. The spaces at the end of a last bare id are part of the id and stay
 (`S   ` prints with its spaces, then the line break). When a directive that is
 not closed reaches the end of the text, it takes the rest up to its last
-character that is not whitespace, where U+2028, U+2029, U+0085, U+180E, and
-U+200B count as characters that are not whitespace. Where the text ends right
-after that character, the printer adds nothing after it. Where whitespace
-follows it (spaces, tabs, a U+00A0, a U+3000, a U+FEFF, a form feed, a vertical
-tab, line breaks, empty lines), the whitespace is dropped and one line break
-ends the text: `%%{unfinished` and two spaces print `%%{unfinished` and a line
-break, and `%%{unfinished`, U+2028, and a space print `%%{unfinished`, U+2028,
-and a line break. On the line of a statement, the whitespace after the directive
-stays up to the first line break, and one line break ends the text:
-`S[x] %%{unfinished` and two spaces print as written, with a line break after
-them. In Markdown, the indentation of the code fence or of its list item is the
-indentation of the host, and is not part of the indentation of the board.
+character that is no whitespace; U+2028, U+2029, U+0085, U+180E, and U+200B are
+no whitespace here. On a line of its own, the whitespace after that character is
+dropped (spaces, tabs, a U+00A0, a U+3000, a U+FEFF, a U+2003, a form feed, a
+vertical tab, line breaks, empty lines), and one line break ends the text;
+nothing is added only where the text ends right after the character and it is no
+U+2028 or U+2029. `%%{unfinished` and two spaces print `%%{unfinished` and a
+line break, and `%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a
+line break. On the line of a statement, the whitespace after the directive stays
+up to the first line break instead: `S[x] %%{unfinished` and two spaces print as
+written, with a line break after them, and `S[x] %%{unfinished` with nothing
+after it is not changed. In Markdown, the indentation of the code fence or of
+its list item is the indentation of the host, and is not part of the indentation
+of the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
@@ -1357,6 +1368,8 @@ spaces] [test: an open directive followed by U+2028] [test: an open directive
 followed by U+2029] [test: an open directive followed by a space and U+2028]
 [test: an open directive followed by U+2028 and a space] [test: an open
 directive followed by U+0085] [test: an open directive followed by U+200B]
+[test: an open directive followed by U+180E] [test: an open directive followed
+by U+2003] [test: an open directive after a statement and with nothing after it]
 [test: an open directive after a statement and followed by two spaces] [test: an
 open directive after a statement and followed by a tab] [test: an open directive
 after a statement and followed by a no-break space] [test: an open directive

@@ -6903,6 +6903,8 @@ const openDirectiveTails: readonly (readonly [string, string, string])[] = [
   ["an open directive followed by U+2028 and a space", "\u2028 ", "\u2028\n"],
   ["an open directive followed by U+0085", "\u0085", "\u0085"],
   ["an open directive followed by U+200B", "\u200b", "\u200b"],
+  ["an open directive followed by U+180E", "\u180e", "\u180e"],
+  ["an open directive followed by U+2003", "\u2003", "\n"],
 ]
 
 /** The same on the line of a statement of a kanban board, which keeps the whitespace up to the first line break. */
@@ -6911,6 +6913,7 @@ const kanbanStatementOpenDirectiveTails: readonly (readonly [
   string,
   string,
 ])[] = [
+  ["an open directive after a statement and with nothing after it", "", ""],
   [
     "an open directive after a statement and followed by two spaces",
     "  ",
@@ -7086,4 +7089,61 @@ describe("the gap after a final comment", () => {
   it.each(terminalCommentExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
   })
+})
+
+/** What the printer does with the directives at the end of the text of a card (docs/kanban.md, Trailing whitespace). */
+const kanbanCardDirectiveExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a tab after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]%%{x}%%\t\n",
+    "kanban\n  S\n    A[x]%%{x}%%\n",
+  ],
+  [
+    "a tab before the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]\t%%{x}%%\n",
+    "kanban\n  S\n    A[x] %%{x}%%\n",
+  ],
+  [
+    "spaces before and after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]  %%{x}%%  \n",
+    "kanban\n  S\n    A[x] %%{x}%%\n",
+  ],
+  [
+    "a no-break space before the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]\u00a0%%{x}%%\n",
+    "kanban\n  S\n    A[x]\u00a0%%{x}%%\n",
+  ],
+  [
+    "U+3000 before the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]\u3000%%{x}%%\n",
+    "kanban\n  S\n    A[x]\u3000%%{x}%%\n",
+  ],
+  [
+    "a no-break space after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]%%{x}%%\u00a0\n",
+    "kanban\n  S\n    A[x]%%{x}%%\u00a0\n",
+  ],
+  [
+    "U+3000 after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]%%{x}%%\u3000\n",
+    "kanban\n  S\n    A[x]%%{x}%%\u3000\n",
+  ],
+  [
+    "tabs around the directive that ends the bare id of a card",
+    "kanban\n  S\n    A\t%%{x}%%\t\n",
+    "kanban\n  S\n    A %%{x}%%\n",
+  ],
+]
+
+describe("the text of a kanban card that a directive ends", () => {
+  it.each(kanbanCardDirectiveExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
 })

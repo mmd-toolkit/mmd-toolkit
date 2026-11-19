@@ -236,8 +236,9 @@ ishikawa/blank-lines/blank-around-trivia]
 A separating blank after a diagram comment remains one, including after an
 attached header comment, touching or spaced, also when a directive before the
 comment contains a line feed that mermaid.js removes (see
-[Comments](#comments)); the complete terminal gap after a final diagram comment
-stays written.
+[Comments](#comments)); the complete terminal gap after a final line of `%%`
+alone stays written, while after a final comment with text the empty lines are
+dropped (see [Final newline](#final-newline)).
 
 [fixture: ishikawa/blank-lines/blank-comment-accepted] [fixture:
 ishikawa/blank-lines/blank-header-comment-accepted] [fixture:
@@ -958,10 +959,10 @@ adds where the gap does not end with one; after a final comment with text, the
 spaces and tabs after its text stay on a line of its own, the empty lines are
 dropped, and one line break ends the text. A directive that is not closed
 reaches the end of the text and takes the rest up to its last character that is
-not whitespace, where U+2028, U+2029, U+0085, U+180E, and U+200B count as
-characters that are not whitespace; the whitespace after it is dropped, on the
-line of a statement too. Where the text ends right after that character, the
-printer adds nothing; otherwise one line break ends the text. Terminal literal
+no whitespace; U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace
+here. The whitespace after that character is dropped, on the line of a statement
+too, and one line break ends the text; nothing is added only where the text ends
+right after the character and it is no U+2028 or U+2029. Terminal literal
 padding is left out under Trailing whitespace.
 
 [fixture: ishikawa/final-newline/final-comment] [corpus fixture:
@@ -980,11 +981,12 @@ spaces] [test: an open directive followed by U+2028] [test: an open directive
 followed by U+2029] [test: an open directive followed by a space and U+2028]
 [test: an open directive followed by U+2028 and a space] [test: an open
 directive followed by U+0085] [test: an open directive followed by U+200B]
-[test: a final line of %% alone, two empty lines, and a space in an ishikawa
-diagram] [test: a final line of %% alone and U+2028 in an ishikawa diagram]
-[test: a final comment with text and a tab on a line of its own in an ishikawa
-diagram] [test: a final comment with text and empty lines in an ishikawa
-diagram]
+[test: an open directive followed by U+180E] [test: an open directive followed
+by U+2003] [test: a final line of %% alone, two empty lines, and a space in an
+ishikawa diagram] [test: a final line of %% alone and U+2028 in an ishikawa
+diagram] [test: a final comment with text and a tab on a line of its own in an
+ishikawa diagram] [test: a final comment with text and empty lines in an
+ishikawa diagram]
 
 Input (escaped):
 

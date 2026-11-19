@@ -602,13 +602,13 @@ section の本文はヘッダーから 2 段、item の本文は 3 段で、
 入れ子の YAML の字下げの差を保ちます。
 単独行の `}` は元の余白がなくてもノードの段に揃え、
 本文の後の閉じ括弧はその行に残します。
-リテラルスカラーや折りたたみスカラー（`|` と `>`、
-後ろに `-` や `+` が付く形も）のテキストの後の `}` は、その行に残します。
-独立した行に置くと、スカラーのテキストの末尾が変わり、
-11.7.0 から 12.3.0 はテキストを別に描くからです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
+リテラルスカラーや折りたたみスカラー（`|`、`|-`、`|+`、`>`、`>-`、
+`>+`）のテキストの後の `}` は、その行に残します。
+独立した行に置くと、12.3.0 の Db のスカラーのテキストの末尾が変わり、
+整形は Db を変えないからです。
+図は同じですが、この隙間を覆う種類の例外は、
+[整形の形の決め方](./printed-form.ja.md#確かめ方とdb-を変える整形)
+に定められていません。
 整形はスカラーの種類を見ないので、
 普通のスカラーのテキストの後の `}` も残ります。
 
@@ -618,6 +618,8 @@ section の本文はヘッダーから 2 段、item の本文は 3 段で、
 [fixture: data-blocks/closing-after-folded-text]
 [fixture: data-blocks/closing-after-strip-text]
 [fixture: data-blocks/closing-after-keep-text]
+[fixture: data-blocks/closing-after-folded-strip-text]
+[fixture: data-blocks/closing-after-folded-keep-text]
 
 空白だけの行も同じ量だけ動かし、空白がなくなる場合は空行にします。
 空行は空のままにし、末尾空白も保ちます。
@@ -1418,14 +1420,16 @@ U+2028 や U+2029 で終わっているときも同じです。
 閉じていないディレクティブがテキストの終わりまで届くときは、
 空白でない最後の文字までの残りを取ります。
 ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
-テキストがその文字の直後で終わるなら、印字はその後ろに何も足しません。
-後ろに空白（空白、タブ、U+00A0、U+3000、U+FEFF、改ページ、垂直タブ、改行、
-空行）が続くなら、空白を落とし、改行 1 つでテキストを終えます。
-`%%{unfinished` と空白 2 つは `%%{unfinished` と改行を印字し、`%%{unfinished`、
-U+2028、空白は `%%{unfinished`、U+2028、改行を印字します。
+単独の行では、その文字の後ろの空白（空白、タブ、U+00A0、U+3000、U+FEFF、U+2003、
+改ページ、垂直タブ、改行、空行）は落とし、改行 1 つでテキストを終えます。
+何も足さないのは、テキストがその文字の直後で終わり、
+その文字が U+2028 でも U+2029 でもないときだけです。
+`%%{unfinished` と空白 2 つは `%%{unfinished` と改行を、
+`%%{unfinished` と U+2028 は `%%{unfinished`、U+2028、改行を印字します。
 文の行にあるときは、ディレクティブの後の空白を最初の改行まで残し、
 改行 1 つでテキストを終えます。
 `S[x] %%{unfinished` と空白 2 つは書かれたまま印字し、その後に改行が来ます。
+`S[x] %%{unfinished` の後に何もないときは変えません。
 Markdown では、コードフェンスやリスト項目の字下げはホストの字下げで、
 ボードの字下げには入りません。
 
@@ -1454,6 +1458,9 @@ Markdown では、コードフェンスやリスト項目の字下げはホス�
 [test: an open directive followed by U+2028 and a space]
 [test: an open directive followed by U+0085]
 [test: an open directive followed by U+200B]
+[test: an open directive followed by U+180E]
+[test: an open directive followed by U+2003]
+[test: an open directive after a statement and with nothing after it]
 [test: an open directive after a statement and followed by two spaces]
 [test: an open directive after a statement and followed by a tab]
 [test: an open directive after a statement and followed by a no-break space]
