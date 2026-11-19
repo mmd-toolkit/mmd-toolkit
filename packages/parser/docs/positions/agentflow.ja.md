@@ -125,6 +125,8 @@ Label は先頭に文字列があればその区切りを含み、続く裸の�
 [fixture: agentflow/lex-label-whitespace-only-comment]
 [fixture: agentflow/lex-slanted-label-whitespace-only-comment-after-space]
 [fixture: agentflow/lex-ellipse-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-pipe-label-whitespace-only-comment]
+[fixture: agentflow/lex-label-whitespace-only-two-comments]
 
 DataBlock は一つの完全な @{ から } までで、別の値範囲はない。
 内部は書かれた空白を保持し、波括弧後に読み方が畳まれる空白も含む。

@@ -229,6 +229,7 @@ frontmatter と directive の除去後、
 空白だけのラベルも同じように分かれる。
 `A[ %% c` とそれに続く行 `]` では、空白と LF が 2 つの `RawText` のトークンで、
 ラベルの値はその 2 つをつないだものである。
+2 つのコメントの間の空白は、一つのトークンになる。
 共通の除去が適用されないとき、文字列、リンクテキスト、コールバックテキスト、
 アクセシビリティ値、データでは、コメントに見えるテキストも内容として保持する。
 
@@ -245,3 +246,5 @@ frontmatter と directive の除去後、
 [fixture: agentflow/lex-label-whitespace-only-comment]
 [fixture: agentflow/lex-slanted-label-whitespace-only-comment-after-space]
 [fixture: agentflow/lex-ellipse-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-pipe-label-whitespace-only-comment]
+[fixture: agentflow/lex-label-whitespace-only-two-comments]

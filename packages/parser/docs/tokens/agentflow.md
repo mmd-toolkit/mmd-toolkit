@@ -223,9 +223,10 @@ A comment splits bare label text into separate RawText runs, preserving the
 interior padding and LF that the label reads; comments and their text are
 outside those tokens and the label value. A label of whitespace only is split in
 the same way: in `A[ %% c` followed by a line `]`, the space and the line feed
-are two `RawText` tokens, and the label's value is the two of them. Strings,
-link text, callback text, accessibility values, and data instead retain
-comment-looking text as content when common removal does not apply.
+are two `RawText` tokens, and the label's value is the two of them; the
+whitespace between two comments is one token. Strings, link text, callback text,
+accessibility values, and data instead retain comment-looking text as content
+when common removal does not apply.
 
 [fixture: agentflow/comment-label-keeps-interior-spaces] [fixture:
 agentflow/comment-quoted-label] [fixture: agentflow/comment-markdown-label]
@@ -238,4 +239,6 @@ agentflow/lex-label-whitespace-only-comment-after-space] [fixture:
 agentflow/lex-label-whitespace-only-comment-after-tab] [fixture:
 agentflow/lex-label-whitespace-only-comment] [fixture:
 agentflow/lex-slanted-label-whitespace-only-comment-after-space] [fixture:
-agentflow/lex-ellipse-label-whitespace-only-comment-after-space]
+agentflow/lex-ellipse-label-whitespace-only-comment-after-space] [fixture:
+agentflow/lex-pipe-label-whitespace-only-comment] [fixture:
+agentflow/lex-label-whitespace-only-two-comments]

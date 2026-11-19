@@ -121,7 +121,9 @@ agentflow/lex-label-whitespace-only-comment-after-space] [fixture:
 agentflow/lex-label-whitespace-only-comment-after-tab] [fixture:
 agentflow/lex-label-whitespace-only-comment] [fixture:
 agentflow/lex-slanted-label-whitespace-only-comment-after-space] [fixture:
-agentflow/lex-ellipse-label-whitespace-only-comment-after-space]
+agentflow/lex-ellipse-label-whitespace-only-comment-after-space] [fixture:
+agentflow/lex-pipe-label-whitespace-only-comment] [fixture:
+agentflow/lex-label-whitespace-only-two-comments]
 
 DataBlock covers one complete @{ through }, with no separate value range; its
 interior keeps its written whitespace, including the whitespace whose reading is
