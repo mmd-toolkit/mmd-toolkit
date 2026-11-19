@@ -692,11 +692,12 @@ wardley-beta
 題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
 テキストの中に U+2028 も U+2029 もないとき、題の終わりのディレクティブは、
 その前と後に何があるかで、次のように印字します。
-ただし、一覧の後に述べる範囲にない行についてです。
-範囲にある行とは、ディレクティブのほかに、`;`（ディレクティブの中のものも、
-コメントの中のものも）が行のどこかにあるか、
-最初のディレクティブの後に U+2028 か U+2029 があるか、
-ディレクティブが改行を含む行です。
+ただし、未決の行は除きます。
+未決の行とは、ディレクティブのほかに、`;`（ディレクティブの中のものも、
+コメントの中のものも）が行のどこかにある行、
+最初のディレクティブの中か後に U+2028 か U+2029 がある行、
+ディレクティブが改行を含む行、または次の文までの間の行に、
+コメントかディレクティブの中の `;` がある行です。
 幅のある空白は、U+000B、U+000C、U+00A0、U+1680、U+2000 から U+200A、U+202F、
 U+205F、U+3000、U+FEFF のどれかです。
 項目 6 が行を分けるときは、ほかの項目はその行に当たりません。
@@ -747,8 +748,6 @@ U+205F、U+3000、U+FEFF のどれかです。
   後ろに空白が続くディレクティブ、空白が間にあるディレクティブ（`%%{y}%%`、
   空白 2 つ、`%%{z}%%`）は取り除かれ、文字、U+0085、U+180E、
   コメントとディレクティブの外の `;` を含む行は文です。
-  コメントの中やディレクティブの中の `;` は、行を文にしません（`%% e;`、
-  `%%{y}%% %% e;`、`%%{y;z}%%` は取り除かれます）。
 - 幅のある空白がディレクティブの間にあるときは、
   最後のディレクティブの後に何が続いても、行を書かれたままにします。
 - 最後のディレクティブの後に幅のある空白があるときは、
@@ -756,7 +755,7 @@ U+205F、U+3000、U+FEFF のどれかです。
   テキストの中にディレクティブのある題も、書かれたままです。
 
 最後のディレクティブの後にコメントが続き、
-テキストとコメントの間に U+2028 も U+2029 もなく、行が範囲になく、
+テキストとコメントの間に U+2028 も U+2029 もなく、行が未決でなく、
 項目 7 と 8 のどちらにも当たらないときは、
 それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
 空白 1 つで印字します。
@@ -773,7 +772,7 @@ U+205F、U+3000、U+FEFF のどれかです。
 （[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)）。
 
 テキストの中に U+2028 か U+2029 があるとき、または値がディレクティブだけで、
-行が範囲にないときは、
+行が未決でないときは、
 最後のディレクティブの後に空白かタブが続けば（その後が行末でもコメントでも）、
 またはディレクティブの間に空白かタブがあれば、行を書かれたままにし、
 項目 3 は適用しません。
@@ -782,14 +781,13 @@ U+205F、U+3000、U+FEFF のどれかです。
 ディレクティブの前の空白とタブの連なり（キーワードの後のものも）はそれぞれ空白 1
 つになります。
 
-範囲にある行は述べません。
+未決の行は述べません。
 そこでは出力が、`;` と U+2028 か U+2029 の両側の文字ごとに決まり、
-規則 1 はこれらの隙間の印を挙げず、
-図の種類も同じには印字しません（Wardley は最後の `;`
-までの行を書かれたままにし、radar と architecture は隙間を印字します）。
-そこでリリース済みの版が印字する形は、決めるまでそのままです。
-（[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)）。
-コメントの中の `;` も行を範囲に入れます。
+規則 1 はこれらの隙間の印を挙げず、図の種類も同じには印字しません。
+そこでリリース済みの版が印字する形は、
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+のとおり、決めるまでそのままです。
+コメントの中の `;` も行を未決にします。
 Wardley はそのような行を書かれたままにするからです。
 整形が投げる行は、そこでは述べません。
 
@@ -1559,6 +1557,15 @@ Wardley はそのような行を書かれたままにするからです。
 [test: a directive, two spaces, a `;`, two spaces, a no-break space, two spaces, a `;`, two spaces, a directive, in a title of directives only of a Wardley map]
 [test: a directive, a `;`, a no-break space, a `;`, two spaces, a `;`, two spaces, a directive, in a title of directives only of a Wardley map]
 [test: a directive, U+2028, a `;`, two spaces, a `;`, two spaces, a directive, in a title of directives only of a Wardley map]
+[test: two U+2028 before the directive that ends a title, of a Wardley map]
+[test: two U+2029 before the directive that ends a title, of a Wardley map]
+[test: U+2028 and U+2029 before the directive that ends a title, of a Wardley map]
+[test: two U+2028 before the directive that ends a title, spaces after it, of a Wardley map]
+[test: U+2029 and U+2028 before the directive that ends a title, spaces after it, of a Wardley map]
+[test: two U+2028 before two directives that touch and end a title, of a Wardley map]
+[test: two U+2028 before a directive that a space and another directive follow in a title, of a Wardley map]
+[test: a U+2028 inside the directive that ends a title, spaces before it, a comment after two spaces, of a Wardley map]
+[test: a U+2028 inside the directive of a title of directives only, spaces before and after it, of a Wardley map]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a Wardley map]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a Wardley map]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a Wardley map]
@@ -1845,6 +1852,15 @@ Wardley はそのような行を書かれたままにするからです。
 [test: a `;` inside the comment after the last directive, two spaces before the comment, the text ends, in a title of a Wardley map]
 [test: a U+2028 between the text and a directive, a U+2028 between the directive and the comment, an empty line and a statement follow, in a title of a Wardley map]
 [test: a U+2028 after the last directive of a title of directives only, two spaces before and after it, a comment follows, the text ends, in a title of a Wardley map]
+[test: two U+2028 before a directive that a comment touches, an empty line and a statement follow, in a title of a Wardley map]
+[test: two U+2028 before a directive that a comment follows after spaces, an empty line and a statement follow, in a title of a Wardley map]
+[test: U+2029 and U+2028 before a directive that a comment touches, the text ends, in a title of a Wardley map]
+[test: two U+2028 before a directive that a comment touches, a comment line follows, in a title of a Wardley map]
+[test: two U+2028 before a directive that a comment touches, a line of whitespace follows, in a title of a Wardley map]
+[test: two U+2028 before a directive that a comment touches, a directive line follows, in a title of a Wardley map]
+[test: a comment after the last directive after two spaces, a comment line that holds a `;` and an empty line follow, a statement follows, in a title of a Wardley map]
+[test: a U+2028 before a directive that a comment follows after two spaces, a comment line that holds a `;` follows, a statement follows, in a title of a Wardley map]
+[test: a comment after the last directive after two spaces, a directive line that holds a `;` and an empty line follow, a statement follows, in a title of a Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -1874,17 +1890,13 @@ accTitle: Value と accDescr: Value は共有の行配置を使います。
 値にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
 テキストの中に U+2028 も U+2029 もないとき、値の終わりのディレクティブは、
 その前と後に何があるかで、次のように印字します。
+ただし、[題の一覧](#title)が述べる未決の行は除きます。
 幅のある空白は、U+000B、U+000C、U+00A0、U+1680、U+2000 から U+200A、U+202F、
 U+205F、U+3000、U+FEFF のどれかです。
 ディレクティブの前に U+2028 か U+2029 があり、
 最後のディレクティブの後にコメントが続くときは、
-[題の一覧](#title)の項目 6 と同じに印字し、題の一覧の項目 6 が行を分けるときは、
-以下の項目はその行に当たりません。
-以下の項目は、題の一覧の後に述べる範囲にない行についてです。
-範囲にある行とは、ディレクティブのほかに、`;`（ディレクティブの中のものも、
-コメントの中のものも）が行のどこかにあるか、
-最初のディレクティブの後に U+2028 か U+2029 があるか、
-ディレクティブが改行を含む行です。
+未決でない行を題の一覧の項目 6 と同じに印字し、
+題の一覧の項目 6 が行を分けるときは、以下の項目はその行に当たりません。
 コロンはキーワードに接するので、コロンの前の隙間は、
 行を書かれたままにするときも、隙間なしで印字します。
 
@@ -1915,7 +1927,7 @@ U+205F、U+3000、U+FEFF のどれかです。
   テキストの中にディレクティブのある値も、書かれたままです。
 
 最後のディレクティブの後にコメントが続き、
-テキストとコメントの間に U+2028 も U+2029 もなく、行が範囲になく、
+テキストとコメントの間に U+2028 も U+2029 もなく、行が未決でなく、
 項目 5 と 6 のどちらにも当たらないときは、
 それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
 空白 1 つで印字します。
@@ -1932,7 +1944,7 @@ U+205F、U+3000、U+FEFF のどれかです。
 （[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)）。
 
 テキストの中に U+2028 か U+2029 があるとき、または値がディレクティブだけで、
-行が範囲にないときは、
+行が未決でないときは、
 最後のディレクティブの後に空白かタブが続けば（その後が行末でもコメントでも）、
 またはディレクティブの間に空白かタブがあれば、行を書かれたままにし、
 項目 3 は適用しません。
@@ -1941,14 +1953,13 @@ U+205F、U+3000、U+FEFF のどれかです。
 ディレクティブの前の空白とタブの連なり（キーワードの後のものも）はそれぞれ空白 1
 つになります。
 
-範囲にある行は述べません。
+未決の行は述べません。
 そこでは出力が、`;` と U+2028 か U+2029 の両側の文字ごとに決まり、
-規則 1 はこれらの隙間の印を挙げず、
-図の種類も同じには印字しません（Wardley は最後の `;`
-までの行を書かれたままにし、radar と architecture は隙間を印字します）。
-そこでリリース済みの版が印字する形は、決めるまでそのままです。
-（[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)）。
-コメントの中の `;` も行を範囲に入れます。
+規則 1 はこれらの隙間の印を挙げず、図の種類も同じには印字しません。
+そこでリリース済みの版が印字する形は、
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+のとおり、決めるまでそのままです。
+コメントの中の `;` も行を未決にします。
 Wardley はそのような行を書かれたままにするからです。
 整形が投げる行は、そこでは述べません。
 
@@ -2404,6 +2415,12 @@ Wardley はそのような行を書かれたままにするからです。
 [test: a `;` and no directive, a U+2029 and two spaces stand before the text of accTitle, in an accTitle line of a Wardley map]
 [test: a `;` and no directive, a U+2028 and a space stand before the text of accDescr, the gap before the colon is a space, in an accDescr line of a Wardley map]
 [test: a `;` and no directive, a U+2029 and two spaces stand before the text of accDescr, in an accDescr line of a Wardley map]
+[test: two U+2028 before the directive that ends an accTitle line, of a Wardley map]
+[test: U+2029 and U+2028 before the directive that ends an accDescr line, of a Wardley map]
+[test: two U+2028 before the directive that ends an accTitle line, spaces after it, of a Wardley map]
+[test: two U+2029 before a directive that a space and another directive follow in an accDescr line, of a Wardley map]
+[test: a U+2028 inside the directive that ends an accDescr line, spaces before it, a comment after two spaces, of a Wardley map]
+[test: a line break inside the directive that ends an accTitle line, a comment after two spaces, of a Wardley map]
 [test: U+2028 before a directive that a comment touches, a line follows, in an accTitle line of a Wardley map]
 [test: U+2028 before a directive that a comment touches, the text ends, in an accTitle line of a Wardley map]
 [test: U+2028 before a directive that a comment follows after spaces, a line follows, in an accTitle line of a Wardley map]
@@ -2611,6 +2628,10 @@ Wardley はそのような行を書かれたままにするからです。
 [test: accTitle with a gap before the colon, a U+2028 inside a directive and a `;` inside a directive after it, the text ends, in an accTitle line of a Wardley map]
 [test: accTitle with a gap before the colon, a U+2028 inside a comment and a `;` after it in the comment, the text ends, in an accTitle line of a Wardley map]
 [test: accTitle with a gap before the colon, a U+2028 inside a comment and no `;`, the text ends, in an accTitle line of a Wardley map]
+[test: a U+2028 between the text and a directive, a U+2028 between the directive and the comment, an empty line and a statement follow, in an accTitle line of a Wardley map]
+[test: a U+2028 before a directive that a comment follows after two spaces, an empty line and a statement follow, in an accTitle line of a Wardley map]
+[test: a U+2028 before a directive that a comment follows after two spaces, a comment line follows, in an accTitle line of a Wardley map]
+[test: a comment after the last directive after two spaces, a comment line that holds a `;` follows, in an accTitle line of a Wardley map]
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
