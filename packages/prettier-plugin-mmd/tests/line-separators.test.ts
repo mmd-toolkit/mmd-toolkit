@@ -6150,6 +6150,41 @@ const wardleyDirectiveEndExamples: readonly (readonly [
     "accDescr: T\u00a0%%{x}%%",
     "accDescr: T %%{x}%%",
   ],
+  [
+    "U+2028 before the directive that ends a title of a Wardley map",
+    "title T\u2028%%{x}%%",
+    "title T %%{x}%%",
+  ],
+  [
+    "U+2029 before the directive that ends a title of a Wardley map",
+    "title T\u2029%%{x}%%",
+    "title T %%{x}%%",
+  ],
+  [
+    "a no-break space before a directive that a space and another directive follow in a title of a Wardley map",
+    "title T\u00a0%%{x}%% %%{y}%%",
+    "title T\u00a0%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+3000 before a directive that a space and a comment follow in a title of a Wardley map",
+    "title T\u3000%%{x}%%  %% c",
+    "title T\u3000%%{x}%% %% c",
+  ],
+  [
+    "U+2028 before the directive that ends an accTitle line of a Wardley map",
+    "accTitle: T\u2028%%{x}%%",
+    "accTitle: T %%{x}%%",
+  ],
+  [
+    "a no-break space before a directive that a space and a comment follow in an accDescr line of a Wardley map",
+    "accDescr: T\u00a0%%{x}%%  %% c",
+    "accDescr: T\u00a0%%{x}%% %% c",
+  ],
+  [
+    "the gap before the colon of an accTitle line with a no-break space after its last directive of a Wardley map",
+    "accTitle :   T  %%{x}%%\u00a0",
+    "accTitle:   T  %%{x}%%\u00a0",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of a Wardley map", () => {

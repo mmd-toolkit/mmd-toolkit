@@ -92,16 +92,30 @@ wardley-beta
 
 Put ordinary statements on separate lines and keep their required EOL.
 mermaid.js expects a line break or the end of the text after a statement, so it
-rejects a second statement on the line of a statement (also after a U+2028 or
-U+2029, which is no line break), a statement on the line of the `{` that opens a
-pipeline, and a `;` after a statement: each statement ends its line. Add no
-semicolon: Wardley does not use semicolons as statement separators. Apparent
-statements inside values remain value text; the source tree already
-distinguishes them.
+rejects a second statement on the line of a statement (after a space, and also
+after a U+2028 or U+2029, which is no line break), a statement on the line of
+the `{` that opens a pipeline, and a `;` after any statement but a link, a
+title, an `accTitle` line, and an `accDescr` line: each statement ends its line.
+A `;` after a link opens its label (see [Semicolon labels](#semicolon-labels)),
+and after one of the other three it is part of the text. Add no semicolon:
+Wardley does not use semicolons as statement separators. Apparent statements
+inside values remain value text; the source tree already distinguishes them.
 
 [fixture: wardley/statements-one-per-line/statement-eol] [corpus fixture:
 wardley/line-ls-gap] [corpus fixture: wardley/line-ps-gap] [corpus fixture:
-wardley/tail-component-semicolon] [corpus fixture: wardley/gram-pipeline-inline]
+wardley/gram-anchor-component-one-line] [corpus fixture:
+wardley/gram-pipeline-inline] [corpus fixture: wardley/tail-component-semicolon]
+[corpus fixture: wardley/tail-anchor-semicolon] [corpus fixture:
+wardley/tail-note-semicolon] [corpus fixture: wardley/tail-evolve-semicolon]
+[corpus fixture: wardley/tail-evolution-semicolon] [corpus fixture:
+wardley/tail-size-semicolon] [corpus fixture: wardley/tail-annotation-semicolon]
+[corpus fixture: wardley/tail-annotations-semicolon] [corpus fixture:
+wardley/tail-accelerator-semicolon] [corpus fixture:
+wardley/tail-deaccelerator-semicolon] [corpus fixture:
+wardley/tail-pipeline-semicolon] [corpus fixture: wardley/tail-child-semicolon]
+[corpus fixture: wardley/tail-block-semicolon] [corpus fixture:
+wardley/tail-link-empty-label] [corpus fixture: wardley/tail-link-spaced-label]
+[corpus fixture: wardley/tail-common-semicolons]
 
 Input (escaped):
 `"wardley-beta\nanchor Sep [0.8,0.2]\ncomponent Step [0.2,0.4]"`.
@@ -316,20 +330,32 @@ Prettier prints no space inside parentheses
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 1 names no
 mark for the gap before a decoration, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides where another diagram type has a gap of that kind. The gap before the
-`[` of a label offset has one: [xychart](./xychart.md#brackets-and-commas)
-prints one space before a `[` that follows a keyword or a title, written
-touching or not, as wardley prints one before the `[` of a label offset. The gap
-before a strategy in parentheses, before `(inertia)` and bare `inertia`, and
-between two decorations has none, so the form that the released version prints,
-one space, stays until the gap is decided (see
+decides where another diagram type has a gap of that kind. Three gaps have one:
+[xychart](./xychart.md#brackets-and-commas) prints one space before a `[` that
+follows a keyword or a title, written touching or not, as wardley prints one
+before the `[` of a label offset; [quadrant](./quadrant.md#styles) prints one
+space between the `]` of a point and its first style, written touching or not
+(`]radius:9`), as wardley prints one between a `]` and the word `label` or the
+bare `inertia` that follows it; and [class](./class.md#member-lines) prints one
+space between the `)` of a method and its return type, as wardley prints one
+between the `)` of a strategy in parentheses and the bare `inertia` that follows
+it. The gap before a `(` that follows a `]` or a `)`, which holds a strategy or
+`(inertia)` in parentheses, has none: the documents of the other printers name
+no such gap, no printed fixture of another diagram type holds a `] (` or a
+`) (`, and the one space that [ER](./er.md#attribute-spacing) prints between the
+keys of an attribute and its comment stands before a quoted string, not before a
+`(`. So the form that the released version prints, one space, stays for the gap
+before a `(` until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep bare inertia and (inertia) distinct, along with build, buy, outsource and
 market. The inertia forms can share a Db, but converting them loses an authored
 node form; do not supply defaults.
 
 [fixture: wardley/decorations/decorations-all] [fixture:
-wardley/decorations/decorations-spaced]
+wardley/decorations/decorations-spaced] [fixture:
+wardley/decorations/decorations-touching] [fixture:
+quadrant/styles/styles-after-one-space] [fixture:
+class/member-lines/method-padding]
 
 [fixture: wardley/decorations/decorations-bare]
 
@@ -631,31 +657,39 @@ are printed with one space before each that has spaces or tabs before it, and
 the spaces and tabs after the last one are left out, whatever the spaces and
 tabs at the end of the line. A no-break space or U+3000 between the text and
 directives that touch one another and then touch the end of the line or a
-comment is printed as one space with the rest of its run. Where a no-break
-space, U+3000, U+2028, or U+2029 follows the last directive, also after spaces
-or tabs, the line stays as written, and so does a title with a directive inside
-it and a title of directives only. Where a comment follows the last directive, a
-run of spaces and tabs before each directive and before the comment is printed
-as one space (see
+comment is printed as one space with the rest of its run, and so is a U+2028 or
+U+2029 where the directives touch the end of the line. Where a space and another
+directive or a comment follow the directive, a no-break space or U+3000 before
+it stays. Where a no-break space, U+3000, U+2028, or U+2029 follows the last
+directive, also after spaces or tabs, the line stays as written, and so does a
+title with a directive inside it and a title of directives only. Where a comment
+follows the last directive, a run of spaces and tabs before each directive and
+before the comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 title/title-directives-end-tabs-dropped] [fixture:
 title/title-directives-in-the-text-kept] [fixture:
 title/title-directives-end-before-comment-line-and-empty-line] [fixture:
-title/title-directives-then-comment] [fixture: wardley/title/title-trim] [test:
-a no-break space after the last directive of a title of a Wardley map] [test:
-U+3000 after the last directive of a title of a Wardley map] [test: U+2028 after
-the last directive of a title of a Wardley map] [test: U+2029 after the last
-directive of a title of a Wardley map] [test: a space and a no-break space after
-the last directive of a title of a Wardley map] [test: a no-break space after
-the last of two directives of a title of a Wardley map] [test: a no-break space
-before the directive that ends a title of a Wardley map] [test: U+3000 before
-the directive that ends a title of a Wardley map] [test: a space, a no-break
-space, and a space before the directive that ends a title of a Wardley map]
-[test: a no-break space before two directives that touch and end a title of a
-Wardley map] [test: a no-break space before a directive that a comment touches
-in a title of a Wardley map]
+title/title-directives-then-comment] [fixture:
+title/title-directives-end-at-the-end-of-the-text] [fixture:
+wardley/title/title-trim] [test: a no-break space after the last directive of a
+title of a Wardley map] [test: U+3000 after the last directive of a title of a
+Wardley map] [test: U+2028 after the last directive of a title of a Wardley map]
+[test: U+2029 after the last directive of a title of a Wardley map] [test: a
+space and a no-break space after the last directive of a title of a Wardley map]
+[test: a no-break space after the last of two directives of a title of a Wardley
+map] [test: a no-break space before the directive that ends a title of a Wardley
+map] [test: U+3000 before the directive that ends a title of a Wardley map]
+[test: a space, a no-break space, and a space before the directive that ends a
+title of a Wardley map] [test: a no-break space before two directives that touch
+and end a title of a Wardley map] [test: a no-break space before a directive
+that a comment touches in a title of a Wardley map] [test: U+2028 before the
+directive that ends a title of a Wardley map] [test: U+2029 before the directive
+that ends a title of a Wardley map] [test: a no-break space before a directive
+that a space and another directive follow in a title of a Wardley map] [test:
+U+3000 before a directive that a space and a comment follow in a title of a
+Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -686,26 +720,35 @@ with one space before each that has spaces or tabs before it, and the spaces and
 tabs after the last one are left out, whatever the spaces and tabs at the end of
 the line. A no-break space or U+3000 between the text and directives that touch
 one another and then touch the end of the line or a comment is printed as one
-space with the rest of its run. Where a no-break space, U+3000, U+2028, or
-U+2029 follows the last directive, also after spaces or tabs, the line stays as
-written, and so does a value with a directive inside it and a value of
-directives only. Where a comment follows the last directive, a run of spaces and
-tabs before each directive and before the comment is printed as one space (see
+space with the rest of its run, and so is a U+2028 or U+2029 where the
+directives touch the end of the line. Where a space and another directive or a
+comment follow the directive, a no-break space or U+3000 before it stays. Where
+a no-break space, U+3000, U+2028, or U+2029 follows the last directive, also
+after spaces or tabs, the line stays as written, apart from the gap before the
+colon, and so does a value with a directive inside it and a value of directives
+only. Where a comment follows the last directive, a run of spaces and tabs
+before each directive and before the comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [test: wardley/accessibility/unicode-empty-description] [fixture:
 accessibility/acc-directives-end-blanks-dropped] [fixture:
 accessibility/acc-directives-end-tabs-dropped] [fixture:
 accessibility/acc-directives-in-the-text-kept] [fixture:
-accessibility/acc-directives-then-comment] [test: a no-break space after the
-last directive of an accTitle line of a Wardley map] [test: a no-break space
-before the directive that ends an accTitle line of a Wardley map] [test: a
-no-break space after the last directive of an accDescr line of a Wardley map]
-[test: a no-break space before the directive that ends an accDescr line of a
-Wardley map] [fixture: wardley/accessibility/access-lines] [fixture:
-wardley/accessibility/access-empty] [fixture:
-wardley/accessibility/access-colon-touching] [fixture:
-wardley/accessibility/description-directive-line]
+accessibility/acc-directives-then-comment] [fixture:
+accessibility/acctitle-directives-end-at-the-end-of-the-text] [fixture:
+accessibility/accdescr-directives-end-at-the-end-of-the-text] [fixture:
+accessibility/acc-directives-end-before-comment-line-and-empty-line] [test: a
+no-break space after the last directive of an accTitle line of a Wardley map]
+[test: a no-break space before the directive that ends an accTitle line of a
+Wardley map] [test: a no-break space after the last directive of an accDescr
+line of a Wardley map] [test: a no-break space before the directive that ends an
+accDescr line of a Wardley map] [test: U+2028 before the directive that ends an
+accTitle line of a Wardley map] [test: a no-break space before a directive that
+a space and a comment follow in an accDescr line of a Wardley map] [test: the
+gap before the colon of an accTitle line with a no-break space after its last
+directive of a Wardley map] [fixture: wardley/accessibility/access-lines]
+[fixture: wardley/accessibility/access-empty] [fixture:
+wardley/accessibility/access-colon-touching]
 
 A description block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
@@ -741,6 +784,7 @@ wardley/accessibility/description-comment-only] [fixture:
 wardley/accessibility/description-directive-only] [fixture:
 wardley/accessibility/block-trailing-whitespace] [fixture:
 wardley/accessibility/block-trailing-whitespace-closer-on-the-text-line]
+[fixture: wardley/accessibility/description-directive-line]
 
 Input (escaped): `"wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t"`.
 

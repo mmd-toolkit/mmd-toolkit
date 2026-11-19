@@ -93,16 +93,37 @@ wardley-beta
 
 普通の文は 1 行ずつにして、必須の EOL を保ちます。
 mermaid.js は文の後に改行かテキストの終わりを期待するので、
-文と同じ行にある 2 つ目の文（U+2028 や U+2029 の後も同じで、
-改行ではありません）と、パイプラインを開く `{` と同じ行にある文と、
-文の後の `;` を拒否するので、各文はその行で終わります。
+文と同じ行にある 2 つ目の文（空白の後も、U+2028 や U+2029 の後も同じで、
+U+2028 と U+2029 は改行ではありません）と、
+パイプラインを開く `{` と同じ行にある文と、リンク、タイトル、`accTitle` の行、
+`accDescr` の行以外の文の後の `;` を拒否します。
+そのため、各文はその行で終わります。
+リンクの後の `;` は、
+ラベルを開きます（[セミコロンのラベル](#semicolon-labels)を参照）。
+ほかの 3 つの後の `;` は、そのテキストの一部です。
 Wardley のセミコロンは文の区切りではないので足しません。
 値の内部の見かけの文は、木が区別した値のテキストとして残します。
 
 [fixture: wardley/statements-one-per-line/statement-eol]
 [corpus fixture: wardley/line-ls-gap] [corpus fixture: wardley/line-ps-gap]
-[corpus fixture: wardley/tail-component-semicolon]
+[corpus fixture: wardley/gram-anchor-component-one-line]
 [corpus fixture: wardley/gram-pipeline-inline]
+[corpus fixture: wardley/tail-component-semicolon]
+[corpus fixture: wardley/tail-anchor-semicolon]
+[corpus fixture: wardley/tail-note-semicolon]
+[corpus fixture: wardley/tail-evolve-semicolon]
+[corpus fixture: wardley/tail-evolution-semicolon]
+[corpus fixture: wardley/tail-size-semicolon]
+[corpus fixture: wardley/tail-annotation-semicolon]
+[corpus fixture: wardley/tail-annotations-semicolon]
+[corpus fixture: wardley/tail-accelerator-semicolon]
+[corpus fixture: wardley/tail-deaccelerator-semicolon]
+[corpus fixture: wardley/tail-pipeline-semicolon]
+[corpus fixture: wardley/tail-child-semicolon]
+[corpus fixture: wardley/tail-block-semicolon]
+[corpus fixture: wardley/tail-link-empty-label]
+[corpus fixture: wardley/tail-link-spaced-label]
+[corpus fixture: wardley/tail-common-semicolons]
 
 入力（エスケープ表記）:
 `"wardley-beta\nanchor Sep [0.8,0.2]\ncomponent Step [0.2,0.4]"`
@@ -325,14 +346,26 @@ Prettier と同じです（[規則 1](./printed-form.ja.md#1-記号の横の空�
 規則 1 は、装飾の前の隙間の印を挙げていないので、
 同じ種類の隙間がほかの図種にあれば、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-ラベルの位置のずれの `[` の前の隙間には、それがあります。
+それがある隙間は 3 つあります。
 [xychart](./xychart.ja.md#角括弧とコンマ) は、
 キーワードやタイトルの後の `[` の前に、
 書かれたとおりに接していても空白 1 つを置き、
 wardley もラベルの位置のずれの `[` の前に空白 1 つを置きます。
-括弧の中の戦略、`(inertia)`、括弧なしの `inertia` の前の隙間と、
-装飾どうしの間の隙間には、それがないので、
-リリース済みの版が印字する空白 1 つの形を、隙間が決まるまで保ちます。
+[quadrant](./quadrant.ja.md#スタイル) は、点の `]` と最初のスタイルの間に、
+接していても（`]radius:9`）空白 1 つを置き、wardley も `]` と、
+その後ろの `label` や括弧なしの `inertia` の間に空白 1 つを置きます。
+[class](./class.ja.md#メンバーの行) は、
+メソッドの `)` と戻り値の型の間に空白 1 つを置き、
+wardley も括弧の中の戦略の `)` と、
+その後ろの括弧なしの `inertia` の間に空白 1 つを置きます。
+`]` や `)` の後にある `(` の前の隙間（括弧の中の戦略と `(inertia)`）には、
+それがありません。
+ほかの図の印字器の文書は、そのような隙間を挙げておらず、
+ほかの図の印字済みのフィクスチャにも `] (` と `) (` はありません。
+[ER](./er.ja.md#属性の空白) が属性のキーとコメントの間に置く空白 1 つは、
+`(` ではなく引用符つきの文字列の前にあります。
+そのため、`(` の前の隙間は、リリース済みの版が印字する空白 1 つの形を、
+隙間が決まるまで保ちます。
 詳しくは
 [どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
 を参照してください。
@@ -343,6 +376,9 @@ inertia の両形は Db が同じでも、変更すると書かれたノード�
 
 [fixture: wardley/decorations/decorations-all]
 [fixture: wardley/decorations/decorations-spaced]
+[fixture: wardley/decorations/decorations-touching]
+[fixture: quadrant/styles/styles-after-one-space]
+[fixture: class/member-lines/method-padding]
 
 [fixture: wardley/decorations/decorations-bare]
 
@@ -653,6 +689,9 @@ wardley-beta
 互いに接して行末かコメントに接するディレクティブがあるとき、
 その前のテキストとの間にあるノーブレークスペースや U+3000 は、
 同じ連なりの残りとともに空白 1 つで印字します。
+ディレクティブが行末に接するときは、U+2028 や U+2029 も同じです。
+ディレクティブの後に空白と別のディレクティブかコメントが続くときは、
+その前のノーブレークスペースや U+3000 は残ります。
 最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
 U+2029 のどれかがあるときは、その前に空白やタブがあっても、
 行を書かれたままにします。
@@ -667,6 +706,7 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [fixture: title/title-directives-in-the-text-kept]
 [fixture: title/title-directives-end-before-comment-line-and-empty-line]
 [fixture: title/title-directives-then-comment]
+[fixture: title/title-directives-end-at-the-end-of-the-text]
 [fixture: wardley/title/title-trim]
 [test: a no-break space after the last directive of a title of a Wardley map]
 [test: U+3000 after the last directive of a title of a Wardley map]
@@ -679,6 +719,10 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: a space, a no-break space, and a space before the directive that ends a title of a Wardley map]
 [test: a no-break space before two directives that touch and end a title of a Wardley map]
 [test: a no-break space before a directive that a comment touches in a title of a Wardley map]
+[test: U+2028 before the directive that ends a title of a Wardley map]
+[test: U+2029 before the directive that ends a title of a Wardley map]
+[test: a no-break space before a directive that a space and another directive follow in a title of a Wardley map]
+[test: U+3000 before a directive that a space and a comment follow in a title of a Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -712,9 +756,12 @@ accTitle: Value と accDescr: Value は共有の行配置を使います。
 互いに接して行末かコメントに接するディレクティブがあるとき、
 その前のテキストとの間にあるノーブレークスペースや U+3000 は、
 同じ連なりの残りとともに空白 1 つで印字します。
+ディレクティブが行末に接するときは、U+2028 や U+2029 も同じです。
+ディレクティブの後に空白と別のディレクティブかコメントが続くときは、
+その前のノーブレークスペースや U+3000 は残ります。
 最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
 U+2029 のどれかがあるときは、その前に空白やタブがあっても、
-行を書かれたままにします。
+コロンの前の隙間を除いて、行を書かれたままにします。
 中にディレクティブのある値と、ディレクティブだけの値も、書かれたままです。
 最後のディレクティブの後にコメントが続くときは、
 それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
@@ -726,14 +773,19 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [fixture: accessibility/acc-directives-end-tabs-dropped]
 [fixture: accessibility/acc-directives-in-the-text-kept]
 [fixture: accessibility/acc-directives-then-comment]
+[fixture: accessibility/acctitle-directives-end-at-the-end-of-the-text]
+[fixture: accessibility/accdescr-directives-end-at-the-end-of-the-text]
+[fixture: accessibility/acc-directives-end-before-comment-line-and-empty-line]
 [test: a no-break space after the last directive of an accTitle line of a Wardley map]
 [test: a no-break space before the directive that ends an accTitle line of a Wardley map]
 [test: a no-break space after the last directive of an accDescr line of a Wardley map]
 [test: a no-break space before the directive that ends an accDescr line of a Wardley map]
+[test: U+2028 before the directive that ends an accTitle line of a Wardley map]
+[test: a no-break space before a directive that a space and a comment follow in an accDescr line of a Wardley map]
+[test: the gap before the colon of an accTitle line with a no-break space after its last directive of a Wardley map]
 [fixture: wardley/accessibility/access-lines]
 [fixture: wardley/accessibility/access-empty]
 [fixture: wardley/accessibility/access-colon-touching]
-[fixture: wardley/accessibility/description-directive-line]
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
@@ -772,6 +824,7 @@ Db で LF 後の字下げが取り除かれるためです。
 [fixture: wardley/accessibility/description-directive-only]
 [fixture: wardley/accessibility/block-trailing-whitespace]
 [fixture: wardley/accessibility/block-trailing-whitespace-closer-on-the-text-line]
+[fixture: wardley/accessibility/description-directive-line]
 
 入力（エスケープ表記）:
 `"wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t"`
