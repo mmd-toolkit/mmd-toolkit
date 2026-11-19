@@ -1389,37 +1389,38 @@ written, and so does a text of spaces and tabs only. A no-break space, U+3000,
 or another whitespace character that is no space or tab at the start or at the
 end of the text stays too, since the Db of 12.3.0 holds it: with one at the ends
 of a title, an axis format, an `accDescription`, or the second description of a
-state alias, every version that counts draws other text or geometry, but for a
-form feed at the start or at the end of a title of a Gantt chart, a user
-journey, a timeline, a sequence diagram, or a C4 diagram, of the axis format of
-a Gantt chart, and of the `accDescription` of a C4 diagram, which are drawn the
-same with and without it and stay as written all the same (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-With one at the end of the date format of a Gantt chart or of the last event of
-a line of a timeline, the drawing is the same in every version that counts and
-only the Db of 12.3.0 differs, and it stays as written there too. The title of a
-pie chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph,
-a cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, a
-railroad diagram, and a quadrant chart loses the whitespace of the specification
-at its end, and at its start in every one of them but a quadrant chart, which
-keeps a gap that holds a U+2028 or a U+2029 as written, so a U+2028 and a U+2029
-at its start stay where text follows them (`\u2028T`, `\u2029T`, and
-`\u2028%%{x}%% T` in the first table below; see
-[Line separators](./quadrant.md#line-separators)), while a title of directives
-only loses them there as the other types do (`\u2028%%{x}%%`). The whitespace is
-U+0009 to U+000D, U+0020, U+00A0, U+1680, U+2000 to U+200A, U+2028, U+2029,
-U+202F, U+205F, U+3000, and U+FEFF, the characters that `String.prototype.trim`
-removes (see [Notation](../../spec/docs/common.md#notation)). The title loses
-them because the Db of 12.3.0 is the same with and without them and the drawing
-is the same in every version that counts. This holds for a title in which no
-directive and no comment stands; beside one, a whitespace character that is no
-space or tab is printed as the tables below say. The last event of a line of a
-timeline and the second description of a state with an alias lose the spaces and
-tabs at their end in the same way, not the whitespace at their start, which
-aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
-`state "d" as A : x   ` is printed `state "d" as A : x`. A period of a timeline,
-and an event that another colon follows, gain one space at their end where they
-end without whitespace, which stands before that colon: `2004: a: b` is printed
+state alias, every version that counts draws other text or geometry (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
+but for a form feed at the start or at the end of a title of a Gantt chart, a
+user journey, a timeline, a sequence diagram, or a C4 diagram, of the axis
+format of a Gantt chart, and of the `accDescription` of a C4 diagram, which are
+drawn the same with and without it and stay as written all the same. With one at
+the end of the date format of a Gantt chart or of the last event of a line of a
+timeline, the drawing is the same in every version that counts and only the Db
+of 12.3.0 differs, and it stays as written there too. The title of a pie chart,
+a radar chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin
+diagram, a treemap, a Wardley map, a treeView, an info diagram, a railroad
+diagram, and a quadrant chart loses the whitespace of the specification at its
+end, and at its start in every one of them but a quadrant chart, which keeps a
+U+2028 or a U+2029 at its start where text follows it, and drops any other
+whitespace character there, since it keeps a gap that holds a U+2028 or a U+2029
+as written (`\u2028T`, `\u2029T`, and `\u2028%%{x}%% T` in the first table
+below; see [Line separators](./quadrant.md#line-separators)); a title of
+directives only loses them there as the other types do (`\u2028%%{x}%%`). The
+whitespace is U+0009 to U+000D, U+0020, U+00A0, U+1680, U+2000 to U+200A,
+U+2028, U+2029, U+202F, U+205F, U+3000, and U+FEFF, the characters that
+`String.prototype.trim` removes (see
+[Notation](../../spec/docs/common.md#notation)). The title loses them because
+the Db of 12.3.0 is the same with and without them and the drawing is the same
+in every version that counts. This holds for a title in which no directive and
+no comment stands; beside one, a whitespace character that is no space or tab is
+printed as the tables below say. The last event of a line of a timeline and the
+second description of a state with an alias lose the spaces and tabs at their
+end in the same way, not the whitespace at their start, which aligns the colons
+of a timeline: `2020 : e   ` is printed `2020 : e`, and `state "d" as A : x   `
+is printed `state "d" as A : x`. A period of a timeline, and an event that
+another colon follows, gain one space at their end where they end without
+whitespace, which stands before that colon: `2004: a: b` is printed
 `2004 : a : b`, except after the word `title` or `section` as the period, where
 a space would make the line a title or a section. The description of a task of a
 user journey loses the spaces and tabs before its first colon
@@ -1470,11 +1471,14 @@ a title that holds a directive or a comment is not printed alike by every
 diagram type. The table gives what each group of diagram types prints after
 `title ` for the written titles of its rows (`\u00a0` is a no-break space,
 `\u3000` is U+3000, `\u2003` is U+2003, `\u2028` is U+2028, `\u2029` is U+2029,
-`\t` is a tab, and `as written` stands for the written title). The Langium types
-are a pie chart, a radar chart, a packet diagram, an architecture diagram, a
-gitGraph, a cynefin diagram, a treemap, a Wardley map, a treeView, an info
-diagram, and a railroad diagram; every type of a group prints the form of its
-column.
+`\u000b` is a vertical tab, `\u000c` is a form feed, `\ufeff` is U+FEFF, `\t` is
+a tab, and `as written` stands for the written title). The Langium types are a
+pie chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph,
+a cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, and a
+railroad diagram; every type of a group prints the form of its column. A pie
+chart is left out of the rows marked `but a pie chart`: it prints one space
+there in this version, as the other Langium types do, and the form that its
+title keeps is stated with the pie rules.
 
 | Written after `title `         | Langium types            | quadrant               | Gantt, journey, timeline, sequence | Venn, C4            |
 | ------------------------------ | ------------------------ | ---------------------- | ---------------------------------- | ------------------- |
@@ -1494,7 +1498,7 @@ column.
 | `T\u3000%%{x}%%`               | `T %%{x}%%`              | `T %%{x}%%`            | as written                         | as written          |
 | `T\u2003%%{x}%%`               | `T %%{x}%%`              | `T %%{x}%%`            | as written                         | as written          |
 | `T\t%%{x}%%\t`                 | `T %%{x}%%`              | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`         |
-| `T\u00a0%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
+| `T\u00a0%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
 | `T  %% c  `                    | `T %% c  `               | `T %% c`               | `T %% c`                           | `T %% c`            |
 | `T %%{x}%% %% c  `             | as written               | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | as written          |
 | `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`          | as written             | as written                         | as written          |
@@ -1523,11 +1527,11 @@ column.
 | `\u00a0%% c`                   | `%% c`                   | `%% c`                 | as written                         | as written          |
 | ` %%{x}%%%% c`                 | `%%{x}%%%% c`            | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written          |
 | `T  %% c  %%{x}%%`             | `T %% c  %%{x}%%`        | `T %% c %%{x}%%`       | `T %% c %%{x}%%`                   | `T %% c %%{x}%%`    |
-| `T\u3000%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
-| `T\u2003%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
-| `T\u000b%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
-| `T\u000c%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
-| `T\ufeff%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
+| `T\u3000%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
+| `T\u2003%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
+| `T\u000b%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
+| `T\u000c%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
+| `T\ufeff%% c`                  | `T %% c` but a pie chart | as written             | as written                         | as written          |
 | `T\u2028`                      | `T`                      | `T`                    | as written                         | as written          |
 | `T  \u2028`                    | `T`                      | `T`                    | as written                         | as written          |
 | `T\u2029`                      | `T`                      | `T`                    | as written                         | as written          |
@@ -1547,6 +1551,8 @@ column.
 | `\u2029%%{x}%% T`              | as written               | as written             | as written                         | as written          |
 | `\u000cT`                      | `T`                      | `T`                    | as written                         | as written          |
 | `T\u000c`                      | `T`                      | `T`                    | as written                         | as written          |
+| `\u00a0%%{x}%%%% c`            | `%%{x}%%%% c`            | `%%{x}%%%% c`          | as written                         | as written          |
+| `\u00a0%%{x}%%  %% c  `        | as written               | `%%{x}%%%% c`          | `\u00a0%%{x}%%  %% c`              | as written          |
 
 A title of directives only (`%%{x}%%  `, a directive and a tab, two directives
 and spaces) stays as written in every type but a quadrant chart, which leaves
@@ -1576,7 +1582,14 @@ two directives) is printed `%%{x}%%%% c` in a quadrant chart, a Gantt chart, a
 user journey, a timeline, and a sequence diagram, and stays as written in the
 other types: the two forms are drawn the same in every version that counts. A
 space before the directive of such a title (` %%{x}%%%% c`) is left out by every
-type but a Venn diagram and a C4 diagram. A tab between the directive and the
+type but a Venn diagram and a C4 diagram. A whitespace character that is no
+space or tab and no U+2028 or U+2029 before the directive of such a title is
+left out by the Langium types and a quadrant chart and stays in the other types
+(`\u00a0%%{x}%%%% c`). With spaces around the comment (`\u00a0%%{x}%%  %% c  `),
+the Langium types, a Venn diagram, and a C4 diagram keep the title as written, a
+quadrant chart prints `%%{x}%%%% c`, and a Gantt chart, a user journey, a
+timeline, and a sequence diagram keep the character and the spaces before the
+comment and leave out the spaces after it. A tab between the directive and the
 comment is left out by a quadrant chart, a Gantt chart, a user journey, a
 timeline, and a sequence diagram, and stays in the other types, with the same
 drawing. A no-break space, U+3000, or U+2003 between them is left out by a
@@ -1745,15 +1758,18 @@ only] [test: a vertical tab before the directive of a title of directives only]
 U+FEFF before the directive of a title of directives only] [test: U+2028 before
 a directive that starts a title and text after it] [test: U+2029 before a
 directive that starts a title and text after it] [test: a form feed at the start
-of a title] [test: a form feed at the end of a title] [test: runs and spaces
-around a directive that ends an accessibility line] [test: a comment and spaces
-after a directive that ends an accessibility line] [test: a no-break space after
-the last directive of an accessibility line] [test: U+3000 after the last
-directive of an accessibility line] [test: U+2003 after the last directive of an
-accessibility line] [test: a no-break space after a directive that starts an
-accessibility line and before another directive] [test: a no-break space after a
-directive that starts an accessibility line and after the last directive] [test:
-a no-break space after a directive that starts an accessibility line and text
+of a title] [test: a form feed at the end of a title] [test: a no-break space
+before the directive of a title of a directive and a comment only] [test: a
+no-break space before the directive of a title of a directive and a comment
+only, with spaces around the comment] [test: runs and spaces around a directive
+that ends an accessibility line] [test: a comment and spaces after a directive
+that ends an accessibility line] [test: a no-break space after the last
+directive of an accessibility line] [test: U+3000 after the last directive of an
+accessibility line] [test: U+2003 after the last directive of an accessibility
+line] [test: a no-break space after a directive that starts an accessibility
+line and before another directive] [test: a no-break space after a directive
+that starts an accessibility line and after the last directive] [test: a
+no-break space after a directive that starts an accessibility line and text
 after the last directive] [test: spaces after a directive that starts an
 accessibility line] [test: text after a directive and spaces at the end of an
 accessibility line] [test: a no-break space after a directive and spaces at the
@@ -1802,8 +1818,14 @@ a whitespace character that is no space or tab at the start and at the end of an
 accessibility line, in each group] [test: a whitespace character that is no
 space or tab at both ends of a title, in the Langium types and a quadrant chart]
 [test: a whitespace character that is no space or tab before a comment after the
-text of a title, in each group] [test: an accessibility line of directives only
-stays as written in each type of the Langium grammar] [fixture:
+text of a title, in each group] [test: a whitespace character that is no space
+or tab before the directive of a title of a directive and a comment only, in
+each group] [test: a whitespace character that is no space or tab before the
+directive of a title of a directive and a comment only, with spaces around the
+comment, in each group] [test: a pie chart prints a whitespace character that is
+no space or tab before a comment after the text of a title as one space in this
+version] [test: an accessibility line of directives only stays as written in
+each type of the Langium grammar] [fixture:
 pie/accessibility-lines/acc-title-percent-gap-kept] [fixture:
 gitgraph/title-and-common-values/acc-title-percent-gap-kept] [test: U+2003
 before a directive that is not closed in a title, at the end of the text] [test:

@@ -875,6 +875,22 @@ const titleDirectiveCases: readonly TitleDirectiveCase[] = [
       quadrant: "T",
     },
   },
+  {
+    name: "a no-break space before the directive of a title of a directive and a comment only",
+    written: "\u00a0%%{x}%%%% c",
+    printed: {
+      langium: "%%{x}%%%% c",
+      quadrant: "%%{x}%%%% c",
+    },
+  },
+  {
+    name: "a no-break space before the directive of a title of a directive and a comment only, with spaces around the comment",
+    written: "\u00a0%%{x}%%  %% c  ",
+    printed: {
+      quadrant: "%%{x}%%%% c",
+      gantt: "\u00a0%%{x}%%  %% c",
+    },
+  },
 ]
 
 const titleOpenDirectiveExamples: readonly (readonly [
@@ -2908,5 +2924,53 @@ describe("a whitespace character that is no space or tab at the start, at the en
         }
       }
     }
+  })
+})
+
+describe("a whitespace character that is no space or tab before the first directive of a title of a directive and a comment only", () => {
+  it("a whitespace character that is no space or tab before the directive of a title of a directive and a comment only, in each group", async () => {
+    for (const { group, input, output } of titleTypesOfEachGroup) {
+      for (const character of whitespaceThatIsNoSpaceOrTab) {
+        const written = `${character}%%{x}%%%% c`
+        const droppedHere = group === "langium" || group === "quadrant"
+        await expectKept(
+          input.replace("{title}", written),
+          output.replace("{title}", droppedHere ? "%%{x}%%%% c" : written),
+        )
+      }
+    }
+  })
+
+  it("a whitespace character that is no space or tab before the directive of a title of a directive and a comment only, with spaces around the comment, in each group", async () => {
+    for (const { group, input, output } of titleTypesOfEachGroup) {
+      for (const character of whitespaceThatIsNoSpaceOrTab) {
+        const written = `${character}%%{x}%%  %% c  `
+        let printed = written
+        if (group === "quadrant") printed = "%%{x}%%%% c"
+        if (group === "gantt") printed = `${character}%%{x}%%  %% c`
+        await expectKept(
+          input.replace("{title}", written),
+          output.replace("{title}", printed),
+        )
+      }
+    }
+  })
+
+  it("a pie chart prints a whitespace character that is no space or tab before a comment after the text of a title as one space in this version", async () => {
+    const { input, output } = titleTypeNamed("a pie chart")
+    for (const row of titleDirectiveCases.filter(({ name }) =>
+      [
+        "a no-break space before a comment after the text of a title",
+        "U+3000 before a comment after the text of a title",
+        "U+2003 before a comment after the text of a title",
+        "a vertical tab before a comment after the text of a title",
+        "a form feed before a comment after the text of a title",
+        "U+FEFF before a comment after the text of a title",
+      ].includes(name),
+    ))
+      await expectKept(
+        input.replace("{title}", row.written),
+        output.replace("{title}", printedTitle(row, "langium")),
+      )
   })
 })

@@ -1457,21 +1457,22 @@ C4 図の説明 `accDescription` も同じです。
 title、軸の書式、`accDescription`、
 別名を持つ state の 2 つ目の説明の両端にあると、
 対象にするどの版も別のテキストか形状を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 ただし、Gantt、user journey、timeline、sequence、C4 の title と、
 Gantt の軸の書式と、
 C4 の `accDescription` の先頭か末尾にあるフォームフィードは、
 あってもなくても同じに描かれ、それでも書かれたままです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 gantt の日付の書式の末尾と、timeline の行の最後の event の末尾にあると、
 12.3.0 の Db だけが違い、描画は対象にするどの版でも同じです。
 そこでも書かれたままです。
 pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、
 treeView、info、railroad、quadrant の図の title は、末尾の空白文字を除き、
 先頭の空白文字も、quadrant 図を除いて除きます。
-quadrant 図は、U+2028 か U+2029 を含む間を書かれたままにするので、
-後ろにテキストが続く先頭の U+2028 と U+2029 を残します（下の最初の表の
+quadrant 図は、後ろにテキストが続く先頭の U+2028 と U+2029 を残し、
+先頭のそのほかの空白文字は除きます。
+U+2028 か U+2029 を含む間を書かれたままにするからです（下の最初の表の
 `\u2028T`、`\u2029T`、`\u2028%%{x}%% T`。
 [行区切り文字](./quadrant.ja.md#行区切り文字)を参照）。
 ディレクティブだけのタイトルは、
@@ -1547,10 +1548,14 @@ user journey
 表は、各行の書かれたタイトルごとに、
 図の種類の群が `title ` の後に印字する形を示します（`\u00a0` は改行しない空白、
 `\u3000` は U+3000、`\u2003` は U+2003、`\u2028` は U+2028、`\u2029` は U+2029、
+`\u000b` は垂直タブ、`\u000c` はフォームフィード、`\ufeff` は U+FEFF、
 `\t` はタブ、「書かれたまま」は書かれたタイトルをそのまま印字することです）。
 Langium の型は、pie、radar、packet、architecture、gitGraph、cynefin、treemap、
 Wardley、treeView、info、railroad です。
 群のどの型も、その列の形を印字します。
+「pie 図を除く」と付けた行では、pie 図は表の対象外です。
+この版の pie 図は、そこでほかの Langium の型と同じに空白 1 つを印字します。
+pie 図のタイトルが残す形は、pie の規則に書きます。
 
 | 書かれた形（`title ` の後）    | Langium の型             | quadrant               | Gantt、journey、timeline、sequence | Venn、C4            |
 | ------------------------------ | ------------------------ | ---------------------- | ---------------------------------- | ------------------- |
@@ -1570,7 +1575,7 @@ Wardley、treeView、info、railroad です。
 | `T\u3000%%{x}%%`               | `T %%{x}%%`              | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま        |
 | `T\u2003%%{x}%%`               | `T %%{x}%%`              | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま        |
 | `T\t%%{x}%%\t`                 | `T %%{x}%%`              | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`         |
-| `T\u00a0%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\u00a0%% c`                  | `T %% c`（pie 図を除く） | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
 | `T  %% c  `                    | `T %% c  `               | `T %% c`               | `T %% c`                           | `T %% c`            |
 | `T %%{x}%% %% c  `             | 書かれたまま             | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | 書かれたまま        |
 | `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`          | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
@@ -1599,11 +1604,11 @@ Wardley、treeView、info、railroad です。
 | `\u00a0%% c`                   | `%% c`                   | `%% c`                 | 書かれたまま                       | 書かれたまま        |
 | ` %%{x}%%%% c`                 | `%%{x}%%%% c`            | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | 書かれたまま        |
 | `T  %% c  %%{x}%%`             | `T %% c  %%{x}%%`        | `T %% c %%{x}%%`       | `T %% c %%{x}%%`                   | `T %% c %%{x}%%`    |
-| `T\u3000%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
-| `T\u2003%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
-| `T\u000b%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
-| `T\u000c%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
-| `T\ufeff%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\u3000%% c`                  | `T %% c`（pie 図を除く） | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\u2003%% c`                  | `T %% c`（pie 図を除く） | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\u000b%% c`                  | `T %% c`（pie 図を除く） | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\u000c%% c`                  | `T %% c`（pie 図を除く） | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\ufeff%% c`                  | `T %% c`（pie 図を除く） | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
 | `T\u2028`                      | `T`                      | `T`                    | 書かれたまま                       | 書かれたまま        |
 | `T  \u2028`                    | `T`                      | `T`                    | 書かれたまま                       | 書かれたまま        |
 | `T\u2029`                      | `T`                      | `T`                    | 書かれたまま                       | 書かれたまま        |
@@ -1623,6 +1628,8 @@ Wardley、treeView、info、railroad です。
 | `\u2029%%{x}%% T`              | 書かれたまま             | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
 | `\u000cT`                      | `T`                      | `T`                    | 書かれたまま                       | 書かれたまま        |
 | `T\u000c`                      | `T`                      | `T`                    | 書かれたまま                       | 書かれたまま        |
+| `\u00a0%%{x}%%%% c`            | `%%{x}%%%% c`            | `%%{x}%%%% c`          | 書かれたまま                       | 書かれたまま        |
+| `\u00a0%%{x}%%  %% c  `        | 書かれたまま             | `%%{x}%%%% c`          | `\u00a0%%{x}%%  %% c`              | 書かれたまま        |
 
 ディレクティブだけのタイトル（`%%{x}%%  `、ディレクティブとタブ、
 ディレクティブ 2 つと空白）は、quadrant 以外のどの型でも書かれたままです。
@@ -1655,6 +1662,12 @@ sequence では `%%{x}%%%% c` と印字し、ほかの型では書かれたま�
 この 2 つの形は、対象にするどの版でも同じに描かれます。
 そのタイトルのディレクティブの前の空白（` %%{x}%%%% c`）は、
 Venn と C4 以外のどの型でも除きます。
+空白でもタブでもなく、U+2028 でも U+2029 でもない空白文字は、
+Langium の型と quadrant では除き、ほかの型では残します（`\u00a0%%{x}%%%% c`）。
+コメントの前後に空白があるとき（`\u00a0%%{x}%%  %% c  `）は、Langium の型、
+Venn、C4 は書かれたままにし、quadrant は `%%{x}%%%% c` と印字し、Gantt、
+user journey、timeline、sequence は、文字とコメントの前の空白を残して、
+コメントの後の空白を除きます。
 ディレクティブとコメントの間のタブは、quadrant、Gantt、user journey、timeline、
 sequence では除き、ほかの型では残し、描画は同じです。
 その間の改行しない空白、U+3000、U+2003 は、quadrant では除き、
@@ -1840,6 +1853,8 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [test: U+2029 before a directive that starts a title and text after it]
 [test: a form feed at the start of a title]
 [test: a form feed at the end of a title]
+[test: a no-break space before the directive of a title of a directive and a comment only]
+[test: a no-break space before the directive of a title of a directive and a comment only, with spaces around the comment]
 [test: runs and spaces around a directive that ends an accessibility line]
 [test: a comment and spaces after a directive that ends an accessibility line]
 [test: a no-break space after the last directive of an accessibility line]
@@ -1894,6 +1909,9 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [test: a whitespace character that is no space or tab at the start and at the end of an accessibility line, in each group]
 [test: a whitespace character that is no space or tab at both ends of a title, in the Langium types and a quadrant chart]
 [test: a whitespace character that is no space or tab before a comment after the text of a title, in each group]
+[test: a whitespace character that is no space or tab before the directive of a title of a directive and a comment only, in each group]
+[test: a whitespace character that is no space or tab before the directive of a title of a directive and a comment only, with spaces around the comment, in each group]
+[test: a pie chart prints a whitespace character that is no space or tab before a comment after the text of a title as one space in this version]
 [test: an accessibility line of directives only stays as written in each type of the Langium grammar]
 [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]
 [fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept]
