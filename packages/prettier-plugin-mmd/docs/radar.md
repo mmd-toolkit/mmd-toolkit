@@ -27,9 +27,11 @@ Spaces or tabs before a closed directive that stands before the colon, before
 the colon, or on both sides are printed away: `radar-beta %%{x}%%:`,
 `radar-beta%%{x}%% :`, and `radar-beta %%{x}%% :` are printed
 `radar-beta%%{x}%%:`, as are the same headers with a tab, and
-`radar-beta %%{x}%% %%{y}%% :` is printed `radar-beta%%{x}%%%%{y}%%:`. With no
-colon the space stays: `radar-beta %%{x}%%` is not changed. The colon stays
-before an unclosed directive too: `radar-beta:%%{x y`, a line break, and
+`radar-beta %%{x}%% %%{y}%% :` is printed `radar-beta%%{x}%%%%{y}%%:`. A space
+or a tab between two directives goes the same way: `radar-beta%%{x}%% %%{y}%%:`
+is printed `radar-beta%%{x}%%%%{y}%%:`. With no colon the spaces stay:
+`radar-beta %%{x}%%` and `radar-beta%%{x}%% %%{y}%%` are not changed. The colon
+stays before an unclosed directive too: `radar-beta:%%{x y`, a line break, and
 `axis North` stay as written, since mermaid.js takes the directive out with the
 line break after it and would read the header and `axis` as one word, and every
 version of mermaid.js that counts rejects that text (see
@@ -46,7 +48,9 @@ radar/header/colon-spaced-before-directive-dropped] [fixture:
 radar/header/colon-spaced-before-colon-dropped] [fixture:
 radar/header/colon-tabs-around-directive-dropped] [fixture:
 radar/header/colon-two-spaced-directives-dropped] [fixture:
-radar/header/directive-no-colon-space-kept]
+radar/header/directive-no-colon-space-kept] [fixture:
+radar/header/colon-between-directives-dropped] [fixture:
+radar/header/directives-no-colon-space-between-kept]
 
 [fixture: radar/header/join-separated-empty-alternative]
 

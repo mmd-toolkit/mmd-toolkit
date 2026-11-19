@@ -1672,35 +1672,10 @@ These stay as written:
   directive that stands only at the start or at the end of the text is no such
   mark, and the text is printed as it is without it (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same));
-  nor is a comment that ends the text: the runs before it are printed as one
-  space in the title of a pie chart, a radar chart, a packet diagram, an
-  architecture diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map,
-  a treeView, an info diagram, a railroad diagram, a quadrant chart, a Gantt
-  chart, a user journey, a timeline, a sequence diagram, a Venn diagram, and a
-  C4 diagram, and in an ishikawa literal (`title A  b  %% c` is printed
-  `title A b %% c`, and `A  b  %% c` is printed `A b %% c`), and stay as written
-  in a mindmap node, a kanban card, and a treeView node.
+  nor is a comment that ends the text, for which the table after this list gives
+  what is printed.
 
-  [fixture: pie/directives-and-semicolons/global-value] [test: runs before a
-  comment that ends the text of a pie chart] [test: runs before a comment that
-  ends the text of a radar chart] [test: runs before a comment that ends the
-  text of a packet diagram] [test: runs before a comment that ends the text of
-  an architecture diagram] [test: runs before a comment that ends the text of a
-  gitGraph] [test: runs before a comment that ends the text of a cynefin
-  diagram] [test: runs before a comment that ends the text of a treemap] [test:
-  runs before a comment that ends the text of a Wardley map] [test: runs before
-  a comment that ends the text of a treeView] [test: runs before a comment that
-  ends the text of an info diagram] [test: runs before a comment that ends the
-  text of a railroad diagram] [test: runs before a comment that ends the text of
-  a quadrant chart] [test: runs before a comment that ends the text of a Gantt
-  chart] [test: runs before a comment that ends the text of a user journey]
-  [test: runs before a comment that ends the text of a timeline] [test: runs
-  before a comment that ends the text of a sequence diagram] [test: runs before
-  a comment that ends the text of a Venn diagram] [test: runs before a comment
-  that ends the text of a C4 diagram] [test: runs before a comment that ends the
-  text of an ishikawa literal] [test: runs before a comment that ends the text
-  of a mindmap node] [test: runs before a comment that ends the text of a kanban
-  card] [test: runs before a comment that ends the text of a treeView node]
+  [fixture: pie/directives-and-semicolons/global-value]
 
 - A text with a `<`, which may start an HTML tag that keeps the whitespace
   (`<pre>`), and every text of a diagram that holds `white-space` anywhere, also
@@ -1805,6 +1780,89 @@ These stay as written:
 
   [fixture: pie/labels/label-quotes] [fixture:
   requirement/names/inner-whitespace-kept] [fixture: state/aliases/id-kept]
+
+A comment that ends the text of one of these texts leaves the runs inside the
+text and before the comment as the table gives (`A  b  %% c` is the text `A  b`
+and the comment `%% c`):
+
+| Text                                                                | Diagram types                                                                                                                                                                                                                                                                                                                                                                         | Written                                                                 | Printed                                                           |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| a `title`                                                           | pie chart, radar chart, packet diagram, architecture diagram, gitGraph, cynefin diagram, treemap, Wardley map, treeView, info diagram, railroad diagram, quadrant chart, Gantt chart, user journey, timeline, sequence diagram, Venn diagram, C4 diagram                                                                                                                              | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
+| an `accDescr:` line                                                 | flowchart, class diagram, state diagram, ER diagram, Gantt chart, user journey, timeline, sequence diagram, requirement diagram, pie chart, gitGraph, radar chart, packet diagram, architecture diagram, cynefin diagram, treemap, Wardley map, treeView, info diagram, railroad diagram, quadrant chart, XY chart, C4 diagram, agentflow diagram, ishikawa diagram, use case diagram | `accDescr: A  b  %% c`                                                  | `accDescr: A b %% c`                                              |
+| a message                                                           | sequence                                                                                                                                                                                                                                                                                                                                                                              | `A->>B: A  b  %% c`                                                     | `A ->> B: A b %% c`                                               |
+| a note                                                              | sequence                                                                                                                                                                                                                                                                                                                                                                              | `Note over A: A  b  %% c`                                               | `Note over A: A b %% c`                                           |
+| the label of a `loop`, `alt`, `else`, `opt`, `par`, `and`, or `box` | sequence                                                                                                                                                                                                                                                                                                                                                                              | `loop A  b  %% c`                                                       | `loop A b %% c`                                                   |
+| the name after `as`                                                 | sequence                                                                                                                                                                                                                                                                                                                                                                              | `participant A as A  b  %% c`                                           | `participant A as A b %% c`                                       |
+| the `text` field                                                    | requirement                                                                                                                                                                                                                                                                                                                                                                           | `text: A  b  %% c`                                                      | `text: A b %% c`                                                  |
+| a quadrant label, an axis label                                     | quadrant                                                                                                                                                                                                                                                                                                                                                                              | `quadrant-1 A  b  %% c`, `x-axis A  b  %% c`, `x-axis L --> A  b  %% c` | `quadrant-1 A b %% c`, `x-axis A b %% c`, `x-axis L --> A b %% c` |
+| a member                                                            | class                                                                                                                                                                                                                                                                                                                                                                                 | `+x  y  %% c`                                                           | `+x y %% c`                                                       |
+| the title of a subgraph                                             | flowchart                                                                                                                                                                                                                                                                                                                                                                             | `subgraph A  b  %% c`                                                   | `subgraph A b %% c`                                               |
+| a literal                                                           | ishikawa                                                                                                                                                                                                                                                                                                                                                                              | `A  b  %% c`                                                            | `A b %% c`                                                        |
+| a node                                                              | mindmap, treeView                                                                                                                                                                                                                                                                                                                                                                     | `A  b  %% c`                                                            | as written                                                        |
+| a card                                                              | kanban                                                                                                                                                                                                                                                                                                                                                                                | `A  b  %% c`                                                            | as written                                                        |
+| the label of a relation                                             | class                                                                                                                                                                                                                                                                                                                                                                                 | `A --> B : A  b  %% c`                                                  | as written                                                        |
+
+[test: runs before a comment that ends the text of a pie chart] [test: runs
+before a comment that ends the text of a radar chart] [test: runs before a
+comment that ends the text of a packet diagram] [test: runs before a comment
+that ends the text of an architecture diagram] [test: runs before a comment that
+ends the text of a gitGraph] [test: runs before a comment that ends the text of
+a cynefin diagram] [test: runs before a comment that ends the text of a treemap]
+[test: runs before a comment that ends the text of a Wardley map] [test: runs
+before a comment that ends the text of a treeView] [test: runs before a comment
+that ends the text of an info diagram] [test: runs before a comment that ends
+the text of a railroad diagram] [test: runs before a comment that ends the text
+of a quadrant chart] [test: runs before a comment that ends the text of a Gantt
+chart] [test: runs before a comment that ends the text of a user journey] [test:
+runs before a comment that ends the text of a timeline] [test: runs before a
+comment that ends the text of a sequence diagram] [test: runs before a comment
+that ends the text of a Venn diagram] [test: runs before a comment that ends the
+text of a C4 diagram] [test: runs before a comment that ends the text of an
+ishikawa literal] [test: runs before a comment that ends the text of a mindmap
+node] [test: runs before a comment that ends the text of a kanban card] [test:
+runs before a comment that ends the text of a treeView node] [test: runs before
+a comment that ends the accDescr line of a flowchart] [test: runs before a
+comment that ends the accDescr line of a class diagram] [test: runs before a
+comment that ends the accDescr line of a state diagram] [test: runs before a
+comment that ends the accDescr line of an ER diagram] [test: runs before a
+comment that ends the accDescr line of a Gantt chart] [test: runs before a
+comment that ends the accDescr line of a user journey] [test: runs before a
+comment that ends the accDescr line of a timeline] [test: runs before a comment
+that ends the accDescr line of a sequence diagram] [test: runs before a comment
+that ends the accDescr line of a requirement diagram] [test: runs before a
+comment that ends the accDescr line of a pie chart] [test: runs before a comment
+that ends the accDescr line of a gitGraph] [test: runs before a comment that
+ends the accDescr line of a radar chart] [test: runs before a comment that ends
+the accDescr line of a packet diagram] [test: runs before a comment that ends
+the accDescr line of an architecture diagram] [test: runs before a comment that
+ends the accDescr line of a cynefin diagram] [test: runs before a comment that
+ends the accDescr line of a treemap] [test: runs before a comment that ends the
+accDescr line of a Wardley map] [test: runs before a comment that ends the
+accDescr line of a treeView] [test: runs before a comment that ends the accDescr
+line of an info diagram] [test: runs before a comment that ends the accDescr
+line of a railroad diagram] [test: runs before a comment that ends the accDescr
+line of a quadrant chart] [test: runs before a comment that ends the accDescr
+line of an XY chart] [test: runs before a comment that ends the accDescr line of
+a C4 diagram] [test: runs before a comment that ends the accDescr line of an
+agentflow diagram] [test: runs before a comment that ends the accDescr line of
+an ishikawa diagram] [test: runs before a comment that ends the accDescr line of
+a use case diagram] [test: runs before a comment that ends a message of a
+sequence diagram] [test: runs before a comment that ends a note of a sequence
+diagram] [test: runs before a comment that ends the label of a loop of a
+sequence diagram] [test: runs before a comment that ends the label of an alt and
+an else of a sequence diagram] [test: runs before a comment that ends the label
+of an opt of a sequence diagram] [test: runs before a comment that ends the
+label of a par and an and of a sequence diagram] [test: runs before a comment
+that ends the label of a box of a sequence diagram] [test: runs before a comment
+that ends the name after as of a participant of a sequence diagram] [test: runs
+before a comment that ends the text field of a requirement diagram] [test: runs
+before a comment that ends the label of a quadrant of a quadrant chart] [test:
+runs before a comment that ends the label of an axis of a quadrant chart] [test:
+runs before a comment that ends the right label of an axis of a quadrant chart]
+[test: runs before a comment that ends a member of a class diagram] [test: runs
+before a comment that ends a member line of a class diagram] [test: runs before
+a comment that ends the title of a subgraph of a flowchart] [test: runs before a
+comment that ends the label of a relation of a class diagram]
 
 mermaid.js keeps the runs in the Db. The renderers put these texts into `text`
 elements of the SVG, whose whitespace the browser collapses
@@ -2836,14 +2894,17 @@ between the keyword and the colon: `cynefin-beta%%{x}%%:` and
 that directive, before the colon, or on both sides is printed without them:
 `radar-beta %%{x}%%:`, `radar-beta%%{x}%% :`, and `radar-beta %%{x}%% :` are
 printed `radar-beta%%{x}%%:`, and so are the same headers with a tab for the
-space; `radar-beta %%{x}%% %%{y}%% :` is printed `radar-beta%%{x}%%%%{y}%%:`. A
-radar header with no colon keeps the space before the directive:
-`radar-beta %%{x}%%` is not changed. A radar header may have spaces or tabs
-before the colon with no directive, which are removed with it (`radar-beta :` is
-printed `radar-beta`). A cynefin header with whitespace before the directive,
-before the colon, or on both sides (`cynefin-beta %%{x}%%:`,
-`cynefin-beta%%{x}%% :`, and `cynefin-beta :`) is rejected by 11.16.1, 11.17.2,
-12.0.0, and 12.3.0, and `cynefin-beta %%{x}%%` with no colon is not changed.
+space; `radar-beta %%{x}%% %%{y}%% :` is printed `radar-beta%%{x}%%%%{y}%%:`,
+and a space or a tab between two directives goes the same way
+(`radar-beta%%{x}%% %%{y}%%:` is printed `radar-beta%%{x}%%%%{y}%%:`). A radar
+header with no colon keeps the spaces: `radar-beta %%{x}%%` and
+`radar-beta%%{x}%% %%{y}%%` are not changed. A radar header may have spaces or
+tabs before the colon with no directive, which are removed with it
+(`radar-beta :` is printed `radar-beta`). A cynefin header with whitespace
+before the directive, before the colon, or on both sides
+(`cynefin-beta %%{x}%%:`, `cynefin-beta%%{x}%% :`, and `cynefin-beta :`) is
+rejected by 11.16.1, 11.17.2, 12.0.0, and 12.3.0, and `cynefin-beta %%{x}%%`
+with no colon is not changed.
 
 [fixture: cynefin/header/colon-removed] [fixture:
 cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
@@ -2859,6 +2920,8 @@ radar/header/colon-spaced-before-colon-dropped] [fixture:
 radar/header/colon-tabs-around-directive-dropped] [fixture:
 radar/header/colon-two-spaced-directives-dropped] [fixture:
 radar/header/directive-no-colon-space-kept] [fixture:
+radar/header/colon-between-directives-dropped] [fixture:
+radar/header/directives-no-colon-space-between-kept] [fixture:
 cynefin/header/directive-no-colon-space-kept] [test: a space before a directive
 between the header and the colon of a cynefin diagram] [test: a space before the
 colon after a directive of a cynefin diagram] [test: a space before the colon of

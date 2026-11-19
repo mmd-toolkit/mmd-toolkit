@@ -6798,6 +6798,250 @@ describe("the runs before a comment that ends a text", () => {
   )
 })
 
+/**
+ * The runs of spaces and tabs before a comment that ends the accDescr line of a
+ * diagram type, and the other texts that a comment can end (docs/compatibility.md,
+ * Runs of whitespace in a text that are drawn the same).
+ */
+const commentEndsOtherTextExamples: readonly {
+  readonly name: string
+  readonly input: string
+  readonly output: string
+}[] = [
+  {
+    name: "runs before a comment that ends the accDescr line of a flowchart",
+    input: "flowchart LR\naccDescr: A  b  %% c\nA-->B\n",
+    output: "flowchart LR\n  accDescr: A b %% c\n  A --> B\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a class diagram",
+    input: "classDiagram\naccDescr: A  b  %% c\nclass A\n",
+    output: "classDiagram\n  accDescr: A b %% c\n  class A\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a state diagram",
+    input: "stateDiagram-v2\naccDescr: A  b  %% c\nA-->B\n",
+    output: "stateDiagram-v2\n  accDescr: A b %% c\n  A --> B\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of an ER diagram",
+    input: "erDiagram\naccDescr: A  b  %% c\nA ||--o{ B : has\n",
+    output: "erDiagram\n  accDescr: A b %% c\n  A ||--o{ B : has\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a Gantt chart",
+    input: "gantt\naccDescr: A  b  %% c\nsection S\nt :2020-01-01, 1d\n",
+    output:
+      "gantt\n  accDescr: A b %% c\n  section S\n    t : 2020-01-01, 1d\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a user journey",
+    input: "journey\naccDescr: A  b  %% c\nsection S\nt: 5: Me\n",
+    output: "journey\n  accDescr: A b %% c\n  section S\n    t: 5: Me\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a timeline",
+    input: "timeline\naccDescr: A  b  %% c\n2020 : e\n",
+    output: "timeline\n  accDescr: A b %% c\n  2020 : e\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a sequence diagram",
+    input: "sequenceDiagram\naccDescr: A  b  %% c\nA->>B: x\n",
+    output: "sequenceDiagram\n  accDescr: A b %% c\n  A ->> B: x\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a requirement diagram",
+    input: "requirementDiagram\naccDescr: A  b  %% c\n",
+    output: "requirementDiagram\n  accDescr: A b %% c\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a pie chart",
+    input: 'pie\naccDescr: A  b  %% c\n"a": 1\n',
+    output: 'pie\n  accDescr: A b %% c\n  "a": 1\n',
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a gitGraph",
+    input: "gitGraph\naccDescr: A  b  %% c\ncommit\n",
+    output: "gitGraph\n  accDescr: A b %% c\n  commit\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a radar chart",
+    input: "radar-beta\naccDescr: A  b  %% c\naxis a, b\ncurve c{1, 2}\n",
+    output: "radar-beta\n  accDescr: A b %% c\n  axis a, b\n  curve c{1, 2}\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a packet diagram",
+    input: 'packet-beta\naccDescr: A  b  %% c\n0-7: "x"\n',
+    output: 'packet-beta\n  accDescr: A b %% c\n  0-7: "x"\n',
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of an architecture diagram",
+    input: "architecture-beta\naccDescr: A  b  %% c\nservice a(server)[A]\n",
+    output: "architecture-beta\n  accDescr: A b %% c\n  service a(server)[A]\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a cynefin diagram",
+    input: "cynefin-beta\naccDescr: A  b  %% c\n",
+    output: "cynefin-beta\n  accDescr: A b %% c\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a treemap",
+    input: 'treemap-beta\naccDescr: A  b  %% c\n"A": 1\n',
+    output: 'treemap\naccDescr: A b %% c\n  "A": 1\n',
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a Wardley map",
+    input: "wardley-beta\naccDescr: A  b  %% c\ncomponent A [0.5, 0.5]\n",
+    output: "wardley-beta\n  accDescr: A b %% c\n  component A [0.5, 0.5]\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a treeView",
+    input: "treeView-beta\naccDescr: A  b  %% c\nroot\n",
+    output: "treeView-beta\n  accDescr: A b %% c\n  root\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of an info diagram",
+    input: "info\naccDescr: A  b  %% c\n",
+    output: "info\n  accDescr: A b %% c\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a railroad diagram",
+    input: 'railroad-abnf-beta\naccDescr: A  b  %% c\nr="a";\n',
+    output: 'railroad-abnf-beta\n  accDescr: A b %% c\n  r = "a";\n',
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a quadrant chart",
+    input:
+      "quadrantChart\naccDescr: A  b  %% c\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    output:
+      "quadrantChart\n  accDescr: A b %% c\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of an XY chart",
+    input: "xychart-beta\naccDescr: A  b  %% c\nx-axis [a, b]\nbar [1, 2]\n",
+    output:
+      "xychart-beta\n  accDescr: A b %% c\n  x-axis [a, b]\n  bar [1, 2]\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a C4 diagram",
+    input: 'C4Context\naccDescr: A  b  %% c\nPerson(a, "A")\n',
+    output: 'C4Context\n  accDescr: A b %% c\n  Person(a, "A")\n',
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of an agentflow diagram",
+    input: "agentflow-beta TB\naccDescr: A  b  %% c\nA\n",
+    output: "agentflow-beta TB\n  accDescr: A b %% c\n  A\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of an ishikawa diagram",
+    input: "ishikawa\naccDescr: A  b  %% c\n  R\n",
+    output: "ishikawa\n  accDescr: A b %% c\n    R\n",
+  },
+  {
+    name: "runs before a comment that ends the accDescr line of a use case diagram",
+    input: "usecase-beta\naccDescr: A  b  %% c\nactor A\n",
+    output: "usecase-beta\n  accDescr: A b %% c\n  actor A\n",
+  },
+  {
+    name: "runs before a comment that ends a message of a sequence diagram",
+    input: "sequenceDiagram\nA->>B: A  b  %% c\n",
+    output: "sequenceDiagram\n  A ->> B: A b %% c\n",
+  },
+  {
+    name: "runs before a comment that ends a note of a sequence diagram",
+    input: "sequenceDiagram\nA->>B: x\nNote over A: A  b  %% c\n",
+    output: "sequenceDiagram\n  A ->> B: x\n  Note over A: A b %% c\n",
+  },
+  {
+    name: "runs before a comment that ends the label of a loop of a sequence diagram",
+    input: "sequenceDiagram\nloop A  b  %% c\nA->>B: x\nend\n",
+    output: "sequenceDiagram\n  loop A b %% c\n    A ->> B: x\n  end\n",
+  },
+  {
+    name: "runs before a comment that ends the label of an alt and an else of a sequence diagram",
+    input:
+      "sequenceDiagram\nalt A  b  %% c\nA->>B: x\nelse C  d  %% c\nA->>B: y\nend\n",
+    output:
+      "sequenceDiagram\n  alt A b %% c\n    A ->> B: x\n  else C d %% c\n    A ->> B: y\n  end\n",
+  },
+  {
+    name: "runs before a comment that ends the label of an opt of a sequence diagram",
+    input: "sequenceDiagram\nopt A  b  %% c\nA->>B: x\nend\n",
+    output: "sequenceDiagram\n  opt A b %% c\n    A ->> B: x\n  end\n",
+  },
+  {
+    name: "runs before a comment that ends the label of a par and an and of a sequence diagram",
+    input:
+      "sequenceDiagram\npar A  b  %% c\nA->>B: x\nand C  d  %% c\nA->>B: y\nend\n",
+    output:
+      "sequenceDiagram\n  par A b %% c\n    A ->> B: x\n  and C d %% c\n    A ->> B: y\n  end\n",
+  },
+  {
+    name: "runs before a comment that ends the label of a box of a sequence diagram",
+    input: "sequenceDiagram\nbox A  b  %% c\nparticipant A\nend\nA->>A: x\n",
+    output:
+      "sequenceDiagram\n  box A b %% c\n    participant A\n  end\n  A ->> A: x\n",
+  },
+  {
+    name: "runs before a comment that ends the name after as of a participant of a sequence diagram",
+    input: "sequenceDiagram\nparticipant A as A  b  %% c\nA->>A: x\n",
+    output: "sequenceDiagram\n  participant A as A b %% c\n  A ->> A: x\n",
+  },
+  {
+    name: "runs before a comment that ends the text field of a requirement diagram",
+    input:
+      "requirementDiagram\nrequirement r {\nid: 1\ntext: A  b  %% c\nrisk: low\nverifymethod: test\n}\n",
+    output:
+      "requirementDiagram\n  requirement r {\n    id: 1\n    text: A b %% c\n    risk: low\n    verifymethod: test\n  }\n",
+  },
+  {
+    name: "runs before a comment that ends the label of a quadrant of a quadrant chart",
+    input:
+      "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 A  b  %% c\nA: [0.5, 0.5]\n",
+    output:
+      "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 A b %% c\n  A: [0.5, 0.5]\n",
+  },
+  {
+    name: "runs before a comment that ends the label of an axis of a quadrant chart",
+    input: "quadrantChart\nx-axis A  b  %% c\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    output:
+      "quadrantChart\n  x-axis A b %% c\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  },
+  {
+    name: "runs before a comment that ends the right label of an axis of a quadrant chart",
+    input:
+      "quadrantChart\nx-axis L --> A  b  %% c\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    output:
+      "quadrantChart\n  x-axis L --> A b %% c\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  },
+  {
+    name: "runs before a comment that ends a member of a class diagram",
+    input: "classDiagram\nclass A {\n  +x  y  %% c\n}\n",
+    output: "classDiagram\n  class A {\n    +x y %% c\n  }\n",
+  },
+  {
+    name: "runs before a comment that ends a member line of a class diagram",
+    input: "classDiagram\nA : +x  y  %% c\n",
+    output: "classDiagram\n  A : +x y %% c\n",
+  },
+  {
+    name: "runs before a comment that ends the title of a subgraph of a flowchart",
+    input: "flowchart LR\nsubgraph A  b  %% c\nA-->B\nend\n",
+    output: "flowchart LR\n  subgraph A b %% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "runs before a comment that ends the label of a relation of a class diagram",
+    input: "classDiagram\nA --> B : A  b  %% c\n",
+    output: "classDiagram\n  A --> B : A  b  %% c\n",
+  },
+]
+
+describe("the runs before a comment that ends an accDescr line or another text", () => {
+  it.each(commentEndsOtherTextExamples)("prints $name", async (example) => {
+    await expectKept(example.input, example.output)
+  })
+})
+
 /** Cynefin headers with whitespace before a directive or the colon, which every version that counts rejects (docs/compatibility.md, The colon after a header). */
 describe("a cynefin header with whitespace before a directive or the colon", () => {
   it.each([

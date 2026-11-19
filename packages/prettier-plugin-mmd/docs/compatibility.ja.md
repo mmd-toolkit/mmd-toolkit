@@ -1755,39 +1755,9 @@ railroad 図の文字列と特殊シーケンスです。
   [同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)
   を参照してください。
   テキストを終えるコメントも、そのような印ではありません。
-  その前の連なりは、
-  次のタイトルと ishikawa のリテラルでは空白 1 つにして印字します。
-  タイトルは、pie、radar、packet、architecture、gitGraph、cynefin、treemap、
-  Wardley、treeView、info、railroad、quadrant、Gantt、user journey、timeline、
-  sequence、Venn、C4 の図のものです。
-  `title A  b  %% c` は `title A b %% c` と、
-  `A  b  %% c` は `A b %% c` と印字します。
-  mindmap のノード、kanban のカード、treeView のノードでは、
-  その連なりは書かれたまま残ります。
+  そのときの印字は、このリストの後の表のとおりです。
 
   [fixture: pie/directives-and-semicolons/global-value]
-  [test: runs before a comment that ends the text of a pie chart]
-  [test: runs before a comment that ends the text of a radar chart]
-  [test: runs before a comment that ends the text of a packet diagram]
-  [test: runs before a comment that ends the text of an architecture diagram]
-  [test: runs before a comment that ends the text of a gitGraph]
-  [test: runs before a comment that ends the text of a cynefin diagram]
-  [test: runs before a comment that ends the text of a treemap]
-  [test: runs before a comment that ends the text of a Wardley map]
-  [test: runs before a comment that ends the text of a treeView]
-  [test: runs before a comment that ends the text of an info diagram]
-  [test: runs before a comment that ends the text of a railroad diagram]
-  [test: runs before a comment that ends the text of a quadrant chart]
-  [test: runs before a comment that ends the text of a Gantt chart]
-  [test: runs before a comment that ends the text of a user journey]
-  [test: runs before a comment that ends the text of a timeline]
-  [test: runs before a comment that ends the text of a sequence diagram]
-  [test: runs before a comment that ends the text of a Venn diagram]
-  [test: runs before a comment that ends the text of a C4 diagram]
-  [test: runs before a comment that ends the text of an ishikawa literal]
-  [test: runs before a comment that ends the text of a mindmap node]
-  [test: runs before a comment that ends the text of a kanban card]
-  [test: runs before a comment that ends the text of a treeView node]
 
 - `<` を含むテキスト。
   空白を保つ HTML タグ（`<pre>`）を始めるかもしれないからです。
@@ -1896,6 +1866,92 @@ railroad 図の文字列と特殊シーケンスです。
   [fixture: pie/labels/label-quotes]
   [fixture: requirement/names/inner-whitespace-kept]
   [fixture: state/aliases/id-kept]
+
+これらのテキストを終えるコメントがあるとき、テキストの中と、
+コメントの前の連なりは、表のとおりに印字します（`A  b  %% c` は、
+テキスト `A  b` とコメント `%% c` です）。
+
+| テキスト                                                   | 図種                                                                                                                                                                                                                                                                                                                                                                                  | 書かれた形                                                              | 印字                                                              |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `title`                                                    | pie chart、radar chart、packet diagram、architecture diagram、gitGraph、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、quadrant chart、Gantt chart、user journey、timeline、sequence diagram、Venn diagram、C4 diagram                                                                                                                              | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
+| `accDescr:` の行                                           | flowchart、class diagram、state diagram、ER diagram、Gantt chart、user journey、timeline、sequence diagram、requirement diagram、pie chart、gitGraph、radar chart、packet diagram、architecture diagram、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、quadrant chart、XY chart、C4 diagram、agentflow diagram、ishikawa diagram、use case diagram | `accDescr: A  b  %% c`                                                  | `accDescr: A b %% c`                                              |
+| メッセージ                                                 | sequence                                                                                                                                                                                                                                                                                                                                                                              | `A->>B: A  b  %% c`                                                     | `A ->> B: A b %% c`                                               |
+| ノート                                                     | sequence                                                                                                                                                                                                                                                                                                                                                                              | `Note over A: A  b  %% c`                                               | `Note over A: A b %% c`                                           |
+| `loop`、`alt`、`else`、`opt`、`par`、`and`、`box` のラベル | sequence                                                                                                                                                                                                                                                                                                                                                                              | `loop A  b  %% c`                                                       | `loop A b %% c`                                                   |
+| `as` の後の名前                                            | sequence                                                                                                                                                                                                                                                                                                                                                                              | `participant A as A  b  %% c`                                           | `participant A as A b %% c`                                       |
+| `text` のフィールド                                        | requirement                                                                                                                                                                                                                                                                                                                                                                           | `text: A  b  %% c`                                                      | `text: A b %% c`                                                  |
+| 象限のラベル、軸のラベル                                   | quadrant                                                                                                                                                                                                                                                                                                                                                                              | `quadrant-1 A  b  %% c`、`x-axis A  b  %% c`、`x-axis L --> A  b  %% c` | `quadrant-1 A b %% c`、`x-axis A b %% c`、`x-axis L --> A b %% c` |
+| メンバー                                                   | class                                                                                                                                                                                                                                                                                                                                                                                 | `+x  y  %% c`                                                           | `+x y %% c`                                                       |
+| subgraph のタイトル                                        | flowchart                                                                                                                                                                                                                                                                                                                                                                             | `subgraph A  b  %% c`                                                   | `subgraph A b %% c`                                               |
+| リテラル                                                   | ishikawa                                                                                                                                                                                                                                                                                                                                                                              | `A  b  %% c`                                                            | `A b %% c`                                                        |
+| ノード                                                     | mindmap、treeView                                                                                                                                                                                                                                                                                                                                                                     | `A  b  %% c`                                                            | 書かれたまま                                                      |
+| カード                                                     | kanban                                                                                                                                                                                                                                                                                                                                                                                | `A  b  %% c`                                                            | 書かれたまま                                                      |
+| 関係のラベル                                               | class                                                                                                                                                                                                                                                                                                                                                                                 | `A --> B : A  b  %% c`                                                  | 書かれたまま                                                      |
+
+[test: runs before a comment that ends the text of a pie chart]
+[test: runs before a comment that ends the text of a radar chart]
+[test: runs before a comment that ends the text of a packet diagram]
+[test: runs before a comment that ends the text of an architecture diagram]
+[test: runs before a comment that ends the text of a gitGraph]
+[test: runs before a comment that ends the text of a cynefin diagram]
+[test: runs before a comment that ends the text of a treemap]
+[test: runs before a comment that ends the text of a Wardley map]
+[test: runs before a comment that ends the text of a treeView]
+[test: runs before a comment that ends the text of an info diagram]
+[test: runs before a comment that ends the text of a railroad diagram]
+[test: runs before a comment that ends the text of a quadrant chart]
+[test: runs before a comment that ends the text of a Gantt chart]
+[test: runs before a comment that ends the text of a user journey]
+[test: runs before a comment that ends the text of a timeline]
+[test: runs before a comment that ends the text of a sequence diagram]
+[test: runs before a comment that ends the text of a Venn diagram]
+[test: runs before a comment that ends the text of a C4 diagram]
+[test: runs before a comment that ends the text of an ishikawa literal]
+[test: runs before a comment that ends the text of a mindmap node]
+[test: runs before a comment that ends the text of a kanban card]
+[test: runs before a comment that ends the text of a treeView node]
+[test: runs before a comment that ends the accDescr line of a flowchart]
+[test: runs before a comment that ends the accDescr line of a class diagram]
+[test: runs before a comment that ends the accDescr line of a state diagram]
+[test: runs before a comment that ends the accDescr line of an ER diagram]
+[test: runs before a comment that ends the accDescr line of a Gantt chart]
+[test: runs before a comment that ends the accDescr line of a user journey]
+[test: runs before a comment that ends the accDescr line of a timeline]
+[test: runs before a comment that ends the accDescr line of a sequence diagram]
+[test: runs before a comment that ends the accDescr line of a requirement diagram]
+[test: runs before a comment that ends the accDescr line of a pie chart]
+[test: runs before a comment that ends the accDescr line of a gitGraph]
+[test: runs before a comment that ends the accDescr line of a radar chart]
+[test: runs before a comment that ends the accDescr line of a packet diagram]
+[test: runs before a comment that ends the accDescr line of an architecture diagram]
+[test: runs before a comment that ends the accDescr line of a cynefin diagram]
+[test: runs before a comment that ends the accDescr line of a treemap]
+[test: runs before a comment that ends the accDescr line of a Wardley map]
+[test: runs before a comment that ends the accDescr line of a treeView]
+[test: runs before a comment that ends the accDescr line of an info diagram]
+[test: runs before a comment that ends the accDescr line of a railroad diagram]
+[test: runs before a comment that ends the accDescr line of a quadrant chart]
+[test: runs before a comment that ends the accDescr line of an XY chart]
+[test: runs before a comment that ends the accDescr line of a C4 diagram]
+[test: runs before a comment that ends the accDescr line of an agentflow diagram]
+[test: runs before a comment that ends the accDescr line of an ishikawa diagram]
+[test: runs before a comment that ends the accDescr line of a use case diagram]
+[test: runs before a comment that ends a message of a sequence diagram]
+[test: runs before a comment that ends a note of a sequence diagram]
+[test: runs before a comment that ends the label of a loop of a sequence diagram]
+[test: runs before a comment that ends the label of an alt and an else of a sequence diagram]
+[test: runs before a comment that ends the label of an opt of a sequence diagram]
+[test: runs before a comment that ends the label of a par and an and of a sequence diagram]
+[test: runs before a comment that ends the label of a box of a sequence diagram]
+[test: runs before a comment that ends the name after as of a participant of a sequence diagram]
+[test: runs before a comment that ends the text field of a requirement diagram]
+[test: runs before a comment that ends the label of a quadrant of a quadrant chart]
+[test: runs before a comment that ends the label of an axis of a quadrant chart]
+[test: runs before a comment that ends the right label of an axis of a quadrant chart]
+[test: runs before a comment that ends a member of a class diagram]
+[test: runs before a comment that ends a member line of a class diagram]
+[test: runs before a comment that ends the title of a subgraph of a flowchart]
+[test: runs before a comment that ends the label of a relation of a class diagram]
 
 mermaid.js は連なりを Db に残します。
 レンダラーは、これらのテキストを SVG の `text` 要素に入れ、
@@ -3013,8 +3069,10 @@ radar のヘッダーで、そのディレクティブの前、コロンの前�
 `radar-beta %%{x}%% :` は `radar-beta%%{x}%%:` と印字し、
 空白をタブにした形も同じです。
 `radar-beta %%{x}%% %%{y}%% :` は `radar-beta%%{x}%%%%{y}%%:` と印字します。
-コロンのない radar のヘッダーは、ディレクティブの前の空白を残します。
-`radar-beta %%{x}%%` は変えません。
+2 つのディレクティブの間の空白かタブも同じです（`radar-beta%%{x}%% %%{y}%%:` は
+`radar-beta%%{x}%%%%{y}%%:` と印字します）。
+コロンのない radar のヘッダーは、空白を残します。
+`radar-beta %%{x}%%` と `radar-beta%%{x}%% %%{y}%%` は変えません。
 radar のヘッダーは、
 ディレクティブがないときコロンの前に空白かタブがあってもよく、
 それはコロンと一緒に除きます（`radar-beta :` は `radar-beta` と印字します）。
@@ -3038,6 +3096,8 @@ cynefin のヘッダーは、ディレクティブの前、コロンの前、
 [fixture: radar/header/colon-tabs-around-directive-dropped]
 [fixture: radar/header/colon-two-spaced-directives-dropped]
 [fixture: radar/header/directive-no-colon-space-kept]
+[fixture: radar/header/colon-between-directives-dropped]
+[fixture: radar/header/directives-no-colon-space-between-kept]
 [fixture: cynefin/header/directive-no-colon-space-kept]
 [test: a space before a directive between the header and the colon of a cynefin diagram]
 [test: a space before the colon after a directive of a cynefin diagram]
