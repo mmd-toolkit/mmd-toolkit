@@ -467,7 +467,10 @@ ends, with a run of spaces and tabs inside it printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same));
 empty/whitespace-only titles print bare `title`. Where only directives follow
 the text of a title, they are printed with one space before each that has spaces
-or tabs before it, and the spaces and tabs after the last one are left out (see
+or tabs before it, and the spaces and tabs after the last one are left out,
+unless a directive of the line holds a line break, a `;`, or a U+2028 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title-and-common-values/title-directives-end-blanks-dropped]

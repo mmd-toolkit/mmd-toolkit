@@ -1443,9 +1443,10 @@ one space, and the spaces and tabs after the last one are dropped like any
 spaces and tabs at the end of the line, so the line is printed alike whether or
 not spaces and tabs follow its last directive, as a directive at the end of a
 line is in the other diagrams (see [Directives](./flowchart.md#directives)),
-unless that directive holds a line break or a `;` (see the paragraph after the
-first table): `title T  %%{x}%%  %%{y}%%` and `title T  %%{x}%%  %%{y}%%  ` are
-both printed `title T %%{x}%% %%{y}%%`, `title T%%{x}%%%%{y}%%  ` is printed
+unless a directive of the line holds a line break, a `;`, or a U+2028 (see
+[Directives that hold a line break or a semicolon](#directives-that-hold-a-line-break-or-a-semicolon)):
+`title T  %%{x}%%  %%{y}%%` and `title T  %%{x}%%  %%{y}%%  ` are both printed
+`title T %%{x}%% %%{y}%%`, `title T%%{x}%%%%{y}%%  ` is printed
 `title T%%{x}%%%%{y}%%`, and `state "d" as A : x  %%{x}%%  ` is printed
 `state "d" as A : x %%{x}%%`. mermaid.js removes the directives before it reads
 the text, so the spaces and tabs around them are spaces and tabs at the end of
@@ -1455,13 +1456,14 @@ C4 diagram, a quadrant chart, a pie chart, a radar chart, a packet diagram, an
 architecture diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map, a
 treeView, an info diagram, and a railroad diagram, for the `accTitle:` and
 `accDescr:` lines of those diagram types, except a Venn diagram, which has none,
-and of a usecase diagram, for the text of a node of an ishikawa diagram, a
-mindmap, and a treeView, and of a card of a kanban board (not the id of a
-column, which the figure depends on), for the date format and the axis format of
-a Gantt chart, for the `accDescription` of a C4 diagram, for the last event of a
-line of a timeline and the space that a period and an event before a colon gain,
-for the description of a task of a user journey, except that a task whose
-description holds a directive stays as written (see
+and of a usecase diagram, for the text of a node of a mindmap and a treeView,
+and of an ishikawa diagram where its runs do not stay under
+[Inline directives](./ishikawa.md#inline-directives), and of a card of a kanban
+board (not the id of a column, which the figure depends on), for the date format
+and the axis format of a Gantt chart, for the `accDescription` of a C4 diagram,
+for the last event of a line of a timeline and the space that a period and an
+event before a colon gain, for the description of a task of a user journey,
+except that a task whose description holds a directive stays as written (see
 [Task data](./journey.md#task-data)), and for the second description of a state
 alias. The runs of spaces and tabs inside a date format, an axis format, or the
 value of an `accTitle:` line stay as written before the directives as they do
@@ -1527,6 +1529,8 @@ likewise: the form that they keep is stated with the pie rules.
 | `  %% c  `                     | `%% c  `                        | `%% c`                 | `%% c`                             | `%% c`                |
 | `\u00a0%% c`                   | `%% c`                          | `%% c`                 | as written                         | as written            |
 | ` %%{x}%%%% c`                 | `%%{x}%%%% c`                   | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written            |
+| a space and `%%{x}%%  %% c  `  | as written                      | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written            |
+| `%%{x}%%  %% c `               | as written                      | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written            |
 | `T  %% c  %%{x}%%`             | `T %% c  %%{x}%%`               | `T %% c %%{x}%%`       | `T %% c %%{x}%%`                   | `T %% c %%{x}%%`      |
 | `T\u3000%% c`                  | `T %% c` but a pie chart        | as written             | as written                         | as written            |
 | `T\u2003%% c`                  | `T %% c` but a pie chart        | as written             | as written                         | as written            |
@@ -1589,22 +1593,27 @@ Where the comment touches the directive, spaces and tabs before the directive of
 such a title (` %%{x}%%%% c`) are left out by every type but a Venn diagram and
 a C4 diagram; with spaces between the directive and the comment
 (`%%{x}%%  %% c `), the Langium types, a Venn diagram, and a C4 diagram keep the
-title as written, and the other types print `%%{x}%%%% c`. A U+2028 or a U+2029
-before the directive of such a title keeps the title as written in every type,
-and the line after it too. A whitespace character that is no space or tab and no
-U+2028 or U+2029 before the directive of such a title is left out by the Langium
-types and a quadrant chart and stays in the other types (`\u00a0%%{x}%%%% c`).
-With spaces around the comment (`\u00a0%%{x}%%  %% c  `), the Langium types, a
-Venn diagram, and a C4 diagram keep the title as written, a quadrant chart
-prints `%%{x}%%%% c`, and a Gantt chart, a user journey, a timeline, and a
-sequence diagram keep the character and the spaces before the comment and leave
-out the spaces after it. A tab between the directive and the comment is left out
-by a quadrant chart, a Gantt chart, a user journey, a timeline, and a sequence
-diagram, and stays in the other types, with the same drawing. A no-break space,
-U+3000, or U+2003 between them is left out by a quadrant chart and stays in the
-other types: the eleven Langium types draw the same with and without it, and a
-Gantt chart, a user journey, a timeline, a sequence diagram, a Venn diagram, and
-a C4 diagram draw other text without it.
+title as written, and the other types print `%%{x}%%%% c`. With the comment
+touching the directive, a U+2028 or a U+2029 before the directive of such a
+title keeps the title as written in every type, and the line after it too, where
+a statement follows the title; where the title is the last statement of the
+text, the Langium types and a quadrant chart print `title` and, on a line of
+their own, the directive and the comment (`title`, a U+2028, a space, and
+`%%{x}%%%% c` are printed `title` and `%%{x}%%%% c` on the next line), and the
+other types keep the title as written. A whitespace character that is no space
+or tab and no U+2028 or U+2029 before the directive of such a title is left out
+by the Langium types and a quadrant chart and stays in the other types
+(`\u00a0%%{x}%%%% c`). With spaces around the comment (`\u00a0%%{x}%%  %% c  `),
+the Langium types, a Venn diagram, and a C4 diagram keep the title as written, a
+quadrant chart prints `%%{x}%%%% c`, and a Gantt chart, a user journey, a
+timeline, and a sequence diagram keep the character and the spaces before the
+comment and leave out the spaces after it. A tab between the directive and the
+comment is left out by a quadrant chart, a Gantt chart, a user journey, a
+timeline, and a sequence diagram, and stays in the other types, with the same
+drawing. A no-break space, U+3000, or U+2003 between them is left out by a
+quadrant chart and stays in the other types: the eleven Langium types draw the
+same with and without it, and a Gantt chart, a user journey, a timeline, a
+sequence diagram, a Venn diagram, and a C4 diagram draw other text without it.
 
 After the text, two directives and a comment (`T  %%{x}%%  %%{y}%%  %% c`) are
 printed with one space before each by the Langium types, and stay as written in
@@ -1612,16 +1621,6 @@ the other types, with the same drawing. After the text, a comment and then a
 directive (`T %% c %%{x}%%`), and a no-break space between a directive and a
 comment (`T %%{x}%%\u00a0%% c`), stay as written in every type, and so does a
 comment that touches the text (`T%% c`).
-
-Where the last directive of a title holds a line break (`T  %%{init: {`, a line
-break, `}}%%`, and two spaces), a quadrant chart and a Venn diagram print the
-title without the spaces after the directive, and every other type keeps the
-line as written, the spaces included. Where it holds a `;`
-(`T  %%{init: {a;b}}%%  `), the Langium types keep the line as written and the
-other types print it without the spaces after the directive (the last row of the
-first table). A card of a kanban board and a bare mindmap node keep the line as
-written in both cases, and the text of a mindmap node after a shape prints
-without the spaces.
 
 A U+2028 or U+2029 at the end of a title with no directive, with the spaces
 before it, is left out by the Langium types and a quadrant chart and stays in
@@ -1839,22 +1838,127 @@ a whitespace character that is no space or tab at the start and at the end of an
 accessibility line, in each group] [test: a whitespace character that is no
 space or tab at both ends of a title, in the Langium types and a quadrant chart]
 [test: a whitespace character that is no space or tab before a comment after the
-text of a title, in each group] [test: a title whose last directive holds a line
-break, with spaces after it, in each type] [test: a card of a kanban board and a
-node of a mindmap whose last directive holds a line break, with spaces after it]
-[test: a title whose last directive holds a semicolon, with spaces after it, in
-each group] [test: U+2028 before the directive of a title of a directive and a
-comment only in a pie chart] [test: U+2029 before the directive of a title of a
-directive and a comment only in a pie chart] [test: U+2028 before the directive
-of a title of a directive and a comment only in a quadrant chart] [test: U+2028
-before the directive of a title of a directive and a comment only in a Gantt
-chart] [test: U+2028 before the directive of a title of a directive and a
-comment only in a Venn diagram] [test: U+2028 before the directive of a title of
-a directive and a comment only in a C4 diagram] [test: a whitespace character
-that is no space or tab before the directive of a title of a directive and a
-comment only, in each group] [test: a whitespace character that is no space or
-tab before the directive of a title of a directive and a comment only, with
-spaces around the comment, in each group] [test: an accessibility line of
+text of a title, in each group]  
+[test: U+2028 before the directive of a title of a directive and a comment only
+in a pie chart] [test: U+2028 before the directive of a title of a directive and
+a comment only, a statement after the title, in a pie chart] [test: U+2029
+before the directive of a title of a directive and a comment only, a statement
+after the title, in a pie chart] [test: U+2028 before the directive of a title
+of a directive and a comment only, the title the last statement of the text, in
+a pie chart] [test: U+2029 before the directive of a title of a directive and a
+comment only, the title the last statement of the text, in a pie chart] [test:
+U+2028 before the directive of a title of a directive and a comment only, a
+statement after the title, in a radar chart] [test: U+2029 before the directive
+of a title of a directive and a comment only, a statement after the title, in a
+radar chart] [test: U+2028 before the directive of a title of a directive and a
+comment only, the title the last statement of the text, in a radar chart] [test:
+U+2029 before the directive of a title of a directive and a comment only, the
+title the last statement of the text, in a radar chart] [test: U+2028 before the
+directive of a title of a directive and a comment only, a statement after the
+title, in a packet diagram] [test: U+2029 before the directive of a title of a
+directive and a comment only, a statement after the title, in a packet diagram]
+[test: U+2028 before the directive of a title of a directive and a comment only,
+the title the last statement of the text, in a packet diagram] [test: U+2029
+before the directive of a title of a directive and a comment only, the title the
+last statement of the text, in a packet diagram] [test: U+2028 before the
+directive of a title of a directive and a comment only, a statement after the
+title, in an architecture diagram] [test: U+2029 before the directive of a title
+of a directive and a comment only, a statement after the title, in an
+architecture diagram] [test: U+2028 before the directive of a title of a
+directive and a comment only, the title the last statement of the text, in an
+architecture diagram] [test: U+2029 before the directive of a title of a
+directive and a comment only, the title the last statement of the text, in an
+architecture diagram] [test: U+2028 before the directive of a title of a
+directive and a comment only, a statement after the title, in a gitGraph] [test:
+U+2029 before the directive of a title of a directive and a comment only, a
+statement after the title, in a gitGraph] [test: U+2028 before the directive of
+a title of a directive and a comment only, the title the last statement of the
+text, in a gitGraph] [test: U+2029 before the directive of a title of a
+directive and a comment only, the title the last statement of the text, in a
+gitGraph] [test: U+2028 before the directive of a title of a directive and a
+comment only, the title the last statement of the text, in a cynefin diagram]
+[test: U+2029 before the directive of a title of a directive and a comment only,
+the title the last statement of the text, in a cynefin diagram] [test: U+2028
+before the directive of a title of a directive and a comment only, a statement
+after the title, in a treemap] [test: U+2029 before the directive of a title of
+a directive and a comment only, a statement after the title, in a treemap]
+[test: U+2028 before the directive of a title of a directive and a comment only,
+the title the last statement of the text, in a treemap] [test: U+2029 before the
+directive of a title of a directive and a comment only, the title the last
+statement of the text, in a treemap] [test: U+2028 before the directive of a
+title of a directive and a comment only, a statement after the title, in a
+Wardley map] [test: U+2029 before the directive of a title of a directive and a
+comment only, a statement after the title, in a Wardley map] [test: U+2028
+before the directive of a title of a directive and a comment only, the title the
+last statement of the text, in a Wardley map] [test: U+2029 before the directive
+of a title of a directive and a comment only, the title the last statement of
+the text, in a Wardley map] [test: U+2028 before the directive of a title of a
+directive and a comment only, a statement after the title, in a treeView] [test:
+U+2029 before the directive of a title of a directive and a comment only, a
+statement after the title, in a treeView] [test: U+2028 before the directive of
+a title of a directive and a comment only, the title the last statement of the
+text, in a treeView] [test: U+2029 before the directive of a title of a
+directive and a comment only, the title the last statement of the text, in a
+treeView] [test: U+2028 before the directive of a title of a directive and a
+comment only, the title the last statement of the text, in an info diagram]
+[test: U+2029 before the directive of a title of a directive and a comment only,
+the title the last statement of the text, in an info diagram] [test: U+2028
+before the directive of a title of a directive and a comment only, a statement
+after the title, in a railroad diagram] [test: U+2029 before the directive of a
+title of a directive and a comment only, a statement after the title, in a
+railroad diagram] [test: U+2028 before the directive of a title of a directive
+and a comment only, the title the last statement of the text, in a railroad
+diagram] [test: U+2029 before the directive of a title of a directive and a
+comment only, the title the last statement of the text, in a railroad diagram]
+[test: U+2028 before the directive of a title of a directive and a comment only,
+a statement after the title, in a quadrant chart] [test: U+2029 before the
+directive of a title of a directive and a comment only, a statement after the
+title, in a quadrant chart] [test: U+2028 before the directive of a title of a
+directive and a comment only, the title the last statement of the text, in a
+quadrant chart] [test: U+2029 before the directive of a title of a directive and
+a comment only, the title the last statement of the text, in a quadrant chart]
+[test: U+2028 before the directive of a title of a directive and a comment only,
+the title the last statement of the text, in a Gantt chart] [test: U+2029 before
+the directive of a title of a directive and a comment only, the title the last
+statement of the text, in a Gantt chart] [test: U+2028 before the directive of a
+title of a directive and a comment only, the title the last statement of the
+text, in a user journey] [test: U+2029 before the directive of a title of a
+directive and a comment only, the title the last statement of the text, in a
+user journey] [test: U+2028 before the directive of a title of a directive and a
+comment only, the title the last statement of the text, in a timeline] [test:
+U+2029 before the directive of a title of a directive and a comment only, the
+title the last statement of the text, in a timeline] [test: U+2028 before the
+directive of a title of a directive and a comment only, a statement after the
+title, in a sequence diagram] [test: U+2029 before the directive of a title of a
+directive and a comment only, a statement after the title, in a sequence
+diagram] [test: U+2028 before the directive of a title of a directive and a
+comment only, the title the last statement of the text, in a sequence diagram]
+[test: U+2029 before the directive of a title of a directive and a comment only,
+the title the last statement of the text, in a sequence diagram] [test: U+2028
+before the directive of a title of a directive and a comment only, a statement
+after the title, in a Venn diagram] [test: U+2029 before the directive of a
+title of a directive and a comment only, a statement after the title, in a Venn
+diagram] [test: U+2028 before the directive of a title of a directive and a
+comment only, the title the last statement of the text, in a Venn diagram]
+[test: U+2029 before the directive of a title of a directive and a comment only,
+the title the last statement of the text, in a Venn diagram] [test: U+2028
+before the directive of a title of a directive and a comment only, a statement
+after the title, in a C4 diagram] [test: U+2029 before the directive of a title
+of a directive and a comment only, a statement after the title, in a C4 diagram]
+[test: U+2028 before the directive of a title of a directive and a comment only,
+the title the last statement of the text, in a C4 diagram] [test: U+2029 before
+the directive of a title of a directive and a comment only, the title the last
+statement of the text, in a C4 diagram] [test: U+2029 before the directive of a
+title of a directive and a comment only in a pie chart] [test: U+2028 before the
+directive of a title of a directive and a comment only in a quadrant chart]
+[test: U+2028 before the directive of a title of a directive and a comment only
+in a Gantt chart] [test: U+2028 before the directive of a title of a directive
+and a comment only in a Venn diagram] [test: U+2028 before the directive of a
+title of a directive and a comment only in a C4 diagram] [test: a whitespace
+character that is no space or tab before the directive of a title of a directive
+and a comment only, in each group] [test: a whitespace character that is no
+space or tab before the directive of a title of a directive and a comment only,
+with spaces around the comment, in each group] [test: an accessibility line of
 directives only stays as written in each type of the Langium grammar] [fixture:
 pie/accessibility-lines/acc-title-percent-gap-kept] [fixture:
 gitgraph/title-and-common-values/acc-title-percent-gap-kept] [test: U+2003
@@ -2104,6 +2208,153 @@ their end. Any other difference, among them one in the name of a section, in a
 tick interval, or in a today marker, fails. When the pinned mermaid.js is
 updated, draw both texts of each kind again and compare the SVG and the pixels
 before the exception stays.
+
+### Directives that hold a line break or a semicolon
+
+A directive that holds a line break, a `;`, or a U+2028 changes what is printed
+of the spaces around the directives of a line. The spaces and tabs after the
+last directive are left out, and the line is printed alike whether or not they
+follow it (see above), unless a directive of the line is one of these. The table
+gives what each text prints then. `T` stands for the text, `\n` for a line break
+in the directive, and `\u2028` for a U+2028 in it. The columns are the written
+forms: the first three have two spaces before the directive and nothing after
+it, the next four have two spaces before it and after it, the next three put the
+directive before the text, and the last four have a comment after the directive,
+with two spaces between them and touching. `as without it` is what the same form
+prints with a directive that holds none of them (`%%{x}%%`), as the sections
+above give; `spaces after it left out` is the written line without the spaces
+and tabs at its end; a dash marks a form that has no form here. A text that is
+the directive alone has the forms without `T` and the spaces before the
+directive.
+
+| Texts                                                                                                                                                                                         | `T  %%{init: {\n}}%%` | `T  %%{init: {a;b}}%%` | `T  %%{init: {\u2028}}%%` | `T  %%{init: {\n}}%%  ` | `T  %%{init: {a;b}}%%  ` | `T  %%{init: {a;\nb}}%%  ` | `T  %%{init: {\u2028}}%%  ` | `%%{init: {\n}}%%  T  `  | `%%{init: {a;b}}%%  T  ` | `%%{init: {a;\nb}}%%  T  ` | `T  %%{init: {\n}}%%  %% c  ` | `T  %%{init: {a;b}}%%  %% c  ` | `T  %%{init: {\n}}%%%% c` | `T  %%{init: {a;b}}%%%% c` |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ---------------------- | ------------------------- | ----------------------- | ------------------------ | -------------------------- | --------------------------- | ------------------------ | ------------------------ | -------------------------- | ----------------------------- | ------------------------------ | ------------------------- | -------------------------- |
+| the `title`, `accTitle:`, and `accDescr:` of a pie chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram, a treemap, a treeView, and an info diagram | as without it         | as without it          | as written                | as written              | as written               | as written                 | as written                  | as without it            | as without it            | as without it              | as written                    | as written                     | as without it             | as without it              |
+| the `title` of a Wardley map and of a railroad diagram                                                                                                                                        | as without it         | as written             | as written                | as written              | as written               | as written                 | as written                  | as without it            | `%%{init: {a;b}}%% T`    | `%%{init: {a;\nb}}%% T`    | as written                    | as written                     | as without it             | as written                 |
+| the `accTitle:` and `accDescr:` of a Wardley map and of a railroad diagram                                                                                                                    | as without it         | as written             | as written                | as written              | as written               | as written                 | as written                  | as without it            | as without it            | as without it              | as written                    | as written                     | as without it             | as written                 |
+| the `title` of a quadrant chart; the description of a task of a user journey                                                                                                                  | as without it         | as without it          | as written                | as without it           | as without it            | as without it              | spaces after it left out    | spaces after it left out | as without it            | spaces after it left out   | as without it                 | as without it                  | as without it             | as without it              |
+| the `accTitle:` and `accDescr:` of a quadrant chart, a Gantt chart, a user journey, a timeline, a sequence diagram, and a C4 diagram; the last event of a line of a timeline                  | as without it         | as without it          | as written                | as without it           | as without it            | as without it              | spaces after it left out    | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              |
+| the `title` of a Gantt chart, a user journey, a timeline, and a sequence diagram; the date format and the axis format of a Gantt chart                                                        | as without it         | as without it          | as written                | as written              | as without it            | as written                 | spaces after it left out    | as written               | as without it            | as written                 | as written                    | as without it                  | as without it             | as without it              |
+| the `title` of a Venn diagram                                                                                                                                                                 | as without it         | as without it          | as written                | as without it           | as without it            | as without it              | as written                  | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              |
+| the `title` of a C4 diagram                                                                                                                                                                   | as without it         | as without it          | as written                | as written              | as without it            | as written                 | as written                  | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              |
+| the text of a node of a mindmap after a shape, with the directive alone                                                                                                                       | as without it         | as without it          | rejected                  | as without it           | as without it            | as without it              | rejected                    | as without it            | as without it            | as without it              | –                             | –                              | –                         | –                          |
+| the `accTitle:` and `accDescr:` of a use case diagram                                                                                                                                         | as without it         | as without it          | as written                | –                       | –                        | –                          | –                           | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              |
+| the text of a node of an ishikawa diagram and of a treeView                                                                                                                                   | as without it         | as without it          | as written                | –                       | –                        | –                          | –                           | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              |
+| the text of a node of a mindmap                                                                                                                                                               | as without it         | as without it          | rejected                  | as written              | as written               | as written                 | rejected                    | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              |
+| the text of a card of a kanban board                                                                                                                                                          | as written            | as written             | rejected                  | as written              | as written               | as written                 | rejected                    | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              |
+| the second description of a state alias                                                                                                                                                       | as without it         | as without it          | as written                | as without it           | as written               | as written                 | as written                  | as without it            | as written               | as written                 | as without it                 | spaces after it left out       | as without it             | as without it              |
+| a card of a kanban board and a bare node of a mindmap, with the directive alone                                                                                                               | as without it         | as without it          | rejected                  | as written              | as written               | as written                 | rejected                    | as written               | as written               | as written                 | –                             | –                              | –                         | –                          |
+
+The directive that holds a line break, a `;`, or a U+2028 may be any directive
+of the line, and a tab may stand in place of the spaces after it:
+`T  %%{y}%%  D  `, `T  D  %%{y}%%  `, and `T  D`, a tab, print as the fourth and
+the fifth columns give, and `T  %%{y}%%  D` as the first and the second, for
+every text of the table but the `accTitle:` and `accDescr:` lines of a use case
+diagram, the text of a node of an ishikawa diagram, of a treeView, and of a
+mindmap after a shape, the text of a card of a kanban board, and the directive
+alone. A U+2029 in place of the U+2028 is not given.
+
+[test: the title of a pie chart with a directive that holds a line break or a
+semicolon] [test: the accTitle: of a pie chart with a directive that holds a
+line break or a semicolon] [test: the accDescr: of a pie chart with a directive
+that holds a line break or a semicolon] [test: the title of a radar chart with a
+directive that holds a line break or a semicolon] [test: the accTitle: of a
+radar chart with a directive that holds a line break or a semicolon] [test: the
+accDescr: of a radar chart with a directive that holds a line break or a
+semicolon] [test: the title of a packet diagram with a directive that holds a
+line break or a semicolon] [test: the accTitle: of a packet diagram with a
+directive that holds a line break or a semicolon] [test: the accDescr: of a
+packet diagram with a directive that holds a line break or a semicolon] [test:
+the title of an architecture diagram with a directive that holds a line break or
+a semicolon] [test: the accTitle: of an architecture diagram with a directive
+that holds a line break or a semicolon] [test: the accDescr: of an architecture
+diagram with a directive that holds a line break or a semicolon] [test: the
+title of a gitGraph with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a gitGraph with a directive that holds a line break or a
+semicolon] [test: the accDescr: of a gitGraph with a directive that holds a line
+break or a semicolon] [test: the title of a cynefin diagram with a directive
+that holds a line break or a semicolon] [test: the accTitle: of a cynefin
+diagram with a directive that holds a line break or a semicolon] [test: the
+accDescr: of a cynefin diagram with a directive that holds a line break or a
+semicolon] [test: the title of a treemap with a directive that holds a line
+break or a semicolon] [test: the accTitle: of a treemap with a directive that
+holds a line break or a semicolon] [test: the accDescr: of a treemap with a
+directive that holds a line break or a semicolon] [test: the title of a treeView
+with a directive that holds a line break or a semicolon] [test: the accTitle: of
+a treeView with a directive that holds a line break or a semicolon] [test: the
+accDescr: of a treeView with a directive that holds a line break or a semicolon]
+[test: the title of an info diagram with a directive that holds a line break or
+a semicolon] [test: the accTitle: of an info diagram with a directive that holds
+a line break or a semicolon] [test: the accDescr: of an info diagram with a
+directive that holds a line break or a semicolon] [test: the title of a Wardley
+map with a directive that holds a line break or a semicolon] [test: the title of
+a railroad diagram with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a Wardley map with a directive that holds a line break
+or a semicolon] [test: the accDescr: of a Wardley map with a directive that
+holds a line break or a semicolon] [test: the accTitle: of a railroad diagram
+with a directive that holds a line break or a semicolon] [test: the accDescr: of
+a railroad diagram with a directive that holds a line break or a semicolon]
+[test: the title of a quadrant chart with a directive that holds a line break or
+a semicolon] [test: the description of a task of a user journey with a directive
+that holds a line break or a semicolon] [test: the accTitle: of a quadrant chart
+with a directive that holds a line break or a semicolon] [test: the accDescr: of
+a quadrant chart with a directive that holds a line break or a semicolon] [test:
+the accTitle: of a Gantt chart with a directive that holds a line break or a
+semicolon] [test: the accDescr: of a Gantt chart with a directive that holds a
+line break or a semicolon] [test: the accTitle: of a user journey with a
+directive that holds a line break or a semicolon] [test: the accDescr: of a user
+journey with a directive that holds a line break or a semicolon] [test: the
+accTitle: of a timeline with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a timeline with a directive that holds a line break or a
+semicolon] [test: the accTitle: of a sequence diagram with a directive that
+holds a line break or a semicolon] [test: the accDescr: of a sequence diagram
+with a directive that holds a line break or a semicolon] [test: the accTitle: of
+a C4 diagram with a directive that holds a line break or a semicolon] [test: the
+accDescr: of a C4 diagram with a directive that holds a line break or a
+semicolon] [test: a last event of a timeline with a directive that holds a line
+break or a semicolon] [test: the title of a Gantt chart with a directive that
+holds a line break or a semicolon] [test: the title of a user journey with a
+directive that holds a line break or a semicolon] [test: the title of a timeline
+with a directive that holds a line break or a semicolon] [test: the title of a
+sequence diagram with a directive that holds a line break or a semicolon] [test:
+the date format of a Gantt chart with a directive that holds a line break or a
+semicolon] [test: the axis format of a Gantt chart with a directive that holds a
+line break or a semicolon] [test: the title of a Venn diagram with a directive
+that holds a line break or a semicolon] [test: the title of a C4 diagram with a
+directive that holds a line break or a semicolon] [test: a node of a mindmap
+after a shape, the directive alone with a directive that holds a line break or a
+semicolon] [test: the accTitle: of a use case diagram with a directive that
+holds a line break or a semicolon] [test: the accDescr: of a use case diagram
+with a directive that holds a line break or a semicolon] [test: the text of an
+ishikawa literal with a directive that holds a line break or a semicolon] [test:
+the text of a treeView node with a directive that holds a line break or a
+semicolon] [test: the text of a mindmap node with a directive that holds a line
+break or a semicolon] [test: the text of a kanban card with a directive that
+holds a line break or a semicolon] [test: the second description of a state
+alias with a directive that holds a line break or a semicolon] [test: a card of
+a kanban board, the directive alone with a directive that holds a line break or
+a semicolon] [test: a bare node of a mindmap, the directive alone with a
+directive that holds a line break or a semicolon] [test: the title of a pie
+chart with a directive that holds a line break or a semicolon, wherever the
+directive stands] [test: the title of a Wardley map with a directive that holds
+a line break or a semicolon, wherever the directive stands] [test: the accTitle:
+of a Wardley map with a directive that holds a line break or a semicolon,
+wherever the directive stands] [test: the title of a quadrant chart with a
+directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the accTitle: of a quadrant chart with a directive that holds a line
+break or a semicolon, wherever the directive stands] [test: the title of a Gantt
+chart with a directive that holds a line break or a semicolon, wherever the
+directive stands] [test: the title of a Venn diagram with a directive that holds
+a line break or a semicolon, wherever the directive stands] [test: the title of
+a C4 diagram with a directive that holds a line break or a semicolon, wherever
+the directive stands] [test: the text of a mindmap node with a directive that
+holds a line break or a semicolon, wherever the directive stands] [test: the
+second description of a state alias with a directive that holds a line break or
+a semicolon, wherever the directive stands] [test: a title whose last directive
+holds a line break, with spaces after it, in each type] [test: a card of a
+kanban board and a node of a mindmap whose last directive holds a line break,
+with spaces after it] [test: a title whose last directive holds a semicolon,
+with spaces after it, in each group]
 
 ## Runs of whitespace in a text that are drawn the same
 

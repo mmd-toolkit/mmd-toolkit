@@ -107,7 +107,10 @@ Never take a value from the next physical line, including across empty, comment
 or directive lines. Trivia-bearing values, hidden suffixes and semicolon
 protection retain their source boundaries. Where only directives follow the text
 of a title, they are printed with one space before each that has spaces or tabs
-before it, and the spaces and tabs after the last one are left out (see
+before it, and the spaces and tabs after the last one are left out, unless a
+directive of the line holds a line break, a `;`, or a U+2028 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -149,7 +152,10 @@ content. Empty values never take the next physical line across
 blank/comment/directive gaps; hidden suffixes and protected gaps remain. Where
 only directives follow the text of the value, they are printed with one space
 before each that has spaces or tabs before it, and the spaces and tabs after the
-last one are left out (see
+last one are left out, unless a directive of the line holds a line break, a `;`,
+or a U+2028 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:

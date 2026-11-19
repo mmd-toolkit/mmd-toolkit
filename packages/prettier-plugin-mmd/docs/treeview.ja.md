@@ -1691,6 +1691,8 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+ただし、行のディレクティブのどれかに改行、`;`、U+2028 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title/title-directives-end-blanks-dropped]
@@ -1798,6 +1800,8 @@ treeView-beta
 次の行の文字を値に取りません。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
+ただし、行のディレクティブのどれかに改行、`;`、U+2028 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]

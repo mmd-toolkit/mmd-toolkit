@@ -365,6 +365,8 @@ period が `title` か `section` の語（大文字小文字は問いません�
 前に空白かタブがあれば空白 1 つを置き、
 最後のディレクティブの後ろの空白とタブは除きます。
 `2020 : e1   %%{x}%%  ` は `2020 : e1 %%{x}%%` と印字します。
+ただし、行のディレクティブのどれかに U+2028 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: periods-and-events/event-trailing-directive-blanks-dropped]
