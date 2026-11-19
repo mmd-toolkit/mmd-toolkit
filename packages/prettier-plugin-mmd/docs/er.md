@@ -2185,7 +2185,7 @@ directives/unclosed-after-statement-kept]
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
 break its left contact.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 this placement, as [radar](./radar.md#global-directives),
 [packet](./packet.md#global-directives), and
 [wardley](./wardley.md#global-directives) place a directive in the gap of units
