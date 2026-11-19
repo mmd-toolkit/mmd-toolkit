@@ -2009,13 +2009,17 @@ statement after the comment] [test: U+2028 and a comment after a value in
 quotes, with a statement after the comment] [test: U+2028 and a comment after
 the class in quotes of a class statement, with a statement after the comment]
 
-A statement that a comment line after U+2028 or U+2029 cuts, and a statement
-whose last line holds such a comment line after a `style`, `classDef`, or
-`class` statement, are printed as written, to their end: the string and the line
-break that follow the style stay where they are, and a name in quotes that the
-statement goes on with after the comment line keeps its quotes, since a name
-without quotes would go on over the character. A statement that follows the
-comment line, and is no part of that line, is printed as any statement is.
+A statement that a comment line after U+2028 or U+2029 cuts is printed as
+written, to its end, and so is a statement whose last line holds such a comment
+line after a `style`, `classDef`, or `class` statement: the string and the line
+break that follow the style stay where they are. In a statement that is cut, a
+name in quotes that ends its line, with the rest of the statement on a later
+line, keeps its quotes: without them the name would go on over the line break,
+and mermaid.js rejects the text. Any other name in quotes is printed as it is
+everywhere else: `"e" {` is printed `e {`, `"e" :::c {` is printed `e :::c {`,
+and the name that ends a relationship is printed without its quotes. A statement
+that follows the comment line, and is no part of that line, is printed as any
+statement is.
 
 [test: requirement: U+2028, a directive, a comment, and an empty line inside the
 line of an element, with its name in quotes on a later line] [test: requirement:
@@ -2028,7 +2032,19 @@ requirement: U+2028, a directive, a comment, and an empty line after the string
 and the class of a classDef statement] [test: requirement: U+2028, a directive,
 a comment, and an empty line after a relationship that goes on a later line]
 [test: requirement: U+2028, a directive, a comment, and an empty line after a
-block, with a name in quotes after them]
+block, with a name in quotes after them] [test: requirement: U+2028, a
+directive, a comment, and an empty line inside the line of an element, with its
+name in quotes and the rest of the statement on its line] [test: requirement:
+U+2028, a directive, a comment, and an empty line inside the line of an element,
+with its name in quotes and a class on its line] [test: requirement: U+2029, a
+directive, a comment, and an empty line inside the line of an element, with its
+name in quotes on a later line] [test: requirement: U+2028, a directive, a
+comment, and an empty line inside the line of a requirement, with its name in
+quotes on a later line] [test: requirement: U+2028, a directive, a comment, and
+an empty line inside the line of a requirement, with its name in quotes and the
+rest of the statement on its line] [test: requirement: U+2028, a directive, a
+comment, and an empty line inside a relationship, with the name in quotes that
+ends it]
 
 ### Whitespace characters
 

@@ -30,7 +30,6 @@ import {
   findDirectiveEndingAt,
   findTokensBetween,
   findTriviaAt,
-  findTriviaBetween,
   isBracketPadding,
   isStructural,
   isSpaceOrTab,
@@ -1584,27 +1583,18 @@ function startsItsLine(source: Source, offset: number): boolean {
 /**
  * Whether the text at `offset` follows a comment region that joins lines, with
  * only whitespace, line feeds, and directives between: mermaid.js reads it as
- * part of the line that ends at the U+2028 or U+2029 before the region, so a
- * name without quotes would go on over the character. Where the region is in
- * the statement of the text, the statement is printed as written, and the text
- * keeps its quotes (docs/requirement.md, Line separators).
+ * part of the line that ends at the U+2028 or U+2029 before the region. Where
+ * the region is in the statement of the text, the statement is printed as
+ * written, and a name that ends its line, with the rest of the statement on a
+ * later line, keeps its quotes: without them the name would go on over the line
+ * break, which mermaid.js rejects (docs/requirement.md, Line separators).
  */
 function followsJoiningRegion(source: Source, offset: number): boolean {
-  return source.joiningRegions.some((region) => {
-    if (region.end > offset) return false
-    let position = region.end
-    while (position < offset) {
-      const trivia = findTriviaBetween(source, position, position + 1).at(0)
-      if (trivia?.type === "Directive") {
-        position = trivia.range[1]
-      } else if (isWhitespace(source.text[position])) {
-        position++
-      } else {
-        return false
-      }
-    }
-    return true
-  })
+  return source.joiningRegions.some(
+    (region) =>
+      region.end <= offset &&
+      [...textRead(source, region.end, offset)].every(isWhitespace),
+  )
 }
 
 /**
@@ -1742,6 +1732,8 @@ function respell(
     !isKept(source, start) &&
     !(
       rule.form === "bare" &&
+      after === undefined &&
+      node.range[1] > lineEnd &&
       holdsJoiningRegion(source, node.range[0], start) &&
       followsJoiningRegion(source, start)
     )

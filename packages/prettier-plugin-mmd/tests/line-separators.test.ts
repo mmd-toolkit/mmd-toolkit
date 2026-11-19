@@ -4879,6 +4879,36 @@ const requirementLineSeparatorExamples: readonly (readonly [
     'requirementDiagram\nrequirement "r" {\n}\nrequirement s {\n} \u2028 %%{x}%%  %% c  \n\n"r" - satisfies -> s\n',
     "requirementDiagram\n  requirement r {\n  }\n  requirement s {\n} \u2028 %%{x}%%  %% c  \n\n  r - satisfies -> s\n",
   ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes and the rest of the statement on its line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n\n"e" {\n}\n',
+    "requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n\ne {\n  }\n",
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes and a class on its line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n\n"e" :::c {\n}\n',
+    "requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n\ne :::c {\n  }\n",
+  ],
+  [
+    "requirement: U+2029, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2029 %%{x}%%  %% c  \n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2029 %%{x}%%  %% c  \n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of a requirement, with its name in quotes on a later line",
+    'requirementDiagram\nrequirement  \u2028 %%{x}%%  %% c  \n\n"q" \n:::c {\nid: 2\n}\n',
+    'requirementDiagram\n  requirement  \u2028 %%{x}%%  %% c  \n\n"q" \n:::c {\n    id: 2\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of a requirement, with its name in quotes and the rest of the statement on its line",
+    'requirementDiagram\nrequirement  \u2028 %%{x}%%  %% c  \n\n"q" {\nid: 2\n}\n',
+    "requirementDiagram\n  requirement  \u2028 %%{x}%%  %% c  \n\nq {\n    id: 2\n  }\n",
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside a relationship, with the name in quotes that ends it",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\n"r" - satisfies ->\u2028 %%{x}%%  %% c  \n\n"r"\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  "r" - satisfies ->\u2028 %%{x}%%  %% c  \n\nr\n',
+  ],
 ]
 
 /**
