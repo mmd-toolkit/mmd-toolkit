@@ -1,5 +1,3 @@
-import type { UsecaseStatement } from "@mmd-toolkit/ast"
-import { appendItems } from "./collections.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesEndedBySemicolon,
@@ -32,11 +30,16 @@ export function findUsecaseKeptLines(source: Source): KeptLines {
 
 /**
  * The lines of a one-line accessibility statement whose value ends at a
- * U+2028 or U+2029 that a comment region follows, when nothing else stands on
- * the line after the region. The printer leaves out the whitespace at the end
- * of such a value and prints a region on a line of its own, so the statement
- * is no joined line and its text is printed as that of any statement
- * (docs/usecase.md, Line terminators).
+ * U+2028 or U+2029 that a comment region follows, when the line after the
+ * region holds no text. The statement ends at the character only where the
+ * whitespace after the region is no part of its value: whitespace at the start
+ * of the line after the region belongs to the value, so a line that starts
+ * with whitespace (before a directive, or alone) keeps the statement as written
+ * (docs/usecase.md, Line terminators). A system boundary cannot hold an
+ * accessibility statement, so only the statements of the body are read.
+ * The printer leaves out the whitespace at the end of such a value and prints
+ * a region on a line of its own, so the statement is no joined line and its
+ * text is printed as that of any statement.
  */
 function findAccessibilityLinesBeforeEmptyRegion(
   source: Source,
@@ -46,7 +49,12 @@ function findAccessibilityLinesBeforeEmptyRegion(
     throw new Error("prettier-plugin-mmd: kept lines of a non-usecase diagram")
   }
   const lines = new Set<number>()
-  for (const statement of accessibilityStatementsOf(diagram.body)) {
+  for (const statement of diagram.body) {
+    if (
+      statement.type !== "UsecaseAccTitleStatement" &&
+      statement.type !== "UsecaseAccDescrStatement"
+    )
+      continue
     const end = statement.range[1]
     const character = source.text[end - 1]
     if (
@@ -59,22 +67,4 @@ function findAccessibilityLinesBeforeEmptyRegion(
     }
   }
   return lines
-}
-
-/** The `accTitle:` and `accDescr:` statements, those in system boundaries too. */
-function accessibilityStatementsOf(
-  statements: readonly UsecaseStatement[],
-): UsecaseStatement[] {
-  const found: UsecaseStatement[] = []
-  for (const statement of statements) {
-    if (statement.type === "UsecaseSystemBoundaryStatement") {
-      appendItems(found, accessibilityStatementsOf(statement.body))
-    } else if (
-      statement.type === "UsecaseAccTitleStatement" ||
-      statement.type === "UsecaseAccDescrStatement"
-    ) {
-      found.push(statement)
-    }
-  }
-  return found
 }

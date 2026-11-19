@@ -119,10 +119,12 @@ export interface JoiningRegion {
   /** Whether anything but whitespace follows the region, to be joined to what comes before. */
   readonly hasTextAfter: boolean
   /**
-   * Whether the line right after the region holds text, so that the text
-   * before the region is read as one line with it: a line that holds nothing
-   * but whitespace and directives, or no line at all, joins nothing to what
-   * comes before.
+   * Whether the line right after the region holds text, which is no whitespace
+   * and no directive, so that the text before the region is read as one line
+   * with it. False for a line that holds nothing else, or for no line at all.
+   * The whitespace of such a line still belongs to what comes before the region
+   * where the statement before it takes it into its value (see
+   * `findAccessibilityLinesBeforeEmptyRegion`).
    */
   readonly joinsText: boolean
 }
