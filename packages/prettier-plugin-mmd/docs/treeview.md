@@ -1878,12 +1878,14 @@ here.
 A U+2028 or a U+2029 before the last directive, or between it and a comment,
 ends the line for what follows the title where a comment follows it: the line
 after the title is not indented (`title T\u2028%%{x}%%%% c` and the node `R`
-under it are printed as they are, `R` at column one). Where the title is the
-last statement of the text, the directive and the comment that follow a U+2028
-or a U+2029 before the directive are printed on a line of their own
-(`title T\u2028%%{x}%%%% c` is printed `title T` and `%%{x}%%%% c` on the next
-line), while a U+2028 or a U+2029 between the directive and the comment stays
-with them as written.
+under it are printed as they are, `R` at column one). Where nothing, an empty
+line, or a comment line follows the title and the text ends, the directive and
+the comment that follow a U+2028 or a U+2029 before the directive are printed on
+a line of their own (`title T\u2028%%{x}%%%% c` is printed `title T` and
+`%%{x}%%%% c` on the next line), while a U+2028 or a U+2029 between the
+directive and the comment stays with them as written. With a statement after the
+title, directly or after an empty line or a comment line, or with a line of
+spaces or a line of a directive after it, the title stays as written.
 
 Where the last directive holds a line break or a `;` (`%%{init: {`, a line
 break, and `}}%%`, or `%%{init: {a;b}}%%`), the table gives the forms with
@@ -1919,13 +1921,18 @@ is printed as a title is (`accDescr: T`, a tab, and U+0085 are printed
 has a space, which mermaid.js draws the same (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 
-Between the last directive and a comment, a run of spaces and tabs is printed as
-one space, and a run that holds another whitespace character stays as written, a
-tab in it included (`T`, `%%{x}%%`, a tab, a no-break space, and `%% c` are not
-changed). Where the title is the last statement of the text, the spaces and tabs
-after a U+2028 or a U+2029 there are printed as one space too
-(`title T %%{x}%%`, a U+2028, two spaces, and `%% c` are printed with one space
-after the U+2028).
+Between the last directive and a comment, with a statement right after the line,
+a run of spaces and tabs is printed as one space, and a run that holds another
+whitespace character stays as written, a tab in it included (`T`, `%%{x}%%`, a
+tab, a no-break space, and `%% c` are not changed). Where the text ends right
+after the line, what stands after the first U+2028 or U+2029 of such a run
+changes: whitespace characters only (spaces, tabs, a no-break space, U+3000, and
+the like) are printed as one space (`title T %%{x}%%`, a U+2028, two spaces, and
+`%% c` are printed with one space after the U+2028), a second U+2028 or U+2029
+after them puts the comment on a line of its own after the first one, and a
+U+0085 after the first one keeps the run as written. The forms with an empty
+line, a comment line, a line of spaces, or a line of a directive after the line
+are not given.
 
 [test: treeview: the whitespace before the last directive, with nothing after
 it] [test: treeview: the whitespace before the last directive, with spaces after
@@ -1940,18 +1947,25 @@ after it] [test: treeview: the whitespace before the last directive, with text
 after a space] [test: treeview: the whitespace between the last directive and a
 comment] [test: treeview: a run between the last directive and a comment] [test:
 treeview: a run between the last directive and a comment where the line is the
-last statement of the text] [test: treeview: the whitespace before the last
-directive where the line is the last statement of the text] [test: treeview: a
-run of whitespace before the last directive follows the column of its
-characters] [test: treeview: a run of whitespace before the last directive
-follows the column of its characters where the line is the last statement of the
-text] [test: treeview: a run that holds a tab and other whitespace before the
-last directive] [test: treeview: a run that holds a tab and other whitespace
-before the last directive where the line is the last statement of the text]
-[test: treeview: the whitespace around a last directive that holds a line break
-or a semicolon, with nothing or a mark that touches it after it] [test:
-treeview: the whitespace around a last directive that holds a line break or a
-semicolon, with spaces or a tab after it, or a mark after a space]
+last statement of the text] [test: treeview: a U+2028 or U+2029 before the last
+directive of a title, with nothing or an empty line after it] [test: treeview: a
+U+2028 or U+2029 before the last directive of a title, with a comment line after
+it] [test: treeview: a U+2028 or U+2029 before the last directive of a title,
+with a statement after it, directly or after an empty line or a comment line]
+[test: treeview: a U+2028 or U+2029 before the last directive of a title, with a
+line of spaces or a line of a directive after it] [test: treeview: the
+whitespace before the last directive where the line is the last statement of the
+text] [test: treeview: a run of whitespace before the last directive follows the
+column of its characters] [test: treeview: a run of whitespace before the last
+directive follows the column of its characters where the line is the last
+statement of the text] [test: treeview: a run that holds a tab and other
+whitespace before the last directive] [test: treeview: a run that holds a tab
+and other whitespace before the last directive where the line is the last
+statement of the text] [test: treeview: the whitespace around a last directive
+that holds a line break or a semicolon, with nothing or a mark that touches it
+after it] [test: treeview: the whitespace around a last directive that holds a
+line break or a semicolon, with spaces or a tab after it, or a mark after a
+space]
 
 This chooses consistent Db-equivalent outer spacing without taking a next-line
 value. Follow AST boundaries for `titlex` and `title"node"`; title still stays

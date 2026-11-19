@@ -728,7 +728,16 @@ const whitespaceColumns = [
 const runsOfOneColumn = [
   ["\t ", " \t"],
   [" \u00a0", "\u00a0 ", "\u00a0\u00a0", "\u00a0\u3000"],
-  [" \u2028", "\u2028 ", "\t\u2028", "\u2028\t", "\t\u2029", "\u2029\t"],
+  [
+    " \u2028",
+    "\u2028 ",
+    " \u2029",
+    "\u2029 ",
+    "\t\u2028",
+    "\u2028\t",
+    "\t\u2029",
+    "\u2029\t",
+  ],
   [" \u0085"],
 ] as const
 
@@ -876,8 +885,15 @@ const runsBetweenTheLastDirectiveAndAComment = {
     "  \u2028",
     " \u2029",
     "\t\u2029",
+    "\u2028\u0085",
+    "\u2028  \u0085",
+    "\u2029\u0085 ",
+    "\u2028\u0085\u2028",
   ],
-  /** Spaces and tabs after a line separator, as the last statement prints them. */
+  /**
+   * Whitespace after the first line separator, as the last statement prints
+   * it: one space.
+   */
   afterASeparator: [
     ["\u2028 ", "\u2028 "],
     ["\u2028  ", "\u2028 "],
@@ -885,6 +901,20 @@ const runsBetweenTheLastDirectiveAndAComment = {
     ["\u2029 ", "\u2029 "],
     ["\u2029  ", "\u2029 "],
     ["\u2029\t", "\u2029 "],
+    ["\u2028\u00a0", "\u2028 "],
+    ["\u2028\u3000", "\u2028 "],
+    ["\u2029\u00a0", "\u2029 "],
+    ["\u2029\u3000", "\u2029 "],
+  ],
+  /**
+   * A second line separator after whitespace, with the first one: the last
+   * statement puts the comment on a line of its own after the first one.
+   */
+  withASecondSeparator: [
+    ["\u2028\u2028", "\u2028"],
+    ["\u2028 \u2029", "\u2028"],
+    ["\u2029\u2028", "\u2029"],
+    ["\u2029\u00a0\u2028", "\u2029"],
   ],
 } as const
 
@@ -902,7 +932,7 @@ async function expectRunsBetweenTheLastDirectiveAndAComment(
   statementAfter: boolean,
 ): Promise<void> {
   const after = statementAfter ? "R\n" : ""
-  const { oneSpace, asWritten, afterASeparator } =
+  const { oneSpace, asWritten, afterASeparator, withASecondSeparator } =
     runsBetweenTheLastDirectiveAndAComment
   for (const keyword of keywordsOfTheTitleLines) {
     for (const run of oneSpace) {
@@ -912,9 +942,12 @@ async function expectRunsBetweenTheLastDirectiveAndAComment(
       )
     }
     for (const run of asWritten) {
-      // The line after a comment that follows a U+2028 or a U+2029 is not
-      // indented.
-      const startsALine = run.includes("\u2028") || run.includes("\u2029")
+      // The line after a comment that starts a line, after a U+2028 or a U+2029,
+      // is not indented; a U+0085 after the last of them keeps the comment on
+      // the line of the U+0085.
+      const startsALine =
+        Math.max(run.lastIndexOf("\u2028"), run.lastIndexOf("\u2029")) >
+        run.lastIndexOf("\u0085")
       await expectDirectiveRowKept(
         `treeView-beta\n${lineBetween(keyword, run)}\n${after}`,
         `treeView-beta\n  ${lineBetween(keyword, run)}\n${statementAfter ? (startsALine ? "R\n" : "  R\n") : ""}`,
@@ -926,8 +959,51 @@ async function expectRunsBetweenTheLastDirectiveAndAComment(
         `treeView-beta\n  ${lineBetween(keyword, statementAfter ? run : lastStatement)}\n${statementAfter ? "R\n" : ""}`,
       )
     }
+    for (const [run, first] of withASecondSeparator) {
+      await expectDirectiveRowKept(
+        `treeView-beta\n${lineBetween(keyword, run)}\n${after}`,
+        statementAfter
+          ? `treeView-beta\n  ${lineBetween(keyword, run)}\nR\n`
+          : `treeView-beta\n  ${lineBetween(keyword, first).slice(0, -"%% c".length)}\n  %% c\n`,
+      )
+    }
   }
 }
+
+/**
+ * What follows a line of a title, an accTitle: line, or an accDescr: line whose
+ * last directive has a U+2028 or a U+2029 before it, and whether the directive
+ * and the comment move to the next line (docs/treeview.md, Title).
+ */
+const whatFollowsATitleWithASeparatorBeforeTheDirective = [
+  {
+    name: "treeview: a U+2028 or U+2029 before the last directive of a title, with nothing or an empty line after it",
+    follows: ["", "\n"],
+    moved: true,
+  },
+  {
+    name: "treeview: a U+2028 or U+2029 before the last directive of a title, with a comment line after it",
+    follows: ["%% z\n"],
+    moved: true,
+  },
+  {
+    name: "treeview: a U+2028 or U+2029 before the last directive of a title, with a statement after it, directly or after an empty line or a comment line",
+    follows: ["R\n", "\nR\n", "%% z\nR\n", "%% z\n\nR\n"],
+    moved: false,
+  },
+  {
+    name: "treeview: a U+2028 or U+2029 before the last directive of a title, with a line of spaces or a line of a directive after it",
+    follows: [
+      "   \n",
+      "   \nR\n",
+      "%%{y}%%\n",
+      "%%{y}%%\nR\n",
+      " %%{y}%%\n",
+      " %%{y}%%\nR\n",
+    ],
+    moved: false,
+  },
+] as const
 
 describe("the whitespace before the last directive of a title and of an accessibility line, by what follows the directive", () => {
   it.each(whitespaceBeforeTheLastDirectiveRows.map((row) => [row.name, row]))(
@@ -1015,6 +1091,36 @@ describe("the whitespace before the last directive of a title and of an accessib
 
   it("treeview: a run that holds a tab and other whitespace before the last directive where the line is the last statement of the text", async () => {
     await expectRunsOfATabAndAnotherColumn(false)
+  })
+
+  it.each(
+    whatFollowsATitleWithASeparatorBeforeTheDirective.map(
+      (row) => [row.name, row] as const,
+    ),
+  )("%s", async (_name, row) => {
+    for (const keyword of keywordsOfTheTitleLines) {
+      for (const character of ["\u2028", "\u2029"]) {
+        const text = `T${character}%%{x}%%%% c`
+        for (const follow of row.follows) {
+          const input = `treeView-beta\n${keyword} ${text}\n${follow}`
+          const start = row.moved
+            ? `treeView-beta\n  ${keyword} T\n%%{x}%%%% c\n`
+            : `treeView-beta\n  ${keyword} ${text}\n`
+          const output = await formatMermaid(input)
+          expect(output.slice(0, start.length)).toBe(start)
+          expect(await formatMermaid(output)).toBe(output)
+          const before = dbOfText(input, defaultEmbedded())
+          expect(
+            dbForFormattingComparison(
+              before,
+              dbOfText(output, defaultEmbedded()),
+              input,
+              output,
+            ),
+          ).toEqual(before)
+        }
+      }
+    }
   })
 
   it("treeview: a run between the last directive and a comment", async () => {

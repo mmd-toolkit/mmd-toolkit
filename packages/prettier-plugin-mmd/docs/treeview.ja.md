@@ -1883,12 +1883,14 @@ U+1680、U+2000〜U+200A、U+202F、U+205F、U+3000、U+FEFF）、U+2028 と U+2
 title の次の行は字下げせず、
 `title T\u2028%%{x}%%%% c` とその下のノード `R` は書かれたまま印字し、
 `R` は 1 桁目になります。
-title がテキストの最後の文のときは、
+title の後に何もないか、空行かコメント行だけがあってテキストが終わるときは、
 ディレクティブの前の U+2028 か U+2029 の後ろの、ディレクティブとコメントを、
 次の行に置いて印字します（`title T\u2028%%{x}%%%% c` は `title T` と、
 次の行の `%%{x}%%%% c` と印字します）。
 ディレクティブとコメントの間の U+2028 か U+2029 は、
 それらと一緒に書かれたまま残ります。
+title の後に文があるとき（直後でも、空行かコメント行の後でも）と、
+空白だけの行かディレクティブの行があるときは、title は書かれたまま残ります。
 
 最後のディレクティブが改行か `;` を含むとき（`%%{init: {`、改行、`}}%%`、
 または `%%{init: {a;b}}%%`）、表のとおりに印字するのは、
@@ -1929,13 +1931,20 @@ U+0085 と印字します）。
 Db にはタブがあり、印字した行には空白がありますが、mermaid.js は同じに描きます。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 
-最後のディレクティブとコメントの間の、
+最後のディレクティブとコメントの間の、行の直後に文があるときの、
 空白とタブだけの連なりは空白 1 つにして印字し、ほかの空白文字を含む連なりは、
 タブがあっても書かれたまま残します（`T`、`%%{x}%%`、タブ、改行しない空白、
 `%% c` は変えません）。
-title がテキストの最後の文のときは、そこの U+2028 か U+2029 の後の空白とタブも、
+行の直後でテキストが終わるときは、
+そのような連なりの最初の U+2028 か U+2029 の後が変わります。
+空白文字（空白、タブ、改行しない空白、U+3000 など）だけなら、
 空白 1 つにして印字します（`title T %%{x}%%`、U+2028、空白 2 つ、`%% c` は、
 U+2028 の後を空白 1 つにして印字します）。
+その後に 2 つ目の U+2028 か U+2029 があれば、
+コメントを最初の文字の次の行に置きます。
+最初の文字の後に U+0085 があれば、連なりは書かれたまま残します。
+行の後に空行、コメント行、空白だけの行、
+ディレクティブの行があるときは示しません。
 
 [test: treeview: the whitespace before the last directive, with nothing after it]
 [test: treeview: the whitespace before the last directive, with spaces after it]
@@ -1949,6 +1958,10 @@ U+2028 の後を空白 1 つにして印字します）。
 [test: treeview: the whitespace between the last directive and a comment]
 [test: treeview: a run between the last directive and a comment]
 [test: treeview: a run between the last directive and a comment where the line is the last statement of the text]
+[test: treeview: a U+2028 or U+2029 before the last directive of a title, with nothing or an empty line after it]
+[test: treeview: a U+2028 or U+2029 before the last directive of a title, with a comment line after it]
+[test: treeview: a U+2028 or U+2029 before the last directive of a title, with a statement after it, directly or after an empty line or a comment line]
+[test: treeview: a U+2028 or U+2029 before the last directive of a title, with a line of spaces or a line of a directive after it]
 [test: treeview: the whitespace before the last directive where the line is the last statement of the text]
 [test: treeview: a run of whitespace before the last directive follows the column of its characters]
 [test: treeview: a run of whitespace before the last directive follows the column of its characters where the line is the last statement of the text]
