@@ -272,7 +272,10 @@ agentflow/lex-label-whitespace-only-comment-after-space] [fixture:
 agentflow/lex-label-whitespace-only-comment-after-tab] [fixture:
 agentflow/lex-label-whitespace-only-comment] [fixture:
 agentflow/lex-slanted-label-whitespace-only-comment-after-space] [fixture:
-agentflow/lex-ellipse-label-whitespace-only-comment-after-space]
+agentflow/lex-ellipse-label-whitespace-only-comment-after-space] [fixture:
+agentflow/comment-inside-pipe] [fixture:
+agentflow/lex-pipe-label-whitespace-only-comment] [fixture:
+agentflow/lex-label-whitespace-only-two-comments]
 
 Strings, markdown strings, split link text, accessibility values, callback text,
 and data have no diagram-comment rule. Their percent pairs and comment-looking
