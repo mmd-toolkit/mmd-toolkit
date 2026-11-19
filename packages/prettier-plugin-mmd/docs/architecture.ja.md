@@ -652,21 +652,45 @@ mermaid.js は次の行を独立した文として読むので、つなぐと、
 その文が宣言するもの（ノード、グループ、ジャンクション、エッジ）がなくなります。
 architecture の要約が title を公開しなくても、文と内容を保ちます。
 注釈類のある値と保護された隠れた形の境界は原文の隙間を保ちます。
-題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
-最後のディレクティブの後が空白とタブだけのときは、題の終わりのディレクティブを、
-それぞれの前に空白かタブがあれば空白 1 つを置き、
-行末の空白とタブの有無にかかわらず、
-最後のディレクティブの後の空白とタブを除いて印字します。
-互いに接して行末かコメントに接するディレクティブがあるとき、
-その前のテキストとの間にあるノーブレークスペースや U+3000 は、
-同じ連なりの残りとともに空白 1 つで印字します。
-ディレクティブが行末に接するときは、U+2028 や U+2029 も同じです。
-ディレクティブの後に空白と別のディレクティブかコメントが続くときは、
-その前のノーブレークスペースや U+3000 は残ります。
-最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
-U+2029 のどれかがあるときは、その前に空白やタブがあっても、
-行を書かれたままにします。
-中にディレクティブのある題と、ディレクティブだけの題も、書かれたままです。
+題にテキストがあり、そのテキストの前にも中にもディレクティブがないとき、
+題の終わりのディレクティブは、その前と後に何があるかで、次のように印字します。
+
+- ディレクティブの前が空白とタブだけ、または何もなく、
+  その前のテキストに `;` がなく、
+  最後のディレクティブの後が空白とタブだけのときは、
+  それぞれのディレクティブの前に空白かタブがあれば空白 1 つを置き、
+  行末の空白とタブの有無にかかわらず、
+  最後のディレクティブの後の空白とタブを除いて印字します。
+- ディレクティブの前にノーブレークスペースか U+3000 があり、
+  ディレクティブが互いに接して、
+  最後のディレクティブに行末かコメントが接するときは、その文字を、
+  同じ連なりの残りとともに空白 1 つで印字します。
+- ディレクティブの前にノーブレークスペースか U+3000 があり、
+  最初のディレクティブの後に空白と別のディレクティブかコメントが続くときは、
+  その文字は残ります。
+- ディレクティブの前に U+2028 か U+2029 があり、ディレクティブが互いに接して、
+  最後のディレクティブに行末が接するときは、空白 1 つで印字します。
+- ディレクティブの前に U+2028 か U+2029 があり、
+  最後のディレクティブの後に空白かタブが続くとき、
+  または最初のディレクティブの後に空白と別のディレクティブが続くときは、
+  行を書かれたままにします。
+- U+000B、U+000C、U+1680、U+2000 から U+200A、U+202F、U+205F、
+  U+FEFF のどれかがディレクティブの前にあり、その後に何も続かないときは、
+  空白 1 つで印字します。
+- 2 つのディレクティブの間にノーブレークスペース、U+3000、U+2028、
+  U+2029 のどれかがあるときは、最後のディレクティブの後の空白も含めて、
+  行を書かれたままにします。
+- テキストの中のディレクティブの前に `;` があるとき、
+  最後のディレクティブの後に空白かタブが続けば、行を書かれたままにします。
+  何も続かなければ、
+  `;` とディレクティブの間の空白やノーブレークスペースを空白 1 つで印字します。
+- 最後のディレクティブの後に、またはそれに接して `;` があるときは、
+  行を書かれたままにします。
+- 最後のディレクティブの後にノーブレークスペース、U+3000、U+2028、
+  U+2029 のどれかがあるときは、その前に空白やタブがあっても、
+  行を書かれたままにします。
+  中にディレクティブのある題と、ディレクティブだけの題も、書かれたままです。
+
 最後のディレクティブの後にコメントが続くときは、
 それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
 空白 1 つで印字します。
@@ -697,6 +721,50 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: a tab and a no-break space after the last directive of a title of an architecture diagram]
 [test: U+3000 before a directive that a comment touches in a title of an architecture diagram]
 [test: U+3000 before two directives that touch and end a title of an architecture diagram]
+[test: U+3000 before a directive that a space and another directive follow in a title of an architecture diagram]
+[test: a no-break space before a directive that a space and a comment follow in a title of an architecture diagram]
+[test: a no-break space between two directives that end a title of an architecture diagram]
+[test: U+3000 between two directives that end a title of an architecture diagram]
+[test: a no-break space between two directives, spaces after the last, in a title of an architecture diagram]
+[test: U+3000 between two directives, spaces after the last, in a title of an architecture diagram]
+[test: U+2028 before two directives that touch and end a title of an architecture diagram]
+[test: U+2029 before two directives that touch and end a title of an architecture diagram]
+[test: U+2028 before the last directive, a space and a tab after it, in a title of an architecture diagram]
+[test: U+2029 before the last directive, a space and a tab after it, in a title of an architecture diagram]
+[test: U+2028 before a directive that a space and another directive follow in a title of an architecture diagram]
+[test: U+2029 before a directive that a space and another directive follow in a title of an architecture diagram]
+[test: U+2028 between two directives that end a title of an architecture diagram]
+[test: U+2029 between two directives that end a title of an architecture diagram]
+[test: U+2028 between two directives, spaces after the last, in a title of an architecture diagram]
+[test: U+2029 between two directives, spaces after the last, in a title of an architecture diagram]
+[test: a space, a tab, and a no-break space after the last directive of a title of an architecture diagram]
+[test: a space, a tab, and U+3000 after the last directive of a title of an architecture diagram]
+[test: a space, a tab, and U+2028 after the last directive of a title of an architecture diagram]
+[test: a space, a tab, and U+2029 after the last directive of a title of an architecture diagram]
+[test: a semicolon before the directive of a title of an architecture diagram, spaces after it]
+[test: a semicolon and spaces before the directive that ends a title of an architecture diagram]
+[test: a semicolon after the last directive of a title of an architecture diagram, spaces around it]
+[test: a semicolon before the directive of a title of an architecture diagram, a tab after it]
+[test: a semicolon and a no-break space before the directive of a title of an architecture diagram, spaces after it]
+[test: a semicolon and a no-break space before the directive that ends a title of an architecture diagram]
+[test: a semicolon touching the last directive of a title of an architecture diagram]
+[test: U+000B before the directive that ends a title of an architecture diagram]
+[test: U+000C before the directive that ends a title of an architecture diagram]
+[test: U+1680 before the directive that ends a title of an architecture diagram]
+[test: U+2000 before the directive that ends a title of an architecture diagram]
+[test: U+2001 before the directive that ends a title of an architecture diagram]
+[test: U+2002 before the directive that ends a title of an architecture diagram]
+[test: U+2003 before the directive that ends a title of an architecture diagram]
+[test: U+2004 before the directive that ends a title of an architecture diagram]
+[test: U+2005 before the directive that ends a title of an architecture diagram]
+[test: U+2006 before the directive that ends a title of an architecture diagram]
+[test: U+2007 before the directive that ends a title of an architecture diagram]
+[test: U+2008 before the directive that ends a title of an architecture diagram]
+[test: U+2009 before the directive that ends a title of an architecture diagram]
+[test: U+200A before the directive that ends a title of an architecture diagram]
+[test: U+202F before the directive that ends a title of an architecture diagram]
+[test: U+205F before the directive that ends a title of an architecture diagram]
+[test: U+FEFF before the directive that ends a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -739,21 +807,32 @@ mermaid.js は次の行を独立した文として読むので、つなぐと、
 その文が title や description に入り、その文が宣言するもの（ノード、グループ、
 ジャンクション、エッジ）がなくなります。
 保護された注釈類と隠れた形の隙間を優先します。
-値にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
-最後のディレクティブの後が空白とタブだけのときは、値の終わりのディレクティブを、
-それぞれの前に空白かタブがあれば空白 1 つを置き、
-行末の空白とタブの有無にかかわらず、
-最後のディレクティブの後の空白とタブを除いて印字します。
-互いに接して行末かコメントに接するディレクティブがあるとき、
-その前のテキストとの間にあるノーブレークスペースや U+3000 は、
-同じ連なりの残りとともに空白 1 つで印字します。
-ディレクティブが行末に接するときは、U+2028 や U+2029 も同じです。
-ディレクティブの後に空白と別のディレクティブかコメントが続くときは、
-その前のノーブレークスペースや U+3000 は残ります。
-最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
-U+2029 のどれかがあるときは、その前に空白やタブがあっても、
-コロンの前の隙間を除いて、行を書かれたままにします。
-中にディレクティブのある値と、ディレクティブだけの値も、書かれたままです。
+値にテキストがあり、そのテキストの前にも中にもディレクティブがないとき、
+値の終わりのディレクティブは、その前と後に何があるかで、次のように印字します。
+
+- ディレクティブの前が空白とタブだけ、または何もなく、
+  その前のテキストに `;` がなく、
+  最後のディレクティブの後が空白とタブだけのときは、
+  それぞれのディレクティブの前に空白かタブがあれば空白 1 つを置き、
+  行末の空白とタブの有無にかかわらず、
+  最後のディレクティブの後の空白とタブを除いて印字します。
+- 最後のディレクティブの前にノーブレークスペース、U+3000、U+2028、
+  U+2029 のどれかがあり、その後に何も続かないときは、
+  その文字を空白 1 つで印字します。
+- 空白とコメントが続くディレクティブの前にノーブレークスペースがあるときは、
+  その文字は残ります。
+- 最後のディレクティブの前に U+2028 か U+2029 があり、
+  その後に空白かタブが続くときは、行を書かれたままにします。
+- テキストの中のディレクティブの前に `;` があるとき、
+  その後に空白かタブが続けば、行を書かれたままにします。
+  何も続かなければ、`;` とディレクティブの間の空白を空白 1 つで印字します。
+- 最後のディレクティブの後に `;` があるときは、行を書かれたままにします。
+- 最後のディレクティブの後にノーブレークスペース、U+3000、U+2028、
+  U+2029 のどれかがあるときは、その前に空白やタブがあっても、
+  行を書かれたままにします。
+  中にディレクティブのある値と、ディレクティブだけの値も、書かれたままです。
+  行を書かれたままにするとき、コロンの前の隙間は、隙間なしで印字します。
+
 最後のディレクティブの後にコメントが続くときは、
 それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
 空白 1 つで印字します。
@@ -785,6 +864,32 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: U+3000 before the directive that ends an accDescr line of an architecture diagram]
 [test: U+2028 before the directive that ends an accDescr line of an architecture diagram]
 [test: U+2029 before the directive that ends an accDescr line of an architecture diagram]
+[test: a no-break space before a directive that a space and a comment follow in an accTitle line of an architecture diagram]
+[test: U+2028 before the last directive, a space and a tab after it, in an accTitle line of an architecture diagram]
+[test: U+2029 before the last directive, a space and a tab after it, in an accTitle line of an architecture diagram]
+[test: a space, a tab, and a no-break space after the last directive of an accTitle line of an architecture diagram]
+[test: a space, a tab, and U+3000 after the last directive of an accTitle line of an architecture diagram]
+[test: the gap before the colon of an accTitle line with U+3000 after its last directive of an architecture diagram]
+[test: a space, a tab, and U+2028 after the last directive of an accTitle line of an architecture diagram]
+[test: the gap before the colon of an accTitle line with U+2028 after its last directive of an architecture diagram]
+[test: a space, a tab, and U+2029 after the last directive of an accTitle line of an architecture diagram]
+[test: the gap before the colon of an accTitle line with U+2029 after its last directive of an architecture diagram]
+[test: a semicolon before the directive of an accTitle line of an architecture diagram, spaces after it]
+[test: a semicolon and spaces before the directive that ends an accTitle line of an architecture diagram]
+[test: a semicolon after the last directive of an accTitle line of an architecture diagram, spaces around it]
+[test: U+2028 before the last directive, a space and a tab after it, in an accDescr line of an architecture diagram]
+[test: U+2029 before the last directive, a space and a tab after it, in an accDescr line of an architecture diagram]
+[test: a space, a tab, and a no-break space after the last directive of an accDescr line of an architecture diagram]
+[test: the gap before the colon of an accDescr line with a no-break space after its last directive of an architecture diagram]
+[test: a space, a tab, and U+3000 after the last directive of an accDescr line of an architecture diagram]
+[test: the gap before the colon of an accDescr line with U+3000 after its last directive of an architecture diagram]
+[test: a space, a tab, and U+2028 after the last directive of an accDescr line of an architecture diagram]
+[test: the gap before the colon of an accDescr line with U+2028 after its last directive of an architecture diagram]
+[test: a space, a tab, and U+2029 after the last directive of an accDescr line of an architecture diagram]
+[test: the gap before the colon of an accDescr line with U+2029 after its last directive of an architecture diagram]
+[test: a semicolon before the directive of an accDescr line of an architecture diagram, spaces after it]
+[test: a semicolon and spaces before the directive that ends an accDescr line of an architecture diagram]
+[test: a semicolon after the last directive of an accDescr line of an architecture diagram, spaces around it]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 
@@ -826,12 +931,29 @@ architecture-beta
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
 [journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
-物理行を結ぶコメント領域と、`;` を含む行がそれです。
+`accDescr` の後に U+2028 か U+2029 があるときは、
+その前に空白があってもなくても、コメントが続けばそれを改行で印字し、
+コメントは 1 段深い独立した行に置きます。
+ディレクティブが続けば空白 1 つで印字し、
+ディレクティブは `accDescr` の行に置きます。
+
 コメントやディレクティブの後の `{` を持つ行は、文と同じ段に置きます。
-その 3 つは 1 段深く置き、この段は規則 2 が与えるので、
-その形は規則 2 に反して印字しており、規則による修正を待っています。
+ほかの図の種類のうちこの形を受け付けるものでは、c4、class、er、flowchart、
+gantt、journey、quadrant、requirement、sequence、state、timeline、xychart は、
+コメントの行と同じく 1 段深く置きます。
+cynefin、gitgraph、info、ishikawa、packet、pie、radar、treemap、treeview、
+wardley は、文と同じ段に置きます。
+規則 2 はこの形を 1 つに決めないので、決まるまで公開版の形を残します。
 
 [fixture: architecture/description-blocks/opener-trivia]
+[test: architecture/description-blocks/keyword-u2028-before-comment]
+[test: architecture/description-blocks/keyword-u2029-before-comment]
+[test: architecture/description-blocks/keyword-u2028-before-directive]
+[test: architecture/description-blocks/keyword-u2029-before-directive]
+[test: architecture/description-blocks/keyword-space-u2028-before-comment]
+[test: architecture/description-blocks/keyword-space-u2029-before-comment]
+[test: architecture/description-blocks/keyword-space-u2028-before-directive]
+[test: architecture/description-blocks/keyword-space-u2029-before-directive]
 
 コメント・ディレクティブだけの内側を保ちます。
 規則 1 は、ブロックの中の行の印を挙げていないので、
@@ -1002,7 +1124,6 @@ architecture-beta
 整形が分ける単位の隙間のディレクティブを後ろの単位と一緒に動かし、
 右側の接触か間隔を残し、左側の接触は切ります。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
-たとえば、文の後の閉じていないディレクティブです。
 通常の独立開始だけ本文の1段に揃え、複数行の内部と EOF までの末尾は保ちます。
 共通処理の除去は両側を結合するため、
 部品の境界の空白を消すと宣言が拒否され得ます。

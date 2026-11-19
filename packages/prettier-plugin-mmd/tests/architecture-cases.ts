@@ -58,6 +58,54 @@ export const architectureCases: readonly ArchitectureCase[] = [
     options: {},
   },
   {
+    name: "architecture/description-blocks/keyword-u2028-before-comment",
+    input: "architecture-beta\naccDescr\u2028%% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-u2029-before-comment",
+    input: "architecture-beta\naccDescr\u2029%% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-u2028-before-directive",
+    input: "architecture-beta\naccDescr\u2028%%{x}%%\n{ D }\n",
+    output: "architecture-beta\n  accDescr %%{x}%%\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-u2029-before-directive",
+    input: "architecture-beta\naccDescr\u2029%%{x}%%\n{ D }\n",
+    output: "architecture-beta\n  accDescr %%{x}%%\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-space-u2028-before-comment",
+    input: "architecture-beta\naccDescr \u2028%% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-space-u2029-before-comment",
+    input: "architecture-beta\naccDescr \u2029%% c\n{ D }\n",
+    output: "architecture-beta\n  accDescr\n    %% c\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-space-u2028-before-directive",
+    input: "architecture-beta\naccDescr \u2028%%{x}%%\n{ D }\n",
+    output: "architecture-beta\n  accDescr %%{x}%%\n  { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-space-u2029-before-directive",
+    input: "architecture-beta\naccDescr \u2029%%{x}%%\n{ D }\n",
+    output: "architecture-beta\n  accDescr %%{x}%%\n  { D }\n",
+    options: {},
+  },
+  {
     name: "architecture/comments/ls-ps-content",
     input:
       "architecture-beta\n%%! X\u2028service swallowed\u2029Y\nservice visible\n",

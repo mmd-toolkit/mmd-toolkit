@@ -625,21 +625,42 @@ mermaid.js reads the next line as a statement of its own, so joining it would
 put that statement into the title, and what it declares (a node, a group, a
 junction, or an edge) would disappear. Keep occurrences and content even though
 the architecture summary does not publish title. Trivia-bearing values and
-protected hidden boundaries keep their source gaps. Where a title has text, no
-directive before its text or inside it, and nothing but spaces and tabs after
-its last directive, the directives that end it are printed with one space before
-each that has spaces or tabs before it, and the spaces and tabs after the last
-one are left out, whatever the spaces and tabs at the end of the line. A
-no-break space or U+3000 between the text and directives that touch one another
-and then touch the end of the line or a comment is printed as one space with the
-rest of its run, and so is a U+2028 or U+2029 where the directives touch the end
-of the line. Where a space and another directive or a comment follow the
-directive, a no-break space or U+3000 before it stays. Where a no-break space,
-U+3000, U+2028, or U+2029 follows the last directive, also after spaces or tabs,
-the line stays as written, and so does a title with a directive inside it and a
-title of directives only. Where a comment follows the last directive, a run of
-spaces and tabs before each directive and before the comment is printed as one
-space (see
+protected hidden boundaries keep their source gaps. Where a title has text and
+no directive stands before its text or inside it, the directives that end it are
+printed as follows, by what stands before them and after them:
+
+- Where only spaces and tabs, or nothing, stand before the directives, no `;`
+  stands in the text before them, and nothing but spaces and tabs follow the
+  last one, one space is printed before each directive that has spaces or tabs
+  before it, and the spaces and tabs after the last one are left out, whatever
+  the spaces and tabs at the end of the line.
+- Where a no-break space or U+3000 stands before the directives, they touch one
+  another, and the end of the line or a comment touches the last one, the
+  character is printed as one space with the rest of its run.
+- Where a no-break space or U+3000 stands before the directives and a space and
+  another directive or a comment follow the first one, the character stays.
+- Where a U+2028 or U+2029 stands before the directives, they touch one another,
+  and the end of the line touches the last one, it is printed as one space.
+- Where a U+2028 or U+2029 stands before the directives and spaces or tabs
+  follow the last one, or a space and another directive follow the first one,
+  the line stays as written.
+- Where one of U+000B, U+000C, U+1680, U+2000 to U+200A, U+202F, U+205F, and
+  U+FEFF stands before a directive and nothing follows it, it is printed as one
+  space.
+- Where a no-break space, U+3000, U+2028, or U+2029 stands between two
+  directives, the line stays as written, the spaces after the last directive
+  included.
+- Where a `;` stands in the text before the directives, the line stays as
+  written if spaces or tabs follow the last directive; if nothing follows it,
+  the spaces or the no-break space between the `;` and the directive are printed
+  as one space.
+- A `;` after the last directive, or touching it, keeps the line as written.
+- A no-break space, U+3000, U+2028, or U+2029 after the last directive, also
+  after spaces or tabs, keeps the line as written, and so does a title with a
+  directive inside it and a title of directives only.
+
+Where a comment follows the last directive, a run of spaces and tabs before each
+directive and before the comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -669,7 +690,59 @@ U+3000 before a directive that a space and a comment follow in a title of an
 architecture diagram] [test: a tab and a no-break space after the last directive
 of a title of an architecture diagram] [test: U+3000 before a directive that a
 comment touches in a title of an architecture diagram] [test: U+3000 before two
-directives that touch and end a title of an architecture diagram]
+directives that touch and end a title of an architecture diagram] [test: U+3000
+before a directive that a space and another directive follow in a title of an
+architecture diagram] [test: a no-break space before a directive that a space
+and a comment follow in a title of an architecture diagram] [test: a no-break
+space between two directives that end a title of an architecture diagram] [test:
+U+3000 between two directives that end a title of an architecture diagram]
+[test: a no-break space between two directives, spaces after the last, in a
+title of an architecture diagram] [test: U+3000 between two directives, spaces
+after the last, in a title of an architecture diagram] [test: U+2028 before two
+directives that touch and end a title of an architecture diagram] [test: U+2029
+before two directives that touch and end a title of an architecture diagram]
+[test: U+2028 before the last directive, a space and a tab after it, in a title
+of an architecture diagram] [test: U+2029 before the last directive, a space and
+a tab after it, in a title of an architecture diagram] [test: U+2028 before a
+directive that a space and another directive follow in a title of an
+architecture diagram] [test: U+2029 before a directive that a space and another
+directive follow in a title of an architecture diagram] [test: U+2028 between
+two directives that end a title of an architecture diagram] [test: U+2029
+between two directives that end a title of an architecture diagram] [test:
+U+2028 between two directives, spaces after the last, in a title of an
+architecture diagram] [test: U+2029 between two directives, spaces after the
+last, in a title of an architecture diagram] [test: a space, a tab, and a
+no-break space after the last directive of a title of an architecture diagram]
+[test: a space, a tab, and U+3000 after the last directive of a title of an
+architecture diagram] [test: a space, a tab, and U+2028 after the last directive
+of a title of an architecture diagram] [test: a space, a tab, and U+2029 after
+the last directive of a title of an architecture diagram] [test: a semicolon
+before the directive of a title of an architecture diagram, spaces after it]
+[test: a semicolon and spaces before the directive that ends a title of an
+architecture diagram] [test: a semicolon after the last directive of a title of
+an architecture diagram, spaces around it] [test: a semicolon before the
+directive of a title of an architecture diagram, a tab after it] [test: a
+semicolon and a no-break space before the directive of a title of an
+architecture diagram, spaces after it] [test: a semicolon and a no-break space
+before the directive that ends a title of an architecture diagram] [test: a
+semicolon touching the last directive of a title of an architecture diagram]
+[test: U+000B before the directive that ends a title of an architecture diagram]
+[test: U+000C before the directive that ends a title of an architecture diagram]
+[test: U+1680 before the directive that ends a title of an architecture diagram]
+[test: U+2000 before the directive that ends a title of an architecture diagram]
+[test: U+2001 before the directive that ends a title of an architecture diagram]
+[test: U+2002 before the directive that ends a title of an architecture diagram]
+[test: U+2003 before the directive that ends a title of an architecture diagram]
+[test: U+2004 before the directive that ends a title of an architecture diagram]
+[test: U+2005 before the directive that ends a title of an architecture diagram]
+[test: U+2006 before the directive that ends a title of an architecture diagram]
+[test: U+2007 before the directive that ends a title of an architecture diagram]
+[test: U+2008 before the directive that ends a title of an architecture diagram]
+[test: U+2009 before the directive that ends a title of an architecture diagram]
+[test: U+200A before the directive that ends a title of an architecture diagram]
+[test: U+202F before the directive that ends a title of an architecture diagram]
+[test: U+205F before the directive that ends a title of an architecture diagram]
+[test: U+FEFF before the directive that ends a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -710,20 +783,32 @@ mermaid.js reads the next line as a statement of its own, so joining it would
 put that statement into the title or the description, and what it declares (a
 node, a group, a junction, or an edge) would disappear. Braces after a colon
 remain line text, and protected trivia/hidden gaps take precedence. Where a
-value has text, no directive before its text or inside it, and nothing but
-spaces and tabs after its last directive, the directives that end it are printed
-with one space before each that has spaces or tabs before it, and the spaces and
-tabs after the last one are left out, whatever the spaces and tabs at the end of
-the line. A no-break space or U+3000 between the text and directives that touch
-one another and then touch the end of the line or a comment is printed as one
-space with the rest of its run, and so is a U+2028 or U+2029 where the
-directives touch the end of the line. Where a space and another directive or a
-comment follow the directive, a no-break space or U+3000 before it stays. Where
-a no-break space, U+3000, U+2028, or U+2029 follows the last directive, also
-after spaces or tabs, the line stays as written, apart from the gap before the
-colon, and so does a value with a directive inside it and a value of directives
-only. Where a comment follows the last directive, a run of spaces and tabs
-before each directive and before the comment is printed as one space (see
+value has text and no directive stands before its text or inside it, the
+directives that end it are printed as follows, by what stands before them and
+after them:
+
+- Where only spaces and tabs, or nothing, stand before the directives, no `;`
+  stands in the text before them, and nothing but spaces and tabs follow the
+  last one, one space is printed before each directive that has spaces or tabs
+  before it, and the spaces and tabs after the last one are left out, whatever
+  the spaces and tabs at the end of the line.
+- Where a no-break space, U+3000, U+2028, or U+2029 stands before the last
+  directive and nothing follows it, the character is printed as one space.
+- Where a no-break space stands before a directive that a space and a comment
+  follow, the character stays.
+- Where a U+2028 or U+2029 stands before the last directive and spaces or tabs
+  follow it, the line stays as written.
+- Where a `;` stands in the text before the directive, the line stays as written
+  if spaces or tabs follow it; if nothing follows it, the spaces between the `;`
+  and the directive are printed as one space.
+- A `;` after the last directive keeps the line as written.
+- A no-break space, U+3000, U+2028, or U+2029 after the last directive, also
+  after spaces or tabs, keeps the line as written, and so does a value with a
+  directive inside it and a value of directives only. Where it keeps the line, a
+  gap before the colon is printed as no gap.
+
+Where a comment follows the last directive, a run of spaces and tabs before each
+directive and before the comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
@@ -755,7 +840,45 @@ architecture diagram] [test: U+2029 after the last directive of an accDescr line
 of an architecture diagram] [test: U+3000 before the directive that ends an
 accDescr line of an architecture diagram] [test: U+2028 before the directive
 that ends an accDescr line of an architecture diagram] [test: U+2029 before the
-directive that ends an accDescr line of an architecture diagram]
+directive that ends an accDescr line of an architecture diagram] [test: a
+no-break space before a directive that a space and a comment follow in an
+accTitle line of an architecture diagram] [test: U+2028 before the last
+directive, a space and a tab after it, in an accTitle line of an architecture
+diagram] [test: U+2029 before the last directive, a space and a tab after it, in
+an accTitle line of an architecture diagram] [test: a space, a tab, and a
+no-break space after the last directive of an accTitle line of an architecture
+diagram] [test: a space, a tab, and U+3000 after the last directive of an
+accTitle line of an architecture diagram] [test: the gap before the colon of an
+accTitle line with U+3000 after its last directive of an architecture diagram]
+[test: a space, a tab, and U+2028 after the last directive of an accTitle line
+of an architecture diagram] [test: the gap before the colon of an accTitle line
+with U+2028 after its last directive of an architecture diagram] [test: a space,
+a tab, and U+2029 after the last directive of an accTitle line of an
+architecture diagram] [test: the gap before the colon of an accTitle line with
+U+2029 after its last directive of an architecture diagram] [test: a semicolon
+before the directive of an accTitle line of an architecture diagram, spaces
+after it] [test: a semicolon and spaces before the directive that ends an
+accTitle line of an architecture diagram] [test: a semicolon after the last
+directive of an accTitle line of an architecture diagram, spaces around it]
+[test: U+2028 before the last directive, a space and a tab after it, in an
+accDescr line of an architecture diagram] [test: U+2029 before the last
+directive, a space and a tab after it, in an accDescr line of an architecture
+diagram] [test: a space, a tab, and a no-break space after the last directive of
+an accDescr line of an architecture diagram] [test: the gap before the colon of
+an accDescr line with a no-break space after its last directive of an
+architecture diagram] [test: a space, a tab, and U+3000 after the last directive
+of an accDescr line of an architecture diagram] [test: the gap before the colon
+of an accDescr line with U+3000 after its last directive of an architecture
+diagram] [test: a space, a tab, and U+2028 after the last directive of an
+accDescr line of an architecture diagram] [test: the gap before the colon of an
+accDescr line with U+2028 after its last directive of an architecture diagram]
+[test: a space, a tab, and U+2029 after the last directive of an accDescr line
+of an architecture diagram] [test: the gap before the colon of an accDescr line
+with U+2029 after its last directive of an architecture diagram] [test: a
+semicolon before the directive of an accDescr line of an architecture diagram,
+spaces after it] [test: a semicolon and spaces before the directive that ends an
+accDescr line of an architecture diagram] [test: a semicolon after the last
+directive of an accDescr line of an architecture diagram, spaces around it]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 
@@ -797,13 +920,28 @@ Rule 1 names no mark for a line break next to a comment or a directive, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep such a line break, where no
-other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`). The line that holds the `{` after a comment or
-a directive stands at the level of its statement, where those three print it one
-level deeper, which rule 2 gives: the form is printed against rule 2 and waits
-to be fixed by the rule.
+other rule keeps the layout as written. A U+2028 or U+2029 after `accDescr`,
+with or without a space before it, is printed as a line break when a comment
+follows it, with the comment on a line of its own one level deeper, and as one
+space when a directive follows it, with the directive on the line of `accDescr`.
 
-[fixture: architecture/description-blocks/opener-trivia]
+The line that holds the `{` after a comment or a directive stands at the level
+of its statement. Of the other diagram types that accept the form, c4, class,
+er, flowchart, gantt, journey, quadrant, requirement, sequence, state, timeline,
+and xychart print it one level deeper, with the comment line, and cynefin,
+gitgraph, info, ishikawa, packet, pie, radar, treemap, treeview, and wardley
+print it at the level of the statement. Rule 2 gives no one form for it, so the
+released form stays until it is decided.
+
+[fixture: architecture/description-blocks/opener-trivia] [test:
+architecture/description-blocks/keyword-u2028-before-comment] [test:
+architecture/description-blocks/keyword-u2029-before-comment] [test:
+architecture/description-blocks/keyword-u2028-before-directive] [test:
+architecture/description-blocks/keyword-u2029-before-directive] [test:
+architecture/description-blocks/keyword-space-u2028-before-comment] [test:
+architecture/description-blocks/keyword-space-u2029-before-comment] [test:
+architecture/description-blocks/keyword-space-u2028-before-directive] [test:
+architecture/description-blocks/keyword-space-u2029-before-directive]
 
 Keep comment/directive-only interiors. Rule 1 names no mark for a line inside a
 block, so
@@ -966,12 +1104,11 @@ decides, as [flowchart](./flowchart.md#directives),
 [gantt](./gantt.md#directives), and [journey](./journey.md#directives) move a
 directive in the gap of units that formatting splits with the following unit,
 keep its right-side contact or separation, and break its left contact, where no
-other rule keeps the layout as written (a directive that is not closed after a
-statement, and the like). Ordinary standalone starts align one body step in;
-multiline interiors and EOF-reaching endings stay written. Common removal joins
-surrounding text, so deleting component-boundary whitespace can reject a
-declaration. Preserve component/value-internal directives rather than treating
-their opaque text as JSON.
+other rule keeps the layout as written. Ordinary standalone starts align one
+body step in; multiline interiors and EOF-reaching endings stay written. Common
+removal joins surrounding text, so deleting component-boundary whitespace can
+reject a declaration. Preserve component/value-internal directives rather than
+treating their opaque text as JSON.
 
 [fixture: architecture/global-directives/header-to-body] [fixture:
 architecture/global-directives/header-split-both-separated] [fixture:
