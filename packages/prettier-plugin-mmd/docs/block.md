@@ -465,8 +465,13 @@ before a `,`, and before the `)`, a comment line or a directive line stays where
 it is written, at column one or indented, and the next line is not indented,
 since the whitespace there is in the Db (see above); after a `,` the comment
 line and the next line stand one level deeper. A directive on the line of the
-direction stays touching or separated as written (`(right %%{x}%%, down)` and
-`(right%%{x}%%, down)` stay).
+direction stays touching or separated as written after the `(`, before a `,`,
+and before the `)`, since the whitespace there is in the Db
+(`(right %%{x}%%, down)` and `(right%%{x}%%, down)` stay). After a `,` the gap
+is printed as without the directive, and the directive stands after its space
+and touches the unit that follows it, as under [Directives](#directives):
+`(right,  %%{x}%%  down)` and `(right,%%{x}%%down)` are printed
+`(right, %%{x}%%down)`.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [fixture:
@@ -476,10 +481,19 @@ shapes/block-arrow-closing-comment-line] [fixture:
 shapes/block-arrow-comma-directive-line] [fixture:
 shapes/block-arrow-comma-directive-line-indented] [fixture:
 shapes/block-arrow-directive-before-comma] [fixture:
-shapes/block-arrow-directive-touching-before-comma] [test: U+2028 after the
-comma between the directions of a block arrow] [test: U+2029 after the comma
-between the directions of a block arrow] [test: U+2028 before the comma between
-the directions of a block arrow] [test: U+2029 before the comma between the
+shapes/block-arrow-directive-touching-before-comma] [fixture:
+shapes/block-arrow-first-direction-comment-line-indented] [fixture:
+shapes/block-arrow-first-direction-directive-line] [fixture:
+shapes/block-arrow-first-direction-directive-line-indented] [fixture:
+shapes/block-arrow-closing-comment-line-indented] [fixture:
+shapes/block-arrow-closing-directive-line] [fixture:
+shapes/block-arrow-closing-directive-line-indented] [fixture:
+shapes/block-arrow-directive-after-open-parenthesis] [fixture:
+shapes/block-arrow-directive-before-closing-parenthesis] [fixture:
+shapes/block-arrow-directive-after-comma] [test: U+2028 after the comma between
+the directions of a block arrow] [test: U+2029 after the comma between the
+directions of a block arrow] [test: U+2028 before the comma between the
+directions of a block arrow] [test: U+2029 before the comma between the
 directions of a block arrow] [fixture: shapes/block-arrow-touches-the-id]
 [fixture: shapes/block-arrow-parenthesis-touches-the-closing] [fixture:
 shapes/block-arrow-directions-as-written] [fixture:
@@ -1308,16 +1322,23 @@ instead of the gap, or the gap ends a line, they are dropped with it. A comment
 line after one of them joins the lines of the source that mermaid.js reads as
 one (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
-and the statements on those lines are printed as written. In a label they are
-characters and stay.
+and the whitespace and the line breaks of the statements on those lines are kept
+as written, while the colors of a style on them are printed as under
+[Colors](#colors). In a label they are characters and stay.
 
 [test: U+2028 between two statements of a row] [test: U+2029 between two
 statements of a row] [test: U+2028 around the arrow of an edge] [test: U+2028
 between an id and its shape] [test: U+2028 before the colon of a width] [test:
 U+2028 after columns] [test: U+2028 in a label] [test: U+2028 at the end of a
 statement of a row] [test: U+2028 before a comment line that joins lines] [test:
-U+2029 before comment lines that join lines] [test: U+2028 between a composite
-head and its body]
+U+2029 before comment lines that join lines] [test: block:
+color-before-comma-in-style-on-a-line-that-a-ls-comment-line-joins] [test:
+block: color-before-comma-in-classdef-on-a-line-that-a-ps-comment-line-joins]
+[test: block:
+last-color-in-style-that-the-line-after-a-ls-comment-line-goes-on-with] [test:
+block:
+whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins]
+[test: U+2028 between a composite head and its body]
 
 ### Whitespace characters
 

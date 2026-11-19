@@ -495,8 +495,14 @@ U+2028 と U+2029 はそのまま残します。
 第 1 列か字下げされた、書かれた位置のままで、次の行も字下げしません。
 そこの空白は Db にあるからです（上を参照）。
 `,` の後では、コメント行と次の行を 1 段深く置きます。
-方向の行にあるディレクティブは、接しているか離れているかを書かれたまま残します。
+方向の行にあるディレクティブは、`(` の後、`,` の前、`)` の前では、
+そこの空白が Db にあるので、接しているか離れているかを書かれたまま残します。
 `(right %%{x}%%, down)` と `(right%%{x}%%, down)` はそのままです。
+`,` の後では、隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
+[指令](#指令)と同じです。
+`(right,  %%{x}%%  down)` と `(right,%%{x}%%down)` は `(right, %%{x}%%down)`
+になります。
 
 [fixture: shapes/block-arrow-comma-space]
 [fixture: shapes/block-arrow-comma-comment-line]
@@ -507,6 +513,15 @@ U+2028 と U+2029 はそのまま残します。
 [fixture: shapes/block-arrow-comma-directive-line-indented]
 [fixture: shapes/block-arrow-directive-before-comma]
 [fixture: shapes/block-arrow-directive-touching-before-comma]
+[fixture: shapes/block-arrow-first-direction-comment-line-indented]
+[fixture: shapes/block-arrow-first-direction-directive-line]
+[fixture: shapes/block-arrow-first-direction-directive-line-indented]
+[fixture: shapes/block-arrow-closing-comment-line-indented]
+[fixture: shapes/block-arrow-closing-directive-line]
+[fixture: shapes/block-arrow-closing-directive-line-indented]
+[fixture: shapes/block-arrow-directive-after-open-parenthesis]
+[fixture: shapes/block-arrow-directive-before-closing-parenthesis]
+[fixture: shapes/block-arrow-directive-after-comma]
 [test: U+2028 after the comma between the directions of a block arrow]
 [test: U+2029 after the comma between the directions of a block arrow]
 [test: U+2028 before the comma between the directions of a block arrow]
@@ -1374,7 +1389,8 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 隙間の代わりに印字が改行を置く所と、行末の隙間では、一緒に落とします。
 それらの後のコメント行は、mermaid.js が 1 行として読む行をつなぎ（詳しくは、
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照）、その行の文は書かれたまま印字します。
+を参照）、その行の文の空白と改行は書かれたまま印字します。
+その行にある style の色は、[色](#色)と同じに印字します。
 ラベルの中では文字で、そのまま残ります。
 
 [test: U+2028 between two statements of a row]
@@ -1385,6 +1401,10 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 [test: U+2028 in a label] [test: U+2028 at the end of a statement of a row]
 [test: U+2028 before a comment line that joins lines]
 [test: U+2029 before comment lines that join lines]
+[test: block: color-before-comma-in-style-on-a-line-that-a-ls-comment-line-joins]
+[test: block: color-before-comma-in-classdef-on-a-line-that-a-ps-comment-line-joins]
+[test: block: last-color-in-style-that-the-line-after-a-ls-comment-line-goes-on-with]
+[test: block: whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins]
 [test: U+2028 between a composite head and its body]
 
 ### 空白文字

@@ -4699,6 +4699,26 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\n  block: G\u2028%% c\n  a\n  end\n",
   ],
   [
+    "block: color-before-comma-in-style-on-a-line-that-a-ls-comment-line-joins",
+    "block-beta\na\nstyle a fill:#F00,stroke:#000\u2028%% c\n x\n",
+    "block-beta\n  a\n  style a fill:#f00,stroke:#000\u2028%% c\n x\n",
+  ],
+  [
+    "block: color-before-comma-in-classdef-on-a-line-that-a-ps-comment-line-joins",
+    "block-beta\na\nclassDef c fill:#F00,color:#ABC\u2029%% c\n x\n",
+    "block-beta\n  a\n  classDef c fill:#f00,color:#ABC\u2029%% c\n x\n",
+  ],
+  [
+    "block: last-color-in-style-that-the-line-after-a-ls-comment-line-goes-on-with",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n x\n",
+    "block-beta\n  a\n  style a fill:#F00\u2028%% c\n x\n",
+  ],
+  [
+    "block: whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins",
+    "block-beta\ncolumns 3\na   b\u2028%% c\n  c\n",
+    "block-beta\n  columns 3\n  a   b\u2028%% c\n  c\n",
+  ],
+  [
     "block: ps-comment-in-composite-head",
     "block-beta\nblock:\u2029%% keep\n group:2\nA\nend\n",
     "block-beta\n  block:\u2029%% keep\n group:2\n    A\n  end\n",
