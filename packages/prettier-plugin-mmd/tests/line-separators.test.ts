@@ -7174,6 +7174,116 @@ const textEndDirectiveExamples: readonly (readonly [string, string, string])[] =
       "usecase-beta\naccTitle: T\u2028%%{x}%%\u2028%%{y}%%\u2028{B}\nactor A\n",
       "usecase-beta\n  accTitle: T\u2028%%{x}%% %%{y}%%\n  actor A\n",
     ],
+    [
+      "radar title: U+00A0 before two directives that touch each other",
+      "radar-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\naxis a, b\ncurve c{1, 2}\n",
+      "radar-beta\n  title T %%{x}%%%%{y}%%\n  axis a, b\n  curve c{1, 2}\n",
+    ],
+    [
+      "architecture title: U+00A0 before two directives that touch each other",
+      "architecture-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\nservice a(server)[A]\n",
+      "architecture-beta\n  title T %%{x}%%%%{y}%%\n  service a(server)[A]\n",
+    ],
+    [
+      "wardley title: U+00A0 before two directives that touch each other",
+      "wardley-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\ncomponent A [0.5, 0.5]\n",
+      "wardley-beta\n  title T %%{x}%%%%{y}%%\n  component A [0.5, 0.5]\n",
+    ],
+    [
+      "pie title: U+00A0 before two directives that touch each other",
+      'pie\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "info title: U+00A0 before two directives that touch each other",
+      "info\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n",
+      "info\n  title T %%{x}%%%%{y}%%\n",
+    ],
+    [
+      "packet title: U+00A0 before two directives that touch each other",
+      'packet-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n0-7: "x"\n',
+      'packet-beta\n  title T %%{x}%%%%{y}%%\n  0-7: "x"\n',
+    ],
+    [
+      "gitGraph title: U+00A0 before two directives that touch each other",
+      "gitGraph\ntitle T\u00a0%%{x}%%%%{y}%%{B}\ncommit\n",
+      "gitGraph\n  title T %%{x}%%%%{y}%%\n  commit\n",
+    ],
+    [
+      "treemap title: U+00A0 before two directives that touch each other",
+      'treemap\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'treemap\ntitle T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "treeView title: U+00A0 before two directives that touch each other",
+      'treeView-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n"R"\n',
+      'treeView-beta\n  title T %%{x}%%%%{y}%%\n  "R"\n',
+    ],
+    [
+      "cynefin title: U+00A0 before two directives that touch each other",
+      "cynefin-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n",
+      "cynefin-beta\n  title T %%{x}%%%%{y}%%\n",
+    ],
+    [
+      "railroad title: U+00A0 before two directives that touch each other",
+      'railroad-abnf-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\nr = "a";\n',
+      'railroad-abnf-beta\n  title T %%{x}%%%%{y}%%\n  r = "a";\n',
+    ],
+    [
+      "pie title: U+00A0 before three directives that touch each other",
+      'pie\ntitle T\u00a0%%{x}%%%%{y}%%%%{z}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%%%{y}%%%%{z}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+3000 before two directives that touch each other",
+      'pie\ntitle T\u3000%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: a tab and U+00A0 before two directives that touch each other",
+      'pie\ntitle T\t\u00a0%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "pie accTitle: U+00A0 before two directives that touch each other",
+      'pie\naccTitle: T\u00a0%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'pie\n  accTitle: T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "pie accDescr: U+00A0 before two directives that touch each other",
+      'pie\naccDescr: T\u00a0%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'pie\n  accDescr: T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+00A0 before a directive, a space, and two directives that touch each other",
+      'pie\ntitle T\u00a0%%{x}%% %%{y}%%%%{z}%%{B}\n"A": 1\n',
+      'pie\n  title T\u00a0%%{x}%% %%{y}%%%%{z}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+00A0 before two directives that touch each other, a space, and a third",
+      'pie\ntitle T\u00a0%%{x}%%%%{y}%% %%{z}%%{B}\n"A": 1\n',
+      'pie\n  title T\u00a0%%{x}%%%%{y}%% %%{z}%%\n  "A": 1\n',
+    ],
+    [
+      "usecase accTitle: U+00A0 before two directives that touch each other",
+      "usecase-beta\naccTitle: T\u00a0%%{x}%%%%{y}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%%%{y}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+2028 before two directives that touch each other",
+      "usecase-beta\naccTitle: T\u2028%%{x}%%%%{y}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%%%{y}%%\n  actor A\n",
+    ],
+    [
+      "usecase accDescr: U+00A0 before three directives that touch each other",
+      "usecase-beta\naccDescr: T\u00a0%%{x}%%%%{y}%%%%{z}%%{B}\nactor A\n",
+      "usecase-beta\n  accDescr: T %%{x}%%%%{y}%%%%{z}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: a space, a directive, U+00A0, and two directives that touch each other",
+      "usecase-beta\naccTitle: T %%{x}%%\u00a0%%{y}%%%%{z}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%% %%{y}%%%%{z}%%\n  actor A\n",
+    ],
   ]
 
 describe("a text that ends with a directive after whitespace that no fixture file holds", () => {

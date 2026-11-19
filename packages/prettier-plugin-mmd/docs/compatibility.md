@@ -1510,10 +1510,13 @@ is printed `accTitle: T %%{x}%%`. In the diagram types named here other than
 usecase, whitespace other than a space or a tab between two directives or after
 the last directive stays as written, with the spaces and tabs after it:
 `title T`, a space, `%%{x}%%`, U+00A0, `%%{y}%%`, and a space is printed as it
-is, and so is `title T`, a space, `%%{x}%%`, U+00A0, and a space. The run before
-a directive that another directive follows keeps whitespace other than spaces
-and tabs as written, and so does U+0085, which is no whitespace to mermaid.js:
-`title T`, U+00A0, `%%{x}%%`, a space, and `%%{y}%%` is printed as it is.
+is, and so is `title T`, a space, `%%{x}%%`, U+00A0, and a space. Directives
+that touch each other count as one directive: `title T`, U+00A0, `%%{x}%%`, and
+`%%{y}%%` is printed `title T %%{x}%%%%{y}%%`, with or without spaces and tabs
+after the last. The run before a directive that another directive follows after
+a space or a tab keeps whitespace other than spaces and tabs as written, and so
+does U+0085, which is no whitespace to mermaid.js: `title T`, U+00A0, `%%{x}%%`,
+a space, and `%%{y}%%` is printed as it is.
 
 The diagram types named here are those that this paragraph changes. mermaid.js
 draws the text of their lines the same with whitespace at its end as without it,
@@ -1524,11 +1527,13 @@ U+00A0, U+3000, U+2003, a form feed, U+000B, U+FEFF, U+1680, and U+202F before
 the directive in each type, and with U+2000 to U+200A, U+205F, U+0085, a space
 and a U+00A0 in one run, and a tab and a U+00A0 in one run in a pie chart, a
 radar chart, a treemap, and a usecase diagram; with U+2028 and U+2029 in a
-usecase diagram; and with a U+00A0 between two directives in a usecase diagram.
-The Db and the SVG were the same, in all versions that accept the text; 10.9.8
-rejects both texts of an info diagram and of the title of a gitGraph. A U+00A0
-inside a title is drawn: the same texts differ there, in a pie chart and a radar
-chart.
+usecase diagram; with a U+00A0 between two directives in a usecase diagram; and
+with two and three directives that touch each other, after a U+00A0, a U+3000, a
+tab and a U+00A0, or a U+2028 (a usecase diagram only), in a pie chart, a radar
+chart, an info diagram, a treemap, and a usecase diagram. The Db and the SVG
+were the same, in all versions that accept the text; 10.9.8 rejects both texts
+of an info diagram and of the title of a gitGraph. A U+00A0 inside a title is
+drawn: the same texts differ there, in a pie chart and a radar chart.
 
 [test: radar title: U+00A0 before the directive] [test: architecture title:
 U+00A0 before the directive] [test: wardley title: U+00A0 before the directive]
@@ -1591,7 +1596,29 @@ title: U+00A0 and a space after the last directive] [test: cynefin title: U+00A0
 between two directives, and a space after the last] [test: cynefin title: U+00A0
 and a space after the last directive] [test: railroad title: U+00A0 between two
 directives, and a space after the last] [test: railroad title: U+00A0 and a
-space after the last directive]
+space after the last directive] [test: radar title: U+00A0 before two directives
+that touch each other] [test: architecture title: U+00A0 before two directives
+that touch each other] [test: wardley title: U+00A0 before two directives that
+touch each other] [test: pie title: U+00A0 before two directives that touch each
+other] [test: info title: U+00A0 before two directives that touch each other]
+[test: packet title: U+00A0 before two directives that touch each other] [test:
+gitGraph title: U+00A0 before two directives that touch each other] [test:
+treemap title: U+00A0 before two directives that touch each other] [test:
+treeView title: U+00A0 before two directives that touch each other] [test:
+cynefin title: U+00A0 before two directives that touch each other] [test:
+railroad title: U+00A0 before two directives that touch each other] [test: pie
+title: U+00A0 before three directives that touch each other] [test: pie title:
+U+3000 before two directives that touch each other] [test: pie title: a tab and
+U+00A0 before two directives that touch each other] [test: pie accTitle: U+00A0
+before two directives that touch each other] [test: pie accDescr: U+00A0 before
+two directives that touch each other] [test: pie title: U+00A0 before a
+directive, a space, and two directives that touch each other] [test: pie title:
+U+00A0 before two directives that touch each other, a space, and a third] [test:
+usecase accTitle: U+00A0 before two directives that touch each other] [test:
+usecase accTitle: U+2028 before two directives that touch each other] [test:
+usecase accDescr: U+00A0 before three directives that touch each other] [test:
+usecase accTitle: a space, a directive, U+00A0, and two directives that touch
+each other]
 
 mermaid.js reads one whitespace character after the keyword and keeps the rest
 in the Db, so the Db of the printed text differs from the Db of the written

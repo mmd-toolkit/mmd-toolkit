@@ -189,6 +189,10 @@ export function layoutCommonLine(
     diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType) &&
     value !== null &&
     startsPlainComment(source, skipRemoved(source, value.range[1]))
+  // Only spaces and tabs stand between the directives and after the last one
+  // where the text counts as ending with directives: with other whitespace
+  // there the line stays as written, with the spaces and tabs after it
+  // (docs/compatibility.md, Texts after a keyword that are drawn the same).
   const endsInDirectives =
     hasTrivia &&
     !titleReachesComment &&
@@ -264,7 +268,9 @@ export function layoutCommonLine(
   ]
   // A text that ends with directives prints them as at the end of a line, and
   // leaves out the whitespace at its end (docs/compatibility.md, Texts after a
-  // keyword that are drawn the same). The runs inside an `accTitle` stay.
+  // keyword that are drawn the same). The runs inside an `accTitle` stay. The
+  // run before the last directive holds any whitespace of a line, which the
+  // line without blanks after the directive prints as one space too.
   if (endsInDirectives) {
     trimTextAfterKeyword(
       source,

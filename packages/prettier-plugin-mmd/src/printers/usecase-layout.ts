@@ -483,7 +483,10 @@ function layoutUsecaseAccessibility(
     joinedBefore.add(valueRange[0])
     // The directives that end the value are printed as those that end a title
     // (docs/compatibility.md, Texts after a keyword that are drawn the same).
-    // The runs inside an `accTitle` stay.
+    // The runs inside an `accTitle` stay. Any whitespace, a U+2028 or U+2029
+    // too, is a blank around the directives, as the value without blanks after
+    // its last directive prints it; the titles of the other diagram types take
+    // a U+2028 or U+2029 for the end of the text.
     if (endsWithDirectives(source, valueRange, isWhitespace)) {
       replaceInAtoms(
         source,

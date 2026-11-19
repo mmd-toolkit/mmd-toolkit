@@ -1582,7 +1582,10 @@ usecase 以外の、ここに挙げた図種で、
 書かれたままにします。
 `title T`、空白、`%%{x}%%`、U+00A0、`%%{y}%%`、空白はそのまま印字し、`title T`、
 空白、`%%{x}%%`、U+00A0、空白もそのまま印字します。
-別のディレクティブが続くディレクティブの前の連なりは、
+接するディレクティブは、1 つのディレクティブとして数えます。
+`title T`、U+00A0、`%%{x}%%`、`%%{y}%%` は `title T %%{x}%%%%{y}%%` と印字し、
+最後の後に空白とタブがあってもなくても同じです。
+空白かタブをはさんで別のディレクティブが続くディレクティブの前の連なりは、
 空白とタブ以外の空白を書かれたままにします。
 U+0085 は mermaid.js にとって空白ではないので、書かれたままです。
 `title T`、U+00A0、`%%{x}%%`、空白、`%%{y}%%` は、そのまま印字します。
@@ -1598,6 +1601,9 @@ U+2000 から U+200A、U+205F、U+0085、空白と U+00A0 の連なり、
 タブと U+00A0 の連なりも置きました。
 usecase の図では、U+2028、U+2029、
 2 つのディレクティブの間の U+00A0 も置きました。
+pie、radar、info、treemap、usecase の図では、
+接する 2 つと 3 つのディレクティブの前に、U+00A0、U+3000、
+タブと U+00A0 の連なり（usecase の図では U+2028 も）を置きました。
 テキストを受け入れるすべての版で、Db も SVG も同じでした。
 10.9.8 は、info 図と gitGraph のタイトルの、どちらのテキストも拒否します。
 タイトルの中の U+00A0 は描かれます。
@@ -1682,6 +1688,28 @@ pie と radar の図では、同じ 2 つのテキストが、そこでは違い
 [test: cynefin title: U+00A0 and a space after the last directive]
 [test: railroad title: U+00A0 between two directives, and a space after the last]
 [test: railroad title: U+00A0 and a space after the last directive]
+[test: radar title: U+00A0 before two directives that touch each other]
+[test: architecture title: U+00A0 before two directives that touch each other]
+[test: wardley title: U+00A0 before two directives that touch each other]
+[test: pie title: U+00A0 before two directives that touch each other]
+[test: info title: U+00A0 before two directives that touch each other]
+[test: packet title: U+00A0 before two directives that touch each other]
+[test: gitGraph title: U+00A0 before two directives that touch each other]
+[test: treemap title: U+00A0 before two directives that touch each other]
+[test: treeView title: U+00A0 before two directives that touch each other]
+[test: cynefin title: U+00A0 before two directives that touch each other]
+[test: railroad title: U+00A0 before two directives that touch each other]
+[test: pie title: U+00A0 before three directives that touch each other]
+[test: pie title: U+3000 before two directives that touch each other]
+[test: pie title: a tab and U+00A0 before two directives that touch each other]
+[test: pie accTitle: U+00A0 before two directives that touch each other]
+[test: pie accDescr: U+00A0 before two directives that touch each other]
+[test: pie title: U+00A0 before a directive, a space, and two directives that touch each other]
+[test: pie title: U+00A0 before two directives that touch each other, a space, and a third]
+[test: usecase accTitle: U+00A0 before two directives that touch each other]
+[test: usecase accTitle: U+2028 before two directives that touch each other]
+[test: usecase accDescr: U+00A0 before three directives that touch each other]
+[test: usecase accTitle: a space, a directive, U+00A0, and two directives that touch each other]
 
 mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db に残すので、
 印字したテキストの Db は、書かれたテキストの Db と違いますが、

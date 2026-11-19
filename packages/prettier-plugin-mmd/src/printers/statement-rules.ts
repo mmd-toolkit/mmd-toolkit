@@ -28,6 +28,7 @@ import {
   findTriviaBetween,
   hasTriviaBesidesTrailingDirectives,
   holdsRemoved,
+  isLineSeparator,
   isSpaceOrTab,
   isStructural,
   skipRemoved,
@@ -557,13 +558,16 @@ export function trimmedTextEnd(
 
 /**
  * Whether the text in `range` ends with directives: its content, then
- * directives with spaces and tabs between them and after the last, and nothing
- * else, no `;`, line break, or line separator. The last directive may start at
- * the end of the range, where the directives of a line that end with a
- * directive, with no whitespace after it, stand. A text printed so leaves out
- * the whitespace at its end, and prints the whitespace around the directives
- * as the end of a line (see `trimTextAfterKeyword`). `isBlank` says
- * which characters are the blanks between the directives and after the last.
+ * directives with blanks between them and after the last, and nothing else, no
+ * `;` or line break. `isBlank` says which characters are the blanks: spaces and
+ * tabs by default, so that a U+2028 or U+2029 anywhere in the text, and any
+ * other whitespace between the directives or after the last, ends the text
+ * for this function; a predicate that takes a U+2028 or U+2029 for a blank
+ * lets one stand in the blanks around the directives, and nowhere else. The
+ * last directive may start at the end of the range, where the directives of a
+ * line that end with a directive, with no whitespace after it, stand. A text
+ * printed so leaves out the whitespace at its end, and prints the whitespace
+ * around the directives as the end of a line (see `trimTextAfterKeyword`).
  */
 export function endsWithDirectives(
   source: Source,
@@ -588,18 +592,15 @@ export function endsWithDirectives(
   while (blanksStart > from && isBlank(source.text[blanksStart - 1]))
     blanksStart--
   if (
-    holdsLineSeparator(source.text.slice(from, blanksStart)) ||
+    [...source.text.slice(from, blanksStart)].some(isLineSeparator) ||
     trivia.some((item) =>
-      holdsLineSeparator(source.text.slice(item.range[0], item.range[1])),
+      [...source.text.slice(item.range[0], item.range[1])].some(
+        isLineSeparator,
+      ),
     )
   )
     return false
   return source.text.slice(from, contentEnd).trim() !== ""
-}
-
-/** Whether a text holds a U+2028 or a U+2029. */
-function holdsLineSeparator(text: string): boolean {
-  return text.includes("\u2028") || text.includes("\u2029")
 }
 
 /**
@@ -726,17 +727,21 @@ export function collectTextEndEdits(
     source.root.comments.some((comment) => comment.range[0] === to)
   let position = to
   let headEnd = to
-  let directives = 0
   const lineEnd = lineEndOf(source, to, true)
   let afterBlanks = to
   while (afterBlanks < lineEnd && isBlank(source.text[afterBlanks]))
     afterBlanks++
   const endsLine = afterBlanks >= lineEnd
+  // The runs are read from the end of the text. The first is the one after
+  // the last directive. The directives that touch each other and end the
+  // line are one place for the text without blanks after it, so the run
+  // before the first of them is the run before the last place, and the runs
+  // before the directives before that are runs of spaces and tabs.
+  let afterLastDirective = true
+  let inLastPlace = endsLine
   for (;;) {
     const isRunBlank =
-      directives === 0 || (directives === 1 && endsLine)
-        ? isBlank
-        : isSpaceOrTab
+      afterLastDirective || inLastPlace ? isBlank : isSpaceOrTab
     let blanks = position
     while (blanks > offset && isRunBlank(source.text[blanks - 1])) blanks--
     headEnd = blanks
@@ -747,11 +752,12 @@ export function collectTextEndEdits(
         range: [blanks, position],
         replacement: position !== to || commentFollows ? " " : "",
       })
+      if (!afterLastDirective) inLastPlace = false
     }
     const directive = findDirectiveEndingAt(source, blanks)
     if (directive === undefined || directive.range[0] <= offset) break
     position = directive.range[0]
-    directives++
+    afterLastDirective = false
   }
   // A text that directives end holds them, so the collapse of the runs in the
   // texts does not reach it; the runs before them are the same as when the

@@ -146,7 +146,9 @@ export function isSpaceOrTab(character: string): boolean {
  * Whether a character is whitespace that does not end its line: `isWhitespace`
  * without LF, CR, U+2028, and U+2029. A gap that holds one of those is written
  * as it is where this decides whether a gap is replaced (docs/c4.md, Argument
- * spacing).
+ * spacing), and a title of a diagram type that draws the whitespace at the end
+ * of a text the same takes it for the blanks before its last directive (see
+ * `collectTextEndEdits`).
  */
 export function isInlineWhitespace(character: string | undefined): boolean {
   return (
