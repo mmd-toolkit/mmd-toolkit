@@ -311,9 +311,9 @@ export function findNamePrintedEnd(
   name: AgentflowName,
 ): number {
   if (!endsWithClickFragment(source, name)) {
+    const beforeComment = findCommentAfterDroppedSemicolon(source, name)
+    if (beforeComment !== undefined) return beforeComment
     const last = name.parts.at(-1)
-    if (name.parts.length === 1)
-      return findCommentAfterDroppedSemicolon(source, name) ?? name.range[1]
     if (
       name.parts.length < 2 ||
       last?.type !== "AgentflowLabel" ||
@@ -364,18 +364,83 @@ export function findNamePrintedEnd(
 const spaceTakingNameKeywords = ["end", "global"]
 
 /**
- * Whether a character is one of the ASCII characters of an id run, in which a
- * keyword is no keyword: `Front-end` is one id run, and `Front end` and
- * `Front:end` end with the keyword (diagrams/agentflow.md, Flows, globals,
- * connectors, and names).
+ * The keywords of the pieces of a name, which a unit of the name starts with
+ * where a word character does not follow them (diagrams/agentflow.md, Flows,
+ * globals, connectors, and names; flowchart.md, rules 10 to 12 and 20, which
+ * agentflow reuses). The longer of two with the same start comes first.
  */
-function isIdRunCharacter(character: string): boolean {
+const nameKeywords = [
+  "agentflow-beta",
+  "connector",
+  "classDef",
+  "linkStyle",
+  "global",
+  "class",
+  "style",
+  "flow",
+  "end",
+  "v",
+]
+
+/** Whether the character is an ASCII letter, a digit, or `_`. */
+function isWordCharacter(character: string | undefined): boolean {
   return (
-    (character >= "a" && character <= "z") ||
-    (character >= "A" && character <= "Z") ||
-    (character >= "0" && character <= "9") ||
-    "!\"#$%&'*+-./?\\_`".includes(character)
+    character !== undefined &&
+    ((character >= "a" && character <= "z") ||
+      (character >= "A" && character <= "Z") ||
+      (character >= "0" && character <= "9") ||
+      character === "_")
   )
+}
+
+/**
+ * Whether the character at `offset` of the text of a name belongs to an id
+ * run: an ASCII letter or digit, one of `!"#$%&'*+./?\_` and the backquote,
+ * or a `-` followed by a character other than `>`, `-`, and `.`
+ * (flowchart.md, rule 21, which agentflow reuses).
+ */
+function isIdRunCharacter(text: string, offset: number): boolean {
+  const character = text[offset]
+  if (character === "-") return !">-.".includes(text[offset + 1] ?? ">")
+  return isWordCharacter(character) || "!\"#$%&'*+./?\\`".includes(character)
+}
+
+/**
+ * The length of the unit that starts at `offset` of the text of a name, by the
+ * order of the lexical rules that agentflow reuses from flowchart: a keyword
+ * that no word character follows (rules 10 to 12 and 20), the digits of a
+ * number (rule 16), one of `#`, `:`, `&`, `,`, `*` (rule 17, in which `:::` is
+ * three of them for the boundaries that this finds), an id run as long as it
+ * goes (rule 21), and any other single character: a `-`, a letter, a `^`, or
+ * one whitespace character (agentflow reads one space unit for each).
+ */
+function nameUnitLength(text: string, offset: number): number {
+  const keyword = nameKeywords.find(
+    (word) =>
+      text.startsWith(word, offset) &&
+      !isWordCharacter(text[offset + word.length]),
+  )
+  if (keyword !== undefined) return keyword.length
+  let end = offset + 1
+  const character = text[offset]
+  if (character >= "0" && character <= "9") {
+    while (text[end] >= "0" && text[end] <= "9") end++
+  } else if (!"#:&,*".includes(character) && isIdRunCharacter(text, offset)) {
+    while (end < text.length && isIdRunCharacter(text, end)) end++
+  }
+  return end - offset
+}
+
+/**
+ * Whether a unit of the text of a name starts at `target`, so that a keyword
+ * there is a keyword: in `Front end`, `Front 9end`, `Front:end`, and
+ * `Front #end` it is, and in `Front-end`, `Front9end`, and `Front#end` it is
+ * inside an id run and is no keyword.
+ */
+function startsNameUnit(text: string, target: number): boolean {
+  let offset = 0
+  while (offset < target) offset += nameUnitLength(text, offset)
+  return offset === target
 }
 
 /**
@@ -394,16 +459,21 @@ function findCommentAfterDroppedSemicolon(
   // A name that holds a directive or a comment, or that ends with a character
   // other than the spaces and tabs that the keyword takes (U+2028 and U+2029
   // are text there), is printed as written.
-  if (findTriviaBetween(source, name.range[0], name.range[1]).length > 0)
+  if (
+    name.parts.length !== 1 ||
+    findTriviaBetween(source, name.range[0], name.range[1]).length > 0
+  )
     return undefined
   let textEnd = name.range[1]
   while (textEnd > name.range[0] && isSpaceOrTab(source.text[textEnd - 1]))
     textEnd--
   const text = source.text.slice(name.range[0], textEnd)
   const keyword = spaceTakingNameKeywords.find((word) => text.endsWith(word))
-  if (keyword === undefined) return undefined
-  const before = text.at(-keyword.length - 1)
-  if (before !== undefined && isIdRunCharacter(before)) return undefined
+  if (
+    keyword === undefined ||
+    !startsNameUnit(text, text.length - keyword.length)
+  )
+    return undefined
   let position = name.range[1]
   while (isSpaceOrTab(source.text[position])) position++
   const separator = findTokenStartingAt(source, position)
@@ -417,7 +487,13 @@ function findCommentAfterDroppedSemicolon(
   )
     return undefined
   position++
-  while (isSpaceOrTab(source.text[position])) position++
+  // The whitespace after the `;` is a gap, which the printer drops whatever
+  // its characters are (see `readGapElement`).
+  for (;;) {
+    const { element, end } = readGapElement(source, position)
+    if (element.kind !== "whitespace") break
+    position = end
+  }
   const comment = findTriviaBetween(source, position, position + 1).at(0)
   return comment?.type === "Comment" ? comment.range[0] : undefined
 }
