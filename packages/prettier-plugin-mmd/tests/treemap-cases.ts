@@ -170,4 +170,54 @@ export const treemapCases: readonly TreemapCase[] = [
     output: 'treemap\n  "Root"\n    "A": 1%% c;\u2028 "B;y":2\n',
     options: {},
   },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-directive-comment-class-on-next-line",
+    input:
+      "treemap\nclassDef zz \u2028 %%{x}%%  %% c  \n\n classDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-directive-comment-row-as-style",
+    input: 'treemap\nclassDef zz \u2028 %%{x}%%  %% c  \n\n"A": 1\n',
+    output: 'treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-after-row-line-separator-directive-comment-row-as-style",
+    input: 'treemap\n"A": 1\nclassDef zz \u2028 %%{x}%%  %% c  \n\n  "B": 2\n',
+    output:
+      'treemap\n  "A": 1\n  classDef zz\n    %%{x}%% %% c  \n\n    "B": 2\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-comment-class-on-next-line",
+    input: "treemap\nclassDef zz \u2028 %% c  \n\n classDef yy color:red\n",
+    output: "treemap\n  classDef zz\n    %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-directive-comment-class-follows-at-once",
+    input:
+      "treemap\nclassDef zz \u2028 %%{x}%%  %% c  \n classDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-directive-comment-class-at-first-column",
+    input:
+      "treemap\nclassDef zz \u2028 %%{x}%%  %% c  \n\nclassDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-feed-directive-comment-class-on-next-line",
+    input: "treemap\nclassDef zz\n %%{x}%%  %% c  \n\n classDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
 ]

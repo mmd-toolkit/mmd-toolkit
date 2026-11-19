@@ -420,6 +420,26 @@ treemap
   classDef zz "Apparent": 2
 ```
 
+A U+2028 or U+2029 before a comment line ends the line of the `classDef`, as a
+line feed does: the comment goes to a line of its own, and its comment line, a
+directive, and the style that follows stand one level inside the `classDef`,
+whether or not whitespace is written before the style.
+
+[test:
+treemap/style-gaps/class-definition-line-separator-directive-comment-class-on-next-line]
+[test:
+treemap/style-gaps/class-definition-line-separator-directive-comment-row-as-style]
+[test:
+treemap/style-gaps/class-definition-after-row-line-separator-directive-comment-row-as-style]
+[test:
+treemap/style-gaps/class-definition-line-separator-comment-class-on-next-line]
+[test:
+treemap/style-gaps/class-definition-line-separator-directive-comment-class-follows-at-once]
+[test:
+treemap/style-gaps/class-definition-line-separator-directive-comment-class-at-first-column]
+[test:
+treemap/style-gaps/class-definition-line-feed-directive-comment-class-on-next-line]
+
 ### Styles
 
 The style of a `classDef` is printed as the styles of the other diagram types
