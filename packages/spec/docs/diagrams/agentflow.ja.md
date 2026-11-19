@@ -287,6 +287,11 @@ LF は次のテキストの単位へ残すため、次の行へラベルを続�
 [fixture: agentflow/comment-ellipse-body-u2028]
 [fixture: agentflow/comment-ellipse-body-u2029]
 [fixture: agentflow/comment-square-after-string-directive-padding]
+[fixture: agentflow/lex-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-label-whitespace-only-comment-after-tab]
+[fixture: agentflow/lex-label-whitespace-only-comment]
+[fixture: agentflow/lex-slanted-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-ellipse-label-whitespace-only-comment-after-space]
 
 文字列、markdown 文字列、分割形のリンクテキスト、アクセシビリティの値、
 コールバックのテキスト、データには図のコメントの規則を置かない。

@@ -518,6 +518,11 @@ Name の断片が読む空白は保つ。
 [fixture: agentflow/gram-flow-name-string-bare-tail]
 [fixture: agentflow/gram-split-edge-string-bare-tail]
 [fixture: agentflow/gram-flow-name-quoted-padding]
+[fixture: agentflow/lex-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-label-whitespace-only-comment-after-tab]
+[fixture: agentflow/lex-label-whitespace-only-comment]
+[fixture: agentflow/lex-slanted-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-ellipse-label-whitespace-only-comment-after-space]
 
 ### AgentflowLiteral
 

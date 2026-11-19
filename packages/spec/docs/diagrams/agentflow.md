@@ -267,7 +267,12 @@ agentflow/comment-ellipse-tab-padding] [fixture:
 agentflow/comment-ellipse-padding-crlf] [fixture:
 agentflow/comment-ellipse-body-u2028] [fixture:
 agentflow/comment-ellipse-body-u2029] [fixture:
-agentflow/comment-square-after-string-directive-padding]
+agentflow/comment-square-after-string-directive-padding] [fixture:
+agentflow/lex-label-whitespace-only-comment-after-space] [fixture:
+agentflow/lex-label-whitespace-only-comment-after-tab] [fixture:
+agentflow/lex-label-whitespace-only-comment] [fixture:
+agentflow/lex-slanted-label-whitespace-only-comment-after-space] [fixture:
+agentflow/lex-ellipse-label-whitespace-only-comment-after-space]
 
 Strings, markdown strings, split link text, accessibility values, callback text,
 and data have no diagram-comment rule. Their percent pairs and comment-looking
