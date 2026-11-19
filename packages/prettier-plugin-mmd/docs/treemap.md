@@ -619,17 +619,15 @@ printed as written.
 [test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
 
 A `;` that ends a comment on the line of a `title`, an `accTitle`, an `accDescr`
-line, or a `classDef` is a `;` that the line rule of mermaid.js may ignore (see
-[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)), so the printer
-keeps what stands before it as written, and a U+2028 or U+2029 before that
-comment stays: mermaid.js removes the comment line with the whitespace before
-it, so the characters, the whitespace around them, and a directive before,
-between, or after them stay as they are written, from the end of the statement
-to the end of the comment. Rule 1 names no mark for a gap that holds such a
-character, so
+line, or a `classDef` is a `;` of the line that mermaid.js may ignore (see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). A U+2028 or
+U+2029 before that comment stays, with the whitespace around it: mermaid.js
+removes the comment line with the whitespace before it, so the gap from the end
+of the statement to the end of the comment is printed as written. Rule 1 names
+no mark for a gap that holds such a character, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the form: a flowchart, a class diagram, and a sequence diagram print such a line
-as written, as a flowchart prints `A-->B`, U+2028, a space, and `%% d;`.
+as written.
 
 [test: treemap a U+2029 before a comment stays after the U+2028 that ends a
 style] [test: treemap a U+2028 before a comment stays after the U+2029 that ends

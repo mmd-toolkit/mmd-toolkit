@@ -4,6 +4,7 @@ import type { AtomLayout } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
+  findJoiningRegionEndInLine,
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   findVerbatimStyleLines,
@@ -103,8 +104,12 @@ export function hiddenBlockRules<Statement extends Node>(
       source.text.slice(offset, lineEndOf(source, offset)).trim() === ""
         ? offset
         : undefined,
+    // A comment region that follows a U+2028 or U+2029 lies in a gap that this
+    // rule keeps as written, like the line of a hidden form.
     keptInlineGapEnd: (start) =>
-      hiddenEnds.has(start) ? lineEndOf(source, start) : start,
+      hiddenEnds.has(start)
+        ? lineEndOf(source, start)
+        : findJoiningRegionEndInLine(source, start),
     keptGapEnd: (start, end, beforeStatement) => {
       if (findTriviaBetween(source, start, end).length > 0) return undefined
       const stop = hiddenGapEnd(start, end, beforeStatement)

@@ -6460,6 +6460,291 @@ describe("style semicolons", () => {
       'treemap\n  "A": 1\n  classDef zz color:red\u2028%%{x}%%\u2029 %% d;\n',
     ],
     [
+      "kanban a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028\u2029 %% d;\n",
+      "kanban\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "kanban\naccTitle: T\u2028\u2029 %% d;\n",
+      "kanban\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "kanban\naccDescr: T\u2028\u2029 %% d;\n",
+      "kanban\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban a title keeps a U+2028 before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028 %% d;\n",
+      "kanban\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "kanban a title keeps a U+2029 before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2029 %% d;\n",
+      "kanban\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "treeview a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;\n",
+      "treeView-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treeview an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "treeView-beta\naccTitle: T\u2028\u2029 %% d;\n",
+      "treeView-beta\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treeview an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "treeView-beta\naccDescr: T\u2028\u2029 %% d;\n",
+      "treeView-beta\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treeview a title keeps a U+2028 before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028 %% d;\n",
+      "treeView-beta\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "treeview a title keeps a U+2029 before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2029 %% d;\n",
+      "treeView-beta\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "architecture a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "architecture-beta\ntitle T\u2028\u2029 %% d;\n",
+      "architecture-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "architecture an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "architecture-beta\naccTitle: T\u2028\u2029 %% d;\n",
+      "architecture-beta\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "architecture an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "architecture-beta\naccDescr: T\u2028\u2029 %% d;\n",
+      "architecture-beta\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "architecture a title keeps a U+2028 before a comment that ends in a semicolon",
+      "architecture-beta\ntitle T\u2028 %% d;\n",
+      "architecture-beta\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "architecture a title keeps a U+2029 before a comment that ends in a semicolon",
+      "architecture-beta\ntitle T\u2029 %% d;\n",
+      "architecture-beta\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "cynefin a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "cynefin-beta\ntitle T\u2028\u2029 %% d;\n",
+      "cynefin-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "cynefin an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "cynefin-beta\naccTitle: T\u2028\u2029 %% d;\n",
+      "cynefin-beta\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "cynefin an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "cynefin-beta\naccDescr: T\u2028\u2029 %% d;\n",
+      "cynefin-beta\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "cynefin a title keeps a U+2028 before a comment that ends in a semicolon",
+      "cynefin-beta\ntitle T\u2028 %% d;\n",
+      "cynefin-beta\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "cynefin a title keeps a U+2029 before a comment that ends in a semicolon",
+      "cynefin-beta\ntitle T\u2029 %% d;\n",
+      "cynefin-beta\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "gitgraph a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "gitGraph\ntitle T\u2028\u2029 %% d;\n",
+      "gitGraph\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "gitgraph an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "gitGraph\naccTitle: T\u2028\u2029 %% d;\n",
+      "gitGraph\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "gitgraph an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "gitGraph\naccDescr: T\u2028\u2029 %% d;\n",
+      "gitGraph\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "gitgraph a title keeps a U+2028 before a comment that ends in a semicolon",
+      "gitGraph\ntitle T\u2028 %% d;\n",
+      "gitGraph\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "gitgraph a title keeps a U+2029 before a comment that ends in a semicolon",
+      "gitGraph\ntitle T\u2029 %% d;\n",
+      "gitGraph\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "radar a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "radar-beta\ntitle T\u2028\u2029 %% d;\n",
+      "radar-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "radar an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "radar-beta\naccTitle: T\u2028\u2029 %% d;\n",
+      "radar-beta\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "radar an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "radar-beta\naccDescr: T\u2028\u2029 %% d;\n",
+      "radar-beta\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "radar a title keeps a U+2028 before a comment that ends in a semicolon",
+      "radar-beta\ntitle T\u2028 %% d;\n",
+      "radar-beta\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "radar a title keeps a U+2029 before a comment that ends in a semicolon",
+      "radar-beta\ntitle T\u2029 %% d;\n",
+      "radar-beta\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "info a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "info\ntitle T\u2028\u2029 %% d;\n",
+      "info\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "info an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "info\naccTitle: T\u2028\u2029 %% d;\n",
+      "info\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "info an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "info\naccDescr: T\u2028\u2029 %% d;\n",
+      "info\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "info a title keeps a U+2028 before a comment that ends in a semicolon",
+      "info\ntitle T\u2028 %% d;\n",
+      "info\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "info a title keeps a U+2029 before a comment that ends in a semicolon",
+      "info\ntitle T\u2029 %% d;\n",
+      "info\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "packet a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "packet\ntitle T\u2028\u2029 %% d;\n",
+      "packet\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "packet an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "packet\naccTitle: T\u2028\u2029 %% d;\n",
+      "packet\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "packet an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "packet\naccDescr: T\u2028\u2029 %% d;\n",
+      "packet\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "packet a title keeps a U+2028 before a comment that ends in a semicolon",
+      "packet\ntitle T\u2028 %% d;\n",
+      "packet\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "packet a title keeps a U+2029 before a comment that ends in a semicolon",
+      "packet\ntitle T\u2029 %% d;\n",
+      "packet\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "pie a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "pie\ntitle T\u2028\u2029 %% d;\n",
+      "pie\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "pie\naccTitle: T\u2028\u2029 %% d;\n",
+      "pie\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "pie\naccDescr: T\u2028\u2029 %% d;\n",
+      "pie\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie a title keeps a U+2028 before a comment that ends in a semicolon",
+      "pie\ntitle T\u2028 %% d;\n",
+      "pie\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "pie a title keeps a U+2029 before a comment that ends in a semicolon",
+      "pie\ntitle T\u2029 %% d;\n",
+      "pie\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "wardley a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "wardley-beta\ntitle T\u2028\u2029 %% d;\n",
+      "wardley-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "wardley an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "wardley-beta\naccTitle: T\u2028\u2029 %% d;\n",
+      "wardley-beta\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "wardley an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "wardley-beta\naccDescr: T\u2028\u2029 %% d;\n",
+      "wardley-beta\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "wardley a title keeps a U+2028 before a comment that ends in a semicolon",
+      "wardley-beta\ntitle T\u2028 %% d;\n",
+      "wardley-beta\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "wardley a title keeps a U+2029 before a comment that ends in a semicolon",
+      "wardley-beta\ntitle T\u2029 %% d;\n",
+      "wardley-beta\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "railroad a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "railroad-beta\ntitle T\u2028\u2029 %% d;\n",
+      "railroad-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "railroad an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "railroad-beta\naccTitle: T\u2028\u2029 %% d;\n",
+      "railroad-beta\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "railroad an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "railroad-beta\naccDescr: T\u2028\u2029 %% d;\n",
+      "railroad-beta\n  accDescr: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "railroad a title keeps a U+2028 before a comment that ends in a semicolon",
+      "railroad-beta\ntitle T\u2028 %% d;\n",
+      "railroad-beta\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "railroad a title keeps a U+2029 before a comment that ends in a semicolon",
+      "railroad-beta\ntitle T\u2029 %% d;\n",
+      "railroad-beta\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "kanban a column keeps two U+2028 or U+2029 before a comment that ends in a semicolon",
+      "kanban\nTodo\u2028\u2029 %% d;\n",
+      "kanban\n  Todo\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban a card keeps a U+2028 before a comment that ends in a semicolon",
+      "kanban\nTodo\n  t1[Task]\u2028 %% d;\n",
+      "kanban\n  Todo\n    t1[Task]\u2028 %% d;\n",
+    ],
+    [
       "ER directives before comments on the same line",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%% %% c\nx\nclassDef c fill:coral\u2029;\n%%{init: {}}%% %% d\ny\n",
       "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%% %% c\n  x\n  classDef c fill: coral\n  %%{init: {}}%% %% d\n  y\n",

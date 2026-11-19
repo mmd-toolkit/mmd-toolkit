@@ -650,16 +650,12 @@ U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も
 コメントを終わらせる `;` は、
 mermaid.js の行の規則が無視することがある `;`
 です（[`;` を含む行](./compatibility.ja.md#-を含む行)を参照）。
-そのため、その前に立つものは書かれたまま残します。
-そのコメントの前の U+2028 や U+2029 も残ります。
+そのコメントの前の U+2028 や U+2029 は、周りの空白とともに残ります。
 mermaid.js はコメント行を、その前の空白ごと取り除くので、
-文の終わりからコメントの終わりまでは、その文字、周りの空白、その前、間、
-後ろのディレクティブを、書かれたまま残します。
+文の終わりからコメントの終わりまでの隙間は、書かれたまま印字します。
 規則 1 は、そのような文字を持つ隙間の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 flowchart、class 図、sequence 図は、この形の行を書かれたまま印字します。
-flowchart が `A-->B`、U+2028、空白、
-`%% d;` を書かれたまま印字するのがその例です。
 
 [test: treemap a U+2029 before a comment stays after the U+2028 that ends a style]
 [test: treemap a U+2028 before a comment stays after the U+2029 that ends a style]

@@ -2436,6 +2436,22 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 
 [fixture: treeview/decorations/box-redraw-annotation-blank-with-protected-name]
 
+`title`、`accTitle`、`accDescr` の行で、コメントを終わらせる `;` は、
+mermaid.js の行の規則が無視することがある `;`
+です（[`;` を含む行](./compatibility.ja.md#-を含む行)を参照）。
+そのコメントの前の U+2028 や U+2029 は、周りの空白とともに残ります。
+mermaid.js はコメント行を、その前の空白ごと取り除くので、
+文の終わりからコメントの終わりまでの隙間は、書かれたまま印字します。
+規則 1 は、そのような文字を持つ隙間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+flowchart、class 図、sequence 図は、この形の行を書かれたまま印字します。
+
+[test: treeview a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
+[test: treeview an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
+[test: treeview an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
+[test: treeview a title keeps a U+2028 before a comment that ends in a semicolon]
+[test: treeview a title keeps a U+2029 before a comment that ends in a semicolon]
+
 ### Blank lines
 
 有意な字下げ連なりを移し、外側の装飾を置き換えてから、
