@@ -12240,6 +12240,101 @@ const wardleyDirectiveEndExamples: readonly (readonly [
     "title %%{x;y}%%  T  ",
     "title %%{x;y}%% T",
   ],
+  [
+    "a `;` at the end of a title, spaces after the keyword, of a Wardley map",
+    "title   T;",
+    "title   T;",
+  ],
+  [
+    "a `;` at the end of a title, a run of spaces inside the text, of a Wardley map",
+    "title A   B;",
+    "title A   B;",
+  ],
+  [
+    "a `;` after spaces at the end of a title, spaces after it, of a Wardley map",
+    "title T  ;  ",
+    "title T  ;",
+  ],
+  [
+    "a `;` at the end of a title, a tab after the keyword, spaces after the `;`, of a Wardley map",
+    "title\tT;  ",
+    "title\tT;",
+  ],
+  [
+    "a `;` at the end of an accDescr line, a run of spaces inside the text, of a Wardley map",
+    "accDescr:   A   B;",
+    "accDescr:   A   B;",
+  ],
+  [
+    "a `;` at the end of an accTitle line, a tab after the colon, spaces after the `;`, of a Wardley map",
+    "accTitle:\tA   B;  ",
+    "accTitle:\tA   B;",
+  ],
+  [
+    "a `;` at the end of an accDescr line, a gap before the colon, of a Wardley map",
+    "accDescr : T  U;",
+    "accDescr : T  U;",
+  ],
+  [
+    "a text after the `;` of a title, spaces at the end, of a Wardley map",
+    "title A;  B  ",
+    "title A;  B",
+  ],
+  [
+    "a U+2028 in the text of a title that ends with a `;`, of a Wardley map",
+    "title T\u2028U;",
+    "title T\u2028U;",
+  ],
+  [
+    "a comment after the text of a title, spaces before it, of a Wardley map",
+    "title T   %% c",
+    "title T %% c",
+  ],
+  [
+    "a comment after the text of an accTitle line, spaces before it, of a Wardley map",
+    "accTitle: T   %% c",
+    "accTitle: T %% c",
+  ],
+  [
+    "a comment after the text of an accDescr line, spaces before it, of a Wardley map",
+    "accDescr: T   %% c",
+    "accDescr: T %% c",
+  ],
+  [
+    "a run of spaces inside the text of a title, of a Wardley map",
+    "title A   B",
+    "title A B",
+  ],
+  [
+    "a run of tabs inside the text of a title, spaces at the end, of a Wardley map",
+    "title A\t\tB  ",
+    "title A B",
+  ],
+  [
+    "a run of spaces inside a quoted string in a title, of a Wardley map",
+    "title \u0022A   B\u0022",
+    "title \u0022A B\u0022",
+  ],
+  [
+    "a run of spaces beside a directive inside the text of a title, of a Wardley map",
+    "title A  %%{x}%%  B",
+    "title A  %%{x}%%  B",
+  ],
+  [
+    "a run of spaces inside the text of an accDescr line, of a Wardley map",
+    "accDescr: A   B",
+    "accDescr: A B",
+  ],
+  [
+    "a run of spaces inside the text of an accTitle line, of a Wardley map",
+    "accTitle: A   B",
+    "accTitle: A   B",
+  ],
+  [
+    "a run of spaces inside a quoted string in an accDescr line, of a Wardley map",
+    "accDescr: \u0022A   B\u0022",
+    "accDescr: \u0022A B\u0022",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of a Wardley map", () => {
