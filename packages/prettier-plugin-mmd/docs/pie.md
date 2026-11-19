@@ -206,9 +206,12 @@ not change that (`title T`, a no-break space, `%%{x}%%`, and `%% c` is not
 changed). Where whitespace follows a directive that follows the text, the title
 is printed as in the other diagrams: `title    T`, a no-break space, `%%{x}%%`,
 two spaces, and `%% c` print `title T`, the no-break space, and `%%{x}%% %% c`.
-The directives that end a title are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out,
-whatever the whitespace at the end of the line (see
+Where only directives follow the text of a title, they are printed with one
+space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out, unless a directive of the line holds a line
+break, a `;`, a U+2028, or a U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -273,9 +276,13 @@ directive in it is printed as in the other diagrams; a comment after the `}` of
 a description block keeps the block, since the text of the form with the colon
 would take the comment (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
-Hidden forms and protected textual groups retain their gaps. The directives that
-end the value are printed with one space before each that has whitespace before
-it, and the whitespace after the last one is left out (see
+Hidden forms and protected textual groups retain their gaps. Where only
+directives follow the text of the value, they are printed with one space before
+each that has spaces or tabs before it, and the spaces and tabs after the last
+one are left out, unless a directive of the line holds a line break, a `;`, a
+U+2028, or a U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
