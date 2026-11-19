@@ -822,6 +822,7 @@ block arrow がそれを書かれたまま使うからです。
 になります）。
 空白、タブ、フォームフィードがその `;` から離す色は小文字になり（`#f00 ;`）、
 ほかの文字が離す色は書かれたままです。
+色の後の最初の文字が決めます。
 最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
 文は普通に整形します。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
@@ -1091,7 +1092,9 @@ U+2028 の前にコロンの後の空白が 3 つの `block:` がその例です
 ノーブレークスペース、`x;` は `#F00` のままです）。
 垂直タブ、幅のある空白（ノーブレークスペース、U+1680、U+2000 から U+200A、
 U+202F、U+205F、U+3000、U+FEFF）、U+2028、U+2029、U+0085、U+180E、U+200B、
-制御文字は、ここでは空白ではありません。
+タブとフォームフィード以外の制御文字は、ここでは空白ではありません。
+色の後の最初の文字が決め、後ろに何が続いても同じです（`fill:#F00`、空白、
+垂直タブは `#f00` になり、`fill:#F00`、垂直タブ、空白は `#F00` のままです）。
 行の規則が無視する `;` が接する色（`#ABC;`）と、空白、タブ、
 フォームフィード以外の文字がその `;` から離す色も書かれたまま残し、
 垂直タブと幅のある空白では、[色](#色)の規則がこれを小文字に印字するので、
@@ -1557,36 +1560,46 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 `style a fill:#F00`、U+2028、`%% c`、改行の後は、
 ブロック図は次のように印字します。
 
-| コメント行の後に続くもの                                             | U+2028 や U+2029 と行                                        | 色     |
-| -------------------------------------------------------------------- | ------------------------------------------------------------ | ------ |
-| 何もなく、テキストの末尾                                             | 落とす。コメント行は、普通の行と同じに自分の行に置く         | `#f00` |
-| コメント行だけで、テキストの末尾                                     | 落とす。各コメント行は、普通の行と同じに自分の行に置く       | `#f00` |
-| 空行で、テキストの末尾                                               | 落とす。コメント行は、普通の行と同じに自分の行に置く         | `#f00` |
-| 空白だけの行で、テキストの末尾                                       | 落とす。コメント行は、普通の行と同じに自分の行に置く         | `#f00` |
-| 空行とコメント行で、テキストの末尾                                   | 落とす。どの行も、普通の行と同じに自分の行に置く。空行は残す | `#f00` |
-| すぐに文（接する `b` か、空白の後の ` y`）                           | 残す。文はコメント行の次の行に、書かれたままで残る           | `#F00` |
-| コメント行 2 つと文                                                  | 残す。文はコメント行の次の行に、書かれたままで残る           | `#F00` |
-| 空行と文                                                             | 残す。文は離れて、文の段に置く                               | `#f00` |
-| コメント行、空行、文                                                 | 残す。文は離れて、文の段に置く                               | `#f00` |
-| 空白だけの行と文                                                     | 残す。文は離れて、文の段に置く                               | `#f00` |
-| ディレクティブの行で、テキストの末尾                                 | 残す                                                         | `#f00` |
-| ディレクティブの行と文                                               | 残す。文は離れて、文の段に置く                               | `#f00` |
-| ディレクティブの行とコメント行で、テキストの末尾                     | 落とす。どの行も、普通の行と同じに自分の行に置く             | `#f00` |
-| コメント行、ディレクティブの行、コメント行で、テキストの末尾         | 落とす。どの行も、普通の行と同じに自分の行に置く             | `#f00` |
-| 空行、ディレクティブの行、コメント行で、テキストの末尾               | 落とす。どの行も、普通の行と同じに自分の行に置き、空行を残す | `#f00` |
-| ディレクティブの行、空行、コメント行で、テキストの末尾               | 落とす。どの行も、普通の行と同じに自分の行に置き、空行を残す | `#f00` |
-| ディレクティブの行 2 つとコメント行で、テキストの末尾                | 落とす。どの行も、普通の行と同じに自分の行に置く             | `#f00` |
-| ディレクティブの行、コメント行、文                                   | 残す。文はコメント行の次の行に、書かれたままで残る           | `#F00` |
-| ディレクティブの行、コメント行、ディレクティブの行で、テキストの末尾 | 残す                                                         | `#f00` |
-| コメント行 2 つとディレクティブの行で、テキストの末尾                | 残す                                                         | `#f00` |
-| 空行とディレクティブの行で、テキストの末尾                           | 残す。ディレクティブの行は離れて、文の段に置く               | `#f00` |
-| ディレクティブの行と空行で、テキストの末尾                           | 残す。末尾の空行は落とす                                     | `#f00` |
+| コメント行の後に続くもの                                                                    | U+2028 や U+2029 と行                                        | 色     |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ------ |
+| 何もなく、テキストの末尾                                                                    | 落とす。コメント行は、普通の行と同じに自分の行に置く         | `#f00` |
+| コメント行だけで、テキストの末尾                                                            | 落とす。各コメント行は、普通の行と同じに自分の行に置く       | `#f00` |
+| 空行で、テキストの末尾                                                                      | 落とす。コメント行は、普通の行と同じに自分の行に置く         | `#f00` |
+| 空白だけの行で、テキストの末尾                                                              | 落とす。コメント行は、普通の行と同じに自分の行に置く         | `#f00` |
+| 空行とコメント行で、テキストの末尾                                                          | 落とす。どの行も、普通の行と同じに自分の行に置く。空行は残す | `#f00` |
+| すぐに文（接する `b` か、空白の後の ` y`）                                                  | 残す。文はコメント行の次の行に、書かれたままで残る           | `#F00` |
+| コメント行 2 つと文                                                                         | 残す。文はコメント行の次の行に、書かれたままで残る           | `#F00` |
+| 空行と文                                                                                    | 残す。文は離れて、文の段に置く                               | `#f00` |
+| コメント行、空行、文                                                                        | 残す。文は離れて、文の段に置く                               | `#f00` |
+| 空白だけの行と文                                                                            | 残す。文は離れて、文の段に置く                               | `#f00` |
+| ディレクティブの行で、テキストの末尾                                                        | 残す                                                         | `#f00` |
+| ディレクティブの行と文                                                                      | 残す。文は離れて、文の段に置く                               | `#f00` |
+| ディレクティブの行とコメント行で、テキストの末尾                                            | 落とす。どの行も、普通の行と同じに自分の行に置く             | `#f00` |
+| コメント行、ディレクティブの行、コメント行で、テキストの末尾                                | 落とす。どの行も、普通の行と同じに自分の行に置く             | `#f00` |
+| 空行、ディレクティブの行、コメント行で、テキストの末尾                                      | 落とす。どの行も、普通の行と同じに自分の行に置き、空行を残す | `#f00` |
+| ディレクティブの行、空行、コメント行で、テキストの末尾                                      | 落とす。どの行も、普通の行と同じに自分の行に置き、空行を残す | `#f00` |
+| ディレクティブの行 2 つとコメント行で、テキストの末尾                                       | 落とす。どの行も、普通の行と同じに自分の行に置く             | `#f00` |
+| ディレクティブの行、コメント行、文                                                          | 残す。文はコメント行の次の行に、書かれたままで残る           | `#F00` |
+| ディレクティブの行、コメント行、ディレクティブの行で、テキストの末尾                        | 残す                                                         | `#f00` |
+| コメント行 2 つとディレクティブの行で、テキストの末尾                                       | 残す                                                         | `#f00` |
+| 空行とディレクティブの行で、テキストの末尾                                                  | 残す。ディレクティブの行は離れて、文の段に置く               | `#f00` |
+| ディレクティブの行と空行で、テキストの末尾                                                  | 残す。末尾の空行は落とす                                     | `#f00` |
+| ディレクティブとコメントが 1 行にある行で、テキストの末尾（`%%{y}%%%% d`、`%%{y}%%  %% d`） | 落とす。その行を、普通の行と同じに自分の行に置く             | `#f00` |
+| ディレクティブを含むコメント行（`%% d%%{y}%%`）で、テキストの末尾                           | 落とす。その行を、普通の行と同じに自分の行に置く             | `#f00` |
+| コメント行、ディレクティブの行、文                                                          | 残す。文は離れて、文と同じ段に置く                           | `#f00` |
+| 空行、コメント行、文                                                                        | 残す。文はコメント行の次の行に、書かれたまま残る             | `#F00` |
 
-U+2028 や U+2029 は、文が続かず、空白でない最後の行がコメント行のときに落とし、
-文が続くとき、または空白でない最後の行がディレクティブの行のときは残します。
-flowchart、class、state、ER は、コメント行の後に何もないときに、
-その行を書かれたまま残し、その形は規則 2 が与えます。
-そのためブロック図は、最初の行を規則 2 に反して印字しており、
+U+2028 や U+2029 は、文が続かず、
+空白でない最後の行がコメントを含むとき（コメント行、
+ディレクティブを含むコメント行、
+ディレクティブとコメントが 1 行にある行）に落とし、文が続くとき、
+または空白でない最後の行にディレクティブしかないときは残します。
+文が続くときの色は、文がコメント行のすぐ後の行にあれば書かれたまま残り、空行、
+空白だけの行、ディレクティブの行が文のすぐ前にあれば小文字になります。
+flowchart、class、state、ER は、ブロック図が落とすどの行でも、
+その行を書かれたまま残し（ER は空白だけの行を拒否します）、
+その形は規則 2 が与えます。
+そのためブロック図は、それらの行を規則 2 に反して印字しており、
 規則による修正を待っています。
 そのような行で、その行でコンマが続く色（空白、タブ、
 フォームフィードを挟んでもです）と、行の規則が無視する `;` が続かない、
@@ -1602,11 +1615,18 @@ U+2028、`%% c`、` y` は `#f00 x` になります）。
 その形は規則に反して印字しており、規則による修正を待っています。
 `;` が U+2028 の直前の色に接するときは、U+2028 とコメント行は書かれたままで、
 コメント行の後に何が続いても同じです。
-色は、コメント行の後に文が続くときだけ書かれたまま残り、
-文が続かないとき（コメント行、空行、ディレクティブの行が、
-どの順で何行続いても）は、小文字になります。
+色は、コメント行のすぐ後に文が続くときだけ、
+`;` がないときと同じに書かれたまま残り、文が続かないとき、
+または空行かディレクティブの行が文のすぐ前にあるときは、小文字になります。
 `style a fill:#F00;`、U+2028、`%% c` は、
 U+2028 と `%% c` を残して `style a fill:#f00;` になります。
+`;` と U+2028 の間に空白、タブ、フォームフィードがあるときは、U+2028 は残り、
+色は何が続いても小文字になります。
+ほかの文字（垂直タブ、ノーブレークスペース）があるときの色は、
+`;` が接するときと同じです。
+2 つ目の `;` が 1 つ目に続くとき（直後でも、空白かタブを挟んでも。
+`style a fill:#F00;;`、`style a fill:#F00; ;`）は、
+何が続いても色は書かれたまま残ります。
 ブロック図では、mermaid.js は U+2028 を行の終わりとして、
 `%% c` をコメントとして読みます。
 `style a fill:#F00`、U+2028、テキストの末尾の `%% c` は、
@@ -1690,6 +1710,44 @@ U+2028 と `%% c` を残して `style a fill:#f00;` になります。
 [test: two directive lines and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
 [test: two directive lines and a comment line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped]
 [test: two directive lines and a comment line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case]
+[test: a directive and a comment that touches it on a line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: a directive and a comment that touches it on a line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped]
+[test: a directive and a comment that touches it on a line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case]
+[test: a directive and a comment after spaces on a line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: a directive and a comment after spaces on a line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped]
+[test: a directive and a comment after spaces on a line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case]
+[test: a comment line that holds a directive, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: a comment line that holds a directive, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped]
+[test: a comment line that holds a directive, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case]
+[test: a comment line, a directive line, and a statement, after a style statement and a U+2028: the U+2028 stays and the color is in lower case]
+[test: an empty line, a comment line, and a statement, after a style statement and a U+2028: the U+2028 stays and the color stays as written]
+[test: two semicolons after a color and a U+2028, to the end of the text, the color stays as written]
+[test: two semicolons after a color and a U+2028, a statement follows, the color stays as written]
+[test: two semicolons that a space separates after a color and a U+2028, to the end of the text, the color stays as written]
+[test: two semicolons that a space separates after a color and a U+2028, a statement follows, the color stays as written]
+[test: two semicolons after a color and a U+2029 in a class definition, to the end of the text, the color stays as written]
+[test: a space between the semicolon and the U+2028, to the end of the text, the U+2028 stays and the color is in lower case]
+[test: a space between the semicolon and the U+2028, a statement follows, the U+2028 stays and the color is in lower case]
+[test: a tab between the semicolon and the U+2028, a statement follows, the U+2028 stays and the color is in lower case]
+[test: a form feed between the semicolon and the U+2028, a statement follows, the U+2028 stays and the color is in lower case]
+[test: a vertical tab between the semicolon and the U+2028, to the end of the text, the U+2028 stays and the color is in lower case]
+[test: a vertical tab between the semicolon and the U+2028, a statement follows, the U+2028 stays and the color is as written]
+[test: a no-break space between the semicolon and the U+2028, to the end of the text, the U+2028 stays and the color is in lower case]
+[test: a no-break space between the semicolon and the U+2028, a statement follows, the U+2028 stays and the color is as written]
+[test: a semicolon touching the color, a directive line, and a statement after the comment line: the color is in lower case]
+[test: a semicolon touching the color, an empty line, and a statement after the comment line: the color is in lower case]
+[test: a semicolon touching the color, a directive line, a comment line, and a statement after the comment line: the color is as written]
+[test: a semicolon touching the color, a comment line, a directive line, and a statement after the comment line: the color is in lower case]
+[test: a semicolon touching the color, an empty line, a comment line, and a statement after the comment line: the color is as written]
+[test: a space and a vertical tab before a comma in a class definition that a line break joins, the first decides: the color is in lower case]
+[test: a vertical tab and a space before a comma in a class definition that a line break joins, the first decides: the color is as written]
+[test: a no-break space and a space before a comma in a class definition that a line break joins, the first decides: the color is as written]
+[test: a space and a no-break space before a comma in a class definition that a line break joins, the first decides: the color is in lower case]
+[test: a tab and a no-break space before a comma in a class definition that a line break joins, the first decides: the color is in lower case]
+[test: a form feed and a no-break space before a comma in a class definition that a line break joins, the first decides: the color is in lower case]
+[test: a no-break space and a form feed before a comma in a class definition that a line break joins, the first decides: the color is as written]
+[test: a space and a vertical tab between a color and the semicolon in a class definition that a line break joins, the first decides: the color is in lower case]
+[test: a vertical tab and a space between a color and the semicolon in a class definition that a line break joins, the first decides: the color is as written]
 
 ### 空白文字
 

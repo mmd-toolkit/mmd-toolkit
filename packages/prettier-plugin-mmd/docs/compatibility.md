@@ -5998,7 +5998,7 @@ on the line of the colon, and stays as written where the comment region follows
 the colon at once (see
 [Multi-line statements](./block.md#multi-line-statements)). In a `style` or a
 `classDef` statement, a U+2028 or U+2029 before a comment line is dropped where
-no statement follows, the last line that is not blank is a comment line, and no
+no statement follows, the last line that is not blank holds a comment, and no
 `;` touches the color before it, and the comment line stands on a line of its
 own (see [Line separators](./block.md#line-separators)). What else the formatter
 prints on a statement of such a line in a block diagram, as the colors of a
