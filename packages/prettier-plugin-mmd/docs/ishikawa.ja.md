@@ -463,11 +463,16 @@ ishikawa
 
 テキスト中のディレクティブの両側の空白は、書かれたとおり保ちます。
 ディレクティブの除去は両側をつなぐだけで、空白を補わないためです。
+ディレクティブの後にテキストが続くテキストでは、
+ほかの空白とタブの連なりも書かれたままです。
+mermaid.js は、それを空白 1 つと同じに描きます。
+`A %%{init: {}}%% b  c` と `D  e %%{init: {}}%% f` はそのままです。
 
 [fixture: ishikawa/inline-directives/directive-gap-trim-unsafe]
 [fixture: ishikawa/inline-directives/directive-single-space-gaps]
 [fixture: ishikawa/inline-directives/directive-in-value]
 [fixture: ishikawa/inline-directives/literal-side-whitespace]
+[fixture: ishikawa/inline-directives/directive-middle-runs-kept]
 [fixture: ishikawa/inline-directives/joined-line-spaces]
 
 先頭のディレクティブの隙間は、節点の深さによる字下げに数えます。
@@ -517,6 +522,8 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+ただし、ディレクティブの後にテキストが続くテキストは別です。
+[Inline directives](#inline-directives)を参照してください。
 結合した継続列は保ちます。
 コメントの空白とディレクティブの内容も同じです。
 テキストを終えるディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
@@ -561,6 +568,9 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 引用符、バッククォート、空に見える文字列や括弧や呼び出し、閉じ忘れ、数、句読点、
 実体参照、HTML、プロトタイプの名前もテキストです。
 title、アクセシビリティ、style、装飾、データらしい形も同じです。
+ディレクティブの後にテキストが続くテキストでは、
+空白とタブの連なりを書かれたままにします。
+[Inline directives](#inline-directives)を参照してください。
 
 [fixture: ishikawa/node-text/values-opaque]
 [fixture: ishikawa/node-text/values-quote-unsafe]
