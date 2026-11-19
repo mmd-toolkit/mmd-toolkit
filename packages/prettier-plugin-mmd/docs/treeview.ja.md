@@ -1885,10 +1885,17 @@ title の次の行は字下げせず、
 `R` は 1 桁目になります。
 title の後に何もないか、空行かコメント行だけがあってテキストが終わるときは、
 ディレクティブの前の U+2028 か U+2029 の後ろの、ディレクティブとコメントを、
-次の行に置いて印字します（`title T\u2028%%{x}%%%% c` は `title T` と、
-次の行の `%%{x}%%%% c` と印字します）。
-ディレクティブとコメントの間の U+2028 か U+2029 は、
+次の行に置いて印字し、その U+2028 か U+2029 の前後の空白文字は除きます。
+その前の U+0085 だけは title の行の末尾に残ります（`title T\u2028%%{x}%%%% c` は
+`title T` と、次の行の `%%{x}%%%% c` と印字します）。
+ディレクティブとコメントの間に 2 つ目の U+2028 か U+2029 があれば、
+コメントをディレクティブの次の行に置きます（`title T`、U+2028、`%%{x}%%`、
+U+2029、`%% c` は、`title T`、`%%{x}%%`、`%% c` の 3 行に印字します）。
+ディレクティブの前に区切りがなく、
+ディレクティブとコメントの間にだけある U+2028 か U+2029 は、
 それらと一緒に書かれたまま残ります。
+最初の U+2028 か U+2029 の後ろ、コメントまでのどこかに U+0085 があれば、
+行は書かれたまま残ります。
 title の後に文があるとき（直後でも、空行かコメント行の後でも）と、
 空白だけの行かディレクティブの行があるときは、title は書かれたまま残ります。
 
@@ -1962,6 +1969,7 @@ U+2028 の後を空白 1 つにして印字します）。
 [test: treeview: a U+2028 or U+2029 before the last directive of a title, with a comment line after it]
 [test: treeview: a U+2028 or U+2029 before the last directive of a title, with a statement after it, directly or after an empty line or a comment line]
 [test: treeview: a U+2028 or U+2029 before the last directive of a title, with a line of spaces or a line of a directive after it]
+[test: treeview: a U+2028 or U+2029 and a U+0085 around the last directive of a title, with the text ending]
 [test: treeview: the whitespace before the last directive where the line is the last statement of the text]
 [test: treeview: a run of whitespace before the last directive follows the column of its characters]
 [test: treeview: a run of whitespace before the last directive follows the column of its characters where the line is the last statement of the text]

@@ -1881,11 +1881,18 @@ after the title is not indented (`title T\u2028%%{x}%%%% c` and the node `R`
 under it are printed as they are, `R` at column one). Where nothing, an empty
 line, or a comment line follows the title and the text ends, the directive and
 the comment that follow a U+2028 or a U+2029 before the directive are printed on
-a line of their own (`title T\u2028%%{x}%%%% c` is printed `title T` and
-`%%{x}%%%% c` on the next line), while a U+2028 or a U+2029 between the
-directive and the comment stays with them as written. With a statement after the
-title, directly or after an empty line or a comment line, or with a line of
-spaces or a line of a directive after it, the title stays as written.
+a line of their own, and the whitespace around that U+2028 or U+2029 is left out
+(a U+0085 before it is no whitespace and stays at the end of the title line;
+`title T\u2028%%{x}%%%% c` is printed `title T` and `%%{x}%%%% c` on the next
+line); a second U+2028 or U+2029 between the directive and the comment puts the
+comment on a line of its own after the directive (`title T`, a U+2028,
+`%%{x}%%`, a U+2029, and `%% c` are printed `title T`, `%%{x}%%`, and `%% c` on
+three lines), while a U+2028 or a U+2029 between the directive and the comment
+alone, with none before the directive, stays with them as written. A U+0085
+after the first U+2028 or U+2029, anywhere up to the comment, keeps the line as
+written. With a statement after the title, directly or after an empty line or a
+comment line, or with a line of spaces or a line of a directive after it, the
+title stays as written.
 
 Where the last directive holds a line break or a `;` (`%%{init: {`, a line
 break, and `}}%%`, or `%%{init: {a;b}}%%`), the table gives the forms with
@@ -1953,19 +1960,20 @@ U+2028 or U+2029 before the last directive of a title, with a comment line after
 it] [test: treeview: a U+2028 or U+2029 before the last directive of a title,
 with a statement after it, directly or after an empty line or a comment line]
 [test: treeview: a U+2028 or U+2029 before the last directive of a title, with a
-line of spaces or a line of a directive after it] [test: treeview: the
-whitespace before the last directive where the line is the last statement of the
-text] [test: treeview: a run of whitespace before the last directive follows the
-column of its characters] [test: treeview: a run of whitespace before the last
-directive follows the column of its characters where the line is the last
-statement of the text] [test: treeview: a run that holds a tab and other
-whitespace before the last directive] [test: treeview: a run that holds a tab
-and other whitespace before the last directive where the line is the last
-statement of the text] [test: treeview: the whitespace around a last directive
-that holds a line break or a semicolon, with nothing or a mark that touches it
-after it] [test: treeview: the whitespace around a last directive that holds a
-line break or a semicolon, with spaces or a tab after it, or a mark after a
-space]
+line of spaces or a line of a directive after it] [test: treeview: a U+2028 or
+U+2029 and a U+0085 around the last directive of a title, with the text ending]
+[test: treeview: the whitespace before the last directive where the line is the
+last statement of the text] [test: treeview: a run of whitespace before the last
+directive follows the column of its characters] [test: treeview: a run of
+whitespace before the last directive follows the column of its characters where
+the line is the last statement of the text] [test: treeview: a run that holds a
+tab and other whitespace before the last directive] [test: treeview: a run that
+holds a tab and other whitespace before the last directive where the line is the
+last statement of the text] [test: treeview: the whitespace around a last
+directive that holds a line break or a semicolon, with nothing or a mark that
+touches it after it] [test: treeview: the whitespace around a last directive
+that holds a line break or a semicolon, with spaces or a tab after it, or a mark
+after a space]
 
 This chooses consistent Db-equivalent outer spacing without taking a next-line
 value. Follow AST boundaries for `titlex` and `title"node"`; title still stays
