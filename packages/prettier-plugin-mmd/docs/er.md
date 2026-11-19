@@ -2518,9 +2518,18 @@ is an entity, so removing its terminator changes the Db.
 [fixture:
 semicolons-at-the-end-of-a-style-statement/hash-outside-line-rule-kept]
 
-A directive after the semicolon on the same line keeps the `;`.
+A directive after the semicolon on the same line keeps the `;`. The line break
+after the directive goes on in the style, as it does after whitespace at the end
+of the last style (see [Styles and classes](#styles-and-classes)): the next line
+stays at its written column, and what it holds belongs to the last style. So the
+`B` that follows `classDef c fill:#f00; %%{init: {}}%%` is the last digit of the
+color `#f00B`, not an entity, and it is printed `b` like the other digits of a
+color (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 
 [fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+[corpus fixture: er/lex-classdef-ignored-semicolon-then-text] [corpus fixture:
+er/tokens-closed-directive-end-of-classdef-line]
 
 An ignored `;` beside another `;` is kept to preserve the line rule's selection.
 

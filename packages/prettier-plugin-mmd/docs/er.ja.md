@@ -2502,8 +2502,18 @@ erDiagram
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-outside-line-rule-kept]
 
 同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
+ディレクティブの後の改行は、最後の style の末尾に空白があるときと同じく、
+style の続きになります。
+詳しくは [スタイルとクラス](#スタイルとクラス) を参照してください。
+次の行は書かれた桁に残り、その行の中身は最後の style に属します。
+そのため `classDef c fill:#f00; %%{init: {}}%%` の次の `B` は、
+実体ではなく色 `#f00B` の最後の桁で、色のほかの桁と同じく `b` と印字します。
+詳しくは [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)
+を参照してください。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+[corpus fixture: er/lex-classdef-ignored-semicolon-then-text]
+[corpus fixture: er/tokens-closed-directive-end-of-classdef-line]
 
 無視される `;` が別の `;` の隣にある場合は、行の規則の選択を保つために残します。
 
