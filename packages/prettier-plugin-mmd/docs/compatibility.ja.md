@@ -1464,12 +1464,20 @@ gantt の日付の書式の末尾と、timeline の行の最後の event の末�
 12.3.0 の Db だけが違い、描画は対象にするどの版でも同じです。
 そこでも書かれたままです。
 pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、
-treeView、info、railroad、quadrant の図の title は、
-先頭と末尾の改行しない空白と U+3000 を、空白とタブと同じように除きます。
-mermaid.js がこれらの title の両端のそれらを除いて読み、
-それがあってもなくても 12.3.0 の Db が同じになるからです。
+treeView、info、railroad、quadrant の図の title は、末尾の空白文字を除き、
+先頭の空白文字も、quadrant 図を除いて除きます。
+quadrant 図は、U+2028 か U+2029 を含む間を書かれたままにするので、
+先頭の U+2028 と U+2029 を残します（下の最初の表の `\u2028T` と `\u2029T`。
+[行区切り文字](./quadrant.ja.md#行区切り文字)を参照）。
+ここでいう空白文字は、U+0009〜U+000D、U+0020、U+00A0、U+1680、U+2000〜U+200A、
+U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF で、
+`String.prototype.trim`
+が除く文字です（[表記](../../spec/docs/common.ja.md#表記)を参照）。
+それがあってもなくても 12.3.0 の Db が同じで、
+描画も対象にするどの版でも同じだからです。
 これは、ディレクティブもコメントもないタイトルに当てはまります。
-それらがあるタイトルでは、下の表のとおりに印字します。
+それらがあるタイトルでは、空白でもタブでもない空白文字を、
+下の表のとおりに印字します。
 timeline の行の最後の event と、別名を持つ state の 2 つ目の説明も、
 同じように末尾の空白とタブを除きますが、先頭の空白は除きません。
 その空白は timeline のコロンをそろえます。
@@ -1480,11 +1488,20 @@ timeline の period と、後ろに別のコロンが続く event は、末尾�
 `2004: a: b` は `2004 : a : b` と印字します。
 period が `title` か `section` の語のときは足しません。
 空白を足すと、その行が title や section になるためです。
-user journey のタスクの説明は、最初のコロンの前の空白を除きます。
+user journey のタスクの説明は、最初のコロンの前の空白とタブを除きます。
 `Make tea : 5: Me` は `Make tea: 5: Me` と印字します。
 説明をそろえてコロンの桁をそろえた節は、書かれたままにします。
+空白でもタブでもない文字がその中にあるときも、書かれたままにします（`Make tea`、
+改行しない空白、`: 5: Me`）。
 タイトルのテキストと、同じ行のその後のコメントの間に空白かタブがあれば、
 空白 1 つにし、コメントがテキストに接していれば接したままにします。
+空白でもタブでもなく、U+2028 でも U+2029 でもない空白文字（改行しない空白、
+U+3000、U+2003 など）は、
+Langium の型では空白 1 つにして印字し（`T\u3000%% c` は `T %% c`）、quadrant、
+Gantt、user journey、timeline、sequence、Venn、C4 の図では書かれたままにします。
+空白 1 つの形は、quadrant、Gantt、Venn、C4 の図で、
+対象にするどの版でも別のテキストか別の形状を描きます。
+ただしフォームフィードは、quadrant、Gantt、C4 の図では同じに描きます。
 テキストの後にディレクティブだけが続く場合は、
 それぞれの前に空白かタブがあるかないかを保ち、
 空白とタブの連続は空白 1 つにします。
@@ -1564,19 +1581,73 @@ Wardley、treeView、info、railroad です。
 | `T %%{x}%%\u00a0%% c`          | 書かれたまま             | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
 | `T  %%{x}%%  %%{y}%%  %% c`    | `T %%{x}%% %%{y}%% %% c` | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
 | `T\t%% c`                      | `T %% c`                 | `T %% c`               | `T %% c`                           | `T %% c`            |
+| ` %%{x}%% T`                   | 書かれたまま             | `%%{x}%%T`             | `%%{x}%%T`                         | 書かれたまま        |
+| `\u00a0%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | 書かれたまま                       | 書かれたまま        |
+| `\u00a0%%{x}%%  `              | 書かれたまま             | `%%{x}%%`              | `\u00a0%%{x}%%`                    | `\u00a0%%{x}%%`     |
+| `\u3000%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | 書かれたまま                       | 書かれたまま        |
+| `\u2003%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | 書かれたまま                       | 書かれたまま        |
+| `  %% c  `                     | `%% c  `                 | `%% c`                 | `%% c`                             | `%% c`              |
+| `\u00a0%% c`                   | `%% c`                   | `%% c`                 | 書かれたまま                       | 書かれたまま        |
+| ` %%{x}%%%% c`                 | `%%{x}%%%% c`            | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | 書かれたまま        |
+| `T  %% c  %%{x}%%`             | `T %% c  %%{x}%%`        | `T %% c %%{x}%%`       | `T %% c %%{x}%%`                   | `T %% c %%{x}%%`    |
+| `T\u3000%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\u2003%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\u000b%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\u000c%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\ufeff%% c`                  | `T %% c`                 | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\u2028`                      | `T`                      | `T`                    | 書かれたまま                       | 書かれたまま        |
+| `T  \u2028`                    | `T`                      | `T`                    | 書かれたまま                       | 書かれたまま        |
+| `T\u2029`                      | `T`                      | `T`                    | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%\u00a0%% c`            | 書かれたまま             | `%%{x}%%%% c`          | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%\u3000%% c`            | 書かれたまま             | `%%{x}%%%% c`          | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%\u2003%% c`            | 書かれたまま             | `%%{x}%%%% c`          | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%\t%% c`                | 書かれたまま             | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | 書かれたまま        |
+| `\u2028T`                      | `T`                      | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `\u2029T`                      | `T`                      | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T\u2028  `                    | `T`                      | `T`                    | `T\u2028`                          | `T\u2028`           |
 
-ディレクティブだけのタイトルは、quadrant 以外のどの型でも書かれたままです。
+ディレクティブだけのタイトル（`%%{x}%%  `、ディレクティブとタブ、
+ディレクティブ 2 つと空白）は、quadrant 以外のどの型でも書かれたままです。
+quadrant は、最後のディレクティブの後の空白とタブを除きます。
 Gantt、user journey、sequence、Venn、C4 では、対象にするどの版も、
 ディレクティブの後の空白を除いたタイトルを拒否し、
 timeline では別の図を描きます。
+そのタイトルの最初のディレクティブの前の改行しない空白、U+3000、U+2003 は、
+Langium の型と quadrant では除き、ほかの型では残します（`\u00a0%%{x}%%`）。
+ディレクティブの後にも空白があるとき（`\u00a0%%{x}%%  `）は、
+quadrant は文字も空白も除き、Gantt、user journey、timeline、sequence、Venn、
+C4 は空白を除いて文字を残し、Langium の型は両方を残します。
+
+コメントだけのタイトル（`  %% c  `）は、
+Langium の型ではコメントの後の空白を残して `%% c  ` と印字し、
+ほかの型では `%% c` と印字します。
+コメントの前の改行しない空白は、Langium の型と quadrant では除き、
+ほかの型では残します。
+
 ディレクティブとコメントだけのタイトル（`%%{x}%%  %% c  `、
 ディレクティブが 2 つでも同じ）は、quadrant、Gantt、user journey、timeline、
 sequence では `%%{x}%%%% c` と印字し、ほかの型では書かれたままです。
 この 2 つの形は、対象にするどの版でも同じに描かれます。
+そのタイトルのディレクティブの前の空白（` %%{x}%%%% c`）は、
+Venn と C4 以外のどの型でも除きます。
+ディレクティブとコメントの間のタブは、quadrant、Gantt、user journey、timeline、
+sequence では除き、ほかの型では残し、描画は同じです。
+その間の改行しない空白、U+3000、U+2003 は、quadrant では除き、
+ほかの型では残します。
+Langium の型はそれがあってもなくても同じに描き、Gantt、timeline、Venn、
+C4 の図は、それがないと別のテキストを描きます。
+
 テキストの後のディレクティブ 2 つとコメント（`T  %%{x}%%  %%{y}%%  %% c`）は、
 Langium の型ではそれぞれの前に空白 1 つを置いて印字し、
 ほかの型では書かれたままです。
 描画は同じです。
+テキストの後のコメントとその後ろのディレクティブ（`T %% c %%{x}%%`）と、
+ディレクティブとコメントの間の改行しない空白（`T %%{x}%%\u00a0%% c`）は、
+どの型でも書かれたままです。
+テキストに接するコメント（`T%% c`）も同じです。
+
+タイトルの末尾の U+2028 か U+2029 は、その前の空白と一緒に、
+Langium の型と quadrant では除き、ほかの型では残します。
 
 テキストのある `accTitle:` と `accDescr:` の行は、次の表のとおりに印字します。
 Langium の型は最初の表と同じ形ですが、値の先頭のディレクティブは、
@@ -1584,9 +1655,16 @@ Langium の型は最初の表と同じ形ですが、値の先頭のディレク
 ほかの型は表の最後の列のとおりです（Venn 図にはこの行がありません）。
 ディレクティブだけの行は表にありません。
 Langium の型は書かれたまま印字します。
-mermaid.js は、Gantt、user journey、timeline では拒否し、
-quadrant と sequence では次の行を値として読み、
-C4 の `accDescr:` の行でもそう読みます。
+mermaid.js は、Gantt、user journey、timeline では拒否し、quadrant、sequence、
+C4 では次の行を値として読みます。
+C4 の 12.3.0 の Db は、
+ディレクティブだけの `accTitle:` の行では `accTitle` が空で、
+次の行が図の title になり（C4 では `accTitle:` が図の title を設定します）、
+`accDescr:` の行では次の行が `accDescr` になります。
+整形は、次の行を書かれたまま、1 段深く置いて印字します。
+ディレクティブとコメントだけで、テキストのない行は、表の最後の行にあります。
+最後の列の型は `%%{x}%%%% c` と印字し、Langium の型は書かれたままにします。
+書かれた形も印字した形も、対象にするどの版でも同じに描かれます。
 quadrant、Gantt、user journey、timeline、sequence、C4 の図では、
 これらの行の値の先頭か末尾に、改行しない空白、U+3000、U+2003、U+2028、
 U+2029 があってもなくても、
@@ -1639,6 +1717,16 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 | `T %%{x}%%\u00a0%% c`                           | 書かれたまま             | 書かれたまま                                      |
 | `T  %%{x}%%  %%{y}%%  %% c`                     | `T %%{x}%% %%{y}%% %% c` | 書かれたまま                                      |
 | `T\t%% c`                                       | `T %% c`                 | `T\t%% c`（`accTitle:`）、`T %% c`（`accDescr:`） |
+| `T\u3000%% c`                                   | `T %% c`                 | 書かれたまま                                      |
+| `T\u2028`                                       | `T`                      | `T`                                               |
+| `T  \u2028`                                     | `T`                      | `T`                                               |
+| `T\u2029`                                       | `T`                      | `T`                                               |
+| `%%{x}%%  %% c  `                               | 書かれたまま             | `%%{x}%%%% c`                                     |
+| `%%{x}%%\u00a0%% c`                             | 書かれたまま             | `%%{x}%%%% c`                                     |
+| `%%{x}%%\u3000%% c`                             | 書かれたまま             | `%%{x}%%%% c`                                     |
+| `%%{x}%%\u2003%% c`                             | 書かれたまま             | `%%{x}%%%% c`                                     |
+| `%%{x}%%\t%% c`                                 | 書かれたまま             | `%%{x}%%%% c`                                     |
+| `T\u2028  `                                     | `T`                      | `T`                                               |
 
 閉じていないディレクティブはタイトルの残りを取ります。
 `title T %%{x` と `title T%%{x` は、どの型でも変えません。
@@ -1690,6 +1778,29 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [test: a no-break space between a directive and a comment after the text of a title]
 [test: two directives and a comment after the text of a title]
 [test: a tab before a comment after the text of a title]
+[test: a space before a directive that starts a title and text after it]
+[test: a no-break space before the directive of a title of directives only]
+[test: a no-break space before the directive and spaces after it in a title of directives only]
+[test: U+3000 before the directive of a title of directives only]
+[test: U+2003 before the directive of a title of directives only]
+[test: a comment only as a title, with spaces around it]
+[test: a no-break space before a comment only as a title]
+[test: a space before a directive and a comment only as a title]
+[test: runs around a comment and then a directive after the text of a title]
+[test: U+3000 before a comment after the text of a title]
+[test: U+2003 before a comment after the text of a title]
+[test: a vertical tab before a comment after the text of a title]
+[test: a form feed before a comment after the text of a title]
+[test: U+FEFF before a comment after the text of a title]
+[test: U+2028 at the end of a title]
+[test: spaces and U+2028 at the end of a title]
+[test: U+2029 at the end of a title]
+[test: a no-break space between a directive and a comment only as a title]
+[test: U+3000 between a directive and a comment only as a title]
+[test: U+2003 between a directive and a comment only as a title]
+[test: a tab between a directive and a comment only as a title]
+[test: U+2028 at the start of a title] [test: U+2029 at the start of a title]
+[test: U+2028 and then spaces at the end of a title]
 [test: runs and spaces around a directive that ends an accessibility line]
 [test: a comment and spaces after a directive that ends an accessibility line]
 [test: a no-break space after the last directive of an accessibility line]
@@ -1721,6 +1832,16 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [test: a no-break space between a directive and a comment after the text of an accessibility line]
 [test: two directives and a comment after the text of an accessibility line]
 [test: a tab before a comment after the text of an accessibility line]
+[test: U+3000 before a comment after the text of an accessibility line]
+[test: U+2028 at the end of an accessibility line]
+[test: spaces and U+2028 at the end of an accessibility line]
+[test: U+2029 at the end of an accessibility line]
+[test: a directive and a comment only as an accessibility line]
+[test: a no-break space between a directive and a comment only as an accessibility line]
+[test: U+3000 between a directive and a comment only as an accessibility line]
+[test: U+2003 between a directive and a comment only as an accessibility line]
+[test: a tab between a directive and a comment only as an accessibility line]
+[test: U+2028 and then spaces at the end of an accessibility line]
 [test: an accessibility line of directives only stays as written in each type of the Langium grammar]
 [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]
 [fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept]

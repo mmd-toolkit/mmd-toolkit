@@ -963,11 +963,15 @@ Venn 図のディレクティブかコメントのあるタイトルは、
 の最初の表の Venn、C4 の列のとおりに印字します。
 テキストの後にディレクティブだけが続くときは、
 最後のディレクティブの後の空白とタブを除きます。
-最後のディレクティブの後のコメント、U+00A0、U+3000、U+2003、U+2028、U+2029、
-テキスト、先頭のディレクティブの後の空白、
+テキストの後では、コメントの前の空白とタブを 1 つの空白にし、
+コメントの後の空白とタブを除きます。
+`title T  %% c  ` は `title T %% c` と印字します。
+ディレクティブの後のコメント、U+00A0、U+3000、U+2003、U+2028、U+2029、
+最後のディレクティブの後のテキスト、先頭のディレクティブの後の空白、
 ディレクティブだけのタイトルがあるときは、タイトルは書かれたまま残ります。
 `title T %%{x}%% U` と空白 2 つは変えません。
 
+[test: runs and spaces around a comment after the text of a title]
 [test: text after a directive and spaces at the end of a title]
 [test: a no-break space after a directive and spaces at the end of a title]
 [test: a comment and spaces after a directive that ends a title]

@@ -1396,51 +1396,67 @@ a line of a timeline, the drawing is the same in every version that counts and
 only the Db of 12.3.0 differs, and it stays as written there too. The title of a
 pie chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph,
 a cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, a
-railroad diagram, and a quadrant chart loses a no-break space and U+3000 at its
-start and at its end, as it loses spaces and tabs, since mermaid.js trims them
-there, so that the Db of 12.3.0 is the same with and without them. This holds
-for a title in which no directive and no comment stands; beside one, a no-break
-space and U+3000 are printed as the tables below say. The last event of a line
-of a timeline and the second description of a state with an alias lose the
-spaces and tabs at their end in the same way, not the whitespace at their start,
-which aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
+railroad diagram, and a quadrant chart loses the whitespace of the specification
+at its end, and at its start in every one of them but a quadrant chart, which
+keeps a gap that holds a U+2028 or a U+2029 as written, so a U+2028 and a U+2029
+at its start stay (`\u2028T` and `\u2029T` in the first table below; see
+[Line separators](./quadrant.md#line-separators)). The whitespace is U+0009 to
+U+000D, U+0020, U+00A0, U+1680, U+2000 to U+200A, U+2028, U+2029, U+202F,
+U+205F, U+3000, and U+FEFF, the characters that `String.prototype.trim` removes
+(see [Notation](../../spec/docs/common.md#notation)). The title loses them
+because the Db of 12.3.0 is the same with and without them and the drawing is
+the same in every version that counts. This holds for a title in which no
+directive and no comment stands; beside one, a whitespace character that is no
+space or tab is printed as the tables below say. The last event of a line of a
+timeline and the second description of a state with an alias lose the spaces and
+tabs at their end in the same way, not the whitespace at their start, which
+aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
 `state "d" as A : x   ` is printed `state "d" as A : x`. A period of a timeline,
 and an event that another colon follows, gain one space at their end where they
 end without whitespace, which stands before that colon: `2004: a: b` is printed
 `2004 : a : b`, except after the word `title` or `section` as the period, where
 a space would make the line a title or a section. The description of a task of a
-user journey loses the whitespace before its first colon (`Make tea : 5: Me` is
-printed `Make tea: 5: Me`), except in a section whose descriptions are padded to
-line the colons up. Where spaces or tabs stand between the text of a title and a
+user journey loses the spaces and tabs before its first colon
+(`Make tea : 5: Me` is printed `Make tea: 5: Me`), except in a section whose
+descriptions are padded to line the colons up, and stays as written where a
+character that is no space or tab stands among them (`Make tea`, a no-break
+space, `: 5: Me`). Where spaces or tabs stand between the text of a title and a
 comment that follows it on its line, they are printed as one space, and a
-comment that touches the text stays touching. Where only directives follow the
-text, each keeps whether spaces or tabs precede it, a run becoming one space,
-and the spaces and tabs after the last one are dropped like any spaces and tabs
-at the end of the line, so the line is printed alike whether or not spaces and
-tabs follow its last directive, as a directive at the end of a line is in the
-other diagrams (see [Directives](./flowchart.md#directives)):
-`title T  %%{x}%%  %%{y}%%` and `title T  %%{x}%%  %%{y}%%  ` are both printed
-`title T %%{x}%% %%{y}%%`, `title T%%{x}%%%%{y}%%  ` is printed
-`title T%%{x}%%%%{y}%%`, and `state "d" as A : x  %%{x}%%  ` is printed
-`state "d" as A : x %%{x}%%`. mermaid.js removes the directives before it reads
-the text, so the spaces and tabs around them are spaces and tabs at the end of
-the text, which it draws the same whatever they are. This holds for the title of
-a Gantt chart, a user journey, a timeline, a sequence diagram, a Venn diagram, a
-C4 diagram, a quadrant chart, a pie chart, a radar chart, a packet diagram, an
-architecture diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map, a
-treeView, an info diagram, and a railroad diagram, for the `accTitle:` and
-`accDescr:` lines of those diagram types, except a Venn diagram, which has none,
-and of a usecase diagram, for the text of a node of an ishikawa diagram, a
-mindmap, and a treeView, and of a card of a kanban board (not the id of a
-column, which the figure depends on), for the date format and the axis format of
-a Gantt chart, for the `accDescription` of a C4 diagram, for the last event of a
-line of a timeline and the space that a period and an event before a colon gain,
-for the description of a task of a user journey, except that a task whose
-description holds a directive stays as written (see
-[Task data](./journey.md#task-data)), and for the second description of a state
-alias. The runs of spaces and tabs inside a date format, an axis format, or the
-value of an `accTitle:` line stay as written before the directives as they do
-without them.
+comment that touches the text stays touching. A whitespace character that is no
+space or tab and no U+2028 or U+2029, among them a no-break space, U+3000, and
+U+2003, is printed as one space by the Langium types (`T\u3000%% c` is printed
+`T %% c`), and stays as written in a quadrant chart, a Gantt chart, a user
+journey, a timeline, a sequence diagram, a Venn diagram, and a C4 diagram. The
+form with one space draws other text or other geometry in every version that
+counts in a quadrant chart, a Gantt chart, a Venn diagram, and a C4 diagram, but
+for a form feed, which draws the same in a quadrant chart, a Gantt chart, and a
+C4 diagram. Where only directives follow the text, each keeps whether spaces or
+tabs precede it, a run becoming one space, and the spaces and tabs after the
+last one are dropped like any spaces and tabs at the end of the line, so the
+line is printed alike whether or not spaces and tabs follow its last directive,
+as a directive at the end of a line is in the other diagrams (see
+[Directives](./flowchart.md#directives)): `title T  %%{x}%%  %%{y}%%` and
+`title T  %%{x}%%  %%{y}%%  ` are both printed `title T %%{x}%% %%{y}%%`,
+`title T%%{x}%%%%{y}%%  ` is printed `title T%%{x}%%%%{y}%%`, and
+`state "d" as A : x  %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`.
+mermaid.js removes the directives before it reads the text, so the spaces and
+tabs around them are spaces and tabs at the end of the text, which it draws the
+same whatever they are. This holds for the title of a Gantt chart, a user
+journey, a timeline, a sequence diagram, a Venn diagram, a C4 diagram, a
+quadrant chart, a pie chart, a radar chart, a packet diagram, an architecture
+diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map, a treeView, an
+info diagram, and a railroad diagram, for the `accTitle:` and `accDescr:` lines
+of those diagram types, except a Venn diagram, which has none, and of a usecase
+diagram, for the text of a node of an ishikawa diagram, a mindmap, and a
+treeView, and of a card of a kanban board (not the id of a column, which the
+figure depends on), for the date format and the axis format of a Gantt chart,
+for the `accDescription` of a C4 diagram, for the last event of a line of a
+timeline and the space that a period and an event before a colon gain, for the
+description of a task of a user journey, except that a task whose description
+holds a directive stays as written (see [Task data](./journey.md#task-data)),
+and for the second description of a state alias. The runs of spaces and tabs
+inside a date format, an axis format, or the value of an `accTitle:` line stay
+as written before the directives as they do without them.
 
 A no-break space, U+3000, U+2003, U+2028, and U+2029 are no spaces or tabs, and
 a title that holds a directive or a comment is not printed alike by every
@@ -1491,27 +1507,87 @@ column.
 | `T %%{x}%%\u00a0%% c`          | as written               | as written             | as written                         | as written          |
 | `T  %%{x}%%  %%{y}%%  %% c`    | `T %%{x}%% %%{y}%% %% c` | as written             | as written                         | as written          |
 | `T\t%% c`                      | `T %% c`                 | `T %% c`               | `T %% c`                           | `T %% c`            |
+| ` %%{x}%% T`                   | as written               | `%%{x}%%T`             | `%%{x}%%T`                         | as written          |
+| `\u00a0%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
+| `\u00a0%%{x}%%  `              | as written               | `%%{x}%%`              | `\u00a0%%{x}%%`                    | `\u00a0%%{x}%%`     |
+| `\u3000%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
+| `\u2003%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | as written                         | as written          |
+| `  %% c  `                     | `%% c  `                 | `%% c`                 | `%% c`                             | `%% c`              |
+| `\u00a0%% c`                   | `%% c`                   | `%% c`                 | as written                         | as written          |
+| ` %%{x}%%%% c`                 | `%%{x}%%%% c`            | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written          |
+| `T  %% c  %%{x}%%`             | `T %% c  %%{x}%%`        | `T %% c %%{x}%%`       | `T %% c %%{x}%%`                   | `T %% c %%{x}%%`    |
+| `T\u3000%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
+| `T\u2003%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
+| `T\u000b%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
+| `T\u000c%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
+| `T\ufeff%% c`                  | `T %% c`                 | as written             | as written                         | as written          |
+| `T\u2028`                      | `T`                      | `T`                    | as written                         | as written          |
+| `T  \u2028`                    | `T`                      | `T`                    | as written                         | as written          |
+| `T\u2029`                      | `T`                      | `T`                    | as written                         | as written          |
+| `%%{x}%%\u00a0%% c`            | as written               | `%%{x}%%%% c`          | as written                         | as written          |
+| `%%{x}%%\u3000%% c`            | as written               | `%%{x}%%%% c`          | as written                         | as written          |
+| `%%{x}%%\u2003%% c`            | as written               | `%%{x}%%%% c`          | as written                         | as written          |
+| `%%{x}%%\t%% c`                | as written               | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written          |
+| `\u2028T`                      | `T`                      | as written             | as written                         | as written          |
+| `\u2029T`                      | `T`                      | as written             | as written                         | as written          |
+| `T\u2028  `                    | `T`                      | `T`                    | `T\u2028`                          | `T\u2028`           |
 
-A title of directives only stays as written in every type but a quadrant chart.
-In a Gantt chart, a user journey, a sequence diagram, a Venn diagram, and a C4
-diagram, every version that counts rejects the title without the whitespace
-after the directive, and in a timeline it draws another figure. A title of
-directives and a comment only (`%%{x}%%  %% c  `, and the same with two
-directives) is printed `%%{x}%%%% c` in a quadrant chart, a Gantt chart, a user
-journey, a timeline, and a sequence diagram, and stays as written in the other
-types: the two forms are drawn the same in every version that counts. After the
-text, two directives and a comment (`T  %%{x}%%  %%{y}%%  %% c`) are printed
-with one space before each by the Langium types, and stay as written in the
-other types, with the same drawing.
+A title of directives only (`%%{x}%%  `, a directive and a tab, two directives
+and spaces) stays as written in every type but a quadrant chart, which leaves
+out the spaces and tabs after the last directive. In a Gantt chart, a user
+journey, a sequence diagram, a Venn diagram, and a C4 diagram, every version
+that counts rejects the title without the whitespace after the directive, and in
+a timeline it draws another figure. A no-break space, U+3000, or U+2003 before
+the first directive of such a title is left out by the Langium types and a
+quadrant chart and stays in the other types (`\u00a0%%{x}%%`). With spaces after
+the directive (`\u00a0%%{x}%%  `), a quadrant chart leaves out the character and
+the spaces, a Gantt chart, a user journey, a timeline, a sequence diagram, a
+Venn diagram, and a C4 diagram leave out the spaces and keep the character, and
+the Langium types keep both.
+
+A title of a comment only (`  %% c  `) is printed `%% c  ` by the Langium types,
+which keep the spaces after the comment, and `%% c` by the other types; a
+no-break space before the comment is left out by the Langium types and a
+quadrant chart and stays in the other types.
+
+A title of directives and a comment only (`%%{x}%%  %% c  `, and the same with
+two directives) is printed `%%{x}%%%% c` in a quadrant chart, a Gantt chart, a
+user journey, a timeline, and a sequence diagram, and stays as written in the
+other types: the two forms are drawn the same in every version that counts. A
+space before the directive of such a title (` %%{x}%%%% c`) is left out by every
+type but a Venn diagram and a C4 diagram. A tab between the directive and the
+comment is left out by a quadrant chart, a Gantt chart, a user journey, a
+timeline, and a sequence diagram, and stays in the other types, with the same
+drawing. A no-break space, U+3000, or U+2003 between them is left out by a
+quadrant chart and stays in the other types: the eleven Langium types draw the
+same with and without it, and a Gantt chart, a timeline, a Venn diagram, and a
+C4 diagram draw other text without it.
+
+After the text, two directives and a comment (`T  %%{x}%%  %%{y}%%  %% c`) are
+printed with one space before each by the Langium types, and stay as written in
+the other types, with the same drawing. After the text, a comment and then a
+directive (`T %% c %%{x}%%`), and a no-break space between a directive and a
+comment (`T %%{x}%%\u00a0%% c`), stay as written in every type, and so does a
+comment that touches the text (`T%% c`).
+
+A U+2028 or U+2029 at the end of a title, with the spaces before it, is left out
+by the Langium types and a quadrant chart and stays in the other types.
 
 An `accTitle:` or `accDescr:` line that holds text is printed as the next table
 gives: the Langium types as in the first table, except that a directive that
 starts the value stays with what follows it, and the other types as its last
 column (a Venn diagram has no such line). A line of directives only is not in
 the table: the Langium types print it as written, mermaid.js rejects it in a
-Gantt chart, a user journey, and a timeline, and in a quadrant chart and a
-sequence diagram the next line is its value, as it is for an `accDescr:` line of
-a C4 diagram. In a quadrant chart, a Gantt chart, a user journey, a timeline, a
+Gantt chart, a user journey, and a timeline, and in a quadrant chart, a sequence
+diagram, and a C4 diagram the next line is its value. In a C4 diagram, the Db of
+12.3.0 has an empty `accTitle` for an `accTitle:` line of directives only and
+the next line as the title of the diagram (`accTitle:` sets the title of a C4
+diagram), and the next line as the `accDescr` for an `accDescr:` line; the
+formatter prints the next line as written, one level deeper. A line of a
+directive and a comment with no text is in the last rows of the table: the types
+of the last column print `%%{x}%%%% c`, and the Langium types keep the line as
+written, the written and the printed forms being drawn the same in every version
+that counts. In a quadrant chart, a Gantt chart, a user journey, a timeline, a
 sequence diagram, and a C4 diagram, the Db of 12.3.0 and the drawing are the
 same with and without a no-break space, U+3000, U+2003, U+2028, or U+2029 at the
 start or at the end of the value of these lines, once the directives are
@@ -1561,6 +1637,16 @@ and [Accessibility lines](./pie.md#accessibility-lines)).
 | `T %%{x}%%\u00a0%% c`                      | as written               | as written                                          |
 | `T  %%{x}%%  %%{y}%%  %% c`                | `T %%{x}%% %%{y}%% %% c` | as written                                          |
 | `T\t%% c`                                  | `T %% c`                 | `T\t%% c` for `accTitle:`, `T %% c` for `accDescr:` |
+| `T\u3000%% c`                              | `T %% c`                 | as written                                          |
+| `T\u2028`                                  | `T`                      | `T`                                                 |
+| `T  \u2028`                                | `T`                      | `T`                                                 |
+| `T\u2029`                                  | `T`                      | `T`                                                 |
+| `%%{x}%%  %% c  `                          | as written               | `%%{x}%%%% c`                                       |
+| `%%{x}%%\u00a0%% c`                        | as written               | `%%{x}%%%% c`                                       |
+| `%%{x}%%\u3000%% c`                        | as written               | `%%{x}%%%% c`                                       |
+| `%%{x}%%\u2003%% c`                        | as written               | `%%{x}%%%% c`                                       |
+| `%%{x}%%\t%% c`                            | as written               | `%%{x}%%%% c`                                       |
+| `T\u2028  `                                | `T`                      | `T`                                                 |
 
 A directive that is not closed in a title takes the rest of the text.
 `title T %%{x` and `title T%%{x` are not changed in any type. The second table
@@ -1605,29 +1691,48 @@ title] [test: a directive and a comment only as a title] [test: two directives
 and a comment only as a title] [test: a comment and then a directive after the
 text of a title] [test: a no-break space between a directive and a comment after
 the text of a title] [test: two directives and a comment after the text of a
-title] [test: a tab before a comment after the text of a title] [test: runs and
-spaces around a directive that ends an accessibility line] [test: a comment and
-spaces after a directive that ends an accessibility line] [test: a no-break
-space after the last directive of an accessibility line] [test: U+3000 after the
-last directive of an accessibility line] [test: U+2003 after the last directive
-of an accessibility line] [test: a no-break space after a directive that starts
-an accessibility line and before another directive] [test: a no-break space
-after a directive that starts an accessibility line and after the last
-directive] [test: a no-break space after a directive that starts an
-accessibility line and text after the last directive] [test: spaces after a
-directive that starts an accessibility line] [test: text after a directive and
-spaces at the end of an accessibility line] [test: a no-break space after a
-directive and spaces at the end of an accessibility line] [test: text between
-two directives and spaces at the end of an accessibility line] [test: a no-break
-space between the text and a directive that ends an accessibility line] [test:
-U+3000 between the text and a directive that ends an accessibility line] [test:
-U+2003 between the text and a directive that ends an accessibility line] [test:
-a tab before and after the last directive of an accessibility line] [test: a
-no-break space before a comment after the text of an accessibility line] [test:
-runs and spaces around a comment after the text of an accessibility line] [test:
-a comment and spaces after a directive that follows the text of an accessibility
-line] [test: a no-break space before a directive and a comment after the text of
-an accessibility line] [test: U+2028 and spaces after the last directive of an
+title] [test: a tab before a comment after the text of a title] [test: a space
+before a directive that starts a title and text after it] [test: a no-break
+space before the directive of a title of directives only] [test: a no-break
+space before the directive and spaces after it in a title of directives only]
+[test: U+3000 before the directive of a title of directives only] [test: U+2003
+before the directive of a title of directives only] [test: a comment only as a
+title, with spaces around it] [test: a no-break space before a comment only as a
+title] [test: a space before a directive and a comment only as a title] [test:
+runs around a comment and then a directive after the text of a title] [test:
+U+3000 before a comment after the text of a title] [test: U+2003 before a
+comment after the text of a title] [test: a vertical tab before a comment after
+the text of a title] [test: a form feed before a comment after the text of a
+title] [test: U+FEFF before a comment after the text of a title] [test: U+2028
+at the end of a title] [test: spaces and U+2028 at the end of a title] [test:
+U+2029 at the end of a title] [test: a no-break space between a directive and a
+comment only as a title] [test: U+3000 between a directive and a comment only as
+a title] [test: U+2003 between a directive and a comment only as a title] [test:
+a tab between a directive and a comment only as a title] [test: U+2028 at the
+start of a title] [test: U+2029 at the start of a title] [test: U+2028 and then
+spaces at the end of a title] [test: runs and spaces around a directive that
+ends an accessibility line] [test: a comment and spaces after a directive that
+ends an accessibility line] [test: a no-break space after the last directive of
+an accessibility line] [test: U+3000 after the last directive of an
+accessibility line] [test: U+2003 after the last directive of an accessibility
+line] [test: a no-break space after a directive that starts an accessibility
+line and before another directive] [test: a no-break space after a directive
+that starts an accessibility line and after the last directive] [test: a
+no-break space after a directive that starts an accessibility line and text
+after the last directive] [test: spaces after a directive that starts an
+accessibility line] [test: text after a directive and spaces at the end of an
+accessibility line] [test: a no-break space after a directive and spaces at the
+end of an accessibility line] [test: text between two directives and spaces at
+the end of an accessibility line] [test: a no-break space between the text and a
+directive that ends an accessibility line] [test: U+3000 between the text and a
+directive that ends an accessibility line] [test: U+2003 between the text and a
+directive that ends an accessibility line] [test: a tab before and after the
+last directive of an accessibility line] [test: a no-break space before a
+comment after the text of an accessibility line] [test: runs and spaces around a
+comment after the text of an accessibility line] [test: a comment and spaces
+after a directive that follows the text of an accessibility line] [test: a
+no-break space before a directive and a comment after the text of an
+accessibility line] [test: U+2028 and spaces after the last directive of an
 accessibility line] [test: U+2029 and spaces after the last directive of an
 accessibility line] [test: U+2028 between the text and a directive that ends an
 accessibility line] [test: two directives after the text of an accessibility
@@ -1638,6 +1743,15 @@ comment and then a directive after the text of an accessibility line] [test: a
 no-break space between a directive and a comment after the text of an
 accessibility line] [test: two directives and a comment after the text of an
 accessibility line] [test: a tab before a comment after the text of an
+accessibility line] [test: U+3000 before a comment after the text of an
+accessibility line] [test: U+2028 at the end of an accessibility line] [test:
+spaces and U+2028 at the end of an accessibility line] [test: U+2029 at the end
+of an accessibility line] [test: a directive and a comment only as an
+accessibility line] [test: a no-break space between a directive and a comment
+only as an accessibility line] [test: U+3000 between a directive and a comment
+only as an accessibility line] [test: U+2003 between a directive and a comment
+only as an accessibility line] [test: a tab between a directive and a comment
+only as an accessibility line] [test: U+2028 and then spaces at the end of an
 accessibility line] [test: an accessibility line of directives only stays as
 written in each type of the Langium grammar] [fixture:
 pie/accessibility-lines/acc-title-percent-gap-kept] [fixture:

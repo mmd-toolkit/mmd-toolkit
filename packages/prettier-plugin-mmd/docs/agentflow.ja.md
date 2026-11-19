@@ -702,8 +702,10 @@ Markdown ラベルは矢印の間には印字できず、
 パイプの間の辺のラベルがコメントで終わり、
 コメントの改行の後に閉じパイプだけがある場合（`A -->|x  %% c`、改行、`| B`）、
 ラベルはコメントの前で終わります。
-コメントの前の空白とタブの連なりと、改行しない空白、U+3000、U+2003、U+2028、
-U+2029 のどれかは、空白 1 つにし、接するコメントは接したまま残します。
+コメントの前の空白文字の連なりは、空白、タブ、
+仕様が空白と定めるほかの文字（改行しない空白、U+3000、U+2003、U+2028、
+U+2029 を含みます）が 1 種類でも混ざっていても、空白 1 つにし、
+接するコメントは接したまま残します。
 閉じパイプは自分の行に、
 矢印より 1 段深く置きます（`A -->|x %% c` と `    | B`）。
 コメントに `;` があるときは、その前の文字も同じに空白 1 つにして印字し、
@@ -727,6 +729,9 @@ U+2029 のどれかは、空白 1 つにし、接するコメントは接した�
 [test: agentflow: U+2028 before a comment with a semicolon that ends the label of an edge]
 [test: agentflow: U+2029 before a comment with a semicolon that ends the label of an edge]
 [test: agentflow: a tab before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: every whitespace character of the specification before a comment that ends the label of an edge]
+[test: agentflow: every whitespace character of the specification before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: a run of different whitespace characters before a comment that ends the label of a vertex or of an edge]
 
 入力（エスケープ表記）: `"agentflow-beta TB\nA --> |x| B"`。
 
@@ -762,9 +767,9 @@ agentflow のラベルコメントは、コメントの改行の後もラベル�
 コメント、LF、後続行の桁位置も保ちます。
 コメントの改行の後に閉じ括弧だけがある場合は、
 ラベルはコメントの前で終わります（`A[x  %% c`、改行、`]` のテキストは `x` です。
-空白の代わりに改行しない空白、U+3000、U+2003、U+2028、
-U+2029 があっても同じです）。
-そのため、コメントの前の空白とタブの連なりと、これらの文字のどれかは、
+空白の代わりに仕様が空白と定めるほかの文字、改行しない空白、U+3000、U+2003、
+U+2028、U+2029 などがあっても同じです）。
+そのため、コメントの前の空白文字の連なりは、1 種類の文字でも複数の文字でも、
 空白 1 つにします。
 接するコメントは接したまま残し、裸のラベルは引用符で囲んで印字します。
 閉じ括弧は自分の行に、頂点より 1 段深く置きます。
@@ -805,6 +810,9 @@ U+2029 があっても同じです）。
 [test: agentflow: U+2028 before a comment with a semicolon that ends the label of a vertex]
 [test: agentflow: U+2029 before a comment with a semicolon that ends the label of a vertex]
 [test: agentflow: a tab before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: every whitespace character of the specification before a comment that ends the label of a vertex]
+[test: agentflow: every whitespace character of the specification before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: a run of different whitespace characters before a comment that ends the label of a vertex or of an edge]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。

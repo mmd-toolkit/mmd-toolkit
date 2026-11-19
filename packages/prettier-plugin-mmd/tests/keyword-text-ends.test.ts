@@ -619,6 +619,196 @@ const titleDirectiveCases: readonly TitleDirectiveCase[] = [
       vennAndC4: "T %% c",
     },
   },
+  {
+    name: "a space before a directive that starts a title and text after it",
+    written: " %%{x}%% T",
+    printed: {
+      quadrant: "%%{x}%%T",
+      gantt: "%%{x}%%T",
+    },
+  },
+  {
+    name: "a no-break space before the directive of a title of directives only",
+    written: "\u00a0%%{x}%%",
+    printed: {
+      langium: "%%{x}%%",
+      quadrant: "%%{x}%%",
+    },
+  },
+  {
+    name: "a no-break space before the directive and spaces after it in a title of directives only",
+    written: "\u00a0%%{x}%%  ",
+    printed: {
+      quadrant: "%%{x}%%",
+      gantt: "\u00a0%%{x}%%",
+      vennAndC4: "\u00a0%%{x}%%",
+    },
+  },
+  {
+    name: "U+3000 before the directive of a title of directives only",
+    written: "\u3000%%{x}%%",
+    printed: {
+      langium: "%%{x}%%",
+      quadrant: "%%{x}%%",
+    },
+  },
+  {
+    name: "U+2003 before the directive of a title of directives only",
+    written: "\u2003%%{x}%%",
+    printed: {
+      langium: "%%{x}%%",
+      quadrant: "%%{x}%%",
+    },
+  },
+  {
+    name: "a comment only as a title, with spaces around it",
+    written: "  %% c  ",
+    printed: {
+      langium: "%% c  ",
+      quadrant: "%% c",
+      gantt: "%% c",
+      vennAndC4: "%% c",
+    },
+  },
+  {
+    name: "a no-break space before a comment only as a title",
+    written: "\u00a0%% c",
+    printed: {
+      langium: "%% c",
+      quadrant: "%% c",
+    },
+  },
+  {
+    name: "a space before a directive and a comment only as a title",
+    written: " %%{x}%%%% c",
+    printed: {
+      langium: "%%{x}%%%% c",
+      quadrant: "%%{x}%%%% c",
+      gantt: "%%{x}%%%% c",
+    },
+  },
+  {
+    name: "runs around a comment and then a directive after the text of a title",
+    written: "T  %% c  %%{x}%%",
+    printed: {
+      langium: "T %% c  %%{x}%%",
+      quadrant: "T %% c %%{x}%%",
+      gantt: "T %% c %%{x}%%",
+      vennAndC4: "T %% c %%{x}%%",
+    },
+  },
+  {
+    name: "U+3000 before a comment after the text of a title",
+    written: "T\u3000%% c",
+    printed: {
+      langium: "T %% c",
+    },
+  },
+  {
+    name: "U+2003 before a comment after the text of a title",
+    written: "T\u2003%% c",
+    printed: {
+      langium: "T %% c",
+    },
+  },
+  {
+    name: "a vertical tab before a comment after the text of a title",
+    written: "T\u000b%% c",
+    printed: {
+      langium: "T %% c",
+    },
+  },
+  {
+    name: "a form feed before a comment after the text of a title",
+    written: "T\u000c%% c",
+    printed: {
+      langium: "T %% c",
+    },
+  },
+  {
+    name: "U+FEFF before a comment after the text of a title",
+    written: "T\ufeff%% c",
+    printed: {
+      langium: "T %% c",
+    },
+  },
+  {
+    name: "U+2028 at the end of a title",
+    written: "T\u2028",
+    printed: {
+      langium: "T",
+      quadrant: "T",
+    },
+  },
+  {
+    name: "spaces and U+2028 at the end of a title",
+    written: "T  \u2028",
+    printed: {
+      langium: "T",
+      quadrant: "T",
+    },
+  },
+  {
+    name: "U+2029 at the end of a title",
+    written: "T\u2029",
+    printed: {
+      langium: "T",
+      quadrant: "T",
+    },
+  },
+  {
+    name: "a no-break space between a directive and a comment only as a title",
+    written: "%%{x}%%\u00a0%% c",
+    printed: {
+      quadrant: "%%{x}%%%% c",
+    },
+  },
+  {
+    name: "U+3000 between a directive and a comment only as a title",
+    written: "%%{x}%%\u3000%% c",
+    printed: {
+      quadrant: "%%{x}%%%% c",
+    },
+  },
+  {
+    name: "U+2003 between a directive and a comment only as a title",
+    written: "%%{x}%%\u2003%% c",
+    printed: {
+      quadrant: "%%{x}%%%% c",
+    },
+  },
+  {
+    name: "a tab between a directive and a comment only as a title",
+    written: "%%{x}%%\t%% c",
+    printed: {
+      quadrant: "%%{x}%%%% c",
+      gantt: "%%{x}%%%% c",
+    },
+  },
+  {
+    name: "U+2028 at the start of a title",
+    written: "\u2028T",
+    printed: {
+      langium: "T",
+    },
+  },
+  {
+    name: "U+2029 at the start of a title",
+    written: "\u2029T",
+    printed: {
+      langium: "T",
+    },
+  },
+  {
+    name: "U+2028 and then spaces at the end of a title",
+    written: "T\u2028  ",
+    printed: {
+      langium: "T",
+      quadrant: "T",
+      gantt: "T\u2028",
+      vennAndC4: "T\u2028",
+    },
+  },
 ]
 
 const titleOpenDirectiveExamples: readonly (readonly [
@@ -2136,6 +2326,69 @@ const accessibilityDirectiveCases: readonly AccessibilityDirectiveCase[] = [
     langium: "T %% c",
     otherAccDescr: "T %% c",
   },
+  {
+    name: "U+3000 before a comment after the text of an accessibility line",
+    written: "T\u3000%% c",
+    langium: "T %% c",
+  },
+  {
+    name: "U+2028 at the end of an accessibility line",
+    written: "T\u2028",
+    langium: "T",
+    otherAccTitle: "T",
+    otherAccDescr: "T",
+  },
+  {
+    name: "spaces and U+2028 at the end of an accessibility line",
+    written: "T  \u2028",
+    langium: "T",
+    otherAccTitle: "T",
+    otherAccDescr: "T",
+  },
+  {
+    name: "U+2029 at the end of an accessibility line",
+    written: "T\u2029",
+    langium: "T",
+    otherAccTitle: "T",
+    otherAccDescr: "T",
+  },
+  {
+    name: "a directive and a comment only as an accessibility line",
+    written: "%%{x}%%  %% c  ",
+    otherAccTitle: "%%{x}%%%% c",
+    otherAccDescr: "%%{x}%%%% c",
+  },
+  {
+    name: "a no-break space between a directive and a comment only as an accessibility line",
+    written: "%%{x}%%\u00a0%% c",
+    otherAccTitle: "%%{x}%%%% c",
+    otherAccDescr: "%%{x}%%%% c",
+  },
+  {
+    name: "U+3000 between a directive and a comment only as an accessibility line",
+    written: "%%{x}%%\u3000%% c",
+    otherAccTitle: "%%{x}%%%% c",
+    otherAccDescr: "%%{x}%%%% c",
+  },
+  {
+    name: "U+2003 between a directive and a comment only as an accessibility line",
+    written: "%%{x}%%\u2003%% c",
+    otherAccTitle: "%%{x}%%%% c",
+    otherAccDescr: "%%{x}%%%% c",
+  },
+  {
+    name: "a tab between a directive and a comment only as an accessibility line",
+    written: "%%{x}%%\t%% c",
+    otherAccTitle: "%%{x}%%%% c",
+    otherAccDescr: "%%{x}%%%% c",
+  },
+  {
+    name: "U+2028 and then spaces at the end of an accessibility line",
+    written: "T\u2028  ",
+    langium: "T",
+    otherAccTitle: "T",
+    otherAccDescr: "T",
+  },
 ]
 
 /** The types that have the lines: a Venn diagram has none. */
@@ -2215,6 +2468,7 @@ const accessibilityCommentRows = [
   "a no-break space before a directive and a comment after the text of a title",
   "two directives and a comment after the text of a title",
   "a tab before a comment after the text of a title",
+  "U+3000 before a comment after the text of a title",
 ]
 
 describe.each(
@@ -2247,6 +2501,97 @@ describe("the accDescription of a C4 diagram with a directive or a comment", () 
   })
 })
 
+/**
+ * The whitespace characters that are no space or tab and no line terminator
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same): the
+ * characters that `String.prototype.trim` removes, but for U+2028 and U+2029.
+ */
+const whitespaceThatIsNoSpaceOrTab: readonly string[] = [
+  "\u000b",
+  "\u000c",
+  "\u00a0",
+  "\u1680",
+  "\u2000",
+  "\u2001",
+  "\u2002",
+  "\u2003",
+  "\u2004",
+  "\u2005",
+  "\u2006",
+  "\u2007",
+  "\u2008",
+  "\u2009",
+  "\u200a",
+  "\u202f",
+  "\u205f",
+  "\u3000",
+  "\ufeff",
+]
+
+/** The title type of the diagram type that the first table of the document names. */
+function titleTypeNamed(name: string): TitleType {
+  const found = titleTypes.find((type) => type.name === name)
+  if (found === undefined) throw new Error(`no type ${name}`)
+  return found
+}
+
+describe("a whitespace character that is no space or tab beside the text of a title", () => {
+  it("a whitespace character that is no space or tab at both ends of a title, in the Langium types and a quadrant chart", async () => {
+    for (const name of ["a radar chart", "a pie chart", "a quadrant chart"]) {
+      const { input, output } = titleTypeNamed(name)
+      for (const character of whitespaceThatIsNoSpaceOrTab) {
+        await expectKept(
+          input.replace("{title}", `${character}T${character}`),
+          output.replace("{title}", "T"),
+        )
+      }
+    }
+  })
+
+  it("a whitespace character that is no space or tab before a comment after the text of a title, in each group", async () => {
+    for (const name of [
+      "a radar chart",
+      "a quadrant chart",
+      "a Gantt chart",
+      "a Venn diagram",
+      "a C4 diagram",
+    ]) {
+      const { group, input, output } = titleTypeNamed(name)
+      for (const character of whitespaceThatIsNoSpaceOrTab) {
+        const written = `T${character}%% c`
+        await expectKept(
+          input.replace("{title}", written),
+          output.replace("{title}", group === "langium" ? "T %% c" : written),
+        )
+      }
+    }
+  })
+
+  it("a whitespace character that is no space or tab before a comment after the text of an accessibility line, in each group", async () => {
+    for (const line of accessibilityLines) {
+      for (const name of [
+        "a radar chart",
+        "a quadrant chart",
+        "a Gantt chart",
+        "a C4 diagram",
+      ]) {
+        const { isLangium, input, output } = accessibilityLineTypes.find(
+          (type) => type.name === name,
+        )!
+        for (const character of whitespaceThatIsNoSpaceOrTab) {
+          const written = `T${character}%% c`
+          await expectKept(
+            input.replace("{line}", line).replace("{title}", written),
+            output
+              .replace("{line}", line)
+              .replace("{title}", isLangium ? "T %% c" : written),
+          )
+        }
+      }
+    }
+  })
+})
+
 describe("an accessibility line of directives only", () => {
   it("an accessibility line of directives only stays as written in each type of the Langium grammar", async () => {
     for (const type of accessibilityLineTypes.filter(
@@ -2256,6 +2601,23 @@ describe("an accessibility line of directives only", () => {
         await expectKept(
           type.input.replace("{line}", line).replace("{title}", "%%{x}%%  "),
           type.output.replace("{line}", line).replace("{title}", "%%{x}%%  "),
+        )
+      }
+    }
+  })
+
+  it("an accessibility line of directives and a comment with no text stays as written in each type of the Langium grammar", async () => {
+    for (const type of accessibilityLineTypes.filter(
+      ({ isLangium }) => isLangium,
+    )) {
+      for (const line of accessibilityLines) {
+        await expectKept(
+          type.input
+            .replace("{line}", line)
+            .replace("{title}", "%%{x}%%  %% c  "),
+          type.output
+            .replace("{line}", line)
+            .replace("{title}", "%%{x}%%  %% c  "),
         )
       }
     }
@@ -2292,6 +2654,64 @@ const c4AccDescriptionExamples: readonly (readonly [string, string, string])[] =
 
 describe("the accDescription of a C4 diagram with a comment or a directive", () => {
   it.each(c4AccDescriptionExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * The spaces and tabs before the first colon of a task of a user journey are
+ * left out; a task with another whitespace character among them stays as
+ * written (docs/compatibility.md, Texts after a keyword that are drawn the
+ * same).
+ */
+const journeyTaskColonExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "a no-break space before the first colon of a task of a user journey",
+      "journey\nsection S\nMake tea\u00a0: 5: Me\n",
+      "journey\n  section S\n    Make tea\u00a0: 5: Me\n",
+    ],
+    [
+      "a tab, a no-break space, and a space before the first colon of a task of a user journey",
+      "journey\nsection S\nMake tea\t\u00a0 : 5: Me\n",
+      "journey\n  section S\n    Make tea\t\u00a0 : 5: Me\n",
+    ],
+  ]
+
+describe("the whitespace before the first colon of a task of a user journey", () => {
+  it.each(journeyTaskColonExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * A C4 diagram reads the line after an `accTitle:` or `accDescr:` line of
+ * directives only as its value, and the printer puts it one level deeper as
+ * written (docs/compatibility.md, Texts after a keyword that are drawn the
+ * same).
+ */
+const c4DirectivesOnlyExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "the accTitle line of directives only of a C4 diagram",
+      'C4Context\naccTitle: %%{x}%%\nPerson(a,"A")\n',
+      'C4Context\n  accTitle: %%{x}%%\n    Person(a,"A")\n',
+    ],
+    [
+      "the accDescr line of directives only of a C4 diagram",
+      'C4Context\naccDescr: %%{x}%%\nPerson(a,"A")\n',
+      'C4Context\n  accDescr: %%{x}%%\n    Person(a,"A")\n',
+    ],
+  ]
+
+describe("an accessibility line of directives only of a C4 diagram", () => {
+  it.each(c4DirectivesOnlyExamples)(
     "keeps %s",
     async (_name, input, output) => {
       await expectKept(input, output)
