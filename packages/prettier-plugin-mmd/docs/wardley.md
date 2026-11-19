@@ -310,18 +310,25 @@ Keep every authored label offset, strategy and inertia decoration in grammar
 order. Separate decorations by one space and compact parenthesized interiors.
 Prettier prints no space inside parentheses
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 1 names no
-mark for the gap before a decoration, and rule 2 has no gap of that kind to
-follow: a label offset and a strategy stand after the coordinate pair of a
-component as words of their own, while what follows an id in another diagram
-type, as the icon and the title of an architecture service `a(server)[A]`,
-touches the id as a part of its token, so
-[rule 3](./printed-form.md#3-a-spelling) decides. Of the 19 wardley examples in
-the documentation of mermaid.js (the corpus fixtures `docs-syntax-wardley-*`), a
-label offset follows a space in each of its 2 uses and a strategy in parentheses
-in each of its 10, and none touches the text before it, so rule 3 gives one
-space before a decoration. Keep bare inertia and (inertia) distinct, along with
-build, buy, outsource and market. The inertia forms can share a Db, but
-converting them loses an authored node form; do not supply defaults.
+mark for the gap before a decoration, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides where another diagram type has a gap of that kind. The gap before the
+`[` of a label offset has one: [xychart](./xychart.md#brackets-and-commas)
+prints one space before a `[` that follows a keyword or a title, written
+touching or not, as wardley prints one before the `[` of a label offset. The gap
+before a strategy in parentheses, before `inertia`, and between two decorations
+has none: they stand after the coordinate pair or the label offset of a
+component as words of their own, and
+[architecture](./architecture.md#declaration-spacing) prints the icon and the
+title of a service `a(server)[A]` touching its id, a choice made so that the
+attached parts read as one node, which is no gap between decorations. Rule 3
+decides those gaps. Of the 19 wardley examples in the documentation of
+mermaid.js (the corpus fixtures `docs-syntax-wardley-*`), a label offset follows
+a space in each of its 2 uses, a strategy in parentheses in each of its 10, and
+`(inertia)` in each of its 2, and none touches the text before it, so rule 3
+gives one space before a decoration. Keep bare inertia and (inertia) distinct,
+along with build, buy, outsource and market. The inertia forms can share a Db,
+but converting them loses an authored node form; do not supply defaults.
 
 [fixture: wardley/decorations/decorations-all]
 
@@ -620,8 +627,8 @@ ordinary outer common whitespace and retain internal text, including unmatched
 quotes. Empty titles stay empty and never take a value from the next line. This
 chooses a compact Db-equal edge without treating the common value as a quoted
 string. The directives that end a title are printed with one space before each
-that has whitespace before it, and the whitespace after the last one is left
-out, whatever the whitespace at the end of the line (see
+that has spaces or tabs before it, and the spaces and tabs after the last one
+are left out, whatever the spaces and tabs at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -651,7 +658,8 @@ the colon of a key, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it. The
 directives that end the value are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out (see
+spaces or tabs before it, and the spaces and tabs after the last one are left
+out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [test: wardley/accessibility/unicode-empty-description] [fixture:
@@ -963,6 +971,7 @@ wardley/comments/inline-gap-run-before-comment]
 [fixture: wardley/comments/comment-pipeline] [fixture:
 wardley/comments/comment-pipeline-after-last-child] [fixture:
 wardley/comments/comment-after-pipeline-end] [fixture:
+wardley/comments/comment-line-after-pipeline-end] [fixture:
 wardley/comments/comment-at-end-of-text]
 
 [fixture: wardley/comments/comment-triple-bare]

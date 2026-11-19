@@ -319,17 +319,25 @@ wardley-beta
 装飾の外側は空白 1 つ、括弧の内側は詰めます。
 括弧の内側に空白を置かないのは、
 Prettier と同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 は、装飾の前の隙間の印を挙げていません。
-規則 2 が従う同じ種類の隙間もありません。
-ラベルの位置のずれと戦略は、コンポーネントの座標の組の後に、
+規則 1 は、装飾の前の隙間の印を挙げていないので、
+同じ種類の隙間がほかの図種にあれば、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+ラベルの位置のずれの `[` の前の隙間には、それがあります。
+[xychart](./xychart.ja.md#角括弧とコンマ) は、
+キーワードやタイトルの後の `[` の前に、
+書かれたとおりに接していても空白 1 つを置き、
+wardley もラベルの位置のずれの `[` の前に空白 1 つを置きます。
+括弧の中の戦略、`inertia`、装飾どうしの間の隙間には、それがありません。
+それらはコンポーネントの座標の組かラベルの位置のずれの後に、
 独立した語として立ちます。
-ほかの図種で id の後に続くもの、
-たとえば architecture の service `a(server)[A]` のアイコンとタイトルは、
-id と 1 つのトークンの部分として接しているからです。
-そのため、[規則 3](./printed-form.ja.md#3-綴り)が決めます。
+[architecture](./architecture.ja.md#declaration-spacing) の service
+`a(server)[A]` は、アイコンとタイトルを id に接して印字しますが、
+それは付いた部分を 1 つのノードとして読ませる選択で、
+装飾どうしの隙間ではありません。
+その隙間は[規則 3](./printed-form.ja.md#3-綴り)が決めます。
 mermaid.js のドキュメントの wardley の例 19 件（corpus の
 `docs-syntax-wardley-*`）では、ラベルの位置のずれは 2 回すべて、
-括弧の中の戦略は 10 回すべてが空白の後に書かれ、
+括弧の中の戦略は 10 回すべて、`(inertia)` は 2 回すべてが空白の後に書かれ、
 前のテキストに接するものはありません。
 そのため、規則 3 が装飾の前に空白 1 つを与えます。
 括弧なしの `inertia` と `(inertia)`、`build`、`buy`、`outsource`、
@@ -640,8 +648,9 @@ wardley-beta
 外端の通常の共通空白は除き、閉じない引用符も内部の文字として保ちます。
 空の title は空のままで、次の行を値にしません。
 値を引用文字列として扱わず、Db が同じ端の形を簡潔にします。
-題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+題の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+行末の空白とタブの有無にかかわらず、
+最後のディレクティブの後の空白とタブを除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title/title-directives-end-blanks-dropped]
@@ -671,8 +680,8 @@ accTitle: Value と accDescr: Value は共有の行配置を使います。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が `accTitle: text`
 の形を与えます。
 コロンの前に空白を置かず、後ろに空白を 1 つ置きます。
-値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-最後のディレクティブの後の空白を除いて印字します。
+値の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブを除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [test: wardley/accessibility/unicode-empty-description]
@@ -992,6 +1001,7 @@ pipeline の中の文は子文です。
 [fixture: wardley/comments/comment-pipeline]
 [fixture: wardley/comments/comment-pipeline-after-last-child]
 [fixture: wardley/comments/comment-after-pipeline-end]
+[fixture: wardley/comments/comment-line-after-pipeline-end]
 [fixture: wardley/comments/comment-at-end-of-text]
 
 [fixture: wardley/comments/comment-triple-bare]
