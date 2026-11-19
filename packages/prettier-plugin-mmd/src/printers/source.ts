@@ -118,6 +118,13 @@ export interface JoiningRegion {
   readonly end: number
   /** Whether anything but whitespace follows the region, to be joined to what comes before. */
   readonly hasTextAfter: boolean
+  /**
+   * Whether the line right after the region holds text, so that the text
+   * before the region is read as one line with it: a line that holds nothing
+   * but whitespace and directives, or no line at all, joins nothing to what
+   * comes before.
+   */
+  readonly joinsText: boolean
 }
 
 /**
@@ -649,6 +656,23 @@ function findCommentRegions(
   // has text after it when it ends before that.
   const contentEnd = text.trimEnd().length
 
+  /** Whether text, which is no whitespace or directive, starts the line at `offset`. */
+  function holdsTextOnLine(offset: number): boolean {
+    let position = offset
+    while (position < text.length) {
+      const directiveEnd = directiveEndByStart.get(position)
+      if (directiveEnd !== undefined) {
+        position = directiveEnd
+        continue
+      }
+      const character = text[position]
+      if (character === "\n" || character === "\r") return false
+      if (!isWhitespace(character)) return true
+      position++
+    }
+    return false
+  }
+
   const all: Range[] = []
   const joining: JoiningRegion[] = []
   let previousEnd = -1
@@ -670,6 +694,7 @@ function findCommentRegions(
       start,
       end,
       hasTextAfter: end < contentEnd,
+      joinsText: holdsTextOnLine(end),
     })
   }
   // Regions that touch are removed together: text follows all of them, and the
@@ -677,7 +702,11 @@ function findCommentRegions(
   for (let index = joining.length - 2; index >= 0; index--) {
     const [region, next] = [joining[index], joining[index + 1]]
     if (next.start === region.end)
-      joining[index] = { ...region, hasTextAfter: next.hasTextAfter }
+      joining[index] = {
+        ...region,
+        hasTextAfter: next.hasTextAfter,
+        joinsText: next.joinsText,
+      }
   }
   return { all, joining }
 }

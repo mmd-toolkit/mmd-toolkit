@@ -388,4 +388,77 @@ export const usecaseCases: readonly UsecaseCase[] = [
     output: "usecase-beta\n  actor Tab <<kind>>\n",
     options: {},
   },
+  {
+    name: "usecase: U+2028, a comment, and an empty line after the text of an accTitle line",
+    id: "usecase/line-terminators/acctitle-u2028-comment-empty-line",
+    input: "usecase-beta\naccTitle  :   Title   \u2028 %% c\n\nactor B\n",
+    output: "usecase-beta\n  accTitle: Title\n  %% c\n\n  actor B\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2028, a directive, a comment, and an empty line after the text of an accTitle line",
+    id: "usecase/line-terminators/acctitle-u2028-directive-comment-empty-line",
+    input:
+      "usecase-beta\naccTitle  :   Title   \u2028 %%{x}%%  %% c\n\nactor B\n",
+    output: "usecase-beta\n  accTitle: Title\n  %%{x}%% %% c\n\n  actor B\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2028, a comment, and an empty line after the text of an accDescr line with a tab before it",
+    id: "usecase/line-terminators/accdescr-u2028-comment-empty-line-tab",
+    input: "usecase-beta\naccDescr:\t Description   \u2028 %% c\n\nactor B\n",
+    output: "usecase-beta\n  accDescr: Description\n  %% c\n\n  actor B\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2028, a comment, and an empty line after an accTitle line without text",
+    id: "usecase/line-terminators/acctitle-empty-u2028-comment-empty-line",
+    input: "usecase-beta\naccTitle: \u2028 %% c\n\nactor B\n",
+    output: "usecase-beta\n  accTitle:\n  %% c\n\n  actor B\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2029, a comment, and an empty line after the text of an accTitle line",
+    id: "usecase/line-terminators/acctitle-u2029-comment-empty-line",
+    input: "usecase-beta\naccTitle  :   Title   \u2029 %% c\n\nactor B\n",
+    output: "usecase-beta\n  accTitle: Title\n  %% c\n\n  actor B\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2028, a comment, and a directive line after the text of an accTitle line",
+    id: "usecase/line-terminators/acctitle-u2028-comment-directive-line",
+    input:
+      "usecase-beta\naccTitle  :   Title   \u2028 %% c\n%%{y}%%\nactor B\n",
+    output: "usecase-beta\n  accTitle: Title\n  %% c\n  %%{y}%%\n  actor B\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2028, a comment, and an empty line after the text of an accDescr line with a tab inside",
+    id: "usecase/line-terminators/accdescr-u2028-comment-empty-line-tab-inside",
+    input: "usecase-beta\naccDescr: E\tF \u2028 %% c\n\nactor B\n",
+    output: "usecase-beta\n  accDescr: E F\n  %% c\n\n  actor B\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2028, a comment, and a statement on the next line after the text of an accTitle line",
+    id: "usecase/line-terminators/acctitle-u2028-comment-statement-follows",
+    input: "usecase-beta\naccTitle  :   Title   \u2028 %% c\nactor B\n",
+    output: "usecase-beta\n  accTitle  :   Title   \u2028 %% c\nactor B\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2028, a comment, and a line of whitespace after the text of an accTitle line",
+    id: "usecase/line-terminators/acctitle-u2028-comment-whitespace-line",
+    input: "usecase-beta\naccTitle  :   Title   \u2028 %% c\n   \nactor B\n",
+    output:
+      "usecase-beta\n  accTitle  :   Title   \u2028 %% c\n   \n  actor B\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2028 and a comment at the end of the text after the text of an accTitle line",
+    id: "usecase/line-terminators/acctitle-u2028-comment-at-end",
+    input: "usecase-beta\nactor B\naccTitle  :   Title   \u2028 %% c  ",
+    output: "usecase-beta\n  actor B\n  accTitle: Title\n  %% c  \n",
+    options: {},
+  },
 ]

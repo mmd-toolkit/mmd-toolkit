@@ -1450,6 +1450,26 @@ id、隙間、プロパティ、CSS の拒否位置を修復しません。
 [test: usecase: crlf-metadata-blank-lines] [test: usecase: nbsp-css-string]
 [test: usecase: unicode-boundary-title] [test: usecase: crlf-output-values]
 
+コメント行が続く U+2028 か U+2029 でテキストが終わる、
+1 行の `accTitle:` と `accDescr:` の文は、
+コメント行の次の行にディレクティブと空白しかないとき、
+その文字がない文と同じに印字します。
+コメントは独立した行になり、コロンの後ろは空白 1 つで、
+テキストの末尾の空白は削除します。
+コメント行の次の行に文か空白だけの行があるときは、コメント行が行をつなぐので、
+文は書かれたままにします。
+
+[test: usecase: U+2028, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, a directive, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and an empty line after the text of an accDescr line with a tab before it]
+[test: usecase: U+2028, a comment, and an empty line after an accTitle line without text]
+[test: usecase: U+2029, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and an empty line after the text of an accDescr line with a tab inside]
+[test: usecase: U+2028, a comment, and a statement on the next line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a line of whitespace after the text of an accTitle line]
+[test: usecase: U+2028 and a comment at the end of the text after the text of an accTitle line]
+
 ### Frontmatter YAML
 
 [フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を再利用します。

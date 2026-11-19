@@ -1360,6 +1360,28 @@ usecase: unicode-semicolon-segments] [test: usecase: crlf-metadata-blank-lines]
 [test: usecase: nbsp-css-string] [test: usecase: unicode-boundary-title] [test:
 usecase: crlf-output-values]
 
+A one-line `accTitle:` or `accDescr:` statement whose text ends at a U+2028 or
+U+2029 that a comment line follows is printed as such a statement is printed
+without the character, when nothing but directives and whitespace stands on the
+line after the comment line: the comment goes to a line of its own, the colon
+has one space after it, and the whitespace at the end of the text goes. A
+comment line that a statement, or a line of whitespace, follows joins the lines,
+and the statement stays as written.
+
+[test: usecase: U+2028, a comment, and an empty line after the text of an
+accTitle line] [test: usecase: U+2028, a directive, a comment, and an empty line
+after the text of an accTitle line] [test: usecase: U+2028, a comment, and an
+empty line after the text of an accDescr line with a tab before it] [test:
+usecase: U+2028, a comment, and an empty line after an accTitle line without
+text] [test: usecase: U+2029, a comment, and an empty line after the text of an
+accTitle line] [test: usecase: U+2028, a comment, and a directive line after the
+text of an accTitle line] [test: usecase: U+2028, a comment, and an empty line
+after the text of an accDescr line with a tab inside] [test: usecase: U+2028, a
+comment, and a statement on the next line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a line of whitespace after the text of an
+accTitle line] [test: usecase: U+2028 and a comment at the end of the text after
+the text of an accTitle line]
+
 ### Frontmatter YAML
 
 Reuse [guarded frontmatter](./flowchart.md#frontmatter-yaml): safe configuration
