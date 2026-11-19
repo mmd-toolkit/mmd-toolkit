@@ -2619,8 +2619,10 @@ Sは、文や、テキストを終えるディレクティブの行の前に、�
 「落とす」は、文字、2 つ目の文字、その後の空白を除くことです。
 文字が残り、その後ろから行の続きまでに空白があるときは、
 その空白を空白 1 つで印字します。
-コメントやディレクティブの前に文字が 2 つあるときは、行の後に何が続いても、
-行を書かれたまま残します。
+文字の後に同じ行でコメントやディレクティブが続くときは、行の後に何が続いても、
+文字とその後ろにあるものを書かれたまま残し、
+各スタイルの中の空白もそのままにします。
+キーワード、名前、スタイルの間の空白とタブの連なりは、空白 1 つで印字します。
 
 | 行で文字の後にあるもの              | E: テキストが終わる、またはコメント行で終わる                | S: 文が続く、またはディレクティブの行で終わる                                                              |
 | ----------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
@@ -2653,15 +2655,12 @@ mermaid.js は、U+2028 や U+2029 の後にあるコメント行も、
 文字が前にあるからです。
 mermaid.js は style 自身の行にあるコメントを拒否し、
 `style A fill:red %% c` は拒否されます。
-2 つ目の文字の後のコメントは、最初の文字が残っても落ちても、コメント行です。
-そのコメントの `;` は、書かれた行の `;` ではありません。
 ディレクティブはテキストを読む前に取り除かれ、その空白が残ります。
 文字とディレクティブの間に空白があるときは、
 コメント行がテキストの終わりに続くと、文字のないテキストは拒否されます。
 文が続くときは、style のテキストがその文を取り込みます。
 文字と改行の間に空白があるとき、コメント行の後に文が続くときも同じです。
-文字に接するディレクティブは何も残さないので、style は文字のあった所で終わり、
-文字はそこに残ります。
+文字に接するディレクティブは何も残しません。
 `style A fill:red`、U+2028、ディレクティブは、書かれたまま印字します。
 落とす文字の前の色は、すぐに小文字で印字します。
 `fill:#F9F` と U+2028 は `fill: #f9f` と印字します。
@@ -2701,6 +2700,9 @@ mermaid.js は style 自身の行にあるコメントを拒否し、
 [test: ER a style that no semicolon ends keeps the two characters that a directive touches before a comment line]
 [test: ER a style that no semicolon ends keeps the two characters that a directive touches where a directive line follows]
 [test: ER a style that no semicolon ends keeps the two characters that a directive touches where the text ends]
+[test: ER a style that no semicolon ends keeps a no-break space and the U+2028 that a directive touches]
+[test: ER a classDef that no semicolon ends keeps a no-break space and the U+2028 that a directive touches]
+[test: ER a style that no semicolon ends keeps the whitespace inside its styles and prints a run between its parts as one space before two U+2028 or U+2029 and a comment]
 [test: ER a style that no semicolon ends keeps two U+2028 or U+2029 that a comment touches]
 [test: ER a style that no semicolon ends keeps the whitespace between two U+2028 or U+2029 and a comment]
 [test: ER a style that no semicolon ends keeps two U+2028 or U+2029 before a directive that a comment line follows]

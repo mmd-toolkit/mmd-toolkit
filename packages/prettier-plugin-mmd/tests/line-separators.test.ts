@@ -6590,6 +6590,21 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill:red\u2029 %% d\n  %% e\n",
     ],
     [
+      "ER a style that no semicolon ends keeps a no-break space and the U+2028 that a directive touches",
+      "erDiagram\nA\nstyle A fill:red\u00a0\u2028%%{init: {}}%%\nB\n",
+      "erDiagram\n  A\n  style A fill:red\u00a0\u2028%%{init: {}}%%\n  B\n",
+    ],
+    [
+      "ER a classDef that no semicolon ends keeps a no-break space and the U+2028 that a directive touches",
+      "erDiagram\nA:::k\nclassDef k fill:red\u00a0\u2028%%{init: {}}%%\nB\n",
+      "erDiagram\n  A:::k\n  classDef k fill:red\u00a0\u2028%%{init: {}}%%\n  B\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the whitespace inside its styles and prints a run between its parts as one space before two U+2028 or U+2029 and a comment",
+      "erDiagram\nA\nstyle   A   fill   :red  ,  stroke  :   blue\u2028\u2029 %% d\n",
+      "erDiagram\n  A\n  style A fill   :red , stroke  :   blue\u2028\u2029 %% d\n",
+    ],
+    [
       "ER a style that no semicolon ends keeps the two characters that a directive touches where the text ends",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n",
       "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n",

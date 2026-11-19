@@ -2,12 +2,10 @@ import type { AstPath, Doc, ParserOptions } from "prettier"
 import { builders } from "prettier/doc"
 import type {
   ErAttribute,
-  ErClassDefStatement,
   ErDiagram,
   ErEntityStatement,
   ErIgnoredText,
   ErStatement,
-  ErStyleStatement,
   ErSubgraphStatement,
   Range,
   Token,
@@ -34,7 +32,6 @@ import {
   classifyErStatement,
   findAttributeBraces,
   endBeforeTriviaAfterSeparators,
-  findDroppedSeparator,
   findEmptyBlockClosingGap,
   findSubgraphHeaderEnd,
   hasAttributeBlock,
@@ -48,11 +45,7 @@ import {
   layoutSubgraphOpening,
 } from "./er-layout.ts"
 import { expectToken, layoutKeywordHeader, toAsciiLowerCase } from "./layout.ts"
-import {
-  findDirectiveTouchingSeparator,
-  isFirstOnItsLine,
-  lineEndOf,
-} from "./kept-lines.ts"
+import { isFirstOnItsLine, lineEndOf } from "./kept-lines.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import { narrowPath } from "./paths.ts"
 import type { Source } from "./source.ts"
@@ -259,7 +252,10 @@ function printSubgraph(
  * the line. The block consumes exactly what the closing prints, so a following
  * written gap cannot print them again. `end` followed by a U+2028 is the
  * keyword to the pinned lexer, and one name to a version that counts
- * (docs/er.md, Line separators).
+ * (docs/er.md, Line separators). A `classDef` or `style` statement ends right
+ * before the comment or the directive that follows it on its line, where the
+ * gap between them holds a U+2028 or a U+2029 (see
+ * `endBeforeTriviaAfterSeparators`).
  */
 function printedErEnd(source: Source, statement: ErStatement): number {
   const from = statement.range[1]
@@ -267,7 +263,7 @@ function printedErEnd(source: Source, statement: ErStatement): number {
     statement.type === "ErStyleStatement" ||
     statement.type === "ErClassDefStatement"
   )
-    return endOfStyleStatement(source, statement)
+    return endBeforeTriviaAfterSeparators(source, statement)
   if (statement.type !== "ErSubgraphStatement") return from
   const lineEnd = lineEndOf(source, from)
   let end = from
@@ -283,47 +279,6 @@ function printedErEnd(source: Source, statement: ErStatement): number {
     if (isNameWhitespace(character)) end = position + 1
   }
   return end
-}
-
-/**
- * Where the printed text of a `classDef` or `style` statement ends: after the
- * U+2028 and U+2029 that the printer drops (see
- * `endOfSeparatorsBeforeDirective`), or, where they stay, before the comment or
- * the directive that follows them on the line (see
- * `endBeforeTriviaAfterSeparators`).
- */
-function endOfStyleStatement(
-  source: Source,
-  statement: ErStyleStatement | ErClassDefStatement,
-): number {
-  const dropped = endOfSeparatorsBeforeDirective(source, statement)
-  return dropped !== statement.range[1]
-    ? dropped
-    : endBeforeTriviaAfterSeparators(source, statement)
-}
-
-/**
- * Where the printed text of a `classDef` or `style` statement ends: after the
- * U+2028 and U+2029 that the printer drops between the last style and a
- * directive that touches them, which the tree leaves out of the statement
- * where comment lines follow the line. The block consumes them, so that the
- * directive is printed right after the style (docs/er.md, Semicolons at the
- * end of a style statement).
- */
-function endOfSeparatorsBeforeDirective(
-  source: Source,
-  statement: ErStyleStatement | ErClassDefStatement,
-): number {
-  const from = statement.range[1]
-  const last = statement.styles.at(-1)
-  if (last === undefined || findDroppedSeparator(source, last, from) < 0)
-    return from
-  const directive = findDirectiveTouchingSeparator(
-    source,
-    from,
-    lineEndOf(source, from),
-  )
-  return directive < 0 ? from : directive
 }
 
 /**
