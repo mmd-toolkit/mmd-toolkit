@@ -20,8 +20,12 @@ person to the next: the same kind of mark would be printed in one way in one
 diagram type and in another way in the next. A rule is there to make a text read
 well. So where a rule gives a form that reads worse than another form that draws
 the same, the rule is what is wrong: the form is decided again, and the rule is
-corrected. Whoever is working on the formatter does not decide that alone;
-AGENTS.md (item 4) says how it is decided.
+corrected. AGENTS.md (item 4) says how it is decided.
+
+The forms compared are those that keep every comment and directive of the text.
+A form that drops one is never the form printed, even where it draws the same:
+Prettier, beside whose output a diagram stands, keeps every comment and every
+directive of the code it formats, also two directives that say the same.
 
 1. The whitespace beside a mark is the whitespace that Prettier prints beside
    the same kind of mark. The formatter is a plugin of Prettier, and a diagram
@@ -165,7 +169,7 @@ to keep in them. Where a text is a table, Prettier lines its columns up: it pads
 the cells of a table of Markdown to the width of their column.
 
 So whether lines are lined up is decided for each kind of line, in the document
-of its diagram type.
+of its diagram type, by the rules of this document.
 
 - The tasks of a section of a Gantt chart are rows of a name and its data. The
   printer puts the colons of a section in one column where its names were
@@ -196,11 +200,10 @@ of a block is printed `a:2`, also where `a :2` was written.
 ### A text that the tree holds whole
 
 This rule decides the whitespace beside the marks that the syntax tree of the
-parser holds as tokens. A text that the tree holds whole is printed as written
-inside: the text of a label and of a string, and the body of a data block
-(`@{ … }`) that mermaid.js reads as YAML, so that `A@{ shape : circle }` in a
-flowchart keeps the space before its colon. What the formatter changes in such a
-text is defined in the document of its diagram type.
+parser holds as tokens. A text that the tree holds whole is the text of a label
+and of a string, and the body of a data block (`@{ … }`) that mermaid.js reads
+as YAML. What the formatter changes inside such a text, and what it keeps, is
+defined in the document of its diagram type by the rules of this document.
 
 ## 2. A gap of a kind that Prettier does not have
 
@@ -216,7 +219,8 @@ number, the direction of a header) takes the form that the examples in the
 documentation of the pinned mermaid.js use at least twice as often as any other:
 `"CUSTOMER" ||--o{ "ORDER" : places` in an ER diagram is printed
 `CUSTOMER ||--o{ ORDER : places`. Where no form is used that often, or the
-examples use none, the spelling is kept as written.
+examples use none, this rule gives no form, and the spelling is decided as under
+[4](#4-where-none-of-these-rules-gives-a-form).
 
 The name of a header with and without `-beta` is an exception. Where every
 version that counts and has the diagram type reads both names and draws them the
@@ -232,9 +236,8 @@ that name.
 ## 4. Where none of these rules gives a form
 
 Where none of these rules gives a form, it is not decided yet which form reads
-best. The output of the released version is then not changed on the judgment of
-whoever is working on it: the form is decided as AGENTS.md (item 4) says, added
-to these rules, and printed after that.
+best. The form is decided as AGENTS.md (item 4) says, added to these rules, and
+printed after that.
 
 ## The versions of mermaid.js that count
 
@@ -264,13 +267,14 @@ Every such case has a row in
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count),
 and the row names the versions that the form is kept for, the pinned version
 among them where it needs the form too. A form that the pinned version itself
-rejects or draws differently stays whatever the other versions are. The versions
-that a form is kept for are named in that table only: the document of a diagram
-type gives the reason and points to the row. A record of a check may say with
-how many versions, and with which, a text was drawn, since nothing changes there
-when a version stops counting. When the pinned version is raised and none of the
-versions of a row counts any longer, the rule is taken out, and the form is the
-one that the rules above give.
+rejects, reads, or draws differently stays whatever the other versions are, and
+its row is run again when the pinned version is raised or the versions that
+count change. The versions that a form is kept for are named in that table only:
+the document of a diagram type gives the reason and points to the row. A record
+of a check may say with how many versions, and with which, a text was drawn,
+since nothing changes there when a version stops counting. When the pinned
+version is raised and none of the versions of a row counts any longer, the rule
+is taken out, and the form is the one that the rules above give.
 
 The CHANGELOG.md of mermaid.js, or the history of its grammar, shows which
 version added or changed a form.

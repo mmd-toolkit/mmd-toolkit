@@ -169,7 +169,11 @@ tools, a CLI), the inputs are different and the list is this:
   `mmd` and are written as the formatter prints them unless the example shows a
   way of writing.
 - A kept document names no working arrangement: not who works on what, not where
-  they talk to each other, not a scratch file.
+  they talk to each other, not a scratch file. The one exception is the list of
+  the format decisions that Claude abandoned
+  (`packages/prettier-plugin-mmd/claude-abandoned-format-decisions.md`), which
+  names Claude and its conversation records so that whoever decides a form
+  searches those records first.
 - A claim in a document is checked against mermaid.js when it states a behavior,
   and against the code when it states what the code does.
 - Every changeset that the change adds or edits is read as the changelog will
@@ -193,6 +197,11 @@ Every review has a section on proper form, also when the behavior is right:
 - A behavior that a change keeps on purpose names the caller or the sentence of
   a document that needs it. What only the old code did is a finding, and so is a
   test that fixes it.
+- A form that a printer keeps as written names its reason: in a version that
+  counts, the other form changes the Db in a way that no kind of exception
+  allows or changes the drawing, or is rejected, as a run of the other form
+  shows; or the user decided it. A form kept as written without one of them is a
+  finding, also where a rules document states it.
 - Does it take the form the repository already uses for the same kind of thing?
 - Is its only reason an earlier decision of its author's own? Then that decision
   is reconsidered first.

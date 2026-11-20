@@ -667,6 +667,8 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 `box` でも、同じ理由で残します。
 コンマの前の空白は、12.3.0 が Db の `boxes[0].fill` を変え、
 描画は変わらないためです。
+色の中の空白のうち、同じに描かれる例外の種類になっているのは、
+コンマの後の空白だけです。
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/rect-leading-and-comma-padding-kept]
