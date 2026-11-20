@@ -1296,6 +1296,126 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart TD\nA   -->   B\u2028%% c\n\n   -->   C\n",
     "flowchart TD\n  A   -->   B\u2028%% c\n\n   -->   C\n",
   ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR;\n  A --> B;\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon, in a header without a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with one semicolon, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C; \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a semicolon at the first column",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a statement",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  D\n",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  D\n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, and an empty line at the end of the text",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a comment, and a line of a semicolon right after it",
+    "flowchart TD\nB --> C\u2028%% c\n;\n",
+    "flowchart TD\n  B --> C\u2028%% c\n;\n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, and a comment line",
+    "flowchart TD\nB --> C\u2028%% c\n\n;\n%% d\n",
+    "flowchart TD\n  B --> C\n  %% c\n\n  %% d\n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, a line of a semicolon, and a comment line",
+    "flowchart TD\nB --> C;;\u2028 %%{x}%%  %% c  \n\n  ;\n%% d\n",
+    "flowchart TD\n  B --> C\n  %%{x}%% %% c  \n\n  %% d\n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, an empty line, and a comment line",
+    "flowchart TD\nB --> C\u2028%% c\n\n;\n\n%% d\n",
+    "flowchart TD\n  B --> C\n  %% c\n\n  %% d\n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a comment, an empty line, and two lines of semicolons",
+    "flowchart TD\nB --> C\u2028%% c\n\n;;\n  ;\n",
+    "flowchart TD\n  B --> C\n  %% c\n",
+  ],
+  [
+    "flowchart: a statement, U+2029, a comment, an empty line, and a line of a semicolon",
+    "flowchart TD\nB --> C\u2029%% c\n\n;\n",
+    "flowchart TD\n  B --> C\n  %% c\n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, and a statement",
+    "flowchart TD\nB --> C\u2028%% c\n\n;\nD --> E\n",
+    "flowchart TD\n  B --> C\u2028%% c\n\n  D --> E\n",
+  ],
+  [
+    "agentflow: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "agentflow-beta TB\nA --> B\u2028%% c\n\n;\n",
+    "agentflow-beta TB\n  A --> B %% c\n",
+  ],
+  [
+    "sequence: a statement, U+2028, a comment, and a line of a semicolon right after it",
+    "sequenceDiagram\nA->>B: y\u2028%% c\n;\n",
+    "sequenceDiagram\n  A->>B: y\u2028%% c\n;\n",
+  ],
+  [
+    "sequence: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "sequenceDiagram\nA->>B: y\u2028%% c\n\n;\n",
+    "sequenceDiagram\n  A ->> B: y\n  %% c\n",
+  ],
+  [
+    "sequence: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "sequenceDiagram\nA->>B: y;;\u2028 %%{x}%%  %% c  \n\n;\n",
+    "sequenceDiagram\n  A ->> B: y\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "quadrant: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "quadrantChart\ntitle t\u2028%% c\n\n;\n",
+    "quadrantChart\n  title t\n  %% c\n",
+  ],
+  [
+    "xychart: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "xychart-beta\ntitle t\u2028%% c\n\n;\n",
+    'xychart-beta\n  title "t"\n  %% c\n',
+  ],
+  [
+    "state: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "stateDiagram-v2\nA --> B\u2028%% c\n\n;\n",
+    "stateDiagram-v2\n  A --> B\u2028%% c\n\n  ;\n",
+  ],
+  [
+    "block: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "block-beta\nA B\u2028%% c\n\n;\n",
+    "block-beta\n  A B\u2028%% c\n\n  ;\n",
+  ],
+  [
+    "treeview: a title, U+2028, a comment, an empty line, and a line of a semicolon",
+    "treeView-beta\ntitle t\u2028%% c\n\n;\n",
+    "treeView-beta\n  title t\u2028%% c\n\n  ;\n",
+  ],
 ]
 
 /**
