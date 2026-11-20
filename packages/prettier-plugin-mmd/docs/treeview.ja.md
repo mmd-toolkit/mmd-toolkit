@@ -58,6 +58,17 @@ treeView-beta
 ### Modes
 
 字下げと罫線のモードを保ちます。
+mermaid.js のドキュメントの木の図 13 件のうち、10 件は字下げで、
+3 件は罫線で書かれています。
+[規則 3](./printed-form.ja.md#3-綴り)が字下げの形を与え、
+字下げで書かれた入力は字下げモードのままです。
+これらの入力には、罫線の形がないものがあります。
+罫線のモードで書くと、複数行の引用名の 2 行目や別の行の注釈のように、
+枝の前置部分を持たずに続く字下げされた行は拒否されます。
+第 1 列にある注釈も拒否されます。
+第 1 列にある引用名の 2 行目は名前の一部で、
+`│` で始まる 2 行目も名前の一部です。
+注釈の前に `│` を付けると `│` という名前のノードが増えます。
 モードは見出し後の論理 LF 行で判定し、値の内部も調べます。
 空白だけ、コメント形、メタデータ形、縦線だけの行を除きます。
 前置部分の有無だけでは判定しません。
@@ -70,7 +81,17 @@ treeView-beta
 字下げモードのコメントは次の文にそろえます。
 
 [fixture: treeview/modes/comment-excluded]
+[fixture: treeview/modes/box-quoted-name-column-one-continuation]
+[fixture: treeview/modes/box-quoted-name-bar-continuation]
+[fixture: treeview/annotation-lines/box-redraw-vertical-is-a-node]
+[test: treeview/modes/box-annotation-column-one-rejected]
+[test: treeview/modes/box-annotation-indented-rejected]
 [corpus fixture: treeview/box-written-tree]
+[corpus fixture: treeview/box-entity-mixed-indent]
+[corpus fixture: treeview/box-quoted-indent-error]
+[corpus fixture: treeview/box-multiline-quoted]
+[corpus fixture: treeview/box-decoration-annotation-gap]
+[corpus fixture: treeview/box-decoration-only]
 
 [corpus fixture: treeview/box-heavy]
 
@@ -1081,6 +1102,11 @@ root
 ディレクティブ間の空白とタブを消します。
 残すとディレクティブを除いた後に空白だけの行が残り、
 mermaid.js が拒否するためです。
+ディレクティブが両側の単位に接しているときは、mermaid.js は、
+ディレクティブの後の単位を最上位に置きます（`root`、`├── "a"%%{x}%%"b"`、
+`└── c` では、ノード `b` は最上位のノードで、子 `c` を持ちます）。
+そのため、ディレクティブの後の単位は前置部分なしで置きます。
+前置部分を付けると `b` が `root` の下に入り、Db も図も変わります。
 
 [fixture: treeview/statements-one-per-line/review159-split-directives-touching]
 
@@ -1122,6 +1148,20 @@ mermaid.js が拒否するためです。
 値が持つコメント領域はその値に保ち、
 その前でノードの間から移すディレクティブは独立した行に置きます。
 字下げモードでは、前置のディレクティブをノードとともに置く既存の配置を保ちます。
+字下げモードでは、規則 1 は、
+2 つの単位の間のディレクティブの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#ディレクティブ)、[er](./er.ja.md#ディレクティブ)、
+[gantt](./gantt.ja.md#ディレクティブ)も、
+整形が分ける単位の隙間のディレクティブを後ろの単位と一緒に動かし、
+右側の接触か間隔を残し、左側の接触は切ります。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+罫線モードでは、分けた隙間から出るディレクティブは、第 1 列の単独の行に置き、
+規則 2 のように次の単位の前置部分に接しては置きません。
+前置部分がディレクティブをまたぐと、
+[Branch prefixes](#branch-prefixes) により本文全体が書かれたまま残り、
+以後の整形で木が描き直されなくなるからです。
+ディレクティブと前置部分の間に空白を置くと、mermaid.js は別の図を描きます。
 
 [fixture: treeview/statements-one-per-line/review159-split-directive-selected-semicolon]
 
@@ -1148,6 +1188,8 @@ mermaid.js が拒否するためです。
 [test: treeview/statements-one-per-line/review159-split-directives-region-ps]
 
 [fixture: treeview/statements-one-per-line/review159-split-directive-indent-control]
+[fixture: treeview/statements-one-per-line/directive-split-indent-right-space]
+[fixture: treeview/statements-one-per-line/directive-split-indent-left-space]
 
 入力（エスケープ表記）: `"treeView-beta\n\"A\"\"B\"'C'\n"`
 
@@ -1207,6 +1249,11 @@ mermaid.js は、その空白か、その空白と後ろの `%%` を名前にす
 正の前置の隙間が注釈と名前の文字を区別します。
 名前の中の空白は保ち、付随要素の両側は、普通の隙間の規則を適用せず、
 接しているか離れているかを保ちます。
+引用符のない名前の中の空白が残るのは、対象にする版が、
+これを除くと別の図を描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: treeview/annotation-gaps/annotation-outer]
 
@@ -1579,6 +1626,7 @@ treeView-beta
 [fixture: treeview/names/single-quote-sensitive-kept]
 [fixture: treeview/names/name-quote-tail]
 [fixture: treeview/names/name-bare-tail]
+[fixture: treeview/names/name-bare-internal]
 
 [fixture: treeview/names/name-quote-tail]
 
@@ -1587,8 +1635,6 @@ treeView-beta
 [fixture: treeview/names/name-escape]
 
 [fixture: treeview/names/name-empty]
-
-[fixture: treeview/names/name-bare-internal]
 
 [corpus fixture: treeview/html-double]
 
@@ -1693,11 +1739,269 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 `null` と空白だけの値は引用符なしの `title` とします。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+テキストの後にディレクティブだけが続くときは、
+空白かタブが前にあるディレクティブごとに空白 1 つを置き、
+最後のディレクティブの後の空白とタブを除いて印字します。
+ただし、行のディレクティブのどれかに改行、`;`、U+2028、
+U+2029 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`title T  %%{x}%%  ` は `title T %%{x}%%` と、
+`title T  %%{x}%%  %%{y}%%  ` は `title T %%{x}%% %%{y}%%` と印字します。
+最後のディレクティブの後のコメントは、
+間に空白かタブがあれば空白 1 つの後に置き、接していれば接したままにします。
+`title T  %%{x}%%  %% c` は `title T %%{x}%% %% c` と、
+`title T  %%{x}%%%% c` は `title T %%{x}%%%% c` と印字します。
+間にある空白は、
+後の 2 番目の表のとおりに印字します（改行しない空白があるときは、
+行は書かれたまま残ります。`T %%{x}%%\u00a0%% c`）。
+ディレクティブのある title のほかの形と、
+`accTitle:` と `accDescr:`
+の行の形（[Accessibility lines](#accessibility-lines)を参照）は、
+次の表のとおりに印字します。
+`%%{x}%%` と `%%{y}%%` はディレクティブ、`\u00a0` は改行しない空白で、
+そのほかの `\u` の形はその番号の文字です。
+
+| キーワードの後に書かれた形 | `title `            | `accTitle: `        | `accDescr: `        |
+| -------------------------- | ------------------- | ------------------- | ------------------- |
+| `T  %%{x}%%  `             | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T  %%{x}%%  %%{y}%%  `    | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%` |
+| `T  %%{x}%%  %% c`         | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    |
+| `T  %%{x}%%%% c`           | `T %%{x}%%%% c`     | `T %%{x}%%%% c`     | `T %%{x}%%%% c`     |
+| `T %%{x}%%  U  %%{y}%%  `  | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%% U  `            | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\u00a0`          | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\u3000`          | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\u2003`          | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\u0085`          | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\u2028`          | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\u2029`          | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%;`               | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\t`              | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u00a0%%{x}%%`           | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u2028%%{x}%%`           | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u2028%%{x}%%  `         | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T\u2029%%{x}%%  `         | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T\u0085%%{x}%%  `         | `T\u0085%%{x}%%`    | `T\u0085%%{x}%%`    | `T\u0085%%{x}%%`    |
+| `T\u3000%%{x}%%`           | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u2003%%{x}%%`           | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u2029%%{x}%%`           | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\u0085%%{x}%%`           | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\u00a0%% c`      | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\u3000%% c`      | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `T %%{x}%%\t%% c`          | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    |
+| `T %%{x}%%  %% c`          | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    | `T %%{x}%% %% c`    |
+| `T\t%%{x}%%`               | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `T\t%%{x}%%\t`             | `T %%{x}%%`         | `T %%{x}%%`         | `T %%{x}%%`         |
+| `%%{x}%%  T  `             | `%%{x}%%T`          | 書かれたまま        | 書かれたまま        |
+| `%%{x}%% T`                | `%%{x}%%T`          | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%\tT`               | `%%{x}%%T`          | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%\u00a0T`           | `%%{x}%%T`          | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%\u3000T`           | `%%{x}%%T`          | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%\u2003T`           | `%%{x}%%T`          | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%  T\u00a0`         | `%%{x}%%T`          | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%\u2028T`           | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%\u2029T`           | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%\u0085T`           | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%  T\u2028`         | `%%{x}%%T`          | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%  T\u0085`         | `%%{x}%%T\u0085`    | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%  %%{y}%%  T  `    | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%  %%{y}%%  T`      | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%%%{y}%%  T  `      | `%%{x}%%%%{y}%%T`   | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%  %%{y}%%T  `      | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `%%{x}%% %%{y}%%T`         | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%%%{y}%%T`          | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%  `                | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%\t`                | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+| `%%{x}%%  %%{y}%%  `       | 書かれたまま        | 書かれたまま        | 書かれたまま        |
+
+テキストの後では、最後のディレクティブの後のタブは空白と同じように除き、U+00A0、
+U+3000、U+2003、U+0085、U+2028、U+2029、`;`、
+テキストは残します（`T %%{x}%%\u00a0`。
+テキストの後のディレクティブの後にテキストが続く `T %%{x}%%  U  %%{y}%%  `
+も残ります）。
+最後のディレクティブの前の空白は、後の 2 番目の表のとおりに印字します。
+ディレクティブで始まり、その後にテキストが続く title は、
+ディレクティブの後と末尾の空白文字を除きます。
+ただし、ディレクティブの後の U+2028、U+2029、U+0085 と、
+末尾の U+0085 は残ります。
+`accTitle:` と `accDescr:` の行は、そこでは書かれたまま残ります。
+ディレクティブ 2 つで始まる title は、間に空白があれば書かれたまま残り、
+ディレクティブが接していて後ろに空白が続くときは、
+2 つ目の後ろと末尾の空白文字を除きます（`title %%{x}%%%%{y}%%  T  ` は
+`title %%{x}%%%%{y}%%T` と印字します）。
+これらの形で、行は書かれたまま残ります。
+ディレクティブと空白かタブだけの title は、書かれたまま残ります。
 
 [fixture: title/title-directives-end-blanks-dropped]
+[test: treeview/title/directive-end-two-spaces]
+[test: treeview/title/directive-end-tab]
+[test: treeview/title/directive-end-comment]
+[test: treeview/title/directive-end-two-directives]
+[test: treeview/title/directive-end-u00a0]
+[test: treeview/title/directive-end-u3000]
+[test: treeview/title/directive-end-u2003]
+[test: treeview/title/directive-end-u2028]
+[test: treeview/title/directive-end-u2029]
+[test: treeview/title/directive-end-u0085]
+[test: treeview/title/directive-end-semicolon]
+[test: treeview/title/directive-end-text-touching]
+[test: treeview/title/directive-end-text-after-space]
+[test: treeview/title/directive-only-two-spaces-kept]
+[test: treeview/title/directive-only-tab-kept]
+[test: treeview/title/directives-u3000-between-kept]
+[test: treeview/title/directive-u3000-trailing-spaces-kept]
+[test: treeview/title/directive-then-text-gap-kept]
+[test: treeview/title/directive-end-comment-touching]
+[test: treeview/title/directive-leading-then-text-spaces]
+[test: treeview/title/directive-leading-then-text-space]
+[test: treeview/title/directive-text-between-directives-kept]
+[test: treeview: the whitespace beside a directive in a title]
+[test: treeview: the whitespace beside a directive in an accTitle line]
+[test: treeview: the whitespace beside a directive in an accDescr line]
+[test: treeview: each whitespace character before the last directive of a title and of an accessibility line]
+
+title、`accTitle:`、`accDescr:` の行で、最後のディレクティブの前の空白は、
+ディレクティブの後ろに何が続くかによって、同じように次の表のとおりに印字します。
+`{w}` は、テキスト `T` と最後のディレクティブの間に書かれた空白で、
+最後の行ではディレクティブとコメントの間に書かれた空白です。
+列はその空白の文字で、タブ、
+空白でもタブでも行区切りでもない空白文字（改行しない空白、U+000B、U+000C、
+U+1680、U+2000〜U+200A、U+202F、U+205F、U+3000、U+FEFF）、U+2028 と U+2029、
+仕様の空白ではない U+0085 です。
+ダッシュは、1 回目と 2 回目で印字が変わり、ここには形がないことを表します。
+
+| キーワードの後に書かれた形 | タブ                | 改行しない空白など | U+2028、U+2029     | U+0085           |
+| -------------------------- | ------------------- | ------------------ | ------------------ | ---------------- |
+| `T{w}%%{x}%%`              | `T %%{x}%%`         | `T %%{x}%%`        | `T %%{x}%%`        | 書かれたまま     |
+| `T{w}%%{x}%%  `            | `T %%{x}%%`         | –                  | 書かれたまま       | `T\u0085%%{x}%%` |
+| `T{w}%%{x}%%\t`            | `T %%{x}%%`         | –                  | 書かれたまま       | `T\u0085%%{x}%%` |
+| `T{w}%%{x}%%%% c`          | `T %%{x}%%%% c`     | `T %%{x}%%%% c`    | 書かれたまま       | 書かれたまま     |
+| `T{w}%%{x}%% %% c`         | `T %%{x}%% %% c`    | 書かれたまま       | 書かれたまま       | 書かれたまま     |
+| `T{w}%%{x}%%%%{y}%%`       | `T %%{x}%%%%{y}%%`  | `T %%{x}%%%%{y}%%` | `T %%{x}%%%%{y}%%` | 書かれたまま     |
+| `T{w}%%{x}%% %%{y}%%`      | `T %%{x}%% %%{y}%%` | 書かれたまま       | 書かれたまま       | 書かれたまま     |
+| `T{w}%%{x}%%;`             | 書かれたまま        | 書かれたまま       | 書かれたまま       | 書かれたまま     |
+| `T{w}%%{x}%% U`            | 書かれたまま        | 書かれたまま       | 書かれたまま       | 書かれたまま     |
+| `T %%{x}%%{w}%% c`         | `T %%{x}%% %% c`    | 書かれたまま       | 書かれたまま       | 書かれたまま     |
+
+最後のディレクティブの前、
+またはディレクティブとコメントの間にある U+2028 と U+2029 は、
+コメントが続くとき、title の後の行の字下げを止めます。
+title の次の行は字下げせず、
+`title T\u2028%%{x}%%%% c` とその下のノード `R` は書かれたまま印字し、
+`R` は 1 桁目になります。
+title の後に何もないか、空行かコメント行だけがあってテキストが終わるときは、
+ディレクティブの前の U+2028 か U+2029 の後ろの、ディレクティブとコメントを、
+次の行に置いて印字し、その U+2028 か U+2029 の前後の空白文字は除きます。
+その前の U+0085 だけは title の行の末尾に残ります（`title T\u2028%%{x}%%%% c` は
+`title T` と、次の行の `%%{x}%%%% c` と印字します）。
+ディレクティブとコメントの間に 2 つ目の U+2028 か U+2029 があれば、
+コメントをディレクティブの次の行に置きます（`title T`、U+2028、`%%{x}%%`、
+U+2029、`%% c` は、`title T`、`%%{x}%%`、`%% c` の 3 行に印字します）。
+ディレクティブの前に区切りがなく、
+ディレクティブとコメントの間にだけある U+2028 か U+2029 は、
+それらと一緒に書かれたまま残り、行の後に何もないときは、
+その後ろの空白は連なりの段落のとおりに印字します。
+最初の U+2028 か U+2029 の後ろ、
+ディレクティブの外でコメントまでの間に U+0085 があれば、
+行は書かれたまま残ります（行の後に何もないときは、
+ディレクティブとコメントの間の連なりを連なりの段落のとおりに印字します）。
+ディレクティブとコメントが続く title の行で、title の直後か、
+コメント行の後に文があるとき、空白だけの行があるとき（その後に何もないか、
+次に文があっても）、ディレクティブだけの行があってその後に何もないとき、
+空白の後のディレクティブの行があるとき（その後に何もないか、次に文があっても）、
+title は書かれたまま残り、ディレクティブとコメントの間の空白も同じです。
+title と次の文の間のほかの行の並びは示しません。
+その一部には、どの規則も形を与えない範囲があります。
+U+2028 か U+2029 とディレクティブとコメントを含む title、`accTitle:`、
+`accDescr:` の行で、次の文との間に、空行か、
+1 桁目にある単独のディレクティブの行があるとき、区切りのまわりと、
+ディレクティブとコメントの間の空白は、
+区切りのそれぞれの隣の文字で変わる形に印字し、
+`accDescr:` の行はほかの 2 つと違います。
+この範囲の形は、リリース済みの版が印字するものを、決めるまで変えません。
+（[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)）。
+
+最後のディレクティブが改行か `;` を含むとき（`%%{init: {`、改行、`}}%%`、
+または `%%{init: {a;b}}%%`）、表のとおりに印字するのは、
+ディレクティブの後ろに何も続かない形と、
+コメントか 2 つ目のディレクティブが接する形です。
+後ろに空白かタブが続く形と、
+空白をはさんでコメントか 2 つ目のディレクティブが続く形は、
+ディレクティブの前に何があっても書かれたまま残ります。
+
+最後のディレクティブの前の空白の連なりは、
+その中の空白でもタブでもない文字の列に従い、
+空白とタブだけの連なりは最初の列に従います。
+ただし、
+空白でもタブでもない文字がすべて同じ列のものである連なりに限ります（`T`、空白、
+改行しない空白、`%%{x}%%%% c` は `T %%{x}%%%% c` と、`T`、空白、U+2028、
+`%%{x}%%` は `T %%{x}%%` と印字します）。
+
+タブと、
+改行しない空白の列（U+3000 を含む）か U+0085 の列の文字からなる連なりは、
+title と `accDescr:` の行では、連なりの中の空白とタブの連なりを、
+タブ 1 つが空白 1 つになる所では空白 1 つにして印字します（`T`、タブ、
+改行しない空白、`%%{x}%% %% c` は、`T`、空白、改行しない空白、
+`%%{x}%% %% c` と印字します）。
+`accTitle:` の行では、
+ディレクティブの直前の空白とタブの連なりだけを空白 1 つにします（`T`、タブ、
+改行しない空白、`%%{x}%% %% c` は書かれたままで、`T`、改行しない空白、タブ、
+`%%{x}%% %% c` は `T`、改行しない空白、空白、`%%{x}%% %% c` と印字します）。
+3 つの行のどれでも、ほかの文字の列が空白 1 つを印字する所では、
+上の段落が 1 つの列の連なりについて示すとおり連なり全体を空白 1 つにし、
+`;` の前とテキストの前では書かれたまま残します。
+タブと改行しない空白の列の文字からなる連なりは、
+最後のディレクティブの後に空白かタブが続く形では印字した形がなく、
+表のダッシュと同じです。
+`accTitle:` の行では、U+0085 の前のタブは残り、後ろのタブは空白 1 つになります。
+`accDescr:` の行でタブが U+0085 の前にあるものは、
+title と同じに印字します（`accDescr: T`、タブ、U+0085 は `accDescr: T`、空白、
+U+0085 と印字します）。
+Db にはタブがあり、印字した行には空白がありますが、mermaid.js は同じに描きます。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+
+最後のディレクティブとコメントの間の、
+ディレクティブの前に U+2028 も U+2029 もなく、行の直後に文があるときの、
+空白とタブだけの連なりは空白 1 つにして印字し、ほかの空白文字を含む連なりは、
+タブがあっても書かれたまま残します（`T`、`%%{x}%%`、タブ、改行しない空白、
+`%% c` は変えません）。
+行の直後でテキストが終わるときは、
+そのような連なりの最初の U+2028 か U+2029 の後が変わります。
+空白文字（空白、タブ、改行しない空白、U+3000 など）だけなら、
+空白 1 つにして印字します（`title T %%{x}%%`、U+2028、空白 2 つ、`%% c` は、
+U+2028 の後を空白 1 つにして印字します）。
+その後に 2 つ目の U+2028 か U+2029 があれば、
+コメントを最初の文字の次の行に置きます。
+最初の文字の後に U+0085 があれば、連なりは書かれたまま残します。
+行の後に空行、コメント行、空白だけの行、
+ディレクティブの行があるときは示しません。
+
+[test: treeview: the whitespace before the last directive, with nothing after it]
+[test: treeview: the whitespace before the last directive, with spaces after it]
+[test: treeview: the whitespace before the last directive, with a tab after it]
+[test: treeview: the whitespace before the last directive, with a comment that touches it]
+[test: treeview: the whitespace before the last directive, with a comment after a space]
+[test: treeview: the whitespace before the last directive, with a second directive that touches it]
+[test: treeview: the whitespace before the last directive, with a second directive after a space]
+[test: treeview: the whitespace before the last directive, with a semicolon after it]
+[test: treeview: the whitespace before the last directive, with text after a space]
+[test: treeview: the whitespace between the last directive and a comment]
+[test: treeview: a run between the last directive and a comment]
+[test: treeview: a run between the last directive and a comment where the line is the last statement of the text]
+[test: treeview: a U+2028 or U+2029 before the last directive of a title, with nothing or an empty line after it]
+[test: treeview: a U+2028 or U+2029 before the last directive of a title, with a comment line after it]
+[test: treeview: a U+2028 or U+2029 before the last directive of a title, with a statement after it, directly or after a comment line]
+[test: treeview: a U+2028 or U+2029 before the last directive of a title, with a line of spaces after it, or a line of a directive alone or after a space]
+[test: treeview: a U+2028 or U+2029 and a U+0085 around the last directive of a title, with the text ending]
+[test: treeview: the whitespace between the last directive and a comment, with a U+2028 or U+2029 before the directive and a statement right after the line]
+[test: treeview: the whitespace before the last directive where the line is the last statement of the text]
+[test: treeview: a run of whitespace before the last directive follows the column of its characters]
+[test: treeview: a run of whitespace before the last directive follows the column of its characters where the line is the last statement of the text]
+[test: treeview: a run that holds a tab and other whitespace before the last directive]
+[test: treeview: a run that holds a tab and other whitespace before the last directive where the line is the last statement of the text]
+[test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with nothing or a mark that touches it after it]
+[test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces or a tab after it, or a mark after a space]
 
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。
@@ -1800,11 +2104,58 @@ treeView-beta
 波括弧らしい行値と付随要素の境界を保ちます。
 共通の変換処理が許す同等の外側の隙間を選びます。
 次の行の文字を値に取りません。
-値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-最後のディレクティブの後の空白を除いて印字します。
+テキストの後にディレクティブだけが続く `accTitle:` と `accDescr:` の行は、
+title の場合と同じに印字します。
+ただし、行のディレクティブのどれかに改行、`;`、U+2028、
+U+2029 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`accTitle: T  %%{x}%%  ` は `accTitle: T %%{x}%%` と、
+`accDescr: T  %%{x}%%  %% c` は `accDescr: T %%{x}%% %% c` と印字し、
+ディレクティブに接するコメントは接したままにします（`accDescr: T  %%{x}%%%% c`
+は `accDescr: T %%{x}%%%% c` と印字します）。
+これらの行のほかの形は、[Title](#title)の表にあります。
+title と同じに印字しますが、ディレクティブで始まり、その後にテキストが続く値は、
+書かれたまま残ります（`accTitle: %%{x}%%  T  ` は変えません）。
+コロンの後の隙間も残ります。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
+[test: treeview/accessibility-lines/acctitle-directive-end-two-spaces]
+[test: treeview/accessibility-lines/acctitle-directive-end-comment]
+[test: treeview/accessibility-lines/acctitle-directive-end-u00a0]
+[test: treeview/accessibility-lines/acctitle-directive-end-text-after-space]
+[test: treeview/accessibility-lines/acctitle-directive-only-two-spaces-kept]
+[test: treeview/accessibility-lines/accdescr-directive-end-two-spaces]
+[test: treeview/accessibility-lines/accdescr-directive-end-comment]
+[test: treeview/accessibility-lines/accdescr-directive-end-u00a0]
+[test: treeview/accessibility-lines/accdescr-directive-end-text-after-space]
+[test: treeview/accessibility-lines/accdescr-directive-only-two-spaces-kept]
+[test: treeview/accessibility-lines/acctitle-directive-u3000-kept]
+[test: treeview/accessibility-lines/accdescr-directive-then-text-kept]
+[test: treeview/accessibility-lines/acctitle-directive-end-tab]
+[test: treeview/accessibility-lines/acctitle-directive-end-two-directives]
+[test: treeview/accessibility-lines/acctitle-directive-end-u3000]
+[test: treeview/accessibility-lines/acctitle-directive-end-u2003]
+[test: treeview/accessibility-lines/acctitle-directive-end-u0085]
+[test: treeview/accessibility-lines/acctitle-directive-end-u2028]
+[test: treeview/accessibility-lines/acctitle-directive-end-u2029]
+[test: treeview/accessibility-lines/acctitle-directive-end-semicolon]
+[test: treeview/accessibility-lines/acctitle-directive-end-text-touching]
+[test: treeview/accessibility-lines/acctitle-directive-end-comment-touching]
+[test: treeview/accessibility-lines/acctitle-directive-leading-then-text-kept]
+[test: treeview/accessibility-lines/acctitle-directive-text-between-directives-kept]
+[test: treeview/accessibility-lines/accdescr-directive-end-tab]
+[test: treeview/accessibility-lines/accdescr-directive-end-two-directives]
+[test: treeview/accessibility-lines/accdescr-directive-end-u3000]
+[test: treeview/accessibility-lines/accdescr-directive-end-u2003]
+[test: treeview/accessibility-lines/accdescr-directive-end-u0085]
+[test: treeview/accessibility-lines/accdescr-directive-end-u2028]
+[test: treeview/accessibility-lines/accdescr-directive-end-u2029]
+[test: treeview/accessibility-lines/accdescr-directive-end-semicolon]
+[test: treeview/accessibility-lines/accdescr-directive-end-text-touching]
+[test: treeview/accessibility-lines/accdescr-directive-end-comment-touching]
+[test: treeview/accessibility-lines/accdescr-directive-leading-then-text-kept]
+[test: treeview/accessibility-lines/accdescr-directive-text-between-directives-kept]
 [fixture: treeview/accessibility-lines/acctitle-padding]
 
 [fixture: treeview/accessibility-lines/accdescr-padding]
@@ -1899,6 +2250,11 @@ Prettier が `x = { }` を `x = {}`
 普通の開始記号の前の空白は寄せ、本文行を文より 1 段深くそろえます。
 付随要素の内容は保ちます。
 別行の閉じ記号は文の段に揃えます。
+規則 1 は、ブロックの中の行の字下げの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+字下げモードでは、[flowchart](./flowchart.ja.md#複数行の値)、
+[class](./class.ja.md#複数行の値)、[state](./state.ja.md#複数行の値)が、
+`accDescr { ... }` の本文の行を、文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 罫線モードではキーワードと開始記号の普通の前置部分を外し、
@@ -2224,6 +2580,12 @@ treeView-beta
 ### Directives
 
 ディレクティブの原文と順序を保ちます。
+mermaid.js はディレクティブを除き、両側のテキストをつなげて読むので、
+名前に接するディレクティブは接したまま残します。
+`A%%{init: {}}%%B` は名前 `AB`、`A%%{init: {}}%% B` は名前 `A B` です。
+詳しくは
+[トークンの間のディレクティブ](./compatibility.ja.md#トークンの間のディレクティブ)
+を参照してください。
 同じ印字行では、title、アクセシビリティの文、
 または `:::` の後のクラスの隙間にあるディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
@@ -2237,6 +2599,10 @@ treeView-beta
 残りの字下げを最初のディレクティブの前に置きます。
 前の行の連なりを重ねず、割り当て済みの字下げを保つためです。
 複数行の内部、値の中の形と EOF の未完のディレクティブは原文のままです。
+
+[fixture: treeview/directives/name-directive-touching-text-kept]
+[fixture: treeview/directives/name-directive-then-space-text-kept]
+[fixture: treeview/directives/name-space-then-directive-touching-text-kept]
 
 `useTabs` のときは、
 行頭の字下げ単位の保つ隙間も補う字下げもすべてタブで印字します。
@@ -2716,6 +3082,14 @@ treeView-beta
 ### Frontmatter yaml
 
 安全な実効フロントマターだけを共有の保護条件付き YAML の整形処理で整えます。
+`---` の行の間の YAML は、
+Prettier が YAML をどこでも印字するのと同じに印字します。
+キーのコロンは `key: value` です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)のとおりです。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+を参照してください。
+[flowchart](./flowchart.ja.md#フロントマターの-yaml)と同じです。
 字下げされた囲みの区切り、閉じ記号の余白、不正な YAML、
 HTML の引用符の危険と囲みの区切りを作る本文は保ちます。
 入れ子とスカラー値は `tabWidth` 0 でも最低でも空白 1 つです。
@@ -2724,6 +3098,7 @@ HTML の引用符の危険と囲みの区切りを作る本文は保ちます。
 本文の `---` は名前のまま、拒否される保持 YAML は昇格も修復もしません。
 
 [fixture: treeview/frontmatter-yaml/frontmatter-safe]
+[fixture: treeview/frontmatter-yaml/frontmatter-colon-spacing]
 
 [fixture: treeview/frontmatter-yaml/frontmatter-zero-scalar]
 
@@ -3031,9 +3406,98 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 設定の改行 1 個で終えます。
 値の末尾は保ち、
 EOF の未完ディレクティブと保護・原文保持の終端は共有の例外に従います。
+規則 1 は、
+閉じていないディレクティブのあるテキストの終わりの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[c4](./c4.ja.md#末尾の改行) と [ishikawa](./ishikawa.ja.md#final-newline) は、
+単独の行にある閉じていないディレクティブを、
+最後の文字の後の空白文字なしで印字し、treeView もここでそうします。
+[kanban](./kanban.ja.md#末尾の改行)はカードの行で、
+閉じていないディレクティブの後の空白とタブだけを落とすので、
+それ以外の空白文字の先例にはなりません。
+treeView は、閉じていないディレクティブを、空白でない最後の文字まで読みます。
+単独の行にあるときと、ブロックの後の行にあるときのほか、
+ノード（引用名と裸の名前）、説明（`## d`）、アイコン、title、
+`accTitle:` と `accDescr:` の行、`:::` の後ろのクラス、
+罫線モードのノードの行にあるときもそうです。
+引用名の後ろとクラスの後ろでは、ディレクティブをそれに接して書き、
+空白を挟んで書くと拒否されます。
+ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
+その文字の後ろの空白は落とします。
+落とすのは U+0009 から U+000D（タブ、LF、垂直タブ、改ページ、CR）、U+0020、
+U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF で、
+これらと一緒に空行も落ちます。
+改行 1 つでテキストを終えます。
+何も足さないのは、テキストがその文字の直後で終わり、
+その文字が U+2028 でも U+2029 でもないときだけです。
+`%%{unfinished` と空白 2 つは `%%{unfinished` と改行を、
+`%%{unfinished` と U+2028 は `%%{unfinished`、U+2028、改行を、
+`"R"%%{unfinished` と空白 2 つは `"R"%%{unfinished` と改行を印字します。
 拒否される未使用の字下げの連なりは、両端の空白を除いて受理させません。
 
 [fixture: treeview/final-newline/eof-node]
+[fixture: treeview/final-newline/eof-open-directive]
+[fixture: treeview/final-newline/eof-open-directive-trailing-blanks]
+[test: treeview/final-newline/open-directive-nothing-after]
+[test: treeview/final-newline/open-directive-two-spaces]
+[test: treeview/final-newline/open-directive-tab]
+[test: treeview/final-newline/open-directive-no-break-space]
+[test: treeview/final-newline/open-directive-u3000]
+[test: treeview/final-newline/open-directive-bom]
+[test: treeview/final-newline/open-directive-vertical-tab]
+[test: treeview/final-newline/open-directive-form-feed]
+[test: treeview/final-newline/open-directive-line-break]
+[test: treeview/final-newline/open-directive-crlf]
+[test: treeview/final-newline/open-directive-spaces-line-break]
+[test: treeview/final-newline/open-directive-empty-lines]
+[test: treeview/final-newline/open-directive-line-break-spaces]
+[test: treeview/final-newline/open-directive-u2028]
+[test: treeview/final-newline/open-directive-u2029]
+[test: treeview/final-newline/open-directive-space-u2028]
+[test: treeview/final-newline/open-directive-u2028-space]
+[test: treeview/final-newline/open-directive-nel]
+[test: treeview/final-newline/open-directive-zero-width-space]
+[test: treeview/final-newline/open-directive-u1680]
+[test: treeview/final-newline/open-directive-u2000]
+[test: treeview/final-newline/open-directive-u200a]
+[test: treeview/final-newline/open-directive-u202f]
+[test: treeview/final-newline/open-directive-u205f]
+[test: treeview/final-newline/open-directive-after-node-u2029]
+[test: treeview/final-newline/open-directive-after-node-u0085]
+[test: treeview/final-newline/open-directive-after-node-u180e]
+[test: treeview/final-newline/open-directive-after-node-u2003]
+[test: treeview/final-newline/open-directive-after-title-two-spaces]
+[test: treeview/final-newline/open-directive-after-title-u2029]
+[test: treeview/final-newline/open-directive-after-acctitle-two-spaces]
+[test: treeview/final-newline/open-directive-after-acctitle-u2029]
+[test: treeview/final-newline/open-directive-after-accdescr-two-spaces]
+[test: treeview/final-newline/open-directive-after-accdescr-u2029]
+[test: treeview/final-newline/open-directive-after-class-two-spaces]
+[test: treeview/final-newline/open-directive-after-description-two-spaces]
+[test: treeview/final-newline/open-directive-after-icon-two-spaces]
+[test: treeview/final-newline/open-directive-after-description-block-two-spaces]
+[test: treeview/final-newline/open-directive-after-box-node-two-spaces]
+[test: treeview/final-newline/open-directive-after-class-u2029]
+[test: treeview/final-newline/open-directive-after-quoted-name-space-rejected]
+[test: treeview/final-newline/open-directive-after-class-space-rejected]
+[test: treeview/final-newline/open-directive-after-node-no-break-space]
+[test: treeview/final-newline/open-directive-after-node-u3000]
+[test: treeview/final-newline/open-directive-after-node-bom]
+[test: treeview/final-newline/open-directive-after-node-vertical-tab]
+[test: treeview/final-newline/open-directive-after-node-form-feed]
+[test: treeview/final-newline/open-directive-after-node-u1680]
+[test: treeview/final-newline/open-directive-after-node-u2000]
+[test: treeview/final-newline/open-directive-after-node-u200a]
+[test: treeview/final-newline/open-directive-after-node-u202f]
+[test: treeview/final-newline/open-directive-after-node-u205f]
+[test: treeview/final-newline/open-directive-after-bare-node-two-spaces]
+[test: treeview/final-newline/open-directive-u180e]
+[test: treeview/final-newline/open-directive-u2003]
+[test: treeview/final-newline/open-directive-after-node-nothing-after]
+[test: treeview/final-newline/open-directive-after-node-two-spaces]
+[test: treeview/final-newline/open-directive-after-node-tab]
+[test: treeview/final-newline/open-directive-after-node-u2028]
+[test: treeview/final-newline/open-directive-after-node-line-break-spaces]
 
 [fixture: treeview/final-newline/eof-comment]
 

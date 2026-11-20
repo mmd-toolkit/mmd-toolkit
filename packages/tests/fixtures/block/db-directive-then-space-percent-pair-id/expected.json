@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Directives inside units, and Comments: the directive glued to b ends the id, and the %% after the space is the id %%; the blocks are b, %%, and x."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "b",
+          "label": "b",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "%%",
+          "label": "%%",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "x",
+          "label": "x",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

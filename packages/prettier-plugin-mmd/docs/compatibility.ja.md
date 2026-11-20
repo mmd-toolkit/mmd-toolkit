@@ -223,6 +223,7 @@ ELK の配置のパッケージのどのリリースも、
 | [state](./state.ja.md#keyword-case)                                                                                                   | `state "x" AS y` の後の `note LEFT OF y: left`                                                                                                | `note left of y: left`                          | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 から 12.3.0 が形状の違う図を描き、12.3.0 は Db のノートの位置も変える                                        | [fixture: state/keyword-case/accessibility-alias-direction-one-form]                                                                                        |
 | [state](./state.ja.md#トークンの間の空白)                                                                                             | `style A fill:#f00;;`                                                                                                                         | `style A fill: #f00;;`                          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 が構造とスタイルの違う図を描く                                                                               | [fixture: state/whitespace-between-tokens/class-ids-with-ignored-semicolon]                                                                                 |
 | [state](./state.ja.md#別名)                                                                                                           | `state "d" as A :` の後の空白 3 つ                                                                                                            | `state "d" as A :` の後が空                     | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.17.2、12.0.0、12.3.0 が構造の違う図を描く                                                                        | [fixture: state/aliases/second-description-blank-kept]                                                                                                      |
+| [state](./state.ja.md#別名)                                                                                                           | 別名を持つ state の 2 つ目の説明で、末尾に改行しない空白を持つもの                                                                            | それのない説明                                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別の形状を描き、12.3.0 は Db の説明の末尾を変える                                              | [test: a no-break space at the end of the second description of a state with an alias]                                                                      |
 | [flowchart、swimlane](./flowchart.ja.md#ラベルの内側の空白)                                                                           | `A[ user@example.com ]`                                                                                                                       | `A[user@example.com]`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | flowchart: 11.7.0、11.17.2、12.0.0; swimlane: 11.16.1、11.17.2、12.0.0 が、空白のない形を拒否する                   | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept]                                                                                 |
 | [flowchart、swimlane](./flowchart.ja.md#矢印の前後の空白)                                                                             | `A@{ shape: circle }e1@--> B`                                                                                                                 | `A@{ shape: circle } e1@--> B`                  | [1](./printed-form.ja.md#1-記号の横の空白)            | flowchart: 11.7.0、11.17.2、12.0.0; swimlane: 11.16.1、11.17.2、12.0.0 が、空白のある形を拒否する                   | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]                                                                                         |
 | [flowchart](./flowchart.ja.md#トークンの間の空白)                                                                                     | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と印字                                                                   | `style A fill: #f00, color: white`              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、`color:` か `text-align:` で始まるスタイルからラベルの色を取る                                           | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]                                                                                    |
@@ -260,6 +261,8 @@ ELK の配置のパッケージのどのリリースも、
 | [C4](./c4.ja.md#引数の空白)                                                                                                           | `Person(a,\t"A", "D")`（コンマの後にタブ）                                                                                                    | `Person(a, "A", "D")`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 がラベルを違って描き、12.3.0 が Db の `label.text` を変える                                      | [test: c4: tab-before-quote]                                                                                                                                |
 | [C4](./c4.ja.md#引数の空白)                                                                                                           | `Person(a,\u00a0"A", "D")`（コンマの後に U+00A0）                                                                                             | `Person(a, "A", "D")`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 がラベルを引用符つきの `"A"` で描き、12.3.0 が Db の `label.text` を変える                       | [test: c4: nbsp-before-quote]                                                                                                                               |
 | [C4](./c4.ja.md#説明ブロック)                                                                                                         | `accDescr {`、`direction LR`、`}` を別の行に書いた形                                                                                          | `accDescr: direction LR`                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 がもう一方の形を拒否する                                                                         | [fixture: c4/description-blocks/acc-block-direction-keep]                                                                                                   |
+| [C4](./c4.ja.md#title-と-accdescription)                                                                                              | 改行しない空白か U+3000 を先頭か末尾に持つ title                                                                                              | それらのない title                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の title の末尾を変える                                       | [test: a no-break space and U+3000 at both ends of the title of a C4 diagram]                                                                               |
+| [C4](./c4.ja.md#title-と-accdescription)                                                                                              | 末尾に改行しない空白を持つ `accDescription`                                                                                                   | それのない説明                                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の説明の末尾を変える                                          | [test: a no-break space at the end of the accDescription of a C4 diagram]                                                                                   |
 | [block](./block.ja.md#columns-と-space)                                                                                               | `space:2`                                                                                                                                     | `space: 2`                                      | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 は `space: 2` を拒否する                                                                         | [fixture: block/columns-and-space/space-width-touching]                                                                                                     |
 | [block](./block.ja.md#スタイル)                                                                                                       | `class A,B c1`                                                                                                                                | `class A, B c1`                                 | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 は class の描画が違い、12.3.0 の Db は `B` の `classes` が変わる                                 | [fixture: block/styles/class-ids-as-written]                                                                                                                |
 | [sequence](./sequence.ja.md#コロン)                                                                                                   | `A->>B: `（`:` の後に空白 1 文字）                                                                                                            | `A->>B:`                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、後に何もない `:` を拒否する                                                                              | [fixture: sequence/colons/whitespace-only-text]                                                                                                             |
@@ -278,6 +281,7 @@ ELK の配置のパッケージのどのリリースも、
 | [sequence](./sequence.ja.md#コメント)                                                                                                 | 末尾の `accDescr {style:#x} end #12; %%{init: {}}%%`                                                                                          | `accDescr: style:#x` の次の行に `end`           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が単独行の `end` を拒否する                                                                      | [fixture: sequence/statements-one-per-line/end-comment-entity-before-directive]                                                                             |
 | [sequence](./sequence.ja.md#コメント)                                                                                                 | `accDescr {style:#x} end #a;`、空白、タブ、次の `else` 行                                                                                     | `accDescr: style:#x` の次の行に `end`           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が単独行の `end` を拒否する                                                                      | [fixture: sequence/statements-one-per-line/end-comment-ignored-semicolon-trailing-whitespace-before-a-divider]                                              |
 | [sequence](./sequence.ja.md#コメント)                                                                                                 | `accDescr {style:#x}else x#a;`                                                                                                                | `accDescr: style:#x` の次の行に `else x#a;`     | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が分かれ目のテキストを変え、12.3.0 は `messages[2].message` も変える                             | [fixture: sequence/statements-one-per-line/else-touching-description-block-with-trigger-entity]                                                             |
+| [sequence](./sequence.ja.md#タイトル)                                                                                                 | 改行しない空白か U+3000 を先頭か末尾に持つ title                                                                                              | それらのない title                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の title の末尾を変える                                       | [test: a no-break space and U+3000 at both ends of the title of a sequence diagram]                                                                         |
 | [gitGraph](./gitgraph.ja.md#header)                                                                                                   | `gitGraph %%{x}%%:` を `gitGraph%%{x}%%:` と印字                                                                                              | `gitGraph %%{x}%%`                              | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、ディレクティブの後でコロンのないヘッダーを拒否する                                                       | [fixture: gitgraph/header/header-directive-before-colon-kept]                                                                                               |
 | [gitGraph](./gitgraph.ja.md#references)                                                                                               | `branch "Merge"`、`branch "lr-x"`                                                                                                             | `branch Merge`、`branch lr-x`                   | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、キーワードを大文字小文字を問わず読み、`lr-x` を `lr` と `-x` として読む                                  | [fixture: gitgraph/references/names-that-need-quotes]                                                                                                       |
 | [info](./info.ja.md#description-blocks)                                                                                               | `accDescr`、`%% c`、`{D}` が続く別の行                                                                                                        | `accDescr %% c` の次の行に `{D}`                | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.17.2、12.0.0、12.3.0 が、コメントが `accDescr` の行にある形を拒否する                                    | [fixture: info/description-blocks/block-opener-comment]                                                                                                     |
@@ -286,6 +290,8 @@ ELK の配置のパッケージのどのリリースも、
 | [gitGraph](./gitgraph.ja.md#hidden-directives)                                                                                        | 次行に `commit` が続く `commit%%{}%% `                                                                                                        | 同じ次行が続く `commit%%{}%%`                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.7.0、11.17.2、12.0.0、12.3.0 は末尾の空白のない行を拒否する                                                      | [fixture: gitgraph/hidden-directives/commit-closing-padding]                                                                                                |
 | [pie、gitGraph](./pie.ja.md#accessibility-lines)                                                                                      | 値のない `accTitle:` または `accDescr:` と、後ろの行の文（`"A":1`）                                                                           | 規則で印字される文（`"A": 1`）                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、空行・コメント・ディレクティブの後の文を値として読む                                                     | [fixture: pie/accessibility-lines/a11y-next-join-kept]                                                                                                      |
 | [pie、gitGraph](./pie.ja.md#accessibility-lines)                                                                                      | `accTitle: Value   %% note`。値の後の `%%` の前の空白                                                                                         | `accTitle: Value %% note`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、`%%` とその後ろを title の一部として読む                                                                 | [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]                                                                                               |
+| [pie](./pie.ja.md#title)                                                                                                              | `title T`、改行しない空白、`%% c`（改行しない空白の代わりに、空白でもタブでもない別の空白文字でも同じ）                                       | `title T %% c`                                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、異なるテキストを描く                                                                                     | [test: a no-break space before a comment after the title of a pie chart]                                                                                    |
+| [pie、gitGraph](./pie.ja.md#accessibility-lines)                                                                                      | `accDescr: Value`、改行しない空白、`%% note`（空白でもタブでもない別の空白文字でも同じ）                                                      | `accDescr: Value %% note`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、異なるテキストを描く                                                                                     | [test: a no-break space before a comment after the accDescr line of a pie chart]                                                                            |
 | [pie、gitGraph](./pie.ja.md#accessibility-lines)                                                                                      | `accDescr {a} %% c`。ブロックの `}` の後のコメント                                                                                            | `accDescr: a %% c`                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、コロンの形の説明に `%% c` を含めて読む                                                                   | [fixture: pie/description-blocks/block-then-comment]                                                                                                        |
 | [architecture、cynefin、gitGraph、packet、pie、radar、railroad、treemap、treeView、Wardley](./compatibility.ja.md#1-行の説明ブロック) | `accDescr {a%%literal}`                                                                                                                       | `accDescr: a%%literal`                          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 から 12.3.0 が異なるテキストを描く                                                                           | [fixture: pie/description-blocks/block-text-with-percent-kept]                                                                                              |
 | [pie](./pie.ja.md#description-blocks)                                                                                                 | 別行の `accDescr`、`%% c`、`{D}`                                                                                                              | `accDescr %% c` と次行の `{D}`                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 がもう一方の形を拒否する                                                                         | [fixture: pie/description-blocks/opener-comment-break-kept]                                                                                                 |
@@ -311,7 +317,10 @@ ELK の配置のパッケージのどのリリースも、
 | [timeline](./timeline.ja.md#title-と-section)                                                                                         | `title`、空白 2 つか、改行と字下げ、`# c`                                                                                                     | `title # c`                                     | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白だけの title とコメントとして読む                                                                    | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]                                                                                        |
 | [timeline](./timeline.ja.md#title-と-section)                                                                                         | `title` の後に空白 2 つ、タブ、空白 1 つ                                                                                                      | `title` の後に何もない形                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が他方の形を違って描く                                                                           | [fixture: timeline/titles-and-sections/title-blank-kept]                                                                                                    |
 | [timeline](./timeline.ja.md#コメント)                                                                                                 | `accDescr {a} %% c`                                                                                                                           | `accDescr: a %% c`                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.3.0 が Db の `accDescr` を `a` でなく `a %% c` と読む                                                            | [fixture: timeline/comments/block-then-percent-comment-kept]                                                                                                |
+| [timeline](./timeline.ja.md#title-と-section)                                                                                         | 改行しない空白か U+3000 を先頭か末尾に持つ title                                                                                              | それらのない title                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の title の末尾を変える                                       | [test: a no-break space and U+3000 at both ends of the title of a timeline diagram]                                                                         |
 | [gantt](./gantt.ja.md#リスト)                                                                                                         | `includes`、空白 2 個、`%%{init: {}}%%`                                                                                                       | `includes`、空白 1 個、ディレクティブ           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 がもう一方の形を拒否する                                                                         | [fixture: gantt/lists/whitespace-only-then-directive]                                                                                                       |
+| [gantt](./gantt.ja.md#タイトルとセクション)                                                                                           | 改行しない空白か U+3000 を先頭か末尾に持つ title                                                                                              | それらのない title                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の title の末尾を変える                                       | [test: a no-break space and U+3000 at both ends of the title of a gantt diagram]                                                                            |
+| [gantt](./gantt.ja.md#設定)                                                                                                           | 末尾に改行しない空白を持つ `axisFormat`                                                                                                       | それのない書式                                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の書式の末尾を変える                                          | [test: a no-break space at the end of the axis format of a gantt diagram]                                                                                   |
 | [ER](./er.ja.md#トークンの間の空白)                                                                                                   | `class-A a`                                                                                                                                   | `class -A a`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を入れた形を拒否する                                                                                 | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                     |
 | [ER](./er.ja.md#トークンの間の空白)                                                                                                   | `subgraph-x`、`end-x`                                                                                                                         | `subgraph -x`、`end` と単独の行の `-x`          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が空白を入れた形を拒否し、11.7.0 が違って描く                                                                | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                    |
 | [ER](./er.ja.md#方向)                                                                                                                 | `DIRECTION lr`                                                                                                                                | `direction LR`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、その行をエンティティとして読む                                                                           | [fixture: er/direction/case-kept]                                                                                                                           |
@@ -335,6 +344,7 @@ ELK の配置のパッケージのどのリリースも、
 | [すべての図種](./compatibility.ja.md#フロントマター)                                                                                  | フロントマターの `%YAML 1.2` の後の `--- !!map`                                                                                               | `---` と `!!map` を別の行に                     | [YAML](#フロントマター)                               | 10.9.8 から 12.3.0 が分割した形を拒否する                                                                           | [fixture: flowchart/frontmatter-yaml/delimiter-line-kept]                                                                                                   |
 | [ishikawa](./ishikawa.ja.md#indentation)                                                                                              | `ishikawa`、`R`、`  A`、` B`、`  C` を書かれたまま                                                                                            | すべてのノードを深さの位置に置く形              | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                    | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                        |
 | [user journey](./journey.ja.md#タイトルとセクション)                                                                                  | `title`、半角空白 2 つ、タブ、半角空白 1 つ                                                                                                   | `title` だけ（後ろに何もない形）                | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が、`title` だけの形を拒否する                                              | [fixture: journey/titles-and-sections/title-blank-kept]                                                                                                     |
+| [user journey](./journey.ja.md#タイトルとセクション)                                                                                  | 改行しない空白か U+3000 を先頭か末尾に持つ title                                                                                              | それらのない title                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の title の末尾を変える                                       | [test: a no-break space and U+3000 at both ends of the title of a user journey diagram]                                                                     |
 | [Wardley](./wardley.ja.md#link)                                                                                                       | `Alpha-->Beta` を `Alpha--> Beta` と印字                                                                                                      | `Alpha- -> Beta`                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.14.0 が、名前の `-` を拒否する                                                                                   | [fixture: wardley/links/link-long-glued]                                                                                                                    |
 | [Wardley](./wardley.ja.md#名前と引用)                                                                                                 | 引用符つきの `"real-time"`                                                                                                                    | `real-time`                                     | [3](./printed-form.ja.md#3-綴り)                      | 11.14.0 が、引用符なしの `-` を含む名前を拒否する                                                                   | [fixture: wardley/names-and-quotes/names-that-need-quotes]                                                                                                  |
 | [Wardley](./wardley.ja.md#セミコロンのラベル)                                                                                         | `Alpha->Beta ;` の後に空白とタブ                                                                                                              | `Alpha->Beta ;`                                 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.14.0、11.17.2、12.0.0、12.3.0 が拒否する                                                                         | [fixture: wardley/semicolon-labels/label-whitespace]                                                                                                        |
@@ -344,6 +354,7 @@ ELK の配置のパッケージのどのリリースも、
 | [treeView](./treeview.ja.md#names)                                                                                                    | `A   B`                                                                                                                                       | `A B`                                           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.17.2、12.0.0、12.3.0 で style と viewBox が異なり、12.3.0 で Db の `nodes[0].name` も異なる                      | [fixture: treeview/names/name-bare-internal]                                                                                                                |
 | [Venn](./venn.ja.md#色)                                                                                                               | `style A color:` の `rgba( 1 ,2 ,3 ,.5 )` の余白                                                                                              | `style A color:` の `rgba(1, 2, 3, .5)`         | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.3.0 では Db の `color` の値が異なる                                                                              | [fixture: venn/colors/function-padding-kept]                                                                                                                |
 | [Venn](./venn.ja.md#title)                                                                                                            | `title` の後に空白 2 個、タブ、空白 1 個                                                                                                      | `title` の後に何もない形                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0、11.17.2、12.0.0、12.3.0 が `title` だけの行を拒否する                                                      | [fixture: venn/title/title-blank-kept]                                                                                                                      |
+| [Venn](./venn.ja.md#title)                                                                                                            | 改行しない空白か U+3000 を先頭か末尾に持つ title                                                                                              | それらのない title                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.13.0 から 12.3.0 が別のテキストを描き、改行しない空白では別の形状も描き、12.3.0 は Db の title の末尾を変える    | [test: a no-break space and U+3000 at both ends of the title of a Venn diagram]                                                                             |
 | [use case](./usecase.ja.md#labels)                                                                                                    | `A("unquoted  words")`                                                                                                                        | `A("unquoted words")`                           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.0.0 と 12.3.0 でアクセシビリティのテキストが異なり、12.3.0 は Db の `useCases[0].label` を変える                 | [fixture: usecase/labels/label-quote-kinds]                                                                                                                 |
 | [use case](./usecase.ja.md#labels)                                                                                                    | `B('a"b')`                                                                                                                                    | `B("a"b")`                                      | [3](./printed-form.ja.md#3-綴り)                      | 12.0.0 と 12.3.0 がもう一方の形を拒否する                                                                           | [fixture: usecase/labels/single-quote-sensitive-kept]                                                                                                       |
 | [use case](./usecase.ja.md#stereotypes)                                                                                               | `actor User <<service  user>>`                                                                                                                | `actor User <<service user>>`                   | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.0.0 と 12.3.0 で ARIA 属性、12.3.0 で Db の `actors[0].stereotype` が異なる                                      | [fixture: usecase/stereotypes/stereotype-inner-kept]                                                                                                        |
@@ -359,7 +370,7 @@ ELK の配置のパッケージのどのリリースも、
 | [eventmodeling](./eventmodeling.ja.md#data-blocks)                                                                                    | 第 1 列の `}`                                                                                                                                 | 空白 2 つで字下げした `}`                       | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]                                                                                             |
 | [eventmodeling](./eventmodeling.ja.md#hidden-forms)                                                                                   | 先頭に空白 1 つのある ` accDescr: D`                                                                                                          | 空白のない `accDescr: D`                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/hidden-forms/hidden-next-common-keep-consumed-lf-padding]                                                                           |
 | [eventmodeling](./eventmodeling.ja.md#semicolons)                                                                                     | 改行の後で第 1 列にある `title`                                                                                                               | 空白 2 つで字下げした `title`                   | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/semicolons/protected-gwt-title-hidden-gap-remains-zero]                                                                             |
-| [eventmodeling](./eventmodeling.ja.md#semicolons)                                                                                     | 先頭に空白 1 つのある ` accDescr: style:#x;`                                                                                                  | 空白のない `accDescr: style:#x;`                | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/semicolons/protected-metadata-prefix-is-value-whitespace]                                                                           |
+| [eventmodeling](./eventmodeling.ja.md#semicolons)                                                                                     | 先頭に空白 1 つのある ` accDescr: style:#x;`                                                                                                  | 空白のない `accDescr: style:#x;`                | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/semicolons/protected-metadata-prefix-is-value-whitespace]                                                                           |
 | [eventmodeling](./eventmodeling.ja.md#data-blocks)                                                                                    | data 本文の後の行が第 1 列にある形。第 1 列の `"sku": "SHIRT-M",` の後の `"quantity": 2`                                                      | 後の行を空白 2 つ下げた形                       | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 が別のテキストと形状を描き、12.3.0 は Db の `data` の値も変える                                 | [fixture: eventmodeling/data-blocks/body-later-zero-margin-kept] [fixture: eventmodeling/data-blocks/body-later-zero-margin-plain-kept]                     |
 | [eventmodeling](./eventmodeling.ja.md#default-size-branches)                                                                          | 50000 単位のテキストで、第 1 列の最初の本文行の後に、2 つ内側のコメント行がある data 本文                                                     | 最初の本文行を空白 2 つ下げた形                 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.3.0 が別のテキスト、構造、形状を描き、Db の `data` の値も違う                                                    | [fixture: eventmodeling/default-size-branches/size-at-limit-indented-comment]                                                                               |
 | [eventmodeling](./eventmodeling.ja.md#default-size-branches)                                                                          | 同じ形で、テキストが 49999 単位                                                                                                               | 最初の本文行を空白 2 つ下げた形                 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.3.0 が別のテキスト、構造、形状を描き、Db の `data` の値も違う                                                    | [fixture: eventmodeling/default-size-branches/size-below-planned-crossing-indented-comment]                                                                 |
@@ -574,7 +585,9 @@ mermaid.js は、そうした位置の多くでそれらを受理し、ないも
 同じ行の別の文の後に書いたときは（`A accDescr {}` は頂点 A と空の description
 ブロックです）、descriptionブロックの文です。
 文字と注釈類のない通常の閉じたブロックの内側は、改行があっても`{}`です。
-接する語は`accDescr{}`と接したままにします。
+キーワードと `{` の間には、接していたときも空白を 1 つ置きます。
+`accDescr{ }` は `accDescr {}`
+と印字します（[説明ブロックの字下げ](#説明ブロックの字下げ)を参照）。
 説明ブロックの文法がある全図種で、空白だけの内側をこの形に揃えます。
 タブと Unicode の空白も含めます。
 囲む空白を要する本文がないためです。
@@ -1436,14 +1449,55 @@ SVG と画素を比べてから、例外を残します。
 
 Gantt、user journey、timeline、sequence、Venn、C4 の図では、タイトル、
 Gantt 図の日付書式と軸の書式を、キーワードの後に空白を 1 つ置き、
-テキストの先頭と末尾の空白を除いて印字します。
+テキストの先頭と末尾の空白とタブを除いて印字します。
 C4 図の説明 `accDescription` も同じです。
 `title   Plan  ` は `title Plan` と印字し、
 `dateFormat   YYYY-MM-DD` は `dateFormat YYYY-MM-DD` と印字します。
 テキストの中の空白は書かれたままにし、
 空白とタブだけのテキストも書かれたままにします。
+テキストの先頭と末尾にある、改行しない空白や U+3000 など、
+空白とタブ以外の空白文字も書かれたままです。
+12.3.0 の Db がそれを持つからです。
+title、軸の書式、`accDescription`、
+別名を持つ state の 2 つ目の説明の両端にあると、
+対象にするどの版も別のテキストか形状を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+ただし、Gantt、user journey、timeline、sequence、C4 の title と、
+Gantt の軸の書式と、
+C4 の `accDescription` の先頭か末尾にあるフォームフィードは、
+あってもなくても同じに描かれ、それでも書かれたままです。
+gantt の日付の書式の末尾と、timeline の行の最後の event の末尾にあると、
+12.3.0 の Db だけが違い、描画は対象にするどの版でも同じです。
+そこでも書かれたままです。
+pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、
+treeView、info、railroad、quadrant の図の title は、末尾の空白文字を除き、
+先頭の空白文字も、quadrant 図を除いて除きます。
+quadrant 図は、後ろにテキストが続く先頭の U+2028 と U+2029 を残し、
+先頭のそのほかの空白文字は除きます。
+U+2028 か U+2029 を含む間を書かれたままにするからです（下の最初の表の
+`\u2028T`、`\u2029T`、`\u2028%%{x}%% T`。
+[行区切り文字](./quadrant.ja.md#行区切り文字)を参照）。
+ディレクティブだけのタイトルは、
+quadrant 図でも先頭のそれらを除きます（`\u2028%%{x}%%`。
+区切りがディレクティブに接し、後ろに何もなく、タイトルのすぐ後に文が続くか、
+そこでテキストが終わるとき）。
+ここでいう空白文字は、U+0009〜U+000D、U+0020、U+00A0、U+1680、U+2000〜U+200A、
+U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF で、
+`String.prototype.trim`
+が除く文字です（[表記](../../spec/docs/common.ja.md#表記)を参照）。
+それがあってもなくても 12.3.0 の Db が同じで、
+描画も対象にするどの版でも同じだからです。
+この理由は、ディレクティブもコメントもないタイトルに当てはまります。
+それらがあるタイトルでは、空白でもタブでもない空白文字を、
+下の表のとおりに印字します。
+下の表がタイトルが除くとする末尾やディレクティブの前の U+2028 か U+2029 は、
+タイトルのすぐ後に文が続くか、
+そこでテキストが終わるときに除きます（下の最初の表の前に挙げた 9
+つの行を参照）。
 timeline の行の最後の event と、別名を持つ state の 2 つ目の説明も、
-同じように末尾の空白を除きますが、先頭の空白は除きません。
+同じように末尾の空白とタブを除きますが、先頭の空白は除きません。
 その空白は timeline のコロンをそろえます。
 `2020 : e   ` は `2020 : e` と印字し、
 `state "d" as A : x   ` は `state "d" as A : x` と印字します。
@@ -1452,14 +1506,31 @@ timeline の period と、後ろに別のコロンが続く event は、末尾�
 `2004: a: b` は `2004 : a : b` と印字します。
 period が `title` か `section` の語のときは足しません。
 空白を足すと、その行が title や section になるためです。
-user journey のタスクの説明は、最初のコロンの前の空白を除きます。
+user journey のタスクの説明は、最初のコロンの前の空白とタブを除きます。
 `Make tea : 5: Me` は `Make tea: 5: Me` と印字します。
 説明をそろえてコロンの桁をそろえた節は、書かれたままにします。
-同じ行のテキストの後にコメントがある場合は、空白 1 つでテキストと隔てます。
-ディレクティブがある場合は、それぞれの前に空白があるかないかを保ち、
-空白の連続は空白 1 つにします。
-最後のディレクティブの後の空白は、ほかの行末の空白と同じように除くので、
-その空白の有無で印字は変わりません。
+空白でもタブでもない文字がその中にあるときも、書かれたままにします（`Make tea`、
+改行しない空白、`: 5: Me`）。
+タイトルのテキストと、同じ行のその後のコメントの間に空白かタブがあれば、
+空白 1 つにし、コメントがテキストに接していれば接したままにします。
+空白でもタブでもなく、U+2028 でも U+2029 でもない空白文字（改行しない空白、
+U+3000、U+2003 など）は、
+pie 図を除く Langium の型では空白 1 つにして印字し（radar 図で `T\u3000%% c` は
+`T %% c`）、quadrant、Gantt、user journey、timeline、sequence、Venn、
+C4 の図では書かれたままにします。
+空白 1 つの形は、この 7 つの型のどれでも、
+対象にするどの版でも別のテキストか別の形状を描きます。
+ただしフォームフィードは、quadrant、Gantt、user journey、timeline、sequence、
+C4 の図では同じに描きます。
+テキストの後にディレクティブだけが続く場合は、
+それぞれの前に空白かタブがあるかないかを保ち、
+空白とタブの連続は空白 1 つにします。
+最後のディレクティブの後の空白とタブは、
+ほかの行末の空白とタブと同じように除くので、その有無で印字は変わりません。
+ただし、行のディレクティブのどれかに改行、`;`、U+2028、
+U+2029 があるときを除きます（詳しくは
+[改行かセミコロンを含むディレクティブ](#改行かセミコロンを含むディレクティブ)
+を参照）。
 ほかの図種の行末のディレクティブも同じです。
 （[ディレクティブ](./flowchart.md#directives)を参照してください）。
 `title T  %%{x}%%  %%{y}%%` も `title T  %%{x}%%  %%{y}%%  ` も
@@ -1467,12 +1538,15 @@ user journey のタスクの説明は、最初のコロンの前の空白を除�
 `title T%%{x}%%%%{y}%%  ` は `title T%%{x}%%%%{y}%%` と印字し、
 `state "d" as A : x  %%{x}%%  ` は `state "d" as A : x %%{x}%%` と印字します。
 mermaid.js はテキストを読む前にディレクティブを除くので、
-その周りの空白はテキストの末尾の空白になり、どのような空白でも同じに描きます。
-これは、Gantt、user journey、timeline、sequence、Venn、C4、pie、radar、packet、
-architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、
-railroad の図のタイトル、
-それらの図種と usecase 図の `accTitle:` と `accDescr:` の行、ishikawa 図、
-mindmap、treeView のノードのテキスト、
+その周りの空白とタブはテキストの末尾の空白とタブになり、
+どのような空白とタブでも同じに描きます。
+これは、Gantt、user journey、timeline、sequence、Venn、C4、quadrant、pie、
+radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、
+info、railroad の図のタイトル、
+それらの図種（この行がない Venn 図を除く）と usecase 図の `accTitle:` と
+`accDescr:` の行、mindmap、treeView のノードのテキスト、
+ishikawa 図のノードのテキスト（連なりが書かれたままになる場合は除く。
+[Inline directives](./ishikawa.ja.md#inline-directives)を参照）、
 kanban ボードのカードのテキスト（図が依存する列の id は除く）、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event と、period およびコロンの前の event が足す空白、
@@ -1484,7 +1558,553 @@ user journey
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
 
+改行しない空白、U+3000、U+2003、U+2028、U+2029 は空白でもタブでもなく、
+ディレクティブやコメントを含むタイトルは、
+図の種類によって同じには印字されません。
+表は、各行の書かれたタイトルごとに、
+図の種類の群が `title ` の後に印字する形を示します（`\u00a0` は改行しない空白、
+`\u3000` は U+3000、`\u2003` は U+2003、`\u2028` は U+2028、`\u2029` は U+2029、
+`\u000b` は垂直タブ、`\u000c` はフォームフィード、`\ufeff` は U+FEFF、
+`\t` はタブ、「書かれたまま」は書かれたタイトルをそのまま印字することです）。
+Langium の型は、pie、radar、packet、architecture、gitGraph、cynefin、treemap、
+Wardley、treeView、info、railroad です。
+群のどの型も、その列の形を印字します。
+「pie 図を除く」と付けた行では、pie 図は表の対象外で、
+2 つ目の表の同じ印の付いた行では、
+pie 図と gitGraph の `accDescr:` が対象外です。
+それらが残す形は、pie の規則に書きます。
+`T\u2028`、`T  \u2028`、`T\u2029`、`T\u2028  `、`\u2028%%{x}%%`、
+`\u2029%%{x}%%`、`T\u2028%%{x}%%`、`T %%{x}%%\u2028  `、
+`T %%{x}%%\u2029  ` の 9 つの行は、タイトルのすぐ後に文が続くか、
+そこでテキストが終わるタイトルについてのものです。
+タイトルの後にほかの行（空行、空白だけの行、コメント行、
+ディレクティブの行）があるときは、これらの行の形を示しません。
+リリース済みの版が印字する形は、決めるまで変えません。
+（[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)）。
+
+| 書かれた形（`title ` の後）    | Langium の型                    | quadrant               | Gantt、journey、timeline、sequence | Venn、C4              |
+| ------------------------------ | ------------------------------- | ---------------------- | ---------------------------------- | --------------------- |
+| `T  %%{x}%%  `                 | `T %%{x}%%`                     | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`           |
+| `T  %%{x}%%  %% c  `           | `T %%{x}%% %% c  `              | `T  %%{x}%%  %% c`     | `T  %%{x}%%  %% c`                 | 書かれたまま          |
+| `T %%{x}%%\u00a0`              | 書かれたまま                    | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま          |
+| `T %%{x}%%\u3000`              | 書かれたまま                    | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま          |
+| `T %%{x}%%\u2003`              | 書かれたまま                    | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%\u00a0T %%{y}%%`       | `%%{x}%%T %%{y}%%`              | `%%{x}%%T %%{y}%%`     | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%\u00a0T %%{y}%%\u00a0` | 書かれたまま                    | `%%{x}%%T %%{y}%%`     | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%\u00a0T %%{y}%% U`     | 書かれたまま                    | `%%{x}%%T %%{y}%% U`   | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%  T  `                 | `%%{x}%%T`                      | `%%{x}%%T`             | `%%{x}%%T`                         | 書かれたまま          |
+| `T %%{x}%% U  `                | 書かれたまま                    | `T %%{x}%% U`          | `T %%{x}%% U`                      | 書かれたまま          |
+| `T %%{x}%%\u00a0U  `           | 書かれたまま                    | `T %%{x}%%\u00a0U`     | `T %%{x}%%\u00a0U`                 | 書かれたまま          |
+| `T %%{x}%%  U  %%{y}%%  `      | 書かれたまま                    | `T %%{x}%%  U %%{y}%%` | `T %%{x}%%  U %%{y}%%`             | 書かれたまま          |
+| `T\u00a0%%{x}%%`               | `T %%{x}%%`                     | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま          |
+| `T\u3000%%{x}%%`               | `T %%{x}%%`                     | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま          |
+| `T\u2003%%{x}%%`               | `T %%{x}%%`                     | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま          |
+| `T\t%%{x}%%\t`                 | `T %%{x}%%`                     | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`           |
+| `T\u00a0%% c`                  | `T %% c`（pie 図を除く）        | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `T  %% c  `                    | `T %% c  `                      | `T %% c`               | `T %% c`                           | `T %% c`              |
+| `T %%{x}%% %% c  `             | 書かれたまま                    | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | 書かれたまま          |
+| `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`（pie 図を除く） | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%  `                    | 書かれたまま                    | `%%{x}%%`              | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%\t`                    | 書かれたまま                    | `%%{x}%%`              | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%  %%{y}%%  `           | 書かれたまま                    | `%%{x}%% %%{y}%%`      | 書かれたまま                       | 書かれたまま          |
+| `T  %%{x}%%  %%{y}%%  `        | `T %%{x}%% %%{y}%%`             | `T %%{x}%% %%{y}%%`    | `T %%{x}%% %%{y}%%`                | `T %%{x}%% %%{y}%%`   |
+| `T  %%{x}%%  %%{y}%%`          | `T %%{x}%% %%{y}%%`             | `T %%{x}%% %%{y}%%`    | `T %%{x}%% %%{y}%%`                | `T %%{x}%% %%{y}%%`   |
+| `T%%{x}%%%%{y}%%  `            | `T%%{x}%%%%{y}%%`               | `T%%{x}%%%%{y}%%`      | `T%%{x}%%%%{y}%%`                  | `T%%{x}%%%%{y}%%`     |
+| `T %%{x}%%\u2028  `            | 書かれたまま                    | `T %%{x}%%`            | `T %%{x}%%\u2028`                  | 書かれたまま          |
+| `T %%{x}%%\u2029  `            | 書かれたまま                    | `T %%{x}%%`            | `T %%{x}%%\u2029`                  | 書かれたまま          |
+| `T\u2028%%{x}%%`               | `T %%{x}%%`                     | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま          |
+| `T%% c`                        | 書かれたまま                    | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%  %% c  `              | 書かれたまま                    | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | 書かれたまま          |
+| `%%{x}%%  %%{y}%%  %% c  `     | 書かれたまま                    | `%%{x}%%%%{y}%%%% c`   | `%%{x}%%%%{y}%%%% c`               | 書かれたまま          |
+| `T %% c %%{x}%%`               | 書かれたまま                    | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `T %%{x}%%\u00a0%% c`          | 書かれたまま                    | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `T  %%{x}%%  %%{y}%%  %% c`    | `T %%{x}%% %%{y}%% %% c`        | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `T\t%% c`                      | `T %% c`                        | `T %% c`               | `T %% c`                           | `T %% c`              |
+| ` %%{x}%% T`                   | 書かれたまま                    | `%%{x}%%T`             | `%%{x}%%T`                         | 書かれたまま          |
+| `\u00a0%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | 書かれたまま                       | 書かれたまま          |
+| `\u00a0%%{x}%%  `              | 書かれたまま                    | `%%{x}%%`              | `\u00a0%%{x}%%`                    | `\u00a0%%{x}%%`       |
+| `\u3000%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | 書かれたまま                       | 書かれたまま          |
+| `\u2003%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | 書かれたまま                       | 書かれたまま          |
+| `  %% c  `                     | `%% c  `                        | `%% c`                 | `%% c`                             | `%% c`                |
+| `\u00a0%% c`                   | `%% c`                          | `%% c`                 | 書かれたまま                       | 書かれたまま          |
+| ` %%{x}%%%% c`                 | `%%{x}%%%% c`                   | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | 書かれたまま          |
+| 空白 1 つと `%%{x}%%  %% c  `  | 書かれたまま                    | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | 書かれたまま          |
+| `%%{x}%%  %% c `               | 書かれたまま                    | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | 書かれたまま          |
+| `T  %% c  %%{x}%%`             | `T %% c  %%{x}%%`               | `T %% c %%{x}%%`       | `T %% c %%{x}%%`                   | `T %% c %%{x}%%`      |
+| `T\u3000%% c`                  | `T %% c`（pie 図を除く）        | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `T\u2003%% c`                  | `T %% c`（pie 図を除く）        | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `T\u000b%% c`                  | `T %% c`（pie 図を除く）        | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `T\u000c%% c`                  | `T %% c`（pie 図を除く）        | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `T\ufeff%% c`                  | `T %% c`（pie 図を除く）        | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `T\u2028`                      | `T`                             | `T`                    | 書かれたまま                       | 書かれたまま          |
+| `T  \u2028`                    | `T`                             | `T`                    | 書かれたまま                       | 書かれたまま          |
+| `T\u2029`                      | `T`                             | `T`                    | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%\u00a0%% c`            | 書かれたまま                    | `%%{x}%%%% c`          | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%\u3000%% c`            | 書かれたまま                    | `%%{x}%%%% c`          | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%\u2003%% c`            | 書かれたまま                    | `%%{x}%%%% c`          | 書かれたまま                       | 書かれたまま          |
+| `%%{x}%%\t%% c`                | 書かれたまま                    | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | 書かれたまま          |
+| `\u2028T`                      | `T`                             | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `\u2029T`                      | `T`                             | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `T\u2028  `                    | `T`                             | `T`                    | `T\u2028`                          | `T\u2028`             |
+| `\u2028%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | 書かれたまま                       | 書かれたまま          |
+| `\u2029%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | 書かれたまま                       | 書かれたまま          |
+| `\u000b%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | 書かれたまま                       | 書かれたまま          |
+| `\u000c%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | 書かれたまま                       | 書かれたまま          |
+| `\ufeff%%{x}%%`                | `%%{x}%%`                       | `%%{x}%%`              | 書かれたまま                       | 書かれたまま          |
+| `\u2028%%{x}%% T`              | 書かれたまま                    | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `\u2029%%{x}%% T`              | 書かれたまま                    | 書かれたまま           | 書かれたまま                       | 書かれたまま          |
+| `\u000cT`                      | `T`                             | `T`                    | 書かれたまま                       | 書かれたまま          |
+| `T\u000c`                      | `T`                             | `T`                    | 書かれたまま                       | 書かれたまま          |
+| `\u00a0%%{x}%%%% c`            | `%%{x}%%%% c`                   | `%%{x}%%%% c`          | 書かれたまま                       | 書かれたまま          |
+| `\u00a0%%{x}%%  %% c  `        | 書かれたまま                    | `%%{x}%%%% c`          | `\u00a0%%{x}%%  %% c`              | 書かれたまま          |
+| `%%{x}%%  %% c `               | 書かれたまま                    | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | 書かれたまま          |
+| `\t%%{x}%%%% c`                | `%%{x}%%%% c`                   | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | 書かれたまま          |
+| `T  %%{init: {a;b}}%%  `       | 書かれたまま                    | `T %%{init: {a;b}}%%`  | `T %%{init: {a;b}}%%`              | `T %%{init: {a;b}}%%` |
+
+ディレクティブだけのタイトル（`%%{x}%%  `、ディレクティブとタブ、
+ディレクティブ 2 つと空白）は、quadrant 以外のどの型でも書かれたままです。
+quadrant は、最後のディレクティブの後の空白とタブを除きます。
+Gantt、user journey、sequence、Venn、C4 では、対象にするどの版も、
+ディレクティブの後の空白を除いたタイトルを拒否し、
+timeline では別の図を描きます。
+そのタイトルの最初のディレクティブの前の、空白でもタブでもなく、
+U+2028 でも U+2029 でもない空白文字（`\u00a0%%{x}%%`）は、
+ディレクティブの後に何も続かないとき、Langium の型と quadrant では除き、
+ほかの型では残します。
+ディレクティブに接し、後ろに何もない U+2028 か U+2029（`\u2028%%{x}%%`）も、
+タイトルのすぐ後に文が続くか、そこでテキストが終わるとき、
+Langium の型と quadrant では同じに除き、ほかの型では残します。
+ディレクティブの前に U+2028 か U+2029 があり、
+後ろに何もないほかの形は示しません。
+そのディレクティブの後にテキストが続くときは、
+quadrant 以外のどの型も書かれたままにし、quadrant は、
+U+2028 と U+2029 を残して、
+そのほかの文字とディレクティブの後の空白を除きます（`\u00a0%%{x}%% T` は
+`%%{x}%%T` と印字し、`\u2028%%{x}%% T` は変えません）。
+ディレクティブの後にも空白があるとき（`\u00a0%%{x}%%  `）は、
+quadrant は文字も空白も除き、Gantt、user journey、timeline、sequence、Venn、
+C4 は空白を除いて文字を残し、Langium の型は両方を残します。
+
+コメントだけのタイトル（`  %% c  `）は、
+Langium の型ではコメントの後の空白を残して `%% c  ` と印字し、
+ほかの型では `%% c` と印字します。
+コメントの前の改行しない空白は、Langium の型と quadrant では除き、
+ほかの型では残します。
+
+ディレクティブとコメントだけのタイトル（`%%{x}%%  %% c  `、
+ディレクティブが 2 つでも同じ）は、quadrant、Gantt、user journey、timeline、
+sequence では `%%{x}%%%% c` と印字し、ほかの型では書かれたままです。
+この 2 つの形は、対象にするどの版でも同じに描かれます。
+コメントがディレクティブに接しているとき、
+そのタイトルのディレクティブの前の空白とタブ（` %%{x}%%%% c`）は、
+Venn と C4 以外のどの型でも除きます。
+ディレクティブとコメントの間に空白があるとき（`%%{x}%%  %% c `）は、
+Langium の型、Venn、C4 は書かれたままにし、
+ほかの型は `%%{x}%%%% c` と印字します。
+そのようなタイトルのディレクティブの前の U+2028 か U+2029 は（`title`、空白、
+U+2028、空白、`%%{x}%%%% c`）、コメントがディレクティブに接していても、
+間に空白があっても、タイトルを書かれたまま残すか、
+ディレクティブとコメントを別の行に移すかが、
+タイトルの後に何が続くかで決まります。
+次の表は、第 1 列に挙げたタイトルの後の行について、
+Langium の型（treeView を除く）、treeView、quadrant、そのほかの型（Gantt、
+user journey、timeline、sequence、Venn、C4）の列で示します。
+「移す」は、
+`title` の後の U+2028 を改行と読んだテキストの印字です（`title` と U+2028 と
+`%%{x}%%%% c` は、`title` と、次の行の `%%{x}%%%% c` と印字し、
+treeView ではディレクティブを 1 桁目に置き、
+ディレクティブの行をそこに置くのと同じです）。
+そこに空白があったときは、ディレクティブとコメントの間を空白 1 つにし、
+その後の行は通常どおりに印字します。
+文のない行は、その後でテキストが終わるものです。
+表は、タイトルの行 1 つと、
+その後の行のうち第 1 列に書いたものについてのものです。
+タイトルの行は、`title`、空白、U+2028 か U+2029 が 1 つ、空白か何もなし、
+改行も `;` も U+2028 も U+2029 も含まないディレクティブ、
+`;` を含まないコメントで、`%%{x}%%%% c` か `%%{x}%%  %% c  ` の形に書かれ、
+ほかには何もないものです。
+それ以外のタイトルの行は表の外にあります。
+U+2028 か U+2029 の前にディレクティブやテキストがある行、区切りが 2 つの行、
+改行か `;` か U+2028 か U+2029 を含むディレクティブの行、
+`;` を含むコメントの行、ディレクティブが 2 つの行、
+コメントのないディレクティブの行、ディレクティブのないコメントの行、
+区切りやコメントの周りに、ほかの空白がある行がそうです。
+表の第 1 列に書いていないタイトルの後の行と、タイトルの後のほかの行の並びも、
+表の外にあります。
+この表は、それらの形を示しません。
+コメントのないディレクティブのタイトルは、この表の外です。
+上の最初の表は、その行 `\u2028%%{x}%%` と `\u2029%%{x}%%` だけを、
+文がすぐ後に続くか、そこでテキストが終わるときに示します。
+U+2028 か U+2029 を含むほかの形は示しません。
+ほかの形について、リリース済みの版が印字する形は、決めるまで変えません。
+（[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)）。
+info は、空行、空白だけの行、
+ディレクティブの行の後の文を拒否する（mermaid.js も拒否する）ので、
+そこに文を置く行は、ほかの Langium の型について示します。
+treemap は、ディレクティブとコメントの間に空白があるとき、第 2 行、第 5 行、
+第 9 行で、1 回目と 2 回目でコメントの印字が違うので、印字した形がありません。
+
+| タイトルの後                                                                   | Langium の型（treeView を除く） | treeView     | quadrant     | そのほかの型 |
+| ------------------------------------------------------------------------------ | ------------------------------- | ------------ | ------------ | ------------ |
+| 何もなし、または空行                                                           | 移す                            | 移す         | 移す         | 書かれたまま |
+| 空行、次に文                                                                   | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| コメント行 `%% z`                                                              | 移す                            | 移す         | 移す         | 書かれたまま |
+| コメント行 `%% z` が 1 つか 2 つ（`%% z`、`%% w`）、次に文                     | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| コメント行 `%% z`、空行、次に文                                                | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| 空白 3 つだけの行                                                              | 書かれたまま                    | 書かれたまま | 移す         | 書かれたまま |
+| 空白 3 つだけの行、次に文                                                      | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| ディレクティブの行 `%%{y}%%`                                                   | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| ディレクティブの行 `%%{y}%%`、次に文                                           | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| 空白の後のディレクティブの行（` %%{y}%%`、単独か、次に文）                     | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| ディレクティブとコメントの行（`%%{y}%% %% d`、`%%{y}%%%% d`、` %%{y}%% %% d`） | 移す                            | 移す         | 移す         | 書かれたまま |
+| ディレクティブとコメントの行、次に文                                           | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| 文                                                                             | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+
+タイトルが書かれたまま残るとき、その次の行も書かれたまま残ります。
+文、文の前のコメント行 `%% z`、空白だけの行、ディレクティブの行、
+ディレクティブとコメントの行は、書かれた桁のままです。
+空白だけの行、ディレクティブの行、
+空行の後の文は通常どおりに印字します（文の 2
+行目からは通常どおりに字下げします）。
+テキストの終わりでは、Gantt、user journey、timeline、sequence、Venn は、
+空行を落とし、
+文のあるコメント行（`%% z`）とディレクティブとコメントの行は桁を合わせ、
+C4 は書かれたまま残します。
+
+ディレクティブとコメントの間に空白があるときは、何もなし、空行、
+コメント行が続いてテキストが終わるとき（第 1 行、第 3 行、第 11 行）、Gantt、
+user journey、timeline、sequence、Venn はその間を空白 1 つにし、
+C4 は空白を残します。
+ほかは表のとおりです。
+空白でもタブでもなく、U+2028 でも U+2029 でもない空白文字は、
+Langium の型と quadrant では除き、ほかの型では残します（`\u00a0%%{x}%%%% c`）。
+コメントの前後に空白があるとき（`\u00a0%%{x}%%  %% c  `）は、Langium の型、
+Venn、C4 は書かれたままにし、quadrant は `%%{x}%%%% c` と印字し、Gantt、
+user journey、timeline、sequence は、文字とコメントの前の空白を残して、
+コメントの後の空白を除きます。
+ディレクティブとコメントの間のタブは、quadrant、Gantt、user journey、timeline、
+sequence では除き、ほかの型では残し、描画は同じです。
+その間の改行しない空白、U+3000、U+2003 は、quadrant では除き、
+ほかの型では残します。
+Langium の型はそれがあってもなくても同じに描き、Gantt、user journey、timeline、
+sequence、Venn、C4 の図は、それがないと別のテキストを描きます。
+
+テキストの後のディレクティブ 2 つとコメント（`T  %%{x}%%  %%{y}%%  %% c`）は、
+Langium の型ではそれぞれの前に空白 1 つを置いて印字し、
+ほかの型では書かれたままです。
+描画は同じです。
+テキストの後のコメントとその後ろのディレクティブ（`T %% c %%{x}%%`）と、
+ディレクティブとコメントの間の改行しない空白（`T %%{x}%%\u00a0%% c`）は、
+どの型でも書かれたままです。
+テキストに接するコメント（`T%% c`）も同じです。
+
+ディレクティブのないタイトルの末尾の U+2028 か U+2029 は、その前の空白と一緒に、
+Langium の型と quadrant では除き、ほかの型では残します。
+これは、タイトルのすぐ後に文が続くか、そこでテキストが終わるときです。
+
+テキストのある `accTitle:` と `accDescr:` の行は、次の表のとおりに印字します。
+Langium の型は最初の表と同じ形ですが、値の先頭のディレクティブは、
+その後ろの文字と一緒に残ります。
+ほかの型は表の最後の列のとおりです（Venn 図にはこの行がありません）。
+その表の 7 つの行（`T %%{x}%%\u2028  `、`T %%{x}%%\u2029  `、`T\u2028%%{x}%%`、
+`T\u2028`、`T  \u2028`、`T\u2029`、`T\u2028  `）は、その行のすぐ後に文が続くか、
+そこでテキストが終わるときについてのもので、最初の表の同じ行と同じです。
+ディレクティブだけの行は表にありません。
+Langium の型は書かれたまま印字します。
+mermaid.js は、Gantt、user journey、timeline では拒否し、quadrant、sequence、
+C4 では次の行を値として読みます。
+C4 の 12.3.0 の Db は、
+ディレクティブだけの `accTitle:` の行では `accTitle` が空で、
+次の行が図の title になり（C4 では `accTitle:` が図の title を設定します）、
+`accDescr:` の行では次の行が `accDescr` になります。
+整形は、次の行を書かれたまま、1 段深く置いて印字します。
+ディレクティブとコメントだけで、テキストのない行は、表の最後の行にあります。
+最後の列の型は `%%{x}%%%% c` と印字し、Langium の型は書かれたままにします。
+書かれた形も印字した形も、対象にするどの版でも同じに描かれます。
+quadrant、Gantt、user journey、timeline、sequence、C4 の図では、
+これらの行の値の先頭か末尾に、改行しない空白、U+3000、U+2003、U+2028、
+U+2029 があってもなくても、
+ディレクティブを除いた後の 12.3.0 の Db も描画も同じです。
+Gantt、user journey、timeline、sequence、C4 の `title` の末尾では、
+同じ文字の有無で Db も描画も変わります（フォームフィードは変わりません）。
+そのため、同じ図種の title が残す場合も、最後の列は末尾のそれらを除きます。
+先頭では、quadrant、Gantt、user journey、timeline、sequence、C4 の図は、
+U+2028 と U+2029 を除くそのような文字を除き、
+U+2028 と U+2029 は残します（表の `\u2028T` と `\u2029T`）。
+pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクティブ、
+ディレクティブ 2 つ、タブの後にコメントがある行では、
+書かれたまま残ります（`T  %%{x}%%  %% c  `、`T`、改行しない空白、`%% c`、
+`T  %% c  `、`T`、改行しない空白、`%%{x}%%%% c`、`T  %%{x}%%  %%{y}%%  %% c`、
+`T`、タブ、U+3000、U+2003、垂直タブ、フォームフィード、U+FEFF、`%% c`）。
+10.9.8 が `%%` とその後ろを title の一部として読み、
+その列の形では異なるテキストを描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+の pie と gitGraph の行を参照してください。
+[Accessibility lines](./pie.ja.md#accessibility-lines)も参照してください。
+
+| 書かれた形（`accTitle: ` か `accDescr: ` の後） | Langium の型                                               | quadrant、Gantt、journey、timeline、sequence、C4  |
+| ----------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------- |
+| `T  %%{x}%%  `                                  | `T %%{x}%%`                                                | `T %%{x}%%`                                       |
+| `T  %%{x}%%  %% c  `                            | `T %%{x}%% %% c  `                                         | `T  %%{x}%%  %% c`                                |
+| `T %%{x}%%\u00a0`                               | 書かれたまま                                               | `T %%{x}%%`                                       |
+| `T %%{x}%%\u3000`                               | 書かれたまま                                               | `T %%{x}%%`                                       |
+| `T %%{x}%%\u2003`                               | 書かれたまま                                               | `T %%{x}%%`                                       |
+| `%%{x}%%\u00a0T %%{y}%%`                        | 書かれたまま                                               | `%%{x}%%T %%{y}%%`                                |
+| `%%{x}%%\u00a0T %%{y}%%\u00a0`                  | 書かれたまま                                               | `%%{x}%%T %%{y}%%`                                |
+| `%%{x}%%\u00a0T %%{y}%% U`                      | 書かれたまま                                               | `%%{x}%%T %%{y}%% U`                              |
+| `%%{x}%%  T  `                                  | 書かれたまま                                               | `%%{x}%%T`                                        |
+| `T %%{x}%% U  `                                 | 書かれたまま                                               | `T %%{x}%% U`                                     |
+| `T %%{x}%%\u00a0U  `                            | 書かれたまま                                               | `T %%{x}%%\u00a0U`                                |
+| `T %%{x}%%  U  %%{y}%%  `                       | 書かれたまま                                               | `T %%{x}%%  U %%{y}%%`                            |
+| `T\u00a0%%{x}%%`                                | `T %%{x}%%`                                                | `T %%{x}%%`                                       |
+| `T\u3000%%{x}%%`                                | `T %%{x}%%`                                                | `T %%{x}%%`                                       |
+| `T\u2003%%{x}%%`                                | `T %%{x}%%`                                                | `T %%{x}%%`                                       |
+| `T\t%%{x}%%\t`                                  | `T %%{x}%%`                                                | `T %%{x}%%`                                       |
+| `T\u00a0%% c`                                   | `T %% c`（pie 図と gitGraph の `accDescr:` を除く）        | 書かれたまま                                      |
+| `T  %% c  `                                     | `T %% c  `                                                 | `T  %% c`（`accTitle:`）、`T %% c`（`accDescr:`） |
+| `T %%{x}%% %% c  `                              | 書かれたまま                                               | `T %%{x}%% %% c`                                  |
+| `T\u00a0%%{x}%%%% c`                            | `T %%{x}%%%% c`（pie 図と gitGraph の `accDescr:` を除く） | 書かれたまま                                      |
+| `T %%{x}%%\u2028  `                             | 書かれたまま                                               | `T %%{x}%%`                                       |
+| `T %%{x}%%\u2029  `                             | 書かれたまま                                               | `T %%{x}%%`                                       |
+| `T\u2028%%{x}%%`                                | `T %%{x}%%`                                                | `T %%{x}%%`                                       |
+| `T  %%{x}%%  %%{y}%%  `                         | `T %%{x}%% %%{y}%%`                                        | `T %%{x}%% %%{y}%%`                               |
+| `T  %%{x}%%  %%{y}%%`                           | `T %%{x}%% %%{y}%%`                                        | `T %%{x}%% %%{y}%%`                               |
+| `T%%{x}%%%%{y}%%  `                             | `T%%{x}%%%%{y}%%`                                          | `T%%{x}%%%%{y}%%`                                 |
+| `T%% c`                                         | 書かれたまま                                               | 書かれたまま                                      |
+| `T %% c %%{x}%%`                                | 書かれたまま                                               | 書かれたまま                                      |
+| `T %%{x}%%\u00a0%% c`                           | 書かれたまま                                               | 書かれたまま                                      |
+| `T  %%{x}%%  %%{y}%%  %% c`                     | `T %%{x}%% %%{y}%% %% c`                                   | 書かれたまま                                      |
+| `T\t%% c`                                       | `T %% c`                                                   | `T\t%% c`（`accTitle:`）、`T %% c`（`accDescr:`） |
+| `T\u3000%% c`                                   | `T %% c`（pie 図と gitGraph の `accDescr:` を除く）        | 書かれたまま                                      |
+| `T\u2028`                                       | `T`                                                        | `T`                                               |
+| `T  \u2028`                                     | `T`                                                        | `T`                                               |
+| `T\u2029`                                       | `T`                                                        | `T`                                               |
+| `%%{x}%%  %% c  `                               | 書かれたまま                                               | `%%{x}%%%% c`                                     |
+| `%%{x}%%\u00a0%% c`                             | 書かれたまま                                               | `%%{x}%%%% c`                                     |
+| `%%{x}%%\u3000%% c`                             | 書かれたまま                                               | `%%{x}%%%% c`                                     |
+| `%%{x}%%\u2003%% c`                             | 書かれたまま                                               | `%%{x}%%%% c`                                     |
+| `%%{x}%%\t%% c`                                 | 書かれたまま                                               | `%%{x}%%%% c`                                     |
+| `T\u2028  `                                     | `T`                                                        | `T`                                               |
+| `\u2028T`                                       | `T`                                                        | 書かれたまま                                      |
+| `\u2029T`                                       | `T`                                                        | 書かれたまま                                      |
+
+閉じていないディレクティブはタイトルの残りを取ります。
+`title T %%{x` と `title T%%{x` は、どの型でも変えません。
+次の表は、その前の空白が印字される形を、
+タイトルの後に文が続くかどうかで示します。
+
+| 書かれた形    | 文が続くとき                                                                                                                                                                     | テキストの末尾                                                                                                                                                                   |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `T  %%{x`     | 空白 1 つ：pie、gitGraph、cynefin、treemap、treeView、info、Gantt、journey、timeline；書かれたまま：radar、packet、architecture、Wardley、railroad、quadrant、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4               |
+| `T\t%%{x`     | 空白 1 つ：pie、gitGraph、cynefin、treemap、treeView、info、Gantt、journey、timeline；書かれたまま：radar、packet、architecture、Wardley、railroad、quadrant、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4               |
+| `T\u00a0%%{x` | 空白 1 つ：pie、gitGraph、cynefin、treemap、treeView、info；書かれたまま：radar、packet、architecture、Wardley、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant；書かれたまま：Gantt、journey、timeline、sequence、Venn、C4 |
+| `T\u3000%%{x` | 空白 1 つ：pie、gitGraph、cynefin、treemap、treeView、info；書かれたまま：radar、packet、architecture、Wardley、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant；書かれたまま：Gantt、journey、timeline、sequence、Venn、C4 |
+| `T\u2003%%{x` | 空白 1 つ：pie、gitGraph、cynefin、treemap、treeView、info；書かれたまま：radar、packet、architecture、Wardley、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant；書かれたまま：Gantt、journey、timeline、sequence、Venn、C4 |
+| `T  %%{x  y`  | 空白 1 つ：cynefin、info、Gantt、journey、timeline；書かれたまま：pie、radar、packet、architecture、gitGraph、treemap、Wardley、treeView、railroad、quadrant、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4               |
+
+[test: runs and spaces around a directive that ends a title]
+[test: a comment and spaces after a directive that ends a title]
+[test: a no-break space after the last directive of a title]
+[test: U+3000 after the last directive of a title]
+[test: U+2003 after the last directive of a title]
+[test: a no-break space after a directive that starts a title and before another directive]
+[test: a no-break space after a directive that starts a title and after the last directive]
+[test: a no-break space after a directive that starts a title and text after the last directive]
+[test: spaces after a directive that starts a title]
+[test: text after a directive and spaces at the end of a title]
+[test: a no-break space after a directive and spaces at the end of a title]
+[test: text between two directives and spaces at the end of a title]
+[test: a no-break space between the text and a directive that ends a title]
+[test: U+3000 between the text and a directive that ends a title]
+[test: U+2003 between the text and a directive that ends a title]
+[test: a tab before and after the last directive of a title]
+[test: a no-break space before a comment after the text of a title]
+[test: runs and spaces around a comment after the text of a title]
+[test: a comment and spaces after a directive that follows the text of a title]
+[test: a no-break space before a directive and a comment after the text of a title]
+[test: a directive and spaces only as a title]
+[test: a directive and a tab only as a title]
+[test: two directives and spaces only as a title]
+[test: two directives after the text of a title and spaces]
+[test: two directives after the text of a title]
+[test: two directives touching after the text of a title and spaces]
+[test: U+2028 and spaces after the last directive of a title]
+[test: U+2029 and spaces after the last directive of a title]
+[test: U+2028 between the text and a directive that ends a title]
+[test: a comment touching the text of a title]
+[test: a directive and a comment only as a title]
+[test: two directives and a comment only as a title]
+[test: a comment and then a directive after the text of a title]
+[test: a no-break space between a directive and a comment after the text of a title]
+[test: two directives and a comment after the text of a title]
+[test: a tab before a comment after the text of a title]
+[test: a space before a directive that starts a title and text after it]
+[test: a no-break space before the directive of a title of directives only]
+[test: a no-break space before the directive and spaces after it in a title of directives only]
+[test: U+3000 before the directive of a title of directives only]
+[test: U+2003 before the directive of a title of directives only]
+[test: a comment only as a title, with spaces around it]
+[test: a no-break space before a comment only as a title]
+[test: a space before a directive and a comment only as a title]
+[test: runs around a comment and then a directive after the text of a title]
+[test: U+3000 before a comment after the text of a title]
+[test: U+2003 before a comment after the text of a title]
+[test: a vertical tab before a comment after the text of a title]
+[test: a form feed before a comment after the text of a title]
+[test: U+FEFF before a comment after the text of a title]
+[test: U+2028 at the end of a title]
+[test: spaces and U+2028 at the end of a title]
+[test: U+2029 at the end of a title]
+[test: a no-break space between a directive and a comment only as a title]
+[test: U+3000 between a directive and a comment only as a title]
+[test: U+2003 between a directive and a comment only as a title]
+[test: a tab between a directive and a comment only as a title]
+[test: U+2028 at the start of a title] [test: U+2029 at the start of a title]
+[test: U+2028 and then spaces at the end of a title]
+[test: U+2028 before the directive of a title of directives only]
+[test: U+2029 before the directive of a title of directives only]
+[test: a vertical tab before the directive of a title of directives only]
+[test: a form feed before the directive of a title of directives only]
+[test: U+FEFF before the directive of a title of directives only]
+[test: U+2028 before a directive that starts a title and text after it]
+[test: U+2029 before a directive that starts a title and text after it]
+[test: a form feed at the start of a title]
+[test: a form feed at the end of a title]
+[test: a no-break space before the directive of a title of a directive and a comment only]
+[test: a no-break space before the directive of a title of a directive and a comment only, with spaces around the comment]
+[test: a space before a directive and spaces around a comment only as a title]
+[test: a tab before a directive and a comment only as a title]
+[test: a last directive that holds a semicolon, and spaces after it]
+[test: runs and spaces around a directive that ends an accessibility line]
+[test: a comment and spaces after a directive that ends an accessibility line]
+[test: a no-break space after the last directive of an accessibility line]
+[test: U+3000 after the last directive of an accessibility line]
+[test: U+2003 after the last directive of an accessibility line]
+[test: a no-break space after a directive that starts an accessibility line and before another directive]
+[test: a no-break space after a directive that starts an accessibility line and after the last directive]
+[test: a no-break space after a directive that starts an accessibility line and text after the last directive]
+[test: spaces after a directive that starts an accessibility line]
+[test: text after a directive and spaces at the end of an accessibility line]
+[test: a no-break space after a directive and spaces at the end of an accessibility line]
+[test: text between two directives and spaces at the end of an accessibility line]
+[test: a no-break space between the text and a directive that ends an accessibility line]
+[test: U+3000 between the text and a directive that ends an accessibility line]
+[test: U+2003 between the text and a directive that ends an accessibility line]
+[test: a tab before and after the last directive of an accessibility line]
+[test: a no-break space before a comment after the text of an accessibility line]
+[test: runs and spaces around a comment after the text of an accessibility line]
+[test: a comment and spaces after a directive that follows the text of an accessibility line]
+[test: a no-break space before a directive and a comment after the text of an accessibility line]
+[test: U+2028 and spaces after the last directive of an accessibility line]
+[test: U+2029 and spaces after the last directive of an accessibility line]
+[test: U+2028 between the text and a directive that ends an accessibility line]
+[test: two directives after the text of an accessibility line and spaces]
+[test: two directives after the text of an accessibility line]
+[test: two directives touching after the text of an accessibility line and spaces]
+[test: a comment touching the text of an accessibility line]
+[test: a comment and then a directive after the text of an accessibility line]
+[test: a no-break space between a directive and a comment after the text of an accessibility line]
+[test: two directives and a comment after the text of an accessibility line]
+[test: a tab before a comment after the text of an accessibility line]
+[test: U+3000 before a comment after the text of an accessibility line]
+[test: U+2028 at the end of an accessibility line]
+[test: spaces and U+2028 at the end of an accessibility line]
+[test: U+2029 at the end of an accessibility line]
+[test: a directive and a comment only as an accessibility line]
+[test: a no-break space between a directive and a comment only as an accessibility line]
+[test: U+3000 between a directive and a comment only as an accessibility line]
+[test: U+2003 between a directive and a comment only as an accessibility line]
+[test: a tab between a directive and a comment only as an accessibility line]
+[test: U+2028 and then spaces at the end of an accessibility line]
+[test: U+2028 at the start of an accessibility line]
+[test: U+2029 at the start of an accessibility line]
+[test: a no-break space before the first colon of a task of a user journey]
+[test: a tab, a no-break space, and a space before the first colon of a task of a user journey]
+[test: the accTitle line of directives only of a C4 diagram]
+[test: the accDescr line of directives only of a C4 diagram]
+[test: a whitespace character that is no space or tab before the first directive of a title of directives only, in each group]
+[test: a whitespace character that is no space or tab at the start of a title, in each group]
+[test: a whitespace character that is no space or tab at the end of a title, in each group]
+[test: a whitespace character that is no space or tab before a directive that starts a title and text after it, in each group]
+[test: a whitespace character that is no space or tab at the start and at the end of an accessibility line, in each group]
+[test: a whitespace character that is no space or tab at both ends of a title, in the Langium types and a quadrant chart]
+[test: a whitespace character that is no space or tab before a comment after the text of a title, in each group]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: nothing, or an empty line]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: an empty line, then a statement]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a comment line]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: one comment line or two, then a statement]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a comment line, an empty line, then a statement]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of spaces]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of spaces, then a statement]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive, then a statement]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive after a space, alone or then a statement]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive and a comment, with or without a space before it]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive and a comment, then a statement]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a statement]
+[test: a whitespace character that is no space or tab before the directive of a title of a directive and a comment only, in each group]
+[test: a whitespace character that is no space or tab before the directive of a title of a directive and a comment only, with spaces around the comment, in each group]
+[test: an accessibility line of directives only stays as written in each type of the Langium grammar]
+[fixture: pie/accessibility-lines/acc-title-percent-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept]
+[test: U+2003 before a directive that is not closed in a title, at the end of the text]
+[test: U+2003 before a directive that is not closed in a title, before a statement]
+[test: U+3000 before a directive that is not closed in a title, at the end of the text]
+[test: U+3000 before a directive that is not closed in a title, before a statement]
+[test: a directive that is not closed after a space in a title]
+[test: a directive that is not closed touching the text of a title]
+[test: a no-break space before a directive that is not closed in a title, at the end of the text]
+[test: a no-break space before a directive that is not closed in a title, before a statement]
+[test: a tab before a directive that is not closed in a title, at the end of the text]
+[test: a tab before a directive that is not closed in a title, before a statement]
+[test: two spaces before a directive that is not closed and text after it in a title, at the end of the text]
+[test: two spaces before a directive that is not closed and text after it in a title, before a statement]
+[test: two spaces before a directive that is not closed in a title, at the end of the text]
+[test: two spaces before a directive that is not closed in a title, before a statement]
+
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
+[test: a no-break space and U+3000 at both ends of the title of
+a gantt diagram] [test: a no-break space and U+3000 at both ends of the title of
+a user journey diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a timeline diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a sequence diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a Venn diagram] [test: a no-break space and U+3000 at both ends of the title of
+a C4 diagram] [test: a no-break space and U+3000 at both ends of the title of
+a pie chart] [test: a no-break space and U+3000 at both ends of the title of
+a radar chart] [test: a no-break space and U+3000 at both ends of the title of
+a packet diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+an architecture diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a gitGraph] [test: a no-break space and U+3000 at both ends of the title of
+a cynefin diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a treemap] [test: a no-break space and U+3000 at both ends of the title of
+a Wardley map] [test: a no-break space and U+3000 at both ends of the title of
+a treeView] [test: a no-break space and U+3000 at both ends of the title of
+an info diagram] [test: a no-break space and U+3000 at both ends of the title of
+a railroad diagram] [test: a no-break space after the last directive of a title]
+[test: a no-break space between the text and a directive that ends a title]
+[test: U+3000 after the last directive of a title]
+[test: U+3000 between the text and a directive that ends a title]
+[test: U+2003 between the text and a directive that ends a title]
+[test: U+2003 after the last directive of a title]
+[test: a tab before and after the last directive of a title]
+[test: a no-break space before a comment after the text of a title]
+[test: text after a directive and spaces at the end of a title]
+[test: a directive that is not closed after a space in a title]
+[test: a directive that is not closed touching the text of a title]
+[test: a no-break space and U+3000 at both ends of the title of
+a quadrant chart] [test: a no-break space at the end of
+the date format of a gantt diagram] [test: a no-break space at the end of
+the axis format of a gantt diagram] [test: a no-break space at the end of the
+last event of a line of a timeline] [test: a no-break space at the end
+of the accDescription of a C4 diagram] [test: a no-break space at the end of the
+second description of a state with an alias]
 [fixture: usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: treeview/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: gantt/settings/format-runs-kept-before-directives]
@@ -1689,6 +2309,143 @@ timeline の event、state の説明、Gantt 図のタスクの名前は、
 それぞれの種類の両方のテキストを描き直し、SVG と画素を比べてから、
 例外を残します。
 
+### 改行かセミコロンを含むディレクティブ
+
+改行、`;`、U+2028、U+2029 を含むディレクティブは、
+行のディレクティブの前後の空白の印字を変えます。
+最後のディレクティブの後ろの空白とタブは除き、
+その後ろに続くかどうかにかかわらず行は同じに印字しますが（上を参照）、
+行のディレクティブのどれかがこれらを含むときはそうなりません。
+そのときの各テキストの印字は次の表のとおりです。
+`T` はテキストを、`\n` はディレクティブの中の改行を、
+`\u2028` はその中の U+2028 を表します（U+2029 でも印字は同じです）。
+列は書かれた形で、
+最初の 3 つはディレクティブの前に空白 2 つがあって後ろに何もなく、
+次の 4 つはディレクティブの前後に空白 2 つがあり、
+次の 3 つはディレクティブがテキストの前にあり、
+次の 4 つはディレクティブの後にコメントがあり、
+間に空白 2 つがあるものと接するものです。
+最後の 2 つは、ディレクティブがテキストの前にあり、間に空白がないものです。
+「ディレクティブがないときと同じ」は、
+これらを含まないディレクティブ（`%%{x}%%`）の同じ形の印字で、
+上の節のとおりです。
+「後ろの空白を除く」は、書かれた行から末尾の空白とタブを除いたものです。
+「拒否」は mermaid.js が拒否するテキストです。
+ダッシュは、この表に載せていない形です。
+ディレクティブだけのテキストは、`T` とディレクティブの前の空白がない形です。
+
+| テキスト                                                                                                                                                      | `T  %%{init: {\n}}%%`          | `T  %%{init: {a;b}}%%`         | `T  %%{init: {\u2028}}%%`      | `T  %%{init: {\n}}%%  `        | `T  %%{init: {a;b}}%%  `       | `T  %%{init: {a;\nb}}%%  `     | `T  %%{init: {\u2028}}%%  `    | `%%{init: {\n}}%%  T  `        | `%%{init: {a;b}}%%  T  `       | `%%{init: {a;\nb}}%%  T  `     | `T  %%{init: {\n}}%%  %% c  `  | `T  %%{init: {a;b}}%%  %% c  ` | `T  %%{init: {\n}}%%%% c`      | `T  %%{init: {a;b}}%%%% c`     | `%%{init: {a;b}}%%T  `         | `%%{init: {a;\nb}}%%T  `       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ |
+| pie chart、radar chart、packet diagram、architecture diagram、gitGraph、cynefin diagram、treemap、treeView、info diagram の `title`、`accTitle:`、`accDescr:` | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| Wardley map と railroad diagram の `title`                                                                                                                    | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | `%%{init: {a;b}}%% T`          | `%%{init: {a;\nb}}%% T`        | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | 書かれたまま                   | `%%{init: {a;b}}%% T`          | `%%{init: {a;\nb}}%% T`        |
+| Wardley map と railroad diagram の `accTitle:` と `accDescr:`                                                                                                 | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| quadrant chart の `title`                                                                                                                                     | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 後ろの空白を除く               | 後ろの空白を除く               | ディレクティブがないときと同じ | 後ろの空白を除く               | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| quadrant chart、Gantt chart、user journey、timeline、sequence diagram、C4 diagram の `accTitle:` と `accDescr:`、timeline の行の最後のイベント                | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 後ろの空白を除く               | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| Gantt chart、user journey、timeline、sequence diagram の `title`、Gantt chart の日付の書式と軸の書式                                                          | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | 書かれたまま                   | 後ろの空白を除く               | 書かれたまま                   | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   |
+| Venn diagram の `title`                                                                                                                                       | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| C4 diagram の `title` と `accDescription`                                                                                                                     | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| mindmap の形の後ろのノードのテキストで、ディレクティブだけのもの                                                                                              | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 拒否                           | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 拒否                           | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | `%%{init: {a;b}}%% %% c`       | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| use case diagram の `accTitle:` と `accDescr:`                                                                                                                | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | –                              | –                              | –                              | –                              | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| ishikawa diagram と treeView のノードのテキスト                                                                                                               | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | –                              | –                              | –                              | –                              | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| mindmap のノードのテキスト                                                                                                                                    | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 拒否                           | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 拒否                           | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| kanban のカードのテキスト                                                                                                                                     | 書かれたまま                   | 書かれたまま                   | 拒否                           | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 拒否                           | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| state の別名の 2 つ目の説明                                                                                                                                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | 後ろの空白を除く               | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 書かれたまま                   | 書かれたまま                   |
+| kanban のカードと mindmap の素のノードで、ディレクティブだけのもの                                                                                            | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 拒否                           | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 拒否                           | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+| user journey のタスクの説明（最初のコロンの前のテキスト）                                                                                                     | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | –                              | –                              | –                              | –                              | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
+
+改行、`;`、U+2028、U+2029 を含むディレクティブは、
+行のどのディレクティブでもよく、
+その後ろの空白の代わりにタブがあってもかまいません。
+`T  %%{y}%%  D  `、`T  D  %%{y}%%  `、
+`T  D` とタブは 4 番目と 5 番目の列のとおりに、
+`T  %%{y}%%  D` は 1 番目と 2 番目の列のとおりに印字します。
+表のテキストのうち、use case diagram の `accTitle:` と `accDescr:` の行、
+ishikawa diagram と treeView と mindmap の形の後ろのノードのテキスト、
+kanban のカードのテキスト、user journey のタスクの説明、
+ディレクティブだけのテキストは除きます。
+
+[test: the title of a pie chart with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a pie chart with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a pie chart with a directive that holds a line break or a semicolon]
+[test: the title of a radar chart with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a radar chart with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a radar chart with a directive that holds a line break or a semicolon]
+[test: the title of a packet diagram with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a packet diagram with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a packet diagram with a directive that holds a line break or a semicolon]
+[test: the title of an architecture diagram with a directive that holds a line break or a semicolon]
+[test: the accTitle: of an architecture diagram with a directive that holds a line break or a semicolon]
+[test: the accDescr: of an architecture diagram with a directive that holds a line break or a semicolon]
+[test: the title of a gitGraph with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a gitGraph with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a gitGraph with a directive that holds a line break or a semicolon]
+[test: the title of a cynefin diagram with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a cynefin diagram with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a cynefin diagram with a directive that holds a line break or a semicolon]
+[test: the title of a treemap with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a treemap with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a treemap with a directive that holds a line break or a semicolon]
+[test: the title of a treeView with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a treeView with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a treeView with a directive that holds a line break or a semicolon]
+[test: the title of an info diagram with a directive that holds a line break or a semicolon]
+[test: the accTitle: of an info diagram with a directive that holds a line break or a semicolon]
+[test: the accDescr: of an info diagram with a directive that holds a line break or a semicolon]
+[test: the title of a Wardley map with a directive that holds a line break or a semicolon]
+[test: the title of a railroad diagram with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a Wardley map with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a Wardley map with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a railroad diagram with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a railroad diagram with a directive that holds a line break or a semicolon]
+[test: the title of a quadrant chart with a directive that holds a line break or a semicolon]
+[test: the description of a task of a user journey with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a quadrant chart with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a quadrant chart with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a Gantt chart with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a Gantt chart with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a user journey with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a user journey with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a timeline with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a timeline with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a sequence diagram with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a sequence diagram with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a C4 diagram with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a C4 diagram with a directive that holds a line break or a semicolon]
+[test: a last event of a timeline with a directive that holds a line break or a semicolon]
+[test: the title of a Gantt chart with a directive that holds a line break or a semicolon]
+[test: the title of a user journey with a directive that holds a line break or a semicolon]
+[test: the title of a timeline with a directive that holds a line break or a semicolon]
+[test: the title of a sequence diagram with a directive that holds a line break or a semicolon]
+[test: the date format of a Gantt chart with a directive that holds a line break or a semicolon]
+[test: the axis format of a Gantt chart with a directive that holds a line break or a semicolon]
+[test: the title of a Venn diagram with a directive that holds a line break or a semicolon]
+[test: the title of a C4 diagram with a directive that holds a line break or a semicolon]
+[test: the accDescription of a C4 diagram with a directive that holds a line break or a semicolon]
+[test: a node of a mindmap after a shape, the directive alone with a directive that holds a line break or a semicolon]
+[test: the accTitle: of a use case diagram with a directive that holds a line break or a semicolon]
+[test: the accDescr: of a use case diagram with a directive that holds a line break or a semicolon]
+[test: the text of an ishikawa literal with a directive that holds a line break or a semicolon]
+[test: the text of a treeView node with a directive that holds a line break or a semicolon]
+[test: the text of a mindmap node with a directive that holds a line break or a semicolon]
+[test: the text of a kanban card with a directive that holds a line break or a semicolon]
+[test: the second description of a state alias with a directive that holds a line break or a semicolon]
+[test: a card of a kanban board, the directive alone with a directive that holds a line break or a semicolon]
+[test: a bare node of a mindmap, the directive alone with a directive that holds a line break or a semicolon]
+[test: the title of a pie chart with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the title of a Wardley map with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the accTitle: of a Wardley map with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the title of a quadrant chart with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the accTitle: of a quadrant chart with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the title of a Gantt chart with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the title of a Venn diagram with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the title of a C4 diagram with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the accDescription of a C4 diagram with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the text of a mindmap node with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: the second description of a state alias with a directive that holds a line break or a semicolon, wherever the directive stands]
+[test: a title whose last directive holds a line break, with spaces after it, in each type]
+[test: a card of a kanban board and a node of a mindmap whose last directive holds a line break, with spaces after it]
+[test: a title whose last directive holds a semicolon, with spaces after it, in each group]
+
 ## 同じに描かれるテキスト中の空白の連なり
 
 テキスト中の空白とタブの連なりは、
@@ -1748,6 +2505,15 @@ railroad 図の文字列と特殊シーケンスです。
 - 複数行のテキストと、コメント、ディレクティブ、
   U+2028 か U+2029 を含むテキスト。
   mermaid.js は、それらの行や印を置かれた場所によって読むからです。
+  テキストの末尾だけにあるディレクティブはそのような印ではなく、
+  テキストはそれを除いたときと同じに印字します。
+  詳しくは
+  [同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)
+  を参照してください。
+  テキストを終えるコメントも、そのような印ではありません。
+  そのときの印字は、このリストの後の最初の表のとおりです。
+  テキストの先頭のディレクティブも、そのような印ではありません。
+  そのときの印字は、このリストの後の 2 番目の表のとおりです。
 
   [fixture: pie/directives-and-semicolons/global-value]
 
@@ -1858,6 +2624,391 @@ railroad 図の文字列と特殊シーケンスです。
   [fixture: pie/labels/label-quotes]
   [fixture: requirement/names/inner-whitespace-kept]
   [fixture: state/aliases/id-kept]
+
+これらのテキストを終えるコメントがあるとき、テキストの中と、
+コメントの前の連なりは、表のとおりに印字します（`A  b  %% c` は、
+テキスト `A  b` とコメント `%% c` です）。
+
+| テキスト                                                                                          | 図種                                                                                                                                                                                                                                                                                                                                                                                  | 書かれた形                                                              | 印字                                                              |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `title`                                                                                           | pie chart、radar chart、packet diagram、architecture diagram、gitGraph、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、quadrant chart、Gantt chart、user journey、timeline、sequence diagram、Venn diagram、C4 diagram                                                                                                                              | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
+| `accDescr:` の行                                                                                  | flowchart、class diagram、state diagram、ER diagram、Gantt chart、user journey、timeline、sequence diagram、requirement diagram、pie chart、gitGraph、radar chart、packet diagram、architecture diagram、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、quadrant chart、XY chart、C4 diagram、agentflow diagram、ishikawa diagram、use case diagram | `accDescr: A  b  %% c`                                                  | `accDescr: A b %% c`                                              |
+| メッセージ                                                                                        | sequence                                                                                                                                                                                                                                                                                                                                                                              | `A->>B: A  b  %% c`                                                     | `A ->> B: A b %% c`                                               |
+| ノート                                                                                            | sequence                                                                                                                                                                                                                                                                                                                                                                              | `Note over A: A  b  %% c`                                               | `Note over A: A b %% c`                                           |
+| `loop`、`alt`、`else`、`opt`、`par`、`and`、`critical`、`option`、`break`、`rect`、`box` のラベル | sequence                                                                                                                                                                                                                                                                                                                                                                              | `loop A  b  %% c`                                                       | `loop A b %% c`                                                   |
+| `as` の後の名前                                                                                   | sequence                                                                                                                                                                                                                                                                                                                                                                              | `participant A as A  b  %% c`                                           | `participant A as A b %% c`                                       |
+| `text` のフィールド                                                                               | requirement                                                                                                                                                                                                                                                                                                                                                                           | `text: A  b  %% c`                                                      | `text: A b %% c`                                                  |
+| `type:` と `docRef:` のフィールド                                                                 | requirement                                                                                                                                                                                                                                                                                                                                                                           | `type: A  b  %% c`、`docRef: A  b  %% c`                                | `type: A b %% c`、`docRef: A b %% c`                              |
+| リンクのテキスト                                                                                  | Wardley map                                                                                                                                                                                                                                                                                                                                                                           | `A -> B; A  b  %% c`                                                    | `A -> B; A b %% c`                                                |
+| `title`                                                                                           | block diagram                                                                                                                                                                                                                                                                                                                                                                         | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
+| 象限のラベル、軸のラベル                                                                          | quadrant                                                                                                                                                                                                                                                                                                                                                                              | `quadrant-1 A  b  %% c`、`x-axis A  b  %% c`、`x-axis L --> A  b  %% c` | `quadrant-1 A b %% c`、`x-axis A b %% c`、`x-axis L --> A b %% c` |
+| メンバー                                                                                          | class                                                                                                                                                                                                                                                                                                                                                                                 | `+x  y  %% c`                                                           | `+x y %% c`                                                       |
+| subgraph のタイトル                                                                               | flowchart                                                                                                                                                                                                                                                                                                                                                                             | `subgraph A  b  %% c`                                                   | `subgraph A b %% c`                                               |
+| リテラル                                                                                          | ishikawa                                                                                                                                                                                                                                                                                                                                                                              | `A  b  %% c`                                                            | `A b %% c`                                                        |
+| ノード                                                                                            | mindmap、treeView                                                                                                                                                                                                                                                                                                                                                                     | `A  b  %% c`                                                            | 書かれたまま                                                      |
+| カード                                                                                            | kanban                                                                                                                                                                                                                                                                                                                                                                                | `A  b  %% c`                                                            | 書かれたまま                                                      |
+| 関係のラベル                                                                                      | class                                                                                                                                                                                                                                                                                                                                                                                 | `A --> B : A  b  %% c`                                                  | 書かれたまま                                                      |
+
+[test: runs before a comment that ends the text of a pie chart]
+[test: runs before a comment that ends the text of a radar chart]
+[test: runs before a comment that ends the text of a packet diagram]
+[test: runs before a comment that ends the text of an architecture diagram]
+[test: runs before a comment that ends the text of a gitGraph]
+[test: runs before a comment that ends the text of a cynefin diagram]
+[test: runs before a comment that ends the text of a treemap]
+[test: runs before a comment that ends the text of a Wardley map]
+[test: runs before a comment that ends the text of a treeView]
+[test: runs before a comment that ends the text of an info diagram]
+[test: runs before a comment that ends the text of a railroad diagram]
+[test: runs before a comment that ends the text of a quadrant chart]
+[test: runs before a comment that ends the text of a Gantt chart]
+[test: runs before a comment that ends the text of a user journey]
+[test: runs before a comment that ends the text of a timeline]
+[test: runs before a comment that ends the text of a sequence diagram]
+[test: runs before a comment that ends the text of a Venn diagram]
+[test: runs before a comment that ends the text of a C4 diagram]
+[test: runs before a comment that ends the text of an ishikawa literal]
+[test: runs before a comment that ends the text of a mindmap node]
+[test: runs before a comment that ends the text of a kanban card]
+[test: runs before a comment that ends the text of a treeView node]
+[test: runs before a comment that ends the accDescr line of a flowchart]
+[test: runs before a comment that ends the accDescr line of a class diagram]
+[test: runs before a comment that ends the accDescr line of a state diagram]
+[test: runs before a comment that ends the accDescr line of an ER diagram]
+[test: runs before a comment that ends the accDescr line of a Gantt chart]
+[test: runs before a comment that ends the accDescr line of a user journey]
+[test: runs before a comment that ends the accDescr line of a timeline]
+[test: runs before a comment that ends the accDescr line of a sequence diagram]
+[test: runs before a comment that ends the accDescr line of a requirement diagram]
+[test: runs before a comment that ends the accDescr line of a pie chart]
+[test: runs before a comment that ends the accDescr line of a gitGraph]
+[test: runs before a comment that ends the accDescr line of a radar chart]
+[test: runs before a comment that ends the accDescr line of a packet diagram]
+[test: runs before a comment that ends the accDescr line of an architecture diagram]
+[test: runs before a comment that ends the accDescr line of a cynefin diagram]
+[test: runs before a comment that ends the accDescr line of a treemap]
+[test: runs before a comment that ends the accDescr line of a Wardley map]
+[test: runs before a comment that ends the accDescr line of a treeView]
+[test: runs before a comment that ends the accDescr line of an info diagram]
+[test: runs before a comment that ends the accDescr line of a railroad diagram]
+[test: runs before a comment that ends the accDescr line of a quadrant chart]
+[test: runs before a comment that ends the accDescr line of an XY chart]
+[test: runs before a comment that ends the accDescr line of a C4 diagram]
+[test: runs before a comment that ends the accDescr line of an agentflow diagram]
+[test: runs before a comment that ends the accDescr line of an ishikawa diagram]
+[test: runs before a comment that ends the accDescr line of a use case diagram]
+[test: runs before a comment that ends a message of a sequence diagram]
+[test: runs before a comment that ends a note of a sequence diagram]
+[test: runs before a comment that ends the label of a loop of a sequence diagram]
+[test: runs before a comment that ends the label of an alt and an else of a sequence diagram]
+[test: runs before a comment that ends the label of an opt of a sequence diagram]
+[test: runs before a comment that ends the label of a par and an and of a sequence diagram]
+[test: runs before a comment that ends the label of a critical of a sequence diagram]
+[test: runs before a comment that ends the label of an option of a sequence diagram]
+[test: runs before a comment that ends the label of a break of a sequence diagram]
+[test: runs before a comment that ends the label of a rect of a sequence diagram]
+[test: runs before a comment that ends the label of a box of a sequence diagram]
+[test: runs before a comment that ends the name after as of a participant of a sequence diagram]
+[test: runs before a comment that ends the text field of a requirement diagram]
+[test: runs before a comment that ends the type field of a requirement diagram]
+[test: runs before a comment that ends the docRef field of a requirement diagram]
+[test: runs before a comment that ends the link text of a Wardley map]
+[test: runs before a comment that ends the title of a block diagram]
+[test: runs before a comment that ends the label of a quadrant of a quadrant chart]
+[test: runs before a comment that ends the label of an axis of a quadrant chart]
+[test: runs before a comment that ends the right label of an axis of a quadrant chart]
+[test: runs before a comment that ends a member of a class diagram]
+[test: runs before a comment that ends a member line of a class diagram]
+[test: runs before a comment that ends the title of a subgraph of a flowchart]
+[test: runs before a comment that ends the label of a relation of a class diagram]
+
+上の表のテキストの先頭のディレクティブの後ろには、書かれたテキストでは空白、
+何もなし、別のディレクティブのどれかが続き、
+ディレクティブから後ろの印字はテキストによって異なります。
+次の表は、同じに印字するテキストごとの印字を、列ごとに 1 つの形で示します。
+形は、空白 1 つ、空白 2 つ、タブ、ノーブレークスペース、U+2028、何もなし、
+空白をはさんだ 2 つのディレクティブ、接する 2 つのディレクティブ、
+改行を含むディレクティブ、`;` を含むディレクティブで、
+最後の 2 つの後ろには空白 1 つが続きます。
+テキストは `A  b` で、class diagram のメンバーは `+x  y` です。
+`\t`、`\u00a0`、`\u2028`、`\n` は、タブ、ノーブレークスペース、U+2028、
+改行を表します。
+垂直タブ、フォームフィード、そのほかの空白、タブ、
+行区切りでない空白文字（U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、
+U+FEFF）はノーブレークスペースと同じに、U+2029 は U+2028 と同じに印字します。
+quadrant chart の象限、軸、
+軸の右端のラベルの先頭のディレクティブの後ろにあるタブ、垂直タブ、
+フォームフィードは mermaid.js が拒否するので、整形は構文エラーを報告します。
+
+| テキスト                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `%%{x}%% A  b` | `%%{x}%%  A  b` | `%%{x}%%\tA  b` | `%%{x}%%\u00a0A  b` | `%%{x}%%\u2028A  b` | `%%{x}%%A  b` | `%%{x}%% %%{y}%% A  b` | `%%{x}%%%%{y}%%A  b` | `%%{init: {\n}}%% A  b` | `%%{init: {a;b}}%% A  b` |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | --------------- | --------------- | ------------------- | ------------------- | ------------- | ---------------------- | -------------------- | ----------------------- | ------------------------ |
+| pie chart、radar chart、packet diagram、architecture diagram、gitGraph、cynefin diagram、treemap、treeView、info diagram の `title`                                                                                                                                                                                                                                                                                                                                                           | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | 書かれたまま           | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%%A b`   |
+| Wardley map と railroad diagram の `title`                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | 書かれたまま           | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%% A b`  |
+| quadrant chart の `title`                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | 書かれたまま            | `%%{init: {a;b}}%%A b`   |
+| Gantt chart、user journey、timeline の `title`                                                                                                                                                                                                                                                                                                                                                                                                                                                | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%\u00a0A b`  | 書かれたまま        | `%%{x}%%A b`  | –                      | `%%{x}%%%%{y}%%A b`  | 書かれたまま            | `%%{init: {a;b}}%%A b`   |
+| sequence diagram の `title`                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `%%{x}%%A  b`  | `%%{x}%%A  b`   | `%%{x}%%A  b`   | 書かれたまま        | 書かれたまま        | 書かれたまま  | `%%{x}%%%%{y}%%A  b`   | 書かれたまま         | 書かれたまま            | `%%{init: {a;b}}%%A  b`  |
+| Venn diagram と C4 diagram の `title`、pie chart、gitGraph、radar chart、packet diagram、architecture diagram、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、ishikawa diagram、use case diagram の `accDescr:` の行、Wardley map のリンクのテキスト、mindmap のノードのテキスト                                                                                                                                                                            | 書かれたまま   | 書かれたまま    | 書かれたまま    | 書かれたまま        | 書かれたまま        | 書かれたまま  | 書かれたまま           | 書かれたまま         | 書かれたまま            | 書かれたまま             |
+| ishikawa diagram のリテラルのテキスト                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `%%{x}%% A b`  | `%%{x}%%  A b`  | `%%{x}%% A b`   | `%%{x}%% A b`       | `%%{x}%% A b`       | `%%{x}%%A b`  | `%%{x}%% %%{y}%% A b`  | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%% A b`  | `%%{init: {a;b}}%% A b`  |
+| kanban のカードのテキスト                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 書かれたまま   | 書かれたまま    | `%%{x}%% A  b`  | `%%{x}%% A  b`      | `%%{x}%% A  b`      | 書かれたまま  | 書かれたまま           | 書かれたまま         | 書かれたまま            | 書かれたまま             |
+| treeView のノードのテキスト                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 書かれたまま   | 書かれたまま    | `%%{x}%% A  b`  | 書かれたまま        | 書かれたまま        | 書かれたまま  | 書かれたまま           | 書かれたまま         | 書かれたまま            | 書かれたまま             |
+| block diagram の `title`、flowchart、class diagram、ER diagram、Gantt chart、user journey、timeline、sequence diagram、requirement diagram、quadrant chart、XY chart、C4 diagram、agentflow diagram の `accDescr:` の行、sequence diagram のメッセージ、ノート、`loop`、`alt` と `else`、`opt`、`par` と `and`、`critical` と `option`、`break`、`rect`、`box` のラベル、participant の `as` の後の名前、requirement diagram の `text:`、`type:`、`docRef:`、flowchart の subgraph のタイトル | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%%A b`   |
+| state diagram の `accDescr:` の行                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | 書かれたまま        | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%%A b`   |
+| quadrant chart の象限のラベル、軸のラベル、軸の右端のラベル                                                                                                                                                                                                                                                                                                                                                                                                                                   | `%%{x}%%A b`   | `%%{x}%%A b`    | 拒否            | `%%{x}%%\u00a0A b`  | 書かれたまま        | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | 書かれたまま            | `%%{init: {a;b}}%%A b`   |
+| class diagram の本体のメンバー                                                                                                                                                                                                                                                                                                                                                                                                                                                                | `%%{x}%% +x y` | `%%{x}%% +x y`  | `%%{x}%% +x y`  | `%%{x}%% +x y`      | `%%{x}%% +x y`      | `%%{x}%%+x y` | `%%{x}%% %%{y}%% +x y` | `%%{x}%%%%{y}%%+x y` | `%%{init: {\n}}%% +x y` | 書かれたまま             |
+| class diagram のメンバーの行                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `%%{x}%%+x y`  | `%%{x}%%+x y`   | `%%{x}%%+x y`   | `%%{x}%%+x y`       | `%%{x}%%\u2028+x y` | `%%{x}%%+x y` | `%%{x}%%%%{y}%%+x y`   | `%%{x}%%%%{y}%%+x y` | `%%{init: {\n}}%%+x y`  | `%%{init: {a;b}}%%+x  y` |
+| class diagram の関係のラベル                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `%%{x}%%A  b`  | `%%{x}%%A  b`   | `%%{x}%%A  b`   | `%%{x}%%A  b`       | 書かれたまま        | 書かれたまま  | `%%{x}%%%%{y}%%A  b`   | 書かれたまま         | `%%{init: {\n}}%%A  b`  | `%%{init: {a;b}}%%A  b`  |
+
+[test: runs after a directive at the start of the text of a pie chart]
+[test: runs after a directive at the start of the text of a radar chart]
+[test: runs after a directive at the start of the text of a packet diagram]
+[test: runs after a directive at the start of the text of an architecture diagram]
+[test: runs after a directive at the start of the text of a gitGraph]
+[test: runs after a directive at the start of the text of a cynefin diagram]
+[test: runs after a directive at the start of the text of a treemap]
+[test: runs after a directive at the start of the text of a Wardley map]
+[test: runs after a directive at the start of the text of a treeView]
+[test: runs after a directive at the start of the text of an info diagram]
+[test: runs after a directive at the start of the text of a railroad diagram]
+[test: runs after a directive at the start of the text of a quadrant chart]
+[test: runs after a directive at the start of the text of a Gantt chart]
+[test: runs after a directive at the start of the text of a user journey]
+[test: runs after a directive at the start of the text of a timeline]
+[test: runs after a directive at the start of the text of a sequence diagram]
+[test: runs after a directive at the start of the text of a Venn diagram]
+[test: runs after a directive at the start of the text of a C4 diagram]
+[test: runs after a directive at the start of the text of an ishikawa literal]
+[test: runs after a directive at the start of the text of a mindmap node]
+[test: runs after a directive at the start of the text of a kanban card]
+[test: runs after a directive at the start of the text of a treeView node]
+[test: runs after a directive at the start of the accDescr line of a flowchart]
+[test: runs after a directive at the start of the accDescr line of a class diagram]
+[test: runs after a directive at the start of the accDescr line of a state diagram]
+[test: runs after a directive at the start of the accDescr line of an ER diagram]
+[test: runs after a directive at the start of the accDescr line of a Gantt chart]
+[test: runs after a directive at the start of the accDescr line of a user journey]
+[test: runs after a directive at the start of the accDescr line of a timeline]
+[test: runs after a directive at the start of the accDescr line of a sequence diagram]
+[test: runs after a directive at the start of the accDescr line of a requirement diagram]
+[test: runs after a directive at the start of the accDescr line of a pie chart]
+[test: runs after a directive at the start of the accDescr line of a gitGraph]
+[test: runs after a directive at the start of the accDescr line of a radar chart]
+[test: runs after a directive at the start of the accDescr line of a packet diagram]
+[test: runs after a directive at the start of the accDescr line of an architecture diagram]
+[test: runs after a directive at the start of the accDescr line of a cynefin diagram]
+[test: runs after a directive at the start of the accDescr line of a treemap]
+[test: runs after a directive at the start of the accDescr line of a Wardley map]
+[test: runs after a directive at the start of the accDescr line of a treeView]
+[test: runs after a directive at the start of the accDescr line of an info diagram]
+[test: runs after a directive at the start of the accDescr line of a railroad diagram]
+[test: runs after a directive at the start of the accDescr line of a quadrant chart]
+[test: runs after a directive at the start of the accDescr line of an XY chart]
+[test: runs after a directive at the start of the accDescr line of a C4 diagram]
+[test: runs after a directive at the start of the accDescr line of an agentflow diagram]
+[test: runs after a directive at the start of the accDescr line of an ishikawa diagram]
+[test: runs after a directive at the start of the accDescr line of a use case diagram]
+[test: runs after a directive at the start of a message of a sequence diagram]
+[test: runs after a directive at the start of a note of a sequence diagram]
+[test: runs after a directive at the start of the label of a loop of a sequence diagram]
+[test: runs after a directive at the start of the label of an alt and an else of a sequence diagram]
+[test: runs after a directive at the start of the label of an opt of a sequence diagram]
+[test: runs after a directive at the start of the label of a par and an and of a sequence diagram]
+[test: runs after a directive at the start of the label of a critical of a sequence diagram]
+[test: runs after a directive at the start of the label of an option of a sequence diagram]
+[test: runs after a directive at the start of the label of a break of a sequence diagram]
+[test: runs after a directive at the start of the label of a rect of a sequence diagram]
+[test: runs after a directive at the start of the label of a box of a sequence diagram]
+[test: runs after a directive at the start of the name after as of a participant of a sequence diagram]
+[test: runs after a directive at the start of the text field of a requirement diagram]
+[test: runs after a directive at the start of the type field of a requirement diagram]
+[test: runs after a directive at the start of the docRef field of a requirement diagram]
+[test: runs after a directive at the start of the link text of a Wardley map]
+[test: runs after a directive at the start of the title of a block diagram]
+[test: runs after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: runs after a directive at the start of the label of an axis of a quadrant chart]
+[test: runs after a directive at the start of the right label of an axis of a quadrant chart]
+[test: runs after a directive at the start of a member of a class diagram]
+[test: runs after a directive at the start of a member line of a class diagram]
+[test: runs after a directive at the start of the title of a subgraph of a flowchart]
+[test: runs after a directive at the start of the label of a relation of a class diagram]
+[test: two spaces after a directive at the start of the text of a pie chart]
+[test: a tab after a directive at the start of the text of a pie chart]
+[test: a no-break space after a directive at the start of the text of a pie chart]
+[test: a U+2028 after a directive at the start of the text of a pie chart]
+[test: a U+2029 after a directive at the start of the text of a pie chart]
+[test: no whitespace after a directive at the start of the text of a pie chart]
+[test: two directives with a space between them at the start of the text of a pie chart]
+[test: two directives that touch at the start of the text of a pie chart]
+[test: a directive that holds a line break at the start of the text of a pie chart]
+[test: a directive that holds a semicolon at the start of the text of a pie chart]
+[test: two spaces after a directive at the start of the text of a Wardley map]
+[test: a tab after a directive at the start of the text of a Wardley map]
+[test: a no-break space after a directive at the start of the text of a Wardley map]
+[test: a U+2028 after a directive at the start of the text of a Wardley map]
+[test: a U+2029 after a directive at the start of the text of a Wardley map]
+[test: no whitespace after a directive at the start of the text of a Wardley map]
+[test: two directives with a space between them at the start of the text of a Wardley map]
+[test: two directives that touch at the start of the text of a Wardley map]
+[test: a directive that holds a line break at the start of the text of a Wardley map]
+[test: a directive that holds a semicolon at the start of the text of a Wardley map]
+[test: two spaces after a directive at the start of the text of a quadrant chart]
+[test: a tab after a directive at the start of the text of a quadrant chart]
+[test: a no-break space after a directive at the start of the text of a quadrant chart]
+[test: a U+2028 after a directive at the start of the text of a quadrant chart]
+[test: a U+2029 after a directive at the start of the text of a quadrant chart]
+[test: no whitespace after a directive at the start of the text of a quadrant chart]
+[test: two directives with a space between them at the start of the text of a quadrant chart]
+[test: two directives that touch at the start of the text of a quadrant chart]
+[test: a directive that holds a line break at the start of the text of a quadrant chart]
+[test: a directive that holds a semicolon at the start of the text of a quadrant chart]
+[test: two spaces after a directive at the start of the text of a Gantt chart]
+[test: a tab after a directive at the start of the text of a Gantt chart]
+[test: a no-break space after a directive at the start of the text of a Gantt chart]
+[test: a U+2028 after a directive at the start of the text of a Gantt chart]
+[test: a U+2029 after a directive at the start of the text of a Gantt chart]
+[test: no whitespace after a directive at the start of the text of a Gantt chart]
+[test: two directives that touch at the start of the text of a Gantt chart]
+[test: a directive that holds a line break at the start of the text of a Gantt chart]
+[test: a directive that holds a semicolon at the start of the text of a Gantt chart]
+[test: two spaces after a directive at the start of the text of a sequence diagram]
+[test: a tab after a directive at the start of the text of a sequence diagram]
+[test: a no-break space after a directive at the start of the text of a sequence diagram]
+[test: a U+2028 after a directive at the start of the text of a sequence diagram]
+[test: a U+2029 after a directive at the start of the text of a sequence diagram]
+[test: no whitespace after a directive at the start of the text of a sequence diagram]
+[test: two directives with a space between them at the start of the text of a sequence diagram]
+[test: two directives that touch at the start of the text of a sequence diagram]
+[test: a directive that holds a line break at the start of the text of a sequence diagram]
+[test: a directive that holds a semicolon at the start of the text of a sequence diagram]
+[test: two spaces after a directive at the start of the text of a Venn diagram]
+[test: a tab after a directive at the start of the text of a Venn diagram]
+[test: a no-break space after a directive at the start of the text of a Venn diagram]
+[test: a U+2028 after a directive at the start of the text of a Venn diagram]
+[test: a U+2029 after a directive at the start of the text of a Venn diagram]
+[test: no whitespace after a directive at the start of the text of a Venn diagram]
+[test: two directives with a space between them at the start of the text of a Venn diagram]
+[test: two directives that touch at the start of the text of a Venn diagram]
+[test: a directive that holds a line break at the start of the text of a Venn diagram]
+[test: a directive that holds a semicolon at the start of the text of a Venn diagram]
+[test: two spaces after a directive at the start of the text of an ishikawa literal]
+[test: a tab after a directive at the start of the text of an ishikawa literal]
+[test: a no-break space after a directive at the start of the text of an ishikawa literal]
+[test: a U+2028 after a directive at the start of the text of an ishikawa literal]
+[test: a U+2029 after a directive at the start of the text of an ishikawa literal]
+[test: no whitespace after a directive at the start of the text of an ishikawa literal]
+[test: two directives with a space between them at the start of the text of an ishikawa literal]
+[test: two directives that touch at the start of the text of an ishikawa literal]
+[test: a directive that holds a line break at the start of the text of an ishikawa literal]
+[test: a directive that holds a semicolon at the start of the text of an ishikawa literal]
+[test: two spaces after a directive at the start of the text of a kanban card]
+[test: a tab after a directive at the start of the text of a kanban card]
+[test: a no-break space after a directive at the start of the text of a kanban card]
+[test: a U+2028 after a directive at the start of the text of a kanban card]
+[test: a U+2029 after a directive at the start of the text of a kanban card]
+[test: no whitespace after a directive at the start of the text of a kanban card]
+[test: two directives with a space between them at the start of the text of a kanban card]
+[test: two directives that touch at the start of the text of a kanban card]
+[test: a directive that holds a line break at the start of the text of a kanban card]
+[test: a directive that holds a semicolon at the start of the text of a kanban card]
+[test: two spaces after a directive at the start of the text of a treeView node]
+[test: a tab after a directive at the start of the text of a treeView node]
+[test: a no-break space after a directive at the start of the text of a treeView node]
+[test: a U+2028 after a directive at the start of the text of a treeView node]
+[test: a U+2029 after a directive at the start of the text of a treeView node]
+[test: no whitespace after a directive at the start of the text of a treeView node]
+[test: two directives with a space between them at the start of the text of a treeView node]
+[test: two directives that touch at the start of the text of a treeView node]
+[test: a directive that holds a line break at the start of the text of a treeView node]
+[test: a directive that holds a semicolon at the start of the text of a treeView node]
+[test: two spaces after a directive at the start of the accDescr line of a flowchart]
+[test: a tab after a directive at the start of the accDescr line of a flowchart]
+[test: a no-break space after a directive at the start of the accDescr line of a flowchart]
+[test: a U+2028 after a directive at the start of the accDescr line of a flowchart]
+[test: a U+2029 after a directive at the start of the accDescr line of a flowchart]
+[test: no whitespace after a directive at the start of the accDescr line of a flowchart]
+[test: two directives with a space between them at the start of the accDescr line of a flowchart]
+[test: two directives that touch at the start of the accDescr line of a flowchart]
+[test: a directive that holds a line break at the start of the accDescr line of a flowchart]
+[test: a directive that holds a semicolon at the start of the accDescr line of a flowchart]
+[test: two spaces after a directive at the start of the accDescr line of a state diagram]
+[test: a tab after a directive at the start of the accDescr line of a state diagram]
+[test: a no-break space after a directive at the start of the accDescr line of a state diagram]
+[test: a U+2028 after a directive at the start of the accDescr line of a state diagram]
+[test: a U+2029 after a directive at the start of the accDescr line of a state diagram]
+[test: no whitespace after a directive at the start of the accDescr line of a state diagram]
+[test: two directives with a space between them at the start of the accDescr line of a state diagram]
+[test: two directives that touch at the start of the accDescr line of a state diagram]
+[test: a directive that holds a line break at the start of the accDescr line of a state diagram]
+[test: a directive that holds a semicolon at the start of the accDescr line of a state diagram]
+[test: two spaces after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: a no-break space after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: a U+2028 after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: a U+2029 after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: no whitespace after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: two directives with a space between them at the start of the label of a quadrant of a quadrant chart]
+[test: two directives that touch at the start of the label of a quadrant of a quadrant chart]
+[test: a directive that holds a line break at the start of the label of a quadrant of a quadrant chart]
+[test: a directive that holds a semicolon at the start of the label of a quadrant of a quadrant chart]
+[test: two spaces after a directive at the start of a member of a class diagram]
+[test: a tab after a directive at the start of a member of a class diagram]
+[test: a no-break space after a directive at the start of a member of a class diagram]
+[test: a U+2028 after a directive at the start of a member of a class diagram]
+[test: a U+2029 after a directive at the start of a member of a class diagram]
+[test: no whitespace after a directive at the start of a member of a class diagram]
+[test: two directives with a space between them at the start of a member of a class diagram]
+[test: two directives that touch at the start of a member of a class diagram]
+[test: a directive that holds a line break at the start of a member of a class diagram]
+[test: a directive that holds a semicolon at the start of a member of a class diagram]
+[test: two spaces after a directive at the start of a member line of a class diagram]
+[test: a tab after a directive at the start of a member line of a class diagram]
+[test: a no-break space after a directive at the start of a member line of a class diagram]
+[test: a U+2028 after a directive at the start of a member line of a class diagram]
+[test: a U+2029 after a directive at the start of a member line of a class diagram]
+[test: no whitespace after a directive at the start of a member line of a class diagram]
+[test: two directives with a space between them at the start of a member line of a class diagram]
+[test: two directives that touch at the start of a member line of a class diagram]
+[test: a directive that holds a line break at the start of a member line of a class diagram]
+[test: a directive that holds a semicolon at the start of a member line of a class diagram]
+[test: two spaces after a directive at the start of the label of a relation of a class diagram]
+[test: a tab after a directive at the start of the label of a relation of a class diagram]
+[test: a no-break space after a directive at the start of the label of a relation of a class diagram]
+[test: a U+2028 after a directive at the start of the label of a relation of a class diagram]
+[test: a U+2029 after a directive at the start of the label of a relation of a class diagram]
+[test: no whitespace after a directive at the start of the label of a relation of a class diagram]
+[test: two directives with a space between them at the start of the label of a relation of a class diagram]
+[test: two directives that touch at the start of the label of a relation of a class diagram]
+[test: a directive that holds a line break at the start of the label of a relation of a class diagram]
+[test: a directive that holds a semicolon at the start of the label of a relation of a class diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a pie chart]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a Wardley map]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a quadrant chart]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a Gantt chart]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a sequence diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a Venn diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of an ishikawa literal]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a kanban card]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a treeView node]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the accDescr line of a flowchart]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the accDescr line of a state diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of a member of a class diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of a member line of a class diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the label of a relation of a class diagram]
+[test: rejects a tab, a vertical tab, and a form feed after a directive at the start of the label of a quadrant of a quadrant chart, as mermaid.js does]
+[test: rejects a tab, a vertical tab, and a form feed after a directive at the start of the left label of the x axis of a quadrant chart, as mermaid.js does]
+[test: rejects a tab, a vertical tab, and a form feed after a directive at the start of the right label of the x axis of a quadrant chart, as mermaid.js does]
+[test: rejects a tab, a vertical tab, and a form feed after a directive at the start of the left label of the y axis of a quadrant chart, as mermaid.js does]
+[test: rejects a tab, a vertical tab, and a form feed after a directive at the start of the right label of the y axis of a quadrant chart, as mermaid.js does]
+
+Gantt chart、user journey、timeline の `title` は、
+空白をはさんだ 2 つのディレクティブの形がなく、表ではダッシュにしています。
+
+書かれたテキストと、書かれたままではないセルの印字したテキストを、
+各行のテキスト 1 つと上に挙げた各文字について、その図種で数える版で描き、
+SVG は、生成された id とテキストノードの空白を除いて同じでした。
+書かれたテキストを拒否する版は、印字したテキストも拒否します。
+ただし、`loop`、`alt`、`opt`、`par`、`critical`、`option`、
+`break` のラベルにある空白の連なりは、10.9.8 が拒否し、
+印字したテキストは描きます。
 
 mermaid.js は連なりを Db に残します。
 レンダラーは、これらのテキストを SVG の `text` 要素に入れ、
@@ -2967,12 +4118,47 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 次の行に移します。
 `;`、隠れた YAML ブロックの `---`、
 閉じていないディレクティブが接するコロンは残します。
+閉じたディレクティブがキーワードとコロンの間にあるときも残し、
+`cynefin-beta%%{x}%%:` と `radar-beta%%{x}%%:` は変えません。
+radar のヘッダーで、そのディレクティブの前、コロンの前、
+またはその両方に空白かタブがあるときは、それらを除いて印字します。
+`radar-beta %%{x}%%:`、`radar-beta%%{x}%% :`、
+`radar-beta %%{x}%% :` は `radar-beta%%{x}%%:` と印字し、
+空白をタブにした形も同じです。
+`radar-beta %%{x}%% %%{y}%% :` は `radar-beta%%{x}%%%%{y}%%:` と印字します。
+2 つのディレクティブの間の空白かタブも同じです（`radar-beta%%{x}%% %%{y}%%:` は
+`radar-beta%%{x}%%%%{y}%%:` と印字します）。
+コロンのない radar のヘッダーは、空白を残します。
+`radar-beta %%{x}%%` と `radar-beta%%{x}%% %%{y}%%` は変えません。
+radar のヘッダーは、
+ディレクティブがないときコロンの前に空白かタブがあってもよく、
+それはコロンと一緒に除きます（`radar-beta :` は `radar-beta` と印字します）。
+cynefin のヘッダーは、ディレクティブの前、コロンの前、
+またはその両方に空白があると、11.16.1、11.17.2、12.0.0、
+12.3.0 のどれにも拒否されます（`cynefin-beta %%{x}%%:`、
+`cynefin-beta%%{x}%% :`、`cynefin-beta :`）。
+コロンのない `cynefin-beta %%{x}%%` は変えません。
 
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
 [fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
 [fixture: cynefin/header/colon-unclosed-directive-kept]
 [fixture: radar/header/colon-unclosed-directive-kept]
+[fixture: radar/header/colon-spaces-before-removed]
+[fixture: radar/header/colon-after-directive-kept]
+[fixture: cynefin/header/colon-after-directive-kept]
+[fixture: radar/header/colon-after-spaced-directive-kept]
+[fixture: radar/header/colon-spaced-before-directive-dropped]
+[fixture: radar/header/colon-spaced-before-colon-dropped]
+[fixture: radar/header/colon-tabs-around-directive-dropped]
+[fixture: radar/header/colon-two-spaced-directives-dropped]
+[fixture: radar/header/directive-no-colon-space-kept]
+[fixture: radar/header/colon-between-directives-dropped]
+[fixture: radar/header/directives-no-colon-space-between-kept]
+[fixture: cynefin/header/directive-no-colon-space-kept]
+[test: a space before a directive between the header and the colon of a cynefin diagram]
+[test: a space before the colon after a directive of a cynefin diagram]
+[test: a space before the colon of a cynefin diagram]
 
 treemap の見出しにはコロンを付けません。
 11.8.1、11.17.2、12.0.0、12.3.0 のどれも、
@@ -4811,6 +5997,13 @@ ER 図と requirement 図は、`accTitle` が 1 桁目にない場合、
   ブロックの `}` の後のコメントは、ブロックの形を残します。
   コロンの形 `accDescr: a %% c` の説明は `a %% c` で、
   ブロックの説明は `a` だからです。
+- 値の後の `%%` の前の、空白でもタブでもない空白文字は、
+  `accDescr:` の行と pie 図の title では、本文の一部として描かれ、
+  後の版はそれを取り除きます。
+  そこの空白とタブは、同じに描かれます（`accDescr: Value`、改行しない空白、
+  `%% note`）。
+  同じ版は gitGraph の `title` を拒否するので、
+  そこでは `%%` の前の空白に左右されるものがありません。
 
 固定した文法の、ほかの図種には、そうした版がありません。
 
@@ -4826,6 +6019,10 @@ ER 図と requirement 図は、`accTitle` が 1 桁目にない場合、
 [fixture: pie/accessibility-lines/acc-title-unclosed-directive-then-comment-kept]
 [fixture: gitgraph/title-and-common-values/acc-title-unclosed-directive-then-comment-kept]
 [fixture: gitgraph/title-and-common-values/block-then-comment-kept]
+[test: a whitespace character that is no space or tab before a comment after the title of a pie chart]
+[test: a whitespace character that is no space or tab before a comment after the accDescr line of a pie chart]
+[test: a whitespace character that is no space or tab before a comment after the accDescr line of a gitGraph]
+[test: a no-break space before a comment after the title of a gitGraph]
 
 ## 方向のテキストを含む行
 
@@ -5537,7 +6734,7 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
 - `tickInterval`、`todayMarker`、`section` の値の両端の空白。
   Db が持ち、図にも描かれるので、空白 2 つの `tickInterval  1week` は、
   目盛りが既定のものになり、`section  A` は `section A` とは別のセクションです。
-  `dateFormat`、`axisFormat`、`title` の両端の空白は除きます。
+  `dateFormat`、`axisFormat`、`title` の両端の空白とタブは除きます。
   タスクの説明のテキストとコロンの間の空白は、
   名前に桁そろえの空白があるセクション、
   または桁を共有するセクションどうしのコロンを、
@@ -5656,7 +6853,8 @@ mermaid.js は、journey の一部の値の空白を持ち、一部の行を、
   Db が持つので、空白 2 つの `section  S` や、桁をそろえた `Make tea  : 5` は、
   空白を落とした形とは別のものです。
   コロンをそろえる空白も残ります。
-  桁をそろえない節の説明のコロンの前の空白と、`title` の両端の空白は除きます。
+  桁をそろえない節の説明のコロンの前の空白と、
+  `title` の両端の空白とタブは除きます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
 
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
@@ -5788,8 +6986,9 @@ mindmap の Db は、ノードの字下げを level として読みます。
 
 mermaid.js は、timeline の period、event、section の名前の空白を保ち、
 いくつかの行を、置かれた場所で読みます。
-そのため、整形は、title の両端の空白と行の最後の event の末尾の空白を除き、
-コロンの前に空白を足し、それらを書かれたまま残します。
+そのため、整形は、title の両端の空白とタブと、
+行の最後の event の末尾の空白とタブを除き、コロンの前に空白を足し、
+それらを書かれたまま残します。
 [period と event](./timeline.ja.md#period-と-event)、
 [event の文](./timeline.ja.md#event-の文)、
 [1 行 1 文](./timeline.ja.md#1-行-1-文)を参照してください。
@@ -5803,7 +7002,7 @@ mermaid.js は、timeline の period、event、section の名前の空白を保�
   同じ行で後ろに別のコロンが続く event の末尾の空白も同じです。
   空白のないテキストの後のコロンには空白を 1 つ足します。
   period が `title` か `section` の語の場合を除きます。
-  行の最後の event の末尾の空白は除きます。
+  行の最後の event の末尾の空白とタブは除きます。
   改行で次のコロンと隔てられた event も含みます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
 
@@ -6310,6 +7509,76 @@ state 図の `style A fill:#F00,x` は、色を書かれたまま残します。
 [test: a comment line after U+2028 inside the name of a class]
 [test: a comment line after U+2029 inside the name of a class]
 
+ブロック図には、上の規則の例外が 2 つあります。
+composite ブロックの開始行は、コロンの行に名前があるときは、
+コロンの後の隙間を普通の開始行と同じに印字し、
+コメント領域がコロンにすぐ続くときは、書かれたまま残します。
+[複数行の文](./block.ja.md#複数行の文)を参照してください。
+どの文でも、文が続かず、空白でない最後の行がコメントを含むとき、
+コメント行の前の U+2028 や U+2029 は落とし（前の行に `;` があるときと、`style`、
+`classDef`、`class` ではない文の後に空白を挟んでコメントが続くときは別です。
+その節が文ごとに述べます）、コメント行は自分の行に置きます。
+[行区切り文字](./block.ja.md#行区切り文字)を参照してください。
+ブロック図では、そのような行の文について、
+スタイルの色のように普通の行と別に印字するものも、そこに書いてあります。
+
+[test: a directive line and then a comment line, to the end of the text, after a style statement and a U+2028]
+[test: a comment line, a directive line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: an empty line, a directive line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: a directive line, an empty line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: two directive lines and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: a node and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node with a label and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a width and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a semicolon, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a semicolon in its label, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a semicolon, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a semicolon, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a semicolon, to the end of the text, after a U+2029: the U+2029 stays]
+[test: the end of a composite block and a semicolon, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a semicolon, to the end of the text, after a U+2029: the whole composite stays as written]
+[test: the end of a composite block, a statement follows the comment line, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: a node and no semicolon, to the end of the text, after a U+2029: the U+2029 is dropped]
+[test: a node and no semicolon, a statement follows the comment line, after a U+2028: the U+2028 stays]
+[test: a node and a semicolon, a statement follows the comment line, after a U+2029: the U+2029 stays]
+[test: a node and a semicolon in a comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a comment that a space separates from it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a comment that a space separates from it, a statement follows the comment line, after a U+2029: the U+2029 stays]
+[test: a node and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: the end of a composite block and a comment that touches it, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a comment after a space, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a directive and a comment after a space, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: the end of a composite block and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: a width and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a directive, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an empty block and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an empty block and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a block arrow and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a block arrow and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node, a directive, and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node, a directive after a space and a comment that touches the directive, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge, a directive after a space and a comment that touches the directive, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node with a width and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a width and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge with a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a tab before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a run of spaces before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a no-break space before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and U+3000 before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a vertical tab before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a form feed before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and U+FEFF before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+
 行に載るものと行の終わりは、mermaid.js が取り除くものから決まります。
 図種ごとの文書には、その図種のことを書きます。
 [ER](./er.ja.md#複数行の文)、[quadrant](./quadrant.ja.md#複数行の文)、
@@ -6495,7 +7764,13 @@ kanban のボードの Db は字下げを持たず、
 ノードの字下げを最初のノードの字下げと比べて、セクションと項目を区別します。
 そのため、印字は、セクションは 1 段、項目は 2 段の字下げを決め、
 役割を決めるものを保ちます。
-裸の id・ラベル・アイコン・class の空白は値として残します。
+ラベル、アイコン、class のテキストの中の空白の連なりは値として残します。
+裸のラベル、アイコン、class のテキストの末尾の空白とタブは落とし、
+カードの裸の id の後の空白とタブも落としますが、
+列の裸の id の後の空白は残します。
+空白とタブだけの裸のラベル、アイコン、class のテキストは、
+空白 1 つを残します（`A[ ]`）。
+詳しくは [Trailing whitespace](./kanban.ja.md#行末の空白) を参照してください。
 装飾はノードの桁に揃え、インラインディレクティブの行は、
 ディレクティブと隣の隙間を保ち、最初のディレクティブの前の空白を印字が決めます。
 YAML として正しくないデータブロックは、パーサーが不透明なテキストとして受理し、
@@ -6513,8 +7788,13 @@ mermaid.js は拒否します（既知の差異
 [データブロック](./kanban.ja.md#データブロック)に従います。
 データブロックの付着位置と内容、隣接するブロック、間のディレクティブも保ちます。
 YAML 整形は、保護条件付きのフロントマターだけです。
-図のコメント後の空行・コメントの隙間は、末尾も含め、
+`%%` だけの行の後と、見出しの行、形かデータブロックで終わる行、
+カードのアイコンの行（`::icon(fa) %% c`）を終えるコメントの後の、
+空行とコメントの隙間は、末尾も含め、
 `blank-line-after-header-or-comments` のもとで全体を保ちます。
+テキストのあるコメントだけの行の後と、裸の id の行と、
+カードのクラスの行（`:::cls %% c`）のコメントの後（そこでは `%%`
+はテキストです）では、空行の連なりは 1 行になり、ボードの末尾には残りません。
 素の mermaid.js が拒否する入力に素の Db はなく、
 コーパスは仕様の読み方を確かめます。
 
@@ -6522,6 +7802,23 @@ YAML 整形は、保護条件付きのフロントマターだけです。
 [fixture: kanban/data-blocks/data-adjacent-directive]
 [fixture: kanban/blank-lines/div-between-comment-blank]
 [fixture: kanban/blank-lines/comment-blank-trailing]
+[test: a final comment with text and empty lines in a kanban board]
+[test: a comment after a shape and empty lines in a kanban board]
+[test: a comment after a shape and empty lines at the end of a kanban board]
+[test: a comment after a data block that holds an icon and empty lines in a kanban board]
+[test: a comment after a data block and empty lines in a kanban board]
+[test: a comment after the header and empty lines in a kanban board]
+[test: a comment after a shape of a column and empty lines in a kanban board]
+[test: a comment after a bare id of a card and empty lines in a kanban board]
+[test: a comment after a bare id of a card and empty lines at the end of a kanban board]
+[test: a comment after a bare id of a column and a line of spaces in a kanban board]
+[test: a comment after a bare id of a column and a line of spaces at the end of a kanban board]
+[test: a comment after a class of a card and empty lines in a kanban board]
+[test: a comment after the icon line of a card and empty lines in a kanban board]
+[test: a comment after the icon line of a card and empty lines at the end of a kanban board]
+[test: a comment after the class line of a card and empty lines in a kanban board]
+[test: a comment after the class line of a card and empty lines at the end of a kanban board]
+[test: a comment on a line of its own and empty lines at the end of a kanban board]
 
 共通の `style`・`classDef` の行規則で保持する行は、区間全体、空白、コメント、
 ディレクティブを保ちます。
@@ -6591,7 +7888,11 @@ direction の文字を結合すると、先頭列でも受理される入力を�
 [fixture: c4/description-blocks/block-directive-lines]
 [fixture: c4/accessibility-lines/acc-colon-comment]
 
-図のコメントの後は、復帰用の空白行と末尾の隙間も含めて全体を保ちます。
+呼び出しの行、見出しの行、境界を開く行、境界を閉じる `}` の行、
+`accDescr {` ブロックの `}` の行を終えるコメントの後は、
+復帰用の空白行と末尾の隙間も含めて全体を保ちます。
+単独のコメントの後と、`title`、`accTitle:`、`accDescr:`、
+`accDescription` の行を終えるコメントの後の隙間は、通常の空行と同じに扱います。
 コメントを移して `comment-takes-line-break` の差異を修復しません。
 すべてのセミコロンと Unicode の区間境界を保ちます。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
@@ -6604,6 +7905,7 @@ direction の文字を結合すると、先頭列でも受理される入力を�
 字下げと値の外の末尾空白は印字処理が整えます。
 
 [fixture: c4/comments/comment-header] [fixture: c4/blank-lines/comment-recovery]
+[fixture: c4/blank-lines/comment-blank-after]
 [fixture: c4/final-newline/comment-eof-gap]
 [fixture: c4/line-rule-and-semicolons/semicolon-inline-comment]
 [fixture: c4/line-rule-and-semicolons/semicolon-suffix-spacing]
@@ -6680,9 +7982,18 @@ Ishikawa は、入力の字下げ幅や Db の一時的なレベルを使わず�
 引用符、空に見える形、アクセシビリティやスタイルやデータの文に見えるもの、
 インラインのパーセントのテキストは値として保ちます。
 内部のディレクティブの隙間と、結合した物理行の継続列は保ちます。
-普通の行でも保持する行でも、値の末尾の文字は全て保ちます。
-値は書かれたものであり、Db が等しいことは値を消す理由になりません。
-mindmap と同じ選択です。
+普通の行でも保持する行でも、値の末尾のうち、空白とタブ以外の空白文字は、
+改行しない空白のように全て保ちます。
+値の末尾の空白とタブは落とします。
+詳しくは [Trailing whitespace](./ishikawa.ja.md#trailing-whitespace)
+を参照してください。
+値の中の空白とタブの連なりは空白 1 つに印字します。
+ただし、ディレクティブの前にテキストがあり、
+その後に空白とタブとディレクティブ以外が続くテキストでは、
+すべての連なりを書かれたままにします。
+詳しくは [Inline directives](./ishikawa.ja.md#inline-directives)
+を参照してください。
+ほかの文字は書かれたままです。
 セミコロンは全て残し、共有の区間保持の経路で、
 交差する値と注釈類全体を保護します。
 
@@ -6695,7 +8006,7 @@ mindmap と同じ選択です。
 図コメントの Unicode 終端は、次の節点の深さの字下げに数える文字です。
 共通コメント領域は、飲み込む接尾部と結合を保ちます。
 図コメントの後の区切りも含め、普通の空行の連続は 1 つにします。
-末尾の図コメントの隙間は全体を保ちます。
+最後の `%%` だけの行の後の末尾の隙間は全体を保ちます。
 受理した差異は仕様の木を使い、失敗は修復しません。
 生の拒否には生の Db はありません。
 ガード付きフロントマター、設定の CR と LF への変換、EOF のディレクティブ、
@@ -6739,7 +8050,7 @@ agentflow本文は共有の意味を持つ字下げ幅を使い、
 値の境界を区別します。
 style/classDef/class/linkStyleの後、classの値、interpolate名、
 tooltipの前の必須の1単位は、その後の空白が値なので保ちます。
-最初のstyleの先頭空白とラベルコメント脇の空白も文字です。
+最初のstyleの先頭空白と、ラベルが続くときのラベルコメントの前の空白も文字です。
 名前の消されるclickと空の断片を保ちます。
 clickのIDとして名前を読むのを終える空白1文字も保ちます。
 区切りをLFへ変えると名前でなくなる、末尾の空白だけの断片は落とします。
@@ -6858,13 +8169,66 @@ CSS 宣言の最初のコロンの前後の空白は、
 [fixture: usecase/direction-and-accessibility/a11y-padding]
 [fixture: usecase/direction-and-accessibility/a11y-closer-aligned]
 
-stereotype の宣言接尾辞は、systemBoundary 内も含め、`<<` の前と、
-各区切りの内側の空白の有無を保ちます。
-空白があれば 1 個に縮め、なければ足しません。
-Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白です。
-内部のテキストは書かれたままです。
+stereotype の宣言接尾辞は、systemBoundary 内も含め、`<<` の前に空白 1 つを置き、
+区切りの内側には空白を置きません。
+`Reader<<human>>` は `Reader <<human>>` に、
+`<<  staff  member  >>` は `<<staff  member>>` になり、
+テキストの中の空白の連なりは残します。
+Mermaid がテキストの両端を除くので、Db は同じです。
+ディレクティブ（`%%{x}%%`）の隣の空白は、下の表のとおりに印字します。
+`<<` の前のディレクティブは、前に空白 1 つを置き、後ろには置きません。
+`<<` の後では、ディレクティブの前の空白の連なりは空白 1 つになり、
+ディレクティブの後の空白は、ディレクティブの前に空白がなければ除き、
+あれば残します。
+`>>` の前では、ディレクティブの後の空白の連なりは空白 1 つになり、
+ディレクティブの前の空白は、ディレクティブの後に空白がなければ除き、
+あれば残します。
+テキストの中では、ディレクティブの隣の空白は残します。
+対象にする版は、書かれた形と印字した形を同じに描きます。
 保護した共通コメント領域は、値の全体を保ちます。
 class の[トークンの間の空白](./class.ja.md#トークンの間の空白) を再利用します。
+
+| `actor ` の後に書かれた形 | 印字                  |
+| ------------------------- | --------------------- |
+| `U%%{x}%%<<s>>`           | `U %%{x}%%<<s>>`      |
+| `U%%{x}%% <<s>>`          | `U %%{x}%%<<s>>`      |
+| `U%%{x}%%  <<s>>`         | `U %%{x}%%<<s>>`      |
+| `U %%{x}%%<<s>>`          | `U %%{x}%%<<s>>`      |
+| `U %%{x}%% <<s>>`         | `U %%{x}%%<<s>>`      |
+| `U %%{x}%%  <<s>>`        | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%%<<s>>`         | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%% <<s>>`        | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%%  <<s>>`       | `U %%{x}%%<<s>>`      |
+| `U <<%%{x}%%s>>`          | `U <<%%{x}%%s>>`      |
+| `U <<%%{x}%% s>>`         | `U <<%%{x}%%s>>`      |
+| `U <<%%{x}%%  s>>`        | `U <<%%{x}%%s>>`      |
+| `U << %%{x}%%s>>`         | `U << %%{x}%%s>>`     |
+| `U << %%{x}%% s>>`        | `U << %%{x}%% s>>`    |
+| `U << %%{x}%%  s>>`       | `U << %%{x}%%  s>>`   |
+| `U <<  %%{x}%%s>>`        | `U << %%{x}%%s>>`     |
+| `U <<  %%{x}%% s>>`       | `U << %%{x}%% s>>`    |
+| `U <<  %%{x}%%  s>>`      | `U << %%{x}%%  s>>`   |
+| `U <<s%%{x}%%>>`          | `U <<s%%{x}%%>>`      |
+| `U <<s%%{x}%% >>`         | `U <<s%%{x}%% >>`     |
+| `U <<s%%{x}%%  >>`        | `U <<s%%{x}%% >>`     |
+| `U <<s %%{x}%%>>`         | `U <<s%%{x}%%>>`      |
+| `U <<s %%{x}%% >>`        | `U <<s %%{x}%% >>`    |
+| `U <<s %%{x}%%  >>`       | `U <<s %%{x}%% >>`    |
+| `U <<s  %%{x}%%>>`        | `U <<s%%{x}%%>>`      |
+| `U <<s  %%{x}%% >>`       | `U <<s  %%{x}%% >>`   |
+| `U <<s  %%{x}%%  >>`      | `U <<s  %%{x}%% >>`   |
+| `U <<a%%{x}%%b>>`         | `U <<a%%{x}%%b>>`     |
+| `U <<a%%{x}%% b>>`        | `U <<a%%{x}%% b>>`    |
+| `U <<a%%{x}%%  b>>`       | `U <<a%%{x}%%  b>>`   |
+| `U <<a %%{x}%%b>>`        | `U <<a %%{x}%%b>>`    |
+| `U <<a %%{x}%% b>>`       | `U <<a %%{x}%% b>>`   |
+| `U <<a %%{x}%%  b>>`      | `U <<a %%{x}%%  b>>`  |
+| `U <<a  %%{x}%%b>>`       | `U <<a  %%{x}%%b>>`   |
+| `U <<a  %%{x}%% b>>`      | `U <<a  %%{x}%% b>>`  |
+| `U <<a  %%{x}%%  b>>`     | `U <<a  %%{x}%%  b>>` |
+| `U <<s\t%%{x}%%\t>>`      | `U <<s\t%%{x}%% >>`   |
+| `U <<\t%%{x}%%\ts>>`      | `U << %%{x}%%\ts>>`   |
+| `U\t%%{x}%%\t<<s>>`       | `U %%{x}%%<<s>>`      |
 
 [fixture: usecase/stereotypes/stereotype-padding]
 [fixture: usecase/stereotypes/opener-gap-sides]
@@ -6874,6 +8238,7 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 [fixture: usecase/stereotypes/boundary-suffixes]
 [fixture: usecase/stereotypes/semicolon-padding-dropped]
 [test: usecase: stereotype-comment-region-padding-kept]
+[test: usecase: a directive beside the text of a stereotype]
 
 ラベル、境界タイトルの余白、継続列は、除去で Db が等しい場合も書かれたままです。
 `'` で囲むラベルは、
@@ -7097,7 +8462,8 @@ C4 の検出、
 
 ## Packet の hidden 境界と原綴の block
 
-[packet の規則](./packet.ja.md)は、`packet-beta` を `packet` と印字し、
+[packet の規則](./packet.ja.md)は、
+見出しの名前を書かれたまま保ち（[見出しの名前](#ヘッダーの名前)を参照）、
 範囲指定・単一位置指定・相対指定の 3 形式を保ちます。
 公開行から block を再構成せず、公開上限後の出現も除きません。
 同じ label は別々に残し、空の共通代入も残します。
@@ -7248,7 +8614,8 @@ Markdown の埋め込み先は本文の最終行の余白を除きますが、
 名前つき項目のコロンの有無、反復と原文順をすべて保ちます。
 公開値が使わない余分な名前や重複項目も残します。
 数だけの curve と名前つき curve は区別します。
-見出しのコロンの有無は保ち、前の普通の空白は gitgraph と同じく詰めます。
+見出しの語の直後のコロンは、その前の空白と一緒に除きます。
+詳しくは [ヘッダーの後のコロン](#ヘッダーの後のコロン) を参照してください。
 単純な十進表記の `NumericLiteral` の原文の範囲は最短の形で印字し、
 その他は整数部の先頭のゼロ、丸められる精度、非正規化数、アンダーフロー、
 桁あふれを保ちます。
@@ -7737,7 +9104,9 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 ## railroad の方言と書かれた値
 
 [railroad の規則](./railroad.ja.md)は、選ばれた IR、EBNF、ABNF、PEG の見出し、
-代入記号、EBNF の任意コンマ、式の構造を保ちます。
+EBNF の任意コンマ、式の構造を保ち、EBNF の `::=` は `=` と印字します。
+詳しくは [キーワードや記号の別の綴り](#キーワードや記号の別の綴り)
+を参照してください。
 正規化した Db が同じでも要素が 1 つの call と group は残します。
 規則、選択肢、メタデータの繰返しと空のリセットを出現順に保ちます。
 比較 Db は本文の title を除きますが、その内容を削除する許可にはなりません。
@@ -8103,8 +9472,11 @@ Markdown は最後のコード行の末尾空白を除きます。
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-body-yaml]
 
-[cynefin の規則](./cynefin.ja.md)は見出しの二形、領域の再宣言と空領域、
-項目の順と重複、自己遷移、空ラベル、共通文のリセットを残します。
+[cynefin の規則](./cynefin.ja.md)は、見出し `cynefin-beta` を保ち、
+見出しの語の直後のコロンは除きます。
+詳しくは [ヘッダーの後のコロン](#ヘッダーの後のコロン) を参照してください。
+領域の再宣言と空領域、項目の順と重複、自己遷移、空ラベル、
+共通文のリセットを残します。
 領域と項目の行は木を示すもので、列が親を選ぶわけではありません。
 有効な Db からの再構築は出現を失い、置換やリセットの読みを変え得ます。
 文字列は空の値や図固有の形に見える文字も含め、エスケープ、内部の列を保ちます。

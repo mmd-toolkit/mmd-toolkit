@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Directives inside units, and Comments: a %% that does not start a line is id text, so the directive lies inside the id b%%, and the input is rejected; mermaid.js removes the directive and reads the blocks b%% and x."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "b%%",
+          "label": "b%%",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "x",
+          "label": "x",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}
