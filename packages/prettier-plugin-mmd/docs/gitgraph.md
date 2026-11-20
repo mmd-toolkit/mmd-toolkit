@@ -483,6 +483,22 @@ a line, they are printed as they are after the text of a title (see
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
 
+A whitespace character that is no space or tab before a `%%` that follows an
+`accDescr` value stays where it is, with the spaces and tabs beside it printed
+as one space each, as in a pie chart (see
+[Accessibility lines](./pie.md#accessibility-lines)). The `title` of a gitGraph
+is printed as in the other diagrams, whatever stands before a `%%` after it: the
+oldest version that counts rejects it (see
+[Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
+
+[test: a no-break space before a comment after the accDescr line of a gitGraph]
+[test: U+3000 before a comment after the accDescr line of a gitGraph] [test:
+U+2003 before a comment after the accDescr line of a gitGraph] [test: a
+whitespace character that is no space or tab before a comment after the accDescr
+line of a gitGraph] [test: a no-break space before a directive and two spaces
+before a comment after the accDescr line of a gitGraph] [test: a no-break space
+before a comment after the title of a gitGraph]
+
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, put one ordinary space between `accDescr` and

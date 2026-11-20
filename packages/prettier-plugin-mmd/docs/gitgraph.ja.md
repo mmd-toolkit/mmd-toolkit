@@ -514,6 +514,25 @@ U+2029 があるときを除きます。
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
 
+gitGraph の `accDescr` の値の後の `%%` の前の、空白でもタブでもない空白文字は、
+pie 図と同じに、その場に残し、その両側の空白とタブは、
+それぞれ空白 1 つにして印字します。
+詳しくは [Accessibility lines](./pie.ja.md#accessibility-lines)
+を参照してください。
+gitGraph の `title` は、後ろの `%%` の前に何があっても、
+ほかの図と同じに印字します。
+対象にする版のうち最も古い版が、それを拒否するからです。
+詳しくは
+[最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
+を参照してください。
+
+[test: a no-break space before a comment after the accDescr line of a gitGraph]
+[test: U+3000 before a comment after the accDescr line of a gitGraph]
+[test: U+2003 before a comment after the accDescr line of a gitGraph]
+[test: a whitespace character that is no space or tab before a comment after the accDescr line of a gitGraph]
+[test: a no-break space before a directive and two spaces before a comment after the accDescr line of a gitGraph]
+[test: a no-break space before a comment after the title of a gitGraph]
+
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 波括弧を残すブロックは、通常の隙間では、
