@@ -299,6 +299,10 @@ treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
 枝の追加や除去で値のタブや末尾の読みが変わる図も本文を保ちます。
 罫線モードの論理行を分けることで、
 名前の先頭の Unicode 空白が新しい枝なしの行に露出する場合も本文を保ちます。
+U+2028 か U+2029 で終わり、コメント領域かディレクティブが続くノードに、
+分岐が付く場合も本文を保ちます。
+詳しくは [Line terminators and unicode](#line-terminators-and-unicode)
+を参照してください。
 条件は同じ図で重ねて適用します。
 一つの保護行の最初の正の枝列が、ほかの全行の幅を決めうるためです。
 本文を保った図には見た目の一致を約束しません。
@@ -3164,6 +3168,40 @@ Unicode の空白は ASCII の字下げへ変えません。
 [corpus fixture: treeview/text-block-ls]
 
 [test: treeview/line-terminators-and-unicode/eol-output-cr]
+
+分岐を描くと、テキストが U+2028 か U+2029 で終わり、
+空白だけを挟んでコメントかディレクティブが続くノードに分岐が付く場合は、
+本体を書かれたままにします。
+ノードの名前か説明、クラス、アイコンが対象です。
+分岐のないノードは、その文字をテキストの最後の文字として読みます。
+分岐のあるノードは、その文字をコメントかディレクティブの前の空白として読み、
+独立した行に置くか、テキストの終わりでは落とすので、
+2 回目の整形が 1 回目と違う読み方をし、描画も変わるからです。
+`├── a`、`b`、その文字、`%%{x}%%`、空行、`└── c` は、そのまま残します。
+すでに分岐があるノード、分岐が付かない本体、その文字で終わらないノード、
+ディレクティブの後に `;` が続くノード、コメントの次の行に行が続くノードは、
+これまでどおりに整形します。
+
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-touching]
+[test: treeview/line-terminators-and-unicode/branch-added-name-paragraph-separator-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-class-line-separator-directive-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-at-end]
+[test: treeview/line-terminators-and-unicode/prefixed-name-line-separator-directive-comment-own-line]
+[test: treeview/line-terminators-and-unicode/no-branch-added-name-line-separator-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-without-line-separator-redrawn]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-row-follows]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-at-end]
+[test: treeview/line-terminators-and-unicode/branch-added-name-paragraph-separator-directive]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-spaces-directive]
+[test: treeview/line-terminators-and-unicode/branch-added-name-spaces-line-separator-directive]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-two-directives]
+[test: treeview/line-terminators-and-unicode/branch-added-description-line-separator-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-description-line-separator-directive]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-directive-line-follows]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-semicolon]
 
 ### Source order
 

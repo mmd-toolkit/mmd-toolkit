@@ -297,10 +297,13 @@ retain it for fixed source row boundaries, unsafe annotation moves, loss of box
 mode, changed effective indentation of a prefix inside a value, or a newly
 added/removed branch changing owned value tabs or tails. Splitting a box-mode
 logical line also retains the body when it would expose leading Unicode
-whitespace in a name on a new unprefixed line. These conditions compose; one
-protected row can determine the first positive branch column for every other
-row. Body-retained diagrams are exempt from visual agreement. Names, values,
-arbitrary prefix text and shared trivia are never discarded.
+whitespace in a name on a new unprefixed line, and where drawing a branch would
+give one to a node that ends at a U+2028 or U+2029 before a comment region or a
+directive (see [Line terminators and unicode](#line-terminators-and-unicode)).
+These conditions compose; one protected row can determine the first positive
+branch column for every other row. Body-retained diagrams are exempt from visual
+agreement. Names, values, arbitrary prefix text and shared trivia are never
+discarded.
 
 [test: treeview/branch-prefixes/uppercase-entity-and-tab-column]
 
@@ -3133,6 +3136,60 @@ frontmatter limitation.
 [corpus fixture: treeview/text-block-ls]
 
 [test: treeview/line-terminators-and-unicode/eol-output-cr]
+
+The body stays as written where drawing a branch would give one to a node whose
+text ends at a U+2028 or U+2029 that a comment or a directive follows, with only
+whitespace between: the name of a node or its description, a class or an icon. A
+node without a branch reads the character as the last character of its text, and
+a node with one reads it as whitespace before the comment or the directive,
+which the printer puts on a line of its own or leaves out at the end of the
+text, so the second formatting would read the line differently from the first
+and the drawing differs: `├── a`, `b`, the character, `%%{x}%%`, a blank line,
+and `└── c` stay as they are. A node that has a branch already, a body where no
+node gets one, a node that the character does not end, a node whose directive is
+followed by a `;`, and a node whose comment is followed by a row on the next
+line are formatted as before.
+
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-touching]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-paragraph-separator-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-class-line-separator-directive-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-at-end]
+[test:
+treeview/line-terminators-and-unicode/prefixed-name-line-separator-directive-comment-own-line]
+[test:
+treeview/line-terminators-and-unicode/no-branch-added-name-line-separator-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-without-line-separator-redrawn]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-row-follows]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-at-end]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-paragraph-separator-directive]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-spaces-directive]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-spaces-line-separator-directive]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-two-directives]
+[test:
+treeview/line-terminators-and-unicode/branch-added-description-line-separator-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-description-line-separator-directive]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-directive-line-follows]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-semicolon]
 
 ### Source order
 
