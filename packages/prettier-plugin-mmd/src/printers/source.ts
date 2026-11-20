@@ -116,7 +116,11 @@ export interface JoiningRegion {
   readonly start: number
   /** Where the region ends: after the line terminator of the comment, if there is one. */
   readonly end: number
-  /** Whether anything but whitespace follows the region, to be joined to what comes before. */
+  /**
+   * Whether the lexer reads anything after the region, wherever it stands, to be
+   * joined to what comes before. `findCommentRegions` decides it together with
+   * `joinsText`, from the same text that the lexer reads.
+   */
   readonly hasTextAfter: boolean
   /**
    * Whether the line right after the region holds text, which is no whitespace
@@ -721,7 +725,7 @@ function findCommentRegions(
   }
 
   const all: Range[] = []
-  const joining: JoiningRegion[] = []
+  const regions: Pick<JoiningRegion, "comment" | "start" | "end">[] = []
   let previousEnd = -1
   for (const comment of root.comments) {
     if (!isCommentLine(text, root, comment)) continue
@@ -736,31 +740,25 @@ function findCommentRegions(
       start === previousEnd
     if (!joins) continue
     previousEnd = end
-    joining.push({
-      comment,
-      start,
-      end,
-      hasTextAfter: false,
-      joinsText: holdsTextOnLine(end),
-    })
+    regions.push({ comment, start, end })
   }
-  // A region has text after it when the lexer reads something after it. The
-  // `;` that end the text stand for no statement in a diagram where a `;`
-  // separates statements, and the printer drops them, except one on the line
-  // that follows the region, which stays with the line that the region joins
+  // What follows a region is decided here, for both questions that
+  // `JoiningRegion` asks, from the text that the lexer reads. The `;` that end
+  // the text stand for no statement in a diagram where a `;` separates
+  // statements, and the printer drops them, except one on the line that follows
+  // the region, which stays with the line that the region joins
   // (docs/flowchart.md, Semicolons).
   const readEnd = findReadEnd(text, all, false)
   const statementEnd = diagramBodiesWithSeparatingSemicolons.has(root.body.type)
     ? findReadEnd(text, all, true)
     : readEnd
-  for (const [index, region] of joining.entries()) {
-    joining[index] = {
-      ...region,
-      hasTextAfter:
-        region.end < statementEnd ||
-        (region.end < readEnd && holdsSemicolonOnLine(text, region.end)),
-    }
-  }
+  const joining: JoiningRegion[] = regions.map((region) => ({
+    ...region,
+    hasTextAfter:
+      region.end < statementEnd ||
+      (region.end < readEnd && holdsSemicolonOnLine(text, region.end)),
+    joinsText: holdsTextOnLine(region.end),
+  }))
   // Regions that touch are removed together: text follows all of them, and the
   // last one decides, not the next comment line, which is removed too.
   for (let index = joining.length - 2; index >= 0; index--) {
