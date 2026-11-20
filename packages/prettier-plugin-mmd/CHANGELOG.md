@@ -350,6 +350,11 @@
   character goes, with the `;` where there is one, and stays only where dropping
   it would change what mermaid.js reads, such as before a comment line and a
   statement.
+  
+  > **NOTE:**\
+  > Overturned in the next release: a U+2028 or U+2029 that a comment or a
+  > directive follows on its line stays as written, as in `style A fill:red`, a
+  > U+2028, a U+2029, and `%% d`.
 
 - [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a statement that starts with whitespace other than a space or a tab, such
   as a line separator (U+2028 or U+2029) or a no-break space, on its line where a
