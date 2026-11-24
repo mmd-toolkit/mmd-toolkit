@@ -241,6 +241,7 @@ function agentflowBlockRules(
     isDroppedAtTopLevel: (statement) =>
       statement.type === "AgentflowEmptyStatement" &&
       !keepsStyleTerminator(source, statement.range[0]),
+    dropsTrailingLineSeparators: true,
     keepsWhitespaceLineAfterComment: false,
     // A real comment after a separator needs no retained semicolon, unlike
     // flowchart's percent-as-vertex text (docs/agentflow.md, Comments).

@@ -322,4 +322,92 @@ export const agentflowCases: readonly AgentflowCase[] = [
     input: "agentflow-beta TB\nflow F[x;]; A --> B; end \u2029;  %% c\n",
     output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end %% c\n",
   },
+  {
+    name: "agentflow: U+2028 between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end \u2028end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `;` between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end ;\u2028end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after a space after the `;` between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end ; \u2028end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end end\u2028\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end \u2029end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `;` between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end ;\u2029end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after a space after the `;` between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end ; \u2029end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end end\u2029\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `end` of a flow on a kept line, then a line break",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2028\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `end` of a flow on a kept line, then the end of the text",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2028",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `end` of a flow on a kept line, then a statement",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2028C\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B; end C\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `end` of a flow on a kept line, then a line break and a statement",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2028\nC\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n  C\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `end` of a flow on a kept line, then a line break",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2029\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `end` of a flow on a kept line, then the end of the text",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2029",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `end` of a flow on a kept line, then a statement",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2029C\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B; end C\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `end` of a flow on a kept line, then a line break and a statement",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2029\nC\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n  C\n",
+  },
 ]

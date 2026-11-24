@@ -1044,6 +1044,47 @@ after `end ;` of a flow on a kept line, then the end of the text] [test:
 agentflow: U+2029 between `end` and `;` of a flow on a kept line, then a
 comment]
 
+Where only the `end` of the `flow` around it follows the `end` of a `flow` on
+its line, the inner `end` goes to a line of its own, as the outer `end` does
+where nothing follows it: `flow F; flow G; A[x;] --> B; end end` is printed with
+each `end` on a line of its own, one level apart, and so are three flows. A `;`
+that stands alone between them is a statement of the `flow` around it, so it is
+printed on a line of its own after the inner `end`, as on any line: `end ; end`
+is printed as `end`, `;`, and `end` on three lines. An `end` that a statement
+follows on its line stays with that statement and with the `end` after it.
+U+2028 and U+2029 between or after the `end` are whitespace, as Agentflow's
+`end` takes only spaces and tabs and no line feed, and they are dropped on a
+kept line as on any line.
+
+[fixture: semicolons/nested-closings-after-kept-line] [fixture:
+semicolons/nested-closings-style-space-after-kept-line] [fixture:
+semicolons/nested-closings-three-after-kept-line] [fixture:
+semicolons/nested-closings-comment-after-kept-line] [fixture:
+semicolons/nested-closings-semicolon-between-after-kept-line] [fixture:
+semicolons/nested-closings-semicolons-after-kept-line] [fixture:
+semicolons/nested-closings-semicolon-after-outer-after-kept-line] [fixture:
+semicolons/nested-closings-statement-after-kept-line-kept] [fixture:
+semicolons/nested-closings-line-break-between-after-kept-line] [fixture:
+semicolons/nested-closings-without-kept-line] [test: agentflow: U+2028 between
+two `end` of nested flows on a kept line] [test: agentflow: U+2028 after the `;`
+between two `end` of nested flows on a kept line] [test: agentflow: U+2028 after
+a space after the `;` between two `end` of nested flows on a kept line] [test:
+agentflow: U+2028 after two `end` of nested flows on a kept line] [test:
+agentflow: U+2029 between two `end` of nested flows on a kept line] [test:
+agentflow: U+2029 after the `;` between two `end` of nested flows on a kept
+line] [test: agentflow: U+2029 after a space after the `;` between two `end` of
+nested flows on a kept line] [test: agentflow: U+2029 after two `end` of nested
+flows on a kept line] [test: agentflow: U+2028 after the `end` of a flow on a
+kept line, then a line break] [test: agentflow: U+2028 after the `end` of a flow
+on a kept line, then the end of the text] [test: agentflow: U+2028 after the
+`end` of a flow on a kept line, then a statement] [test: agentflow: U+2028 after
+the `end` of a flow on a kept line, then a line break and a statement] [test:
+agentflow: U+2029 after the `end` of a flow on a kept line, then a line break]
+[test: agentflow: U+2029 after the `end` of a flow on a kept line, then the end
+of the text] [test: agentflow: U+2029 after the `end` of a flow on a kept line,
+then a statement] [test: agentflow: U+2029 after the `end` of a flow on a kept
+line, then a line break and a statement]
+
 Keep a separating semicolon after a statement or name ending in `accTitle`,
 `accDescr`, `direction`, `click`, `call` or `href`, and after any id ending in
 `direction`: these words can consume a new LF and the following text. Keep a

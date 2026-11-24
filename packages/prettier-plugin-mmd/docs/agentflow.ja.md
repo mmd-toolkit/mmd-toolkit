@@ -1084,6 +1084,47 @@ agentflow-beta TB
 [test: agentflow: U+2029 after `end ;` of a flow on a kept line, then the end of the text]
 [test: agentflow: U+2029 between `end` and `;` of a flow on a kept line, then a comment]
 
+`flow` の `end` の後ろに、同じ行で、外側の `flow` の `end` だけが続くときは、
+内側の `end` も自分の行に移ります。
+外側の `end` が、後ろに何も続かないときに移るのと同じです。
+`flow F; flow G; A[x;] --> B; end end` は、各 `end` を自分の行に、
+1 段ずらして置きます。
+`flow` が 3 つのときも同じです。
+その間にそれだけで置かれた `;` は、外側の `flow` の文なので、
+内側の `end` の後ろの自分の行に、ほかの行と同じように印字します。
+`end ; end` は、`end`、`;`、`end` を 3 行に印字します。
+同じ行で文が続く `end` は、その文と、その後ろの `end` と一緒に残ります。
+`end` の間か後ろにある U+2028 と U+2029 は、空白です。
+Agentflow の `end` は、スペースとタブだけを取り、改行は取りません。
+残す行でも、ほかの行と同じように落とします。
+
+[fixture: semicolons/nested-closings-after-kept-line]
+[fixture: semicolons/nested-closings-style-space-after-kept-line]
+[fixture: semicolons/nested-closings-three-after-kept-line]
+[fixture: semicolons/nested-closings-comment-after-kept-line]
+[fixture: semicolons/nested-closings-semicolon-between-after-kept-line]
+[fixture: semicolons/nested-closings-semicolons-after-kept-line]
+[fixture: semicolons/nested-closings-semicolon-after-outer-after-kept-line]
+[fixture: semicolons/nested-closings-statement-after-kept-line-kept]
+[fixture: semicolons/nested-closings-line-break-between-after-kept-line]
+[fixture: semicolons/nested-closings-without-kept-line]
+[test: agentflow: U+2028 between two `end` of nested flows on a kept line]
+[test: agentflow: U+2028 after the `;` between two `end` of nested flows on a kept line]
+[test: agentflow: U+2028 after a space after the `;` between two `end` of nested flows on a kept line]
+[test: agentflow: U+2028 after two `end` of nested flows on a kept line]
+[test: agentflow: U+2029 between two `end` of nested flows on a kept line]
+[test: agentflow: U+2029 after the `;` between two `end` of nested flows on a kept line]
+[test: agentflow: U+2029 after a space after the `;` between two `end` of nested flows on a kept line]
+[test: agentflow: U+2029 after two `end` of nested flows on a kept line]
+[test: agentflow: U+2028 after the `end` of a flow on a kept line, then a line break]
+[test: agentflow: U+2028 after the `end` of a flow on a kept line, then the end of the text]
+[test: agentflow: U+2028 after the `end` of a flow on a kept line, then a statement]
+[test: agentflow: U+2028 after the `end` of a flow on a kept line, then a line break and a statement]
+[test: agentflow: U+2029 after the `end` of a flow on a kept line, then a line break]
+[test: agentflow: U+2029 after the `end` of a flow on a kept line, then the end of the text]
+[test: agentflow: U+2029 after the `end` of a flow on a kept line, then a statement]
+[test: agentflow: U+2029 after the `end` of a flow on a kept line, then a line break and a statement]
+
 文か名前がaccTitle/accDescr/direction/click/call/hrefで終わる場合と、
 IDがdirectionで終わる場合は、その後の区切りセミコロンを保ちます。
 その語が新しいLFと後続の文字を読む場合があるためです。

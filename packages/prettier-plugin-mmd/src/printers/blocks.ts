@@ -264,6 +264,13 @@ export interface BlockRules<Statement extends Positioned> {
    */
   readonly isDroppedAtTopLevel: (statement: Statement) => boolean
   /**
+   * Whether U+2028 and U+2029 at the end of a kept stretch are whitespace, as
+   * after the `end` of a subgraph, and are dropped with the whitespace at the
+   * end of a line. Otherwise a stretch whose last whitespace holds one keeps
+   * it as written (see `keepsTrailingLineSeparators`).
+   */
+  readonly dropsTrailingLineSeparators?: boolean
+  /**
    * Whether a line of only whitespace after a line that ends with a comment
    * is kept, as a line of one space where it stands among the comment lines
    * and directive lines after that line, also at the start of a block.
@@ -476,10 +483,11 @@ export function printBlock<Statement extends Positioned>(
   let endsAfterBareMarker = false
   let endsAfterTakingComment = false
   /**
-   * The positions of the statements that the block drops after a block whose
-   * closing goes to a line of its own (see `followsSplitClosing`).
+   * The positions of the statements that follow a block whose closing goes to
+   * a line of its own, and that the stretch of that block leaves out (see
+   * `followsSplitClosing`).
    */
-  const droppedAfterSplitClosing = new Set<number>()
+  const afterSplitClosing = new Set<number>()
   /**
    * The indentation beyond the block's for the lines being added (see
    * `BlockRules.extraIndentationOf`).
@@ -750,9 +758,9 @@ export function printBlock<Statement extends Positioned>(
       ) {
         return { start, end: stretchEnd, first, after }
       }
-      // The stretch ends before a statement that the printer drops after a
-      // closing that goes to a line of its own, unless the stretch is printed
-      // as written (see `followsSplitClosing`).
+      // The stretch ends before a statement that follows a closing that goes
+      // to a line of its own, unless the stretch is printed as written (see
+      // `followsSplitClosing`).
       if (followsSplitClosing(after)) {
         let uncutAfter = after
         while (
@@ -768,7 +776,7 @@ export function printBlock<Statement extends Positioned>(
         }
         if (!printsAsWritten(uncut, statements.slice(first, uncutAfter))) {
           for (let dropped = after; dropped < uncutAfter; dropped++)
-            droppedAfterSplitClosing.add(dropped)
+            afterSplitClosing.add(dropped)
           return { start, end: stretchEnd, first, after }
         }
       }
@@ -779,16 +787,17 @@ export function printBlock<Statement extends Positioned>(
   }
 
   /**
-   * Whether the statement at `index`, which is dropped at the top level, stands
-   * after a block on the line of its closing, and the closing goes to a line of
-   * its own (see `startOfSplitClosing`) that holds no `;` of its own. The line
-   * that the source has does not stay together then: the statement is on the
-   * line of the closing, where a `;` of its own is dropped as it is on any line
-   * of its own, so a second formatting drops no more than the first.
+   * Whether the statement at `index`, a `;` of its own (see
+   * `BlockRules.isDroppedAtTopLevel`), stands after a block on the line of its
+   * closing, and the closing goes to a line of its own (see
+   * `startOfSplitClosing`) that holds no `;` of its own. The line that the
+   * source has does not stay together then: the statement is on the line of the
+   * closing, where it is printed as it is on any line of its own, dropped at the
+   * top level and on a line of its own in a block, so a second formatting
+   * changes nothing.
    */
   function followsSplitClosing(index: number): boolean {
-    if (!bounds.isTopLevel || !rules.isDroppedAtTopLevel(statements[index]))
-      return false
+    if (!rules.isDroppedAtTopLevel(statements[index])) return false
     let blockIndex = index - 1
     while (blockIndex >= 0 && rules.isDroppedAtTopLevel(statements[blockIndex]))
       blockIndex--
@@ -1016,7 +1025,8 @@ export function printBlock<Statement extends Positioned>(
         : null
     const trailing =
       textTrailing ??
-      (keepsTrailingLineSeparators(source, position, stretch.end)
+      (rules.dropsTrailingLineSeparators !== true &&
+      keepsTrailingLineSeparators(source, position, stretch.end)
         ? printAsWritten(source, position, stretch.end)
         : printInlineGap(
             source,
@@ -1104,12 +1114,16 @@ export function printBlock<Statement extends Positioned>(
     // too: the part before it holds no `;` of its own, so a second formatting
     // would not keep its statements and its `;` together (see
     // `holdsOwnSemicolonIn`).
-    // The `}` that closes a block around this one is on a line of its own
-    // after this block, unless something follows it, so it does not keep the
-    // closing of this block on the line: the second formatting would move it.
+    // The `}` or the `end` that closes a block around this one is on a line of
+    // its own after this block, unless something follows it, so it does not
+    // keep the closing of this block on the line: the second formatting would
+    // move it.
     const followed =
       findTokensBetween(source, closing.range[1], lineEnd).some(
-        (token) => isStructural(source, token) && token.value !== "}",
+        (token) =>
+          isStructural(source, token) &&
+          token.value !== "}" &&
+          toAsciiLowerCase(token.value) !== "end",
       ) ||
       [...source.ignoredSemicolons].some(
         (semicolon) =>
@@ -1185,7 +1199,7 @@ export function printBlock<Statement extends Positioned>(
     if (
       bounds.isTopLevel &&
       rules.isDroppedAtTopLevel(statement) &&
-      (!startsStretch || droppedAfterSplitClosing.has(index))
+      (!startsStretch || afterSplitClosing.has(index))
     ) {
       next++
       continue
