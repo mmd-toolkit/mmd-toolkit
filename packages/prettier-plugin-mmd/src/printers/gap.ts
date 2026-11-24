@@ -19,6 +19,7 @@ import {
   isLineSeparator,
   findTokenStartingAt,
   findTriviaBetween,
+  isSpaceOrTab,
   isWhitespace,
   previousRead,
   textRead,
@@ -695,6 +696,8 @@ function toRun(
     spacePending = false
   }
   if (printed === undefined) return null
+  const semicolonTail = bareSemicolonTail(source, printed.item)
+  if (semicolonTail !== "") doc.push(semicolonTail)
   return {
     range: [(firstPrinted as Part).item.range[0], printed.item.range[1]],
     doc,
@@ -717,15 +720,38 @@ function toRun(
     // comment line keeps it, as every comment does (docs/sequence.md,
     // Statements one per line; docs/flowchart.md, Comments).
     endsWithWhitespace:
-      endsWithSpaceOrTab(
+      semicolonTail !== "" ||
+      (endsWithSpaceOrTab(
         source.text.slice(printed.item.range[0], printed.item.range[1]),
       ) &&
-      !(
-        printed.item.type === "Comment" &&
-        !isFirstOnItsLine(source, printed.item.range[0]) &&
-        ignoredSemicolonAtCommentEnd(source, printed.item.range) !== undefined
-      ),
+        !(
+          printed.item.type === "Comment" &&
+          !isFirstOnItsLine(source, printed.item.range[0]) &&
+          ignoredSemicolonAtCommentEnd(source, printed.item.range) !== undefined
+        )),
   }
+}
+
+/**
+ * The whitespace that stays after a `;` that is a comment of its own in a
+ * railroad diagram, or an empty string. In ABNF a bare `;` is punctuation and
+ * every version of mermaid.js that counts rejects it where a comment is meant:
+ * a `;` is a comment only where a space or other text follows it on its line
+ * (diagrams/railroad.md, Native comments). The printer starts the next line
+ * where a U+2028 or U+2029 stood, so the whitespace written after the `;` stays
+ * as written, and one space stands where only the character followed it
+ * (docs/railroad.md, Comments).
+ */
+function bareSemicolonTail(source: Source, item: GapItem): string {
+  if (
+    source.root.body.type !== "RailroadDiagram" ||
+    item.type !== "Comment" ||
+    source.text.slice(item.range[0], item.range[1]) !== ";"
+  )
+    return ""
+  let end = item.range[1]
+  while (isSpaceOrTab(source.text[end])) end++
+  return end > item.range[1] ? source.text.slice(item.range[1], end) : " "
 }
 
 /**

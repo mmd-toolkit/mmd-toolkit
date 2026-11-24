@@ -1625,6 +1625,38 @@ railroad-peg-beta
   r <- "bare comment";#
 ```
 
+ABNF のコメントを始める `;` は、
+U+2028 か U+2029 があった所で次の行を始めるとき、
+その後ろに空白かタブを残します。
+`;`、空白、U+2028、`%% c`、空の行、規則は、`; ` と `%% c` の 2 行に印字します。
+`;` と文字の間に空白がなかったときは、空白を 1 つ置きます。
+行末の `;` だけのものは句読点で、
+`railroad-abnf-beta` はコメントのつもりの位置では受け付けないので、
+1 回目の整形が、2 回目が読めないテキストを印字することになります。
+
+[test: railroad/comments/abnf-semicolon-sp-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-tight-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-dircomment-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp2-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-tab-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-comment-eot-ls]
+[test: railroad/comments/abnf-semicolon-tight-comment-eot-ls]
+[test: railroad/comments/abnf-semicolon-after-rule-dircomment-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-comment-nobl-ls]
+[test: railroad/comments/abnf-semicolon-sp-dir-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-text-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-tight-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-dircomment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp2-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-tab-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-comment-eot-ps]
+[test: railroad/comments/abnf-semicolon-tight-comment-eot-ps]
+[test: railroad/comments/abnf-semicolon-after-rule-dircomment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-comment-nobl-ps]
+[test: railroad/comments/abnf-semicolon-sp-dir-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-text-comment-bl-ps]
+
 ### 共有 directive
 
 `Root` ディレクティブを原文範囲から元の所有位置に1回印字します。
