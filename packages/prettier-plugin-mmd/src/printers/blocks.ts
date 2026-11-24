@@ -476,6 +476,11 @@ export function printBlock<Statement extends Positioned>(
   let endsAfterBareMarker = false
   let endsAfterTakingComment = false
   /**
+   * The positions of the statements that the block drops after a block whose
+   * closing goes to a line of its own (see `followsSplitClosing`).
+   */
+  const droppedAfterSplitClosing = new Set<number>()
+  /**
    * The indentation beyond the block's for the lines being added (see
    * `BlockRules.extraIndentationOf`).
    */
@@ -745,10 +750,74 @@ export function printBlock<Statement extends Positioned>(
       ) {
         return { start, end: stretchEnd, first, after }
       }
+      // The stretch ends before a statement that the printer drops after a
+      // closing that goes to a line of its own, unless the stretch is printed
+      // as written (see `followsSplitClosing`).
+      if (followsSplitClosing(after)) {
+        let uncutAfter = after
+        while (
+          statements[uncutAfter] !== undefined &&
+          printedStartOf(statements[uncutAfter]) < lineEnd
+        )
+          uncutAfter++
+        const uncut = {
+          start,
+          end: Math.max(stretchEnd, lineEnd),
+          first,
+          after: uncutAfter,
+        }
+        if (!printsAsWritten(uncut, statements.slice(first, uncutAfter))) {
+          for (let dropped = after; dropped < uncutAfter; dropped++)
+            droppedAfterSplitClosing.add(dropped)
+          return { start, end: stretchEnd, first, after }
+        }
+      }
       stretchEnd = Math.max(stretchEnd, rules.printedEnd(following))
       after++
     }
     return { start, end: stretchEnd, first, after }
+  }
+
+  /**
+   * Whether the statement at `index`, which is dropped at the top level, stands
+   * after a block on the line of its closing, and the closing goes to a line of
+   * its own (see `startOfSplitClosing`) that holds no `;` of its own. The line
+   * that the source has does not stay together then: the statement is on the
+   * line of the closing, where a `;` of its own is dropped as it is on any line
+   * of its own, so a second formatting drops no more than the first.
+   */
+  function followsSplitClosing(index: number): boolean {
+    if (!bounds.isTopLevel || !rules.isDroppedAtTopLevel(statements[index]))
+      return false
+    let blockIndex = index - 1
+    while (blockIndex >= 0 && rules.isDroppedAtTopLevel(statements[blockIndex]))
+      blockIndex--
+    const block = statements[blockIndex]
+    if (block === undefined) return false
+    const closing = startOfSplitClosing(rules.printedEnd(block), block)
+    if (closing === undefined) return false
+    const lineEnd = lineEndOf(source, closing)
+    return (
+      printedStartOf(statements[index]) < lineEnd &&
+      !holdsOwnSemicolonIn(source, closing, lineEnd)
+    )
+  }
+
+  /**
+   * Whether a stretch is printed as written, with the spellings that are
+   * printed in one form (see `printStretch`): one of its lines is verbatim, or
+   * it holds a joining region.
+   */
+  function printsAsWritten(
+    stretch: Stretch,
+    covered: readonly Statement[],
+  ): boolean {
+    return (
+      (holdsVerbatimLine(source, kept, stretch.start, stretch.end) &&
+        !isEdgeLinesOfBlock(stretch, covered)) ||
+      (rules.joiningRegionsPrintedAsWritten !== true &&
+        holdsJoiningRegion(source, stretch.start, stretch.end))
+    )
   }
 
   /**
@@ -848,12 +917,7 @@ export function printBlock<Statement extends Positioned>(
    */
   function printStretch(stretch: Stretch): Line {
     const covered = statements.slice(stretch.first, stretch.after)
-    if (
-      (holdsVerbatimLine(source, kept, stretch.start, stretch.end) &&
-        !isEdgeLinesOfBlock(stretch, covered)) ||
-      (rules.joiningRegionsPrintedAsWritten !== true &&
-        holdsJoiningRegion(source, stretch.start, stretch.end))
-    ) {
+    if (printsAsWritten(stretch, covered)) {
       // What stands after the last statement is a gap: the whitespace that
       // the planned indentation of the next statement supplies is not printed.
       const last = covered.at(-1)
@@ -1119,9 +1183,9 @@ export function printBlock<Statement extends Positioned>(
       continue
     }
     if (
-      !startsStretch &&
       bounds.isTopLevel &&
-      rules.isDroppedAtTopLevel(statement)
+      rules.isDroppedAtTopLevel(statement) &&
+      (!startsStretch || droppedAfterSplitClosing.has(index))
     ) {
       next++
       continue

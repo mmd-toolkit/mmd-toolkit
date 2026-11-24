@@ -997,6 +997,53 @@ sole terminal ignored semicolon can drop when no other candidate remains.
 [fixture: kept-lines/line-rule-safe-terminal] [fixture:
 kept-lines/line-rule-shift-unsafe] [fixture: kept-lines/line-rule-two-passes]
 
+Where the `end` of a `flow`, or of `global`, stands on such a line and only `;`,
+whitespace, comments, and directives follow it, the `end` goes to a line of its
+own, and a `;` that stands alone at the top level after it is dropped there, as
+in [Semicolons](./flowchart.md#semicolons): `flow F[x;]; A --> B; end ;  %% c`
+is printed `flow F[x;]; A --> B;` and `end %% c`. A `;` before a directive
+stays, and so does one before a comment that holds a `;` of its own, since the
+line of the `end` then holds a `;` that the line keeps. A statement after the
+`;` keeps the `end` on the line, and the `;` with it.
+
+[fixture: semicolons/closing-semicolon-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-after-style-space-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-after-body-label-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-alone-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-tight-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-tab-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolons-after-kept-line-dropped] [fixture:
+semicolons/global-closing-semicolon-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-before-statement-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-empty-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-comment-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-directive-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-semicolon-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-directive-after-kept-line-kept]
+[fixture: semicolons/closing-semicolon-before-statement-after-kept-line-kept]
+[fixture: semicolons/closing-semicolon-before-comment-with-semicolon-kept]
+[fixture: semicolons/closing-semicolon-without-kept-line-dropped] [test:
+agentflow: U+2028 after `end ;` of a flow on a kept line, then a statement]
+[test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a line
+break] [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a
+comment] [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a
+directive] [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then
+a second `;`] [test: agentflow: U+2028 after `end ;` of a flow on a kept line,
+then the end of the text] [test: agentflow: U+2028 between `end` and `;` of a
+flow on a kept line, then a comment] [test: agentflow: U+2029 after `end ;` of a
+flow on a kept line, then a statement] [test: agentflow: U+2029 after `end ;` of
+a flow on a kept line, then a line break] [test: agentflow: U+2029 after `end ;`
+of a flow on a kept line, then a comment] [test: agentflow: U+2029 after `end ;`
+of a flow on a kept line, then a directive] [test: agentflow: U+2029 after
+`end ;` of a flow on a kept line, then a second `;`] [test: agentflow: U+2029
+after `end ;` of a flow on a kept line, then the end of the text] [test:
+agentflow: U+2029 between `end` and `;` of a flow on a kept line, then a
+comment]
+
 Keep a separating semicolon after a statement or name ending in `accTitle`,
 `accDescr`, `direction`, `click`, `call` or `href`, and after any id ending in
 `direction`: these words can consume a new LF and the following text. Keep a

@@ -1416,6 +1416,66 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "treeView-beta\ntitle t\u2028%% c\n\n;\n",
     "treeView-beta\n  title t\u2028%% c\n\n  ;\n",
   ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028C\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B; end ; C\n",
+  ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028\nC\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then a comment, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028%% c\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B; end ;\u2028%% c\n",
+  ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then a directive, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028%%{x}%%\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end ; %%{x}%%\n",
+  ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then a second `;`, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028;\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029C\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B; end ; C\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029\nC\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then a comment, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029%% c\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B; end ;\u2029%% c\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then a directive, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029%%{x}%%\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end ; %%{x}%%\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then a second `;`, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029;\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
+  ],
 ]
 
 /**

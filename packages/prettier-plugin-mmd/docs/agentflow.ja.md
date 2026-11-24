@@ -1040,6 +1040,50 @@ agentflow-beta TB
 [fixture: kept-lines/line-rule-shift-unsafe]
 [fixture: kept-lines/line-rule-two-passes]
 
+`flow` の `end` と `global` の `end` が、そのような行にあり、
+後ろに `;` と空白とコメントとディレクティブしか続かないときは、
+`end` を自分の行に移します。
+その後ろの、最上位でそれだけで置かれた `;` は、
+[セミコロン](./flowchart.ja.md#セミコロン)と同じく落とします。
+`flow F[x;]; A --> B; end ;  %% c` は、
+`flow F[x;]; A --> B;` と `end %% c` に印字します。
+ディレクティブの前の `;` は残します。
+自分の `;` を持つコメントの前の `;` も残します。
+その `end` の行に、行が残す `;` があるからです。
+`;` の後ろに文があるときは、`end` を行に残し、`;` も一緒に残します。
+
+[fixture: semicolons/closing-semicolon-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-after-style-space-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-after-body-label-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-alone-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-tight-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-tab-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolons-after-kept-line-dropped]
+[fixture: semicolons/global-closing-semicolon-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-statement-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-empty-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-comment-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-directive-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-semicolon-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-directive-after-kept-line-kept]
+[fixture: semicolons/closing-semicolon-before-statement-after-kept-line-kept]
+[fixture: semicolons/closing-semicolon-before-comment-with-semicolon-kept]
+[fixture: semicolons/closing-semicolon-without-kept-line-dropped]
+[test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a statement]
+[test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a line break]
+[test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a comment]
+[test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a directive]
+[test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a second `;`]
+[test: agentflow: U+2028 after `end ;` of a flow on a kept line, then the end of the text]
+[test: agentflow: U+2028 between `end` and `;` of a flow on a kept line, then a comment]
+[test: agentflow: U+2029 after `end ;` of a flow on a kept line, then a statement]
+[test: agentflow: U+2029 after `end ;` of a flow on a kept line, then a line break]
+[test: agentflow: U+2029 after `end ;` of a flow on a kept line, then a comment]
+[test: agentflow: U+2029 after `end ;` of a flow on a kept line, then a directive]
+[test: agentflow: U+2029 after `end ;` of a flow on a kept line, then a second `;`]
+[test: agentflow: U+2029 after `end ;` of a flow on a kept line, then the end of the text]
+[test: agentflow: U+2029 between `end` and `;` of a flow on a kept line, then a comment]
+
 文か名前がaccTitle/accDescr/direction/click/call/hrefで終わる場合と、
 IDがdirectionで終わる場合は、その後の区切りセミコロンを保ちます。
 その語が新しいLFと後続の文字を読む場合があるためです。
