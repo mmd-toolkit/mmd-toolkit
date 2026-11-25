@@ -342,13 +342,7 @@ after `wrap:` and `nowrap:`. The text after the keyword of a block or a section
 (`loop`, `alt`, `else`, `opt`, `par`, `and`, `critical`, `option`, `break`,
 `rect`, `box`) stands after one space too: `loop$$x$$` is printed `loop $$x$$`,
 and `par-:<>,;# comment` is printed `par -:<>,;# comment`. The whitespace is not
-in the Db, so the form is a choice, and the documentation of mermaid.js writes a
-space after every block keyword
-([`loop Loop text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L472),
-[`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492)).
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-between a block or section keyword and its text, as Prettier prints `return  x`
-as `return x;`.
+in the Db. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space between a block or section keyword and its text, as Prettier prints `return  x` as `return x;`.
 
 [fixture: whitespace-between-tokens/wrap-text-spaced] [fixture:
 whitespace-between-tokens/block-text-touching-spaced]
