@@ -6,7 +6,7 @@ import {
   isSpaceOrTab,
   previousRead,
   skipRemoved,
-  skipSpacesAndTabs,
+  skipBlanks,
   textRead,
 } from "./source.ts"
 
@@ -50,9 +50,7 @@ export function styleRunEdits(
         joinsFormFeeds &&
         text.startsWith("%%", cssEnd) &&
         findTriviaAt(source, cssEnd)?.type !== "Directive"
-      const runEnd = beforeComment
-        ? cssEnd
-        : skipSpacesAndTabs(source, position, end)
+      const runEnd = beforeComment ? cssEnd : skipBlanks(source, position, end)
       if (runEnd === position) {
         position++
         continue

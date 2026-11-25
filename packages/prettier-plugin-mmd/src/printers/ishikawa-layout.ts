@@ -13,11 +13,7 @@ import {
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import { keptAsWritten, replaceInAtoms } from "./layout.ts"
 import type { TextEdit } from "./layout.ts"
-import {
-  collectTextEndEdits,
-  endsWithDirectives,
-  trimmedTextEnd,
-} from "./statement-rules.ts"
+import { collectLineEndEdits, trimmedTextEnd } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import {
   findTriviaBetween,
@@ -130,20 +126,28 @@ export function layoutIshikawaLine(
   const textEnd = trimmedTextEnd(source, start, line.range[1], isSpaceOrTab)
   let end = textEnd.end
   const atoms: Atom[] = []
-  if (endsWithDirectives(source, [start, end])) {
+  const lineEnd = collectLineEndEdits(
+    source,
+    [start, end],
+    { runs: "collapsedWithoutLeadingDirectives", gapBeforePlace: "likeRuns" },
+    line.range[1],
+  )
+  if (lineEnd !== null) {
     // The literal ends with directives, which are printed as at the end of a
     // line, with the whitespace before them as the same literal has when the
     // directives stand after it: one space each (docs/ishikawa.md, Trailing
-    // whitespace).
+    // whitespace). A directive that holds a line break or a `;` is one of
+    // them: the literal ends before it where no whitespace follows it.
     atoms.push({ start, end: line.range[1] })
-    replaceInAtoms(
-      source,
-      atoms,
-      collectTextEndEdits(source, start, line.range[1], true),
-    )
+    replaceInAtoms(source, atoms, lineEnd)
   } else {
     // The gap before a directive that follows the literal is that of the
-    // directive, so the literal keeps its end there.
+    // directive, so the literal keeps its end there, and the gap is part of its
+    // atom: it is printed as the runs of the literal are, which the rule of the
+    // texts makes one space and leaves as written for a literal that stays as
+    // written (see `staysAsWritten`). A literal that stays as written and ends
+    // with a place after a `;` comes here too: `collectLineEndEdits` leaves it,
+    // with `gapBeforePlace: "likeRuns"`, to this branch (`directiveFollows`).
     const directiveFollows = findTriviaBetween(source, end, end + 1).some(
       (item) => item.type === "Directive" && item.range[0] === end,
     )
