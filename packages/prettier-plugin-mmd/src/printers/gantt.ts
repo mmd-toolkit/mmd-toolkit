@@ -21,7 +21,7 @@ const ganttDiagram: SectionedDiagram<GanttStatement> = {
   keptLines: findGanttKeptLines,
   printedEnd: findGanttPrintedEnd,
   layoutHeader: layoutKeywordHeader,
-  layoutStatement: (source, statement, end, options) =>
+  layoutStatement: (source, statement, end, options, stays) =>
     layoutGanttStatement(
       source,
       statement,
@@ -30,6 +30,7 @@ const ganttDiagram: SectionedDiagram<GanttStatement> = {
         source,
         source.root.body.type === "GanttDiagram" ? source.root.body.body : [],
         findGanttKeptLines(source),
+        stays,
         options,
       ),
     ),

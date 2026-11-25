@@ -116,6 +116,22 @@ LF や他の空白文字は取らない。
 [fixture: agentflow/gram-nested-statement-after-end]
 [fixture: agentflow/gram-nested-end-end-same-line]
 
+この単位の後のコメントは、単位が取る空白と tab が終わる所から始まる。
+end や global の直後、その空白と tab（名前の最後の断片に残る）の後、
+またはそれらに続く `;` の後である。
+end が id の並びの終わりにすぎない `Front-end` では、空白を取る単位がなく、
+触れているコメントは id の一部になる。
+`Front-end%% c` は id `Front-end%% c` である。
+
+[fixture: agentflow/lex-flow-name-end-keyword-space-comment]
+[fixture: agentflow/lex-flow-name-end-keyword-tab-comment]
+[fixture: agentflow/lex-flow-name-end-keyword-touching-comment]
+[fixture: agentflow/lex-flow-name-end-keyword-semicolon-comment]
+[fixture: agentflow/lex-flow-name-global-keyword-space-comment]
+[fixture: agentflow/lex-flow-name-global-keyword-touching-comment]
+[fixture: agentflow/lex-flow-name-global-keyword-tab-semicolon-comment]
+[fixture: agentflow/lex-flow-name-end-in-id-run-touching-comment]
+
 最後の残る空白の規則は、flowchart の最長の連続とは異なり、
 1 文字ごとに space の単位を作る。
 先にある newline の規則は、連続する LF を 1 つの newline の単位にする。

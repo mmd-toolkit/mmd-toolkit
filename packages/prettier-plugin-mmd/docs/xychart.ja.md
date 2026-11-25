@@ -1238,6 +1238,18 @@ U+2028 と U+2029 は、XY チャートの単位の間の空白で、
 [test: U+2028 after a description block]
 [test: U+2028 at the end of a statement] [test: U+2028 at the end of the text]
 
+`;` だけの行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字し、
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにします。
+`;` は、単独の行と同じに削除します。
+
+[test: xychart: a line of a semicolon, U+2029, a directive, two spaces, a comment, and an empty line at the end of the text]
+[test: xychart: a line of a semicolon, U+2028, a directive, two spaces, and a comment]
+[test: xychart: a line of a semicolon, U+2028, a directive touching a comment]
+[test: xychart: a line of a semicolon, U+2028, a directive, a tab, and a comment]
+[test: xychart: a line of a semicolon, U+2029, a directive, two spaces, and a comment]
+
 ### 空白文字
 
 タブ、改ページ、U+00A0、U+3000、U+FEFF は、
