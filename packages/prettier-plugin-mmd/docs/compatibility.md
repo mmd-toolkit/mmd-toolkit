@@ -831,10 +831,14 @@ holds one of the characters above in a class diagram, a flowchart, or an
 agentflow diagram, in a treemap where the character follows a `;`, or stands in
 the whitespace at the end of the style before or after a directive, and the line
 that holds another `;` that stays (see
-[Lines that hold a `;`](#lines-that-hold-a-)). In a treemap, spaces, tabs, and
-form feeds after a directive at the end of a `classDef` are left out too, unless
-one of the characters above is in the whitespace at the end of the style; the
-spacing inside the style on that line stays as written.
+[Lines that hold a `;`](#lines-that-hold-a-)). Spaces and tabs after a retained
+directive or an ignored final `;` are whitespace at the physical end of a line.
+Outside the lines kept as written,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them as
+Prettier does. In a treemap, spaces, tabs, and form feeds after a directive at
+the end of a `classDef` are left out too, unless one of the characters above is
+in the whitespace at the end of the style; the spacing inside the style on that
+line stays as written.
 
 [test: keeps the whitespace after a `;` and after a directive that the line rule
 removes] [test: keeps the whitespace after the character in a line that stays as
@@ -997,7 +1001,9 @@ name that ends with `stroke` keeps whether whitespace stands between it and the
 `:`, a run of whitespace becoming one space: `linkStyle 0 stroke  :#f00` is
 printed `linkStyle 0 stroke : #f00`. A `style` styles a node, and is printed in
 the one form: the pixels of `style A stroke :#f00` and `style A stroke: #f00`
-were the same.
+were the same. A node style property gives its name one value, so its colon is
+the colon of a key. [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives no whitespace before that colon and one space after it.
 
 [fixture:
 flowchart/whitespace-between-tokens/link-style-stroke-before-colon-kept]
@@ -1436,20 +1442,23 @@ the nine rows named before the first table). The last event of a line of a
 timeline and the second description of a state with an alias lose the spaces and
 tabs at their end in the same way, not the whitespace at their start, which
 aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
-`state "d" as A : x   ` is printed `state "d" as A : x`. A period of a timeline,
-and an event that another colon follows, gain one space at their end where they
-end without whitespace, which stands before that colon: `2004: a: b` is printed
-`2004 : a : b`, except after the word `title` or `section` as the period, where
-a space would make the line a title or a section. The description of a task of a
-user journey loses the spaces and tabs before its first colon
-(`Make tea : 5: Me` is printed `Make tea: 5: Me`), except in a section whose
-descriptions are padded to line the colons up, and stays as written where a
-character that is no space or tab stands among them (`Make tea`, a no-break
-space, `: 5: Me`). Where spaces or tabs stand between the text of a title and a
-comment that follows it on its line, they are printed as one space, and a
-comment that touches the text stays touching. A whitespace character that is no
-space or tab and no U+2028 or U+2029, among them a no-break space, U+3000, and
-U+2003, is printed as one space by the Langium types but a pie chart
+`state "d" as A : x   ` is printed `state "d" as A : x`. The spaces and tabs
+after the last event of a timeline line or the second description of a state
+alias stand at the end of a line. Prettier prints no whitespace there, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives their removal.
+A period of a timeline, and an event that another colon follows, gain one space
+at their end where they end without whitespace, which stands before that colon:
+`2004: a: b` is printed `2004 : a : b`, except after the word `title` or
+`section` as the period, where a space would make the line a title or a section.
+The description of a task of a user journey loses the spaces and tabs before its
+first colon (`Make tea : 5: Me` is printed `Make tea: 5: Me`), except in a
+section whose descriptions are padded to line the colons up, and stays as
+written where a character that is no space or tab stands among them (`Make tea`,
+a no-break space, `: 5: Me`). Where spaces or tabs stand between the text of a
+title and a comment that follows it on its line, they are printed as one space,
+and a comment that touches the text stays touching. A whitespace character that
+is no space or tab and no U+2028 or U+2029, among them a no-break space, U+3000,
+and U+2003, is printed as one space by the Langium types but a pie chart
 (`T\u3000%% c` is printed `T %% c` in a radar chart), and stays as written in a
 quadrant chart, a Gantt chart, a user journey, a timeline, a sequence diagram, a
 Venn diagram, and a C4 diagram. The form with one space draws other text or
@@ -1484,9 +1493,22 @@ for the last event of a line of a timeline and the space that a period and an
 event before a colon gain, for the description of a task of a user journey,
 except that a task whose description holds a directive stays as written (see
 [Task data](./journey.md#task-data)), and for the second description of a state
-alias. The runs of spaces and tabs inside a date format, an axis format, or the
-value of an `accTitle:` line stay as written before the directives as they do
-without them.
+alias. Trailing directives in [mindmap](./mindmap.md#directives) nodes and
+[kanban](./kanban.md#trailing-whitespace) cards print with one space where
+spaces or tabs preceded them and keep touching where none did.
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same gaps before trailing directives here.
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
+and tabs after the last directive, as at other line ends. The runs of spaces and
+tabs inside a date format, an axis format, or the value of an `accTitle:` line
+stay as written before the directives as they do without them. An axis format
+and an accessibility title retain their internal spaces and tabs in the Db after
+mermaid.js removes trailing directives. The permitted exceptions cover the axis
+format's exterior spaces and tabs and runs inside accessibility descriptions.
+Collapsing these internal runs falls outside those exceptions and changes the
+value, so they stay as written.
+
+[corpus fixture: gantt/db-axis-format]
 
 A no-break space, U+3000, U+2003, U+2028, and U+2029 are no spaces or tabs, and
 a title that holds a directive or a comment is not printed alike by every
@@ -6084,8 +6106,15 @@ flowchart/accessibility-lines/empty-block-touching-keyword]
 Ordinary closed multiline `accDescr` bodies use the statement's continuation
 indentation, with a separate `}` at the statement's level. Mermaid discards
 leading spaces and tabs after LF from the description. Keep the remaining text,
-line breaks, trailing whitespace and directive contents. Quoted strings and
-opaque data blocks retain their separate value-preservation rules.
+line breaks, trailing whitespace and directive contents. In a two-line
+`accDescr` body, mermaid.js stores the line break between the text lines in the
+description value;
+[a description after a colon](./compatibility.md#a-description-block-on-one-line)
+occupies one line. Replacing that line break with a space changes the Db outside
+the defined whitespace exceptions, so the body keeps the line break. Quoted
+strings and opaque data blocks retain their separate value-preservation rules.
+
+[corpus fixture: flowchart/db-acc-descr-block-two-lines-alone]
 
 [fixture: flowchart/multi-line-values/accdescr-block-kept]
 
@@ -7115,11 +7144,14 @@ around them. What the Db or the lexer reads stays. See
   [test: U+2028 between the words of a text] [test: U+2028 around the arrow of
   an axis]
 
-Ordinary point and class styles use `name: value`. Only ASCII spaces and tabs
-next to the first colon are normalized; the value spelling stays intact. A style
-with trivia, whitespace other than ASCII spaces and tabs, a semicolon or a
-second colon, or on a protected semicolon line, keeps its interior as written.
-The suffix after a second colon is not interpreted.
+Ordinary point and class styles use `name: value`. A style property gives its
+name one value, so its first colon is the colon of a key.
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
+before that colon and one space after it. Only ASCII spaces and tabs next to the
+first colon are normalized; the value spelling stays intact. A style with
+trivia, whitespace other than ASCII spaces and tabs, a semicolon or a second
+colon, or on a protected semicolon line, keeps its interior as written. The
+suffix after a second colon is not interpreted.
 
 [fixture: quadrant/styles/style-colon-padding] [fixture:
 quadrant/styles/style-colon-tab-padding] [fixture:
@@ -8070,6 +8102,11 @@ comment-region-join] [test: usecase: unicode-comment]
 
 Shared EOL, BOM, frontmatter, final-newline and Markdown handling apply.
 Accessibility exterior whitespace is trimmed in standalone files and Markdown.
+An accessibility line gives the title or description key one value, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) places the colon
+against that key and one space before a nonempty value. Prettier removes
+line-end whitespace, so spaces and tabs do not remain after the value, including
+an empty value.
 
 [fixture: usecase/final-newline/final-value-padding] [test: usecase Markdown:
 last-value-padding]
