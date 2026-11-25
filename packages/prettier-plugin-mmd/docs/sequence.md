@@ -1428,6 +1428,20 @@ statements-one-per-line/end-comment-moves-text-before-as-usual-other-block]
 statements-one-per-line/end-comment-moves-text-before-as-usual-two-statements]
 [fixture:
 statements-one-per-line/end-comment-moves-text-before-as-usual-already-spaced]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-with-ignored-semicolon-in-comment]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-comment-line]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-two-comment-lines]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-empty-line]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-whitespace-line]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-at-end-of-text]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-entity-comment]
 
 The `;` that the line rule ignores after an `end` that goes to a line of its own
 is dropped, as it is on a line of its own, whatever the lines before it hold:

@@ -1447,6 +1447,13 @@ mermaid.js の行の規則が読むかもしれない範囲に空白を含むと
 [fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block]
 [fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-two-statements]
 [fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-already-spaced]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-with-ignored-semicolon-in-comment]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-then-comment-line]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-then-two-comment-lines]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-then-empty-line]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-then-whitespace-line]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-at-end-of-text]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-entity-comment]
 
 `end` が別の行になるとき、その後ろの行の規則が無視する `;` は、
 `end` が自分の行にあるときと同じに、前の行に何があっても落とします。

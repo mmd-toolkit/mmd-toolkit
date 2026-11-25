@@ -1806,29 +1806,53 @@ function findStretchesOfLines(
 
 /**
  * The offsets of the closings of a sequence diagram that the printer puts on a
- * line of its own: the `end` keywords that nothing keeps on the line before
- * them (see `keepsClosingOnItsLine`). The `#` of a comment after such a closing
- * leaves the line that it ended a stretch of, so the line that the printer
- * prints holds the stretches of the text before the closing only, and the
- * whitespace that lay in the longer stretch is printed as anywhere else
+ * line of its own: the closings of the blocks that nothing keeps on the line
+ * before them (see `keepsClosingOnItsLine`). The `#` of a comment after such a
+ * closing leaves the line that it ended a stretch of, so the line that the
+ * printer prints holds the stretches of the text before the closing only, and
+ * the whitespace that lay in the longer stretch is printed as anywhere else
  * (docs/sequence.md, Semicolons).
  */
 function findMovedClosingStarts(source: Source): readonly number[] {
   const cached = closingStartsBySource.get(source)
   if (cached !== undefined) return cached
-  const starts =
-    source.root.body.type === "SequenceDiagram"
-      ? source.root.tokens
-          .filter(
-            (token) =>
-              isEndKeyword(token) &&
-              isStructural(source, token) &&
-              !keepsClosingOnItsLine(source, token),
-          )
-          .map((token) => token.range[0])
-      : []
+  const starts = findBlockClosings(source)
+    .filter((closing) => !keepsClosingOnItsLine(source, closing))
+    .map((closing) => closing.range[0])
+    .sort((a, b) => a - b)
   closingStartsBySource.set(source, starts)
   return starts
+}
+
+/** The block statements of a sequence diagram, which `end` closes (ast/sequence.md). */
+const sequenceBlockTypes: ReadonlySet<string> = new Set([
+  "SequenceLoopStatement",
+  "SequenceOptStatement",
+  "SequenceBreakStatement",
+  "SequenceRectStatement",
+  "SequenceBoxStatement",
+  "SequenceAltStatement",
+  "SequenceParStatement",
+  "SequenceParOverStatement",
+  "SequenceCriticalStatement",
+])
+
+/**
+ * The closings of the blocks of a sequence diagram, none for another diagram:
+ * the last token of each block statement. A closing is judged by the node that
+ * it ends, as `closesEnclosingBlock` does for the diagram types that print
+ * their blocks with `printBlock`, and not by its spelling.
+ */
+function findBlockClosings(source: Source): readonly Token[] {
+  if (source.root.body.type !== "SequenceDiagram") return []
+  const closings: Token[] = []
+  for (const node of findNodes(source.root.body, (candidate) =>
+    sequenceBlockTypes.has(candidate.type),
+  )) {
+    const closing = findTokenEndingBefore(source, node.range[1])
+    if (closing !== undefined) closings.push(closing)
+  }
+  return closings
 }
 
 /** The `;` that the line rule ignores in the lines that the printer prints, of each source. */
@@ -1884,11 +1908,6 @@ function withoutOffsets(
     text: kept.map((index) => segment.text[index]).join(""),
     offsets: kept.map((index) => segment.offsets[index]),
   }
-}
-
-/** Whether the token is the `end` keyword, in any case. */
-function isEndKeyword(token: Token): boolean {
-  return token.value.length === 3 && token.value.toLowerCase() === "end"
 }
 
 /**
