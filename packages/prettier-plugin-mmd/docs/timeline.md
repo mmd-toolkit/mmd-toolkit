@@ -446,8 +446,8 @@ before a later event] [test: U+2029 inside a period before a later event]
 
 Comment lines and directive lines between event lines align with the next event
 colon. When the colons use ordinary continuation indentation, these lines use
-that indentation too. Rule 1 gives no form here, since its table names the
-whitespace beside a mark and not the start of a line
+that indentation too. Rule 1 gives no form here, since its table does not name
+the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields) and
@@ -975,11 +975,9 @@ header-and-direction/description-block-after-the-header-without-direction-moves]
 A comment after the direction stays on the line (see [Comments](#comments)), and
 a directive before it or after it is placed as everywhere else (see
 [Directives](#directives)). The whitespace at the end of the line is dropped.
-Rule 1 names no mark at the end of a line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [radar](./radar.md#trailing-whitespace) and
-[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
-the header.
+Prettier prints no whitespace at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) drops the whitespace
+after the header.
 
 [fixture: header-and-direction/comment-after-the-direction] [fixture:
 header-and-direction/directive-before-the-direction] [fixture:
@@ -1365,12 +1363,10 @@ block on one line follows
 
 [fixture: whitespace-between-tokens/description-block-braces]
 
-The whitespace at the end of the header's line is dropped. Rule 1 names no mark
-at the end of a line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [radar](./radar.md#trailing-whitespace) and
-[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
-the header.
+The whitespace at the end of the header's line is dropped. Prettier prints no
+whitespace at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) drops the whitespace
+after the header.
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -1404,8 +1400,8 @@ end of the line. A comment on a line of its own stands at the level of the
 statement after it, as in a user journey, and its text and its mark are kept as
 written: a comment before a `section` stands at its level, and one before a
 period at the level of the period; at the end of the text it stands at the level
-of the last statement. Rule 1 gives no form here, since its table names the
-whitespace beside a mark and not the start of a line
+of the last statement. Rule 1 gives no form here, since its table does not name
+the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [gantt](./gantt.md#comments), [block](./block.md#comments), and

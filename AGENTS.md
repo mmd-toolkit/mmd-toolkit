@@ -87,17 +87,18 @@ Correctness is defined by the pinned mermaid.js.
    printed in one form, the one that reads best; a way of writing that draws
    something else is kept as written. Which form reads best is decided by rules
    that are applied in a fixed order, so that it does not depend on who judges:
-   first the whitespace that Prettier prints beside the same kind of mark, then
-   the form that the other diagram types print for the same kind of gap, then
-   the spelling that the examples in the documentation of the pinned mermaid.js
-   use. A rule whose form reads worse than another form that draws the same is
-   the rule to correct. In that case, and where none of them gives a form,
-   whoever is working on the formatter decides the form that reads best and
-   writes it into the rules with a reason that anyone would accept, so that the
-   next case of the same kind is decided by a rule and not by judgment again.
-   The formatted text is also drawn by other versions of mermaid.js, so a form
-   is printed only where every version that counts reads and draws it the same.
-   The check is that formatting does not change the Db; a formatting that
+   first the whitespace that Prettier prints beside the same kind of mark and at
+   the same kind of place (the end of a line, the end of the text, blank lines),
+   then the form that the other diagram types print for the same kind of gap,
+   then the spelling that the examples in the documentation of the pinned
+   mermaid.js use. A rule whose form reads worse than another form that draws
+   the same is the rule to correct. In that case, and where none of them gives a
+   form, whoever is working on the formatter decides the form that reads best
+   and writes it into the rules with a reason that anyone would accept, so that
+   the next case of the same kind is decided by a rule and not by judgment
+   again. The formatted text is also drawn by other versions of mermaid.js, so a
+   form is printed only where every version that counts reads and draws it the
+   same. The check is that formatting does not change the Db; a formatting that
    changes the Db but not the drawing is an exception of a kind that a section
    of the documents of the formatter defines. The rules, the versions that
    count, and the kinds of exceptions are in

@@ -28,9 +28,12 @@ Prettier, beside whose output a diagram stands, keeps every comment and every
 directive of the code it formats, also two directives that say the same.
 
 1. The whitespace beside a mark is the whitespace that Prettier prints beside
-   the same kind of mark. The formatter is a plugin of Prettier, and a diagram
-   stands in a file beside code that Prettier formats, so a kind of mark reads
-   the same in both.
+   the same kind of mark, and the whitespace of a place that is no mark (the end
+   of a line, the end of the text, blank lines) is the whitespace that Prettier
+   prints there, where it prints the same in every language that has the place.
+   The formatter is a plugin of Prettier, and a diagram stands in a file beside
+   code that Prettier formats, so the same kind of mark or place reads the same
+   in both.
 2. A gap of a kind that Prettier does not have takes the form that the other
    diagram types print for it, so that a kind of gap has one form in every
    diagram type: a reader who knows it from one diagram type reads it at once in
@@ -51,27 +54,50 @@ spellings is the rule to correct.
 ## 1. The whitespace beside a mark
 
 The whitespace beside a mark is the whitespace that Prettier prints beside the
-same kind of mark in the languages it formats. The table gives what Prettier
-prints for each kind, and a text that the formatter prints in the same way. The
-texts of Prettier are JavaScript where no language is named.
+same kind of mark in the languages it formats. So is the whitespace of a place
+that is no mark, where Prettier prints the same in every language that has the
+place: the end of a line, the end of the text, and blank lines. The table gives
+what Prettier prints for each kind, and a text that the formatter prints in the
+same way. The texts of Prettier are JavaScript where no language is named.
 
-| Mark                                     | Prettier                                               | Whitespace                   | Written                                     | Printed                       |
-| ---------------------------------------- | ------------------------------------------------------ | ---------------------------- | ------------------------------------------- | ----------------------------- |
-| A comma                                  | `f(a,b)` is printed `f(a, b);`                         | none before, one space after | `class A,B c` in an ER diagram              | `class A, B c`                |
-| A `=` that gives a name its value        | `function f(a=1) {}` is printed `function f(a = 1) {}` | one space on each side       | `Person(a, "A", $link="x")` in a C4 diagram | `Person(a, "A", $link = "x")` |
-| The colon of a key                       | `x = {a : 1}` is printed `x = { a: 1 };`               | none before, one space after | `"Dogs" : 386` in a pie chart               | `"Dogs": 386`                 |
-| A colon between two things               | `y = c ? d:e` is printed `y = c ? d : e;`              | one space on each side       | `s1 --> s2: go` in a state diagram          | `s1 --> s2 : go`              |
-| A colon inside a name                    | the selector `a:hover` of CSS stays `a:hover`          | none on either side          | `a : R -- L : b` in an architecture diagram | `a:R -- L:b`                  |
-| Another mark between two things          | `x = a+b` is printed `x = a + b;`                      | one space on each side       | `A-->B` in a flowchart                      | `A --> B`                     |
-| Parentheses and square brackets          | `f( a )` is printed `f(a);`                            | none inside                  | `A( text )` in a flowchart                  | `A(text)`                     |
-| A `;` that ends a statement              | `a ;` is printed `a;`                                  | none before                  | `r="a" ;` in a railroad diagram             | `r = "a";`                    |
-| The `(` of a call                        | `f (a)` is printed `f(a);`                             | none before                  | `terminal ("x")` in a railroad diagram      | `terminal("x")`               |
-| Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                 | one space inside             | `curve c{m: 60, s: 70}` in a radar chart    | `curve c{ m: 60, s: 70 }`     |
-| Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                | none inside                  | `curve d{ 85, 90 }` in a radar chart        | `curve d{85, 90}`             |
-| Braces that hold nothing                 | `x = { }` is printed `x = {};`                         | none inside                  | `accDescr { }` in a Gantt chart             | `accDescr {}`                 |
+| Mark or place                            | Prettier                                                             | Whitespace                                                                         | Written                                                    | Printed                       |
+| ---------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------- |
+| A comma                                  | `f(a,b)` is printed `f(a, b);`                                       | none before, one space after                                                       | `class A,B c` in an ER diagram                             | `class A, B c`                |
+| A `=` that gives a name its value        | `function f(a=1) {}` is printed `function f(a = 1) {}`               | one space on each side                                                             | `Person(a, "A", $link="x")` in a C4 diagram                | `Person(a, "A", $link = "x")` |
+| The colon of a key                       | `x = {a : 1}` is printed `x = { a: 1 };`                             | none before, one space after                                                       | `"Dogs" : 386` in a pie chart                              | `"Dogs": 386`                 |
+| A colon between two things               | `y = c ? d:e` is printed `y = c ? d : e;`                            | one space on each side                                                             | `s1 --> s2: go` in a state diagram                         | `s1 --> s2 : go`              |
+| A colon inside a name                    | the selector `a:hover` of CSS stays `a:hover`                        | none on either side                                                                | `a : R -- L : b` in an architecture diagram                | `a:R -- L:b`                  |
+| Another mark between two things          | `x = a+b` is printed `x = a + b;`                                    | one space on each side                                                             | `A-->B` in a flowchart                                     | `A --> B`                     |
+| A keyword between two things             | `x = a  in   b;` is printed `x = a in b;`                            | one space on each side                                                             | `service a(server)[A]in   g` in an architecture diagram    | `service a(server)[A] in g`   |
+| The dot of a member access               | `x = a . b;` is printed `x = a.b;`                                   | none on either side                                                                | `tf 01 evt Shop . Buy` in an event modeling diagram        | `tf 01 evt Shop.Buy`          |
+| Parentheses and square brackets          | `f( a )` is printed `f(a);`                                          | none inside                                                                        | `A( text )` in a flowchart                                 | `A(text)`                     |
+| A `;` that ends a statement              | `a ;` is printed `a;`                                                | none before                                                                        | `r="a" ;` in a railroad diagram                            | `r = "a";`                    |
+| The `(` of a call                        | `f (a)` is printed `f(a);`                                           | none before                                                                        | `terminal ("x")` in a railroad diagram                     | `terminal("x")`               |
+| The `[` of an index                      | `x [ 0 ];` is printed `x[0];`                                        | none before                                                                        | `service a (server) [A]` in an architecture diagram        | `service a(server)[A]`        |
+| The `{` that opens a block               | `class A{}` is printed `class A {}`                                  | one space before                                                                   | `A   {` in an ER diagram                                   | `A {`                         |
+| Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                               | one space inside                                                                   | `curve c{m: 60, s: 70}` in a radar chart                   | `curve c{ m: 60, s: 70 }`     |
+| Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                              | none inside                                                                        | `curve d{ 85, 90 }` in a radar chart                       | `curve d{85, 90}`             |
+| Braces that hold nothing                 | `x = { }` is printed `x = {};`                                       | none inside                                                                        | `accDescr { }` in a Gantt chart                            | `accDescr {}`                 |
+| The end of a line                        | `a = 1;` and three spaces is printed `a = 1;`                        | none                                                                               | `radar-beta` and three spaces in a radar chart             | `radar-beta`                  |
+| The end of the text                      | `a = 1;` and two blank lines is printed `a = 1;` and one line break  | one line break, no blank line                                                      | `A --> B` and two blank lines at the end of a flowchart    | `A --> B` and one line break  |
+| Blank lines                              | `a();`, three blank lines, and `b();` is printed with one blank line | one blank line at most between two things, none at the start or the end of a block | `A --> B`, three blank lines, and `B --> C` in a flowchart | the same with one blank line  |
 
 The first two kinds of braces are the object and the array of Prettier, and the
 third is either of them with nothing in it.
+
+The end of a line, the end of the text, and blank lines are the same in
+JavaScript, CSS, YAML, and Markdown, and a line of whitespace only is a blank
+line in all four. In Markdown, two or more spaces before a line break are the
+mark of a hard line break, and not whitespace at the end of a line: Prettier
+prints two of them, and drops any other whitespace at the end of a line (`a `
+and a line break is printed `a` and a line break). Where a statement stands (the
+start of a line) is no place of this rule:
+[rule 2](#2-a-gap-of-a-kind-that-prettier-does-not-have) decides it. What
+Prettier does by an option or by itself, and not by the kind of mark or place,
+is no rule here: the unit of one level of indentation (`useTabs` and
+`tabWidth`), the line ending (`endOfLine`), and a byte order mark. The formatter
+follows them as Prettier does, and the document of a diagram type says so as a
+fact.
 
 Prettier prints the `=` of an attribute of HTML without spaces (`<a href="x">`).
 An argument of a C4 diagram stands in the list of the arguments of a call, where
