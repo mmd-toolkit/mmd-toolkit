@@ -346,11 +346,9 @@ in the Db, so the form is a choice, and the documentation of mermaid.js writes a
 space after every block keyword
 ([`loop Loop text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L472),
 [`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492)).
-A block or section keyword has one space before its text, as the title keyword
-does in [Gantt charts](./gantt.md#titles-and-sections) and
-[user journeys](./journey.md#titles-and-sections);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that gap.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a block or section keyword and its text, as Prettier prints `return  x`
+as `return x;`.
 
 [fixture: whitespace-between-tokens/wrap-text-spaced] [fixture:
 whitespace-between-tokens/block-text-touching-spaced]

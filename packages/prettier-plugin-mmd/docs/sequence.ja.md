@@ -350,11 +350,9 @@ mermaid.js の文書では、
 すべてのブロックのキーワードの後に空白を書いています
 ([`loop Loop text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L472)、
 [`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492))。
-[Gantt 図](./gantt.ja.md#タイトルとセクション) と
-[ユーザージャーニー](./journey.ja.md#タイトルとセクション) も、
-タイトルのキーワードの後に、空白を 1 つ置きます。
-ブロックや節のキーワードの後も、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+ブロックや section のキーワードとそのテキストの間に空白 1 つを与えます。
+Prettier は `return  x` を `return x;` と印字します。
 
 [fixture: whitespace-between-tokens/wrap-text-spaced]
 [fixture: whitespace-between-tokens/block-text-touching-spaced]
