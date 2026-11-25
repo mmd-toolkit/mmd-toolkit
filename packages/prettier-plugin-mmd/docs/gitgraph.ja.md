@@ -513,10 +513,17 @@ U+2029 があるときを除きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
+[fixture: gitgraph/title-and-common-values/acc-title-empty-directive-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-unclosed-empty-directive-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-empty-directive-no-final-newline-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-descr-empty-directive-gap-printed]
+[test: a whitespace character that is no space or tab before an empty directive after the accTitle line of a gitGraph]
+[test: a whitespace character that is no space or tab before an empty directive after the accDescr line of a gitGraph]
 
-gitGraph の `accDescr` の値の後の `%%` の前の、空白でもタブでもない空白文字は、
-pie 図と同じに、その場に残し、その両側の空白とタブは、
-それぞれ空白 1 つにして印字します。
+gitGraph の `accDescr` の値の後の `%%` か、`%%{` の後ろに、
+空白を除いて語の文字が続かないもの（`%%{}%%` など）の前の、
+空白でもタブでもない空白文字は、pie 図と同じに、その場に残し、
+その両側の空白とタブは、それぞれ空白 1 つにして印字します。
 詳しくは [Accessibility lines](./pie.ja.md#accessibility-lines)
 を参照してください。
 gitGraph の `title` は、後ろの `%%` の前に何があっても、
@@ -566,7 +573,7 @@ Db で LF 後の字下げが取り除かれるためです。
 行形式は次の物理行を取り込みません。
 対象にする版のうち最も古い版は、
 空の `accTitle:` または `accDescr:` の後の文を値として読みます。
-そのため、その文と、`accTitle` の値の後の `%%` の前の空白は、
+そのため、その文と、`accTitle` の値の後の `%%` か `%%{}%%` の前の空白は、
 書かれたまま残します。
 詳しくは
 [最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)

@@ -221,6 +221,13 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 `%% c` は `title T %% c` と印字します。
 コメントに接するディレクティブがあっても同じです（`title T`、改行しない空白、
 `%%{x}%%`、`%% c` は変えません）。
+`%%{` の後ろに、空白を除いて語の文字が続かないもの（`%%{}%%` など）は、
+その版が `%%` と同じようにテキストとして読むので、その前の空白も同じに扱います。
+`title T`、改行しない空白、`%%{}%%` は変えません。
+`title T`、空白 2 つ、`%%{}%%` は `title T %%{}%%` と印字します。
+詳しくは
+[最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
+を参照してください。
 テキストの後のディレクティブの後に空白が続くときは、ほかの図と同じに印字します。
 `title    T`、改行しない空白、`%%{x}%%`、空白 2 つ、`%% c` は、`title T`、
 その改行しない空白、`%%{x}%% %% c` と印字します。
@@ -237,6 +244,8 @@ U+2029 があるときを除きます。
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
 [fixture: pie/title/title-inner-text]
 [fixture: pie/title/empty-value-with-directive]
+[fixture: pie/title/title-empty-directive-gap-printed]
+[test: a whitespace character that is no space or tab before an empty directive after the title of a pie chart]
 [test: a no-break space before a comment after the title of a pie chart]
 [test: U+3000 before a comment after the title of a pie chart]
 [test: U+2003 before a comment after the title of a pie chart]
@@ -327,7 +336,10 @@ mermaid.js が先に取り除く空行・コメント・ディレクティブの
 その文は書かれたまま残します（`"A":1` を `"A": 1` と印字しません）。
 `accTitle` の値の後の `%%` の前の空白も、その版が title の一部として読むので、
 書かれたまま残します（`accTitle: Value   %% note`）。
-`accDescr` の値の後の `%%` の前の、
+`%%{` の後ろに、空白を除いて語の文字が続かないもの（`%%{}%%` など）も、
+その版はテキストとして読むので、
+その前の空白は同じに残します（`accTitle: Value   %%{}%%`）。
+`accDescr` の値の後の `%%` か、そうした `%%{` の前の、
 空白でもタブでもない空白文字（[Title](./pie.ja.md#title)
 が挙げる文字）も同じです。
 その版が説明の一部として描くので、その場に残します（`accDescr: Value`、
@@ -352,6 +364,18 @@ U+2029 があるときを除きます。
 [fixture: accessibility-lines/acc-title-percent-gap-kept]
 [fixture: accessibility-lines/acc-value-after-blank-and-directive-kept]
 [fixture: accessibility-lines/acc-value-with-value-then-row-split]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-tab-kept]
+[fixture: pie/accessibility-lines/acc-title-spaced-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-punctuation-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-then-comment-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-directive-then-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-unclosed-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-no-final-newline-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-spaced-word-directive-gap-printed]
+[fixture: pie/accessibility-lines/acc-descr-empty-directive-gap-printed]
+[test: a whitespace character that is no space or tab before an empty directive after the accTitle line of a pie chart]
+[test: a whitespace character that is no space or tab before an empty directive after the accDescr line of a pie chart]
 [fixture: pie/accessibility-lines/a11y-lines]
 [fixture: pie/accessibility-lines/a11y-empty]
 [fixture: pie/accessibility-lines/a11y-next-section]
@@ -640,7 +664,8 @@ pie
 自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。
-コメントの前の空白が例外になるのは、`accTitle` の値の後ろの `%%` です。
+コメントの前の空白が例外になるのは、
+`accTitle` の値の後ろの `%%` と `%%{}%%` です。
 数える版のうち最も古い版が、その空白をタイトルの一部として読むためです。
 詳しくは [アクセシビリティの行](#accessibility-lines) を参照してください。
 裸・3つのパーセントと末尾の空白を残します。

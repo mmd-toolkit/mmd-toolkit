@@ -40116,6 +40116,53 @@ describe("each whitespace character that is no space or tab before a comment", (
   })
 })
 
+describe("each whitespace character that is no space or tab before an empty directive", () => {
+  it("a whitespace character that is no space or tab before an empty directive after the title of a pie chart", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `pie\n"a": 1\ntitle T${character}%%{}%%\n`,
+        `pie\n  "a": 1\n  title T${character}%%{}%%\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before an empty directive after the accDescr line of a pie chart", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `pie\n"a": 1\naccDescr: T${character}%%{}%%\n`,
+        `pie\n  "a": 1\n  accDescr: T${character}%%{}%%\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before an empty directive after the accTitle line of a pie chart", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `pie\n"a": 1\naccTitle: T${character}%%{}%%\n`,
+        `pie\n  "a": 1\n  accTitle: T${character}%%{}%%\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before an empty directive after the accDescr line of a gitGraph", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `gitGraph\ncommit\naccDescr: T${character}%%{}%%\n`,
+        `gitGraph\n  commit\n  accDescr: T${character}%%{}%%\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before an empty directive after the accTitle line of a gitGraph", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `gitGraph\ncommit\naccTitle: T${character}%%{}%%\n`,
+        `gitGraph\n  commit\n  accTitle: T${character}%%{}%%\n`,
+      )
+    }
+  })
+})
+
 describe("the whitespace before a comment after a title or an accDescr line", () => {
   it.each(valueBeforeCommentExamples)(
     "prints %s",
