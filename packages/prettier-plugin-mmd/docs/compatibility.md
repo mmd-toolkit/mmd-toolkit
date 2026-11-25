@@ -6586,8 +6586,8 @@ without changing its text. Interior contacts and trivia keep their own rules.
 flowchart/accessibility-lines/empty-block-touching-keyword]
 
 Ordinary closed multiline `accDescr` bodies use the statement's continuation
-indentation, with a separate `}` at the statement's level. Mermaid discards
-leading spaces and tabs after LF from the description. Keep the remaining text,
+indentation, with a separate `}` at the statement's level. mermaid.js discards
+the indentation after a line feed from the description. Keep the remaining text,
 line breaks, trailing whitespace and directive contents. In a two-line
 `accDescr` body, mermaid.js stores the line break between the text lines in the
 description value;
