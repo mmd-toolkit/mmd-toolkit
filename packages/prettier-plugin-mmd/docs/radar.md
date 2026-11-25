@@ -45,10 +45,13 @@ prints it without the directive, and the directive stands after the space of
 that rule. Without a directive, nothing stands between the header word and its
 colon, since Prettier prints no space before the colon of a label or of
 `default` (`label :` and `default :` are printed `label:` and `default:`), so
-the directive touches the colon, and two directives in one gap touch each other.
-At the end of a line no unit stands on the other side of the directive, and the
-gap keeps whether it holds whitespace, as a flowchart keeps `A %%{x}%% %%{y}%%`
-as written. [gitgraph](./gitgraph.md#header) prints `gitGraph %%{x}%%:` as
+the directive touches the colon. Two directives in one gap touch each other in a
+flowchart, and the gap keeps whether it holds whitespace at the end of a line
+(`A %%{x}%% %%{y}%%` stays as written), but in it these are a question of the
+list of undecided forms (D50), so no rule gives the contact of two directives,
+and the released form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+[gitgraph](./gitgraph.md#header) prints `gitGraph %%{x}%%:` as
 `gitGraph%%{x}%%:`. The colon stays before an unclosed directive too:
 `radar-beta:%%{x y`, a line break, and `axis North` stay as written, since
 mermaid.js takes the directive out with the line break after it and would read
@@ -3520,11 +3523,14 @@ and `{ Words }` as `accDescr: Words`, which
 [A description block on one line](./compatibility.md#a-description-block-on-one-line)
 states for every diagram type that accepts a block, and keeps the line break
 after a directive that stands between them. Preserve comment/directive-only
-interiors. Rule 1 names no mark for a line inside a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
+interiors. Rule 1 names no mark for a line inside a block, and no rule gives
+these interiors: [xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block without text that holds a comment line or a directive.
+breaks of a block without text that holds a comment line or a directive, but in
+them this is a question of the list of undecided forms (D34) and a form printed
+against a rule, so their printing is no decided form, and the released form
+stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Ordinary description body and standalone comment lines align one level inside
 the statement: the Db removes indentation after LF. Rule 1 names no mark for the
 indentation of a line inside a block, so
