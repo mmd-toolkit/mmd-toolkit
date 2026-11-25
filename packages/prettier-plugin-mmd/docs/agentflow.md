@@ -1099,14 +1099,14 @@ comment are removed as well.
 [fixture: comments/repeated-separators-before-comment] [fixture:
 comments/comment-looking-values] [fixture: comments/comments-align]
 
-Reuse [Comments](./flowchart.md#comments) for the same reason: align standalone
-comments with neighbouring statements and retain the author's complete text,
-including trailing spaces, except that the spaces and tabs at the end of a
-comment after a statement are dropped where the comment holds a `;` (`A %% c;  `
-is printed `A %% c;`) and stay where it holds none. The final spaces and tabs of
-a trailing comment that contains `;` stand at the line end, where Prettier
-removes them, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives their removal while the comment and its semicolon remain.
+Align standalone comments with neighbouring statements and retain the author's
+complete text, including trailing spaces, except that the spaces and tabs at the
+end of a comment after a statement are dropped where the comment holds a `;`
+(`A %% c;  ` is printed `A %% c;`) and stay where it holds none. The final
+spaces and tabs of a trailing comment that contains `;` stand at the line end,
+where Prettier removes them, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives their removal
+while the comment and its semicolon remain.
 
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
 [fixture:
@@ -1147,20 +1147,14 @@ agentflow-beta TB
 
 ### Directives
 
-Reuse [Directives](./flowchart.md#directives) for the same reason: removal
-supplies no separator. Keep contents, order and continuation columns, align
-standalone directives, and place a directive within a printed line as under
-[Directives](./flowchart.md#directives). In
-[flowchart](./flowchart.md#directives) and [ER](./er.md#directives) diagrams,
-standalone directives stand at neighbouring statements' depth. Where an ordinary
-gap supplies a space, an inline directive follows that space and touches the
-next unit.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-agentflow the same directive placements. A directive after a header separator
-moves into the body with its following statement, keeping whether they touch,
-just as in flowchart: the Db is the same, and no reason specific to Agentflow
-calls for attaching it to the header instead. A line already kept under Kept
-lines stays together.
+Removal supplies no separator. Keep contents, order and continuation columns,
+align standalone directives, and place a directive within a printed line as
+under [Directives](./flowchart.md#directives). Standalone directives stand at
+the depth of the neighbouring statements. Where an ordinary gap supplies a
+space, an inline directive follows that space and touches the next unit. A
+directive after a header separator moves into the body with its following
+statement, keeping whether they touch. A line already kept under Kept lines
+stays together.
 
 [fixture: directives/header-directive-before-body] [fixture:
 directives/header-directive-touching-body] [fixture:
@@ -1433,11 +1427,10 @@ accessibility/block-spaced-text] [fixture: accessibility/block-padded-text]
 accessibility/block-right-padding-only]
 
 At the top level, align the body lines of a closed description block one step
-inside its statement: Mermaid discards this indentation from the accessibility
-description. The body lines of a closed description block stand one level inside
-its top-level statement. Inside a flow or global body, keep their columns,
-because the raw text also participates in membership. Changing a global body's
-text can change the members of a later flow.
+inside its statement. The body lines of a closed description block stand one
+level inside its top-level statement. Inside a flow or global body, keep their
+columns, because the raw text also participates in membership. Changing a global
+body's text can change the members of a later flow.
 
 [fixture: accessibility/global-description-membership-kept]
 

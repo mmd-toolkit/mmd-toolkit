@@ -1149,7 +1149,6 @@ agentflow-beta TB
 [fixture: comments/repeated-separators-before-comment]
 [fixture: comments/comment-looking-values] [fixture: comments/comments-align]
 
-[コメント](./flowchart.ja.md#コメント)と同じ理由で、
 独立したコメントを近隣の文に揃え、著者の全文と末尾空白を保ちます。
 ただし、文の後ろのコメントは、
 `;` を含む場合にだけ末尾の空白とタブを落とします（`A %% c;  ` は `A %% c;`
@@ -1198,20 +1197,14 @@ agentflow-beta TB
 
 ### Directives
 
-[ディレクティブ](./flowchart.ja.md#ディレクティブ)と同じ理由です。
 除去で区切りが生まれないため、内容、順序、後続行の桁位置を保ちます。
 独立したディレクティブを揃え、同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
-独立したディレクティブは、
-[flowchart](./flowchart.ja.md#ディレクティブ) と [ER](./er.ja.md#ディレクティブ)
-の図で、前後の文と同じ段に揃えます。
-通常の隙間に空白を置く場合は、同じ図で、
-行内のディレクティブをその空白の後ろに置き、次の単位に接します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
+独立したディレクティブは、前後の文と同じ段に揃えます。
+通常の隙間に空白を置く場合は、行内のディレクティブをその空白の後ろに置き、
+次の単位に接します。
 見出しの区切りの後のディレクティブは、後続文との接触の有無を保ち、
-flowchartと同じく本文へ移します。
-Dbは同じで、agentflowだけ見出しに付ける理由がないためです。
+本文へ移します。
 行の保持ですでに保つ行は分けません。
 
 [fixture: directives/header-directive-before-body]
@@ -1492,7 +1485,6 @@ U+2028 と U+2029 は、[行の保持](./agentflow.ja.md#kept-lines) のとお�
 [fixture: accessibility/block-right-padding-only]
 
 トップレベルの閉じた説明ブロックの本文は文より 1 段深くそろえます。
-Mermaid がアクセシビリティの説明からこの字下げを除くためです。
 flow または global の本文では、原文がメンバーの決定にも使われるため、
 元の列を保ちます。
 global 本文の原文を変えると、後続の flow のメンバーが変わる場合があります。
