@@ -1973,6 +1973,22 @@ keeps its written indentation.
 
 [test: a state line starting with a directive before U+2028]
 
+A comment line that starts with `#` ends at a U+2028 or U+2029, and the text
+after the character is a line of its own. A directive and a comment on that line
+are printed as on a line after a line feed, with one space between them where
+the source has whitespace there, and none where the source has none: `# c`,
+U+2028, `%%{x}%%`, two spaces, and `%% c` print `# c` and `%%{x}%% %% c` on two
+lines. A comment line, or a node named `End`, on the next line with no empty
+line between keeps the line as written.
+
+[test: state: a hash comment line, U+2028, a directive, two spaces, a comment,
+and a comment line after it] [test: state: a hash comment line, U+2028, a
+directive, two spaces, a comment, and a node named End] [test: state: a hash
+comment line, U+2028, a directive, two spaces, and a comment] [test: state: a
+hash comment line, U+2028, a directive touching a comment] [test: state: a hash
+comment line, U+2028, a directive, a tab, and a comment] [test: state: a hash
+comment line, U+2029, a directive, two spaces, and a comment]
+
 A line that holds U+2028 or U+2029 is kept as written, the second description of
 an alias included, whitespace after the character too: `state "d" as A : x`, two
 spaces, U+2028, and two spaces stays as written.
