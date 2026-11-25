@@ -1,4 +1,4 @@
-import type { Node, Range } from "@mmd-toolkit/ast"
+import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { appendItems, findNodes, minOf, maxOf } from "./collections.ts"
 import type { Source } from "./source.ts"
 import {
@@ -13,6 +13,7 @@ import {
   isAtLineEnd,
   isCssWhitespace,
   isSpaceOrTab,
+  isStructural,
   isWhitespace,
   isWordCharacter,
   previousRead,
@@ -1073,7 +1074,7 @@ export function isDroppedSemicolon(source: Source, offset: number): boolean {
     return false
   }
   const { kind } = semicolonRulesOf(source)
-  if (source.ignoredSemicolons.has(offset)) {
+  if (printedIgnoredSemicolonsOf(source).has(offset)) {
     return (
       kind === "separators" ||
       (kind === "text" && endsStyleStatement(source, offset))
@@ -1621,7 +1622,7 @@ export function followsGapsOfStyleRuleStretch(
   range: Range,
 ): boolean {
   if (usesVerbatimStyleLines(source)) return false
-  const stretch = findStyleRuleStretches(source).find(
+  const stretch = findSourceStyleRuleStretches(source).find(
     ([first, last]) => first < range[0] && range[1] <= last,
   )
   if (stretch === undefined || !ignoresSemicolonAfter(source, range[1])) {
@@ -1653,6 +1654,22 @@ const styleRuleStretchesBySource = new WeakMap<
   Source,
   readonly (readonly [number, number])[]
 >()
+
+/** The stretches that the line rule reads in the source as written. */
+const sourceStyleRuleStretchesBySource = new WeakMap<
+  Source,
+  readonly (readonly [number, number])[]
+>()
+
+/** The offsets of the closings that go to a line of their own, of each source. */
+const closingStartsBySource = new WeakMap<Source, readonly number[]>()
+
+/**
+ * The sources whose closings are being decided. A closing is decided on the
+ * text as written, so while it is, the lines that the printer prints, which
+ * the decisions create, are not read (see `printedIgnoredSemicolonsOf`).
+ */
+const decidingClosings = new WeakSet<Source>()
 
 /** The `;` that end a comment and that the line rule ignores, of each source. */
 const commentEndSemicolonsBySource = new WeakMap<Source, ReadonlySet<number>>()
@@ -1720,15 +1737,186 @@ function findStyleRuleStretches(
 ): readonly (readonly [number, number])[] {
   const cached = styleRuleStretchesBySource.get(source)
   if (cached !== undefined) return cached
+  const stretches = findStretchesOfLines(source, findMovedClosingStarts(source))
+  styleRuleStretchesBySource.set(source, stretches)
+  return stretches
+}
+
+/**
+ * The stretches that the line rule reads in the source as written, where no
+ * closing goes to a line of its own. A closing stays on its line where one of
+ * them holds whitespace before it (see `followsGapsOfStyleRuleStretch`), so
+ * this is the set that decides where a closing goes.
+ */
+function findSourceStyleRuleStretches(
+  source: Source,
+): readonly (readonly [number, number])[] {
+  const cached = sourceStyleRuleStretchesBySource.get(source)
+  if (cached !== undefined) return cached
+  const stretches = findStretchesOfLines(source, [])
+  sourceStyleRuleStretchesBySource.set(source, stretches)
+  return stretches
+}
+
+/**
+ * The stretches of every line of the source, with the segments of the line
+ * rule cut at the offsets in `cuts`, where the printer starts a new line.
+ */
+function findStretchesOfLines(
+  source: Source,
+  cuts: readonly number[],
+): readonly (readonly [number, number])[] {
   const stretches: (readonly [number, number])[] = []
   let start = 0
   while (start <= source.text.length) {
     const end = lineEndOf(source, start)
-    appendItems(stretches, findPotentialStyleRuleStretches(source, start, end))
+    appendItems(
+      stretches,
+      findPotentialStyleRuleStretches(source, start, end, cuts),
+    )
     start = end + 1
   }
-  styleRuleStretchesBySource.set(source, stretches)
   return stretches
+}
+
+/**
+ * The offsets of the closings of a sequence diagram that the printer puts on a
+ * line of its own: the `end` keywords that nothing keeps on the line before
+ * them (see `keepsClosingOnItsLine`). The `#` of a comment after such a closing
+ * leaves the line that it ended a stretch of, so the line that the printer
+ * prints holds the stretches of the text before the closing only, and the
+ * whitespace that lay in the longer stretch is printed as anywhere else
+ * (docs/sequence.md, Semicolons).
+ */
+function findMovedClosingStarts(source: Source): readonly number[] {
+  const cached = closingStartsBySource.get(source)
+  if (cached !== undefined) return cached
+  decidingClosings.add(source)
+  const starts =
+    source.root.body.type === "SequenceDiagram"
+      ? source.root.tokens
+          .filter(
+            (token) =>
+              isEndKeyword(token) &&
+              isStructural(source, token) &&
+              !keepsClosingOnItsLine(source, token),
+          )
+          .map((token) => token.range[0])
+      : []
+  decidingClosings.delete(source)
+  closingStartsBySource.set(source, starts)
+  return starts
+}
+
+/** The `;` that the line rule ignores in the lines that the printer prints, of each source. */
+const printedIgnoredSemicolonsBySource = new WeakMap<
+  Source,
+  ReadonlySet<number>
+>()
+
+/**
+ * The offsets of the `;` that the line rule ignores in the lines that the
+ * printer prints, which are the lines of the source cut where a closing goes to
+ * a line of its own (see `findMovedClosingStarts`): the `;` that the rule
+ * ignores in the source, which mermaid.js removes from the text, and the `;`
+ * that it ignores in the text before the closing without them, whose last `;`
+ * is then the one that the rule ignores in the line that the printer prints
+ * (docs/sequence.md, Semicolons).
+ */
+export function printedIgnoredSemicolonsOf(
+  source: Source,
+): ReadonlySet<number> {
+  if (decidingClosings.has(source)) return source.ignoredSemicolons
+  const cached = printedIgnoredSemicolonsBySource.get(source)
+  if (cached !== undefined) return cached
+  const cuts = findMovedClosingStarts(source)
+  let printed: ReadonlySet<number> = source.ignoredSemicolons
+  if (cuts.length > 0) {
+    const set = new Set(source.ignoredSemicolons)
+    const lines = new Set(cuts.map((cut) => lineStartOf(source, cut)))
+    for (const first of lines) {
+      const segments = readSegments(
+        source,
+        first,
+        lineEndOf(source, first),
+      ).map((segment) => withoutOffsets(segment, source.ignoredSemicolons))
+      for (const offset of ignoredSemicolonsIn(cutSegments(segments, cuts))) {
+        if (offset >= 0) set.add(offset)
+      }
+    }
+    printed = set
+  }
+  printedIgnoredSemicolonsBySource.set(source, printed)
+  return printed
+}
+
+/** The segment without the characters at the offsets in `removed`. */
+function withoutOffsets(
+  segment: ReadableSegment,
+  removed: ReadonlySet<number>,
+): ReadableSegment {
+  const kept = segment.offsets.flatMap((offset, index) =>
+    removed.has(offset) ? [] : [index],
+  )
+  return {
+    text: kept.map((index) => segment.text[index]).join(""),
+    offsets: kept.map((index) => segment.offsets[index]),
+  }
+}
+
+/** Whether the token is the `end` keyword, in any case. */
+function isEndKeyword(token: Token): boolean {
+  return token.value.length === 3 && token.value.toLowerCase() === "end"
+}
+
+/**
+ * Whether the closing keeps the line before it, which the block of the closing
+ * ends on, as the line of the closing: something follows the closing on its
+ * line, or the text before it needs the closing on its line. A `;` that the
+ * line rule ignores stays with the text on the line that makes it ignored
+ * (`style:#x` before the closing) where a line of its own would make it read:
+ * it ends a comment as an entity (`end #a;`, see `ignoredSemicolonNeedsItsLine`),
+ * also where whitespace follows it and it has no token of its own
+ * (`commentHasIgnoredSemicolonThatNeedsItsLine`). The `#` of a comment after
+ * the closing also keeps the closing on the line where it ends a stretch of the
+ * line rule that holds whitespace of the line before the closing: a line break
+ * would end the stretch earlier (see `followsGapsOfStyleRuleStretch`). A line
+ * that stays together because of a `;` after the closing, with a `;` before the
+ * closing that only separates statements, keeps the closing too: the part
+ * before it holds no `;` of its own, so a second formatting would not keep its
+ * statements and its `;` together (see `holdsOwnSemicolonIn`). The `}` that
+ * closes a block around this one is on a line of its own after this block,
+ * unless something follows it, so it does not keep the closing of this block on
+ * the line: the second formatting would move it.
+ */
+export function keepsClosingOnItsLine(source: Source, closing: Token): boolean {
+  const closingStart = closing.range[0]
+  const closingLine = lineStartOf(source, closingStart)
+  const lineEnd = lineEndOf(source, closingStart)
+  return (
+    findTokensBetween(source, closing.range[1], lineEnd).some(
+      (token) => isStructural(source, token) && token.value !== "}",
+    ) ||
+    [...source.ignoredSemicolons].some(
+      (semicolon) =>
+        closing.range[1] <= semicolon &&
+        semicolon < lineEnd &&
+        !isDroppedSemicolon(source, semicolon) &&
+        ignoredSemicolonNeedsItsLine(source, semicolon),
+    ) ||
+    source.root.comments.some(
+      (comment) =>
+        closing.range[1] <= comment.range[0] &&
+        comment.range[0] < lineEnd &&
+        commentHasIgnoredSemicolonThatNeedsItsLine(source, comment.range),
+    ) ||
+    followsGapsOfStyleRuleStretch(source, closing.range) ||
+    (findTokensBetween(source, closingLine, closingStart).some(
+      (token) => token.value === ";",
+    ) &&
+      !holdsOwnSemicolonIn(source, closingLine, closingStart) &&
+      holdsOwnSemicolonIn(source, closingStart, lineEnd))
+  )
 }
 
 /** The first of the two literal words used by the common line rule. */
@@ -1827,12 +2015,16 @@ export function findPotentialStyleRuleStretches(
   source: Source,
   start: number,
   end: number,
+  cuts: readonly number[] = [],
 ): readonly (readonly [number, number])[] {
   const first = lineStartOf(source, start)
   const lineEnd = lineEndOf(source, end)
   if (!source.text.slice(first, lineEnd).includes(";")) return []
   const stretches: (readonly [number, number])[] = []
-  for (const segment of readSegments(source, first, lineEnd)) {
+  for (const segment of cutSegments(
+    readSegments(source, first, lineEnd),
+    cuts,
+  )) {
     const semicolon = findLastKeptSemicolon(source, first, segment)
     if (semicolon < 0) continue
     const firstWord = findStyleWord(segment.text)
@@ -2129,6 +2321,36 @@ function joinLines(
     },
     ...second.slice(1),
   ]
+}
+
+/**
+ * The segments cut where the printer starts a new line, at the offsets in
+ * `cuts`: the characters of a segment from a cut on are a segment of their own.
+ */
+function cutSegments(
+  segments: readonly ReadableSegment[],
+  cuts: readonly number[],
+): readonly ReadableSegment[] {
+  if (cuts.length === 0) return segments
+  const cut: ReadableSegment[] = []
+  for (const segment of segments) {
+    let from = 0
+    for (const at of cuts) {
+      const index = segment.offsets.findIndex((offset) => offset >= at)
+      if (index > from) {
+        cut.push({
+          text: segment.text.slice(from, index),
+          offsets: segment.offsets.slice(from, index),
+        })
+        from = index
+      }
+    }
+    cut.push({
+      text: segment.text.slice(from),
+      offsets: segment.offsets.slice(from),
+    })
+  }
+  return cut
 }
 
 /** The characters of a line-rule segment, with their offsets in the source. */

@@ -1417,6 +1417,37 @@ mermaid.js の行の規則が読むかもしれない範囲に空白を含むと
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-body-line]
 [fixture: statements-one-per-line/box-end-comment-in-style-rule-stretch-trigger-in-other-statement]
 
+`end` がこの理由で行に残るのは、
+コメントの `;` の後ろが空白とタブだけのときに限ります。
+`;` の後ろにコメントかディレクティブが続くとき（`end #;  %% c`）は、
+`end` とそのコメントを別の行にします。
+コメントの `#` は、`end` の前のテキストの行にはもうありません。
+行の規則が読む範囲はそこより前で終わるので、そのテキストは、1 回目の整形で、
+ほかの場所と同じに印字します。
+`loop style:#x;; loop x; A->>B: body; end #;  %% c` は、
+`loop style:#x;; loop x; A ->> B: body;` と `end #;  %% c` に印字します。
+これは、`;` とコメントのあいだが空白 1 つ、空白なし、タブのとき、
+`;` の後ろがディレクティブのとき、`style` の `:` の後ろが空白かタブのとき、
+`style` の代わりに `classDef` のとき、
+メッセージの後の `;` の前に空白があるとき、`end` の前に文が 2 つあるとき、
+ほかのブロック（`alt`）のときも同じです。
+書かれたとおりに空白があるメッセージも、同じに印字します。
+
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-one-space]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-touching]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-tab]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-directive]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-directive-only]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-style-space-after-colon]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-style-tab-after-colon]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-classdef]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-classdef-space-after-colon]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-space-before-semicolon]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-two-statements]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-already-spaced]
+
 `end` が別の行になるとき、その後ろの行の規則が無視する `;` は、
 `end` が自分の行にあるときと同じに、前の行に何があっても落とします。
 `A->>B: style:#x;; end;` は、`A ->> B: style:#x;;` と `end` に印字します。
