@@ -1953,11 +1953,6 @@ prints no whitespace inside its braces.
 
 Kept-line exceptions still take priority, and a block of several lines that
 holds comment lines, or a directive on a line of its own, retains its layout.
-Rule 1 names no mark for a line inside a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
-[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block that holds comment lines, or a directive on a line of its own.
 
 [fixture: accessibility-lines/empty-block-semicolon-kept] [fixture:
 accessibility-lines/empty-block-directive-line-kept] [fixture:
@@ -1977,8 +1972,7 @@ The documentation of mermaid.js has no example of a block on one line.
 
 Multiline body columns follow the top-level or subgraph rules in
 [Multi-line values](#multi-line-values), and a closing brace on its own line
-aligns with `accDescr`, whether written at column zero or indented. This is the
-same form as the sibling diagrams, with no flowchart-specific reason to differ.
+aligns with `accDescr`, whether written at column zero or indented.
 
 [fixture: accessibility-lines/block-close-column-zero] [fixture:
 accessibility-lines/block-close-indented] [fixture:
@@ -2650,9 +2644,9 @@ A quoted string written over several lines keeps its columns.
 [fixture: multi-line-values/markdown-string-kept]
 
 At the top level, align the lines of an `accDescr { ... }` body one step inside
-its statement: Mermaid discards leading indentation after LF from the
-accessibility description. Inside a subgraph, keep the columns of a block with
-text, because its raw text is also stored among the subgraph's members.
+its statement. mermaid.js discards the indentation after a line feed from the
+description. Inside a subgraph, keep the columns of a block with text, because
+its raw text is also stored among the subgraph's members.
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 
@@ -2661,10 +2655,7 @@ The `}` of the block stands at the level of the `accDescr` it closes.
 [fixture: multi-line-values/accdescr-block-kept]
 
 Comment contents inside such a block are kept, with their columns following the
-same top-level or subgraph rule. Comment lines in description blocks use the
-body's indentation in [C4](./c4.md#description-blocks) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same indentation at the top level of a flowchart.
+same top-level or subgraph rule.
 
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
 
@@ -2678,8 +2669,7 @@ Blocks on one line follow
 and empty blocks without trivia follow
 [Accessibility lines](#accessibility-lines). A block without text, whose lines
 are only comment lines, holds no value: its comment lines stand one level deeper
-than the `accDescr`, as comment lines inside a statement do (see
-[Comments](#comments)), and its `}` at the level of the `accDescr`.
+than the `accDescr`, and its `}` at the level of the `accDescr`.
 
 [fixture: multi-line-values/accdescr-block-comment-only-several-comments]
 [fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
@@ -2769,8 +2759,7 @@ flowchart LR
 
 A comment on a line of its own stands at the level of the statements around it,
 before the header too, where it starts the line. A comment belongs to no
-statement, so it takes the level of its neighbours, which is where a reader
-looks for it.
+statement and takes the level of its neighbours.
 
 [fixture: comments/only-comment-in-subgraph] [fixture: comments/after-end]
 [fixture: comments/tab-indented-and-consecutive] [fixture:
@@ -2891,7 +2880,7 @@ empty line, and a line of a semicolon]
 ### Directives
 
 A directive (`%%{ ... }%%`) on a line of its own stands at the level of the
-statements around it, for the same reason as a comment.
+statements around it.
 
 [fixture: directives/own-line-in-subgraph] [fixture:
 directives/several-on-own-line] [fixture: directives/multi-line-on-own-line]

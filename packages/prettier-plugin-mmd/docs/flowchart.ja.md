@@ -2024,11 +2024,6 @@ usecaseのDbが同じ形に従います。
 
 保持行の例外を優先し、複数行でコメント行か、
 自分の行にあるディレクティブを持つブロックは従来の配置を保ちます。
-規則 1 は、ブロックの中の行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[xychart](./xychart.ja.md#空の説明ブロック) と
-[quadrant](./quadrant.ja.md#空の説明ブロック) も、コメント行か、
-自分の行にあるディレクティブを持つブロックの内容と改行を、そのまま残します。
 
 [fixture: accessibility-lines/empty-block-semicolon-kept]
 [fixture: accessibility-lines/empty-block-directive-line-kept]
@@ -2050,7 +2045,6 @@ mermaid.js の文書には、1 行のブロックの例がありません。
 [複数行の値](#複数行の値)のトップレベルと subgraph の規則に従い、
 単独行の閉じ括弧を `accDescr` に揃えます。
 閉じ括弧が0桁目でも字下げされていても同じです。
-兄弟の図種と同じ形で、flowchart固有の理由はありません。
 
 [fixture: accessibility-lines/block-close-column-zero]
 [fixture: accessibility-lines/block-close-indented]
@@ -2750,7 +2744,7 @@ flowchart LR
 [fixture: multi-line-values/markdown-string-kept]
 
 トップレベルの `accDescr { ... }` の本文行は、文より 1 段深くそろえます。
-Mermaid がアクセシビリティの説明から LF 後の字下げを除くためです。
+mermaid.js は説明から行送り後の字下げを除きます。
 subgraph の中では、本文があるブロックの原文が字下げごとメンバーに入るため、
 元の列を保ちます。
 
@@ -2762,11 +2756,6 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 
 そうしたブロックのコメントの内容も保ち、
 列は同じトップレベルまたは subgraph の規則に従います。
-[C4](./c4.ja.md#説明ブロック) の図では、説明ブロックのコメント行も、
-本文と同じ字下げにします。
-flowchart のトップレベルでは、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この字下げを与えます。
 
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
 
@@ -2780,8 +2769,7 @@ flowchart のトップレベルでは、
 注釈類のない空ブロックは、
 [アクセシビリティの行](#アクセシビリティの行)に従います。
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
-そのコメント行は、文の中のコメント行と同じく、
-`accDescr` より 1 段深く置き（[コメント](#コメント)を参照）、
+そのコメント行は、`accDescr` より 1 段深く置き、
 `}` は `accDescr` と同じ段に置きます。
 
 [fixture: multi-line-values/accdescr-block-comment-only-several-comments]
@@ -2871,7 +2859,8 @@ flowchart LR
 ### コメント
 
 1 行に置かれたコメントは、周りの文と同じ段に置きます。
-コメントはどの文にも属さないので、読む人が探す場所の隣の段にします。
+コメントはどの文にも属しません。
+隣の文と同じ段にします。
 ヘッダーの前でも同じで、行の先頭に置きます。
 
 [fixture: comments/only-comment-in-subgraph] [fixture: comments/after-end]
@@ -2989,7 +2978,6 @@ U+2028 か U+2029 の後のコメント行が次の行をその行につなぐ�
 ### ディレクティブ
 
 1 行に置かれたディレクティブ（`%%{ ... }%%`）は、周りの文と同じ段に置きます。
-コメントと同じ理由です。
 
 [fixture: directives/own-line-in-subgraph]
 [fixture: directives/several-on-own-line]
