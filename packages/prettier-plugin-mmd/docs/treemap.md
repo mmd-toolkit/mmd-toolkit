@@ -53,14 +53,13 @@ deeper than their parent; common statements and class definitions use one body
 step. This chooses consistent depths from equivalent widths. Ordinary roots
 stand one configured step below the header and children one below their parent
 under [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
-following the indentation gaps in [kanban](./kanban.md#indentation) and
-[ishikawa](./ishikawa.md#indentation) diagrams. Use at least one character per
-step at tabWidth zero because indentation determines parentage. A title or an
-accessibility statement that was not written indented is the exception and is
-printed at the start of its line (see [Title](#title)). A styleless,
-unterminated class definition touching a row keeps that contact; in such a
-diagram every root uses baseline zero, so later roots cannot become children
-accidentally.
+following the indentation gaps in [kanban](./kanban.md#indentation) diagrams.
+Use at least one character per step at tabWidth zero because indentation
+determines parentage. A title or an accessibility statement that was not written
+indented is the exception and is printed at the start of its line (see
+[Title](#title)). A styleless, unterminated class definition touching a row
+keeps that contact; in such a diagram every root uses baseline zero, so later
+roots cannot become children accidentally.
 
 [fixture: treemap/indentation/irregular]
 
@@ -783,11 +782,8 @@ null/whitespace-only text.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
 between `title` and what it takes, as Prettier prints `return  x` as
 `return x;`, and drops the spaces and tabs at the end of a line, so a title of
-spaces and tabs only prints bare `title`.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-before a nonempty title value, as Prettier prints `return  x` as `return x;`,
-and the formatter prints a run of spaces and tabs inside the text as one space
-(see
+spaces and tabs only prints bare `title`. The formatter prints a run of spaces
+and tabs inside the text as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 without rewriting quote-looking text. Quotes in title text are characters of the
 title: mermaid.js reads the content after `title` as line text, so removing them
@@ -963,10 +959,10 @@ positive minimum step at width zero. Align a separate opener or closer with its
 statement. A description block’s separate closing brace stands at the
 statement’s indentation under
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as in
-the description blocks of [flowchart](./flowchart.md#multi-line-values) and
-[pie](./pie.md#description-blocks) diagrams. The first `}` still closes the
-block. A block that was not written indented is printed at the start of its
-line, with its body one step inside it (see [Title](#title)).
+the description blocks of [flowchart](./flowchart.md#multi-line-values)
+diagrams. The first `}` still closes the block. A block that was not written
+indented is printed at the start of its line, with its body one step inside it
+(see [Title](#title)).
 
 [fixture: treemap/description-blocks/block-touching-with-text-fixed] [fixture:
 treemap/description-blocks/empty]
@@ -1111,11 +1107,6 @@ positive minimum step at tabWidth zero.
 treemap/comments/aligned-zero]
 
 Comments before the header or in a body without statements stand at column one.
-Comments before the header stand at column one in
-[mindmap](./mindmap.md#comments) and [ishikawa](./ishikawa.md#comments)
-diagrams, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same column for those comments here.
 
 [fixture: treemap/prefix/comment] [fixture: treemap/comments/only-comments]
 

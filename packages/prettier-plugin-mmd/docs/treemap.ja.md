@@ -58,8 +58,7 @@ AST の `children` から、書かれた順に親を読みます。
 共通文と classDef は本文の 1 段に置きます。
 同じ読みを持つ幅から、一貫した深さを選ぶためです。
 普通の根を見出しより設定の 1 段、子を親より 1 段深く置く形は、
-[kanban](./kanban.ja.md#インデント) と [ishikawa](./ishikawa.ja.md#indentation)
-の図の字下げの間隔と同じです。
+[kanban](./kanban.ja.md#インデント)の図の字下げの間隔と同じです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 字下げして書かれていない title とアクセシビリティの文だけは、
 行頭に置いて印字します。
@@ -827,9 +826,6 @@ treemap
 `title` と値の間に空白 1 つを与え（Prettier は `return  x` を `return x;`
 と印字する）、行末の空白とタブを除きます。
 そのため、空白とタブだけの値を持つ title は `title` だけになります。
-[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
-空でない title の値の前を空白 1 つにします。
-Prettier が `return  x` を `return x;` と印字するためです。
 引用符に見える文字を保ち、内側の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 題のテキストの引用符は題の文字です。
@@ -1020,8 +1016,7 @@ Mermaid が説明から LF 後の字下げを除くためです。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 別行の開始記号と閉じ記号は文の列にそろえます。
 説明ブロックの別行の閉じ記号は、
-[flowchart](./flowchart.ja.md#複数行の値) と
-[pie](./pie.ja.md#description-blocks) の図と同じく、文の列にそろえます。
+[flowchart](./flowchart.ja.md#複数行の値)の図と同じく、文の列にそろえます。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
 この位置を与えます。
 最初の `}` がブロックを閉じます。
@@ -1174,11 +1169,6 @@ treemap
 [fixture: treemap/comments/aligned-zero]
 
 見出しの前のコメントと、文のない本文のコメントは第 1 列に置きます。
-見出しの前のコメントは、
-[mindmap](./mindmap.ja.md#コメント) と [ishikawa](./ishikawa.ja.md#comments)
-の図でも第 1 列に置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-ここでも同じ列を与えます。
 
 [fixture: treemap/prefix/comment] [fixture: treemap/comments/only-comments]
 
