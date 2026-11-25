@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Comments, and common.md Comment lines: a %% that only a directive precedes on its line starts a comment line, so the line changes nothing; the only block is b."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "b",
+          "label": "b",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

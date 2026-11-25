@@ -272,6 +272,8 @@ too.
 | [gitGraph](./gitgraph.md#hidden-directives)                                                                                                     | `commit%%{}%% ` before a following `commit` on the next line                                                                                                                 | `commit%%{}%%` before the same following line                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.7.0, 11.17.2, 12.0.0 and 12.3.0 reject the line without its final space                                                        | [fixture: gitgraph/hidden-directives/commit-closing-padding]                                                                                                |
 | [pie, gitGraph](./pie.md#accessibility-lines)                                                                                                   | `accTitle:` or `accDescr:` with no value, and a statement on a later line (`"A":1`)                                                                                          | the statement printed by its rules (`"A": 1`)                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the next statement, after blank lines, comments, and directives, as the value                                        | [fixture: pie/accessibility-lines/a11y-next-join-kept]                                                                                                      |
 | [pie, gitGraph](./pie.md#accessibility-lines)                                                                                                   | `accTitle: Value   %% note`, whitespace before a `%%` after the value                                                                                                        | `accTitle: Value %% note`                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the `%%` and what follows as part of the title                                                                       | [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]                                                                                               |
+| [pie](./pie.md#title)                                                                                                                           | `title T`, a no-break space, and `%% c` (likewise another whitespace character that is no space or tab)                                                                      | `title T %% c`                                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws different text                                                                                                       | [test: a no-break space before a comment after the title of a pie chart]                                                                                    |
+| [pie, gitGraph](./pie.md#accessibility-lines)                                                                                                   | `accDescr: Value`, a no-break space, and `%% note` (likewise another whitespace character that is no space or tab)                                                           | `accDescr: Value %% note`                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws different text                                                                                                       | [test: a no-break space before a comment after the accDescr line of a pie chart]                                                                            |
 | [pie, gitGraph](./pie.md#accessibility-lines)                                                                                                   | `accDescr {a} %% c`, a comment after the `}` of a block                                                                                                                      | `accDescr: a %% c`                                                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the `%% c` as part of the description of the form with the colon                                                     | [fixture: pie/description-blocks/block-then-comment]                                                                                                        |
 | [architecture, cynefin, gitGraph, packet, pie, radar, railroad, treemap, treeView, Wardley](./compatibility.md#a-description-block-on-one-line) | `accDescr {a%%literal}`                                                                                                                                                      | `accDescr: a%%literal`                                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0 to 12.3.0 draw different text                                                                                              | [fixture: pie/description-blocks/block-text-with-percent-kept]                                                                                              |
 | [pie](./pie.md#description-blocks)                                                                                                              | `accDescr`, `%% c`, `{D}` on separate lines                                                                                                                                  | `accDescr %% c`, then `{D}` on the next line                          | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 reject the other form                                                                                            | [fixture: pie/description-blocks/opener-comment-break-kept]                                                                                                 |
@@ -876,7 +878,12 @@ changes 127, and in none of those does the formatted text draw differently from
 the written text. The `style` and the `classDef` of an ER diagram, with runs of
 a U+2028, a U+2029, a no-break space, a space, and a tab at the end, before a
 `;`, a comment, a directive, and a statement, made 144 texts, and in none of
-them does the formatted text draw differently in a version that reads them.
+them did the formatted text draw other pixels in a version that reads them. The
+SVG that mermaid.js draws holds the character in the style attribute of the
+groups around the entity box where a comment or a directive follows it on the
+line of the style (`style A fill:red`, a U+2028, a U+2029, and `%% d`), and not
+in the text without it, so the formatter keeps the character there (see
+[Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
 
 ## Styles that are drawn the same
 
@@ -5790,6 +5797,12 @@ counts reads both with a lexer built with jison, whose rule takes `accTitle`,
   is removed with it (`accTitle: Value   %%{x: w  %% note`), and a comment after
   the `}` of a block keeps the block: the form with the colon,
   `accDescr: a %% c`, has the description `a %% c`, where the block has `a`.
+- A whitespace character that is no space or tab before the `%%` after the value
+  is drawn as a part of the text of an `accDescr:` line and of the title of a
+  pie chart, where the later versions trim it, and spaces and tabs there are
+  drawn the same (`accDescr: Value`, a no-break space, and `%% note`). The same
+  version rejects the `title` of a gitGraph, so nothing there depends on the
+  whitespace before a `%%` after it.
 
 The other diagram types of the pinned grammar have no such version.
 
@@ -5805,7 +5818,12 @@ gitgraph/title-and-common-values/acc-title-percent-gap-kept] [fixture:
 pie/accessibility-lines/acc-title-unclosed-directive-then-comment-kept]
 [fixture:
 gitgraph/title-and-common-values/acc-title-unclosed-directive-then-comment-kept]
-[fixture: gitgraph/title-and-common-values/block-then-comment-kept]
+[fixture: gitgraph/title-and-common-values/block-then-comment-kept] [test: a
+whitespace character that is no space or tab before a comment after the title of
+a pie chart] [test: a whitespace character that is no space or tab before a
+comment after the accDescr line of a pie chart] [test: a whitespace character
+that is no space or tab before a comment after the accDescr line of a gitGraph]
+[test: a no-break space before a comment after the title of a gitGraph]
 
 ## Lines that hold a direction text
 

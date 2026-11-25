@@ -107,14 +107,23 @@ agentflow/gram-split-sequence-label]
 
 A Label includes its initial string delimiters, when present, and subsequent
 bare continuation, excluding outer bare padding; an all-whitespace label covers
-its whitespace token. Comments within bare label text are within its range but
-outside its value and tokens.
+its whitespace tokens, one for each run of whitespace around the comments inside
+it. Comments within bare label text are within its range but outside its value
+and tokens: `A[ %% c` followed by a line `]` has the label range from the space
+through the line feed, with the comment inside it and a token on each side.
 
 [fixture: agentflow/gram-node-quoted-padding] [fixture:
 agentflow/gram-split-edge-string-bare-tail] [fixture:
 agentflow/gram-label-whitespace-only] [fixture:
 agentflow/comment-label-keeps-interior-spaces] [fixture:
-agentflow/comment-square-after-string-padding]
+agentflow/comment-square-after-string-padding] [fixture:
+agentflow/lex-label-whitespace-only-comment-after-space] [fixture:
+agentflow/lex-label-whitespace-only-comment-after-tab] [fixture:
+agentflow/lex-label-whitespace-only-comment] [fixture:
+agentflow/lex-slanted-label-whitespace-only-comment-after-space] [fixture:
+agentflow/lex-ellipse-label-whitespace-only-comment-after-space] [fixture:
+agentflow/lex-pipe-label-whitespace-only-comment] [fixture:
+agentflow/lex-label-whitespace-only-two-comments]
 
 DataBlock covers one complete @{ through }, with no separate value range; its
 interior keeps its written whitespace, including the whitespace whose reading is

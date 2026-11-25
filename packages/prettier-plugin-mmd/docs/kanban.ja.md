@@ -595,6 +595,38 @@ mermaid.js は拒否します（既知の差異
 [test: data blocks: kanban one line with U+2029 inside]
 [test: data blocks: kanban one line with no-break spaces at the ends]
 
+ブロックが 1 行で、ディレクティブで終わる card は、
+2 つの規則を 1 回の整形で適用して印字します。
+ブロックは両端の内側に空白を 1 つずつ置き、
+最後のディレクティブの後の空白とタブは、
+落とします（[行末の空白](#行末の空白)を参照）。
+出力をもう一度整形しても何も変わりません。
+その空白とタブがあるために、ブロックが書かれたままになることはありません。
+これは、閉じているディレクティブでも、
+テキストの終わりまで届く閉じていないディレクティブでも同じです。
+形のある card にも、ない card にも当てはまります。
+ブロックに接するディレクティブ、続けて並ぶディレクティブ、
+card の頭にもあるディレクティブにも当てはまります。
+行が長すぎるブロックは、`}` の後にディレクティブがあれば分けません。
+[データブロック](./flowchart.ja.md#データブロック)と同じで、その行のまま、
+両端の内側に空白を 1 つずつ置いて印字します。
+複数行のブロックは、空白を置かず、
+card の最後のディレクティブの後の空白も書かれたままにします。
+複数行の値の続きの行と同じです（[行末の空白](#行末の空白)を参照）。
+
+[fixture: data-blocks/one-line-padded-closed-directive-blanks]
+[fixture: data-blocks/one-line-padded-closed-directive-tab]
+[fixture: data-blocks/one-line-padded-closed-directive-blanks-end-of-text]
+[fixture: data-blocks/one-line-padded-open-directive-blanks-end-of-text]
+[fixture: data-blocks/one-line-padded-open-directive-tab-end-of-text]
+[fixture: data-blocks/one-line-padded-bare-id-directive-blanks]
+[fixture: data-blocks/one-line-padded-touching-directive-blanks]
+[fixture: data-blocks/one-line-padded-two-directives-blanks]
+[fixture: data-blocks/one-line-padded-leading-directive-blanks]
+[fixture: data-blocks/one-line-padded-tab-inside-directive-blanks]
+[fixture: data-blocks/one-line-padded-long-directive-blanks]
+[fixture: data-blocks/multiline-directive-blanks-kept]
+
 [データブロック](./flowchart.ja.md#データブロック)の移動と安全条件を適用します。
 `@{` の直後が改行なら、本文の全行を同じ数の半角空白だけ動かし、
 文字がある最も浅い行をノードの 1 段内側に置きます。

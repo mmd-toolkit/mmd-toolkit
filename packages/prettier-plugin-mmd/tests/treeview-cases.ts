@@ -1148,6 +1148,146 @@ export const treeviewCases: readonly TreeviewCase[] = [
     options: {},
   },
   {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-comment",
+    input: "treeView-beta\n├── a\nb \u2028 %%{x}%%  %% c  \n\n└── c\n",
+    output: "treeView-beta\n├── a\nb \u2028 %%{x}%%  %% c  \n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment",
+    input: "treeView-beta\n├── a\nb \u2028 %% c\n\n└── c\n",
+    output: "treeView-beta\n├── a\nb \u2028 %% c\n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-touching",
+    input: "treeView-beta\n├── a\nb\u2028 %% c\n\n└── c\n",
+    output: "treeView-beta\n├── a\nb\u2028 %% c\n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-paragraph-separator-comment",
+    input: "treeView-beta\n├── a\nb \u2029 %% c\n\n└── c\n",
+    output: "treeView-beta\n├── a\nb \u2029 %% c\n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-class-line-separator-directive-comment",
+    input:
+      'treeView-beta\n├── a\n"parent" :::X   \u2028 %%{x}%%  %% c  \n\n└── c\n',
+    output:
+      'treeView-beta\n├── a\n"parent" :::X   \u2028 %%{x}%%  %% c  \n\n└── c\n',
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-at-end",
+    input: "treeView-beta\n├── a\nb \u2028 %% c  ",
+    output: "treeView-beta\n├── a\nb \u2028 %% c  ",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/prefixed-name-line-separator-directive-comment-own-line",
+    input: "treeView-beta\n├── a\n├── b \u2028 %%{x}%%  %% c  \n\n└── c\n",
+    output: "treeView-beta\n├── a\n├── b\n%%{x}%% %% c  \n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/no-branch-added-name-line-separator-comment",
+    input: "treeView-beta\na\nb \u2028 %% c\n\n└── c\n",
+    output: "treeView-beta\na\nb \u2028 %% c\n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-row-follows",
+    input: "treeView-beta\n├── a\nb \u2028 %% c\n└── c\n",
+    output: "treeView-beta\n├── a\nb \u2028 %% c\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-without-line-separator-redrawn",
+    input: "treeView-beta\n├── a\nb\n└── c\n",
+    output: "treeView-beta\n├── a\n└── b\n    └── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-at-end",
+    input: "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%\n",
+    output: "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-paragraph-separator-directive",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2029%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2029%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-spaces-directive",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028   %%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028   %%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-spaces-line-separator-directive",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb   \u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb   \u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-two-directives",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%%%{y}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%%%{y}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-description-line-separator-comment",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb ## d\u2028%% c\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb ## d\u2028%% c\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-description-line-separator-directive",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb ## d\u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb ## d\u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-directive-line-follows",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%% c\n%%{y}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%% c\n%%{y}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-semicolon",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%;\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\n\u2514\u2500\u2500 b\u2028%%{x}%%;\n\n    \u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
     name: "treeview/title/directive-end-comment-touching",
     input: "treeView-beta\ntitle T  %%{x}%%%% c\nR\n",
     output: "treeView-beta\n  title T %%{x}%%%% c\n  R\n",

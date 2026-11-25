@@ -291,6 +291,8 @@ ELK の配置のパッケージのどのリリースも、
 | [gitGraph](./gitgraph.ja.md#hidden-directives)                                                                                        | 次行に `commit` が続く `commit%%{}%% `                                                                                                        | 同じ次行が続く `commit%%{}%%`                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.7.0、11.17.2、12.0.0、12.3.0 は末尾の空白のない行を拒否する                                                      | [fixture: gitgraph/hidden-directives/commit-closing-padding]                                                                                                |
 | [pie、gitGraph](./pie.ja.md#accessibility-lines)                                                                                      | 値のない `accTitle:` または `accDescr:` と、後ろの行の文（`"A":1`）                                                                           | 規則で印字される文（`"A": 1`）                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、空行・コメント・ディレクティブの後の文を値として読む                                                     | [fixture: pie/accessibility-lines/a11y-next-join-kept]                                                                                                      |
 | [pie、gitGraph](./pie.ja.md#accessibility-lines)                                                                                      | `accTitle: Value   %% note`。値の後の `%%` の前の空白                                                                                         | `accTitle: Value %% note`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、`%%` とその後ろを title の一部として読む                                                                 | [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]                                                                                               |
+| [pie](./pie.ja.md#title)                                                                                                              | `title T`、改行しない空白、`%% c`（改行しない空白の代わりに、空白でもタブでもない別の空白文字でも同じ）                                       | `title T %% c`                                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、異なるテキストを描く                                                                                     | [test: a no-break space before a comment after the title of a pie chart]                                                                                    |
+| [pie、gitGraph](./pie.ja.md#accessibility-lines)                                                                                      | `accDescr: Value`、改行しない空白、`%% note`（空白でもタブでもない別の空白文字でも同じ）                                                      | `accDescr: Value %% note`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、異なるテキストを描く                                                                                     | [test: a no-break space before a comment after the accDescr line of a pie chart]                                                                            |
 | [pie、gitGraph](./pie.ja.md#accessibility-lines)                                                                                      | `accDescr {a} %% c`。ブロックの `}` の後のコメント                                                                                            | `accDescr: a %% c`                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、コロンの形の説明に `%% c` を含めて読む                                                                   | [fixture: pie/description-blocks/block-then-comment]                                                                                                        |
 | [architecture、cynefin、gitGraph、packet、pie、radar、railroad、treemap、treeView、Wardley](./compatibility.ja.md#1-行の説明ブロック) | `accDescr {a%%literal}`                                                                                                                       | `accDescr: a%%literal`                          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 から 12.3.0 が異なるテキストを描く                                                                           | [fixture: pie/description-blocks/block-text-with-percent-kept]                                                                                              |
 | [pie](./pie.ja.md#description-blocks)                                                                                                 | 別行の `accDescr`、`%% c`、`{D}`                                                                                                              | `accDescr %% c` と次行の `{D}`                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 がもう一方の形を拒否する                                                                         | [fixture: pie/description-blocks/opener-comment-break-kept]                                                                                                 |
@@ -924,7 +926,14 @@ treemap の `classDef` も、その図種で対象にする版で同じように
 ER 図の `style` と `classDef` は、U+2028、U+2029、ノーブレークスペース、空白、
 タブの並びが末尾にあり、その後に `;`、コメント、指令、
 文が続く 144 のテキストを描きました。
-それを読む版で、整形したテキストが違って描かれることはありませんでした。
+それを読む版で、整形したテキストの画素が違うことはありませんでした。
+コメントかディレクティブが style の行で文字の後に続くとき（`style A fill:red`、
+U+2028、U+2029、`%% d`）、mermaid.js が描く SVG は、
+その文字をエンティティの箱を囲むグループの style 属性に持ち、
+文字のないテキストの SVG は持ちません。
+そのため、整形はそこでは文字を残します。
+詳しくは [スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
+を参照してください。
 
 ## 同じに描かれるスタイル
 
@@ -6000,6 +6009,13 @@ ER 図と requirement 図は、`accTitle` が 1 桁目にない場合、
   ブロックの `}` の後のコメントは、ブロックの形を残します。
   コロンの形 `accDescr: a %% c` の説明は `a %% c` で、
   ブロックの説明は `a` だからです。
+- 値の後の `%%` の前の、空白でもタブでもない空白文字は、
+  `accDescr:` の行と pie 図の title では、本文の一部として描かれ、
+  後の版はそれを取り除きます。
+  そこの空白とタブは、同じに描かれます（`accDescr: Value`、改行しない空白、
+  `%% note`）。
+  同じ版は gitGraph の `title` を拒否するので、
+  そこでは `%%` の前の空白に左右されるものがありません。
 
 固定した文法の、ほかの図種には、そうした版がありません。
 
@@ -6015,6 +6031,10 @@ ER 図と requirement 図は、`accTitle` が 1 桁目にない場合、
 [fixture: pie/accessibility-lines/acc-title-unclosed-directive-then-comment-kept]
 [fixture: gitgraph/title-and-common-values/acc-title-unclosed-directive-then-comment-kept]
 [fixture: gitgraph/title-and-common-values/block-then-comment-kept]
+[test: a whitespace character that is no space or tab before a comment after the title of a pie chart]
+[test: a whitespace character that is no space or tab before a comment after the accDescr line of a pie chart]
+[test: a whitespace character that is no space or tab before a comment after the accDescr line of a gitGraph]
+[test: a no-break space before a comment after the title of a gitGraph]
 
 ## 方向のテキストを含む行
 

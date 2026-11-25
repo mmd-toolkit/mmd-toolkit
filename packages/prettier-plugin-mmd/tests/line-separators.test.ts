@@ -1296,6 +1296,126 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart TD\nA   -->   B\u2028%% c\n\n   -->   C\n",
     "flowchart TD\n  A   -->   B\u2028%% c\n\n   -->   C\n",
   ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR;\n  A --> B;\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon, in a header without a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with one semicolon, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C; \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a semicolon at the first column",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a statement",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  D\n",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  D\n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, and an empty line at the end of the text",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a comment, and a line of a semicolon right after it",
+    "flowchart TD\nB --> C\u2028%% c\n;\n",
+    "flowchart TD\n  B --> C\u2028%% c\n;\n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, and a comment line",
+    "flowchart TD\nB --> C\u2028%% c\n\n;\n%% d\n",
+    "flowchart TD\n  B --> C\n  %% c\n\n  %% d\n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, a line of a semicolon, and a comment line",
+    "flowchart TD\nB --> C;;\u2028 %%{x}%%  %% c  \n\n  ;\n%% d\n",
+    "flowchart TD\n  B --> C\n  %%{x}%% %% c  \n\n  %% d\n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, an empty line, and a comment line",
+    "flowchart TD\nB --> C\u2028%% c\n\n;\n\n%% d\n",
+    "flowchart TD\n  B --> C\n  %% c\n\n  %% d\n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a comment, an empty line, and two lines of semicolons",
+    "flowchart TD\nB --> C\u2028%% c\n\n;;\n  ;\n",
+    "flowchart TD\n  B --> C\n  %% c\n",
+  ],
+  [
+    "flowchart: a statement, U+2029, a comment, an empty line, and a line of a semicolon",
+    "flowchart TD\nB --> C\u2029%% c\n\n;\n",
+    "flowchart TD\n  B --> C\n  %% c\n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, and a statement",
+    "flowchart TD\nB --> C\u2028%% c\n\n;\nD --> E\n",
+    "flowchart TD\n  B --> C\u2028%% c\n\n  D --> E\n",
+  ],
+  [
+    "agentflow: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "agentflow-beta TB\nA --> B\u2028%% c\n\n;\n",
+    "agentflow-beta TB\n  A --> B %% c\n",
+  ],
+  [
+    "sequence: a statement, U+2028, a comment, and a line of a semicolon right after it",
+    "sequenceDiagram\nA->>B: y\u2028%% c\n;\n",
+    "sequenceDiagram\n  A->>B: y\u2028%% c\n;\n",
+  ],
+  [
+    "sequence: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "sequenceDiagram\nA->>B: y\u2028%% c\n\n;\n",
+    "sequenceDiagram\n  A ->> B: y\n  %% c\n",
+  ],
+  [
+    "sequence: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "sequenceDiagram\nA->>B: y;;\u2028 %%{x}%%  %% c  \n\n;\n",
+    "sequenceDiagram\n  A ->> B: y\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "quadrant: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "quadrantChart\ntitle t\u2028%% c\n\n;\n",
+    "quadrantChart\n  title t\n  %% c\n",
+  ],
+  [
+    "xychart: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "xychart-beta\ntitle t\u2028%% c\n\n;\n",
+    'xychart-beta\n  title "t"\n  %% c\n',
+  ],
+  [
+    "state: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "stateDiagram-v2\nA --> B\u2028%% c\n\n;\n",
+    "stateDiagram-v2\n  A --> B\u2028%% c\n\n  ;\n",
+  ],
+  [
+    "block: a statement, U+2028, a comment, an empty line, and a line of a semicolon",
+    "block-beta\nA B\u2028%% c\n\n;\n",
+    "block-beta\n  A B\u2028%% c\n\n  ;\n",
+  ],
+  [
+    "treeview: a title, U+2028, a comment, an empty line, and a line of a semicolon",
+    "treeView-beta\ntitle t\u2028%% c\n\n;\n",
+    "treeView-beta\n  title t\u2028%% c\n\n  ;\n",
+  ],
 ]
 
 /**
@@ -7967,6 +8087,27 @@ const rejectedSequenceExamples: readonly (readonly [string, string])[] = [
 
 describe("a sequence diagram with a line separator that is rejected", () => {
   it.each(rejectedSequenceExamples)(
+    "reports a syntax error for %s",
+    async (_name, input) => {
+      await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
+    },
+  )
+})
+
+/** Texts that mermaid.js rejects: the text ends in the style context after a directive that follows whitespace (docs/er.md, Line separators). */
+const rejectedErStyleExamples: readonly (readonly [string, string])[] = [
+  [
+    "ER a style, two U+2028 or U+2029, a space, and a directive at the end of the text",
+    "erDiagram\nA\nstyle A fill:red\u2028\u2029 %%{init: {}}%%\n",
+  ],
+  [
+    "ER a classDef, two U+2028 or U+2029, a space, and a directive at the end of the text",
+    "erDiagram\nA:::k\nclassDef k fill:red\u2028\u2029 %%{init: {}}%%\n",
+  ],
+]
+
+describe("an ER style that is rejected", () => {
+  it.each(rejectedErStyleExamples)(
     "reports a syntax error for %s",
     async (_name, input) => {
       await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
@@ -36640,14 +36781,14 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill: red\n  %% c\n\n  %% d\n  %%{init: {}}%%\n  %% e\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment follows on its line",
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 that a comment follows on its line",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029 %% comment",
-      "erDiagram\n  A\n  style A fill: red\n  %% comment\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029 %% comment\n",
     ],
     [
-      "ER a classDef that no semicolon ends is printed without U+2029 and U+2028 before a directive and a comment at the end of the text",
+      "ER a classDef that no semicolon ends keeps U+2029 and U+2028 before a directive and a comment at the end of the text",
       "erDiagram\nA:::k\nclassDef k fill:red\u2029\u2028%%{init: {}}%% %% comment\n%% c1\n",
-      "erDiagram\n  A:::k\n  classDef k fill: red\n  %%{init: {}}%% %% comment\n  %% c1\n",
+      "erDiagram\n  A:::k\n  classDef k fill:red\u2029\u2028%%{init: {}}%% %% comment\n  %% c1\n",
     ],
     [
       "ER a style that no semicolon ends is printed without the U+2028 and the no-break space after it before a comment line at the end of the text",
@@ -36675,14 +36816,14 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill:red\u2028 %%{init: {}}%%\n  %% c\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without the U+2028 that a directive touches",
+      "ER a style that no semicolon ends keeps the U+2028 that a directive touches",
       "erDiagram\nA\nstyle A fill:red\u2028%%{init: {}}%%\nx\n",
-      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  x\n",
+      "erDiagram\n  A\n  style A fill:red\u2028%%{init: {}}%%\n  x\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without the U+2028 that a directive touches before a comment line",
+      "ER a style that no semicolon ends keeps the U+2028 that a directive touches before a comment line",
       "erDiagram\nA\nstyle A fill:red\u2028%%{init: {}}%%\n%% d\n",
-      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  %% d\n",
+      "erDiagram\n  A\n  style A fill:red\u2028%%{init: {}}%%\n  %% d\n",
     ],
     [
       "ER a style that no semicolon ends keeps the U+2028 that a directive touches where a comment line and a statement follow",
@@ -36690,49 +36831,89 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill:red\u2028%%{init: {}}%%\n%% d\nx\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without the two characters that a directive touches before a comment line",
+      "ER a style that no semicolon ends keeps the two characters that a directive touches before a comment line",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%% d\n",
-      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  %% d\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n  %% d\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without the two characters that a directive touches where a directive line follows",
+      "ER a style that no semicolon ends keeps the two characters that a directive touches where a directive line follows",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%%{init: {}}%%\n",
-      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  %%{init: {}}%%\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n  %%{init: {}}%%\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without the two characters that a directive touches where the text ends",
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 that a comment touches",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029%% d\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029%% d\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the whitespace between two U+2028 or U+2029 and a comment",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029   %% d\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029   %% d\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 before a directive that a comment line follows",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029 %%{init: {}}%%\n%% e\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029 %%{init: {}}%%\n  %% e\n",
+    ],
+    [
+      "ER a classDef that no semicolon ends keeps two U+2028 or U+2029 and a no-break space before a comment",
+      "erDiagram\nA:::k\nclassDef k fill:red\u2028\u2029\u00a0%% d\n",
+      "erDiagram\n  A:::k\n  classDef k fill:red\u2028\u2029\u00a0%% d\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps U+2029 before a comment and a comment line",
+      "erDiagram\nA\nstyle A fill:red\u2029 %% d\n%% e\n",
+      "erDiagram\n  A\n  style A fill:red\u2029 %% d\n  %% e\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps a no-break space and the U+2028 that a directive touches",
+      "erDiagram\nA\nstyle A fill:red\u00a0\u2028%%{init: {}}%%\nB\n",
+      "erDiagram\n  A\n  style A fill:red\u00a0\u2028%%{init: {}}%%\n  B\n",
+    ],
+    [
+      "ER a classDef that no semicolon ends keeps a no-break space and the U+2028 that a directive touches",
+      "erDiagram\nA:::k\nclassDef k fill:red\u00a0\u2028%%{init: {}}%%\nB\n",
+      "erDiagram\n  A:::k\n  classDef k fill:red\u00a0\u2028%%{init: {}}%%\n  B\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the whitespace inside its styles and prints a run between its parts as one space before two U+2028 or U+2029 and a comment",
+      "erDiagram\nA\nstyle   A   fill   :red  ,  stroke  :   blue\u2028\u2029 %% d\n",
+      "erDiagram\n  A\n  style A fill   :red , stroke  :   blue\u2028\u2029 %% d\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the two characters that a directive touches where the text ends",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n",
-      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without the two characters that a directive touches where a statement follows",
+      "ER a style that no semicolon ends keeps the two characters that a directive touches where a statement follows",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\nx\n",
-      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  x\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n  x\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without the two characters that a directive touches where a directive line and then a comment line follow",
+      "ER a style that no semicolon ends keeps the two characters that a directive touches where a directive line and then a comment line follow",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%%{init: {}}%%\n%% d\n",
-      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  %%{init: {}}%%\n  %% d\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n  %%{init: {}}%%\n  %% d\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without the two characters that a directive touches where a directive line and then a statement follow",
+      "ER a style that no semicolon ends keeps the two characters that a directive touches where a directive line and then a statement follow",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%%{init: {}}%%\nx\n",
-      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  %%{init: {}}%%\n  x\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n  %%{init: {}}%%\n  x\n",
     ],
     [
-      "ER a classDef that no semicolon ends is printed without the U+2029 that a directive touches",
+      "ER a classDef that no semicolon ends keeps the U+2029 that a directive touches",
       "erDiagram\nA:::k\nclassDef k fill:red\u2029%%{init: {}}%%\nx\n",
-      "erDiagram\n  A:::k\n  classDef k fill: red%%{init: {}}%%\n  x\n",
+      "erDiagram\n  A:::k\n  classDef k fill:red\u2029%%{init: {}}%%\n  x\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line",
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 that a comment with a semicolon follows on its line",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029 %% c;\n",
-      "erDiagram\n  A\n  style A fill: red\n  %% c;\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029 %% c;\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line before a comment line",
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 that a comment with a semicolon follows on its line before a comment line",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029 %% c;\n%% d\n",
-      "erDiagram\n  A\n  style A fill: red\n  %% c;\n  %% d\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029 %% c;\n  %% d\n",
     ],
     [
       "ER a style that no semicolon ends keeps the U+2028 that a comment with a semicolon follows on its line",
@@ -36745,14 +36926,14 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill:red\u2028\u2029 %% c;\nx\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a directive and a comment with a semicolon follow on their line",
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 that a directive and a comment with a semicolon follow on their line",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029 %%{init: {}}%% %% c;\n",
-      "erDiagram\n  A\n  style A fill: red\n  %%{init: {}}%% %% c;\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029 %%{init: {}}%% %% c;\n",
     ],
     [
-      "ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line, with a color",
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 that a comment with a semicolon follows on its line, with a color",
       "erDiagram\nA\nstyle A fill:#f00\u2028\u2029 %% #a;\n",
-      "erDiagram\n  A\n  style A fill: #f00\n  %% #a;\n",
+      "erDiagram\n  A\n  style A fill:#f00\u2028\u2029 %% #a;\n",
     ],
     [
       "ER a style that no semicolon ends keeps the two characters of a style that holds a semicolon before a comment with a semicolon",
@@ -36760,9 +36941,9 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill:#f0;\u2028\u2029 %% c;\n",
     ],
     [
-      "ER a classDef that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line",
+      "ER a classDef that no semicolon ends keeps two U+2028 or U+2029 that a comment with a semicolon follows on its line",
       "erDiagram\nA:::k\nclassDef k fill:red\u2028\u2029 %% c;\n",
-      "erDiagram\n  A:::k\n  classDef k fill: red\n  %% c;\n",
+      "erDiagram\n  A:::k\n  classDef k fill:red\u2028\u2029 %% c;\n",
     ],
     [
       "ER a style that no semicolon ends keeps the U+2028 and the no-break space after it where the text ends",
@@ -36843,6 +37024,21 @@ describe("style semicolons", () => {
       "ER a style that no semicolon ends keeps the U+2028 that a no-break space follows",
       "erDiagram\nA\nstyle A fill:red\u2028\u00a0\nx\n",
       "erDiagram\n  A\n  style A fill:red\u2028\u00a0\n  x\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 and a space before a directive that a statement follows",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029 %%{init: {}}%%\nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029 %%{init: {}}%%\nx\n",
+    ],
+    [
+      "ER a classDef that no semicolon ends keeps two U+2028 or U+2029 and a space before a directive that a statement follows",
+      "erDiagram\nA:::k\nclassDef k fill:red\u2028\u2029 %%{init: {}}%%\nx\n",
+      "erDiagram\n  A:::k\n  classDef k fill:red\u2028\u2029 %%{init: {}}%%\nx\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps two U+2028 or U+2029 and a space before a directive that a comment line and a statement follow",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029 %%{init: {}}%%\n%% c\nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029 %%{init: {}}%%\n%% c\nx\n",
     ],
     [
       "flowchart directive, direct, NBSP and bare percent controls",
@@ -36954,6 +37150,21 @@ describe("style semicolons", () => {
       "classDiagram\nclass A\nstyle A fill:#f00;",
       "classDiagram\n  class A\n  style A fill: #f00\n",
     ],
+    [
+      "ER a style that no semicolon ends keeps the runs between its parts as written where a comment follows the U+2028 on its line and a statement follows",
+      "erDiagram\nA\nstyle   A   fill:red,   stroke:#ABC\u2028%% x\nB\n",
+      "erDiagram\n  A\n  style   A   fill:red,   stroke:#ABC\u2028%% x\nB\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the runs between its parts as written where a comment line stands between the directive after the U+2028 and a statement",
+      "erDiagram\nA\nstyle   A   fill:red,   stroke:#ABC\u2028%%{x}%%\n%% d\nB\n",
+      "erDiagram\n  A\n  style   A   fill:red,   stroke:#ABC\u2028%%{x}%%\n%% d\nB\n",
+    ],
+    [
+      "ER a style that no semicolon ends prints the runs between its parts as one space where a directive follows the U+2028 on its line and a statement follows",
+      "erDiagram\nA\nstyle   A   fill:red,   stroke:#ABC\u2028%%{x}%%\nB\n",
+      "erDiagram\n  A\n  style A fill:red, stroke:#ABC\u2028%%{x}%%\n  B\n",
+    ],
   ])("%s", async (_title, input, expected) => {
     const output = await format(input)
     expect(output).toBe(expected)
@@ -37009,6 +37220,255 @@ describe("requirement color words with rejected tabs", () => {
   ])("rejects a tab after the color of %s", async (_kind, input) => {
     await expect(format(input)).rejects.toThrow("Unexpected character")
   })
+})
+
+/**
+ * A whitespace character that is no space or tab between the text of a value
+ * and a comment: the oldest version that counts reads it as a part of the text
+ * of the title of a pie chart and of an accDescr line of a pie chart and a
+ * gitGraph, so it stays, while the other diagram types print one space
+ * (docs/pie.md, Title and Accessibility lines).
+ */
+const valueBeforeCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a no-break space before a comment after the title of a pie chart",
+    'pie\ntitle T\u00a0%% c\n"a": 1\n',
+    'pie\n  title T\u00a0%% c\n  "a": 1\n',
+  ],
+  [
+    "U+3000 before a comment after the title of a pie chart",
+    'pie\ntitle T\u3000%% c\n"a": 1\n',
+    'pie\n  title T\u3000%% c\n  "a": 1\n',
+  ],
+  [
+    "U+2003 before a comment after the title of a pie chart",
+    'pie\ntitle T\u2003%% c\n"a": 1\n',
+    'pie\n  title T\u2003%% c\n  "a": 1\n',
+  ],
+  [
+    "spaces and a no-break space before a comment after the title of a pie chart",
+    'pie\ntitle T  \u00a0%% c\n"a": 1\n',
+    'pie\n  title T \u00a0%% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a directive and a comment after the title of a pie chart",
+    'pie\ntitle T\u00a0%%{x}%%%% c\n"a": 1\n',
+    'pie\n  title T\u00a0%%{x}%%%% c\n  "a": 1\n',
+  ],
+  [
+    "two spaces before a comment after the title of a pie chart",
+    'pie\ntitle T  %% c\n"a": 1\n',
+    'pie\n  title T %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space at the end of the title of a pie chart",
+    'pie\ntitle T\u00a0\n"a": 1\n',
+    'pie\n  title T\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr: T\u00a0%% c\n"a": 1\n',
+    'pie\n  accDescr: T\u00a0%% c\n  "a": 1\n',
+  ],
+  [
+    "U+3000 before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr: T\u3000%% c\n"a": 1\n',
+    'pie\n  accDescr: T\u3000%% c\n  "a": 1\n',
+  ],
+  [
+    "two spaces before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr: T  %% c\n"a": 1\n',
+    'pie\n  accDescr: T %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a comment after the accDescr line of a gitGraph",
+    "gitGraph\naccDescr: T\u00a0%% c\ncommit\n",
+    "gitGraph\n  accDescr: T\u00a0%% c\n  commit\n",
+  ],
+  [
+    "U+3000 before a comment after the accDescr line of a gitGraph",
+    "gitGraph\naccDescr: T\u3000%% c\ncommit\n",
+    "gitGraph\n  accDescr: T\u3000%% c\n  commit\n",
+  ],
+  [
+    "U+2003 before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr: T\u2003%% c\n"a": 1\n',
+    'pie\n  accDescr: T\u2003%% c\n  "a": 1\n',
+  ],
+  [
+    "U+2003 before a comment after the accDescr line of a gitGraph",
+    "gitGraph\naccDescr: T\u2003%% c\ncommit\n",
+    "gitGraph\n  accDescr: T\u2003%% c\n  commit\n",
+  ],
+  [
+    "a no-break space and spaces before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr:    T  \u00a0  %% c\n"a": 1\n',
+    'pie\n  accDescr: T \u00a0 %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a comment after the title of a pie chart, with CRLF line ends",
+    'pie\r\ntitle T\u00a0%% c\r\n"a": 1\r\n',
+    'pie\n  title T\u00a0%% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a comment after the last line of a pie chart, with no line break",
+    'pie\n"a": 1\ntitle T\u00a0%% c',
+    'pie\n  "a": 1\n  title T\u00a0%% c\n',
+  ],
+  [
+    "a no-break space before a comment after the accDescr line, with no line break at the end of a pie chart",
+    'pie\n"a": 1\naccDescr: T\u00a0%% c',
+    'pie\n  "a": 1\n  accDescr: T\u00a0%% c\n',
+  ],
+  [
+    "a no-break space before a directive and two spaces before a comment after the title of a pie chart",
+    'pie\ntitle T\u00a0%%{x}%%  %% c\n"a": 1\n',
+    'pie\n  title T\u00a0%%{x}%% %% c\n  "a": 1\n',
+  ],
+  [
+    "spaces before the text, a no-break space before a directive and two spaces before a comment after the title of a pie chart",
+    'pie\ntitle    T\u00a0%%{x}%%  %% c\n"a": 1\n',
+    'pie\n  title T\u00a0%%{x}%% %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a directive and a tab before a comment after the title of a pie chart",
+    'pie\ntitle T\u00a0%%{x}%%\t%% c\n"a": 1\n',
+    'pie\n  title T\u00a0%%{x}%% %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before two directives and a comment after the title of a pie chart",
+    'pie\ntitle T\u00a0%%{x}%%  %%{y}%%  %% c\n"a": 1\n',
+    'pie\n  title T\u00a0%%{x}%% %%{y}%% %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a directive and two spaces before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr: T\u00a0%%{x}%%  %% c\n"a": 1\n',
+    'pie\n  accDescr: T\u00a0%%{x}%% %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a directive and two spaces before a comment after the accDescr line of a gitGraph",
+    "gitGraph\naccDescr: T\u00a0%%{x}%%  %% c\ncommit\n",
+    "gitGraph\n  accDescr: T\u00a0%%{x}%% %% c\n  commit\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a radar chart",
+    "radar-beta\ntitle T\u00a0%% c\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T %% c\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a packet diagram",
+    'packet-beta\ntitle T\u00a0%% c\n0-7: "x"\n',
+    'packet-beta\n  title T %% c\n  0-7: "x"\n',
+  ],
+  [
+    "a no-break space before a comment after the title of an architecture diagram",
+    "architecture-beta\ntitle T\u00a0%% c\nservice a(server)[A]\n",
+    "architecture-beta\n  title T %% c\n  service a(server)[A]\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a gitGraph",
+    "gitGraph\ntitle T\u00a0%% c\ncommit\n",
+    "gitGraph\n  title T %% c\n  commit\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a cynefin diagram",
+    "cynefin-beta\ntitle T\u00a0%% c\n",
+    "cynefin-beta\n  title T %% c\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a treemap",
+    'treemap-beta\ntitle T\u00a0%% c\n"A": 1\n',
+    'treemap\ntitle T %% c\n  "A": 1\n',
+  ],
+  [
+    "a no-break space before a comment after the title of a Wardley map",
+    "wardley-beta\ntitle T\u00a0%% c\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T %% c\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a treeView",
+    "treeView-beta\ntitle T\u00a0%% c\nroot\n",
+    "treeView-beta\n  title T %% c\n  root\n",
+  ],
+  [
+    "a no-break space before a comment after the title of an info diagram",
+    "info\ntitle T\u00a0%% c\n",
+    "info\n  title T %% c\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a railroad diagram",
+    'railroad-abnf-beta\ntitle T\u00a0%% c\nr="a";\n',
+    'railroad-abnf-beta\n  title T %% c\n  r = "a";\n',
+  ],
+]
+
+/**
+ * The whitespace characters that are no space or tab and no line terminator
+ * (docs/pie.md, Title): the characters that the oldest version that counts
+ * draws as a part of the text before a `%%`.
+ */
+const whitespaceBeforeComment: readonly string[] = [
+  "\u000b",
+  "\u000c",
+  "\u00a0",
+  "\u1680",
+  "\u2000",
+  "\u2001",
+  "\u2002",
+  "\u2003",
+  "\u2004",
+  "\u2005",
+  "\u2006",
+  "\u2007",
+  "\u2008",
+  "\u2009",
+  "\u200a",
+  "\u202f",
+  "\u205f",
+  "\u3000",
+  "\ufeff",
+]
+
+describe("each whitespace character that is no space or tab before a comment", () => {
+  it("a whitespace character that is no space or tab before a comment after the title of a pie chart", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `pie\ntitle T${character}%% c\n"a": 1\n`,
+        `pie\n  title T${character}%% c\n  "a": 1\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before a comment after the accDescr line of a pie chart", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `pie\naccDescr: T${character}%% c\n"a": 1\n`,
+        `pie\n  accDescr: T${character}%% c\n  "a": 1\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before a comment after the accDescr line of a gitGraph", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `gitGraph\naccDescr: T${character}%% c\ncommit\n`,
+        `gitGraph\n  accDescr: T${character}%% c\n  commit\n`,
+      )
+    }
+  })
+})
+
+describe("the whitespace before a comment after a title or an accDescr line", () => {
+  it.each(valueBeforeCommentExamples)(
+    "prints %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
 })
 
 /**
