@@ -5286,8 +5286,8 @@ the start or at the end of the printed line. See
 Ordinary comments and directives between structural parts retain their required
 line breaks without freezing the parts' columns. Continuations and intervening
 standalone trivia use one indentation level inside the statement. Rule 1 gives
-no form here, since its table names the whitespace beside a mark and not the
-start of a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+no form here, since its table does not name the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields),
 [sequence](./sequence.md#multi-line-statements),
@@ -5304,7 +5304,7 @@ This applies to class and state statements, ER statements, requirement headers,
 fields and statements, and sequence statements other than trivia-separated
 titles. Empty description blocks inside requirement and element bodies also
 align their standalone trivia and separate closer. Rule 1 gives no form here,
-since its table names the whitespace beside a mark and not the start of a line
+since its table does not name the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [block](./block.md#empty-description-blocks) and
@@ -5961,9 +5961,8 @@ comes before the line break, and such a statement is printed on one line.
 [fixture: sequence/multi-line-statements/joined]
 
 One with a comment or a directive keeps its line breaks and aligns structural
-continuations. Rule 1 gives no form here, since its table names the whitespace
-beside a mark and not the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+continuations. Rule 1 gives no form here, since its table does not name the
+start of a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields) and
 [flowchart](./flowchart.md#multi-line-statements) put the comment and directive
@@ -8405,9 +8404,8 @@ radar/multi-line-statements/semicolon-terminal-line]
 
 A list containing comments or directives keeps its other authored entry newlines
 too, so it remains a block as written. A separate closing brace aligns with the
-statement. Rule 1 gives no form here, since its table names the whitespace
-beside a mark and not the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+statement. Rule 1 gives no form here, since its table does not name the start of
+a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [usecase](./usecase.md#native-metadata) puts the comment lines and the
 properties of a braced list one level inside and its separate closing brace at
