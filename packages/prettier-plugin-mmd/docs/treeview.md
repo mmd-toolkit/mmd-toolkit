@@ -2292,18 +2292,13 @@ Prettier puts one space before the brace that opens a block, so plain whitespace
 between `accDescr` and `{` becomes one space under
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark). Join plain opener
 whitespace, align ordinary body lines one step inside the statement, preserve
-trivia contents, and align separate closers with the statement. Rule 1 names no
-mark for the indentation of a line inside a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: in indentation mode, [flowchart](./flowchart.md#multi-line-values),
-[class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
-align the lines of an `accDescr { ... }` body one step inside its statement.
-Mermaid discards indentation after LF from the description. The body uses the
-configured indentation, including tabs and the positive minimum step at width
-zero. In box mode remove ordinary keyword/opener prefixes and place the common
-statement at column one, while keeping the body's authored columns: indenting a
-plain physical line can make box syntax reject it. Value-owned box geometry
-still keeps its complete brace span. The first effective `}` remains the closer.
+trivia contents, and align separate closers with the statement. Mermaid discards
+indentation after LF from the description. The body uses the configured
+indentation, including tabs and the positive minimum step at width zero. In box
+mode remove ordinary keyword/opener prefixes and place the common statement at
+column one, while keeping the body's authored columns: indenting a plain
+physical line can make box syntax reject it. Value-owned box geometry still
+keeps its complete brace span. The first effective `}` remains the closer.
 Unsafe removal follows Branch prefixes, including common-value tabs. A sole mode
 selector in the opener gap keeps just that gap, as described in Decorations. The
 whitespace before the `}` is no text, so the `}` stays aligned with the
