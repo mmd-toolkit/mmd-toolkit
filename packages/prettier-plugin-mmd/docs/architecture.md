@@ -50,9 +50,8 @@ architecture-beta
 ### Indentation
 
 Indent ordinary declarations, edges, alignments, common statements and
-standalone trivia one configured step. Rule 1 names no mark for the start of a
-line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+standalone trivia one configured step. The start of a line is no place of rule
+1, so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [flowchart](./flowchart.md#indentation),
 [sequence](./sequence.md#indentation), [gantt](./gantt.md#indentation),
 [pie](./pie.md#indentation), and [info](./info.md#indentation) put the
@@ -3975,9 +3974,8 @@ C" ["D
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. Rule 1 gives no form here, since its table names the whitespace beside a
-mark and not the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+header. Rule 1 gives no form here, since the start of a line is no place that
+its table names ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [flowchart](./flowchart.md#comments) and [wardley](./wardley.md#comments)
 align a comment on a line of its own with the body in the same way. Inline

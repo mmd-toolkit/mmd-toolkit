@@ -51,7 +51,7 @@ architecture-beta
 ### Indentation
 
 通常の宣言・辺・整列指定・共通文・独立した注釈類は設定の1段だけ字下げします。
-規則 1 は、行頭の印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [flowchart](./flowchart.ja.md#字下げ)、[sequence](./sequence.ja.md#字下げ)、
 [gantt](./gantt.ja.md#インデント)、[pie](./pie.ja.md#indentation)、
@@ -2892,7 +2892,7 @@ C" ["D
 
 通常の独立コメントは本文の1段、見出し前は第1列に揃えます。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は行頭を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [flowchart](./flowchart.ja.md#コメント) と [wardley](./wardley.ja.md#コメント)
 も、独立した行のコメントを本文と同じ段に揃えます。
