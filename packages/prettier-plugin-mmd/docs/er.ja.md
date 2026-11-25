@@ -1697,8 +1697,13 @@ erDiagram
 
 subgraph の名前は空白 1 つの後に置き、タイトルの `[` は名前に接します。
 `subgraph S [t]` は `subgraph S[t]` になります。
-同じ語で同じタイトルの形が逆になる理由がないので、
-[flowchart](./flowchart.ja.md#subgraph-のヘッダー)と同じ形です。
+規則 1 がこの形を与えます。
+タイトルの `[` は、添字の `[` と同じく名前に付くからです。
+Prettier は `x [ 0 ];` を `x[0];` と印字し、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)の表は、
+architecture の `service a (server) [A]` を `service a(server)[A]`
+と印字します。
+[flowchart](./flowchart.ja.md#subgraph-のヘッダー)も同じ形で印字します。
 mermaid.js は、どちらの書き方も同じ subgraph として読みます。
 角括弧の中には何も置きません。
 タイトルの名前は、接して書かれていても空白 1 つで区切ります。
@@ -1740,10 +1745,8 @@ Prettier は、JavaScript と CSS で、ブロックの先頭と末尾の空行�
 [fixture: subgraphs/title-beside-directive-runs]
 
 そこにある U+2028 と U+2029 は、そのまま残します。
-規則 1 は、subgraph の名前とタイトルの間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#行区切り) と [state](./state.ja.md#行区切り文字)
-も、これを含む間隔を書かれたまま印字します。
+規則 1 はタイトルの `[` の前に空白を置かないので、
+この形は規則 1 に反して印字しており、規則による修正を待っています。
 
 [test: U+2028 between an ER subgraph name and its title]
 [test: U+2029 between an ER subgraph name and its title]

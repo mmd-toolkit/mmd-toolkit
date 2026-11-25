@@ -1729,12 +1729,15 @@ erDiagram
 ### Subgraphs
 
 The name of a subgraph stands after one space, and the `[` of its title touches
-the name: `subgraph S [t]` is printed `subgraph S[t]`, as in
-[a flowchart](./flowchart.md#subgraph-header), since the same word with the same
-title has no reason for the opposite form. mermaid.js reads both spellings as
-the same subgraph. Nothing stands inside the brackets, and the names of the
-title are separated by one space, also where they were written touching:
-mermaid.js joins them with one space.
+the name: `subgraph S [t]` is printed `subgraph S[t]`. Rule 1 gives it: the `[`
+of the title attaches to the name as the `[` of an index does (Prettier prints
+`x [ 0 ];` as `x[0];`, and the table of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints
+`service a (server) [A]` of an architecture diagram as `service a(server)[A]`),
+and [a flowchart](./flowchart.md#subgraph-header) prints it so too. mermaid.js
+reads both spellings as the same subgraph. Nothing stands inside the brackets,
+and the names of the title are separated by one space, also where they were
+written touching: mermaid.js joins them with one space.
 
 [fixture: subgraphs/header-spacing] [fixture: subgraphs/title-touches-name]
 [fixture: subgraphs/title-names-spaced] [fixture:
@@ -1770,11 +1773,9 @@ A directive between the name and the `[` is placed as under
 [fixture: subgraphs/title-beside-directive] [fixture:
 subgraphs/title-beside-directive-runs]
 
-A U+2028 or U+2029 there stays as written. Rule 1 names no mark between the name
-of a subgraph and its title, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#line-separators) and
-[state](./state.md#line-separators) print a gap that holds one as written.
+A U+2028 or U+2029 there stays as written. Rule 1 gives no whitespace before the
+`[` of the title, so that form is printed against rule 1 and waits to be fixed
+by the rule.
 
 [test: U+2028 between an ER subgraph name and its title] [test: U+2029 between
 an ER subgraph name and its title]
