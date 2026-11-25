@@ -1477,6 +1477,86 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
   ],
   [
+    "U+2028 between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end \u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2028 after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ;\u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2028 after a space after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ; \u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2028 after two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end end\u2028\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2029 between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end \u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2029 after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ;\u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2029 after a space after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ; \u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2029 after two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end end\u2029\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028C\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B; end C\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a line break and a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028\nC\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029C\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B; end C\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a line break and a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029\nC\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
     "U+2028 after `end ;;` of a subgraph with an ignored `;`, in a flowchart",
     "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2028\n",
     "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2028\n",
@@ -1485,6 +1565,16 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "U+2029 after `end ;;` of a subgraph with an ignored `;`, in a flowchart",
     "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2029\n",
     "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2029\n",
+  ],
+  [
+    "U+2028 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end;\u2028 C; end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B; end; C;\n  end\n",
+  ],
+  [
+    "U+2029 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end;\u2029 C; end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B; end; C;\n  end\n",
   ],
 ]
 
@@ -5103,6 +5193,66 @@ const requirementLineSeparatorExamples: readonly (readonly [
     "a directive line after a comment line after U+2028, and the block of a requirement on the next line",
     "requirementDiagram\nrequirement\u2028%% heading\n%%{init: {}}%%\n r {\nid: 1\ntext: t\nrisk: low\nverifymethod: test\n}\n",
     "requirementDiagram\n  requirement\u2028%% heading\n%%{init: {}}%%\n r {\n    id: 1\n    text: t\n    risk: low\n    verifymethod: test\n  }\n",
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-region-ps",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2029 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2029 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-comment-semicolon-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c;',
+    'requirementDiagram\n  style r fill:red "r"\n:::c\u2028 %% c;\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-comment-semicolon-region-ps",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2029 %% c;',
+    'requirementDiagram\n  style r fill:red "r"\n:::c\u2029 %% c;\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-classdef-semicolon-comment-region-ls",
+    'requirementDiagram\nclassDef c fill:red "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  classDef c fill:red "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-class-semicolon-comment-region-ls",
+    'requirementDiagram\nclass r c "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  class r c "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-relationship-semicolon-comment-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n- satisfies -> a;b\u2028 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n- satisfies -> a;b\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-with-directive-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %%{x}%%  %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %%{x}%%  %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-comment-line-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n%% d\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n  %% d\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-empty-line-and-statement-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n\n  class r c\n  r - satisfies -> b\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;  %% c\n \t\nclass r c\n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c; %% c\n\n  class r c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n \t\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n \t\n  class r c\n  r - satisfies -> b\n',
   ],
   [
     "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
@@ -38383,6 +38533,314 @@ describe("a title that holds a line separator and ends with a directive", () => 
   ])("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
   })
+})
+
+/**
+ * Each example is a line that the printer keeps as written and that ends at a
+ * U+2028 or U+2029, followed by a directive, a comment, and a blank line. The
+ * text after the character is a line of its own, so the directive and the
+ * comment have one space between them where the source has whitespace, as
+ * after a line feed (for example docs/requirement.md, Line separators).
+ */
+const directiveAfterSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "requirement: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, a directive, one space, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%% %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, a directive, a tab, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%\t%% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, a directive touching a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%%% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%%%% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "requirementDiagram\n# c \u2029 %%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n% c \u2028 %%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  % c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, two directives, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%  %%{y}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %%{y}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2028, a directive, two spaces, and a comment",
+    "sequenceDiagram\n; \u2028 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "timeline\n# c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "timeline\n% c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "timeline\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "journey\n# c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "journey\n% c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "journey\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "gantt\n% c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive, two spaces, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%  %% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive, two spaces, and a comment",
+    "xychart\n; \u2028 %%{x}%%  %% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive, two spaces, and a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028 right after the text, a directive, two spaces, and a comment",
+    "usecase-beta\naccTitle: T\u2028%%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "sequence: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "sequenceDiagram\n# c \u2028 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  # c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive touching a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%%% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%%%% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%\t%% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2029, a directive, two spaces, and a comment",
+    "sequenceDiagram\n% c \u2029 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    "sequenceDiagram\n; \u2029 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%  %% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive touching a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%%% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%%%% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, a tab, and a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%\t%% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "stateDiagram-v2\n# c \u2029 %%{x}%%  %% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive touching a comment",
+    "timeline\n# c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "timeline\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "timeline\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "timeline\n# c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive touching a comment",
+    "journey\n# c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "journey: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "journey\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "journey\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "journey\n# c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive touching a comment",
+    "gantt\n% c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "gantt\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2029, a directive, two spaces, and a comment",
+    "gantt\n% c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive touching a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%%% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%%%% c\n\n  r = ("x");\n',
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive, a tab, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%\t%% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2029 %%{x}%%  %% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive touching a comment",
+    "xychart\n; \u2028 %%{x}%%%% c\n\nline [1]\n",
+    "xychart\n  %%{x}%%%% c\n\n  line [1]\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive, a tab, and a comment",
+    "xychart\n; \u2028 %%{x}%%\t%% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    "xychart\n; \u2029 %%{x}%%  %% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "usecase: an accDescr line, U+2028, a directive, two spaces, and a comment",
+    "usecase-beta\naccDescr: D \u2028 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accDescr: D\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive touching a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%%% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%%%% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive, a tab, and a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%\t%% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2029, a directive, two spaces, and a comment",
+    "usecase-beta\naccTitle: T \u2029 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "requirement: a hash comment line with an ignored semicolon, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# style:#x;\u2028%%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # style:#x;\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line with two ignored semicolons, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# style classDef:#x;;\u2028%%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # style classDef:#x;;\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line in a body, U+2028, a directive, two spaces, a comment, and the closing brace after an empty line",
+    "requirementDiagram\nrequirement r {\n# c\u2028%%{x}%%  %% c\n\n}\n",
+    "requirementDiagram\n  requirement r {\n    # c\n    %%{x}%% %% c\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, and a directive that is not closed",
+    "requirementDiagram\n# c\u2028%%{x",
+    "requirementDiagram\n  # c\u2028%%{x",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, a comment, and a comment line after it",
+    "stateDiagram-v2\n# c\u2028%%{x}%%  %% c\n%% d\n[*]-->A\n",
+    "stateDiagram-v2\n  # c\u2028%%{x}%%  %% c\n%% d\n[*]-->A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, a comment, and a node named End",
+    "stateDiagram-v2\n# c\u2028%%{x}%%  %% c\nEnd\n",
+    "stateDiagram-v2\n  # c\u2028%%{x}%%  %% c\nEnd\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive, two spaces, a comment, and two comment lines after it",
+    "timeline\n# c\u2028%%{x}%%  %% c\n%% d\n%% e\ntitle T\n",
+    "timeline\n  # c\u2028%%{x}%%  %% c\n%% d\n%% e\ntitle T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive, two spaces, a comment, and a line of whitespace only after it",
+    "journey\n# c\u2028%%{x}%%  %% c\n \t\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, two spaces, and a comment at the end of the text",
+    "gantt\n% c\u2028%%{x}%%  %% c",
+    "gantt\n  % c\n  %%{x}%% %% c\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2028, and a directive at the end of the text",
+    "sequenceDiagram\n;\u2028%%{x}%%",
+    "sequenceDiagram\n  %%{x}%%\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2029, a directive, two spaces, a comment, and an empty line at the end of the text",
+    "xychart\n;\u2029%%{x}%%  %% c\n\n",
+    "xychart\n  %%{x}%% %% c\n",
+  ],
+]
+
+describe("a line kept as written that ends at a line separator, with a directive and a comment after it", () => {
+  it.each(directiveAfterSeparatorExamples)(
+    "prints one space between them: %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
 })
 
 /**

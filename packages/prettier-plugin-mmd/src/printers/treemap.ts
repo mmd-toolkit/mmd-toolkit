@@ -3,7 +3,6 @@ import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
-import { relocatedWhitespaceStart } from "./common-layout.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
@@ -20,6 +19,7 @@ import {
   layoutTreemapStatement,
   treemapLines,
   treemapPrintedDepth,
+  treemapRelocatedWhitespaceStart,
   treemapStatementRange,
 } from "./treemap-layout.ts"
 
@@ -113,10 +113,11 @@ export function printTreemap(
   const relocatedWhitespace: Range[] = lines.map((line, index) => [
     index === 0
       ? keyword.range[1]
-      : relocatedWhitespaceStart(
+      : treemapRelocatedWhitespaceStart(
           source,
           lines[index - 1].statements.at(-1)!,
           lines[index - 1].range[1],
+          keptWithJoinedLines,
         ),
     line.range[0],
   ])
