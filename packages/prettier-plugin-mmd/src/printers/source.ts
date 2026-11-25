@@ -116,7 +116,12 @@ export interface JoiningRegion {
   readonly start: number
   /** Where the region ends: after the line terminator of the comment, if there is one. */
   readonly end: number
-  /** Whether anything but whitespace follows the region, to be joined to what comes before. */
+  /**
+   * Whether the lexer reads anything after the region, wherever it stands, to be
+   * joined to what comes before (see `findReadEnd`). `findCommentRegions`
+   * decides it next to `joinsText`, which looks only at the line right after
+   * the region.
+   */
   readonly hasTextAfter: boolean
   /**
    * Whether the line right after the region holds text, which is no whitespace
@@ -149,6 +154,24 @@ export function isBracketPadding(character: string): boolean {
 /** Whether a character is a space or a tab. */
 export function isSpaceOrTab(character: string): boolean {
   return character === " " || character === "\t"
+}
+
+/**
+ * Whether a character is whitespace that does not end its line: `isWhitespace`
+ * without LF, CR, U+2028, and U+2029. A gap that holds one of those is written
+ * as it is where this decides whether a gap is replaced (docs/c4.md, Argument
+ * spacing), and a title of a diagram type that draws the whitespace at the end
+ * of a text the same takes it for the blanks before its last directive (see
+ * `collectTextEndEdits`).
+ */
+export function isInlineWhitespace(character: string | undefined): boolean {
+  return (
+    character !== undefined &&
+    isWhitespace(character) &&
+    character !== "\n" &&
+    character !== "\r" &&
+    !isLineSeparator(character)
+  )
 }
 
 /** Whether a character is whitespace in CSS, other than a line break: a space, a tab, or a form feed. */
@@ -730,7 +753,7 @@ function findCommentRegions(
   }
 
   const all: Range[] = []
-  const joining: JoiningRegion[] = []
+  const regions: Pick<JoiningRegion, "comment" | "start" | "end">[] = []
   let previousEnd = -1
   for (const comment of root.comments) {
     if (!isCommentLine(text, root, comment)) continue
@@ -745,31 +768,27 @@ function findCommentRegions(
       start === previousEnd
     if (!joins) continue
     previousEnd = end
-    joining.push({
-      comment,
-      start,
-      end,
-      hasTextAfter: false,
-      joinsText: holdsTextOnLine(end),
-    })
+    regions.push({ comment, start, end })
   }
-  // A region has text after it when the lexer reads something after it. The
-  // `;` that end the text stand for no statement in a diagram where a `;`
-  // separates statements, and the printer drops them, except one on the line
-  // that follows the region, which stays with the line that the region joins
+  // What follows a region is decided here, for both questions that
+  // `JoiningRegion` asks: whether the lexer reads anything after it
+  // (`hasTextAfter`, from where the text read ends) and whether the line right
+  // after it holds text (`joinsText`). The `;` that end the text stand for no
+  // statement in a diagram where a `;` separates statements, and the printer
+  // drops them, except one on the line that follows the region, which stays
+  // with the line that the region joins
   // (docs/flowchart.md, Semicolons).
   const readEnd = findReadEnd(text, all, false)
   const statementEnd = diagramBodiesWithSeparatingSemicolons.has(root.body.type)
     ? findReadEnd(text, all, true)
     : readEnd
-  for (const [index, region] of joining.entries()) {
-    joining[index] = {
-      ...region,
-      hasTextAfter:
-        region.end < statementEnd ||
-        (region.end < readEnd && holdsSemicolonOnLine(text, region.end)),
-    }
-  }
+  const joining: JoiningRegion[] = regions.map((region) => ({
+    ...region,
+    hasTextAfter:
+      region.end < statementEnd ||
+      (region.end < readEnd && holdsSemicolonOnLine(text, region.end)),
+    joinsText: holdsTextOnLine(region.end),
+  }))
   // Regions that touch are removed together: text follows all of them, and the
   // last one decides, not the next comment line, which is removed too.
   for (let index = joining.length - 2; index >= 0; index--) {
@@ -1053,12 +1072,13 @@ export function findTriviaBetween(
  * the directives at its end: directives that follow each other with spaces and
  * tabs only between them, the last of them followed by spaces and tabs only up
  * to `end`. That is the end of a title read to the end of its line, whose last
- * things are directives.
+ * things are directives. `isBlank` says which characters are the blanks.
  */
 export function hasTriviaBesidesTrailingDirectives(
   source: Source,
   start: number,
   end: number,
+  isBlank: (character: string) => boolean = isSpaceOrTab,
 ): boolean {
   let position = end
   const trivia = findTriviaBetween(source, start, end)
@@ -1066,7 +1086,7 @@ export function hasTriviaBesidesTrailingDirectives(
     const item = trivia[index]
     if (
       item.type !== "Directive" ||
-      ![...source.text.slice(item.range[1], position)].every(isSpaceOrTab)
+      ![...source.text.slice(item.range[1], position)].every(isBlank)
     )
       return true
     position = item.range[0]

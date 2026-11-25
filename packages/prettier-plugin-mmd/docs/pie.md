@@ -194,8 +194,9 @@ and preserve quotes and backslashes, and all repeated assignments, including
 frontmatter fallback. The quotes and backslashes in a title are literal title
 characters in the Db read by mermaid.js. Removing the quotes or decoding a
 backslash sequence would change that title, so those characters stay as written.
-Pie never joins the next physical line into a title: even across
-blank/comment/directive gaps, a following section is a separate statement.
+The pinned grammar never joins the next physical line into a title: even across
+blank/comment/directive gaps, a following section is a separate statement, and
+where the oldest version that counts reads it otherwise, the cases below say so.
 Protected trivia and semicolon groups take precedence. A whitespace character
 that is no space or tab (U+000B, U+000C, a no-break space, U+1680, U+2000 to
 U+200A, U+202F, U+205F, U+3000, or U+FEFF) between the text and a `%%` comment
@@ -250,6 +251,38 @@ pie
   title Sales report
   "Sales": 8
 ```
+
+In the oldest version that counts, a title that ends at a U+2028 or U+2029,
+which a comment region follows, takes a line of `%%` and nothing else after the
+region as part of its text. mermaid.js removes the comment region with the line
+feed that ends it, so the line after it goes on the line of the title; a line
+that holds only `%%` is no comment line, so it stays, while the pinned grammar
+reads it as a comment. A title that such a line follows is printed as written,
+up to that `%%`, since the title on a line of its own, the comment region, and
+the `%%` line after it draw a different title there. A blank line, a directive
+line, or the end of the text after the region moves the title and the region
+onto lines of their own, as for any title; a comment line with text after it, or
+a line of whitespace only, keeps the title and what follows as written; and a
+title that no U+2028 or U+2029 ends is printed as usual, each as before.
+
+[test: pie/title/title-text-ls-comment-then-whitespace-line-kept] [test:
+pie/title/title-text-ls-comment-at-end-moved] [test:
+pie/title/title-ignored-semicolon-ls-comment-then-percent-line-kept] [test:
+pie/title/title-two-ignored-semicolons-ls-comment-then-percent-line-kept] [test:
+pie/title/title-ls-comment-then-percent-line-kept] [test:
+pie/title/title-text-ls-comment-then-percent-line-kept] [test:
+pie/title/title-ps-comment-then-percent-line-kept] [test:
+pie/title/title-ls-spaced-comment-then-percent-line-kept] [test:
+pie/title/title-ls-comment-only-then-percent-line-kept] [test:
+pie/title/title-ls-comment-then-percent-line-at-end-kept] [test:
+pie/title/title-ls-comment-then-blank-line-moved] [test:
+pie/title/title-ls-comment-then-directive-line-moved] [test:
+pie/title/title-ls-comment-then-comment-line-kept] [test:
+pie/title/title-comment-then-percent-line-without-separator] [test:
+pie/title/title-text-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/title/title-text-ls-comment-then-two-percent-lines-kept] [test:
+pie/title/title-text-ls-comment-then-percent-line-crlf-kept] [test:
+pie/title/title-text-ls-comment-then-unclosed-directive-line-moved]
 
 ### Accessibility lines
 
@@ -316,6 +349,35 @@ no-break space and spaces before a comment after the accDescr line of a pie
 chart] [test: a no-break space before a directive and two spaces before a
 comment after the accDescr line of a pie chart] [test: a no-break space before a
 comment after the accDescr line, with no line break at the end of a pie chart]
+
+The same holds for an `accTitle:` or an `accDescr:` line: a value that ends at a
+U+2028 or U+2029, a comment region after it, and a line of `%%` and nothing else
+after the region are printed as written, up to that `%%`, since the oldest
+version that counts takes the `%%` line into the value that the drawing shows. A
+blank line, a directive line, or the end of the text after the region moves the
+line and the region onto lines of their own as before.
+
+[test: pie/accessibility-lines/accdescr-ps-directive-comment-at-end-moved]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ps-comment-then-percent-line-kept]
+[test:
+pie/accessibility-lines/acctitle-ls-comment-then-percent-line-at-end-kept]
+[test:
+pie/accessibility-lines/acctitle-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-blank-line-moved] [test:
+pie/accessibility-lines/acctitle-ls-comment-then-unclosed-directive-line-moved]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ps-comment-then-percent-line-kept]
+[test:
+pie/accessibility-lines/accdescr-ls-comment-then-percent-line-at-end-kept]
+[test:
+pie/accessibility-lines/accdescr-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-blank-line-moved] [test:
+pie/accessibility-lines/accdescr-ls-comment-then-unclosed-directive-line-moved]
 
 Input (escaped):
 `"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`.

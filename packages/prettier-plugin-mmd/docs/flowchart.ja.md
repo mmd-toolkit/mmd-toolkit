@@ -591,6 +591,49 @@ mermaid.js はそれを subgraph のメンバーに入れます。
 [test: U+2029 after `end ;` of a subgraph on a kept line, then a second `;`, in a flowchart]
 [test: U+2029 after `end ;` of a subgraph on a kept line, then the end of the text, in a flowchart]
 
+subgraph の `end` の後ろに、同じ行で、
+外側の subgraph の `end` だけが続くときは、内側の `end` も自分の行に移ります。
+外側の `end` が、後ろに何も続かないときに移るのと同じです。
+`subgraph F; subgraph G; A[x;] --> B; end end` は、各 `end` を自分の行に、
+1 段ずらして置きます。
+subgraph が 3 つのときも同じです。
+その間にそれだけで置かれた `;` は、外側の subgraph の文なので、
+内側の `end` の後ろの自分の行に、ほかの行と同じように印字します。
+`end ; end` は、`end`、`;`、`end` を 3 行に印字します。
+同じ行で文が続く `end` は、その文と、間にある閉じと一緒に残ります。
+`end end ; C` は、そのままです。
+文の後ろにある閉じは、後ろに何も続かないとき、自分の行に移ります。
+`subgraph F; subgraph G; A[x;] --> B; end; C; end` では、
+最後の `end` だけがそうなります。
+`end` の間か後ろにある U+2028 と U+2029 は、ほかの `end` の後ろと同じく、
+空白です。
+
+[fixture: semicolons/nested-closings-after-kept-line]
+[fixture: semicolons/nested-closings-style-space-after-kept-line]
+[fixture: semicolons/nested-closings-three-after-kept-line]
+[fixture: semicolons/nested-closings-semicolon-between-after-kept-line]
+[fixture: semicolons/nested-closings-semicolon-after-outer-after-kept-line]
+[fixture: semicolons/nested-closings-statement-between-closings]
+[fixture: semicolons/nested-closings-statement-between-closings-closed-directive-before-statement]
+[fixture: semicolons/nested-closings-statement-between-closings-unclosed-directive-after-last-end]
+[fixture: semicolons/nested-closings-statement-between-closings-ignored-semicolon-after-last-end]
+[fixture: semicolons/nested-closings-statement-between-closings-comment-line-after-last-end]
+[fixture: semicolons/nested-closings-statement-between-closings-empty-line-after-last-end]
+[fixture: semicolons/nested-closings-statement-between-closings-at-end-of-text]
+[test: U+2028 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart]
+[test: U+2029 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart]
+[fixture: semicolons/nested-closings-statement-after-kept-line-kept]
+[fixture: semicolons/nested-closings-line-break-between-after-kept-line]
+[fixture: semicolons/nested-closings-without-kept-line]
+[test: U+2028 between two `end` of nested subgraphs on a kept line, in a flowchart]
+[test: U+2028 after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart]
+[test: U+2028 after a space after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart]
+[test: U+2028 after two `end` of nested subgraphs on a kept line, in a flowchart]
+[test: U+2029 between two `end` of nested subgraphs on a kept line, in a flowchart]
+[test: U+2029 after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart]
+[test: U+2029 after a space after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart]
+[test: U+2029 after two `end` of nested subgraphs on a kept line, in a flowchart]
+
 文の終わりの `;` も、同じ行でその後にディレクティブが続くときは残します。
 `;` がないと、ディレクティブの前の空白が文の一部として読まれるからです。
 
@@ -1179,6 +1222,19 @@ subgraph の `end` の後の U+2028 と U+2029 は mermaid.js にとって空白
 
 [test: U+2028 after the `end` of a subgraph]
 [test: U+2029 and whitespace around it after the `end` of a subgraph]
+
+残す行（`subgraph S; A[x;] --> B; end` の行など）でも、後ろに改行、次の行の文、
+テキストの終わりのどれが続いても、同じように落とします。
+自分の行に移った `end` の行には、それらを残す元のテキストがないからです。
+
+[test: U+2028 after the `end` of a subgraph on a kept line, then a line break, in a flowchart]
+[test: U+2028 after the `end` of a subgraph on a kept line, then the end of the text, in a flowchart]
+[test: U+2028 after the `end` of a subgraph on a kept line, then a statement, in a flowchart]
+[test: U+2028 after the `end` of a subgraph on a kept line, then a line break and a statement, in a flowchart]
+[test: U+2029 after the `end` of a subgraph on a kept line, then a line break, in a flowchart]
+[test: U+2029 after the `end` of a subgraph on a kept line, then the end of the text, in a flowchart]
+[test: U+2029 after the `end` of a subgraph on a kept line, then a statement, in a flowchart]
+[test: U+2029 after the `end` of a subgraph on a kept line, then a line break and a statement, in a flowchart]
 
 入力
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/collapsed-input.mmd)):

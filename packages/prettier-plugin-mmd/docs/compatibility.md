@@ -1482,7 +1482,15 @@ except that a task whose description holds a directive stays as written (see
 [Task data](./journey.md#task-data)), and for the second description of a state
 alias. The runs of spaces and tabs inside a date format, an axis format, or the
 value of an `accTitle:` line stay as written before the directives as they do
-without them.
+without them. A whitespace character that is no space or tab, such as U+00A0 or
+U+3000, that stands before the last directive that ends the text is printed as
+one space in the title of a pie chart, a radar chart, a packet diagram, an
+architecture diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map, a
+treeView, an info diagram, and a railroad diagram, and in the `accTitle:` and
+`accDescr:` lines of a usecase diagram, where a U+2028 or a U+2029 is printed so
+too: `title T`, U+00A0, `%%{x}%%`, and a space are printed `title T %%{x}%%`. In
+the title of a Gantt chart, a user journey, a timeline, a sequence diagram, a
+Venn diagram, and a C4 diagram the character stays as written.
 
 A no-break space, U+3000, U+2003, U+2028, and U+2029 are no spaces or tabs, and
 a title that holds a directive or a comment is not printed alike by every
@@ -2231,6 +2239,131 @@ a U+2029 in its text and a directive at its end, two spaces after the directive]
 [test: C4 accDescription with a U+2029 in its text and a directive at its end,
 no blanks after the directive] [test: C4 accDescription with a U+2029 in its
 text and a directive at its end, two spaces after the directive]
+
+In the `title`, `accTitle:`, and `accDescr:` lines of a pie chart, a radar
+chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram,
+a treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram,
+and in the `accTitle:` and `accDescr:` lines of a usecase diagram, the run of
+whitespace before the last directive of the line is printed as one space
+whatever whitespace it holds, such as U+00A0, U+3000, or a form feed, with or
+without spaces and tabs after that directive: `title T`, U+00A0, and `%%{x}%%`
+is printed `title T %%{x}%%`, and so is the same line with two spaces after the
+directive. This holds where only spaces and tabs stand between the directives
+and after the last of them, and in a usecase diagram where only whitespace
+stands there, a U+2028 or U+2029 included: `accTitle: T`, U+2028, and `%%{x}%%`
+is printed `accTitle: T %%{x}%%`. In the diagram types named here other than
+usecase, whitespace other than a space or a tab between two directives or after
+the last directive stays as written, with the spaces and tabs after it:
+`title T`, a space, `%%{x}%%`, U+00A0, `%%{y}%%`, and a space is printed as it
+is, and so is `title T`, a space, `%%{x}%%`, U+00A0, and a space. Directives
+that touch each other count as one directive: `title T`, U+00A0, `%%{x}%%`, and
+`%%{y}%%` is printed `title T %%{x}%%%%{y}%%`, with or without spaces and tabs
+after the last. The run before a directive that another directive follows after
+a space or a tab keeps whitespace other than spaces and tabs as written, and so
+does U+0085, which is no whitespace to mermaid.js: `title T`, U+00A0, `%%{x}%%`,
+a space, and `%%{y}%%` is printed as it is.
+
+The diagram types named here are those that this paragraph changes. mermaid.js
+draws the text of their lines the same with whitespace at its end as without it,
+whatever the whitespace. The written text and the printed text of each of these
+lines were drawn with the versions that count for the diagram type (see
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), with
+U+00A0, U+3000, U+2003, a form feed, U+000B, U+FEFF, U+1680, and U+202F before
+the directive in each type, and with U+2000 to U+200A, U+205F, U+0085, a space
+and a U+00A0 in one run, and a tab and a U+00A0 in one run in a pie chart, a
+radar chart, a treemap, and a usecase diagram; with U+2028 and U+2029 in a
+usecase diagram; with a U+00A0 between two directives in a usecase diagram; and
+with two and three directives that touch each other, after a U+00A0, a U+3000, a
+tab and a U+00A0, or a U+2028 (a usecase diagram only), in a pie chart, a radar
+chart, an info diagram, a treemap, and a usecase diagram. The Db and the SVG
+were the same, in all versions that accept the text; 10.9.8 rejects both texts
+of an info diagram and of the title of a gitGraph. A U+00A0 inside a title is
+drawn: the same texts differ there, in a pie chart and a radar chart.
+
+[test: radar title: U+00A0 before the directive] [test: architecture title:
+U+00A0 before the directive] [test: wardley title: U+00A0 before the directive]
+[test: pie title: U+00A0 before the directive] [test: info title: U+00A0 before
+the directive] [test: packet title: U+00A0 before the directive] [test: gitGraph
+title: U+00A0 before the directive] [test: treemap title: U+00A0 before the
+directive] [test: treeView title: U+00A0 before the directive] [test: cynefin
+title: U+00A0 before the directive] [test: railroad title: U+00A0 before the
+directive] [test: pie accTitle: U+00A0 before the directive] [test: pie
+accDescr: U+00A0 before the directive] [test: pie title: U+3000 before the
+directive] [test: pie title: U+2003 before the directive] [test: pie title:
+U+000C before the directive] [test: pie title: U+FEFF before the directive]
+[test: pie title: U+000B before the directive] [test: pie title: U+1680 before
+the directive] [test: pie title: U+202F before the directive] [test: pie title:
+a space and U+00A0 before the directive] [test: pie title: U+00A0 and a space
+before the directive] [test: pie title: a tab and U+00A0 before the directive]
+[test: pie title: U+00A0 before the first of two directives, a space between
+them] [test: pie title: U+0085 before the directive is no whitespace] [test:
+usecase accTitle: U+00A0 before the directive] [test: usecase accDescr: U+00A0
+before the directive] [test: usecase accTitle: U+00A0 between two directives]
+[test: usecase accTitle: U+00A0 before, between and after two directives] [test:
+usecase accTitle: U+00A0 before the first of two directives, a space between
+them] [test: radar accTitle: U+00A0 before the directive] [test: radar accDescr:
+U+00A0 before the directive] [test: architecture accTitle: U+00A0 before the
+directive] [test: architecture accDescr: U+00A0 before the directive] [test:
+wardley accTitle: U+00A0 before the directive] [test: wardley accDescr: U+00A0
+before the directive] [test: info accTitle: U+00A0 before the directive] [test:
+info accDescr: U+00A0 before the directive] [test: packet accTitle: U+00A0
+before the directive] [test: packet accDescr: U+00A0 before the directive]
+[test: gitGraph accTitle: U+00A0 before the directive] [test: gitGraph accDescr:
+U+00A0 before the directive] [test: treemap accTitle: U+00A0 before the
+directive] [test: treemap accDescr: U+00A0 before the directive] [test: treeView
+accTitle: U+00A0 before the directive] [test: treeView accDescr: U+00A0 before
+the directive] [test: cynefin accTitle: U+00A0 before the directive] [test:
+cynefin accDescr: U+00A0 before the directive] [test: railroad accTitle: U+00A0
+before the directive] [test: railroad accDescr: U+00A0 before the directive]
+[test: usecase accTitle: U+2028 before the directive] [test: usecase accTitle:
+U+2029 before the directive] [test: usecase accDescr: U+2028 before the
+directive] [test: usecase accTitle: U+00A0 and U+2028 before the directive]
+[test: usecase accTitle: a space, U+2028, and a space before the directive]
+[test: usecase accTitle: U+2028 between two directives] [test: usecase accTitle:
+U+2028 before, between and after two directives] [test: radar title: U+00A0
+between two directives, and a space after the last] [test: radar title: U+00A0
+and a space after the last directive] [test: architecture title: U+00A0 between
+two directives, and a space after the last] [test: architecture title: U+00A0
+and a space after the last directive] [test: wardley title: U+00A0 between two
+directives, and a space after the last] [test: wardley title: U+00A0 and a space
+after the last directive] [test: pie title: U+00A0 between two directives, and a
+space after the last] [test: pie title: U+00A0 and a space after the last
+directive] [test: info title: U+00A0 between two directives, and a space after
+the last] [test: info title: U+00A0 and a space after the last directive] [test:
+packet title: U+00A0 between two directives, and a space after the last] [test:
+packet title: U+00A0 and a space after the last directive] [test: gitGraph
+title: U+00A0 between two directives, and a space after the last] [test:
+gitGraph title: U+00A0 and a space after the last directive] [test: treemap
+title: U+00A0 between two directives, and a space after the last] [test: treemap
+title: U+00A0 and a space after the last directive] [test: treeView title:
+U+00A0 between two directives, and a space after the last] [test: treeView
+title: U+00A0 and a space after the last directive] [test: cynefin title: U+00A0
+between two directives, and a space after the last] [test: cynefin title: U+00A0
+and a space after the last directive] [test: railroad title: U+00A0 between two
+directives, and a space after the last] [test: railroad title: U+00A0 and a
+space after the last directive] [test: radar title: U+00A0 before two directives
+that touch each other] [test: architecture title: U+00A0 before two directives
+that touch each other] [test: wardley title: U+00A0 before two directives that
+touch each other] [test: pie title: U+00A0 before two directives that touch each
+other] [test: info title: U+00A0 before two directives that touch each other]
+[test: packet title: U+00A0 before two directives that touch each other] [test:
+gitGraph title: U+00A0 before two directives that touch each other] [test:
+treemap title: U+00A0 before two directives that touch each other] [test:
+treeView title: U+00A0 before two directives that touch each other] [test:
+cynefin title: U+00A0 before two directives that touch each other] [test:
+railroad title: U+00A0 before two directives that touch each other] [test: pie
+title: U+00A0 before three directives that touch each other] [test: pie title:
+U+3000 before two directives that touch each other] [test: pie title: a tab and
+U+00A0 before two directives that touch each other] [test: pie accTitle: U+00A0
+before two directives that touch each other] [test: pie accDescr: U+00A0 before
+two directives that touch each other] [test: pie title: U+00A0 before a
+directive, a space, and two directives that touch each other] [test: pie title:
+U+00A0 before two directives that touch each other, a space, and a third] [test:
+usecase accTitle: U+00A0 before two directives that touch each other] [test:
+usecase accTitle: U+2028 before two directives that touch each other] [test:
+usecase accDescr: U+00A0 before three directives that touch each other] [test:
+usecase accTitle: a space, a directive, U+00A0, and two directives that touch
+each other]
 
 mermaid.js reads one whitespace character after the keyword and keeps the rest
 in the Db, so the Db of the printed text differs from the Db of the written
@@ -7497,6 +7630,49 @@ after it and the `}` stand as those of any entity, unless the `}` stands on a
 line that holds the start of such a comment line (see
 [ER](./er.md#multi-line-statements)).
 
+A line that a `;` of its text keeps together, as `title T;` or the text of a
+kanban section `S[x;]`, is printed as written with the comment line after a
+U+2028 or U+2029, whatever follows the comment line: a line of a statement, an
+empty line, or the end of the text. The comment line gets no line of its own
+there. On a line that no `;` keeps, it goes to a line of its own only where an
+empty line or the end of the text follows it, and stays as written where a
+statement follows (see [Title](./treemap.md#title)). The formatter does not
+stop.
+
+[test: treemap: a title with a `;` inside, U+2028, a directive, three spaces,
+and a comment] [test: treemap: a title with a `;` inside, a directive, U+2028,
+three spaces, a comment, and an empty line] [test: treemap: a title with a `;`
+inside, a directive, U+2028, a directive, U+2028, three spaces, and a comment]
+[test: pie: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: pie: a title that ends with a `;`, U+2028, and a comment at the end of
+the text] [test: radar: a title that ends with a `;`, U+2028, a comment, and an
+empty line] [test: radar: a title that ends with a `;`, U+2028, and a comment at
+the end of the text] [test: packet: a title that ends with a `;`, U+2028, a
+comment, and an empty line] [test: packet: a title that ends with a `;`, U+2028,
+and a comment at the end of the text] [test: architecture: a title that ends
+with a `;`, U+2028, a comment, and an empty line] [test: architecture: a title
+that ends with a `;`, U+2028, and a comment at the end of the text] [test:
+wardley: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: wardley: a title that ends with a `;`, U+2028, and a comment at the end
+of the text] [test: gitGraph: a title that ends with a `;`, U+2028, a comment,
+and an empty line] [test: gitGraph: a title that ends with a `;`, U+2028, and a
+comment at the end of the text] [test: info: a title that ends with a `;`,
+U+2028, a comment, and an empty line] [test: info: a title that ends with a `;`,
+U+2028, and a comment at the end of the text] [test: cynefin: a title that ends
+with a `;`, U+2028, a comment, and an empty line] [test: cynefin: a title that
+ends with a `;`, U+2028, and a comment at the end of the text] [test: kanban: a
+section with a `;` in its text, U+2028, a comment, and an empty line] [test:
+kanban: a section with a `;` in its text, U+2028, and a comment at the end of
+the text] [test: treemap: a title that ends with a `;`, U+2028, a comment, and
+an empty line] [test: treemap: a title that ends with a `;`, U+2028, and a
+comment at the end of the text] [test: railroad: a title that ends with a `;`,
+U+2028, and a comment at the end of the text] [test: treemap: a title that ends
+with a `;`, a space, U+2028, a directive, two spaces, a comment, and an empty
+line] [test: treemap: a title that ends with a `;`, a space, U+2029, a
+directive, two spaces, a comment, and an empty line] [test: treemap: an accTitle
+that ends with a `;`, U+2028, a directive, two spaces, a comment, and an empty
+line]
+
 In an ER diagram, what else the formatter prints on a statement of such a line,
 as the colors of a style, the words of a relationship, and the quotes of a name
 that is one plain word, is stated in [ER](./er.md#attribute-spacing). A color
@@ -7592,6 +7768,116 @@ line after U+2029 inside the name of an ER entity] [test: a comment line after
 U+2028 inside the name of an ER entity that follows a name in quotes] [test: a
 comment line after U+2028 inside the name of a class] [test: a comment line
 after U+2029 inside the name of a class]
+
+The printers of kanban, treemap, treeView, and of the diagram types pie, info,
+gitgraph, packet, architecture, radar, wardley, railroad, and cynefin lay a line
+out themselves. They print the gap before a comment line that follows U+2028 or
+U+2029 as written, from the end of the statement to the end of the comment,
+where the line holds a `;` that the printer keeps: a `;` in a text, or the `;`
+that ends the comment (see [Lines that hold a `;`](#lines-that-hold-a-)). One or
+two of U+2028 and U+2029, the whitespace around them, and a directive before,
+between, or after them stay as written: `title T`, U+2028, three spaces, and
+`%% d;` is printed with its three spaces. Where the line holds no such `;`, the
+layout of the diagram type decides, and it does where a directive stands before
+the gap on the line and the comment does not end in a `;`: the title of an
+architecture diagram, of a radar chart, and of a Wardley map prints the
+whitespace between its last directive and the comment as its own rule says (see
+[Accessibility lines](./radar.md#accessibility-lines)).
+
+[test: kanban title: two separators before a comment that ends in a semicolon]
+[test: kanban title: a U+2028 before a comment that ends in a semicolon] [test:
+kanban title: a U+2029 before a comment that ends in a semicolon] [test: kanban
+title: a U+2029 and a U+2028 before a comment that ends in a semicolon] [test:
+kanban title: three spaces between a U+2028 and a comment that ends in a
+semicolon] [test: kanban title: a tab between a U+2028 and a comment that ends
+in a semicolon] [test: kanban title: a comment that ends in a semicolon touches
+the U+2028] [test: kanban title: spaces after a comment that ends in a
+semicolon] [test: kanban title: a space between the two separators before a
+comment that ends in a semicolon] [test: kanban title: a comment line after the
+comment] [test: kanban title: a directive line after the comment] [test: kanban
+title: a statement after the comment] [test: kanban title: the end of the text
+with no line break after the comment] [test: kanban title: two semicolons that
+end the comment] [test: kanban title: a directive before the separators] [test:
+kanban title: a directive between the separators] [test: kanban title: a
+directive after the separators and before the comment] [test: kanban title: a
+semicolon in the text and a comment without a semicolon] [test: kanban title: a
+comment without a semicolon after two separators] [test: treemap title: two
+separators before a comment that ends in a semicolon] [test: treemap title: a
+U+2028 before a comment that ends in a semicolon] [test: treemap title: a U+2029
+before a comment that ends in a semicolon] [test: treemap title: a U+2029 and a
+U+2028 before a comment that ends in a semicolon] [test: treemap title: three
+spaces between a U+2028 and a comment that ends in a semicolon] [test: treemap
+title: a tab between a U+2028 and a comment that ends in a semicolon] [test:
+treemap title: a comment that ends in a semicolon touches the U+2028] [test:
+treemap title: spaces after a comment that ends in a semicolon] [test: treemap
+title: a space between the two separators before a comment that ends in a
+semicolon] [test: treemap title: a comment line after the comment] [test:
+treemap title: a directive line after the comment] [test: treemap title: a
+statement after the comment] [test: treemap title: the end of the text with no
+line break after the comment] [test: treemap title: two semicolons that end the
+comment] [test: treemap title: a directive before the separators] [test: treemap
+title: a directive between the separators] [test: treemap title: a directive
+after the separators and before the comment] [test: treemap title: a semicolon
+in the text and a comment without a semicolon] [test: treemap title: a comment
+without a semicolon after two separators] [test: treeview title: two separators
+before a comment that ends in a semicolon] [test: treeview title: a U+2028
+before a comment that ends in a semicolon] [test: treeview title: a U+2029
+before a comment that ends in a semicolon] [test: treeview title: a U+2029 and a
+U+2028 before a comment that ends in a semicolon] [test: treeview title: three
+spaces between a U+2028 and a comment that ends in a semicolon] [test: treeview
+title: a tab between a U+2028 and a comment that ends in a semicolon] [test:
+treeview title: a comment that ends in a semicolon touches the U+2028] [test:
+treeview title: spaces after a comment that ends in a semicolon] [test: treeview
+title: a space between the two separators before a comment that ends in a
+semicolon] [test: treeview title: a comment line after the comment] [test:
+treeview title: a directive line after the comment] [test: treeview title: a
+statement after the comment] [test: treeview title: the end of the text with no
+line break after the comment] [test: treeview title: two semicolons that end the
+comment] [test: treeview title: a directive before the separators] [test:
+treeview title: a directive between the separators] [test: treeview title: a
+directive after the separators and before the comment] [test: treeview title: a
+semicolon in the text and a comment without a semicolon] [test: treeview title:
+a comment without a semicolon after two separators] [test: pie title: two
+separators before a comment that ends in a semicolon] [test: pie title: a U+2028
+before a comment that ends in a semicolon] [test: pie title: a U+2029 before a
+comment that ends in a semicolon] [test: pie title: a U+2029 and a U+2028 before
+a comment that ends in a semicolon] [test: pie title: three spaces between a
+U+2028 and a comment that ends in a semicolon] [test: pie title: a tab between a
+U+2028 and a comment that ends in a semicolon] [test: pie title: a comment that
+ends in a semicolon touches the U+2028] [test: pie title: spaces after a comment
+that ends in a semicolon] [test: pie title: a space between the two separators
+before a comment that ends in a semicolon] [test: pie title: a comment line
+after the comment] [test: pie title: a directive line after the comment] [test:
+pie title: a statement after the comment] [test: pie title: the end of the text
+with no line break after the comment] [test: pie title: two semicolons that end
+the comment] [test: pie title: a directive before the separators] [test: pie
+title: a directive between the separators] [test: pie title: a directive after
+the separators and before the comment] [test: pie title: a semicolon in the text
+and a comment without a semicolon] [test: pie title: a comment without a
+semicolon after two separators] [test: kanban column: two separators before a
+comment that ends in a semicolon] [test: kanban card: a U+2028 before a comment
+that ends in a semicolon] [test: kanban card: three spaces between a U+2028 and
+a comment that ends in a semicolon] [test: treemap classDef: two separators
+before a comment that ends in a semicolon] [test: treemap classDef: three spaces
+between a U+2028 and a comment that ends in a semicolon] [test: treemap
+classDef: a tab between a U+2028 and a comment that ends in a semicolon] [test:
+treemap classDef two styles: two separators before a comment that ends in a
+semicolon] [test: treemap classDef without a style: two separators before a
+comment that ends in a semicolon] [test: treemap classDef: a statement after the
+comment] [test: treemap classDef: a directive before the separators] [test: pie
+accTitle: two separators before a comment that ends in a semicolon] [test: pie
+title: a directive, a U+2028, two spaces, and a comment that ends in a
+semicolon] [test: architecture title: two separators before a comment that ends
+in a semicolon] [test: cynefin title: two separators before a comment that ends
+in a semicolon] [test: gitgraph title: two separators before a comment that ends
+in a semicolon] [test: radar title: two separators before a comment that ends in
+a semicolon] [test: info title: two separators before a comment that ends in a
+semicolon] [test: packet title: two separators before a comment that ends in a
+semicolon] [test: wardley title: two separators before a comment that ends in a
+semicolon] [test: railroad title: two separators before a comment that ends in a
+semicolon] [test: a `;` before the U+2028 between two directives, a comment
+follows the last directive after two spaces, the text ends, in a title of a
+radar chart]
 
 A block diagram has two exceptions to the rule above. The gap after the colon of
 the head of a composite block is printed as on a plain head where a name stands

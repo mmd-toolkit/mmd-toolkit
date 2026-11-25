@@ -28,9 +28,9 @@ import {
 import type {
   SequenceBodyBlockStatement,
   SequenceSectionBlockStatement,
-} from "./sequence-layout.ts"
+} from "./sequence-statements.ts"
+import { classifySequenceStatement } from "./sequence-statements.ts"
 import {
-  classifySequenceStatement,
   findColonWhitespaceEnd,
   findEndOfCommentAfterNameBlock,
   findTitleText,
