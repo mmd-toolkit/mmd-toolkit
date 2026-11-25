@@ -944,6 +944,10 @@ flowchart、agentflow、class、state、block、usecase の `style`、`classDef`
 `style A fill :#f00,stroke:  #333` は `style A fill: #f00, stroke: #333`
 になります。
 スタイルの語と語の間の空白とタブの連なりは、空白 1 つで印字します（後述）。
+swimlane 図のスタイルでは、語と語の間の空白とタブの連続を、`:` の有無によらず、
+[class](./class.ja.md#トークンの間の空白) と [block](./block.ja.md#スタイル)
+の図と同じく、空白 1 つで印字します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced]
 [fixture: flowchart/whitespace-between-tokens/style-colon-empty-value-kept]
@@ -1724,6 +1728,12 @@ treeView ではディレクティブを 1 桁目に置き、
 そこに空白があったときは、ディレクティブとコメントの間を空白 1 つにし、
 その後の行は通常どおりに印字します。
 文のない行は、その後でテキストが終わるものです。
+Gantt 図では、最初の空白文字の後に、タイトルのテキストが必要です。
+最後の行の `title` の後に、U+2028 とディレクティブとコメントが続く場合は、
+U+2028 がそのテキストになります。
+ディレクティブとコメントを別の行に移すと、
+`title` だけになって mermaid.js が拒否するため、
+区切りとディレクティブとコメントを、タイトルの行に残します。
 表は、タイトルの行 1 つと、
 その後の行のうち第 1 列に書いたものについてのものです。
 タイトルの行は、`title`、空白、U+2028 か U+2029 が 1 つ、空白か何もなし、
@@ -1750,6 +1760,9 @@ info は、空行、空白だけの行、
 そこに文を置く行は、ほかの Langium の型について示します。
 treemap は、ディレクティブとコメントの間に空白があるとき、第 2 行、第 5 行、
 第 9 行で、1 回目と 2 回目でコメントの印字が違うので、印字した形がありません。
+
+[corpus fixture: gantt/lex-title-line-separator-comment-line-end-of-text]
+[corpus fixture: gantt/lex-title-at-end]
 
 | タイトルの後                                                                   | Langium の型（treeView を除く） | treeView     | quadrant     | そのほかの型 |
 | ------------------------------------------------------------------------------ | ------------------------------- | ------------ | ------------ | ------------ |
@@ -1813,6 +1826,11 @@ Langium の型と quadrant では除き、ほかの型では残します。
 Langium の型は最初の表と同じ形ですが、値の先頭のディレクティブは、
 その後ろの文字と一緒に残ります。
 ほかの型は表の最後の列のとおりです（Venn 図にはこの行がありません）。
+quadrant 図では、mermaid.js は `%%` とその後ろを、
+`accTitle:` と `accDescr:` の値の一部として読みます。
+そのため `%%` の前の U+3000 は両方の行で、同じ位置のタブは `accTitle:` の行で、
+書かれたまま保ちます。
+ASCII の空白に置き換えると、許される空白の例外を超えて、Db が変わるためです。
 その表の 7 つの行（`T %%{x}%%\u2028  `、`T %%{x}%%\u2029  `、`T\u2028%%{x}%%`、
 `T\u2028`、`T  \u2028`、`T\u2029`、`T\u2028  `）は、その行のすぐ後に文が続くか、
 そこでテキストが終わるときについてのもので、最初の表の同じ行と同じです。
@@ -1849,6 +1867,12 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 の pie と gitGraph の行を参照してください。
 [Accessibility lines](./pie.ja.md#accessibility-lines)も参照してください。
+
+[corpus fixture: quadrant/db-grid-ideographic-acc-title]
+[corpus fixture: quadrant/db-grid-ideographic-acc-descr]
+[corpus fixture: quadrant/db-grid-tab-acc-title]
+[corpus fixture: quadrant/db-acc-title-comment-kept]
+[corpus fixture: quadrant/db-acc-descr-comment-kept]
 
 | 書かれた形（`accTitle: ` か `accDescr: ` の後） | Langium の型                                               | quadrant、Gantt、journey、timeline、sequence、C4  |
 | ----------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------- |
@@ -4531,19 +4555,31 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
 - ブロックに本文がない場合です。
   [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)のとおり、
   `accDescr {}` と印字します。
+  flowchart では、mermaid.js は空の `accDescr {}` の後も、前の説明を保ちますが、
+  空の `accDescr:` は説明を空にします。
+  そのため、空のブロックはブロックの形を保ちます。
   ディレクティブだけを持つブロックはブロックのままで、
   整形ツールは `accDescr {%%{init: {}}%% }` を `accDescr { %%{init: {}}%%}`
   と印字します。
   自分の行にあるディレクティブは行を保ちます。
 
-  [fixture: flowchart/accessibility-lines/empty-block-tight]
-  [fixture: flowchart/accessibility-lines/empty-block-spaced]
-  [fixture: flowchart/accessibility-lines/empty-block-directive-kept]
-  [fixture: flowchart/accessibility-lines/empty-block-directive-line-kept]
+[corpus fixture: flowchart/db-acc-descr-empty-block-keeps]
+[corpus fixture: flowchart/db-acc-descr-empty-replaces]
+
+[fixture: flowchart/accessibility-lines/empty-block-tight]
+[fixture: flowchart/accessibility-lines/empty-block-spaced]
+[fixture: flowchart/accessibility-lines/empty-block-directive-kept]
+[fixture: flowchart/accessibility-lines/empty-block-directive-line-kept]
 
 - ブロックが閉じていない場合です。
+  flowchart では、mermaid.js は閉じていない `accDescr {a` を、
+  Db の空の説明として読みます。
+  `accDescr: a` に変えると、説明が `a` になるため、
+  閉じていないブロックは書かれたまま残します。
 
-  [fixture: flowchart/accessibility-lines/block-unclosed]
+[corpus fixture: flowchart/lex-acc-descr-block-unclosed]
+
+[fixture: flowchart/accessibility-lines/block-unclosed]
 
 - 文を同じ行に保つ行のブロックで、
   同じ行の後ろに図が読む文か `;` が続く場合です。
@@ -4921,6 +4957,10 @@ gitGraph では、ASCII の英字、数字、`_` と、その間の `-`、`.`、
 gitGraph で対象にする版で、`branch` の中で引用符の有無を変えて描きました。
 そのうち 240 個は `checkout` と `merge` の中でも描きました。
 引用符で描画か受理が変わったのは、引用符を残す名前だけでした。
+mermaid.js はディレクティブを除いてから、ブランチの参照を読み、
+`branch` の文は参照を 1 つだけ受け取ります。
+引用符のない `branch a %%{init: {}}%% b` は、
+`a` と `b` の 2 つの参照になって拒否されるため、ブランチ名は引用符を残します。
 
 [fixture: gitgraph/references/plain-names-without-quotes]
 [fixture: gitgraph/references/names-next-to-a-keyword-without-quotes]
@@ -8584,6 +8624,15 @@ Markdown では埋め込みを辞退して本文を修復しません。
 作者のセミコロンはすべて共有の区間保護で保ちます。
 選択された1個の削除が別の選択を生み、ラベルを変え得るためです。
 原文順、繰り返す制約、空の共通代入も保ちます。
+architecture 図では、mermaid.js が辺と整列制約を、
+繰り返しも含めて Db の順序付きリストに記録するため、
+順序と繰り返す項目を保ちます。
+空の共通代入は、削除すると最後の値が変わり得るため、
+[原文順](./architecture.ja.md#source-order) が説明するように、
+書かれたまま保ちます。
+
+[corpus fixture: architecture/db-duplicate-edges]
+[corpus fixture: architecture/db-align-forward-repeat]
 
 [fixture: architecture/hidden-forms/yaml-named-icon-title-and-parent-gaps]
 [fixture: architecture/hidden-boundaries/header-and-statement]

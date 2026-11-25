@@ -891,7 +891,12 @@ ER and requirement diagrams: no whitespace before the first `:` of a style, one
 space after it where the value is not empty, no whitespace before the `,`
 between two styles, and one space after it. `style A fill :#f00,stroke:  #333`
 is printed `style A fill: #f00, stroke: #333`. A run of spaces and tabs between
-the words of a style is printed as one space (see below).
+the words of a style is printed as one space (see below). A run of spaces and
+tabs between words of a swimlane style is printed as one space, with or without
+a `:`, as in [class diagrams](./class.md#whitespace-between-tokens) and
+[block diagrams](./block.md#styles).
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form.
 
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
@@ -1633,28 +1638,35 @@ as columns. `moved` prints the text as if the U+2028 were a line break after
 column, as it prints a line of a directive there), with one space between the
 directive and the comment where spaces stood there, and the lines after it
 printed as usual. A row without a statement is followed by the end of the text.
-The table is for one title line and for the lines after it that its first column
-writes. The title line is `title`, a space, one U+2028 or U+2029, a space or
-nothing, a directive that holds no line break, no `;`, no U+2028, and no U+2029,
-and a comment that holds no `;`, written `%%{x}%%%% c` or `%%{x}%%  %% c  `, and
-nothing else. Every other title line (a directive or text before the U+2028 or
-U+2029, two separators, a directive that holds a line break, a `;`, a U+2028, or
-a U+2029, a comment that holds a `;`, a second directive, a directive without a
-comment, a comment without a directive, other whitespace around the separator or
-the comment), a line after the title that the first column of the table does not
-write, and the other sequences of lines after the title are outside the table,
-and no form of this table is stated for them. A title of a directive without a
-comment is outside this table: the first table above states its rows
-`\u2028%%{x}%%` and `\u2029%%{x}%%`, where a statement follows the title
-directly or the text ends after it, and no other form of it that holds a U+2028
-or a U+2029. The forms that the released version prints for the others stay
-until they are decided (see
+When a Gantt chart ends after a `title` line with U+2028 before a directive and
+a comment, the separator supplies the text required after the first whitespace
+character. Moving the directive and comment to another line leaves a bare
+`title`, which mermaid.js rejects, so the separator, directive, and comment stay
+on the title line. The table is for one title line and for the lines after it
+that its first column writes. The title line is `title`, a space, one U+2028 or
+U+2029, a space or nothing, a directive that holds no line break, no `;`, no
+U+2028, and no U+2029, and a comment that holds no `;`, written `%%{x}%%%% c` or
+`%%{x}%%  %% c  `, and nothing else. Every other title line (a directive or text
+before the U+2028 or U+2029, two separators, a directive that holds a line
+break, a `;`, a U+2028, or a U+2029, a comment that holds a `;`, a second
+directive, a directive without a comment, a comment without a directive, other
+whitespace around the separator or the comment), a line after the title that the
+first column of the table does not write, and the other sequences of lines after
+the title are outside the table, and no form of this table is stated for them. A
+title of a directive without a comment is outside this table: the first table
+above states its rows `\u2028%%{x}%%` and `\u2029%%{x}%%`, where a statement
+follows the title directly or the text ends after it, and no other form of it
+that holds a U+2028 or a U+2029. The forms that the released version prints for
+the others stay until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 An info diagram rejects a statement after an empty line, a line of spaces, or a
 line of a directive (mermaid.js rejects it too), so the rows that put a
 statement there hold for the other Langium types. A treemap with spaces between
 the directive and the comment has no form in the second, the fifth, and the
 ninth row: the first pass and the second pass print the comment differently.
+
+[corpus fixture: gantt/lex-title-line-separator-comment-line-end-of-text]
+[corpus fixture: gantt/lex-title-at-end]
 
 | Follows the title                                                                       | Langium types but a treeView | treeView   | quadrant chart | the other types |
 | --------------------------------------------------------------------------------------- | ---------------------------- | ---------- | -------------- | --------------- |
@@ -1717,41 +1729,50 @@ after it.
 An `accTitle:` or `accDescr:` line that holds text is printed as the next table
 gives: the Langium types as in the first table, except that a directive that
 starts the value stays with what follows it, and the other types as its last
-column (a Venn diagram has no such line). The seven rows `T %%{x}%%\u2028  `,
-`T %%{x}%%\u2029  `, `T\u2028%%{x}%%`, `T\u2028`, `T  \u2028`, `T\u2029`, and
-`T\u2028  ` of that table are for a line that a statement follows directly or
-after which the text ends, as the same rows of the first table are. A line of
-directives only is not in the table: the Langium types print it as written,
-mermaid.js rejects it in a Gantt chart, a user journey, and a timeline, and in a
-quadrant chart, a sequence diagram, and a C4 diagram the next line is its value.
-In a C4 diagram, the Db of 12.3.0 has an empty `accTitle` for an `accTitle:`
-line of directives only and the next line as the title of the diagram
-(`accTitle:` sets the title of a C4 diagram), and the next line as the
-`accDescr` for an `accDescr:` line; the formatter prints the next line as
-written, one level deeper. A line of a directive and a comment with no text is
-in the last rows of the table: the types of the last column print `%%{x}%%%% c`,
-and the Langium types keep the line as written, the written and the printed
-forms being drawn the same in every version that counts. In a quadrant chart, a
-Gantt chart, a user journey, a timeline, a sequence diagram, and a C4 diagram,
-the Db of 12.3.0 and the drawing are the same with and without a no-break space,
-U+3000, U+2003, U+2028, or U+2029 at the start or at the end of the value of
-these lines, once the directives are removed, whereas the same characters at the
-ends of the `title` of a Gantt chart, a user journey, a timeline, a sequence
-diagram, and a C4 diagram change the Db and the drawing (a form feed does not,
-as above), so the last column leaves them out at the end where the title of the
-same type keeps them. At the start, a quadrant chart, a Gantt chart, a user
-journey, a timeline, a sequence diagram, and a C4 diagram leave out every such
-character but a U+2028 and a U+2029, which stay (`\u2028T` and `\u2029T` in the
-table). The `accTitle:` line of a pie chart and of a gitGraph stays as written
-in the rows with a comment that stands after the text or after a directive,
-after two directives, or after a tab (`T  %%{x}%%  %% c  `, `T`, a no-break
-space, `%% c`, `T  %% c  `, `T`, a no-break space, `%%{x}%%%% c`,
-`T  %%{x}%%  %%{y}%%  %% c`, and `T`, a tab, U+3000, U+2003, a vertical tab, a
-form feed, or U+FEFF, `%% c`), since 10.9.8 reads the `%%` and what follows as
-part of the title and draws other text for the form of the column (see the pie
-and gitGraph row of
+column (a Venn diagram has no such line). In a quadrant chart, mermaid.js reads
+`%%` and what follows as part of an `accTitle:` or `accDescr:` value. A U+3000
+before `%%` in either value, and a tab there in `accTitle:`, therefore stay as
+written: replacing them with an ASCII space changes the Db beyond the permitted
+whitespace exceptions. The seven rows `T %%{x}%%\u2028  `, `T %%{x}%%\u2029  `,
+`T\u2028%%{x}%%`, `T\u2028`, `T  \u2028`, `T\u2029`, and `T\u2028  ` of that
+table are for a line that a statement follows directly or after which the text
+ends, as the same rows of the first table are. A line of directives only is not
+in the table: the Langium types print it as written, mermaid.js rejects it in a
+Gantt chart, a user journey, and a timeline, and in a quadrant chart, a sequence
+diagram, and a C4 diagram the next line is its value. In a C4 diagram, the Db of
+12.3.0 has an empty `accTitle` for an `accTitle:` line of directives only and
+the next line as the title of the diagram (`accTitle:` sets the title of a C4
+diagram), and the next line as the `accDescr` for an `accDescr:` line; the
+formatter prints the next line as written, one level deeper. A line of a
+directive and a comment with no text is in the last rows of the table: the types
+of the last column print `%%{x}%%%% c`, and the Langium types keep the line as
+written, the written and the printed forms being drawn the same in every version
+that counts. In a quadrant chart, a Gantt chart, a user journey, a timeline, a
+sequence diagram, and a C4 diagram, the Db of 12.3.0 and the drawing are the
+same with and without a no-break space, U+3000, U+2003, U+2028, or U+2029 at the
+start or at the end of the value of these lines, once the directives are
+removed, whereas the same characters at the ends of the `title` of a Gantt
+chart, a user journey, a timeline, a sequence diagram, and a C4 diagram change
+the Db and the drawing (a form feed does not, as above), so the last column
+leaves them out at the end where the title of the same type keeps them. At the
+start, a quadrant chart, a Gantt chart, a user journey, a timeline, a sequence
+diagram, and a C4 diagram leave out every such character but a U+2028 and a
+U+2029, which stay (`\u2028T` and `\u2029T` in the table). The `accTitle:` line
+of a pie chart and of a gitGraph stays as written in the rows with a comment
+that stands after the text or after a directive, after two directives, or after
+a tab (`T  %%{x}%%  %% c  `, `T`, a no-break space, `%% c`, `T  %% c  `, `T`, a
+no-break space, `%%{x}%%%% c`, `T  %%{x}%%  %%{y}%%  %% c`, and `T`, a tab,
+U+3000, U+2003, a vertical tab, a form feed, or U+FEFF, `%% c`), since 10.9.8
+reads the `%%` and what follows as part of the title and draws other text for
+the form of the column (see the pie and gitGraph row of
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
 and [Accessibility lines](./pie.md#accessibility-lines)).
+
+[corpus fixture: quadrant/db-grid-ideographic-acc-title] [corpus fixture:
+quadrant/db-grid-ideographic-acc-descr] [corpus fixture:
+quadrant/db-grid-tab-acc-title] [corpus fixture:
+quadrant/db-acc-title-comment-kept] [corpus fixture:
+quadrant/db-acc-descr-comment-kept]
 
 | Written after `accTitle: ` or `accDescr: ` | Langium types                                                        | quadrant, Gantt, journey, timeline, sequence, C4    |
 | ------------------------------------------ | -------------------------------------------------------------------- | --------------------------------------------------- |
@@ -4388,19 +4409,30 @@ block holds, or would not be read as the block is:
   railroad/description-blocks/peg-percent-comment-after-block]
 
 - The block has no text: it is printed `accDescr {}`, as
-  [Accessibility lines](./flowchart.md#accessibility-lines) says. A block that
-  holds only a directive stays a block, and the formatter prints
-  `accDescr {%%{init: {}}%% }` as `accDescr { %%{init: {}}%%}`; a directive on a
-  line of its own keeps its lines.
+  [Accessibility lines](./flowchart.md#accessibility-lines) says. In a
+  flowchart, mermaid.js leaves an earlier accessible description unchanged after
+  an empty `accDescr {}`, but an empty `accDescr:` clears it. The empty block
+  therefore keeps its block form. A block that holds only a directive stays a
+  block, and the formatter prints `accDescr {%%{init: {}}%% }` as
+  `accDescr { %%{init: {}}%%}`; a directive on a line of its own keeps its
+  lines.
 
-  [fixture: flowchart/accessibility-lines/empty-block-tight] [fixture:
-  flowchart/accessibility-lines/empty-block-spaced] [fixture:
-  flowchart/accessibility-lines/empty-block-directive-kept] [fixture:
-  flowchart/accessibility-lines/empty-block-directive-line-kept]
+[corpus fixture: flowchart/db-acc-descr-empty-block-keeps] [corpus fixture:
+flowchart/db-acc-descr-empty-replaces]
 
-- The block is not closed.
+[fixture: flowchart/accessibility-lines/empty-block-tight] [fixture:
+flowchart/accessibility-lines/empty-block-spaced] [fixture:
+flowchart/accessibility-lines/empty-block-directive-kept] [fixture:
+flowchart/accessibility-lines/empty-block-directive-line-kept]
 
-  [fixture: flowchart/accessibility-lines/block-unclosed]
+- The block is not closed. In a flowchart, mermaid.js reads an unclosed
+  `accDescr {a` as an empty accessible description in the Db. Converting it to
+  `accDescr: a` would set the description to `a`, so the unclosed block stays as
+  written.
+
+[corpus fixture: flowchart/lex-acc-descr-block-unclosed]
+
+[fixture: flowchart/accessibility-lines/block-unclosed]
 
 - The block is on a line that keeps its statements together, and a statement or
   a `;` that the diagram reads follows it on that line, including a line that
@@ -4763,7 +4795,11 @@ with a space keep them. A list of 433 names, the keywords in three cases and in
 mixed cases, alone and with the endings `-x`, `.x`, `/x`, `1`, and `_x`, was
 drawn in a `branch` with and without quotes by the versions that count for
 gitGraph, and 240 of them also in a `checkout` and in a `merge`: the quotes
-changed the drawing, or the acceptance, of exactly the names that keep them.
+changed the drawing, or the acceptance, of exactly the names that keep them. A
+`branch` statement accepts only one reference, and mermaid.js removes directives
+before reading references. Without quotes, `branch a %%{init: {}}%% b` supplies
+the two references `a` and `b` and is rejected, so the branch name keeps its
+quotes.
 
 [fixture: gitgraph/references/plain-names-without-quotes] [fixture:
 gitgraph/references/names-next-to-a-keyword-without-quotes] [fixture:
@@ -8320,7 +8356,15 @@ prefix so ignored YAML cannot become effective frontmatter. Only safe real
 frontmatter uses guarded YAML formatting, with the shared positive minimum
 indentation. All authored semicolons remain under shared segment protection;
 removing a selected one can select another and change a label. Source order,
-repeated constraints and empty common assignments remain written.
+repeated constraints and empty common assignments remain written. In
+architecture diagrams, mermaid.js records edges and alignment constraints in
+ordered Db lists, including repeated entries, so their order and repetitions
+stay as written. Deleting an empty common assignment can change the final value,
+as [Source order](./architecture.md#source-order) describes, so such assignments
+also stay as written.
+
+[corpus fixture: architecture/db-duplicate-edges] [corpus fixture:
+architecture/db-align-forward-repeat]
 
 [fixture: architecture/hidden-forms/yaml-named-icon-title-and-parent-gaps]
 [fixture: architecture/hidden-boundaries/header-and-statement] [fixture:
