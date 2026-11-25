@@ -608,16 +608,15 @@ braces, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
 space between the keyword and the opening brace, as Prettier prints `class A{}`
 as `class A {}`. Join plain opener whitespace and align a separate closer with
 the statement. Ordinary description body and standalone comment lines align one
-level inside it, since the Db removes indentation after LF. Keep line breaks and
-interior blank lines, and the whitespace at the end of each line of text except
-the last one; a line of whitespace only becomes an empty line. A block
-description's line breaks form part of its value in mermaid.js, so joining
-description lines with spaces changes the Db. The whitespace at the end of the
-last line of text is dropped where the closer stands on a line of its own, and
-is printed as one space where the closer follows it on that line. Directives and
-shared removed comment regions keep their complete source. Comments/directives
-inside empty blocks retain their shared layout. Native-looking text inside a
-value remains value text.
+level inside it. Keep line breaks and interior blank lines, and the whitespace
+at the end of each line of text except the last one; a line of whitespace only
+becomes an empty line. A block description's line breaks form part of its value
+in mermaid.js, so joining description lines with spaces changes the Db. The
+whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. Directives and shared removed comment regions keep
+their complete source. Comments/directives inside empty blocks retain their
+shared layout. Native-looking text inside a value remains value text.
 
 [corpus fixture: cynefin/line-block-values]
 
@@ -902,13 +901,11 @@ as under [Directives](./flowchart.md#directives). When formatting splits units
 that were on the same line, a directive in their gap moves with the following
 unit: its right boundary stays touching or separated, while its left contact is
 broken. Ordinary standalone lines align with their body, including item depth
-between items. In [pie](./pie.md#indentation) diagrams, standalone directives
-stand at the depth of their surrounding body.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-ordinary standalone directives the same placement here, including the additional
-body level between domain items. Multiline interiors and unfinished EOF endings
-remain written. Reordering directives or editing their JSON can change the text
-that common removal joins; native hidden directives remain separate forms.
+between items. Ordinary standalone directives stand at the depth of their
+surrounding body, including the additional body level between domain items.
+Multiline interiors and unfinished EOF endings remain written. Reordering
+directives or editing their JSON can change the text that common removal joins;
+native hidden directives remain separate forms.
 
 [fixture: cynefin/global-directives/header-to-body]
 
@@ -942,13 +939,11 @@ cynefin-beta
 ### Comments
 
 Align ordinary standalone comments with their body, item comments at item depth
-and prefix comments at column one. In [pie](./pie.md#indentation) diagrams,
-standalone comments stand at the depth of their surrounding body.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-standalone comments the same placement here: item comments follow the deeper
-domain body, and prefix comments stand at column one. Inline comments keep their
-line, touching where they touch, and a run of spaces and tabs before one becomes
-one space. Rule 1 names no mark before a comment, so
+and prefix comments at column one. Standalone comments stand at the depth of
+their surrounding body: item comments follow the deeper domain body, and prefix
+comments stand at column one. Inline comments keep their line, touching where
+they touch, and a run of spaces and tabs before one becomes one space. Rule 1
+names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
