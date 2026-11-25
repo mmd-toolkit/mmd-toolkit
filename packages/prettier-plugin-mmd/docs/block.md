@@ -380,8 +380,11 @@ block-beta
 whitespace was written between them (a tab, a line break): mermaid.js reads any
 whitespace there, and the form is one line, as every diagram type prints the gap
 between a keyword and what follows it (see [Composites](#composites)). `space:2`
-is printed with the `:` touching, as every version of mermaid.js that counts
-rejects `space :2` and `space: 2` (see
+is printed with the `:` touching:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
+before the colon of a key (`x = {a : 1}` is printed `x = { a: 1 };`), and every
+version of mermaid.js that counts rejects `space: 2`, so no space follows it
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A `space` statement and a `columns` statement are never moved to another place:
 the last `columns` statement of a block is its columns, wherever it stands, and
