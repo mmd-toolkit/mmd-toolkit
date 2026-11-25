@@ -44,11 +44,7 @@ was indented with.
 [fixture: indentation/written-indentation-dropped]
 
 The header stands at the first column, also where whitespace was written before
-it. The header starts in the first column in
-[Gantt charts](./gantt.md#indentation) and
-[user journeys](./journey.md#indentation);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-a requirement diagram's header that same position.
+it.
 
 [fixture: indentation/header-leading-whitespace]
 
@@ -247,7 +243,7 @@ a run of spaces and tabs inside the value, or between the quotes of a string, is
 in the Db and is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 The field colon is a key colon, and Prettier removes trailing spaces and tabs;
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore removes the
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore removes the
 padding outside an unquoted value. Message text in
 [sequence diagrams](./sequence.md#whitespace-between-tokens) and fields in
 [class diagrams](./class.md#member-lines) print internal runs of spaces and tabs
@@ -378,13 +374,10 @@ after it.
 names/names-that-need-quotes] [fixture: names/names-next-to-a-direction-line]
 
 An unquoted name may hold whitespace between its words, which is part of the
-name and stays as written; the whitespace at its ends is not, and is dropped. A
-keyword-to-name gap is one space in [ER subgraphs](./er.md#subgraphs) and
-[state definitions](./state.md#whitespace-between-tokens);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that gap the same form in requirement and element headers.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
-before their opening brace.
+name and stays as written; the whitespace at its ends is not, and is dropped.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its name in requirement and element headers, as Prettier
+prints `return  x` as `return x;`, and the space before their opening brace.
 
 [fixture: names/inner-whitespace-kept] [fixture: names/outer-whitespace-dropped]
 
@@ -605,15 +598,10 @@ requirementDiagram
 
 Name and class lists use a comma that touches the name before it and has one
 space after it, as Prettier prints a comma where mermaid.js reads the list the
-same. The two lists of a `class` statement remain separated by one space. The
-gap between target names and classes is one space in
-[block diagrams](./block.md#styles) and
-[usecase diagrams](./usecase.md#classes-and-styles);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same space between the two lists of a `class` statement. Statement-ending
-whitespace is dropped where the style context ends at LF. The first style stands
-after one space. The gap before the first style is one space in
-[block diagrams](./block.md#styles) and
+same. The two lists of a `class` statement remain separated by one space.
+Statement-ending whitespace is dropped where the style context ends at LF. The
+first style stands after one space. The gap before the first style is one space
+in [block diagrams](./block.md#styles) and
 [ER diagrams](./er.md#styles-and-classes);
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 that gap the same form. For ordinary single-line property/value styles in
@@ -836,11 +824,9 @@ direction/text-both-sides-inner-whitespace-kept] [fixture:
 direction/case-one-form]
 
 A value written on a later line is printed after `direction` on one line.
-Direction values written on later lines join `direction` on one line in
-[ER diagrams](./er.md#direction) and
-[state diagrams](./state.md#multi-line-statements);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the keyword-to-value gap that same form.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `direction` and its value, as Prettier prints `return  x` as
+`return x;`.
 
 [fixture: direction/value-on-next-line-joined]
 
@@ -1422,7 +1408,7 @@ terminator leaves the Db unchanged, also with several styles.
 
 Whitespace immediately before a dropped `;` is dropped with it. Dropping a style
 terminator leaves the spaces and tabs before it at the end of the line;
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them, as
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them, as
 Prettier does in JavaScript, CSS, and YAML.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
@@ -1935,8 +1921,9 @@ and `classDef` statements of a requirement diagram are printed so. A color is a
 style; it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 A word such as `#ABCDE`, which is no color, keeps its case: the Db holds the
-text of a style as written, so `#ABCDE` and `#abcde` are two values in it,
-although the drawing is the same.
+text of a style as written, so `#ABCDE` and `#abcde` are two values in it, and
+the SVG of 11.7.0 and later holds the text as written (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: colors/colors-in-lower-case] [fixture:
 colors/words-that-are-not-colors-as-written]
@@ -2099,12 +2086,7 @@ the class in quotes of a class statement, with a statement after the comment]
 
 U+00A0 and U+FEFF are whitespace to the lexer between units, and characters of a
 name or a value. Where the lexer reads whitespace between units, a space stands
-for them; inside a name or a value they are characters of the text, and stay. A
-whitespace character used as the separator after a keyword becomes an ASCII
-space in [Gantt charts](./gantt.md#whitespace-characters) and
-[user journeys](./journey.md#whitespace-characters);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that separator the same form.
+for them; inside a name or a value they are characters of the text, and stay.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
 before the opening brace of a body. The examples are written as strings, in
 which `\u00a0` is U+00A0 and `\ufeff` is U+FEFF.

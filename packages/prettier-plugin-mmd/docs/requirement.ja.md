@@ -40,10 +40,6 @@ requirement の文とフィールドと `}` に、この字下げを与えるの
 [fixture: indentation/written-indentation-dropped]
 
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
-[gantt](./gantt.ja.md#インデント) と [journey](./journey.ja.md#インデント)
-の図も、ヘッダーを 1 桁目に置きます。
-requirement のヘッダーにも、この位置を与えるのは、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
 
 [fixture: indentation/header-leading-whitespace]
 
@@ -377,13 +373,10 @@ mermaid.js は `"r"` と `r` を同じ名前として読み、
 引用符のない名前は、語の間に空白を持てます。
 それは名前の一部なので書かれたまま残し、
 両端の空白は名前に入らないので落とします。
-[ER](./er.ja.md#subgraph) のサブグラフと
-[state](./state.ja.md#トークンの間の空白) の定義も、
-キーワードと名前の間に空白を 1 つ置きます。
-requirement と element のヘッダーで、この間隔を与えるのは、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
-開始波括弧の前の空白を与えるのは、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+requirement と element のヘッダーのキーワードと名前の間に空白 1 つを与えます。
+Prettier は `return  x` を `return x;` と印字し、
+開始波括弧の前の空白も同じ規則が与えます。
 
 [fixture: names/inner-whitespace-kept] [fixture: names/outer-whitespace-dropped]
 
@@ -607,10 +600,7 @@ requirementDiagram
 前の名前に接して後ろに空白を 1 つ置く comma を使います。
 Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 `class` の 2 つのリストは、空白 1 つで区切ります。
-[block](./block.ja.md#スタイル) と [usecase](./usecase.ja.md#classes-and-styles)
-の図も、対象の名前とクラスを、空白 1 つで区切ります。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-このリストの区切りの形を与えます。
+
 style の文脈が LF で終わる場合、文の末尾の空白は落とします。
 最初のスタイルは空白 1 つの後に置きます。
 [block](./block.ja.md#スタイル) と [ER](./er.ja.md#スタイルとクラス) の図も、
@@ -842,10 +832,9 @@ requirementDiagram
 [fixture: direction/case-one-form]
 
 次の行に書かれた値は、`direction` の後ろに寄せて 1 行にします。
-[ER](./er.ja.md#方向) と [state](./state.ja.md#複数行の文) の図も、
-後の行に書かれた方向の値を、`direction` の後ろに寄せて 1 行にします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-このキーワードと値の間を決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`direction` とその値の間に空白 1 つを与えます。
+Prettier は `return  x` を `return x;` と印字します。
 
 [fixture: direction/value-on-next-line-joined]
 
@@ -1951,7 +1940,8 @@ requirement 図の `style`、`classDef` 文のスタイルの色が対象です�
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
 `#ABCDE` のように色でない語は、大文字小文字も残します。
 Db はスタイルのテキストを書かれたまま持つので、`#ABCDE` と `#abcde` は別の値で、
-描画は同じでも Db が変わるからです。
+11.7.0 以降の SVG もそのテキストを書かれたまま持つからです
+（[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)を参照）。
 
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
@@ -2117,11 +2107,6 @@ U+00A0 と U+FEFF は、字句解析器にとって単位の間の空白であ�
 名前や値の文字でもあります。
 字句解析器が単位の間の空白を読む所には空白 1 つを置き、
 名前や値の中のものはテキストの文字なので残します。
-キーワードの後の区切りに使う空白文字は、
-[gantt](./gantt.ja.md#空白の文字) と [journey](./journey.ja.md#空白の文字)
-の図でも、ASCII 空白 1 つになります。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この区切りの形を与えます。
 本体の開始波括弧の前の空白は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 例は文字列で書かれていて、`\u00a0` は U+00A0、`\ufeff` は U+FEFF です。
