@@ -34,6 +34,13 @@ mermaid.js は各入力とその出力を同じ Db として読みます。
 外側の空白は除きます。
 beta の境界に合わない接尾辞は根のテキストに残します。
 接するコメントとディレクティブは後の規則に従います。
+Prettier は行末の空白とタブを除きます。
+見出し行末の外側の空白とタブを除く形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+`-beta` の境界に合わない場合、mermaid.js は短い見出しと、
+その後の根のテキストとして読むので、接尾辞を除くと根の値が変わります。
+
+[corpus fixture: ishikawa/header-beta-letter-suffix]
 
 [fixture: ishikawa/header/header-beta-fallback]
 
@@ -167,6 +174,9 @@ Ishikawa の見出しは、
 共有の行の規則の `style` と `classDef` の契機を加えないためです。
 見出しのコメントとディレクティブの接続は、専用の規則に従います。
 根に含まれる文らしいテキストは分割しません。
+mermaid.js では、根の中のセミコロンは節点を分けないので、
+文らしいテキストをそこで分割すると、節点のテキストが変わるか節点が増え、
+Db が変わります。
 これは、書かれた字下げが入れ子だけで木を示すときです（[字下げ](#indentation)）。
 見出しと根の間の空白より深くない原因があるときは、根は見出しの行に残り、
 原因は書かれた字下げを残します。
@@ -233,14 +243,20 @@ ishikawa
 普通の空行の連続は 1 つにして、余分な連続を除き、まとまりを残します。
 本文の端の普通の空行は除きます。
 先頭の共通コメントやディレクティブだけの行の後も同じです。
+空行は Ishikawa の節点も親も変えないためです。
+Prettier はテキストの先頭に空行を置かず、項目間の空行は最大 1 つにします。
+先頭の空行を除き、途中の普通の空行の連続を 1 つにする形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+図のコメントの後の空行は、そのコメントの区切りの隙間であり、
+本文の端の普通の空行ではないため、区切りの空行は 1 つ保ちます。
+図のコメントと次の項目の間の空行は、次がディレクティブでも、
+本文の途中の空行です。
+Prettier が項目間に空行を 1 つ残すのと同じ形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: ishikawa/blank-lines/blank-runs]
 [fixture: ishikawa/blank-lines/blank-around-trivia]
 
-空行は Ishikawa の節点も親も変えないため、連続を 1 つにし、
-本文の端の普通の空行を除いても Db は同じです。
-図のコメントの後の空行は、そのコメントの区切りの隙間であり、
-本文の端の普通の空行ではないため、区切りの空行は 1 つ保ちます。
 見出しに付く図のコメントの後も同じで、見出しに接していても、
 空白で離れていても変わりません（[コメント](#comments) を参照）。
 コメントの前のディレクティブに mermaid.js が取り除く改行があっても同じです。
@@ -580,6 +596,9 @@ ishikawa
 `IshikawaLiteral` の末尾の空白とタブは、普通の行でも保持する行でも、
 コロンの後でも入力の末尾でも除きます。
 Mermaid がテキストの両端の空白を除くので、除いても Db と図は同じです。
+Prettier は行末の空白とタブを除きます。
+普通の行と保持する行のどちらでも、リテラルの行末から空白とタブを除く形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 改行しない空白、バイト順マーク、Unicode の区切り文字、全角空白など、
 それ以外の末尾の空白文字は書かれたまま保ちます。
 
@@ -654,8 +673,85 @@ U+205F、U+3000、U+FEFF）は、
 [test: ishikawa: comment-run-after-directive-between-words-kept]
 [test: ishikawa: comment-run-after-leading-and-between-directives-kept]
 
+行をまたぐディレクティブと `;` を含むディレクティブも、
+ほかのディレクティブと同じに、テキストを終えます。
+最後に置いても、後ろのディレクティブと接していても、
+最後のディレクティブの後に空白とタブが続いても同じです。
+`A  b %%{init: {`、改行、`}}%%`、空白とタブは、`A b %%{init: {`、改行、
+`}}%%` と印字します。
+空白とタブが続かない同じテキストと同じ形です。
+mermaid.js が行を読む前にディレクティブを除くためです。
+空白かタブでそのディレクティブから隔てた後ろのディレクティブがあるときは、
+そのディレクティブはテキストの一部になり、
+テキストの連なりを書かれたままにします。
+`A  b %%{init: {`、改行、`}}%%`、空白、`%%{x}%%` は、
+最後のディレクティブの後の空白とタブを除くだけで、そのまま印字します。
+そのようなディレクティブの後のノーブレークスペースは、
+どのテキストの末尾とも同じに、書かれたままにします。
+
+[fixture: trailing-whitespace/directive-unclosed-end-runs-collapsed]
+[fixture: trailing-whitespace/directive-lines-end-of-text-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-end-empty-line-blanks-dropped]
+[fixture: trailing-whitespace/literal-brace-directive-lines-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-root-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-touching-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-gap-run-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-then-directive-lines-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directives-lines-touching-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-semicolon-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-semicolon-end-blanks-dropped]
+[test: ishikawa: U+00A0 after a directive over lines stays]
+[fixture: ishikawa/trailing-whitespace/directive-lines-before-directive-runs-kept]
+
+末尾のディレクティブの前のリテラルが `;` を含んでも、何も変わりません。
+`A;b  %%{z}%%  ` は `A;b %%{z}%%` と印字し、
+リテラルの連なりも空白 1 つにします。
+`A;  b  %%{z}%%  ` は `A; b %%{z}%%` です。
+単語の間にディレクティブがあるリテラルと、U+2028 か U+2029 を含むリテラルは、
+最後のディレクティブの後の空白とタブを除くだけで、書かれたままにします。
+最後のディレクティブが、
+空白かタブで前のディレクティブから隔てられているリテラルも同じです。
+`A;b  %%{x}%%  %%{z}%%  ` は `A;b  %%{x}%%  %%{z}%%` と印字します。
+`;` を含むリテラルが書かれたままになるとき、
+つまり HTML タグが空白を保つかもしれない `<` も含むときと、
+図が `white-space` を含むときは、
+最後のディレクティブの前の空白とタブも書かれたままにします。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+ディレクティブの後に空白とタブがない同じ行と同じ形です。
+`A;  <b  %%{z}%%  ` は `A;  <b  %%{z}%%` と印字します。
+
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-run-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-after-inner-directive-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directives-after-semicolon-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-angle-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-white-space-text-gap-kept]
+[test: ishikawa: U+2028 in the literal before the last directive]
+[test: ishikawa: U+2029 in the literal before the last directive]
+
+`;` を含まず書かれたままになるリテラル、つまり `<` を含むか、
+図が `white-space` を含むリテラルは、
+最後のディレクティブの後に空白が続かないとき、その前の隙間を書かれたままにし、
+空白が続くとき、その前の隙間を空白 1 つにします。
+`A  <b  %%{z}%%` はそのままで、
+`A  <b  %%{z}%%  ` は `A  <b %%{z}%%` と印字します。
+リテラルの前にディレクティブがあるときも同じです。
+`%%{x}%% A  <b  %%{z}%%` はそのままで、
+`%%{x}%% A  <b  %%{z}%%  ` は `%%{x}%% A  <b %%{z}%%` と印字します。
+
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-after-white-space-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-white-space-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-before-angle-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-before-angle-text-blanks-gap-one-space]
+
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。
+Prettier は行末の空白とタブを除きます。
+見出し行末の外側の空白とタブを除く形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: ishikawa/trailing-whitespace/trailing-header-div]
 
@@ -698,6 +794,11 @@ title、アクセシビリティ、style、装飾、データらしい形も同�
 
 他の文法のトークン間隔や値変換は適用しません。
 Db からラベルを再構築せず、書かれた形と設定による読みを保つためです。
+mermaid.js は、句読点、引用符、数に見える綴りを、節点のテキストとして読みます。
+記した空白とタブの変更を除き、他の文法のトークン間隔や値変換を適用すると、
+Db のテキストが変わります。
+
+[corpus fixture: ishikawa/lex-text-punctuation]
 
 [fixture: ishikawa/node-text/values-spacing-unsafe]
 [fixture: ishikawa/node-text/value-single-space-and-colon]

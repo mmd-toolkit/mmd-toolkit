@@ -530,7 +530,10 @@ stateDiagram-v2
 
 ### トークンの間の空白
 
-行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにし、
+行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードとそれが取るものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 接しているトークンは接したまま残します。
 flowchart と同じです。
 （[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)）。
@@ -1485,7 +1488,7 @@ stateDiagram-v2
 行に単独のコメント（`%%` か `#`）は、周りの文と同じ段に置き、
 本文は書かれたまま残します。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [flowchart](./flowchart.ja.md#コメント)、[class](./class.ja.md#コメント)、
 [sequence](./sequence.ja.md#コメント)も、
@@ -2063,6 +2066,23 @@ stateDiagram-v2
 行の字下げは書かれたまま保ちます。
 
 [test: a state line starting with a directive before U+2028]
+
+`#` で始まるコメント行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字します。
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
+なければ空白を置きません。
+`# c`、U+2028、`%%{x}%%`、空白 2 つ、`%% c` は、
+`# c` と `%%{x}%% %% c` の 2 行に印字します。
+空行を挟まずに次の行にコメント行か `End` という名前のノードがあるときは、
+行を書かれたまま残します。
+
+[test: state: a hash comment line, U+2028, a directive, two spaces, a comment, and a comment line after it]
+[test: state: a hash comment line, U+2028, a directive, two spaces, a comment, and a node named End]
+[test: state: a hash comment line, U+2028, a directive, two spaces, and a comment]
+[test: state: a hash comment line, U+2028, a directive touching a comment]
+[test: state: a hash comment line, U+2028, a directive, a tab, and a comment]
+[test: state: a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 U+2028 か U+2029 を含む行は、書かれたまま残します。
 別名の 2 つ目の説明も、その文字の後の空白も含めて残します。

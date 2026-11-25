@@ -18,7 +18,7 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 
 `eventmodeling` は第 1 列に置き、普通の最初の文を次の行へ移して、
 見出しを見つけやすくします。
-規則 1 は、見出しの後の文の印を挙げていないので、
+文が置かれる位置（行頭）は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [wardley](./wardley.ja.md#見出し)、[cynefin](./cynefin.ja.md#header)、
 [architecture](./architecture.ja.md#header)、[packet](./packet.ja.md#header)も、
@@ -26,7 +26,7 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 隠れた形、保持する前置部分、保護行は共有の規則に従い、
 見出しの行が保つ行なら最初の文もその行に残します。
 同じ項目を図種の間で同じように扱うためです。
-最初の共通文は接続と前置の空白を保ちます。
+最初の共通文は接続を保ちます。
 行頭へ移すと識別子が優先され、拒否される場合があるためです。
 対象にする版の mermaid.js のすべてが、`eventmodeling title Heading`、
 `eventmodeling accTitle: Heading`、
@@ -34,6 +34,8 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+その前置の空白も書かれたままにします。
+詳しくは [Common boundaries](#common-boundaries) を参照してください。
 
 [fixture: eventmodeling/header/ordinary-frame]
 
@@ -80,6 +82,11 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 普通のトップレベルの文は、第 1 列から始めます。
 フレーム、モデルの実体、`data`、`note`、`gwt` が対象です。
+改行の後の `title` とブロックの `}` も、第 1 列に置きます。
+対象にする版の mermaid.js のすべてが、字下げした形を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 固定している Mermaid は `data` と `note`
 の閉じ波括弧の前の空白を受理しないため、見出しを閉じ波括弧にそろえ、
@@ -89,12 +96,30 @@ eventmodeling tf 01 evt A %%{{x}}%%
 トップレベルの字下げを再検討します。
 
 GWT 節は設定の 1 段、項目は 2 段にします。
+行頭は規則 1 の場所ではないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#字下げ)と [state](./state.ja.md#字下げ)は、
+ブロックの文を、それを開く行より 1 段深く置きます。
+[flowchart](./flowchart.ja.md#字下げ)も、
+subgraph の中の subgraph を同じように置きます。
+節は `gwt` より 1 段深く、項目は節より 1 段深くします。
 `data` と `note` の見出しが完結する行も含め、
 通常の構造の継続行はその文より 1 段深くします。
+[Long lines](#long-lines) と同じです。
 安全に字下げできるブロック本文は、
-その継続した見出し行からさらに 1 段深くします。
+その継続した見出し行からさらに 1 段深くします（[データブロック](#data-blocks)
+を参照）。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段にタブを 1 個使います。
+1 段の幅は、Prettier の `tabWidth` と `useTabs` のとおりです。
+[flowchart](./flowchart.ja.md#字下げ)、[sequence](./sequence.ja.md#字下げ)、
+[state](./state.ja.md#字下げ)、[class](./class.ja.md#字下げ)、
+[er](./er.ja.md#字下げ)は、
+1 段の幅を Prettier の `tabWidth` と `useTabs` から取ります。
+[wardley](./wardley.ja.md#字下げ)と [radar](./radar.ja.md#indentation)は、
+列にも意味がないので、`tabWidth: 0` では空白を置かず、
+`useTabs` では 1 段にタブを 1 個置きます。
+Prettier が JavaScript に行うのと同じです。
 値の継続列、メタデータの空白、隠れた形が消費する LF の境界は、
 [データブロック](#data-blocks) の本文の余白の変更を除いて保ちます。
 `eventmodeling tf 01 evt Alpha.%%{{native}}%%` と改行の後の `title` は、
@@ -104,11 +129,6 @@ GWT 節は設定の 1 段、項目は 2 段にします。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-ほかの図種は、ヘッダーの後の文を 1 段深く置きます。
-[flowchart](./flowchart.ja.md#字下げ)、[class](./class.ja.md#字下げ)、
-[er](./er.ja.md#字下げ)、[state](./state.ja.md#字下げ) がそうです。
-改行の後の `title` とブロックの `}` は、対象にする版の mermaid.js のすべてが、
-字下げした形を拒否するので、この図種ではそこに置けません（表を参照）。
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 [fixture: eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
@@ -172,6 +192,14 @@ note 01 {
 ### Statements one per line
 
 普通の最上位 AST 文は原順の各行へ分け、セミコロンは足しません。
+文が置かれる位置（行頭）は規則 1 の場所ではないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[er](./er.ja.md#1-行に-1-文)、[gantt](./gantt.ja.md#1-行に-1-文)、
+[journey](./journey.ja.md#1-行に-1-文)も、各文を自分の行に印字します。
+ほかの規則が書かれたまま残す所は別です。
+共通の後続文と、後続の文字を取り込む行内データは、下で述べます。
+隠れた形か `;` を含む行は、
+[Hidden forms](#hidden-forms) と [Semicolons](#semicolons) を参照してください。
 完全な単位の間に可視の EOL を要しない文法なので、Db は変わりません。
 次が共通文なら先行単位との接続を保ちます。
 `eventmodeling accDescr {}  title Next` は 1 行のまま残します。
@@ -222,6 +250,15 @@ entity Shop.Beta
 フレームキーワード、数字の名前、実体の種類、修飾名の間は、
 元が図固有の空白の改行でも普通の空白 1 個にします。
 `01 evt` のように完全な部品を見分けるためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードとそれが取るものの間に空白 1 個を与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
+続く値の間にも空白 1 個を与えます。
+Prettier が CSS の `margin: 1px    2px;` を `margin: 1px 2px;`
+と印字するためです。
+部品の間の改行は、
+[Declarations and notes](#declarations-and-notes) で述べる理由で空白 1
+個にします。
 必須の識別子がちょうど `title` のときは成立する境界を保ちます。
 普通の LF は継続行にし、隠れた形が消費する LF の後の空白は原文どおりです。
 前置の空白を加えると、必要な名前が `EM_TITLE` になる場合があります。
@@ -255,7 +292,11 @@ tf 01 evt Alpha
 ### Source references
 
 完全な参照元を結ぶ矢印は `Name ->> 02 ->> 001` のように、
-矢印の左右を普通の空白 1 個にして見分けやすくします。
+矢印の左右を普通の空白 1 個にします。
+規則 1 が与える形です。
+`->>` は 2 つの物の間に立ち、Prettier は `x = a+b;` を、
+印の両側に空白 1 個を置いて `x = a + b;` と印字します。
+規則 1 の表が、flowchart の `A-->B` を `A --> B` と印字するのと同じです。
 全参照とその順序、先頭の 0 を保ち、逆転や解決はしません。
 隠れた形の隙間と大域的な注釈類は保護された境界を保ちます。
 
@@ -281,7 +322,10 @@ tf 01 evt Alpha ->> 02 ->> 001
 Prettier が入れ子の角括弧に印字する形です。
 部品間の普通の改行も詰めます。
 `[[title]]` なら前置空白付きの title composite も作りません。
+部品の間の改行が置き換わる空白 1 個は、規則 2 が与える形です。
+理由は [Declarations and notes](#declarations-and-notes) と同じです。
 所有する隙間の隠れた形形と注釈類は保ち、単一の参照名を修飾付きにしません。
+参照は識別子を 1 つだけ持ち、ドットと別の区間を付けた形は拒否されます。
 
 [fixture: eventmodeling/data-references/reference-padded]
 
@@ -391,8 +435,15 @@ tf 01 evt Alpha `json` { x }
 ### Qualified names
 
 修飾名のドットの普通の隙間は改行や Unicode 空白も詰め、`Shop.Bought` にします。
+規則 1 が与える形です。
+修飾名のドットは、メンバーアクセスのドットと同じく 2 つの名前を結びます。
+Prettier は、ドットの両側に空白、改行、ノーブレークスペース、
+U+3000 を書いたメンバーアクセスも、
+JavaScript では `a.b` と印字します（`x = a . b;` は `x = a.b;` になります）。
 ドットは既存の識別子区間を接続する記号だからです。
-完全な識別子の綴りと、所有する隠れた形・コメント隙間は保ちます。
+完全な識別子の綴りは、
+Db がフレームの完全な修飾名を書かれたまま持つので保ちます。
+所有する隠れた形・コメント隙間も保ちます。
 隠れた形が消費する LF の後の `title` 区間に空白を足しません。
 
 [test: eventmodeling/qualified-names/qualified-padded]
@@ -455,10 +506,16 @@ resetframe 02 command Beta
 
 コメントやディレクティブで宣言や note の見出しが分かれる場合、GWT と同じく、
 注釈類と見出しが完結する行をキーワードより 1 段深くします。
+規則 2 は、文の後ろの行と、その間のコメントやディレクティブの行に、
+この深さを与えます。
+コメントやディレクティブの隣の改行も残します。
+理由は [Long lines](#long-lines) と同じです。
 data 本文の規則が余白の変更を許す場合、
 本文はその開始行よりさらに 1 段深くします。
 原文の順序、値の継続行、必須の隠れた形の境界を保ちます。
 閉じ波括弧は引き続き第 1 列に置きます。
+対象にする版の mermaid.js のすべてが、字下げした閉じ波括弧を拒否するためです。
+詳しくは [Data blocks](#data-blocks) を参照してください。
 
 [fixture: eventmodeling/declarations-and-notes/header-completion-comments]
 
@@ -501,6 +558,10 @@ mermaid.js が複数行にわたって読む文を、部品の間に空白 1 個
 部品の間のコメント（上の段落が扱います）、改行をまたぐスラッシュのコメント、
 無視される `;` を含む行です。
 ブロック開始記号は見出し行の空白 1 個後に置きます。
+規則 1 が与える形です。
+Prettier は、ブロックを開く `{` の前に空白 1 個を置きます。
+見出しに接して書いても次の行に書いても同じで、JavaScript では `class A{}` も、
+`class A` と改行と `{}` も、`class A {}` と印字します。
 値と閉じの境界は data の規則に従います。
 必須の名前の `title` はフレームと同じく安全な前方境界を保ちます。
 `eventmodeling data`、改行、`title {` は、そのまま残します。
@@ -536,8 +597,11 @@ entity Shop.Buy
 
 GWT の見出しがコメントやディレクティブの後に続く場合、通常の継続の字下げを使い、
 注釈類と参照元フレームの行を `gwt` より 1 段深く置きます。
+文の後ろの行にこの深さを与えるのは規則 2 です（[Long lines](#long-lines)
+を参照）。
 書かれた順序とコメントの形は保ちます。
 節キーワードは引き続き 1 段、項目は 2 段です。
+理由は [Indentation](#indentation) と同じです。
 参照元フレームの行は新たなトップレベルの文ではありません。
 
 [fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
@@ -551,10 +615,14 @@ GWT の見出しがコメントやディレクティブの後に続く場合、�
 [fixture: eventmodeling/gwt-clauses-and-items/clause-after-header-directive-with-tail-directive]
 
 `gwt 99` は第 1 列、節キーワードはさらに 1 段、各項目はさらに 1 段深くします。
+理由は [Indentation](#indentation) と同じです。
 架空の閉じ記号を足さず、書かれた節と項目の関係を見せます。
 必須の given・then、任意の when、項目の順序・反復・型語を保ちます。
-普通の項目部品は空白 1 個で分け、必須の `title` の境界、隠れた形、注釈類、
-保護された開始境界を優先します。
+普通の項目部品は空白 1 個で分けます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+キーワードとそれが取るものの間に空白 1 個を与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
+必須の `title` の境界、隠れた形、注釈類、保護された開始境界を優先します。
 `eventmodeling gwt 01 given evt`、改行、
 `title then cmd accTitle tf 02 evt Alpha` は、そのまま残します。
 対象にする版の mermaid.js のすべてが、
@@ -638,12 +706,37 @@ tf 01 evt Alpha { 	 x  }
 `{` の直後が LF で、LF の直後の `}` で閉じる通常の data と note は、
 次の条件を満たす場合、
 空でない本文行をすべて `tabWidth` 個の ASCII 空白（U+0020）で字下げします。
+行頭は規則 1 の場所ではなく、規則 2 も本文の行の余白を与えません。
+[pie](./pie.ja.md#description-blocks)、
+[radar](./radar.ja.md#description-blocks)、
+[cynefin](./cynefin.ja.md#description-blocks) は、説明ブロックの行を、
+文より 1 段内側の `tabWidth` 個の空白に置き、
+`tabWidth: 0` では空白を置きません。
+ただし、どれでもこの形は、決まっていない形の一覧（D35）の問いです。
+そのため、その印字は決まった形ではなく、決まるまでリリース済みの形を残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 通常の見出しの継続行が残る場合は `2 * tabWidth` 個にして、
 本文をその開始行よりさらに 1 段深くします。
+[sequence](./sequence.ja.md#字下げ)と [state](./state.ja.md#字下げ)も、
+ブロックの本文を、それを開く行より 1 段深く置き、継続した行がその行です。
 見出しへ結合される元の LF や、
 行内のディレクティブの内部の LF では段を増やしません。
+段が表すのはプリンターが字下げする継続行で、結合された LF は継続行を残さず、
+ディレクティブの行は書かれたままだからです。
 図固有の隠れた形を含む見出しはその境界の列を保ち、本文は通常の 1 段にします。
-`useTabs` でも空白を使い、`tabWidth: 0` では本文を書かれたまま残します。
+`useTabs` でも空白を使います。
+タブの余白でも、走らせた版の Db と描画は同じなので、空白を残す理由はなく、
+その行は一覧（D35）にあります。
+`tabWidth: 0` では本文を書かれたまま残します。
+余白は 0 個で、後の行の余白を除くと別の図を描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+の、後の行を第 1 列に置く形と 2 つの空白で字下げする形の行を参照してください。
+本文が 1 行のものと、後の行のどれにも余白がない本文は、
+第 1 行の余白を除いても同じに描くので、ここでは書かれたまま残しています。
+この余白も、どの規則も与えません（D35）。
 本文をデータ項目に分けて解析したり、JSON やコードとして整形したりはせず、
 原文の字下げの差は保ちません。
 
@@ -680,17 +773,12 @@ tf 01 evt Alpha { 	 x  }
 元にない行頭の空白を加えられるのは、本文の第 1 物理行だけです。
 それ以降の空でない物理行は、変更前後とも行頭に ASCII 空白が 1 個以上必要です。
 満たさない場合は本文全体を書かれたまま残します。
-後の行に初めて空白を加えると、描画するラベルが変わる場合があり、
+全行に余白を置くと、後の行に初めて空白を加えます。
+それは描画するラベルを変える場合があり、
 11.15.0 から 12.3.0 が別のテキストと形状を描きます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-規則 1 は本文の行の余白に記号を挙げないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)は、
-説明ブロックの行が、[pie](./pie.ja.md#description-blocks)、
-[radar](./radar.ja.md#description-blocks)、
-[cynefin](./cynefin.ja.md#description-blocks) で文より 1
-段内側に立つ余白を与えます。
 先頭が空行でも、その次の行が第 1 物理行になるわけではありません。
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
@@ -702,6 +790,9 @@ tf 01 evt Alpha { 	 x  }
 [fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
 
 空行、空白だけの行、改行、行末の空白とタブ、行頭の余白より後の文字は保ちます。
+フレームが読む `data` ブロックでは、
+これらはフレームのために Db が持つ値の文字で、
+下の余白の例外だけがそれを変えます。
 閉じ波括弧は第 1 列に残します。
 `eventmodeling tf 01 evt Alpha [[D]] data D {`、`x`、`}` は、そのまま残します。
 対象にする版の mermaid.js のすべてが、
@@ -712,6 +803,8 @@ tf 01 evt Alpha { 	 x  }
 ほかの図種なら `}` を字下げします（[字下げ](#indentation)を参照）。
 見かけの文、波括弧を含むテキスト、直後の閉じ風の行も、
 本文を持つ形の規則が後の閉じまで読む場合は保ちます。
+フレームが読む `data` ブロックでは、
+これらはフレームのために Db が持つ値の文字だからです。
 
 [fixture: eventmodeling/data-blocks/body-whitespace-kept]
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
@@ -818,12 +911,26 @@ data D {
 ### Data boundaries
 
 ブロックデータが閉じの LF を消費するか、空白の先読みで止まるかを保ちます。
+ブロックデータは、閉じの直後の LF を消費し、ほかの空白は先読みするだけなので、
+先読みを LF に置き換えると Db が変わる場合があります。
+詳しくは
+[Eventmodeling terminals and source boundaries](./compatibility.ja.md#eventmodeling-terminals-and-source-boundaries)
+を参照してください。
 普通の後続文を次の行へ移すときも、閉じ直後の水平空白は残します。
+空白は閉じと LF の間にあり、除くと LF がブロックに消費されるからです。
+後続文は、
+[Statements one per line](#statements-one-per-line) のとおり自分の行へ移します。
 LS・PS の先読みは終端トークンの外のままで、LF へ変えません。
+そこに LF を置くとブロックに消費されるので、理由は同じです。
 次が共通文なら、最初の LF の有無、前置の連なり全体、
 先行単位との接続を幅 0 でも保ちます。
 予備 LF の追加や字下げ・閉じの空白の削除は Db や受理を変えるためです。
 EOF の論理 LF は明示的な末尾 LF 1 個にできます。
+mermaid.js は、読む前にテキストへ LF を足します。
+詳しくは [テキストの終わり](../../spec/docs/common.ja.md#テキストの終わり)
+を参照してください。
+明示的な LF はすでに読む文字で、Prettier はファイルを 1 つの改行で終えます。
+詳しくは [Final newline](#final-newline) を参照してください。
 
 [fixture: eventmodeling/data-boundaries/block-eof-logical-lf-kept]
 
@@ -913,18 +1020,9 @@ U+2029 も値に属するので、書かれたまま残します。
 連なりを書かれたまま残します。
 つなぐと、対象にするどの版でも、
 Db と mermaid.js が描くテキストが変わるからです。
-`title` と `accDescr:` では、連なりをつないでも描くものは同じです。
-title の Db は同じで、説明の Db は連なりか末尾だけが違い、
-mermaid.js は説明を空白をつめた HTML として描きます。
-規則 2 は空白 1 つを与えます。
-journey、timeline、sequence は `title T  %% c` を `title T %% c` と印字し、
-title や説明の中の連なり（`title T  // c`）にも、
-同じに描かれるテキスト中の空白の連なりが空白 1 つを与えます。
-（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 リリース済みの版は、`title T  %% c`、`title T  // c`、`title T  /* c */`、
 `accDescr: T  %% c`、`accDescr: T  // c`、`accDescr: T  /* c */` を、
-書かれたまま残すので、その形は規則 2 に反して印字しており、
-規則による修正を待っています。
+書かれたまま残します。
 
 [fixture: eventmodeling/title/header-line-title-run-before-percent-comment-kept]
 [fixture: eventmodeling/title/header-line-acctitle-run-before-percent-comment-kept]
@@ -983,7 +1081,17 @@ tf 01 evt Alpha
 
 アクセシビリティの行形式は前置空白、キーワードとコロンの間、
 コロン後と末尾の空白、空本文、引用符、波括弧風のテキストを保ちます。
-`EM_ACC_TITLE` と `EM_ACC_DESCR` はこれらも値に含むためです。
+`EM_ACC_TITLE` と `EM_ACC_DESCR` は、これらの一部を値に含みます。
+固定した版の Db は、
+`eventmodeling   accDescr: A` と `eventmodeling accDescr: A` で accDescr
+が違い、走らせた版は両方を同じに描くので、その空白は値の一部として残します。
+見出しと `accTitle` の間の空白は Db に入らず（設定関数が先頭の空白を除きます）、
+走らせた版は両方の形を同じに描くので、理由なしに残し、
+その行は一覧（D18）にあります。
+コロンの後と、`accTitle` や `accDescr` の行末の空白も、値の一部です。
+走らせた版は、
+その有無で SVG の `<title>` や `<desc>`
+のアクセシビリティのテキストを違って描くので、残します。
 `accTitle` と `:` の間が空白 1 個とタブ 1 個のときは、その隙間を保ちます。
 対象にする版の mermaid.js のすべてが、
 隙間をなくすとアクセシビリティのテキストを違って描くためです。
@@ -1021,6 +1129,12 @@ tf 01 evt Alpha accTitle:
 説明ブロック全体と前置の連なりを保ちます。
 開き前の改行、空白だけの内部、閉じの列も含みます。
 空、空白だけ、共通除去だけの内部を区別して残します。
+固定した版の Db はブロックを書かれたとおりに持ち、
+（`accDescr { }` と `accDescr {}`、`accDescr`、改行、
+`{ Details }` と `accDescr { Details }` は accDescr
+が違います）空白だけの内部と開き前の改行は残ります。
+閉じの列は Db に入らず、走らせた版は両方の形を同じに描くので、理由なしに残し、
+その行は一覧（D34）にあります。
 共有 `layoutDescriptionBlock` を通さない判断はこの 1 か所です。
 通常の `{}` への圧縮と閉じの整列は `EM_ACC_DESCR` の値を変えるためです。
 図種専用の空ブロック正規化も加えません。
@@ -1063,6 +1177,12 @@ GWT 節・項目の隙間を保ちます。
 保持 YAML と図固有の `DIRECTIVE` を設定として解釈しません。
 隠れた形を扱う共有経路が内部の列、消費 LF、閉じの先読み空白を保ち、
 普通の本文開始記号は本文の段に揃えます。
+行頭は規則 1 の場所ではないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[radar](./radar.ja.md#hidden-forms) は、普通の本文開始記号を字下げします。
+[pie](./pie.ja.md#indentation)と [packet](./packet.ja.md#indentation)は、
+独立したディレクティブを見出しの 1 段下に置き、
+自分の行にある隠れたディレクティブも、どちらでもそれに従います。
 必須の開始部分の隙間と共通文の前方境界は原文どおりです。
 `eventmodeling`、`%%{{x}}%%`、` accDescr: D` を各行に置いた形は、
 `accDescr` の前の空白 1 つも残します。
@@ -1136,6 +1256,14 @@ tf 02 evt Beta
 ### Comments
 
 普通の独立コメントは所属本文の段に揃え、GWT 項目間では項目の段にします。
+行頭は規則 1 の場所ではないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#コメント)は、コメント行を周りの文の段に置きます。
+[sequence](./sequence.ja.md#コメント)も同じです。
+[journey](./journey.ja.md#コメント)、[timeline](./timeline.ja.md#コメント)、
+[block](./block.ja.md#コメント)、[quadrant](./quadrant.ja.md#コメント)、
+[gantt](./gantt.ja.md#コメント)は、コメント行を後ろの文の段に置きます。
+eventmodeling の本文は平らなので、どちらも同じ段になります。
 同じ印字行では、接するコメントは接したまま残し、
 前の空白とタブの連なりは空白 1 つにします。
 ただし、ヘッダー行とフレーム文の行の title、accTitle、accDescr では、
@@ -1185,10 +1313,11 @@ U+2028 と U+2029 の前では、sequence、journey、timeline は、
 data ブロック、note、`accDescr` ブロック、スラッシュのブロックコメント、
 隠れた形の内部の `%%` のコメント行は、そのテキストの一部です。
 列は [データブロック](#data-blocks) の本文の余白の変更を除いて保ちます。
+フレームが読む `data` ブロックでは、Db がそれを値の一部として持つからです。
 メタデータや必須の `title` の境界を優先します。
 検出が拒否するため、スラッシュのコメントを見出し前へ移しません。
 見出しの前のコメント行は第 1 列に置きます。
-規則 1 は、見出しの前の行の字下げの印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [journey](./journey.ja.md#コメント)、[timeline](./timeline.ja.md#コメント)、
 [c4](./c4.ja.md#コメント)も、見出しの前のコメント行をそう印字します。
@@ -1411,6 +1540,12 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 [journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 内容、順序、複数行の内部、値の中の位置、未完 EOF の終端を保ちます。
 独立した開始は所属本文の段に揃えます。
+行頭は規則 1 の場所ではないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#ディレクティブ)と
+[sequence](./sequence.ja.md#ディレクティブ)は、自分の行にあるディレクティブを、
+周りの文の段に置きます。
+[journey](./journey.ja.md#ディレクティブ)は、後ろの文の段に置きます。
 共通文の境界は普通の空白規則でなく原文隙間全体を保ちます。
 除去されるディレクティブ自体は必要な空白の代わりになりません。
 
@@ -1464,6 +1599,9 @@ tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
+規則 2 が与える 1 行の形は、行の規則が無視するものを変えてしまうからです。
+1 行の形については [Declarations and notes](#declarations-and-notes)
+を参照してください。
 それ以外の複数行の文は、1 行の文と同じように整形します。
 行の規則が無視する `;` は mermaid.js が除くため、
 その両側のトークンが接していれば 1 つのトークンになります。
@@ -1542,7 +1680,11 @@ eventmodeling tf 01 evt Alpha "style:#x"; rf 02 cmd Beta
 ### Blank lines
 
 文・項目間の普通の ASCII 空行は最大 1 行、文書・本文の端は削除します。
-無制限に広げず区切りを残すためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+[flowchart](./flowchart.ja.md#空行)、[sequence](./sequence.ja.md#空行)、
+[gantt](./gantt.ja.md#空行)、[journey](./journey.ja.md#空行)は、
+空行の連なりを空行 1 行にし、本文の初めと終わりの空行を除きます。
+Prettier がコードに行うのと同じです。
 普通の空白だけの行は空にします。
 data の内部は [データブロック](#data-blocks) の規則に従います。
 説明、隠れた形、ディレクティブの内部、保持する前置部分、
@@ -1574,9 +1716,8 @@ rf 02 cmd Beta
 ### Trailing whitespace
 
 見出しや構造部品の後の、害のない外側の ASCII 空白だけを削ります。
-規則 1 は、行末の空白を決めません。
-規則 1 の表が挙げるのは印の横の空白だからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、JavaScript、CSS、YAML で、行末に空白を印字しません。
 [requirement](./requirement.ja.md#トークンの間の空白) と
 [radar](./radar.ja.md#trailing-whitespace)も、行末の空白を落とします。
 物理行ごとの両端の空白の除去ではなく所有ノードで判断します。
@@ -1613,7 +1754,7 @@ entity Shop.Buy
 [journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
 物理行を結ぶコメント領域と、`;` を含む行がそれです。
-規則 1 は、後続の行の字下げの印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [flowchart](./flowchart.ja.md#複数行の文)、
 [sequence](./sequence.ja.md#複数行の文)、
@@ -1736,6 +1877,10 @@ tf 01 evt Alpha
 
 共有埋め込み先方針に従い、CR・CRLF は LF として読み、
 値や隠れた形の内部も設定の `endOfLine` で出力します。
+Prettier はプラグインがテキストを読む前にそれらを変換し、
+mermaid.js は `\r\n` と単独の `\r` を `\n` と同じ改行として読むので、
+Db は変わりません。
+詳しくは [行末](./compatibility.ja.md#行末) を参照してください。
 普通の図固有の Unicode 隙間は部品の規則で整えます。
 共通値と行コメントの LS・PS、ブロックの閉じの先読みとしての役割は保ちます。
 消費される LF とは交換できません。
@@ -1821,6 +1966,16 @@ data Unused {
 ### Final newline
 
 普通の受理入力は設定の改行 1 個で終え、末尾の普通の空行列を削除します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+[pie](./pie.ja.md#final-newline)、[packet](./packet.ja.md#final-newline)、
+[kanban](./kanban.ja.md#末尾の改行)は、テキストを改行 1 個で終え、
+その前の空行を削除します。
+Prettier も、JavaScript、CSS、YAML でファイルを 1 つの改行で終え、
+最後の行の後に空行を置きません。
+mermaid.js は、読む前にテキストへ LF を足します。
+詳しくは [テキストの終わり](../../spec/docs/common.ja.md#テキストの終わり)
+を参照してください。
+末尾の LF はすでに読む文字です。
 必要な隠れた形・data の閉じの空白、保護原文、
 EOF に達する未完ディレクティブは字句上の終端を保ちます。
 共有の末尾方針に揃えつつ、ディレクティブ内容への LF 追加や、
@@ -1870,6 +2025,9 @@ Markdown では埋め込み先に任せます。
 
 共有の接続を使い、最上位、リスト、引用の外側の字下げを除いた本文を整形します。
 設定、保持する前置部分、共通文の空白も同じ規則です。
+本文の末尾の空行は、
+ファイルの末尾と同じように除きます（[Final newline](#final-newline) を参照）。
+Prettier がほかの言語のコードの fence を整形するのと同じです。
 埋め込み先は埋め込んだ出力の末尾改行と最後のコード行の余白を削るため、
 最後の保持余白は単独ファイルと同じ保証を持ちません。
 拒否された本文は Prettier の通常のコード処理に任せます。

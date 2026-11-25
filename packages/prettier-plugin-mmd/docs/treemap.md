@@ -450,6 +450,47 @@ treemap
   classDef zz "Apparent": 2
 ```
 
+A U+2028 or U+2029 before a comment line ends the line of the `classDef`, as a
+line feed does: the comment goes to a line of its own, and its comment line, a
+directive, and the style that follows stand one level inside the `classDef`,
+whether or not whitespace is written before the style.
+
+[test:
+treemap/style-gaps/class-definition-line-separator-directive-comment-class-on-next-line]
+[test:
+treemap/style-gaps/class-definition-line-separator-directive-comment-row-as-style]
+[test:
+treemap/style-gaps/class-definition-after-row-line-separator-directive-comment-row-as-style]
+[test:
+treemap/style-gaps/class-definition-line-separator-comment-class-on-next-line]
+[test:
+treemap/style-gaps/class-definition-line-separator-directive-comment-class-follows-at-once]
+[test:
+treemap/style-gaps/class-definition-line-separator-directive-comment-class-at-first-column]
+[test:
+treemap/style-gaps/class-definition-line-separator-comment-then-unclosed-directive]
+[test: treemap/style-gaps/class-definition-line-separator-two-comment-lines]
+[test:
+treemap/style-gaps/class-definition-line-separator-comment-then-whitespace-line]
+[test:
+treemap/style-gaps/class-definition-ignored-semicolon-line-separator-comment]
+[test:
+treemap/style-gaps/class-definition-line-separator-comment-at-end-of-text]
+[test:
+treemap/style-gaps/class-definition-line-feed-directive-comment-class-on-next-line]
+[test:
+treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-on-next-line]
+[test:
+treemap/style-gaps/class-definition-paragraph-separator-directive-comment-row-as-style]
+[test:
+treemap/style-gaps/class-definition-paragraph-separator-after-row-directive-comment-row-as-style]
+[test:
+treemap/style-gaps/class-definition-paragraph-separator-comment-class-on-next-line]
+[test:
+treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-follows-at-once]
+[test:
+treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-at-first-column]
+
 ### Styles
 
 The style of a `classDef` is printed as the styles of the other diagram types
@@ -779,8 +820,8 @@ treemap
 Use shared common-line placement: trim ordinary common-whitespace edges and
 print one space before a nonempty value, or bare `title` for
 null/whitespace-only text.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
-between `title` and what it takes, as Prettier prints `return  x` as
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `title` and its nonempty value, as Prettier prints `return  x` as
 `return x;`, and drops the spaces and tabs at the end of a line, so a title of
 spaces and tabs only prints bare `title`. The formatter prints a run of spaces
 and tabs inside the text as one space (see
@@ -830,6 +871,146 @@ treemap/title/bare-title-directive-space-and-line-separator] [test:
 treemap/title/bare-title-directive-space-and-paragraph-separator] [test:
 treemap/title/bare-title-directive-spaces-and-line-separator] [test:
 treemap/title/bare-title-comment-after-line-separator-kept]
+
+A U+2028 or U+2029 after the text of a `title` or `accTitle:` line, or after the
+keyword where it has no text, with only whitespace before it, and a directive
+and a comment after it, ends the line for the printer where a row follows the
+comment after an empty line, with a directive line after the empty line or
+without one, or after a bare directive line. A bare directive line holds
+directives that touch each other and nothing else: no whitespace before,
+between, or after them, and no `;`. A directive before the character, or before
+the text of an `accTitle:` line, keeps the line (see below). The directive and
+the comment are then printed on a line of their own with nothing between them,
+as an inline comment is on any line that a row follows (see
+[Comments](#comments)): `title`, a space, the character, a space, `%%{x}%%`, two
+spaces, `%% c`, a blank line, and `"A":1` print `title`, `%%{x}%%%% c`, a blank
+line, and `  "A": 1`, the same the second time.
+
+[test: treemap/title/bare-title-line-separator-directive-comment-touch] [test:
+treemap/title/bare-title-paragraph-separator-tabs-directive-comment-touch]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-touch-before-directive-line]
+[test: treemap/title/title-text-line-separator-directive-comment-touch] [test:
+treemap/title/title-directive-text-line-separator-directive-comment-touch]
+[test: treemap/title/acctitle-text-line-separator-directive-comment-touch]
+[test: treemap/title/acctitle-bare-line-separator-directive-comment-touch]
+[test:
+treemap/title/title-text-line-separator-directive-comment-touch-before-directive-line]
+[test:
+treemap/title/acctitle-text-line-separator-directive-comment-touch-before-directive-line]
+[test:
+treemap/title/bare-title-paragraph-separator-directive-comment-touch-before-directive-line]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-touch-before-touching-directives-line]
+[test:
+treemap/title/title-text-line-separator-directive-comment-touch-before-empty-line-and-directive-line-with-trailing-blanks]
+[test:
+treemap/title/title-text-line-separator-directive-comment-touch-before-empty-line-and-indented-directive-line]
+[test:
+treemap/title/title-text-line-separator-directive-comment-touch-before-empty-line-and-directive-line-with-two-directives]
+[test:
+treemap/title/acctitle-text-paragraph-separator-directive-comment-touch-before-empty-line-and-directive-line-with-trailing-blanks]
+
+The line stays as written where the comment is followed directly by a row, by
+one comment line or more and a row, by an empty line, a comment line, and a row,
+by a line of whitespace only and a row, by a directive line that holds a comment
+and a row, or by a directive line that is not bare and a row: one with
+whitespace before or after a directive, a `;`, or whitespace between two
+directives.
+
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-two-comment-lines-kept]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-before-row-kept]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-before-comment-line-kept]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-before-empty-line-and-comment-line-kept]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-before-whitespace-line-kept]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-before-directive-comment-line-kept]
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-trailing-blanks-kept]
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-semicolon-kept]
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-indented-directive-line-kept]
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-two-directives-kept]
+[test:
+treemap/title/acctitle-text-paragraph-separator-directive-comment-before-directive-line-with-trailing-blanks-kept]
+
+Where the comment is followed by the end of the text, with or without a line
+feed after it, by a comment line and the end of the text, or by a bare directive
+line and the end of the text, the line breaks at the character, and the
+directive and the comment have one space between them. A directive line that is
+not bare and the end of the text keep the line as written.
+
+[test:
+treemap/title/title-text-line-separator-directive-comment-at-end-without-line-feed-one-space]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-at-end-one-space]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-before-comment-line-at-end-one-space]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-before-directive-line-at-end-one-space]
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-directive-line-at-end-one-space]
+[test:
+treemap/title/acctitle-text-line-separator-directive-comment-before-directive-line-at-end-one-space]
+[test:
+treemap/title/bare-title-paragraph-separator-directive-comment-before-directive-line-at-end-one-space]
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-trailing-blanks-at-end-kept]
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-semicolon-at-end-kept]
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-indented-directive-line-at-end-kept]
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-two-directives-at-end-kept]
+[test:
+treemap/title/acctitle-text-paragraph-separator-directive-comment-before-directive-line-with-semicolon-at-end-kept]
+
+A directive before the character, or before the text of an `accTitle:` line,
+does not break the line. Where an empty line and a row follow the comment, the
+whitespace before the comment is printed as one space, as on any line (see
+[Comments](#comments)), and where a row follows it directly the line stays as
+written.
+
+[test: treemap/title/bare-title-directive-before-line-separator-comment-kept]
+[test:
+treemap/title/acctitle-directive-text-line-separator-directive-comment-kept]
+[test:
+treemap/title/bare-title-directive-before-line-separator-directive-comment-before-empty-line-one-space]
+[test:
+treemap/title/acctitle-directive-text-line-separator-directive-comment-before-empty-line-one-space]
+[test:
+treemap/title/bare-title-directive-before-line-separator-directive-comment-before-row-kept]
+[test:
+treemap/title/acctitle-directive-text-line-separator-directive-comment-before-row-kept]
+[test:
+treemap/title/title-text-directive-before-line-separator-directive-comment-before-empty-line-one-space]
+[test:
+treemap/title/title-text-directive-before-paragraph-separator-directive-comment-before-empty-line-one-space]
+
+A line that is a kept line, because a `;` that the line rule ignores comes
+before the character, as in `title style:#x;`, stays as written whatever
+follows: the whitespace after the character and between the directive and the
+comment is kept, and the line is not broken at the character. A directive that
+is not closed after the character takes the rest of the text, so the line is not
+broken at the character either: `title T`, the character, `%%{x`, a blank line,
+and `"A":1` print `title T %%{x`, a blank line, and `"A":1`.
+
+[test:
+treemap/title/title-text-ignored-semicolon-line-separator-directive-comment-kept]
+[test:
+treemap/title/title-text-two-ignored-semicolons-line-separator-directive-comment-kept]
+[test: treemap/title/title-text-line-separator-unclosed-directive-joins-rest]
+
+The other ways in which the comment can be followed, such as an empty line and
+the end of the text, or an empty line and a bare directive line, are not stated
+here.
 
 A comment line after an empty title aligns with the next statement without
 becoming the title's value.

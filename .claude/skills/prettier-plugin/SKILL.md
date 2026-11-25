@@ -73,14 +73,15 @@ SKILL, fixtures with the tests SKILL).
 
 The printed form of each item is decided by the rules of
 [How the printed form is decided](../../../packages/prettier-plugin-mmd/docs/printed-form.md),
-in their order: the whitespace beside a mark (for a colon, the three steps that
-say which kind it is), then the form that the other diagram types print for the
-same kind of gap, then a spelling. The rules say which form reads best, which is
-what a printed form is for; they are applied in their order so that the form
-does not depend on who judges. Where none of them gives a form, the output of
-the released version is not changed on the judgment of whoever is working on it:
-a form that seems to read better is proposed to the user, with a text as written
-and both outputs, and what is decided is added to those rules.
+in their order: the whitespace beside a mark and at a place that Prettier prints
+alike (the end of a line, the end of the text, blank lines; for a colon, the
+three steps that say which kind it is), then the form that the other diagram
+types print for the same kind of gap, then a spelling. The rules say which form
+reads best, which is what a printed form is for; they are applied in their order
+so that the form does not depend on who judges. Where none of them gives a form,
+the output of the released version is not changed on the judgment of whoever is
+working on it: a form that seems to read better is proposed to the user, with a
+text as written and both outputs, and what is decided is added to those rules.
 
 1. From the grammar and the tree in the specification, list what formatting
    could change. The kinds of items flowchart has (as examples; a diagram type
@@ -96,11 +97,11 @@ and both outputs, and what is decided is added to those rules.
    - what is kept as written (what affects the Db)
 2. For each item, find the rule of that document that decides its form, taking
    the rules in their order, and the facts it needs: the whitespace that
-   Prettier prints beside the same kind of mark, the form that the other diagram
-   types print for the same gap, or the count of each form in the examples of
-   the documentation of the pinned mermaid.js. Write the candidate forms with
-   examples (before and after formatting), the rule that decides, and the facts.
-   Say which forms change the Db.
+   Prettier prints beside the same kind of mark or at the same kind of place,
+   the form that the other diagram types print for the same gap, or the count of
+   each form in the examples of the documentation of the pinned mermaid.js.
+   Write the candidate forms with examples (before and after formatting), the
+   rule that decides, and the facts. Say which forms change the Db.
 3. For each candidate form, run the text before and after formatting through the
    pinned mermaid.js and the versions that count (that document), and check that
    the Db does not change and that every one of those versions accepts the form
@@ -167,7 +168,7 @@ How it is built (under `src/printers/`):
   of sections, statements that hold no other), decide the kinds in one function
   whose switch lists every statement type, checks each case against the type of
   its kind, and ends with a `satisfies` check that fails when a statement type
-  is not listed (`classifySequenceStatement` in `sequence-layout.ts`);
+  is not listed (`classifySequenceStatement` in `sequence-statements.ts`);
   everything else asks that function, rather than keeping its own list of types.
 - Value nodes (`Identifier`, `StringLiteral`, labels, and so on) are printed as
   the text of their ranges. Each diagram type has its list of them

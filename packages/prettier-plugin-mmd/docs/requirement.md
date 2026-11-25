@@ -888,6 +888,39 @@ statements-one-per-line/continued-with-directive-kept] [fixture:
 statements-one-per-line/continued-on-semicolon-line-kept] [fixture:
 statements-one-per-line/continued-on-ignored-semicolon-line-kept]
 
+A statement of that kind that ends on a line that holds a kept `;`, such as the
+`;` of the class `c;` in `:::c;` or the last character of a comment, is printed
+on a line of its own with its parts on one line, as it is without the `;`. Where
+a comment line starts after a U+2028 or U+2029 on that line, the line is printed
+as written, from the statement before it to the end of the comment line: on a
+line of its own, the string would stand alone, which mermaid.js rejects.
+
+[fixture: statements-one-per-line/string-continued-on-semicolon-line-joined]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-comment-region-ps]
+[test:
+requirement/statements-one-per-line/continued-comment-semicolon-region-ls]
+[test:
+requirement/statements-one-per-line/continued-comment-semicolon-region-ps]
+[test:
+requirement/statements-one-per-line/continued-classdef-semicolon-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-class-semicolon-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-relationship-semicolon-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-with-directive-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-then-comment-line-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-then-empty-line-and-statement-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls]
+
 A line that holds a kept `;` keeps its statements together: the line rule of
 mermaid.js removes the last `;` of a line that holds `style`, a `:` after it,
 and a `#` after that, and moving a statement to a line of its own makes the rule
@@ -982,10 +1015,8 @@ end of the diagram and of a body are dropped, as in the other diagram types. A
 line of whitespace only is an empty line after the header, in a body, between
 statements, around a comment line, and at the end of the text, whatever the
 whitespace character is, a form feed, a vertical tab, U+00A0, U+3000, U+2028,
-and U+2029 included: rule 1 names no mark for a line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [kanban](./kanban.md#blank-lines) and
-[packet](./packet.md#blank-lines) print whitespace-only lines as empty lines,
+and U+2029 included: Prettier prints a whitespace-only line as an empty line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form,
 where no other rule keeps the whitespace as written (the lines of a value or of
 a block of text, and the like).
 
@@ -1083,11 +1114,9 @@ and Unicode whitespace, prints `{}`, as Prettier prints `x = { }` as `x = {}`
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)): there is no text
 for interior whitespace to surround. An already empty interior stays empty. The
 keyword and opening brace have one space between them: `accDescr{  }` becomes
-`accDescr {}`. Rule 1 names no mark between a keyword and its opening brace, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [gantt](./gantt.md#empty-description-blocks),
-[class](./class.md#empty-description-blocks), and
-[journey](./journey.md#empty-description-blocks) print one space there.
+`accDescr {}`. Prettier prints one space before the `{` that opens a block
+(`class A{}` is printed `class A {}`), so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that space.
 
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test:
 requirement Unicode and tab interiors] [test: requirement body Unicode and tab
@@ -1099,8 +1128,7 @@ empty-description-blocks/in-body-over-lines-joined]
 A block containing comments or directives keeps their contents and line breaks;
 standalone trivia is one level inside the block and a separate `}` aligns with
 `accDescr`, including an empty block within a requirement or element body. Rule
-1 gives no form here, since its table names the whitespace beside a mark and not
-the start of a line
+1 gives no form here, since its table does not name the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [block](./block.md#empty-description-blocks) and
@@ -1639,8 +1667,8 @@ requirementdiagram
 A comment starts with `%%`, `#`, or `%`, where a unit starts, and runs to the
 end of the line. A comment on a line of its own stands at the level of the
 statement after it, in a body at the level of the fields, and its text and its
-mark are kept as written. Rule 1 gives no form here, since its table names the
-whitespace beside a mark and not the start of a line
+mark are kept as written. Rule 1 gives no form here, since its table does not
+name the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [c4](./c4.md#comments) and [quadrant](./quadrant.md#comments) align a
@@ -2008,6 +2036,86 @@ goes on over the character, and the comment would be text.
 statement after the comment] [test: U+2028 and a comment after a value in
 quotes, with a statement after the comment] [test: U+2028 and a comment after
 the class in quotes of a class statement, with a statement after the comment]
+
+A statement that a comment line after U+2028 or U+2029 cuts is printed as
+written, to its end, and so is a statement whose last line holds such a comment
+line after a `style`, `classDef`, or `class` statement, where text follows the
+comment line: the string and the line break that follow the style stay where
+they are. Where nothing follows it, as at the end of the text, the statement and
+the comment line are printed as any are. In a statement that is cut, a name in
+quotes that ends its line, with the rest of the statement on a later line, keeps
+its quotes: without them the name would go on over the line break, and
+mermaid.js rejects the text. Any other name in quotes is printed as it is
+everywhere else: `"e" {` is printed `e {`, `"e" :::c {` is printed `e :::c {`,
+and the name that ends a relationship is printed without its quotes. A statement
+that follows the comment line, and is no part of that line, is printed as any
+statement is.
+
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the
+line of an element, with its name in quotes on a later line] [test: requirement:
+U+2028, a directive, a comment, and a directive line inside the line of an
+element, with its name in quotes on a later line] [test: requirement: U+2028, a
+directive, a comment, and an empty line after the string and the class of a
+style statement] [test: requirement: U+2028, a directive, a comment, and a
+directive line after the string and the class of a style statement] [test:
+requirement: U+2028, a directive, a comment, and an empty line after the string
+and the class of a classDef statement] [test: requirement: U+2028, a directive,
+a comment, and an empty line after a relationship that goes on a later line]
+[test: requirement: U+2028 and a comment at the end of the text after the string
+and the class of a style statement] [test: requirement: U+2028 and a comment at
+the end of the text after the string and the class of a classDef statement]
+[test: requirement: U+2028 and a comment at the end of the text after the string
+and the class of a class statement] [test: requirement: U+2029 and a comment at
+the end of the text after the string and the class of a style statement] [test:
+requirement: U+2028, a comment, and a comment line at the end of the text after
+the string and the class of a style statement] [test: requirement: U+2028, a
+comment, and a line of whitespace at the end of the text after the string and
+the class of a style statement] [test: requirement: U+2028 and a directive that
+is not closed at the end of the text after the string and the class of a style
+statement] [test: requirement: U+2028 and a comment before an ignored semicolon
+after the string of a style statement] [test: requirement: U+2028, a directive,
+a comment, and an empty line after a block, with a name in quotes after them]
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the
+line of an element, with its name in quotes and the rest of the statement on its
+line] [test: requirement: U+2028, a directive, a comment, and an empty line
+inside the line of an element, with its name in quotes and a class on its line]
+[test: requirement: U+2029, a directive, a comment, and an empty line inside the
+line of an element, with its name in quotes on a later line] [test: requirement:
+U+2028, a directive, a comment, and an empty line inside the line of a
+requirement, with its name in quotes on a later line] [test: requirement:
+U+2028, a directive, a comment, and an empty line inside the line of a
+requirement, with its name in quotes and the rest of the statement on its line]
+[test: requirement: U+2028, a directive, a comment, and an empty line inside a
+relationship, with the name in quotes that ends it] [test: requirement: U+2028,
+a comment, and an empty line inside the line of an element, with an ignored
+semicolon in its name in quotes on a later line] [test: requirement: U+2028, a
+directive that is not closed, a comment, and an empty line inside the line of an
+element, with its name in quotes on a later line] [test: requirement: U+2028,
+two comments, and an empty line inside the line of an element, with its name in
+quotes on a later line] [test: requirement: U+2028, a comment, and a line of
+whitespace inside the line of an element, with its name in quotes on a later
+line]
+
+A comment line that starts with `#` or `%` ends at a U+2028 or U+2029, and the
+text after the character is a line of its own. A directive and a comment on that
+line are printed as on a line after a line feed: with one space between them
+where the source has whitespace there, and none where it has none. A directive
+that is not closed keeps the line as written.
+
+[test: requirement: a hash comment line with an ignored semicolon, U+2028, a
+directive, two spaces, and a comment] [test: requirement: a hash comment line
+with two ignored semicolons, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line in a body, U+2028, a directive, two
+spaces, a comment, and the closing brace after an empty line] [test:
+requirement: a hash comment line, U+2028, and a directive that is not closed]
+[test: requirement: a hash comment line, U+2028, a directive, two spaces, and a
+comment] [test: requirement: a hash comment line, U+2028, a directive, one
+space, and a comment] [test: requirement: a hash comment line, U+2028, a
+directive, a tab, and a comment] [test: requirement: a hash comment line,
+U+2028, a directive touching a comment] [test: requirement: a hash comment line,
+U+2029, a directive, two spaces, and a comment] [test: requirement: a percent
+comment line, U+2028, a directive, two spaces, and a comment] [test:
+requirement: a hash comment line, U+2028, two directives, and a comment]
 
 ### Whitespace characters
 

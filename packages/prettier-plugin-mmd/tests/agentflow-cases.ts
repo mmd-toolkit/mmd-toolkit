@@ -133,6 +133,83 @@ export const agentflowCases: readonly AgentflowCase[] = [
     output: "agentflow-beta TB\n  connector F  \u2029\n",
   },
   {
+    name: "agentflow: U+2028 after the keyword at the end of a flow name before a semicolon and a comment",
+    input: "agentflow-beta TB\nflow Front end \u2028 ;  %% c\nA\nend\n",
+    output: "agentflow-beta TB\n  flow Front end \u2028; %% c\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: vertical tab after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\u000b%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: form feed after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\f%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+3000 after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\u3000%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: no-break space after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\u00a0%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\u2028%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\u2029%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+3000 after the semicolon after the keyword at the end of a connector name before a comment",
+    input: "agentflow-beta TB\nconnector Front global ;\u3000%% c\n",
+    output: "agentflow-beta TB\n  connector Front global%% c\n",
+  },
+  {
+    name: "agentflow: a tab before the keyword at the end of a flow name before a semicolon and a comment",
+    input: "agentflow-beta TB\nflow Front\tend ;  %% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front\tend%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: a no-break space before the keyword at the end of a flow name before a semicolon and a comment",
+    input: "agentflow-beta TB\nflow Front\u00a0end ;  %% c\nA --> B\nend\n",
+    output:
+      "agentflow-beta TB\n  flow Front\u00a0end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the keyword at the end of a flow name before a semicolon and a comment",
+    input: "agentflow-beta TB\nflow Front end \u2029 ;  %% c\nA\nend\n",
+    output: "agentflow-beta TB\n  flow Front end \u2029; %% c\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: a tab between an entity-shaped name end and a semicolon that a directive follows",
+    input: "agentflow-beta TB\nflow Fr#ont\t;  %%{x}%%\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Fr#ont\t; %%{x}%%\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: no-break space between an entity-shaped name end and a semicolon that a directive follows",
+    input: "agentflow-beta TB\nflow Fr#ont\u00a0;  %%{x}%%\nA --> B\nend\n",
+    output:
+      "agentflow-beta TB\n  flow Fr#ont\u00a0; %%{x}%%\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 between a semicolon that a directive follows and an entity-shaped name end",
+    input: "agentflow-beta TB\nconnector Front#fin ;\u2028%%{x}%%\n",
+    output: "agentflow-beta TB\n  connector Front#fin ; %%{x}%%\n",
+  },
+  {
+    name: "agentflow: U+2029 between a semicolon that a directive follows and an entity-shaped name end",
+    input: "agentflow-beta TB\nconnector Front#fin ;\u2029%%{x}%%\n",
+    output: "agentflow-beta TB\n  connector Front#fin ; %%{x}%%\n",
+  },
+  {
     name: "agentflow: a no-break space before a comment that ends the label of a vertex",
     input: "agentflow-beta TB\nA[x\u00a0%% c\n]\n",
     output: 'agentflow-beta TB\n  A["x" %% c\n    ]\n',
@@ -251,5 +328,187 @@ export const agentflowCases: readonly AgentflowCase[] = [
     name: "agentflow: a tab before a comment with a semicolon that ends the label of an edge",
     input: "agentflow-beta TB\nA -->|x\t%% c;  \n| B\n",
     output: "agentflow-beta TB\n  A -->|x %% c;  \n    | B\n",
+  },
+  {
+    name: "agentflow: U+2028 after `end ;` of a flow on a kept line, then a statement",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2028C\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B; end ; C\n",
+  },
+  {
+    name: "agentflow: U+2028 after `end ;` of a flow on a kept line, then a line break",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2028\nC\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end\n  C\n",
+  },
+  {
+    name: "agentflow: U+2028 after `end ;` of a flow on a kept line, then a comment",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2028%% c\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end %% c\n",
+  },
+  {
+    name: "agentflow: U+2028 after `end ;` of a flow on a kept line, then a directive",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2028%%{x}%%\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end ; %%{x}%%\n",
+  },
+  {
+    name: "agentflow: U+2028 after `end ;` of a flow on a kept line, then a second `;`",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2028;\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after `end ;` of a flow on a kept line, then the end of the text",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2028",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 between `end` and `;` of a flow on a kept line, then a comment",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end \u2028;  %% c\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end %% c\n",
+  },
+  {
+    name: "agentflow: U+2029 after `end ;` of a flow on a kept line, then a statement",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2029C\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B; end ; C\n",
+  },
+  {
+    name: "agentflow: U+2029 after `end ;` of a flow on a kept line, then a line break",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2029\nC\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end\n  C\n",
+  },
+  {
+    name: "agentflow: U+2029 after `end ;` of a flow on a kept line, then a comment",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2029%% c\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end %% c\n",
+  },
+  {
+    name: "agentflow: U+2029 after `end ;` of a flow on a kept line, then a directive",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2029%%{x}%%\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end ; %%{x}%%\n",
+  },
+  {
+    name: "agentflow: U+2029 after `end ;` of a flow on a kept line, then a second `;`",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2029;\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after `end ;` of a flow on a kept line, then the end of the text",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end ;\u2029",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 between `end` and `;` of a flow on a kept line, then a comment",
+    input: "agentflow-beta TB\nflow F[x;]; A --> B; end \u2029;  %% c\n",
+    output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end %% c\n",
+  },
+  {
+    name: "agentflow: U+2028 between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end \u2028end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `;` between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end ;\u2028end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after a space after the `;` between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end ; \u2028end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end end\u2028\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end \u2029end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `;` between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end ;\u2029end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after a space after the `;` between two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end ; \u2029end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after two `end` of nested flows on a kept line",
+    input: "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end end\u2029\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B;\n    end\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `end` of a flow on a kept line, then a line break",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2028\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `end` of a flow on a kept line, then the end of the text",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2028",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `end` of a flow on a kept line, then a statement",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2028C\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B; end C\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `end` of a flow on a kept line, then a line break and a statement",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2028\nC\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n  C\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `end` of a flow on a kept line, then a line break",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2029\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `end` of a flow on a kept line, then the end of the text",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2029",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `end` of a flow on a kept line, then a statement",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2029C\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B; end C\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `end` of a flow on a kept line, then a line break and a statement",
+    input: "agentflow-beta TB\nflow F; A[x;] --> B; end \u2029\nC\n",
+    output: "agentflow-beta TB\n  flow F; A[x;] --> B;\n  end\n  C\n",
+  },
+  {
+    name: "agentflow: U+2028 after `end ;;` of a flow with an ignored `;`",
+    input: "agentflow-beta TB\nflow F[style:#x;]; A --> B; end ;;\u2028\n",
+    output: "agentflow-beta TB\n  flow F[style:#x;]; A --> B; end ;;\u2028\n",
+  },
+  {
+    name: "agentflow: U+2029 after `end ;;` of a flow with an ignored `;`",
+    input: "agentflow-beta TB\nflow F[style:#x;]; A --> B; end ;;\u2029\n",
+    output: "agentflow-beta TB\n  flow F[style:#x;]; A --> B; end ;;\u2029\n",
+  },
+  {
+    name: "agentflow: U+2028 after the `;` after the inner `end` of nested flows, before a statement and the last `end`",
+    input:
+      "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end;\u2028 C; end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B; end; C;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `;` after the inner `end` of nested flows, before a statement and the last `end`",
+    input:
+      "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end;\u2029 C; end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B; end; C;\n  end\n",
   },
 ]

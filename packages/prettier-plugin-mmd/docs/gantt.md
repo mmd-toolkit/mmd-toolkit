@@ -392,6 +392,37 @@ task-data/colon-column-sections-in-different-columns] [fixture:
 task-data/colon-column-before-first-section] [fixture:
 task-data/colon-column-sections-and-preamble]
 
+A section with a task whose line a comment line after U+2028 or U+2029 joins to
+the next line, which the printer prints as written, is on its own where the
+colon of that task is not in the column of the group: the printer moves the
+colons of the other tasks and leaves that one, so the colons of the section are
+in more than one column, and a second formatting would find it on its own. A
+task that stays as written for another reason, such as a name that ends with a
+directive, is left out of the tasks of its section, as above, and does not take
+the section out of the group.
+
+[test: Gantt: a task that a comment after U+2028 joins to the next line, and a
+section with padding after it] [test: Gantt: a task that a comment only after
+U+2028 joins to the next line, and a section with padding after it] [test:
+Gantt: a section with padding, and a section whose task a comment after U+2028
+joins to the next line] [test: Gantt: a task that a comment after U+2028 joins
+to the next line, and two sections with padding after it] [test: Gantt: a task
+that a comment after U+2029 joins to the next line, and a section with padding
+after it] [test: Gantt: a task that a comment after U+2028 joins to the next
+line, with its colon at the column of the group] [test: Gantt: a task that stays
+as written for another reason does not take its section out of the group] [test:
+Gantt: a task that a comment after U+2028 joins to a directive that is not
+closed, and a section with padding after it] [test: Gantt: a task that a comment
+after U+2028 joins to a second comment line, and a section with padding after
+it] [test: Gantt: a task that a comment after U+2028 joins to a line of
+whitespace, and a section with padding after it] [test: Gantt: a task that a
+comment after U+2028 joins to an empty line, and a section with padding after
+it] [test: Gantt: a task that a comment after U+2028 joins to the end of the
+text, in the last section] [test: Gantt: a task that a comment after U+2028
+joins to the next line, under a title with an ignored semicolon] [test: Gantt: a
+task that a comment that ends in a semicolon after U+2028 joins to the next
+line, and a section with padding after it]
+
 The colons stay where they are in these cases, since moving them could change
 the figure. A section in which no name has more than one space before its colon
 is left: no colon moves, and a name that touches its colon gets its one space as
@@ -870,11 +901,9 @@ follows the whitespace: `includes`, two spaces, and `%%{init: {}}%%` stay, since
 mermaid.js takes the directive out before it reads the list, and every version
 of mermaid.js that counts rejects the form with one space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Rule 1 names no mark between a keyword and its text, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that gap one space, as [pie](./pie.md#title) and [sequence](./sequence.md#title)
-print `title` followed by one space; the rejected one-space form is why these
-two spaces stay.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its text, as Prettier prints `return  x` as `return x;`;
+the rejected one-space form is why these two spaces stay.
 
 [fixture: lists/whitespace-only] [fixture: lists/whitespace-only-then-directive]
 
@@ -1282,10 +1311,9 @@ Unicode whitespace, prints `{}`, as Prettier prints `x = { }` as `x = {}`
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)): there is no text
 for interior whitespace to surround. An already empty interior stays empty. The
 ordinary keyword/opener gap uses one space: `accDescr{  }` becomes
-`accDescr {}`. Rule 1 names no mark between a keyword and its opening brace, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [class](./class.md#empty-description-blocks) and
-[journey](./journey.md#empty-description-blocks) print one space there.
+`accDescr {}`. Prettier prints one space before the `{` that opens a block
+(`class A{}` is printed `class A {}`), so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that space.
 
 [fixture: gantt/empty-description-blocks/touching-comment-body] [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: gantt Unicode and
@@ -1296,8 +1324,8 @@ empty-description-blocks/blank-lines-inside]
 A block with a directive or a comment line keeps its contents and line breaks,
 with body indentation under
 [Accessibility statements](#accessibility-statements). Rule 1 gives no form
-here, since its table names the whitespace beside a mark and not the start of a
-line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+here, since its table does not name the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [pie](./pie.md#description-blocks) keeps comment-only blocks with
 comments one level inside and a separate closer at statement level, and
@@ -1525,12 +1553,10 @@ Db, so a comment line before the `)` must not indent it.
 
 [fixture: click-statements/callback-args-comment-line-kept]
 
-The whitespace at the end of the header's line is dropped. Rule 1 names no mark
-at the end of a line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [radar](./radar.md#trailing-whitespace) and
-[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
-the header.
+The whitespace at the end of the header's line is dropped. Prettier prints no
+whitespace at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) drops the whitespace
+after the header.
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -1570,9 +1596,8 @@ comments/single-percent-kept] [fixture: comments/bare-percent-lines]
 A comment line stands at the level of the statement after it, so a comment
 before a `section` stands at its level, and one before a task stands at the
 level of the task; at the end of the text it stands at the level of the last
-statement. Rule 1 gives no form here, since its table names the whitespace
-beside a mark and not the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+statement. Rule 1 gives no form here, since its table does not name the start of
+a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [quadrant](./quadrant.md#comments), [xychart](./xychart.md#comments), and
 [ishikawa](./ishikawa.md#comments) put a comment line on a line of its own at
@@ -1891,6 +1916,18 @@ stay.
 
 [test: U+2028 and spaces at the end of a title] [test: U+2029 and spaces at the
 end of a date format]
+
+A comment line that starts with `%` ends at a U+2028 or U+2029, and the text
+after the character is a line of its own. A directive and a comment on that line
+are printed as on a line after a line feed: with one space between them where
+the source has whitespace there, and none where it has none.
+
+[test: gantt: a percent comment line, U+2028, a directive, two spaces, and a
+comment at the end of the text] [test: gantt: a percent comment line, U+2028, a
+directive, two spaces, and a comment] [test: gantt: a percent comment line,
+U+2028, a directive touching a comment] [test: gantt: a percent comment line,
+U+2028, a directive, a tab, and a comment] [test: gantt: a percent comment line,
+U+2029, a directive, two spaces, and a comment]
 
 ### Whitespace characters
 
