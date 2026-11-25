@@ -380,22 +380,19 @@ xychart
 
 ### Brackets and commas
 
-The categories and the values stand between brackets. The `[` has one space
-before it, after the keyword or the title, also where it was written touching
-(`x-axis[a]`, `line T[1]`, `bar"Costs"[1,2]`); there is no space after the `[`
-or before the `]`; a comma has no space before it and one after it
-(`[jan, feb, mar]`). Prettier leaves no whitespace just inside square brackets
-and gives a comma no space before it and one after;
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
-spacing inside brackets and around commas. A keyword and the string that follows
-it are separated by one space in the same way (`title"T"` is printed
-`title "T"`). None of this whitespace is in the Db, and none of it changes how
-units are read, since a bracket, a comma, and a quote are no characters of a
-word, so the form is a choice. It is the form that most examples in the
-documentation of mermaid.js use (`[jan, feb, mar]`, `[5000, 6000, 7500]`); some
-examples there have no space after a comma (`[12,2,20,25,17,24]`), and every
-chart has one form. A space after each comma is the whitespace that Prettier
-prints beside a comma.
+The categories and the values stand between brackets.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives their
+whitespace, as Prettier prints it in code. The `[` that opens the values that a
+keyword or a statement takes has one space before it, after the keyword or the
+title, also where it was written touching (`x-axis[a]`, `line T[1]`,
+`bar"Costs"[1,2]`), as Prettier prints `return  [800, 600]` as
+`return [800, 600];`. There is no space after the `[` or before the `]`, and a
+comma has no space before it and one after it (`[jan, feb, mar]`), as Prettier
+prints `[ 1,2 ]` as `[1, 2]`. A keyword and the string that follows it are
+separated by one space (`title"T"` is printed `title "T"`), as Prettier prints
+`return  x` as `return x;`. None of this whitespace is in the Db, and none of it
+changes how units are read, since a bracket, a comma, and a quote are no
+characters of a word.
 
 [fixture: brackets-and-commas/spaces-inside-and-around-commas] [fixture:
 brackets-and-commas/bracket-touching-the-keyword] [fixture:
@@ -483,10 +480,10 @@ xychart
 A value and the label after it are separated by one space (`20 "peak"`), also
 where they were written touching (`10"peak"`), and a comma follows the label
 with no space before it. mermaid.js reads the label whether it touches the value
-or not, so the form is a choice: one space is the form that its documentation
-uses (`25 "Launch"`) and the same separator as between a keyword and a string
-(see [Brackets and commas](#brackets-and-commas)). Prettier prints a comma with
-no space before it; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+or not; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between values that follow one another, as Prettier prints CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`. Prettier prints a comma with no
+space before it; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
 gives the comma after a value label the same form.
 
 [fixture: values-and-labels/label-touching-the-value] [fixture:
@@ -654,13 +651,12 @@ directive stays as written.
 ### Accessibility statements
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
-it, as in the other diagrams (see
-[Accessibility statements](./journey.md#accessibility-statements)). The text has
-no whitespace at its ends. Prettier prints one space after the colon of a key
-and removes spaces and tabs at the end of a line;
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the text of
-`accTitle` and `accDescr` these margins. A run of spaces and tabs inside the
-text of an `accDescr` is printed as one space (see
+it, as [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for the
+colon of a key (Prettier prints `x = {a : 1}` as `x = { a: 1 };`). The text has
+no whitespace at its ends: Prettier removes spaces and tabs at the end of a
+line, and rule 1 gives the same removal at the end of the text of `accTitle` and
+`accDescr`. A run of spaces and tabs inside the text of an `accDescr` is printed
+as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip, which the Db keeps (`accTitle: a  b` has the title `a  b` and is
