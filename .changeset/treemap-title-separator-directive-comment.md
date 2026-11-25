@@ -2,7 +2,7 @@
 "prettier-plugin-mmd": patch
 ---
 
-Print the directive and the comment that follow a U+2028 or U+2029 after a
-`treemap` `title` or `accTitle:` text touching each other on a line of their
-own, so that the second formatting changes nothing: `%%{x}%% %% c` on the line
-after `title T` now prints `%%{x}%%%% c`.
+Fix a `treemap` whose `title` or `accTitle:` text is followed by U+2028, a
+directive, a comment, an empty line, and a row, which changed when it was
+formatted a second time: the directive and the comment were printed
+`%%{x}%% %% c` and are now printed `%%{x}%%%% c`.

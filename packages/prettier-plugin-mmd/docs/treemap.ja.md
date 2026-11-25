@@ -865,13 +865,14 @@ section か leaf が後に続くインラインコメントは、
 [test: treemap/title/title-text-line-separator-directive-comment-touch-before-empty-line-and-directive-line-with-two-directives]
 [test: treemap/title/acctitle-text-paragraph-separator-directive-comment-touch-before-empty-line-and-directive-line-with-trailing-blanks]
 
-コメントの後に、section か leaf、コメント行と section か leaf、
+コメントの後に、section か leaf、1 つ以上のコメント行と section か leaf、
 空行とコメント行と section か leaf、空白だけの行と section か leaf、
 コメントを含むディレクティブの行と section か leaf、
 ディレクティブだけではない行（ディレクティブの前か後に空白がある、`;` がある、
 ディレクティブの間に空白がある）と section か leaf のどれかが直後に続くときは、
 行を書かれたまま残します。
 
+[test: treemap/title/title-text-line-separator-directive-comment-before-two-comment-lines-kept]
 [test: treemap/title/bare-title-line-separator-directive-comment-before-row-kept]
 [test: treemap/title/bare-title-line-separator-directive-comment-before-comment-line-kept]
 [test: treemap/title/bare-title-line-separator-directive-comment-before-empty-line-and-comment-line-kept]
@@ -883,12 +884,14 @@ section か leaf が後に続くインラインコメントは、
 [test: treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-two-directives-kept]
 [test: treemap/title/acctitle-text-paragraph-separator-directive-comment-before-directive-line-with-trailing-blanks-kept]
 
-コメントの後に、テキストの終わり、コメント行とテキストの終わり、
+コメントの後に、テキストの終わり（その後に改行があってもなくても）、
+コメント行とテキストの終わり、
 ディレクティブだけの行とテキストの終わりのどれかが続くときは、
 その文字で行を終え、ディレクティブとコメントの間は空白 1 つです。
 ディレクティブだけではない行とテキストの終わりが続くときは、
 行を書かれたまま残します。
 
+[test: treemap/title/title-text-line-separator-directive-comment-at-end-without-line-feed-one-space]
 [test: treemap/title/bare-title-line-separator-directive-comment-at-end-one-space]
 [test: treemap/title/bare-title-line-separator-directive-comment-before-comment-line-at-end-one-space]
 [test: treemap/title/bare-title-line-separator-directive-comment-before-directive-line-at-end-one-space]
@@ -915,6 +918,19 @@ section か leaf が直後に続くときは、行を書かれたまま残しま
 [test: treemap/title/acctitle-directive-text-line-separator-directive-comment-before-row-kept]
 [test: treemap/title/title-text-directive-before-line-separator-directive-comment-before-empty-line-one-space]
 [test: treemap/title/title-text-directive-before-paragraph-separator-directive-comment-before-empty-line-one-space]
+
+行の規則が無視する `;` がその文字の前にある（`title style:#x;` など）ために、
+その行が書かれたまま残す行であるときは、後に何が続いても書かれたまま残します。
+その文字の後の空白と、ディレクティブとコメントの間の空白を保ち、
+その文字で行を終えません。
+その文字の後に閉じていないディレクティブがあるときは、
+それがテキストの残りを取るので、同じくその文字で行を終えません。
+`title T`、その文字、`%%{x`、空行、`"A":1` は、`title T %%{x`、空行、
+`"A":1` と印字します。
+
+[test: treemap/title/title-text-ignored-semicolon-line-separator-directive-comment-kept]
+[test: treemap/title/title-text-two-ignored-semicolons-line-separator-directive-comment-kept]
+[test: treemap/title/title-text-line-separator-unclosed-directive-joins-rest]
 
 コメントの後がそれ以外の形のとき、たとえば空行とテキストの終わりのときや、
 空行とディレクティブだけの行のときは、ここでは述べません。

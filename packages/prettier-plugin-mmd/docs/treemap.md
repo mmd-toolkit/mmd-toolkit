@@ -827,12 +827,15 @@ treemap/title/title-text-line-separator-directive-comment-touch-before-empty-lin
 [test:
 treemap/title/acctitle-text-paragraph-separator-directive-comment-touch-before-empty-line-and-directive-line-with-trailing-blanks]
 
-The line stays as written where the comment is followed directly by a row, by a
-comment line and a row, by an empty line, a comment line, and a row, by a line
-of whitespace only and a row, by a directive line that holds a comment and a
-row, or by a directive line that is not bare and a row: one with whitespace
-before or after a directive, a `;`, or whitespace between two directives.
+The line stays as written where the comment is followed directly by a row, by
+one comment line or more and a row, by an empty line, a comment line, and a row,
+by a line of whitespace only and a row, by a directive line that holds a comment
+and a row, or by a directive line that is not bare and a row: one with
+whitespace before or after a directive, a `;`, or whitespace between two
+directives.
 
+[test:
+treemap/title/title-text-line-separator-directive-comment-before-two-comment-lines-kept]
 [test:
 treemap/title/bare-title-line-separator-directive-comment-before-row-kept]
 [test:
@@ -854,12 +857,14 @@ treemap/title/title-text-line-separator-directive-comment-before-directive-line-
 [test:
 treemap/title/acctitle-text-paragraph-separator-directive-comment-before-directive-line-with-trailing-blanks-kept]
 
-Where the comment is followed by the end of the text, by a comment line and the
-end of the text, or by a bare directive line and the end of the text, the line
-breaks at the character, and the directive and the comment have one space
-between them. A directive line that is not bare and the end of the text keep the
-line as written.
+Where the comment is followed by the end of the text, with or without a line
+feed after it, by a comment line and the end of the text, or by a bare directive
+line and the end of the text, the line breaks at the character, and the
+directive and the comment have one space between them. A directive line that is
+not bare and the end of the text keep the line as written.
 
+[test:
+treemap/title/title-text-line-separator-directive-comment-at-end-without-line-feed-one-space]
 [test:
 treemap/title/bare-title-line-separator-directive-comment-at-end-one-space]
 [test:
@@ -904,6 +909,20 @@ treemap/title/acctitle-directive-text-line-separator-directive-comment-before-ro
 treemap/title/title-text-directive-before-line-separator-directive-comment-before-empty-line-one-space]
 [test:
 treemap/title/title-text-directive-before-paragraph-separator-directive-comment-before-empty-line-one-space]
+
+A line that is a kept line, because a `;` that the line rule ignores comes
+before the character, as in `title style:#x;`, stays as written whatever
+follows: the whitespace after the character and between the directive and the
+comment is kept, and the line is not broken at the character. A directive that
+is not closed after the character takes the rest of the text, so the line is not
+broken at the character either: `title T`, the character, `%%{x`, a blank line,
+and `"A":1` print `title T %%{x`, a blank line, and `"A":1`.
+
+[test:
+treemap/title/title-text-ignored-semicolon-line-separator-directive-comment-kept]
+[test:
+treemap/title/title-text-two-ignored-semicolons-line-separator-directive-comment-kept]
+[test: treemap/title/title-text-line-separator-unclosed-directive-joins-rest]
 
 The other ways in which the comment can be followed, such as an empty line and
 the end of the text, or an empty line and a bare directive line, are not stated

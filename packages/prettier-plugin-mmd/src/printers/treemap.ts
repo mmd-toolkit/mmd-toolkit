@@ -117,6 +117,7 @@ export function printTreemap(
           source,
           lines[index - 1].statements.at(-1)!,
           lines[index - 1].range[1],
+          keptWithJoinedLines,
         ),
     line.range[0],
   ])

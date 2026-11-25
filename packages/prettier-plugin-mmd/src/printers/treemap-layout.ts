@@ -25,6 +25,7 @@ import {
   findLayoutEnd,
   protectSemicolonPrefixes,
 } from "./layout.ts"
+import type { KeptLines } from "./kept-lines.ts"
 import {
   endingSemicolonOf,
   isDroppedSemicolon,
@@ -118,21 +119,27 @@ export function treemapStatementRange(item: TreemapBodyItem): Range {
  * as on any line after the title, so the run starts at the end of the title
  * (docs/treemap.md, Title). The end of the title text is the one that
  * `layoutCommonLine` prints (`commonValueTextEnd`). Not so where a directive
- * stands right before the whitespace, which `layoutCommonLine` leaves out, or
- * where the value holds a directive or a comment, which it prints as written.
- * The decision cannot be read from the layout: it is atoms and rules, with no
- * trace of what whitespace was trimmed.
+ * stands right before the whitespace, which `layoutCommonLine` leaves out,
+ * where the value holds a directive or a comment, which it prints as written,
+ * or where the line is a kept line, which the whitespace after the title does
+ * not leave: the title, the character, and what follows stay on the line as
+ * written. The decision cannot be read from the layout: it is atoms and
+ * rules, with no trace of what whitespace was trimmed.
  */
 export function treemapRelocatedWhitespaceStart(
   source: Source,
   statement: TreemapBodyItem,
   end: number,
+  kept: KeptLines,
 ): number {
+  const line = lineStartOf(source, treemapStatementRange(statement)[0])
   if (
     (statement.type === "TreemapTitleStatement" ||
       statement.type === "TreemapAccTitleStatement") &&
     statement.value !== null &&
-    !valueHoldsTrivia(source, statement.value)
+    !valueHoldsTrivia(source, statement.value) &&
+    !kept.joined.has(line) &&
+    !kept.verbatim.has(line)
   ) {
     const textEnd = commonValueTextEnd(source, statement.value.range[0], end)
     if (

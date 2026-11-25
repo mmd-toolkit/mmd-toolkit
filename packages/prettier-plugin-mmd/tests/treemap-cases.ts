@@ -441,4 +441,35 @@ export const treemapCases: readonly TreemapCase[] = [
     output: 'treemap\n  "Root"\n    "A": 1%% c;\u2028 "B;y":2\n',
     options: {},
   },
+  {
+    name: "treemap/title/title-text-line-separator-unclosed-directive-joins-rest",
+    input: 'treemap\ntitle T \u2028 %%{x\n\n"A":1\n',
+    output: 'treemap\ntitle T %%{x\n\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-two-comment-lines-kept",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%% d\n%% e\n"A":1\n',
+    output: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%% d\n%% e\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-at-end-without-line-feed-one-space",
+    input: "treemap\ntitle T \u2028 %%{x}%%  %% c",
+    output: "treemap\ntitle T\n%%{x}%% %% c\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-ignored-semicolon-line-separator-directive-comment-kept",
+    input: 'treemap\ntitle style:#x; \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\ntitle style:#x; \u2028 %%{x}%%  %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-two-ignored-semicolons-line-separator-directive-comment-kept",
+    input: 'treemap\ntitle style classDef:#x;; \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output:
+      'treemap\ntitle style classDef:#x;; \u2028 %%{x}%%  %% c\n\n  "A": 1\n',
+    options: {},
+  },
 ]
