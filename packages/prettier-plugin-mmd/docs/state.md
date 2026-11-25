@@ -1556,11 +1556,7 @@ directives/after-statement] [fixture: directives/whitespace-on-each-side]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
-break its left contact. Rule 1 names no mark for a directive between two units,
-so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#directives),
-[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-print such a gap in the same way.
+break its left contact.
 
 [fixture: state/directives/split-directive-gap]
 
