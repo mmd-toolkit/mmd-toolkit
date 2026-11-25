@@ -229,6 +229,7 @@ markdown はラベルの種類を変えるため、markdown ラベルは種類�
 ラベルの両端の改行しない空白とバックスラッシュは、Db のテキストの一部です。
 文字参照の展開や HTML の除去も、mermaid.js が記録するテキストを変えるため、
 これらの文字は書かれたまま保ちます。
+markdown ラベルのバッククォートの内側の余白も、Db のラベルの一部なので残します。
 通常のラベルは、例で使われている形で印字します（[引用符](#quotes) を参照）。
 裸のラベルを構成する単位の外側にある ASCII の水平空白だけを除きます。
 内部の空白、Unicode の余白、バックスラッシュ、文字参照、HTML は保ちます。
@@ -599,6 +600,8 @@ usecase の id には `:` を書けず、
 `systemBoundary mystyle%%{init:{}}%%[ #x; ]` は
 `systemBoundary mystyle%%{init:{}}%%[#x;]` になります。
 U+2028 や U+2029 を含む空白は、書かれたまま残します。
+区切り文字を除くと、Db が持つ境界のタイトルが変わり、
+境界の描画も変わるからです。
 
 [fixture: system-boundaries/boundary-title-directive-or-semicolon]
 [fixture: system-boundaries/boundary-title-padding-after-directive-colon]
@@ -1198,6 +1201,8 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+複数行の `accDescr` ブロックの説明は、各内側の行の末尾の空白を Db に持つので、
+それを除くと説明が変わります。
 空と空白だけの行は、値のないコロン形式にします。
 空のアクセシビリティ行はコロンで終わり、その後ろの空白は行末の空白になります。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、

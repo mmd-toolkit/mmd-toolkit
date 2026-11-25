@@ -214,12 +214,13 @@ keeps its kind, since markdown changes the label type, and every label keeps its
 interior characters, including empty quoted values. No-break spaces at a label's
 ends and literal backslashes are part of its Db text; entity decoding and HTML
 stripping also change the text mermaid.js records. Those characters therefore
-stay as written. A plain label is printed in the form that the examples use (see
-[Quotes](#quotes)). Only exterior ASCII HWS outside a bare label's contributing
-units is trimmed. Internal gaps, Unicode padding, backslashes, entities and HTML
-stay. The run in `A(unquoted  words)` stays in the printed form
-`A("unquoted  words")`, since every version of mermaid.js that counts draws
-different accessibility text for `A("unquoted words")` (see
+stay as written. The padding inside the backquotes of a markdown label is part
+of its Db label too, so it stays. A plain label is printed in the form that the
+examples use (see [Quotes](#quotes)). Only exterior ASCII HWS outside a bare
+label's contributing units is trimmed. Internal gaps, Unicode padding,
+backslashes, entities and HTML stay. The run in `A(unquoted  words)` stays in
+the printed form `A("unquoted  words")`, since every version of mermaid.js that
+counts draws different accessibility text for `A("unquoted words")` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
@@ -545,7 +546,8 @@ rule may read, as in architecture and venn. A usecase id cannot hold a `:`, and
 a `:` inside a directive is not read by the line rule, so no `:` stands before
 the title for the rule: `systemBoundary mystyle%%{init:{}}%%[ #x; ]` is printed
 `systemBoundary mystyle%%{init:{}}%%[#x;]`. A padding with a U+2028 or U+2029 in
-it stays.
+it stays: removing the separator changes the title of the boundary that the Db
+holds, and the drawing of the boundary changes with it.
 
 [fixture: system-boundaries/boundary-title-directive-or-semicolon] [fixture:
 system-boundaries/boundary-title-padding-after-directive-colon] [test: usecase:
@@ -1113,7 +1115,9 @@ accessibility title, `accTitle: first  last` stays, since every version of
 mermaid.js that counts draws different title text for `accTitle: first last`
 (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Empty and whitespace-only lines print the colon form without a value. An empty
+The description of a multiline `accDescr` block holds the spaces at the end of
+each inner line in the Db, so removing them changes the description. Empty and
+whitespace-only lines print the colon form without a value. An empty
 accessibility line ends at its colon, so a following space would be trailing
 whitespace; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
 form with nothing after the colon. The next physical line remains a separate
