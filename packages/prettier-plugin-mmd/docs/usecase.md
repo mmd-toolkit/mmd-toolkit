@@ -51,10 +51,7 @@ usecase/div-comment-preheader-bare]
 Reuse the visible header convention of [C4](./c4.md#header): put exact
 lower-case `usecase-beta` at column one and place the body below it, so the
 diagram starts visibly. Exterior ASCII spaces/tabs disappear; direction remains
-a separate statement. The header starts at column one, as in
-[C4](./c4.md#header) and [Gantt](./gantt.md#indentation) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this placement. Trailing ASCII spaces and tabs disappear under
+a separate statement. Trailing ASCII spaces and tabs disappear under
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) because they are at
 the end of the header line. A header alone is accepted and gains the ordinary
 final newline; case, stable-header and inline-body failures follow the shared
@@ -215,12 +212,14 @@ interior characters, including empty quoted values. No-break spaces at a label's
 ends and literal backslashes are part of its Db text; entity decoding and HTML
 stripping also change the text mermaid.js records. Those characters therefore
 stay as written. The padding inside the backquotes of a markdown label is part
-of its Db label too, so it stays. A plain label is printed in the form that the
-examples use (see [Quotes](#quotes)). Only exterior ASCII HWS outside a bare
-label's contributing units is trimmed. Internal gaps, Unicode padding,
-backslashes, entities and HTML stay. The run in `A(unquoted  words)` stays in
-the printed form `A("unquoted  words")`, since every version of mermaid.js that
-counts draws different accessibility text for `A("unquoted words")` (see
+of its Db label too, so it stays (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A plain label is printed in the form that the examples use (see
+[Quotes](#quotes)). Only exterior ASCII HWS outside a bare label's contributing
+units is trimmed. Internal gaps, Unicode padding, backslashes, entities and HTML
+stay. The run in `A(unquoted  words)` stays in the printed form
+`A("unquoted  words")`, since every version of mermaid.js that counts draws
+different accessibility text for `A("unquoted words")` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
@@ -267,9 +266,9 @@ labels/label-empty-quotes] [fixture: labels/label-quote-rewrite-one-form]
 [fixture: labels/label-quote-remove-kept] [fixture: labels/label-interior-kept]
 [fixture: labels/label-backslash-kept] [fixture: labels/label-html-entities]
 [fixture: labels/div-c4-label] [fixture: labels/label-markdown-remove-kept]
-[test: usecase: label-unicode-padding] [fixture: labels/single-quote-option]
-[fixture: labels/empty-shape-labels] [corpus fixture:
-usecase/div-c4-inline-percent-eof]
+[fixture: labels/label-markdown-padding-kept] [test: usecase:
+label-unicode-padding] [fixture: labels/single-quote-option] [fixture:
+labels/empty-shape-labels] [corpus fixture: usecase/div-c4-inline-percent-eof]
 
 Input (escaped):
 ``"usecase-beta\nA(unquoted  words)\nB(' single  text ')\nC(\" double  text \" )\nD(\"` markdown  text `\")"``
@@ -547,7 +546,8 @@ a `:` inside a directive is not read by the line rule, so no `:` stands before
 the title for the rule: `systemBoundary mystyle%%{init:{}}%%[ #x; ]` is printed
 `systemBoundary mystyle%%{init:{}}%%[#x;]`. A padding with a U+2028 or U+2029 in
 it stays: removing the separator changes the title of the boundary that the Db
-holds, and the drawing of the boundary changes with it.
+holds, and the drawing of the boundary changes with it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: system-boundaries/boundary-title-directive-or-semicolon] [fixture:
 system-boundaries/boundary-title-padding-after-directive-colon] [test: usecase:
@@ -881,12 +881,7 @@ defined in [Data blocks](./flowchart.md#data-blocks).
 
 When `{` is immediately followed by a newline, shift all body lines by the same
 number of ASCII spaces so the shallowest text stands one level inside the JSON
-statement. The uniform JSON body margin puts the shallowest text one level
-inside its statement, as eligible multiline data blocks in
-[flowchart](./flowchart.md#data-blocks) and [kanban](./kanban.md#data-blocks)
-diagrams do;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that margin. Relative indentation, including nested objects, stays unchanged. A
+statement. Relative indentation, including nested objects, stays unchanged. A
 separate `}` aligns with the statement; a closer after text stays on that line.
 JSON strings cannot contain raw newlines: Mermaid rejects them with
 `Bad control character in string literal`, so this movement cannot change a
@@ -1007,28 +1002,20 @@ usecase-beta
 
 Reuse [ER's class lists](./er.md#styles-and-classes): a comma touches the target
 or class name before it and has one space after it, with one gap between lists
-and before the first declaration; CSS declarations use comma-space. The `:::` of
-a class suffix touches the name before it and the first class after it, as in
-[class](./class.md#whitespace-between-tokens) and
-[state](./state.md#whitespace-between-tokens) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this gap its form. A declaration has no whitespace before its first colon and
-one space after it, as in the other diagram types (see
+and before the first declaration; CSS declarations use comma-space. A
+declaration has no whitespace before its first colon and one space after it, as
+in the other diagram types (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 Mermaid stores the padding before and after the colon, so the Db changes, but it
 draws the same figure. A name that ends with `stroke` is the exception, since a
 `classDef` or a `style` can reach a relationship with an explicit id, and
 mermaid.js colours its arrowheads from `stroke:` only: such a name keeps whether
-whitespace stands before the colon, a run becoming one space. For a name ending
-with `stroke`, retained spaces and tabs before the colon become one space, as in
-[flowchart](./flowchart.md#whitespace-between-tokens) and
-[Agentflow](./agentflow.md#single-space-gaps) link styles;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the length of that gap. The text of a declaration from its name's start through
-its last value component otherwise stays as written: directives in the dash gap,
-quoted or escaped commas, empty string components, functions, order and
-repetition, except that a run of spaces and tabs between its words is printed as
-one space, as in the other diagram types (see
+whitespace stands before the colon, a run becoming one space. The text of a
+declaration from its name's start through its last value component otherwise
+stays as written: directives in the dash gap, quoted or escaped commas, empty
+string components, functions, order and repetition, except that a run of spaces
+and tabs between its words is printed as one space, as in the other diagram
+types (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `style A --  color:red` is printed `style A -- color: red`, and
 `translate(1  2)` is printed `translate(1 2)`. A run inside a string, a comment,
@@ -1116,8 +1103,9 @@ mermaid.js that counts draws different title text for `accTitle: first last`
 (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The description of a multiline `accDescr` block holds the spaces at the end of
-each inner line in the Db, so removing them changes the description. Empty and
-whitespace-only lines print the colon form without a value. An empty
+each inner line in the Db, so removing them changes the description (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Empty and whitespace-only lines print the colon form without a value. An empty
 accessibility line ends at its colon, so a following space would be trailing
 whitespace; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
 form with nothing after the colon. The next physical line remains a separate
@@ -1128,7 +1116,8 @@ rather than becoming accessibility value text.
 [fixture: direction-and-accessibility/title-next-direction-separate] [fixture:
 direction-and-accessibility/description-next-direction-separate] [fixture:
 direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
-[fixture: direction-and-accessibility/acctitle-inner-gap-kept]
+[fixture: direction-and-accessibility/acctitle-inner-gap-kept] [fixture:
+direction-and-accessibility/acc-descr-line-trailing-spaces-kept]
 
 Description blocks reuse [class multiline values](./class.md#multi-line-values):
 align body lines one step inside the statement and a separate `}` with the
