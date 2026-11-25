@@ -392,12 +392,14 @@ task-data/colon-column-sections-in-different-columns] [fixture:
 task-data/colon-column-before-first-section] [fixture:
 task-data/colon-column-sections-and-preamble]
 
-A section with a task that the printer prints as written, as it prints the line
-of a task that a comment line after U+2028 or U+2029 joins to the next line, is
-on its own where the colon of that task is not in the column of the group: the
-printer moves the colons of the other tasks and leaves that one, so the colons
-of the section are in more than one column, and a second formatting would find
-it on its own.
+A section with a task whose line a comment line after U+2028 or U+2029 joins to
+the next line, which the printer prints as written, is on its own where the
+colon of that task is not in the column of the group: the printer moves the
+colons of the other tasks and leaves that one, so the colons of the section are
+in more than one column, and a second formatting would find it on its own. A
+task that stays as written for another reason, such as a name that ends with a
+directive, is left out of the tasks of its section, as above, and does not take
+the section out of the group.
 
 [test: Gantt: a task that a comment after U+2028 joins to the next line, and a
 section with padding after it] [test: Gantt: a task that a comment only after
@@ -407,7 +409,8 @@ joins to the next line] [test: Gantt: a task that a comment after U+2028 joins
 to the next line, and two sections with padding after it] [test: Gantt: a task
 that a comment after U+2029 joins to the next line, and a section with padding
 after it] [test: Gantt: a task that a comment after U+2028 joins to the next
-line, with its colon at the column of the group]
+line, with its colon at the column of the group] [test: Gantt: a task that stays
+as written for another reason does not take its section out of the group]
 
 The colons stay where they are in these cases, since moving them could change
 the figure. A section in which no name has more than one space before its colon

@@ -402,12 +402,14 @@ mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度
 [fixture: task-data/colon-column-before-first-section]
 [fixture: task-data/colon-column-sections-and-preamble]
 
-U+2028 か U+2029 の後のコメント行が次の行につなぐタスクの行のように、
+U+2028 か U+2029 の後のコメント行が次の行につなぐタスクの行を、
 書かれたまま印字するタスクがあるセクションは、
 そのタスクのコロンが組の桁にないとき、それだけで桁を決めます。
 ほかのタスクのコロンは動かし、そのタスクは動かさないので、
 セクションのコロンが複数の桁に分かれ、
 2 回目の整形ではそれだけのセクションとして扱われるからです。
+ディレクティブで終わる名前など、ほかの理由で書かれたまま残るタスクは、
+上のとおりセクションのタスクから外れ、セクションを組から外しません。
 
 [test: Gantt: a task that a comment after U+2028 joins to the next line, and a section with padding after it]
 [test: Gantt: a task that a comment only after U+2028 joins to the next line, and a section with padding after it]
@@ -415,6 +417,7 @@ U+2028 か U+2029 の後のコメント行が次の行につなぐタスクの�
 [test: Gantt: a task that a comment after U+2028 joins to the next line, and two sections with padding after it]
 [test: Gantt: a task that a comment after U+2029 joins to the next line, and a section with padding after it]
 [test: Gantt: a task that a comment after U+2028 joins to the next line, with its colon at the column of the group]
+[test: Gantt: a task that stays as written for another reason does not take its section out of the group]
 
 次の場合は、コロンを動かすと図が変わりうるので、コロンをその位置に残します。
 どの名前もコロンの前の空白が 1 つ以下のセクションは、どのコロンも動かさず、

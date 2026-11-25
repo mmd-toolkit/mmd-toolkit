@@ -4680,6 +4680,11 @@ const ganttLineSeparatorExamples: readonly (readonly [
     "gantt\n  section A\n    Task A      :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long :a2, after a1, 2d\n  section B\n    Other       :a3, after a2, 1d\n",
     "gantt\n  section A\n    Task A      :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n  section B\n    Other       : a3, after a2, 1d\n",
   ],
+  [
+    "Gantt: a task that stays as written for another reason does not take its section out of the group",
+    "gantt\nsection A\nTask A              :a1, 1d\nPadded name         : %%{init: {}}%%\nTask B long         :a2, 2d\nsection B\nOther               :a3, 1d\n",
+    "gantt\n  section A\n    Task A      : a1, 1d\n    Padded name         : %%{init: {}}%%\n    Task B long : a2, 2d\n  section B\n    Other       : a3, 1d\n",
+  ],
 ]
 
 /**
