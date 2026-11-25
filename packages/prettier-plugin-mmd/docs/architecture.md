@@ -635,12 +635,16 @@ Use one ordinary space between `align`, its row/column direction and each
 member. Rule 1 names no mark for a gap between the words of a statement, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: the gap between a keyword and its text is one space (`title    Pets` in
-a pie chart is printed `title Pets`, the example of rule 2), and
-[block](./block.md#rows) prints the nodes of a row, written with spaces and tabs
-between them, with one space (`a`, three spaces, `b`, a tab, and `c` are printed
-`a b c`). Do not align columns, sort members, merge repeated constraints or wrap
-them: consistent gaps improve reading without changing authored order or
-introducing visible EOL.
+a pie chart is printed `title Pets`, the example of rule 2), which gives the gap
+between `align` and its direction and the gap between the direction and the
+first member. No rule gives the gap between two members (`a   b` and `a`, a tab,
+and `b` are printed `a b`): [block](./block.md#rows) prints the nodes of a row
+with one space, but states that no rule gives the form of its rows, so it is no
+basis for rule 2, and the released form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Do not align columns, sort members, merge repeated constraints or wrap them:
+consistent gaps improve reading without changing authored order or introducing
+visible EOL.
 
 [fixture: architecture/alignment/alignment-row-and-column]
 
@@ -4400,22 +4404,23 @@ architecture-beta
 
 ### Semicolons
 
-Keep every authored semicolon. Removing one can make the line rule ignore
-another `;` and change a label or an entity (see
-[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). A segment that
-holds a kept `;` is formatted as anywhere else, except where formatting could
-change which `;` the line rule ignores. The rule reads a segment from the first
-`:` after `style` or `classDef` to the last `#` before its last kept `;`, with
-no whitespace between the `:` and the `#` (see
-[Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
-that stretch keep whether they hold whitespace, a run becoming one space, and
-the rest of the segment follows the ordinary rules of this diagram, apart from a
-title and an accessibility line (see the paragraph after the fixtures). Text
-that no part of the layout holds stays as written. A statement over several
-lines whose lines, joined with one space or with nothing, could change which `;`
-the line rule ignores keeps the text of each segment, up to its last kept `;`,
-as written; any other statement over several lines is formatted like one on a
-single line.
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram, apart from a title and an accessibility line (see the paragraph after
+the fixtures). Text that no part of the layout holds stays as written. A
+statement over several lines whose lines, joined with one space or with nothing,
+could change which `;` the line rule ignores keeps the text of each segment, up
+to its last kept `;`, as written; any other statement over several lines is
+formatted like one on a single line. Where a line holds more than one `;`,
+removing one can make the line rule ignore another `;` and change a label or an
+entity (see [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-));
+that reason does not reach a `;` that stands alone on its line, which stays as
+written.
 
 [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
 semicolons/no-stretch-formatted] [fixture: semicolons/crossing-comment]
