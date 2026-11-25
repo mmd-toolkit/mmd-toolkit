@@ -693,7 +693,9 @@ timeline
 ### title と section
 
 `title` は、キーワードの後ろに空白 1 つを置いて印字します。
-この形は journey と同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとその値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 値の先頭と末尾の空白とタブは除きます。
 Db はそれらを持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -1680,13 +1682,50 @@ U+2028 と U+2029 は空白やタブではなくテキストの文字なので�
 [test: U+2028 and spaces at the end of the last event of a line]
 
 U+2028 か U+2029 の後のコメント行は、次の行をその行につなぎ、
-その行は最後まで書かれたまま残ります。
+次の行に文があるときは、その行は最後まで書かれたまま残ります。
 ヘッダーと同じ行で始まる description block の `}` の後と、
 period の前でも同じです（詳しくは、
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照）。
 
 [test: a line separator and a comment line after the closing brace of a description block that starts on the line of the timeline header, before a period]
+[test: timeline: an event that a comment after U+2028 joins to the next event line stays as written]
+
+ピリオドの中で、U+2028 か U+2029 に続くコメント行の後のディレクティブは、
+コメント行が次の行をその行につなぐので、イベントの行にあります。
+ディレクティブの前の空白は、イベントのテキストの一部です。
+印字は空白を足さないので、行頭に書かれたディレクティブはそこにとどまり、
+前に空白が書かれていれば、ほかのテキストと同じく空白 1 つにします。
+ディレクティブは、文のほかの行の字下げでは印字しません。
+
+[test: timeline: an event that a comment after U+2028 joins to a directive line, with an event after it]
+[test: timeline: an event that a comment alone after U+2028 joins to a directive line, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to an indented directive line, with an event after it]
+[test: timeline: an event that U+2028 ends before an indented directive line, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to a directive line, with a period after it]
+[test: timeline: an event that a comment after U+2029 joins to a directive line, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to a comment line and a directive line, with an event after it]
+[test: timeline: an event that a comment after U+2029 joins to a comment line and a directive line, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to a directive that is not closed, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to a line of whitespace and a directive line, with an event after it]
+[test: timeline: an event with an ignored semicolon that a comment after U+2028 joins to a directive line, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to a directive line at the end of the text]
+[test: timeline: an event that a comment after U+2028 joins to an empty line and a directive line, with an event after it]
+
+`#` か `%` で始まるコメント行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字します。
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
+なければ空白を置きません。
+空行を挟まずに次の行から 2 つのコメント行が続くときは、
+行を書かれたまま残します。
+
+[test: timeline: a hash comment line, U+2028, a directive, two spaces, a comment, and two comment lines after it]
+[test: timeline: a hash comment line, U+2028, a directive, two spaces, and a comment]
+[test: timeline: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: timeline: a hash comment line, U+2028, a directive touching a comment]
+[test: timeline: a percent comment line, U+2028, a directive, a tab, and a comment]
+[test: timeline: a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 ### 空白文字
 

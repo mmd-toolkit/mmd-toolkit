@@ -7,7 +7,10 @@ import type {
   Token,
 } from "@mmd-toolkit/ast"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { isReadAsAccValueByOlderVersions } from "./acc-value-join.ts"
+import {
+  findPercentLineReadByOlderVersions,
+  isReadAsAccValueByOlderVersions,
+} from "./acc-value-join.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
 import { findRespellings } from "./spelling.ts"
@@ -116,6 +119,8 @@ export function layoutGitgraphStatement(
   if (isReadAsAccValueByOlderVersions(source, statement)) {
     return keptAsWritten(start, end)
   }
+  const percentLineEnd = findPercentLineReadByOlderVersions(source, statement)
+  if (percentLineEnd !== undefined) return keptAsWritten(start, percentLineEnd)
   const values = collectValueNodes(statement, gitgraphValueNodeTypes)
   const hidden = values.filter(
     (value): value is GitgraphIgnoredText =>

@@ -211,7 +211,7 @@ export function layoutTimelineStatement(
     source,
     atoms,
     statement.type === "TimelineTitleStatement" ? statement.value.range : null,
-    true,
+    "collapsed",
   )
   return {
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
@@ -388,6 +388,7 @@ function layoutEvents(
     outdented: new Set(),
     lineBreaks: "kept",
     joinedBefore,
+    keepsJoinedLinesFlush: true,
   }
 }
 
@@ -424,7 +425,7 @@ function trimEventEnds(
       ) ||
       findDirectiveEndingAt(source, contentEnd) !== undefined
     ) {
-      appendItems(edits, collectTextEndEdits(source, from, to, false))
+      appendItems(edits, collectTextEndEdits(source, from, to, "kept"))
     } else if (contentEnd !== to) {
       edits.push({ range: [contentEnd, to], replacement: "" })
     }
