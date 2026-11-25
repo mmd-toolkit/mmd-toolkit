@@ -754,10 +754,9 @@ part of it and are kept.
 
 [fixture: blank-lines/inside-values-kept]
 
-The text ends with exactly one line break. Rule 1 names no mark here, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [kanban](./kanban.md#final-newline) and
-[packet](./packet.md#final-newline) end the text with one line break.
+The text ends with exactly one line break. Prettier ends a file with one line
+break, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that
+line break.
 
 [fixture: blank-lines/header-only-without-line-break]
 
@@ -1805,8 +1804,7 @@ A real comment or directive prevents compact joining. Keep the previous
 [Multi-line statements](#multi-line-statements) layout: continuation lines,
 including comment and directive lines, stand one level deeper than the keyword;
 the comment/directive text and the authored statement breaks remain. Rule 1
-gives no form here, since its table names the whitespace beside a mark and not
-the start of a line
+gives no form here, since its table does not name the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields) and
@@ -1987,8 +1985,7 @@ multi-line-statements/label-over-lines] [fixture:
 multi-line-statements/directive-inside]
 
 Comment lines inside it stay inside it, at the level of its later lines. Rule 1
-gives no form here, since its table names the whitespace beside a mark and not
-the start of a line
+gives no form here, since its table does not name the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields) and
