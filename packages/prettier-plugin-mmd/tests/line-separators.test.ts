@@ -1477,6 +1477,86 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
   ],
   [
+    "U+2028 between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end \u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2028 after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ;\u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2028 after a space after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ; \u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2028 after two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end end\u2028\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2029 between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end \u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2029 after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ;\u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2029 after a space after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ; \u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2029 after two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end end\u2029\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028C\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B; end C\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a line break and a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028\nC\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029C\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B; end C\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a line break and a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029\nC\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
     "U+2028 after `end ;;` of a subgraph with an ignored `;`, in a flowchart",
     "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2028\n",
     "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2028\n",
@@ -1485,6 +1565,16 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "U+2029 after `end ;;` of a subgraph with an ignored `;`, in a flowchart",
     "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2029\n",
     "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2029\n",
+  ],
+  [
+    "U+2028 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end;\u2028 C; end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B; end; C;\n  end\n",
+  ],
+  [
+    "U+2029 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end;\u2029 C; end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B; end; C;\n  end\n",
   ],
 ]
 
@@ -5103,6 +5193,66 @@ const requirementLineSeparatorExamples: readonly (readonly [
     "a directive line after a comment line after U+2028, and the block of a requirement on the next line",
     "requirementDiagram\nrequirement\u2028%% heading\n%%{init: {}}%%\n r {\nid: 1\ntext: t\nrisk: low\nverifymethod: test\n}\n",
     "requirementDiagram\n  requirement\u2028%% heading\n%%{init: {}}%%\n r {\n    id: 1\n    text: t\n    risk: low\n    verifymethod: test\n  }\n",
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-region-ps",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2029 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2029 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-comment-semicolon-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c;',
+    'requirementDiagram\n  style r fill:red "r"\n:::c\u2028 %% c;\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-comment-semicolon-region-ps",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2029 %% c;',
+    'requirementDiagram\n  style r fill:red "r"\n:::c\u2029 %% c;\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-classdef-semicolon-comment-region-ls",
+    'requirementDiagram\nclassDef c fill:red "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  classDef c fill:red "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-class-semicolon-comment-region-ls",
+    'requirementDiagram\nclass r c "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  class r c "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-relationship-semicolon-comment-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n- satisfies -> a;b\u2028 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n- satisfies -> a;b\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-with-directive-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %%{x}%%  %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %%{x}%%  %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-comment-line-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n%% d\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n  %% d\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-empty-line-and-statement-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n\n  class r c\n  r - satisfies -> b\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;  %% c\n \t\nclass r c\n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c; %% c\n\n  class r c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n \t\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n \t\n  class r c\n  r - satisfies -> b\n',
   ],
   [
     "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
@@ -37288,6 +37438,486 @@ describe("style semicolons", () => {
       'treemap\n  classDef aa fill: coral\n  %% c\n  "x": 1\n  classDef bb fill: coral\n  %% d\n  "y": 2\n',
     ],
     [
+      "kanban title: two separators before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028\u2029 %% d;\n",
+      "kanban\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban title: a U+2028 before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028 %% d;\n",
+      "kanban\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "kanban title: a U+2029 before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2029 %% d;\n",
+      "kanban\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "kanban title: a U+2029 and a U+2028 before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2029\u2028 %% d;\n",
+      "kanban\n  title T\u2029\u2028 %% d;\n",
+    ],
+    [
+      "kanban title: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028   %% d;\n",
+      "kanban\n  title T\u2028   %% d;\n",
+    ],
+    [
+      "kanban title: a tab between a U+2028 and a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028\t%% d;\n",
+      "kanban\n  title T\u2028\t%% d;\n",
+    ],
+    [
+      "kanban title: a comment that ends in a semicolon touches the U+2028",
+      "kanban\ntitle T\u2028%% d;\n",
+      "kanban\n  title T\u2028%% d;\n",
+    ],
+    [
+      "kanban title: spaces after a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028 %% d;  \n",
+      "kanban\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "kanban title: a space between the two separators before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028 \u2029 %% d;\n",
+      "kanban\n  title T\u2028 \u2029 %% d;\n",
+    ],
+    [
+      "kanban title: a comment line after the comment",
+      "kanban\ntitle T\u2028\u2029 %% d;\n%% e\n",
+      "kanban\n  title T\u2028\u2029 %% d;\n  %% e\n",
+    ],
+    [
+      "kanban title: a directive line after the comment",
+      "kanban\ntitle T\u2028\u2029 %% d;\n%%{x}%%\n",
+      "kanban\n  title T\u2028\u2029 %% d;\n%%{x}%%\n",
+    ],
+    [
+      "kanban title: a statement after the comment",
+      "kanban\ntitle T\u2028\u2029 %% d;\nTodo\n",
+      "kanban\n  title T\u2028\u2029 %% d;\nTodo\n",
+    ],
+    [
+      "kanban title: the end of the text with no line break after the comment",
+      "kanban\ntitle T\u2028\u2029 %% d;",
+      "kanban\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban title: two semicolons that end the comment",
+      "kanban\ntitle T\u2028\u2029 %% d;;\n",
+      "kanban\n  title T\u2028\u2029 %% d;;\n",
+    ],
+    [
+      "kanban title: a directive before the separators",
+      "kanban\ntitle T%%{x}%%\u2028\u2029 %% d;\n",
+      "kanban\n  title T%%{x}%%\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban title: a directive between the separators",
+      "kanban\ntitle T\u2028%%{x}%%\u2029 %% d;\n",
+      "kanban\n  title T\u2028%%{x}%%\u2029 %% d;\n",
+    ],
+    [
+      "kanban title: a directive after the separators and before the comment",
+      "kanban\ntitle T\u2028\u2029 %%{x}%% %% d;\n",
+      "kanban\n  title T\u2028\u2029 %%{x}%% %% d;\n",
+    ],
+    [
+      "kanban title: a semicolon in the text and a comment without a semicolon",
+      "kanban\ntitle a;b\u2028\u2029 %% d\n",
+      "kanban\n  title a;b\u2028\u2029 %% d\n",
+    ],
+    [
+      "kanban title: a comment without a semicolon after two separators",
+      "kanban\ntitle T\u2028\u2029 %% d\n",
+      "kanban\n  title T\u2028\n  %% d\n",
+    ],
+    [
+      "treemap title: two separators before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028\u2029 %% d;\n",
+      "treemap\ntitle T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap title: a U+2028 before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028 %% d;\n",
+      "treemap\ntitle T\u2028 %% d;\n",
+    ],
+    [
+      "treemap title: a U+2029 before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2029 %% d;\n",
+      "treemap\ntitle T\u2029 %% d;\n",
+    ],
+    [
+      "treemap title: a U+2029 and a U+2028 before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2029\u2028 %% d;\n",
+      "treemap\ntitle T\u2029\u2028 %% d;\n",
+    ],
+    [
+      "treemap title: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028   %% d;\n",
+      "treemap\ntitle T\u2028   %% d;\n",
+    ],
+    [
+      "treemap title: a tab between a U+2028 and a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028\t%% d;\n",
+      "treemap\ntitle T\u2028\t%% d;\n",
+    ],
+    [
+      "treemap title: a comment that ends in a semicolon touches the U+2028",
+      "treemap\ntitle T\u2028%% d;\n",
+      "treemap\ntitle T\u2028%% d;\n",
+    ],
+    [
+      "treemap title: spaces after a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028 %% d;  \n",
+      "treemap\ntitle T\u2028 %% d;  \n",
+    ],
+    [
+      "treemap title: a space between the two separators before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028 \u2029 %% d;\n",
+      "treemap\ntitle T\u2028 \u2029 %% d;\n",
+    ],
+    [
+      "treemap title: a comment line after the comment",
+      "treemap\ntitle T\u2028\u2029 %% d;\n%% e\n",
+      "treemap\ntitle T\u2028\u2029 %% d;\n%% e\n",
+    ],
+    [
+      "treemap title: a directive line after the comment",
+      "treemap\ntitle T\u2028\u2029 %% d;\n%%{x}%%\n",
+      "treemap\ntitle T\u2028\u2029 %% d;\n%%{x}%%\n",
+    ],
+    [
+      "treemap title: a statement after the comment",
+      'treemap\ntitle T\u2028\u2029 %% d;\n"A": 1\n',
+      'treemap\ntitle T\u2028\u2029 %% d;\n"A": 1\n',
+    ],
+    [
+      "treemap title: the end of the text with no line break after the comment",
+      "treemap\ntitle T\u2028\u2029 %% d;",
+      "treemap\ntitle T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap title: two semicolons that end the comment",
+      "treemap\ntitle T\u2028\u2029 %% d;;\n",
+      "treemap\ntitle T\u2028\u2029 %% d;;\n",
+    ],
+    [
+      "treemap title: a directive before the separators",
+      "treemap\ntitle T%%{x}%%\u2028\u2029 %% d;\n",
+      "treemap\ntitle T%%{x}%%\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap title: a directive between the separators",
+      "treemap\ntitle T\u2028%%{x}%%\u2029 %% d;\n",
+      "treemap\ntitle T\u2028%%{x}%%\u2029 %% d;\n",
+    ],
+    [
+      "treemap title: a directive after the separators and before the comment",
+      "treemap\ntitle T\u2028\u2029 %%{x}%% %% d;\n",
+      "treemap\ntitle T\u2028\u2029 %%{x}%% %% d;\n",
+    ],
+    [
+      "treemap title: a semicolon in the text and a comment without a semicolon",
+      "treemap\ntitle a;b\u2028\u2029 %% d\n",
+      "treemap\ntitle a;b\u2028\u2029 %% d\n",
+    ],
+    [
+      "treemap title: a comment without a semicolon after two separators",
+      "treemap\ntitle T\u2028\u2029 %% d\n",
+      "treemap\ntitle T\n%% d\n",
+    ],
+    [
+      "treeview title: two separators before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;\n",
+      "treeView-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treeview title: a U+2028 before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028 %% d;\n",
+      "treeView-beta\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "treeview title: a U+2029 before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2029 %% d;\n",
+      "treeView-beta\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "treeview title: a U+2029 and a U+2028 before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2029\u2028 %% d;\n",
+      "treeView-beta\n  title T\u2029\u2028 %% d;\n",
+    ],
+    [
+      "treeview title: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028   %% d;\n",
+      "treeView-beta\n  title T\u2028   %% d;\n",
+    ],
+    [
+      "treeview title: a tab between a U+2028 and a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028\t%% d;\n",
+      "treeView-beta\n  title T\u2028\t%% d;\n",
+    ],
+    [
+      "treeview title: a comment that ends in a semicolon touches the U+2028",
+      "treeView-beta\ntitle T\u2028%% d;\n",
+      "treeView-beta\n  title T\u2028%% d;\n",
+    ],
+    [
+      "treeview title: spaces after a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028 %% d;  \n",
+      "treeView-beta\n  title T\u2028 %% d;  \n",
+    ],
+    [
+      "treeview title: a space between the two separators before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028 \u2029 %% d;\n",
+      "treeView-beta\n  title T\u2028 \u2029 %% d;\n",
+    ],
+    [
+      "treeview title: a comment line after the comment",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;\n%% e\n",
+      "treeView-beta\n  title T\u2028\u2029 %% d;\n  %% e\n",
+    ],
+    [
+      "treeview title: a directive line after the comment",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;\n%%{x}%%\n",
+      "treeView-beta\n  title T\u2028\u2029 %% d;\n%%{x}%%\n",
+    ],
+    [
+      "treeview title: a statement after the comment",
+      'treeView-beta\ntitle T\u2028\u2029 %% d;\n"R"\n',
+      'treeView-beta\n  title T\u2028\u2029 %% d;\n"R"\n',
+    ],
+    [
+      "treeview title: the end of the text with no line break after the comment",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;",
+      "treeView-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treeview title: two semicolons that end the comment",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;;\n",
+      "treeView-beta\n  title T\u2028\u2029 %% d;;\n",
+    ],
+    [
+      "treeview title: a directive before the separators",
+      "treeView-beta\ntitle T%%{x}%%\u2028\u2029 %% d;\n",
+      "treeView-beta\n  title T%%{x}%%\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treeview title: a directive between the separators",
+      "treeView-beta\ntitle T\u2028%%{x}%%\u2029 %% d;\n",
+      "treeView-beta\n  title T\u2028%%{x}%%\u2029 %% d;\n",
+    ],
+    [
+      "treeview title: a directive after the separators and before the comment",
+      "treeView-beta\ntitle T\u2028\u2029 %%{x}%% %% d;\n",
+      "treeView-beta\n  title T\u2028\u2029 %%{x}%% %% d;\n",
+    ],
+    [
+      "treeview title: a semicolon in the text and a comment without a semicolon",
+      "treeView-beta\ntitle a;b\u2028\u2029 %% d\n",
+      "treeView-beta\n  title a;b\u2028\u2029 %% d\n",
+    ],
+    [
+      "treeview title: a comment without a semicolon after two separators",
+      "treeView-beta\ntitle T\u2028\u2029 %% d\n",
+      "treeView-beta\n  title T\n  %% d\n",
+    ],
+    [
+      "pie title: two separators before a comment that ends in a semicolon",
+      "pie\ntitle T\u2028\u2029 %% d;\n",
+      "pie\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie title: a U+2028 before a comment that ends in a semicolon",
+      "pie\ntitle T\u2028 %% d;\n",
+      "pie\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "pie title: a U+2029 before a comment that ends in a semicolon",
+      "pie\ntitle T\u2029 %% d;\n",
+      "pie\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "pie title: a U+2029 and a U+2028 before a comment that ends in a semicolon",
+      "pie\ntitle T\u2029\u2028 %% d;\n",
+      "pie\n  title T\u2029\u2028 %% d;\n",
+    ],
+    [
+      "pie title: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "pie\ntitle T\u2028   %% d;\n",
+      "pie\n  title T\u2028   %% d;\n",
+    ],
+    [
+      "pie title: a tab between a U+2028 and a comment that ends in a semicolon",
+      "pie\ntitle T\u2028\t%% d;\n",
+      "pie\n  title T\u2028\t%% d;\n",
+    ],
+    [
+      "pie title: a comment that ends in a semicolon touches the U+2028",
+      "pie\ntitle T\u2028%% d;\n",
+      "pie\n  title T\u2028%% d;\n",
+    ],
+    [
+      "pie title: spaces after a comment that ends in a semicolon",
+      "pie\ntitle T\u2028 %% d;  \n",
+      "pie\n  title T\u2028 %% d;  \n",
+    ],
+    [
+      "pie title: a space between the two separators before a comment that ends in a semicolon",
+      "pie\ntitle T\u2028 \u2029 %% d;\n",
+      "pie\n  title T\u2028 \u2029 %% d;\n",
+    ],
+    [
+      "pie title: a comment line after the comment",
+      "pie\ntitle T\u2028\u2029 %% d;\n%% e\n",
+      "pie\n  title T\u2028\u2029 %% d;\n  %% e\n",
+    ],
+    [
+      "pie title: a directive line after the comment",
+      "pie\ntitle T\u2028\u2029 %% d;\n%%{x}%%\n",
+      "pie\n  title T\u2028\u2029 %% d;\n%%{x}%%\n",
+    ],
+    [
+      "pie title: a statement after the comment",
+      'pie\ntitle T\u2028\u2029 %% d;\n"A": 1\n',
+      'pie\n  title T\u2028\u2029 %% d;\n"A": 1\n',
+    ],
+    [
+      "pie title: the end of the text with no line break after the comment",
+      "pie\ntitle T\u2028\u2029 %% d;",
+      "pie\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie title: two semicolons that end the comment",
+      "pie\ntitle T\u2028\u2029 %% d;;\n",
+      "pie\n  title T\u2028\u2029 %% d;;\n",
+    ],
+    [
+      "pie title: a directive before the separators",
+      "pie\ntitle T%%{x}%%\u2028\u2029 %% d;\n",
+      "pie\n  title T%%{x}%%\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie title: a directive between the separators",
+      "pie\ntitle T\u2028%%{x}%%\u2029 %% d;\n",
+      "pie\n  title T\u2028%%{x}%%\u2029 %% d;\n",
+    ],
+    [
+      "pie title: a directive after the separators and before the comment",
+      "pie\ntitle T\u2028\u2029 %%{x}%% %% d;\n",
+      "pie\n  title T\u2028\u2029 %%{x}%% %% d;\n",
+    ],
+    [
+      "pie title: a semicolon in the text and a comment without a semicolon",
+      "pie\ntitle a;b\u2028\u2029 %% d\n",
+      "pie\n  title a;b\u2028\u2029 %% d\n",
+    ],
+    [
+      "pie title: a comment without a semicolon after two separators",
+      "pie\ntitle T\u2028\u2029 %% d\n",
+      "pie\n  title T\n  %% d\n",
+    ],
+    [
+      "kanban column: two separators before a comment that ends in a semicolon",
+      "kanban\nTodo\u2028\u2029 %% d;\n",
+      "kanban\n  Todo\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban card: a U+2028 before a comment that ends in a semicolon",
+      "kanban\nTodo\n  t1[Task]\u2028 %% d;\n",
+      "kanban\n  Todo\n    t1[Task]\u2028 %% d;\n",
+    ],
+    [
+      "kanban card: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "kanban\nTodo\n  t1[Task]\u2028   %% d;\n",
+      "kanban\n  Todo\n    t1[Task]\u2028   %% d;\n",
+    ],
+    [
+      "treemap classDef: two separators before a comment that ends in a semicolon",
+      "treemap\nclassDef zz color:red\u2028\u2029 %% d;\n",
+      "treemap\n  classDef zz color:red\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap classDef: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "treemap\nclassDef zz color:red\u2028   %% d;\n",
+      "treemap\n  classDef zz color:red\u2028   %% d;\n",
+    ],
+    [
+      "treemap classDef: a tab between a U+2028 and a comment that ends in a semicolon",
+      "treemap\nclassDef zz color:red\u2028\t%% d;\n",
+      "treemap\n  classDef zz color:red\u2028\t%% d;\n",
+    ],
+    [
+      "treemap classDef two styles: two separators before a comment that ends in a semicolon",
+      "treemap\nclassDef zz fill:red , color:blue\u2028\u2029 %% d;\n",
+      "treemap\n  classDef zz fill:red , color:blue\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap classDef without a style: two separators before a comment that ends in a semicolon",
+      "treemap\nclassDef zz\u2028\u2029 %% d;\n",
+      "treemap\n  classDef zz\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap classDef: a statement after the comment",
+      'treemap\nclassDef zz color:red\u2028\u2029 %% d;\n"A": 1\n',
+      'treemap\n  classDef zz color:red\u2028\u2029 %% d;\n"A": 1\n',
+    ],
+    [
+      "treemap classDef: a directive before the separators",
+      "treemap\nclassDef zz color:red%%{x}%%\u2028\u2029 %% d;\n",
+      "treemap\n  classDef zz color:red%%{x}%%\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie accTitle: two separators before a comment that ends in a semicolon",
+      "pie\naccTitle: T\u2028\u2029 %% d;\n",
+      "pie\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie title: a directive, a U+2028, two spaces, and a comment that ends in a semicolon",
+      "pie\ntitle T   %%{x}%%\u2028  %% d;\n",
+      "pie\n  title T   %%{x}%%\u2028  %% d;\n",
+    ],
+    [
+      "architecture title: two separators before a comment that ends in a semicolon",
+      "architecture-beta\ntitle T\u2028\u2029 %% d;\n",
+      "architecture-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "cynefin title: two separators before a comment that ends in a semicolon",
+      "cynefin-beta\ntitle T\u2028\u2029 %% d;\n",
+      "cynefin-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "gitgraph title: two separators before a comment that ends in a semicolon",
+      "gitGraph\ntitle T\u2028\u2029 %% d;\n",
+      "gitGraph\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "radar title: two separators before a comment that ends in a semicolon",
+      "radar-beta\ntitle T\u2028\u2029 %% d;\n",
+      "radar-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "info title: two separators before a comment that ends in a semicolon",
+      "info\ntitle T\u2028\u2029 %% d;\n",
+      "info\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "packet title: two separators before a comment that ends in a semicolon",
+      "packet\ntitle T\u2028\u2029 %% d;\n",
+      "packet\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "wardley title: two separators before a comment that ends in a semicolon",
+      "wardley-beta\ntitle T\u2028\u2029 %% d;\n",
+      "wardley-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "railroad title: two separators before a comment that ends in a semicolon",
+      "railroad-beta\ntitle T\u2028\u2029 %% d;\n",
+      "railroad-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
       "ER directives before comments on the same line",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%% %% c\nx\nclassDef c fill:coral\u2029;\n%%{init: {}}%% %% d\ny\n",
       "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%% %% c\n  x\n  classDef c fill: coral\n  %%{init: {}}%% %% d\n  y\n",
@@ -38383,6 +39013,314 @@ describe("a title that holds a line separator and ends with a directive", () => 
   ])("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
   })
+})
+
+/**
+ * Each example is a line that the printer keeps as written and that ends at a
+ * U+2028 or U+2029, followed by a directive, a comment, and a blank line. The
+ * text after the character is a line of its own, so the directive and the
+ * comment have one space between them where the source has whitespace, as
+ * after a line feed (for example docs/requirement.md, Line separators).
+ */
+const directiveAfterSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "requirement: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, a directive, one space, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%% %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, a directive, a tab, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%\t%% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, a directive touching a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%%% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%%%% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "requirementDiagram\n# c \u2029 %%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n% c \u2028 %%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  % c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, two directives, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%  %%{y}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %%{y}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2028, a directive, two spaces, and a comment",
+    "sequenceDiagram\n; \u2028 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "timeline\n# c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "timeline\n% c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "timeline\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "journey\n# c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "journey\n% c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "journey\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "gantt\n% c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive, two spaces, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%  %% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive, two spaces, and a comment",
+    "xychart\n; \u2028 %%{x}%%  %% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive, two spaces, and a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028 right after the text, a directive, two spaces, and a comment",
+    "usecase-beta\naccTitle: T\u2028%%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "sequence: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "sequenceDiagram\n# c \u2028 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  # c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive touching a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%%% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%%%% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%\t%% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2029, a directive, two spaces, and a comment",
+    "sequenceDiagram\n% c \u2029 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    "sequenceDiagram\n; \u2029 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%  %% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive touching a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%%% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%%%% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, a tab, and a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%\t%% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "stateDiagram-v2\n# c \u2029 %%{x}%%  %% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive touching a comment",
+    "timeline\n# c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "timeline\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "timeline\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "timeline\n# c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive touching a comment",
+    "journey\n# c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "journey: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "journey\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "journey\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "journey\n# c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive touching a comment",
+    "gantt\n% c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "gantt\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2029, a directive, two spaces, and a comment",
+    "gantt\n% c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive touching a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%%% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%%%% c\n\n  r = ("x");\n',
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive, a tab, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%\t%% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2029 %%{x}%%  %% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive touching a comment",
+    "xychart\n; \u2028 %%{x}%%%% c\n\nline [1]\n",
+    "xychart\n  %%{x}%%%% c\n\n  line [1]\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive, a tab, and a comment",
+    "xychart\n; \u2028 %%{x}%%\t%% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    "xychart\n; \u2029 %%{x}%%  %% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "usecase: an accDescr line, U+2028, a directive, two spaces, and a comment",
+    "usecase-beta\naccDescr: D \u2028 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accDescr: D\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive touching a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%%% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%%%% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive, a tab, and a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%\t%% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2029, a directive, two spaces, and a comment",
+    "usecase-beta\naccTitle: T \u2029 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "requirement: a hash comment line with an ignored semicolon, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# style:#x;\u2028%%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # style:#x;\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line with two ignored semicolons, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# style classDef:#x;;\u2028%%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # style classDef:#x;;\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line in a body, U+2028, a directive, two spaces, a comment, and the closing brace after an empty line",
+    "requirementDiagram\nrequirement r {\n# c\u2028%%{x}%%  %% c\n\n}\n",
+    "requirementDiagram\n  requirement r {\n    # c\n    %%{x}%% %% c\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, and a directive that is not closed",
+    "requirementDiagram\n# c\u2028%%{x",
+    "requirementDiagram\n  # c\u2028%%{x",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, a comment, and a comment line after it",
+    "stateDiagram-v2\n# c\u2028%%{x}%%  %% c\n%% d\n[*]-->A\n",
+    "stateDiagram-v2\n  # c\u2028%%{x}%%  %% c\n%% d\n[*]-->A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, a comment, and a node named End",
+    "stateDiagram-v2\n# c\u2028%%{x}%%  %% c\nEnd\n",
+    "stateDiagram-v2\n  # c\u2028%%{x}%%  %% c\nEnd\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive, two spaces, a comment, and two comment lines after it",
+    "timeline\n# c\u2028%%{x}%%  %% c\n%% d\n%% e\ntitle T\n",
+    "timeline\n  # c\u2028%%{x}%%  %% c\n%% d\n%% e\ntitle T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive, two spaces, a comment, and a line of whitespace only after it",
+    "journey\n# c\u2028%%{x}%%  %% c\n \t\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, two spaces, and a comment at the end of the text",
+    "gantt\n% c\u2028%%{x}%%  %% c",
+    "gantt\n  % c\n  %%{x}%% %% c\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2028, and a directive at the end of the text",
+    "sequenceDiagram\n;\u2028%%{x}%%",
+    "sequenceDiagram\n  %%{x}%%\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2029, a directive, two spaces, a comment, and an empty line at the end of the text",
+    "xychart\n;\u2029%%{x}%%  %% c\n\n",
+    "xychart\n  %%{x}%% %% c\n",
+  ],
+]
+
+describe("a line kept as written that ends at a line separator, with a directive and a comment after it", () => {
+  it.each(directiveAfterSeparatorExamples)(
+    "prints one space between them: %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
 })
 
 /**
@@ -42385,4 +43323,162 @@ describe("a cynefin header with whitespace before a directive or the colon", () 
   ])("rejects %s", async (_name, input) => {
     await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
   })
+})
+
+/**
+ * Each example is a line that a `;` of its text keeps together, with U+2028 or
+ * U+2029 and a comment after it. The comment line of such a region gets no line
+ * of its own on a kept line, so the line is printed as written, whatever
+ * follows the comment (docs/compatibility.md, A comment line after U+2028 or
+ * U+2029).
+ */
+const keptLineCommentRegionExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "pie: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'pie\ntitle T;\u2028%% c\n\n"A":1\n',
+    'pie\n  title T;\u2028%% c\n\n  "A": 1\n',
+  ],
+  [
+    "pie: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "pie\ntitle T;\u2028%% c",
+    "pie\n  title T;\u2028%% c\n",
+  ],
+  [
+    "radar: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "radar-beta\ntitle T;\u2028%% c\n\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T;\u2028%% c\n\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "radar: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "radar-beta\ntitle T;\u2028%% c",
+    "radar-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "packet: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'packet\ntitle T;\u2028%% c\n\n0-7: "x"\n',
+    'packet\n  title T;\u2028%% c\n\n  0-7: "x"\n',
+  ],
+  [
+    "packet: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "packet\ntitle T;\u2028%% c",
+    "packet\n  title T;\u2028%% c\n",
+  ],
+  [
+    "architecture: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "architecture-beta\ntitle T;\u2028%% c\n\nservice a(server)[A]\n",
+    "architecture-beta\n  title T;\u2028%% c\n\n  service a(server)[A]\n",
+  ],
+  [
+    "architecture: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "architecture-beta\ntitle T;\u2028%% c",
+    "architecture-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "wardley: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "wardley-beta\ntitle T;\u2028%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T;\u2028%% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "wardley: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "wardley-beta\ntitle T;\u2028%% c",
+    "wardley-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "gitGraph: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "gitGraph\ntitle T;\u2028%% c\n\ncommit\n",
+    "gitGraph\n  title T;\u2028%% c\n\n  commit\n",
+  ],
+  [
+    "gitGraph: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "gitGraph\ntitle T;\u2028%% c",
+    "gitGraph\n  title T;\u2028%% c\n",
+  ],
+  [
+    "info: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "info\ntitle T;\u2028%% c\n\n",
+    "info\n  title T;\u2028%% c\n",
+  ],
+  [
+    "info: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "info\ntitle T;\u2028%% c",
+    "info\n  title T;\u2028%% c\n",
+  ],
+  [
+    "cynefin: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'cynefin-beta\ntitle T;\u2028%% c\n\ncomplex "x"\n',
+    'cynefin-beta\n  title T;\u2028%% c\n\n  complex\n    "x"\n',
+  ],
+  [
+    "cynefin: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "cynefin-beta\ntitle T;\u2028%% c",
+    "cynefin-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "kanban: a section with a `;` in its text, U+2028, a comment, and an empty line",
+    "kanban\n  S[x;]\u2028%% c\n\n    A\n",
+    "kanban\n  S[x;]\u2028%% c\n\n    A\n",
+  ],
+  [
+    "kanban: a section with a `;` in its text, U+2028, and a comment at the end of the text",
+    "kanban\n  S[x;]\u2028%% c",
+    "kanban\n  S[x;]\u2028%% c\n",
+  ],
+  [
+    "treemap: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'treemap\ntitle T;\u2028%% c\n\n"A":1\n',
+    'treemap\ntitle T;\u2028%% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "treemap\ntitle T;\u2028%% c",
+    "treemap\ntitle T;\u2028%% c\n",
+  ],
+  [
+    "railroad: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "railroad-beta\ntitle T;\u2028%% c",
+    "railroad-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "treemap: a title that ends with a `;`, a space, U+2028, a directive, two spaces, a comment, and an empty line",
+    'treemap\ntitle T; \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    'treemap\ntitle T; \u2028 %%{x}%%  %% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title that ends with a `;`, a space, U+2029, a directive, two spaces, a comment, and an empty line",
+    'treemap\ntitle T; \u2029 %%{x}%%  %% c\n\n"A":1\n',
+    'treemap\ntitle T; \u2029 %%{x}%%  %% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: an accTitle that ends with a `;`, U+2028, a directive, two spaces, a comment, and an empty line",
+    'treemap\naccTitle: T;\u2028%%{x}%%  %% c\n\n"A":1\n',
+    'treemap\naccTitle: T;\u2028%%{x}%%  %% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title with a `;` inside, U+2028, a directive, three spaces, and a comment",
+    "treemap\ntitle a;b\u2028%%{x}%%   %% d\n",
+    "treemap\ntitle a;b\u2028%%{x}%%   %% d\n",
+  ],
+  [
+    "treemap: a title with a `;` inside, a directive, U+2028, three spaces, a comment, and an empty line",
+    'treemap\ntitle a;b%%{x}%%\u2028   %% d\n\n"A":1\n',
+    'treemap\ntitle a;b%%{x}%%\u2028   %% d\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title with a `;` inside, a directive, U+2028, a directive, U+2028, three spaces, and a comment",
+    "treemap\ntitle a;b%%{x}%%\u2028%%{y}%%\u2028   %% d\n",
+    "treemap\ntitle a;b%%{x}%%\u2028%%{y}%%\u2028   %% d\n",
+  ],
+]
+
+describe("a line that a `;` keeps together, with a comment line after a line separator", () => {
+  it.each(keptLineCommentRegionExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
 })
