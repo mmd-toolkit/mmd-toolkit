@@ -3252,8 +3252,7 @@ wardley-beta
 文書と本文の端の余分な空行と、空白だけの余白は落とします。
 pipeline の端も必須の可視 LF を残して空行を除きます。
 作者のまとまりを 1 行で示す選択です。
-規則 1 は、空行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 [flowchart](./flowchart.ja.md#空行)、[pie](./pie.ja.md#blank-lines)、
 [radar](./radar.ja.md#blank-lines)は、空行の連なりを 1 行にし、
 本文の先頭と末尾の空行を落として印字します。
@@ -3579,8 +3578,7 @@ wardley-beta
 ### 最終改行
 
 普通の受理ファイルは設定の改行 1 個で終え、末尾の普通の空行を落とします。
-規則 1 は、テキストの終わりの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 [radar](./radar.ja.md#final-newline)、[pie](./pie.ja.md#final-newline)、
 [gitgraph](./gitgraph.ja.md#final-newline)は、テキストを改行 1 個で終えます。
 Prettier は、JavaScript、CSS、YAML で、ファイルを改行 1 個で終え、
