@@ -7201,8 +7201,10 @@ A line that a `;` of its text keeps together, as `title T;` or the text of a
 kanban section `S[x;]`, is printed as written with the comment line after a
 U+2028 or U+2029, whatever follows the comment line: a line of a statement, an
 empty line, or the end of the text. The comment line gets no line of its own
-there, as it does on a line that no `;` keeps (see [Title](./treemap.md#title)),
-and the formatter does not stop.
+there. On a line that no `;` keeps, it goes to a line of its own only where an
+empty line or the end of the text follows it, and stays as written where a
+statement follows (see [Title](./treemap.md#title)). The formatter does not
+stop.
 
 [test: treemap: a title with a `;` inside, U+2028, a directive, three spaces,
 and a comment] [test: treemap: a title with a `;` inside, a directive, U+2028,

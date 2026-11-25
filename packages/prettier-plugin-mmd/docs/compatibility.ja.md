@@ -7464,9 +7464,11 @@ ER 図では、そのような行にある実体のブロックだけは、
 kanban の section のテキスト `S[x;]` で、U+2028 か U+2029 の後のコメント行ごと、
 書かれたまま印字します。
 コメント行の後に続くものが、文の行でも、空行でも、テキストの終わりでも同じです。
-`;` が行を残さない行では、
-コメント行は自分の行に置かれますが（[Title](./treemap.ja.md#title)を参照）、
-ここでは置かれず、整形は止まりません。
+ここでは、コメント行は自分の行に置かれません。
+`;` が行を残さない行では、コメント行は、
+後ろに空行かテキストの終わりが続くときだけ自分の行に置かれ、
+文が続くときは書かれたまま残ります（[Title](./treemap.ja.md#title)を参照）。
+整形は止まりません。
 
 [test: treemap: a title with a `;` inside, U+2028, a directive, three spaces, and a comment]
 [test: treemap: a title with a `;` inside, a directive, U+2028, three spaces, a comment, and an empty line]

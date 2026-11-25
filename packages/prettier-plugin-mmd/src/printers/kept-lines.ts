@@ -1401,6 +1401,15 @@ export function holdsJoiningRegion(
  * (`BlockRules.joiningRegionsPrintedAsWritten`): the region starts after a
  * U+2028 or U+2029, which the gap holds, so the gap cannot be laid out again
  * (docs/compatibility.md, A comment line after U+2028 or U+2029).
+ *
+ * `printInlineGap` keeps the other gaps of a kept line as written, those whose
+ * comment line cannot go to a line of its own, so that the formatter does not
+ * stop. The two are decisions of their own, and neither can take over the gaps
+ * of the other: without this one, the spaces between the U+2028 and a comment
+ * that ends in a `;` would be laid out again, and with those gaps added to it,
+ * the lines whose U+2028 stands between two directives would no longer be
+ * printed as they are (the tests of A comment line after U+2028 or U+2029 in
+ * docs/compatibility.md).
  */
 export function findJoiningRegionEndInLine(
   source: Source,

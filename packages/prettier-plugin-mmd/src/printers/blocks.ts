@@ -1493,7 +1493,9 @@ export function printInlineGap(
   })
   // The comment line of a region that joins lines cannot go to a line of its
   // own on a kept line, whose statements stay on it: the gap stays as written
-  // (docs/compatibility.md, A comment line after U+2028 or U+2029).
+  // (docs/compatibility.md, A comment line after U+2028 or U+2029). `printBlock`
+  // keeps the other gaps of a region as written before it gets here (see
+  // `findJoiningRegionEndInLine`, which says why the two are not one decision).
   if (gap.breaksLine) return printAsWritten(source, start, end)
   const run = gap.leading ?? gap.trailing
   if (run === null) {
