@@ -67,6 +67,13 @@ export interface ItemRun {
    * ends with spaces or tabs. `%% ` is a comment; `%%` is not.
    */
   readonly endsWithWhitespace: boolean
+  /**
+   * The whitespace that stays after the last item, or an empty string: where
+   * the last item is the `;` of an ABNF comment, the whitespace that follows
+   * it (`bareSemicolonTail`). `doc` ends with it, and a line printed as
+   * written adds it to the text of the items (`printRunAsWritten`).
+   */
+  readonly tail: string
 }
 
 /** An item that mermaid.js reads as not there. */
@@ -696,8 +703,8 @@ function toRun(
     spacePending = false
   }
   if (printed === undefined) return null
-  const semicolonTail = bareSemicolonTail(source, printed.item)
-  if (semicolonTail !== "") doc.push(semicolonTail)
+  const tail = bareSemicolonTail(source, printed.item)
+  if (tail !== "") doc.push(tail)
   return {
     range: [(firstPrinted as Part).item.range[0], printed.item.range[1]],
     doc,
@@ -719,8 +726,9 @@ function toRun(
     // lets hardline remove the whitespace after the comment of a statement; a
     // comment line keeps it, as every comment does (docs/sequence.md,
     // Statements one per line; docs/flowchart.md, Comments).
+    tail,
     endsWithWhitespace:
-      semicolonTail !== "" ||
+      tail !== "" ||
       (endsWithSpaceOrTab(
         source.text.slice(printed.item.range[0], printed.item.range[1]),
       ) &&

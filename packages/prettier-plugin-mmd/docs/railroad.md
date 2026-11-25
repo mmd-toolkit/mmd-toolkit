@@ -1562,13 +1562,19 @@ railroad-peg-beta
   r <- "bare comment";#
 ```
 
-A `;` that starts an ABNF comment keeps a space or tab after it where a U+2028
-or U+2029 stood before the next line: `;`, a space, U+2028, `%% c`, an empty
-line, and a rule are printed with `; ` and `%% c` on two lines, and with one
-space where no whitespace stood between the `;` and the character. A bare `;` at
-the end of a line is punctuation, and `railroad-abnf-beta` rejects it where a
-comment is meant, so the first formatting would print a text that the second
-cannot read.
+The whitespace after the `;` of an ABNF comment is the end of the text of the
+comment, which stays as written (see above). Where a U+2028 or U+2029 follows it
+and a comment line starts after the character, the printer starts the comment
+line on a line of its own, and the `;` keeps the spaces and tabs written after
+it: `;`, a space, U+2028, `%% c`, an empty line, and a rule are printed with
+`; ` and `%% c` on two lines. Where no whitespace stood between the `;` and the
+character, one space stands after the `;`, the one space of a separated gap
+above. A bare `;` is punctuation, and every version of mermaid.js that counts
+rejects it where a comment is meant, so a `;` printed without that whitespace
+would give a text that the second formatting cannot read. The same holds where
+the comment line ends with a `;` and so is kept as written (`%% style:#x;`,
+`%% c;`). Where no comment line follows the character, as with a directive, the
+`;` and the character stay as written.
 
 [test: railroad/comments/abnf-semicolon-sp-comment-bl-ls] [test:
 railroad/comments/abnf-semicolon-tight-comment-bl-ls] [test:
@@ -1591,38 +1597,27 @@ railroad/comments/abnf-semicolon-tight-comment-eot-ps] [test:
 railroad/comments/abnf-semicolon-after-rule-dircomment-bl-ps] [test:
 railroad/comments/abnf-semicolon-sp-comment-nobl-ps] [test:
 railroad/comments/abnf-semicolon-sp-dir-bl-ps] [test:
-railroad/comments/abnf-semicolon-sp-text-comment-bl-ps]
-
-A `;` that starts an ABNF comment keeps a space or tab after it where a U+2028
-or U+2029 stood before the next line: `;`, a space, U+2028, `%% c`, an empty
-line, and a rule are printed with `; ` and `%% c` on two lines, and with one
-space where no whitespace stood between the `;` and the character. A bare `;` at
-the end of a line is punctuation, and `railroad-abnf-beta` rejects it where a
-comment is meant, so the first formatting would print a text that the second
-cannot read.
-
-[test: railroad/comments/abnf-semicolon-sp-comment-bl-ls] [test:
-railroad/comments/abnf-semicolon-tight-comment-bl-ls] [test:
-railroad/comments/abnf-semicolon-sp-dircomment-bl-ls] [test:
-railroad/comments/abnf-semicolon-sp2-comment-bl-ls] [test:
-railroad/comments/abnf-semicolon-tab-comment-bl-ls] [test:
-railroad/comments/abnf-semicolon-sp-comment-eot-ls] [test:
-railroad/comments/abnf-semicolon-tight-comment-eot-ls] [test:
-railroad/comments/abnf-semicolon-after-rule-dircomment-bl-ls] [test:
-railroad/comments/abnf-semicolon-sp-comment-nobl-ls] [test:
-railroad/comments/abnf-semicolon-sp-dir-bl-ls] [test:
-railroad/comments/abnf-semicolon-sp-text-comment-bl-ls] [test:
-railroad/comments/abnf-semicolon-sp-comment-bl-ps] [test:
-railroad/comments/abnf-semicolon-tight-comment-bl-ps] [test:
-railroad/comments/abnf-semicolon-sp-dircomment-bl-ps] [test:
-railroad/comments/abnf-semicolon-sp2-comment-bl-ps] [test:
-railroad/comments/abnf-semicolon-tab-comment-bl-ps] [test:
-railroad/comments/abnf-semicolon-sp-comment-eot-ps] [test:
-railroad/comments/abnf-semicolon-tight-comment-eot-ps] [test:
-railroad/comments/abnf-semicolon-after-rule-dircomment-bl-ps] [test:
-railroad/comments/abnf-semicolon-sp-comment-nobl-ps] [test:
-railroad/comments/abnf-semicolon-sp-dir-bl-ps] [test:
-railroad/comments/abnf-semicolon-sp-text-comment-bl-ps]
+railroad/comments/abnf-semicolon-sp-text-comment-bl-ps] [test:
+railroad/comments/abnf-semicolon-sp-style-bl-ls] [test:
+railroad/comments/abnf-semicolon-sp-style-bl-ps] [test:
+railroad/comments/abnf-semicolon-tight-style-bl-ls] [test:
+railroad/comments/abnf-semicolon-tight-style-bl-ps] [test:
+railroad/comments/abnf-semicolon-tab-style-bl-ls] [test:
+railroad/comments/abnf-semicolon-tab-style-bl-ps] [test:
+railroad/comments/abnf-semicolon-sp-style-eot-ls] [test:
+railroad/comments/abnf-semicolon-sp-style-eot-ps] [test:
+railroad/comments/abnf-semicolon-after-rule-style-bl-ls] [test:
+railroad/comments/abnf-semicolon-after-rule-style-bl-ps] [test:
+railroad/comments/abnf-semicolon-sp-style-two-bl-ls] [test:
+railroad/comments/abnf-semicolon-sp-style-two-bl-ps] [test:
+railroad/comments/abnf-semicolon-sp-style-spaced-bl-ls] [test:
+railroad/comments/abnf-semicolon-sp-style-spaced-bl-ps] [test:
+railroad/comments/abnf-semicolon-sp-endsemi-bl-ls] [test:
+railroad/comments/abnf-semicolon-sp-endsemi-bl-ps] [test:
+railroad/comments/abnf-semicolon-sp-dir-endsemi-bl-ls] [test:
+railroad/comments/abnf-semicolon-sp-dir-endsemi-bl-ps] [test:
+railroad/comments/abnf-semicolon-sp-unclosed-dir-ls] [test:
+railroad/comments/abnf-semicolon-sp-unclosed-dir-ps]
 
 ### Global directives
 

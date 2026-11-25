@@ -1625,14 +1625,21 @@ railroad-peg-beta
   r <- "bare comment";#
 ```
 
-ABNF のコメントを始める `;` は、
-U+2028 か U+2029 があった所で次の行を始めるとき、
-その後ろに空白かタブを残します。
+ABNF のコメントの `;` の後ろの空白は、そのコメントの本文の末尾で、
+書かれたまま残します（上の規則）。
+`;` の後ろに U+2028 か U+2029 があり、その文字の後ろでコメント行が始まるときは、
+印字ではコメント行を自分の行で始め、
+`;` は後ろに書かれていた空白とタブを残します。
 `;`、空白、U+2028、`%% c`、空の行、規則は、`; ` と `%% c` の 2 行に印字します。
-`;` と文字の間に空白がなかったときは、空白を 1 つ置きます。
-行末の `;` だけのものは句読点で、
-`railroad-abnf-beta` はコメントのつもりの位置では受け付けないので、
-1 回目の整形が、2 回目が読めないテキストを印字することになります。
+`;` と文字の間に空白がなかったときは、上の離れた隙間の空白 1 つと同じに、
+`;` の後ろに空白を 1 つ置きます。
+`;` だけのものは句読点で、数える版の mermaid.js はどれも、
+コメントのつもりのその形を受け付けないので、空白なしで印字すると、
+2 回目の整形が読めないテキストになります。
+コメント行が `;` で終わり、書かれたまま残る行でも同じです（`%% style:#x;`、
+`%% c;`）。
+文字の後ろにコメント行が続かないとき（ディレクティブが続く場合）は、
+`;` と文字を書かれたまま残します。
 
 [test: railroad/comments/abnf-semicolon-sp-comment-bl-ls]
 [test: railroad/comments/abnf-semicolon-tight-comment-bl-ls]
@@ -1656,6 +1663,26 @@ U+2028 か U+2029 があった所で次の行を始めるとき、
 [test: railroad/comments/abnf-semicolon-sp-comment-nobl-ps]
 [test: railroad/comments/abnf-semicolon-sp-dir-bl-ps]
 [test: railroad/comments/abnf-semicolon-sp-text-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-style-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-style-bl-ps]
+[test: railroad/comments/abnf-semicolon-tight-style-bl-ls]
+[test: railroad/comments/abnf-semicolon-tight-style-bl-ps]
+[test: railroad/comments/abnf-semicolon-tab-style-bl-ls]
+[test: railroad/comments/abnf-semicolon-tab-style-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-style-eot-ls]
+[test: railroad/comments/abnf-semicolon-sp-style-eot-ps]
+[test: railroad/comments/abnf-semicolon-after-rule-style-bl-ls]
+[test: railroad/comments/abnf-semicolon-after-rule-style-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-style-two-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-style-two-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-style-spaced-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-style-spaced-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-endsemi-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-endsemi-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-dir-endsemi-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-dir-endsemi-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-unclosed-dir-ls]
+[test: railroad/comments/abnf-semicolon-sp-unclosed-dir-ps]
 
 ### 共有 directive
 

@@ -35,6 +35,7 @@ import {
   joinLines,
   lineBreakBetween,
   printAsWritten,
+  printRunAsWritten,
   printTextGap,
   withLeading,
   withTrailing,
@@ -632,7 +633,7 @@ export function printBlock<Statement extends Positioned>(
         // A verbatim trivia line keeps spacing between its comments and
         // directives too; the block still supplies its ordinary indentation.
         doc: kept.verbatim.has(lineStartOf(source, line.run.range[0]))
-          ? printAsWritten(source, line.run.range[0], line.run.range[1])
+          ? printRunAsWritten(source, line.run)
           : line.run.doc,
         ...(triviaBreakBefore(line.run.range[0]) === undefined
           ? {}
