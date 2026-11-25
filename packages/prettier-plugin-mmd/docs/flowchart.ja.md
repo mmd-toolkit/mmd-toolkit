@@ -1046,7 +1046,8 @@ mermaid.js はリンクのスタイルを書かれたまま `;` でつなぐの�
 [fixture: whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 
 U+2028 と U+2029 は、その場所に残します。
-10.9.8 は、`,` の前の U+2028 か U+2029 を除いたスタイルを別に描くからです。
+対象にする版のうち、
+`,` の前の U+2028 か U+2029 を除いたスタイルを別に描くものがあるからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。

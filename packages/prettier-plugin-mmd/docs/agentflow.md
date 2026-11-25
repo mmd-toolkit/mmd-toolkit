@@ -1930,8 +1930,8 @@ retained click prefix keep their touching gaps.
 click-statements/prefix-with-directive]
 
 The `href` of a click statement stays touching the `)` of a blank call, as in
-`click A call ()href click "/u"`: 12.0.0 and 12.3.0 reject the form with a space
-between them (see
+`click A call ()href click "/u"`: some of the versions that count reject the
+form with a space between them (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: click-statements/blank-call-then-href-kept]

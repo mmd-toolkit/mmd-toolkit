@@ -1011,8 +1011,8 @@ whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 
-A U+2028 or U+2029 stays where it is: 10.9.8 draws a style whose U+2028 or
-U+2029 before the `,` is taken out differently (see
+A U+2028 or U+2029 stays where it is: some of the versions that count draw a
+style differently where a U+2028 or U+2029 before the `,` is taken out (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: U+2028 between the value of a flowchart style and its comma] [test:
