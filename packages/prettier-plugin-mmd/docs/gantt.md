@@ -683,9 +683,9 @@ gantt
 ### Settings
 
 `dateFormat` and `axisFormat` are printed with one space after the keyword and
-the value after it, without the whitespace at the start or at the end of the
-value: mermaid.js keeps that whitespace in the Db, but draws the same figure
-without it (see
+the value after it, without the spaces and tabs at the start or at the end of
+the value: mermaid.js keeps them in the Db, but draws the same figure without
+them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 `dateFormat   YYYY-MM-DD  ` is printed `dateFormat YYYY-MM-DD`.
 
@@ -770,8 +770,8 @@ gantt
 ### Titles and sections
 
 A `title` is printed as the settings are: one space after the keyword, and the
-value without the whitespace at its start or at its end, which the Db keeps and
-which is drawn without (see
+value without the spaces and tabs at its start or at its end, which the Db keeps
+and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 `title   Plan  ` is printed `title Plan`, and a run of spaces and tabs inside it
 is printed as one space, so `title Plan  of   work` is printed
@@ -1903,7 +1903,8 @@ of accTitle] [test: U+2028 between a click id and its part]
 
 At the end of a title, a date format, or an axis format, U+2028 and U+2029 are
 characters of the text and no spaces or tabs: the spaces after one are left out
-with the other whitespace at the end of the text, and the spaces before it stay.
+with the other spaces and tabs at the end of the text, and the spaces before it
+stay.
 
 [test: U+2028 and spaces at the end of a title] [test: U+2029 and spaces at the
 end of a date format]
