@@ -949,9 +949,7 @@ flowchart、agentflow、class、state、block、usecase の `style`、`classDef`
 になります。
 スタイルの語と語の間の空白とタブの連なりは、空白 1 つで印字します（後述）。
 swimlane 図のスタイルでは、語と語の間の空白とタブの連続を、`:` の有無によらず、
-[class](./class.ja.md#トークンの間の空白) と [block](./block.ja.md#スタイル)
-の図と同じく、空白 1 つで印字します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+空白 1 つで印字します。
 
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced]
 [fixture: flowchart/whitespace-between-tokens/style-colon-empty-value-kept]
@@ -2417,15 +2415,12 @@ timeline の event、state の説明、Gantt 図のタスクの名前は、
 | kanban のカードと mindmap の素のノードで、ディレクティブだけのもの                                                                                            | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 拒否                           | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 拒否                           | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
 | user journey のタスクの説明（最初のコロンの前のテキスト）                                                                                                     | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | –                              | –                              | –                              | –                              | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
 
-表で連なりを縮めるテキストの中は、
-[Gantt 図](./gantt.ja.md#タイトルとセクション) と
-[radar チャート](./radar.ja.md#title) のタイトルと同じく、
-空白とタブの連なりを空白 1 つにします。
+表で連なりを縮めるテキストの中は、空白とタブの連なりを空白 1 つにします。
 これらのテキストで、末尾のコメントの前に空白やタブがあるときは、
 [radar チャート](./radar.ja.md#comments) と [mindmap](./mindmap.ja.md#コメント)
 と同じく、空白 1 つにしてコメントを同じ行に残します。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この 2 つの形を与えます。
+末尾のコメントの前の形を与えます。
 
 改行、`;`、U+2028、U+2029 を含むディレクティブは、
 行のどのディレクティブでもよく、
@@ -7064,11 +7059,7 @@ mermaid.js は、requirement 図の名前や値の一部の空白を持ち、一
   [state](./state.ja.md#トークンの間の空白) の図と同じで、
   [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
   この形を与えます。
-  値、クラス、文字列の単語間の連なりを空白 1 つにする形は、
-  [sequence のメッセージ](./sequence.ja.md#トークンの間の空白) と
-  [packet のラベル](./packet.ja.md#label-content) と同じで、
-  [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-  この形を与えます。
+  値、クラス、文字列の単語間の連なりは、空白 1 つにします。
 
   [fixture: requirement/names/inner-whitespace-kept]
   [fixture: requirement/fields/value-inner-runs-collapsed]
@@ -8301,10 +8292,7 @@ JSON の表データは不透明で、数とエスケープの綴り、プロパ
 CSS 宣言の最初のコロンの前後の空白は、
 [同じに描かれるスタイル](#同じに描かれるスタイル)に従います。
 宣言の中の空白の連なりも、空白 1 つで印字します。
-usecase の CSS 宣言の単語間の連なりを空白 1 つにする形は、
-[flowchart](./flowchart.ja.md#トークンの間の空白) と
-[state](./state.ja.md#トークンの間の空白) の図のスタイルの同じ隙間と同じで、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+usecase の CSS 宣言の単語間の連なりは、空白 1 つにします。
 
 [fixture: usecase/native-metadata/metadata-inline]
 [fixture: usecase/native-metadata/metadata-blank-lines-kept]

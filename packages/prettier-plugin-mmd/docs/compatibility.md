@@ -898,10 +898,7 @@ between two styles, and one space after it. `style A fill :#f00,stroke:  #333`
 is printed `style A fill: #f00, stroke: #333`. A run of spaces and tabs between
 the words of a style is printed as one space (see below). A run of spaces and
 tabs between words of a swimlane style is printed as one space, with or without
-a `:`, as in [class diagrams](./class.md#whitespace-between-tokens) and
-[block diagrams](./block.md#styles).
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this form.
+a `:`.
 
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
@@ -2611,12 +2608,11 @@ and the comment `%% c`):
 | the label of a relation                                                                                    | class                                                                                                                                                                                                                                                                                                                                                                                 | `A --> B : A  b  %% c`                                                  | as written                                                        |
 
 Runs of spaces and tabs inside the texts compacted in the table become one
-space, as in the titles of [Gantt charts](./gantt.md#titles-and-sections) and
-[radar charts](./radar.md#title). For those texts, a trailing comment keeps its
-line with one preceding space where the source has spaces or tabs, as in
+space. For those texts, a trailing comment keeps its line with one preceding
+space where the source has spaces or tabs, as in
 [radar charts](./radar.md#comments) and [mindmaps](./mindmap.md#comments).
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-both forms.
+that form.
 
 [test: runs before a comment that ends the text of a pie chart] [test: runs
 before a comment that ends the text of a radar chart] [test: runs before a
@@ -6796,10 +6792,7 @@ them as they are written. See [Names](./requirement.md#names),
   [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as
   in [flowchart](./flowchart.md#whitespace-between-tokens) and
   [state](./state.md#whitespace-between-tokens) diagrams. Runs between words of
-  a value, a class, or a string become one space under
-  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as
-  in [sequence messages](./sequence.md#whitespace-between-tokens) and
-  [packet labels](./packet.md#label-content).
+  a value, a class, or a string become one space.
 
   [fixture: requirement/names/inner-whitespace-kept] [fixture:
   requirement/fields/value-inner-runs-collapsed] [fixture:
@@ -8050,11 +8043,7 @@ check; the corpus uses recorded effects where available. The padding of a CSS
 declaration around its first colon follows
 [Styles that are drawn the same](#styles-that-are-drawn-the-same); the runs in a
 declaration are printed as one space as well. A run between the words of a
-usecase CSS declaration becomes one space, as the same gap in a style does in
-[flowchart](./flowchart.md#whitespace-between-tokens) and
-[state](./state.md#whitespace-between-tokens) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this form.
+usecase CSS declaration becomes one space.
 
 [fixture: usecase/native-metadata/metadata-inline] [fixture:
 usecase/native-metadata/metadata-blank-lines-kept] [fixture:
