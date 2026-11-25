@@ -291,10 +291,11 @@ space is the gap of [Component spacing](#component-spacing) after a keyword, of
 of [Links](#links) around an arrow. Before the `[` of a coordinate pair it is
 the gap that [xychart](./xychart.md#brackets-and-commas) prints before the `[`
 after a string (`bar"Costs"[1,2]` is printed `bar "Costs" [1, 2]`), and the
-examples in the documentation of mermaid.js write the `[` of all 73 coordinates
-that follow a name, a string, or `annotations` after a space. Whitespace after
-title makes it metadata instead of a name. Quoted "title" and bare titlex follow
-ordinary spacing; uppercase names stay names.
+examples in the documentation of mermaid.js write the `[` of all 68 coordinates
+that follow a name, a string, or `annotations` after a space (see
+[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
+Whitespace after title makes it metadata instead of a name. Quoted "title" and
+bare titlex follow ordinary spacing; uppercase names stay names.
 
 [fixture: wardley/name-boundaries/component-title-contact]
 
@@ -492,11 +493,13 @@ arrowless links. Preserve every port and arrow spelling.
 around an arrow, a mark between two things: a flowchart prints `A-->B` as
 `A --> B`, and Prettier prints `x = a+b` as `x = a + b;`. The examples in the
 documentation of mermaid.js write all 31 of their links with a space on each
-side (`Customer -> Service`, `App +> API`, `Cache +'backup'> Database`). A-->B
-is the name A- and arrow ->, but the first version with the diagram rejects a
-name with a `-` in it and reads the same text as the name A and the arrow -->,
-so an arrow is not separated from a name that ends with `-`: A-->B prints A-->
-B, which every version draws as it draws A-->B, not A- -> B (see
+side (see
+[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram))
+(`Customer -> Service`, `App +> API`, `Cache +'backup'> Database`). A-->B is the
+name A- and arrow ->, but the first version with the diagram rejects a name with
+a `-` in it and reads the same text as the name A and the arrow -->, so an arrow
+is not separated from a name that ends with `-`: A-->B prints A--> B, which
+every version draws as it draws A-->B, not A- -> B (see
 [Wardley authored text and required line breaks](./compatibility.md#wardley-authored-text-and-required-line-breaks)).
 A directive between the name and the arrow does not part them, as mermaid.js
 takes the directive away before it reads the text: A-%%{init: {}}%%->B prints
@@ -731,7 +734,8 @@ pairs consistent. The comma and the brackets are those of
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): none inside a
 bracket, none before a comma and one after it), the space after `size` is that
 of [Component spacing](#component-spacing), and the examples in the
-documentation of mermaid.js write all 3 sizes so (`size [800, 1000]`).
+documentation of mermaid.js write their one size so (`size [1100, 800]`; see
+[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
 
 [fixture: wardley/size/size-spacing]
 
