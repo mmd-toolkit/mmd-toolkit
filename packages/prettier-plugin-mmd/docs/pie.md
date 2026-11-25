@@ -361,18 +361,18 @@ respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
 statement, as the other diagram types do. Keep line breaks and interior blank
-lines, and the whitespace at the end of each line of text except the last one; a
-line of whitespace only becomes an empty line. The oldest version that counts
-draws the whitespace at the end of a line of text before the last one in the
-description of the figure (`<desc>x  </desc>` for `x` and two spaces), so that
-whitespace stays (see
+lines, and the whitespace at the end of each line of text except the last one.
+The oldest version that counts draws the whitespace at the end of a line of text
+before the last one in the description of the figure (`<desc>x  </desc>` for `x`
+and two spaces), so that whitespace stays (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The whitespace at the end of the last line of text is dropped where the closer
-stands on a line of its own, and is printed as one space where the closer
-follows it on that line. A separate `}` aligns with the statement. Directives
-and shared removed comment regions keep their complete source. Trivia-bearing
-interiors keep their trivia. The first closing brace still closes the block,
-even inside quote/backslash/hidden-looking text.
+A line of whitespace only becomes an empty line. The whitespace at the end of
+the last line of text is dropped where the closer stands on a line of its own,
+and is printed as one space where the closer follows it on that line. A separate
+`}` aligns with the statement. Directives and shared removed comment regions
+keep their complete source. Trivia-bearing interiors keep their trivia. The
+first closing brace still closes the block, even inside
+quote/backslash/hidden-looking text.
 
 [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:
