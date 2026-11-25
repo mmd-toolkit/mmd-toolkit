@@ -2683,8 +2683,16 @@ railroad 図の文字列と特殊シーケンスです。
   tags、リンク）と、本来の位置にない名前付き属性。
   mermaid.js の読み方は、その場所によって変わります。
   （[引数の形](./c4.ja.md#引数の形)を参照してください）。
+  12.3.0 の Db は、tags とリンクを書かれたまま格納するので、
+  `a  b` と `a b` は別の値です。
+  `$tags` が label の位置に書かれたときは、
+  label のテキストが `{tags: "a  b"}` で、`{tags: "a b"}` ではありません。
+  これらの値の中の連なりは残します。
 
   [fixture: c4/named-attributes/named-text-places-runs-collapsed]
+  [fixture: c4/argument-forms/tags-run-kept]
+  [fixture: c4/argument-forms/link-run-kept]
+  [fixture: c4/named-attributes/label-place-run-kept]
 
 - ほかの文が参照する名前。
   連なりで異なる 2 つの名前は別のもので、連なりがなくなると 1 つになります。

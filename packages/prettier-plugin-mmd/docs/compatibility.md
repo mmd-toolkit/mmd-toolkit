@@ -2565,9 +2565,14 @@ These stay as written:
 - The arguments of a C4 statement that are not a label, a technology, a type, or
   a description (the sprite, the tags, the link), and a named attribute at
   another place than its own, which mermaid.js reads in a way that depends on
-  the place (see [Argument forms](./c4.md#argument-forms)).
+  the place (see [Argument forms](./c4.md#argument-forms)). The Db of 12.3.0
+  stores the tags and the link as written, so `a  b` and `a b` are two values in
+  it, and where `$tags` stands in the place of the label, the label text is
+  `{tags: "a  b"}` and not `{tags: "a b"}`: a run in one of these values stays.
 
-  [fixture: c4/named-attributes/named-text-places-runs-collapsed]
+  [fixture: c4/named-attributes/named-text-places-runs-collapsed] [fixture:
+  c4/argument-forms/tags-run-kept] [fixture: c4/argument-forms/link-run-kept]
+  [fixture: c4/named-attributes/label-place-run-kept]
 
 - The names that other statements refer to: two names that differ by a run are
   two things, and are one once the run is gone. A pair of such names was drawn
