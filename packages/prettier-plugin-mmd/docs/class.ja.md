@@ -294,7 +294,10 @@ classDiagram
 ### トークンの間の空白
 
 行の中で、下の規則が隙間に別の形を与えない限り、
-2 つのトークンの間の空白とタブの連続は空白 1 つにし、
+2 つのトークンの間の空白とタブの連続は空白 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードとそれが取るものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 接しているトークンは flowchart と同じく接したまま残します。
 下の規則が別の形を与える例は、文字列、矢印、コロン、
 コールバックの `(` の前の名前、`:::` などです。
@@ -389,12 +392,13 @@ U+2028 と U+2029 は、そのまま残します。
 `cssClass"A,B"c` は `cssClass "A,B" c` に、
 `click C call f()"t"` は `click C call f() "t"` に、
 `click C~T~call f()` は `click C~T~ call f()` と印字します。
-mermaid.js はどの書き方も同じ文として読むので、形を強いるものはありません。
-その文書では、
-各文字列の前に空白を書いています
-([`note "…"` と `note for MyClass "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L639-L640)、
-[`link Shape "…" "…"` と `click Shape2 href "…" "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L650-L652)、
-[`cssClass "nodeId1,nodeId2" className`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L773))。
+mermaid.js はどの書き方も同じ文として読みます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードとそれが取るものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
+続く値の間にも空白 1 つを与えます。
+Prettier が CSS の `margin: 1px    2px;` を `margin: 1px 2px;`
+と印字するためです。
 
 [fixture: whitespace-between-tokens/note-and-name-strings-touching-spaced]
 [fixture: whitespace-between-tokens/link-strings-touching-spaced]

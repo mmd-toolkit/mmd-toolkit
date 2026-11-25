@@ -486,19 +486,21 @@ journey
 
 ### Titles and sections
 
-A `title` is printed with one space after the keyword, so that the separator has
-one form, as in a Gantt chart, and the value without the spaces and tabs at its
-start or at its end, which the Db keeps and which are drawn without (see
+A `title` is printed with one space after the keyword, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives between a
+keyword and its value (Prettier prints `return  x` as `return x;`), and the
+value without the spaces and tabs at its start or at its end, which the Db keeps
+and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   My trip  ` is printed `title My trip`. Prettier prints one space
-between a keyword and what it takes, and removes spaces and tabs at the end of a
-line. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
-single space after `title` and removes spaces and tabs at the end of the line.
-The name of a `section` is printed as written, the whitespace at its start and
-at its end included: two sections whose names differ by it are drawn apart, and
-would not be once it is left out. A title of spaces and tabs only stays as
-written. For `title` followed by two spaces, a tab, and a space, every version
-of mermaid.js that counts rejects `title` with nothing after it (see
+`title   My trip  ` is printed `title My trip`. The spaces and tabs at the end
+of the value stand at the end of the line, where
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives none, as
+Prettier removes spaces and tabs at the end of a line. The name of a `section`
+is printed as written, the whitespace at its start and at its end included: two
+sections whose names differ by it are drawn apart, and would not be once it is
+left out. A title of spaces and tabs only stays as written. For `title` followed
+by two spaces, a tab, and a space, every version of mermaid.js that counts
+rejects `title` with nothing after it (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: titles-and-sections/title-padding-dropped] [fixture:
