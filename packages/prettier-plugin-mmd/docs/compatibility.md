@@ -899,7 +899,7 @@ the words of a style is printed as one space (see below). A run of spaces and
 tabs between words of a swimlane style is printed as one space, with or without
 a `:`, as in [class diagrams](./class.md#whitespace-between-tokens) and
 [block diagrams](./block.md#styles).
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 this form.
 
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
@@ -1496,7 +1496,7 @@ except that a task whose description holds a directive stays as written (see
 alias. Trailing directives in [mindmap](./mindmap.md#directives) nodes and
 [kanban](./kanban.md#trailing-whitespace) cards print with one space where
 spaces or tabs preceded them and keep touching where none did.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the same gaps before trailing directives here.
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
 and tabs after the last directive, as at other line ends. The runs of spaces and
@@ -2603,6 +2603,14 @@ and the comment `%% c`):
 | a node                                                                                                     | mindmap, treeView                                                                                                                                                                                                                                                                                                                                                                     | `A  b  %% c`                                                            | as written                                                        |
 | a card                                                                                                     | kanban                                                                                                                                                                                                                                                                                                                                                                                | `A  b  %% c`                                                            | as written                                                        |
 | the label of a relation                                                                                    | class                                                                                                                                                                                                                                                                                                                                                                                 | `A --> B : A  b  %% c`                                                  | as written                                                        |
+
+Runs of spaces and tabs inside the texts compacted in the table become one
+space, as in the titles of [Gantt charts](./gantt.md#titles-and-sections) and
+[radar charts](./radar.md#title). For those texts, a trailing comment keeps its
+line with one preceding space where the source has spaces or tabs, as in
+[radar charts](./radar.md#comments) and [mindmaps](./mindmap.md#comments).
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+both forms.
 
 [test: runs before a comment that ends the text of a pie chart] [test: runs
 before a comment that ends the text of a radar chart] [test: runs before a
@@ -4162,8 +4170,13 @@ as nodes and gives the description no text, and an event modeling diagram stores
 the token as it is written, so that the description is ` accDescr {a}` in one
 form and ` accDescr: a` in the other. A block with a text of one line is printed
 in the form with the colon, on a line of its own: `accDescr {a}`,
-`accDescr { a }`, and `accDescr{ a }` become `accDescr: a`. The keyword and the
-`{` can stand apart in any whitespace, a line break included, and so can the
+`accDescr { a }`, and `accDescr{ a }` become `accDescr: a`.
+[ER diagrams](./er.md#statements-one-per-line) and
+[sequence diagrams](./sequence.md#statements-one-per-line) print each statement
+on a line of its own.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a description converted to `accDescr:` the same separate line. The keyword and
+the `{` can stand apart in any whitespace, a line break included, and so can the
 text and the braces: `accDescr {`, `a`, and `}` on three lines are `accDescr: a`
 too. A `;` after the `}` is dropped like any `;` that separates statements. A
 block that starts on the line of the header of a timeline, after a direction,
@@ -6613,6 +6626,12 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   section whose names have padding, or of the sections that share a column, and
   one space after a name that touches its colon (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+  The titles of [pie charts](./pie.md#title) and
+  [timelines](./timeline.md#titles-and-sections) have one space between the
+  keyword and nonempty text.
+  [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+  gives the gap before a nonempty Gantt `axisFormat` or `title` value the same
+  form.
 
   [fixture: gantt/settings/trailing-whitespace-by-setting] [fixture:
   gantt/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
@@ -6718,6 +6737,11 @@ See [Task data](./journey.md#task-data) and
   section without padding is left out, as are the spaces and tabs at the ends of
   a `title` (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+  The titles of [pie charts](./pie.md#title) and
+  [timelines](./timeline.md#titles-and-sections) have one space between the
+  keyword and nonempty text.
+  [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+  gives the gap before a nonempty user journey `title` value the same form.
 
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]
@@ -6768,7 +6792,7 @@ them as they are written. See [Names](./requirement.md#names),
   [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as
   in [flowchart](./flowchart.md#whitespace-between-tokens) and
   [state](./state.md#whitespace-between-tokens) diagrams. Runs between words of
-  a value or string become one space under
+  a value, a class, or a string become one space under
   [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as
   in [sequence messages](./sequence.md#whitespace-between-tokens) and
   [packet labels](./packet.md#label-content).

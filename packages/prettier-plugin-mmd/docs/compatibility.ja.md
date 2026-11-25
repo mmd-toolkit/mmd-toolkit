@@ -2416,6 +2416,16 @@ timeline の event、state の説明、Gantt 図のタスクの名前は、
 | kanban のカードと mindmap の素のノードで、ディレクティブだけのもの                                                                                            | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 拒否                           | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 拒否                           | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
 | user journey のタスクの説明（最初のコロンの前のテキスト）                                                                                                     | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | –                              | –                              | –                              | –                              | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
 
+表で連なりを縮めるテキストの中は、
+[Gantt 図](./gantt.ja.md#タイトルとセクション) と
+[radar チャート](./radar.ja.md#title) のタイトルと同じく、
+空白とタブの連なりを空白 1 つにします。
+これらのテキストで、末尾のコメントの前に空白やタブがあるときは、
+[radar チャート](./radar.ja.md#comments) と [mindmap](./mindmap.ja.md#コメント)
+と同じく、空白 1 つにしてコメントを同じ行に残します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この 2 つの形を与えます。
+
 改行、`;`、U+2028、U+2029 を含むディレクティブは、
 行のどのディレクティブでもよく、
 その後ろの空白の代わりにタブがあってもかまいません。
@@ -4336,6 +4346,11 @@ mermaid.js は、`accDescr {text}` と `accDescr: text` を、
 説明が一方では ` accDescr {a}`、他方では ` accDescr: a` になります。
 本文が 1 行のブロックは、コロンの形で独立した行に印字します。
 `accDescr {a}`、`accDescr { a }`、`accDescr{ a }` は、`accDescr: a` になります。
+[ER 図](./er.ja.md#1-行に-1-文) と [sequence 図](./sequence.ja.md#1-行に-1-文)
+は、各文を独立した行に印字します。
+コロンの形に変えた `accDescr:` の説明も文なので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+独立した行を与えます。
 キーワードと `{` の間は、改行を含めてどの空白でもよく、
 本文と波かっこの間も同じです。
 `accDescr {`、`a`、`}` を 3 行に書いたものも、`accDescr: a` になります。
@@ -6857,6 +6872,11 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   Db が持ち、図にも描かれるので、空白 2 つの `tickInterval  1week` は、
   目盛りが既定のものになり、`section  A` は `section A` とは別のセクションです。
   `dateFormat`、`axisFormat`、`title` の両端の空白とタブは除きます。
+  [円グラフ](./pie.ja.md#title) と [timeline](./timeline.ja.md#title-と-section)
+  のタイトルは、キーワードと空でないテキストの間に、空白を 1 つ置きます。
+  Gantt 図でも、`axisFormat` や `title` の値が空でないときは、
+  [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+  同じ間隔を与えます。
   タスクの説明のテキストとコロンの間の空白は、
   名前に桁そろえの空白があるセクション、
   または桁を共有するセクションどうしのコロンを、
@@ -6978,6 +6998,11 @@ mermaid.js は、journey の一部の値の空白を持ち、一部の行を、
   桁をそろえない節の説明のコロンの前の空白と、
   `title` の両端の空白とタブは除きます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
+  [円グラフ](./pie.ja.md#title) と [timeline](./timeline.ja.md#title-と-section)
+  のタイトルは、キーワードと空でないテキストの間に、空白を 1 つ置きます。
+  journey の `title` の値が空でないときも、
+  [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+  同じ間隔を与えます。
 
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]
@@ -7029,7 +7054,7 @@ mermaid.js は、requirement 図の名前や値の一部の空白を持ち、一
   [state](./state.ja.md#トークンの間の空白) の図と同じで、
   [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
   この形を与えます。
-  値や文字列の単語間の連なりを空白 1 つにする形は、
+  値、クラス、文字列の単語間の連なりを空白 1 つにする形は、
   [sequence のメッセージ](./sequence.ja.md#トークンの間の空白) と
   [packet のラベル](./packet.ja.md#label-content) と同じで、
   [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
