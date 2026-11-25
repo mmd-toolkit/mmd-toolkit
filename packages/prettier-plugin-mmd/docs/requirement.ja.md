@@ -602,7 +602,7 @@ Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに
 
 style の文脈が LF で終わる場合、文の末尾の空白は落とします。
 最初のスタイルは空白 1 つの後に置きます。
-[block](./block.ja.md#スタイル) と [ER](./er.ja.md#スタイルとクラス) の図も、
+[ER](./er.ja.md#スタイルとクラス) の図も、
 最初のスタイルの前に空白を 1 つ置きます。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
 このスタイルの前の隙間を決めます。
@@ -636,9 +636,6 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 `:` で始まるスタイルも、ほかのスタイルと同じく、`:` の前に空白を置かず、
 後ろに空白を 1 つ置きます。
 `style r :  red   x` は `style r : red x` と印字します。
-[flowchart](./flowchart.ja.md#トークンの間の空白) と
-[block](./block.ja.md#スタイル) の図も、`:` で始まるスタイルの語の間を、
-空白 1 つにして印字します。
 `:` で始まるスタイルの語の間は、空白 1 つにして印字します。
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]

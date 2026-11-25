@@ -597,8 +597,7 @@ space after it, as Prettier prints a comma where mermaid.js reads the list the
 same. The two lists of a `class` statement remain separated by one space.
 Statement-ending whitespace is dropped where the style context ends at LF. The
 first style stands after one space. The gap before the first style is one space
-in [block diagrams](./block.md#styles) and
-[ER diagrams](./er.md#styles-and-classes);
+in [ER diagrams](./er.md#styles-and-classes);
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 that gap the same form. For ordinary single-line property/value styles in
 `style` or `classDef`, put no space before the first colon of each style and one
