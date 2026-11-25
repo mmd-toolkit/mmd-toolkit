@@ -303,8 +303,15 @@ wardley-beta
 普通の名前と後続部品の間は空白 1 つにします。
 ただし引用符のない名前がちょうど title のときは、座標、pipeline の括弧、
 evolve の数、矢印、port、@、/ との接し方を保ちます。
-空白 1 つの理由は、[部品間の空白](#部品間の空白)、[座標](#座標)、
-[pipeline](#pipeline)、[evolve](#evolve)、[link](#link) の各節にあります。
+この空白 1 つは、キーワードの後なら[部品間の空白](#部品間の空白)、
+`{` の前なら[pipeline](#pipeline)、数の前なら[evolve](#evolve)、
+矢印の前後なら[link](#link) の各節と同じ隙間です。
+座標の組の `[` の前は、
+[xychart](./xychart.ja.md#角括弧とコンマ)が文字列の後の `[`
+の前に置く隙間と同じです（`bar"Costs"[1,2]` は `bar "Costs" [1, 2]`
+に印字します）。
+mermaid.js の文書の例も、名前、文字列、
+`annotations` の後の座標 73 個のすべての `[` を、空白の後に書いています。
 title の後の空白でメタデータとして読まれるためです。
 引用した "title" と引用符なしの titlex は普通に空白を置きます。
 大文字の名前は名前のままです。
@@ -330,6 +337,8 @@ title の後の空白でメタデータとして読まれるためです。
 [fixture: wardley/name-boundaries/title-stage-slash]
 
 [fixture: wardley/name-boundaries/title-evolve-hidden]
+
+[fixture: xychart/brackets-and-commas/bracket-touching-a-string]
 
 入力（エスケープ表記）: `"wardley-beta\ncomponent title[0.3,0.6]"`
 

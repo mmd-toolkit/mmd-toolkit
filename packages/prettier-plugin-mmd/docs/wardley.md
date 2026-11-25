@@ -286,11 +286,15 @@ wardley-beta
 Separate ordinary names from following components by one space, except that a
 bare name exactly title keeps its authored contact or separation before
 coordinates, a pipeline brace, an evolve target, arrows, ports, @ and /. The one
-space has the reasons of [Component spacing](#component-spacing),
-[Coordinates](#coordinates), [Pipeline](#pipeline), [Evolves](#evolves), and
-[Links](#links). Whitespace after title makes it metadata instead of a name.
-Quoted "title" and bare titlex follow ordinary spacing; uppercase names stay
-names.
+space is the gap of [Component spacing](#component-spacing) after a keyword, of
+[Pipeline](#pipeline) before a `{`, of [Evolves](#evolves) before a number, and
+of [Links](#links) around an arrow. Before the `[` of a coordinate pair it is
+the gap that [xychart](./xychart.md#brackets-and-commas) prints before the `[`
+after a string (`bar"Costs"[1,2]` is printed `bar "Costs" [1, 2]`), and the
+examples in the documentation of mermaid.js write the `[` of all 73 coordinates
+that follow a name, a string, or `annotations` after a space. Whitespace after
+title makes it metadata instead of a name. Quoted "title" and bare titlex follow
+ordinary spacing; uppercase names stay names.
 
 [fixture: wardley/name-boundaries/component-title-contact]
 
@@ -313,6 +317,8 @@ names.
 [fixture: wardley/name-boundaries/title-stage-slash]
 
 [fixture: wardley/name-boundaries/title-evolve-hidden]
+
+[fixture: xychart/brackets-and-commas/bracket-touching-a-string]
 
 Input (escaped): `"wardley-beta\ncomponent title[0.3,0.6]"`.
 
