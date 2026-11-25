@@ -1,5 +1,44 @@
 # prettier-plugin-mmd
 
+## 0.9.2
+
+### Patch Changes
+
+- [#251](https://github.com/mmd-toolkit/mmd-toolkit/pull/251) [`dabbf0f`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dabbf0f98f7bfc65a31d3d92c265593c752b3783) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a U+2028 or U+2029 that a comment or a directive follows on its line in an
+  ER `style` or `classDef`: `style A fill:red`, a U+2028, a U+2029, and `%% d` is
+  printed as written, where it came out as `style A fill: red` and `%% d` on a
+  line of its own. 0.9.0 began to drop the character there, because mermaid.js
+  draws the same picture without it, but the formatted text no longer drew the
+  same SVG as the written text. Now the character stays, as 0.5.0 printed it, and
+  it is still dropped where only whitespace follows it on its line, such as
+  `style A fill:red` and a U+2028 at the end of a line.
+
+- [#249](https://github.com/mmd-toolkit/mmd-toolkit/pull/249) [`8425c7c`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8425c7c70e2063774316a4c7eac8e88a903ea591) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the data block of a `kanban` card with one space inside each end in the
+  first formatting, where spaces or tabs follow a directive at the end of its
+  line: `A@{ticket: 1} %%{x}%%` followed by two spaces was printed
+  `A@{ticket: 1} %%{x}%%` and is now printed `A@{ ticket: 1 } %%{x}%%`.
+
+- [#248](https://github.com/mmd-toolkit/mmd-toolkit/pull/248) [`6988037`](https://github.com/mmd-toolkit/mmd-toolkit/commit/6988037c2c650586af1e55d6bfc407f3d2d7a65d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a no-break space or another whitespace character that is no space or tab
+  before a `%%` comment as written in the `title` of a pie chart and in an
+  `accDescr` line of a pie chart or a gitGraph. Up to 0.9.1, `title T`, a no-break
+  space, and `%% c` was printed `title T %% c`, which mermaid.js 10.9.8 draws as
+  another title; it is no longer changed. The spaces and tabs beside the character
+  are still printed as one space each.
+
+- [#254](https://github.com/mmd-toolkit/mmd-toolkit/pull/254) [`58ca378`](https://github.com/mmd-toolkit/mmd-toolkit/commit/58ca378488cc6985deb6d23382516c47f9363c40) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a statement and the comment line that follows it after a U+2028 or U+2029
+  on separate lines where only `;` and comment lines follow, in a `flowchart`, an
+  `agentflow`, a `sequenceDiagram`, a `quadrantChart`, and an `xychart-beta`, so
+  that formatting again changes nothing: `B --> C;;\u2028%% c`, an empty line, and
+  a line `;` now print `B --> C` and `%% c` on separate lines.
+
+- [#253](https://github.com/mmd-toolkit/mmd-toolkit/pull/253) [`8068da1`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8068da12d040dda5e23cc9ff71a7c2c816014903) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the body of a `treeView` as written where redrawing the branches would give
+  a branch to a node that ends at a U+2028 or U+2029 before a comment or a
+  directive, so that formatting again changes nothing and the drawing does not
+  change: `├── a`, `b\u2028%%{x}%%`, a blank line, and `└── c` stay as they are.
+- Updated dependencies:
+  - [@mmd-toolkit/parser@0.4.1](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fparser%400.4.1)
+  - [@mmd-toolkit/ast@0.4.1](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fast%400.4.1)
+
 ## 0.9.1
 
 ### Patch Changes
@@ -350,6 +389,11 @@
   character goes, with the `;` where there is one, and stays only where dropping
   it would change what mermaid.js reads, such as before a comment line and a
   statement.
+  
+  > **NOTE:**\
+  > Overturned in 0.9.2: a U+2028 or U+2029 that a comment or a
+  > directive follows on its line stays as written, as in `style A fill:red`, a
+  > U+2028, a U+2029, and `%% d`.
 
 - [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a statement that starts with whitespace other than a space or a tab, such
   as a line separator (U+2028 or U+2029) or a no-break space, on its line where a

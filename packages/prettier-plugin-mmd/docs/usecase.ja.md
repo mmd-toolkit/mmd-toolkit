@@ -456,10 +456,14 @@ mermaid.js の文書の例 5 件も、`<<...>>` を空白の後に、文字に�
 残る 2 件は、
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L546-L549)
 にあります。
-文字の端にディレクティブやコメントがあるときは、その隣の空白の側を保ちます。
+ディレクティブの隣の空白は、
+[Usecase native syntax and authored values](./compatibility.ja.md#usecase-native-syntax-and-authored-values)
+の表のとおりに印字し、保護したコメント領域は値の全体を保ちます。
 
 [fixture: stereotypes/stereotype-spaced-once]
 [fixture: stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
+[test: usecase: a directive beside the text of a stereotype]
+[test: usecase: stereotype-comment-region-padding-kept]
 
 actor と use case の両方に適用し、
 関係の端点や systemBoundary 内の宣言も同じです。

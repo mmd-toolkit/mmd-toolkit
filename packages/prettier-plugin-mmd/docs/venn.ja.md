@@ -925,7 +925,7 @@ venn-beta
 
 title の最初の区切りを ASCII 空白1つにします。
 その後の空白とタブも含めて、ASCII 空白 1 つにします。
-タイトルの末尾の空白とタブは除きます。
+タイトルの末尾の空白とタブは、次の場合を除いて除きます。
 mermaid.js はそれらを Db に残しますが、それらがなくても同じタイトルを描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 それより後の値の全ての文字は、文に見える単語も含めて保ちます。
@@ -957,6 +957,29 @@ mermaid.js はそれらを Db に残しますが、それらがなくても同�
 
 [fixture: venn/title/title-trailing-directive-blanks-dropped]
 [fixture: venn/title/title-two-directives-trailing-blanks-dropped]
+
+Venn 図のディレクティブかコメントのあるタイトルは、
+[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+の最初の表の Venn、C4 の列のとおりに印字します。
+テキストの後にディレクティブだけが続くときは、
+最後のディレクティブの後の空白とタブを除きます。
+ただし、行のディレクティブのどれかに U+2028 か U+2029 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
+テキストの後では、コメントの前の空白とタブを 1 つの空白にし、
+コメントの後の空白とタブを除きます。
+`title T  %% c  ` は `title T %% c` と印字します。
+ディレクティブの後のコメント、U+00A0、U+3000、U+2003、U+2028、U+2029、
+最後のディレクティブの後のテキスト、先頭のディレクティブの後の空白、
+ディレクティブだけのタイトルがあるときは、タイトルは書かれたまま残ります。
+`title T %%{x}%% U` と空白 2 つは変えません。
+
+[test: runs and spaces around a comment after the text of a title]
+[test: text after a directive and spaces at the end of a title]
+[test: a no-break space after a directive and spaces at the end of a title]
+[test: a comment and spaces after a directive that ends a title]
+[test: spaces after a directive that starts a title]
+[test: a directive and spaces only as a title]
+[test: U+2028 and spaces after the last directive of a title]
 
 行の規則が無視する `;` の後の行にテキストがあるタイトルは、
 `;` とその行の字下げを含めて、書かれたまま残します。
