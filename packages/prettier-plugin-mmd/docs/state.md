@@ -21,9 +21,9 @@ organized and checked is described in
 The statements after the header stand one level deeper than the header. The
 statements of a composite state stand one level deeper than the line that opens
 it, and its `}` stands on a line of its own at the level of that line. In
-[class](./class.md#indentation) and [sequence](./sequence.md#indentation)
-diagrams, statements stand one level below the header, block contents one level
-below their opening line, and closers at that line's level.
+[sequence](./sequence.md#indentation) diagrams, statements stand one level below
+the header, block contents one level below their opening line, and closers at
+that line's level.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 state statements, the contents of composite states, and their closing braces the
 same levels.
@@ -1049,19 +1049,14 @@ notes/markdown-unordered-list-kept]
 
 For a note whose body starts after a single-line header, with `end note`
 starting its own line, align every content line of a single paragraph one level
-inside the note. The lines of a description body in
-[flowchart](./flowchart.md#multi-line-values) and
-[sequence](./sequence.md#multi-line-values) stand one level inside their
-statement.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-eligible lines in note paragraphs the same depth; the drawing checks below
-establish where changing these margins preserves the note. Replace leading ASCII
-spaces with the body indentation; the first content line may also have leading
-tabs, which Mermaid trims. Later lines with a tab in their margin fall outside
-this paragraph rule. Preserve the remaining text, line breaks and trailing
-spaces. Empty and whitespace-only rows before or after the paragraph stay
-exactly as written. Use ASCII spaces even with `useTabs`, and no leading spaces
-at `tabWidth: 0`. Nesting and `tabWidth` determine the body level.
+inside the note. The drawing checks below establish where changing these margins
+preserves the note. Replace leading ASCII spaces with the body indentation; the
+first content line may also have leading tabs, which Mermaid trims. Later lines
+with a tab in their margin fall outside this paragraph rule. Preserve the
+remaining text, line breaks and trailing spaces. Empty and whitespace-only rows
+before or after the paragraph stay exactly as written. Use ASCII spaces even
+with `useTabs`, and no leading spaces at `tabWidth: 0`. Nesting and `tabWidth`
+determine the body level.
 
 [fixture: notes/payment-prose] [fixture: notes/prose-nested-four] [fixture:
 notes/prose-use-tabs] [fixture: notes/prose-zero-width] [fixture:
@@ -1096,16 +1091,12 @@ notes/marker-at-paragraph-boundary-kept] [fixture:
 notes/literal-setext-zero-width]
 
 For bodies outside this paragraph rule, align only the first physical body line
-when it is nonempty and starts with only ASCII-space/tab padding. The lines of a
-description body in [flowchart](./flowchart.md#multi-line-values) and
-[sequence](./sequence.md#multi-line-values) stand one level inside their
-statement. The eligible first row of other note bodies takes that level under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have);
-Mermaid trims that margin, while later margins can affect the drawing. Use the
-configured body indentation, as for eligible paragraphs. Do not infer a
-different indentation from protected later lines: their authored margins are
-part of the body text and may affect rendering. This rule applies with or
-without later content lines, and with any later margins.
+when it is nonempty and starts with only ASCII-space/tab padding. Mermaid trims
+that margin, while later margins can affect the drawing. Use the configured body
+indentation, as for eligible paragraphs. Do not infer a different indentation
+from protected later lines: their authored margins are part of the body text and
+may affect rendering. This rule applies with or without later content lines, and
+with any later margins.
 
 [fixture: notes/backslash-margins-kept] [fixture:
 notes/protected-tab-margins-kept] [fixture:
@@ -1256,8 +1247,7 @@ When the text of a note over lines starts on the line of its id, as in
 trims only the margin of that row: the margins of the later rows are part of the
 text and stay as written, and `end note` stands at the level of the note. The
 separate closing braces of description blocks in
-[flowchart](./flowchart.md#multi-line-values) and
-[sequence](./sequence.md#multi-line-values) stand at the level of their
+[flowchart](./flowchart.md#multi-line-values) stand at the level of their
 statement.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the separate `end note` the same level as the note it closes.
