@@ -1491,11 +1491,11 @@ for the last event of a line of a timeline and the space that a period and an
 event before a colon gain, for the description of a task of a user journey,
 except that a task whose description holds a directive stays as written (see
 [Task data](./journey.md#task-data)), and for the second description of a state
-alias. Trailing directives in [mindmap](./mindmap.md#directives) nodes and
-[kanban](./kanban.md#trailing-whitespace) cards print with one space where
-spaces or tabs preceded them and keep touching where none did.
+alias. Trailing directives in [mindmap](./mindmap.md#directives) nodes print
+with one space where spaces or tabs preceded them and keep touching where none
+did, and so do those of [kanban](./kanban.md#trailing-whitespace) cards.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same gaps before trailing directives here.
+the same gaps before trailing directives here, as the mindmap does.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
 and tabs after the last directive, as at other line ends. The runs of spaces and
 tabs inside a date format, an axis format, or the value of an `accTitle:` line
