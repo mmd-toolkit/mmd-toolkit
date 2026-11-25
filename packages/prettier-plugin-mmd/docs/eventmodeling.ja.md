@@ -1673,8 +1673,7 @@ eventmodeling tf 01 evt Alpha "style:#x"; rf 02 cmd Beta
 ### Blank lines
 
 文・項目間の普通の ASCII 空行は最大 1 行、文書・本文の端は削除します。
-規則 1 は、空行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 [flowchart](./flowchart.ja.md#空行)、[sequence](./sequence.ja.md#空行)、
 [gantt](./gantt.ja.md#空行)、[journey](./journey.ja.md#空行)は、
 空行の連なりを空行 1 行にし、本文の初めと終わりの空行を除きます。
@@ -1710,9 +1709,8 @@ rf 02 cmd Beta
 ### Trailing whitespace
 
 見出しや構造部品の後の、害のない外側の ASCII 空白だけを削ります。
-規則 1 は、行末の空白を決めません。
-規則 1 の表が挙げるのは印の横の空白だからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、JavaScript、CSS、YAML で、行末に空白を印字しません。
 [requirement](./requirement.ja.md#トークンの間の空白) と
 [radar](./radar.ja.md#trailing-whitespace)も、行末の空白を落とします。
 物理行ごとの両端の空白の除去ではなく所有ノードで判断します。
@@ -1961,8 +1959,7 @@ data Unused {
 ### Final newline
 
 普通の受理入力は設定の改行 1 個で終え、末尾の普通の空行列を削除します。
-規則 1 は、テキストの終わりの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 [pie](./pie.ja.md#final-newline)、[packet](./packet.ja.md#final-newline)、
 [kanban](./kanban.ja.md#末尾の改行)は、テキストを改行 1 個で終え、
 その前の空行を削除します。

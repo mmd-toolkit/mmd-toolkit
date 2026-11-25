@@ -1632,15 +1632,15 @@ eventmodeling tf 01 evt Alpha "style:#x"; rf 02 cmd Beta
 ### Blank lines
 
 Keep at most one ordinary ASCII blank line between statements or items and
-remove ordinary blanks at document/body edges. Rule 1 names no mark for a blank
-line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#blank-lines),
-[sequence](./sequence.md#blank-lines), [gantt](./gantt.md#blank-lines), and
-[journey](./journey.md#blank-lines) print a run of empty lines as one empty line
-and drop the empty lines at the start and the end of the body, as Prettier does
-for code. Whitespace-only ordinary lines become empty; data interiors follow
-[Data blocks](#data-blocks). Description, hidden and directive interiors,
+remove ordinary blanks at document/body edges.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and
+the end of a file or of a block in code, and
+[flowchart](./flowchart.md#blank-lines), [sequence](./sequence.md#blank-lines),
+[gantt](./gantt.md#blank-lines), and [journey](./journey.md#blank-lines) print a
+run of empty lines as one empty line and drop the empty lines at the start and
+the end of the body. Whitespace-only ordinary lines become empty; data interiors
+follow [Data blocks](#data-blocks). Description, hidden and directive interiors,
 retained prefixes and common consumed-LF boundaries remain as written.
 
 [fixture: eventmodeling/blank-lines/ordinary-blanks-bounded]
@@ -1671,9 +1671,9 @@ rf 02 cmd Beta
 ### Trailing whitespace
 
 Remove only harmless exterior ASCII padding after the header or structural
-components. Rule 1 names no mark at the end of a line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [requirement](./requirement.md#whitespace-between-tokens) and
+components. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it:
+Prettier prints no whitespace at the end of a line in JavaScript, CSS, and YAML,
+and [requirement](./requirement.md#whitespace-between-tokens) and
 [radar](./radar.md#trailing-whitespace) drop the whitespace at the end of a
 line. Decide by ownership rather than trimming every physical line. Keep
 metadata values and prefixes, data interiors apart from the permitted margin
@@ -1924,12 +1924,11 @@ data Unused {
 ### Final newline
 
 End ordinary accepted text with one configured newline, removing ordinary
-terminal blank runs. Rule 1 names no mark at the end of the text, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [pie](./pie.md#final-newline), [packet](./packet.md#final-newline),
-and [kanban](./kanban.md#final-newline) end the text with one line break and
-drop the empty lines before it, as Prettier ends a file with one line break and
-no blank line after the last line in JavaScript, CSS, and YAML. mermaid.js
+terminal blank runs. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives it: Prettier ends a file with one line break and no blank line after the
+last line in JavaScript, CSS, and YAML, and [pie](./pie.md#final-newline),
+[packet](./packet.md#final-newline), and [kanban](./kanban.md#final-newline) end
+the text with one line break and drop the empty lines before it. mermaid.js
 appends a LF to the text before it reads it (see
 [End of text](../../spec/docs/common.md#end-of-text)), so the final LF is a
 character that it already reads. Required hidden/data closing padding, protected
