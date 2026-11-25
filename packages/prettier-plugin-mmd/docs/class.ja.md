@@ -861,11 +861,11 @@ sequence 図では `:` を前のものに接して書きます（詳しくは、
 `namespace Auth[ "x" ]` は `namespace Auth["x"]` に、
 `class A["x" ]` は `class A["x"]` になります。
 mermaid.js はどの書き方も同じラベルとして読みます。
-その文書では `[` を名前に接して書いており、
-flowchart の subgraph や agentflow の見出しも同じ形で印字します
-([`namespace Auth["Authentication Service"]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L404))。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+名前のラベルを開く括弧の前に、空白を置かない形を与えます（添字の `[` が、
+添字を付ける対象に接するのと同じです）。
 ラベルの文字列の外の余白は、角括弧の内側の空白なので、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が、余白を除く形を与えます。
+規則 1 が余白を除く形を与えます。
 
 [fixture: labels/bracket-touches-name]
 

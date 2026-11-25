@@ -803,12 +803,11 @@ The label in brackets of a class or a namespace has nothing between the name and
 the `[`, and nothing between the brackets and the string: `namespace Auth ["x"]`
 is printed `namespace Auth["x"]`, `namespace Auth[ "x" ]` is printed
 `namespace Auth["x"]`, and `class A["x" ]` is printed `class A["x"]`. mermaid.js
-reads every spelling as the same label, and its documentation writes the `[`
-touching the name
-([`namespace Auth["Authentication Service"]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L404)),
-as a flowchart subgraph and an agentflow heading print it. The padding outside
-the label string lies inside square brackets, so
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes it.
+reads every spelling as the same label.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives a bracket that
+opens the label of a name no space before it, as the `[` of an index touches
+what it indexes, and the padding outside the label string lies inside square
+brackets, so rule 1 removes it.
 
 [fixture: labels/bracket-touches-name]
 
