@@ -728,9 +728,8 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 字下げのモードでは AST の `children` から親子を読み、
 ファイルも親として扱います。
 根は設定の 1 段、子は親より 1 段深く置きます。
-[ishikawa](./ishikawa.ja.md#indentation) は根を見出しの 1 段下に、
-子を親の 1 段下に置き、
-[kanban](./kanban.ja.md#インデント) のセクションと項目も同じ段に置きます。
+[kanban](./kanban.ja.md#インデント) は、セクションを見出しの 1 段下に、
+項目をセクションのさらに 1 段下に置きます。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
 treeView の根と子にも同じ配置を与えます。
 空白の 1 段は `max(1, tabWidth)`、`useTabs` は 1 タブです。
@@ -1327,8 +1326,8 @@ treeView-beta
 
 字下げモードの別行の注釈は、その行を保ち、
 正の前置空白を残して所有ノードに揃えます。
-[mindmap](./mindmap.ja.md#飾り行) と [kanban](./kanban.ja.md#アイコンとクラス)
-は、別行の装飾を所有ノードの列に置きます。
+[kanban](./kanban.ja.md#アイコンとクラス) は、
+別行の装飾を所有ノードの列に置きます。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
 字下げモードの注釈にも同じ配置を与えます。
 罫線モードの枝付き注釈は、所有ノードの行へ、原順で空白 1 個を挟んで寄せます。
@@ -1531,8 +1530,8 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 普通の class の部品は `:::Name`、icon は `icon(reference)` に詰めます。
 `icon()` と `icon(:file)` も同様で、名前の綴りは保ちます。
 印後を詰めると class がまとまり、icon の内側の空白は文法にありません。
-[mindmap](./mindmap.ja.md#飾り行) と [kanban](./kanban.ja.md#アイコンとクラス)
-は、`:::` とクラス名の間の空白とタブを除きます。
+[kanban](./kanban.ja.md#アイコンとクラス) は、
+`:::` とクラス名の間の空白とタブを除きます。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
 treeView のクラスにもこの詰めた形を与えます。
 完全な部品の間の付随要素は境界を保ちます。

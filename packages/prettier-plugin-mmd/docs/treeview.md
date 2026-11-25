@@ -724,9 +724,8 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 In indentation mode read the forest from AST children, including file parents.
 Print roots at one configured step and children one step beyond their parent.
-Roots stand one configured level below the header and children one level below
-their parent in [ishikawa](./ishikawa.md#indentation);
-[kanban](./kanban.md#indentation) sections and items use the same levels. Under
+Sections and items stand one configured level below the header and one more
+below a section in [kanban](./kanban.md#indentation) diagrams. Under
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
 treeView roots and children take those positions. A space step is
 `max(1, tabWidth)`; useTabs uses one tab. This selects a uniform Db-equivalent
@@ -1336,8 +1335,8 @@ treeView-beta
 
 In indentation mode keep later-line annotations separate and align them with
 their owner, retaining positive leading whitespace. Separate decoration lines
-stand at their owner's column in [mindmap](./mindmap.md#decorations) and
-[kanban](./kanban.md#icons-and-classes);
+stand at their owner's column in [kanban](./kanban.md#icons-and-classes)
+diagrams;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 indentation-mode annotations the same alignment. In box mode move a
 branch-prefixed annotation onto its owner's line, in source order with one
@@ -1545,9 +1544,8 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 Print ordinary class components as `:::Name` and icon components as
 `icon(reference)`, including `icon()` and `icon(:file)`. Keep class/reference
 spelling. Compact marker padding groups the class visually; icon-internal
-whitespace is not grammar. Classes in [mindmap](./mindmap.md#decorations) and
-[kanban](./kanban.md#icons-and-classes) have no spaces or tabs between `:::` and
-the class name, so
+whitespace is not grammar. Classes in [kanban](./kanban.md#icons-and-classes)
+diagrams have no spaces or tabs between `:::` and the class name, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 treeView the same compact class marker. Trivia between complete components
 retains its boundaries.
