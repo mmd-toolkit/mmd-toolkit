@@ -17,6 +17,10 @@ Markdown のコードブロックでは Markdown 側に任せます。
 
 `treeView-beta` を第 1 列に置き、普通の本文は次の行へ移します。
 見出しを独立させ、末尾の空白、同じ行の名前や拒否される綴りは修復しません。
+[kanban](./kanban.ja.md#ヘッダー) と [C4](./c4.ja.md#ヘッダー) も、
+見出しを第 1 列に置き、普通の本文を後の行に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+treeView にも同じ配置を与えます。
 空の本文は空のままとし、接するディレクティブの境界を保ちます。
 
 [fixture: treeview/header/header-leading]
@@ -286,6 +290,9 @@ treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
 
 名前が `;` だけの枝もノードです。
 前置部分の後に何も続かず、前置部分はほかと同じように描きます。
+枝の前置部分の後の `;` は、treeview の仕様ではノードの裸名です。
+唯一の前置部分を除くと、ノードが最上位へ移り、Db の木が変わるので、
+前置部分を残します。
 
 [fixture: treeview/branch-prefixes/branch-semicolon-name]
 
@@ -721,6 +728,11 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 字下げのモードでは AST の `children` から親子を読み、
 ファイルも親として扱います。
 根は設定の 1 段、子は親より 1 段深く置きます。
+[ishikawa](./ishikawa.ja.md#indentation) は根を見出しの 1 段下に、
+子を親の 1 段下に置き、
+[kanban](./kanban.ja.md#インデント) のセクションと項目も同じ段に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+treeView の根と子にも同じ配置を与えます。
 空白の 1 段は `max(1, tabWidth)`、`useTabs` は 1 タブです。
 最初のノードが深い場合、後の根が浅い場合、不揃いな増分、重複名と空名でも、
 Db の等しい一定幅を選びます。
@@ -1315,6 +1327,10 @@ treeView-beta
 
 字下げモードの別行の注釈は、その行を保ち、
 正の前置空白を残して所有ノードに揃えます。
+[mindmap](./mindmap.ja.md#飾り行) と [kanban](./kanban.ja.md#アイコンとクラス)
+は、別行の装飾を所有ノードの列に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+字下げモードの注釈にも同じ配置を与えます。
 罫線モードの枝付き注釈は、所有ノードの行へ、原順で空白 1 個を挟んで寄せます。
 ただし、前に description が無く、間にコメント、ディレクティブ、
 選ばれるセミコロンやコメント領域が無い場合だけです。
@@ -1515,6 +1531,10 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 普通の class の部品は `:::Name`、icon は `icon(reference)` に詰めます。
 `icon()` と `icon(:file)` も同様で、名前の綴りは保ちます。
 印後を詰めると class がまとまり、icon の内側の空白は文法にありません。
+[mindmap](./mindmap.ja.md#飾り行) と [kanban](./kanban.ja.md#アイコンとクラス)
+は、`:::` とクラス名の間の空白とタブを除きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+treeView のクラスにもこの詰めた形を与えます。
 完全な部品の間の付随要素は境界を保ちます。
 
 [fixture: treeview/annotation-components/class-post-marker]
@@ -1563,9 +1583,17 @@ description の末尾の空白とタブも同じ理由で除きます。
 （[行末の空白](#trailing-whitespace)を参照）。
 description の残りの原文は、空白だけの値、LS・PS、
 `%` の文字と注釈らしい文字を含めて丸ごと保ちます。
+mermaid.js は description の末尾の空白とタブを除いても、同じ図を描くので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+行末からそれらを除く形を与えます。
+`##` の後の `%` の文字と注釈らしい文字は、Db の description の一部なので、
+別のコメントや注釈へ移すと description が変わります。
 `null` は `null` のままです。
 内部の空白の変更は description を変ええます。
 `##` の前の隙間は注釈の隙間に従います。
+
+[corpus fixture: treeview/tail-description-comment]
+[corpus fixture: treeview/db-description-absorbs-annotations]
 
 [fixture: treeview/descriptions/description-padding]
 [fixture: treeview/descriptions/description-touches-marker]
@@ -1601,6 +1629,12 @@ treeView-beta
 裸名と `StringLiteral` の原文の範囲を丸ごと保ちます。
 空名、バックスラッシュ、内部の空白、引用符の中の空白、HTML と文字参照の綴り、
 ディレクトリのスラッシュを含みます。
+空の引用名も Db のノードであり、バックスラッシュ、引用符の中の空白、
+HTML と文字参照の綴りも名前に残るので、
+除いたり書き換えたりすると Db が変わります。
+裸名の末尾のスラッシュはディレクトリを選ぶので、除くとファイルに変わります。
+裸名の行末の空白とタブは、mermaid.js がすでに取り除いて同じ図を描くので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、それらを除く形を与えます。
 行末にある裸名の末尾の空白とタブだけを除きます。
 （[行末の空白](#trailing-whitespace)を参照）。
 裸名では、`A B` ではなく `A   B` を保ちます。
@@ -1621,6 +1655,12 @@ treeView-beta
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+
+[corpus fixture: treeview/db-empty-names]
+[corpus fixture: treeview/db-quote-conversion]
+[corpus fixture: treeview/db-quoted-space]
+[corpus fixture: treeview/html-double] [corpus fixture: treeview/entity-double]
+[corpus fixture: treeview/db-directory-trailing-space]
 
 [fixture: treeview/names/quoted-name-kept]
 [fixture: treeview/names/single-quote-sensitive-kept]
@@ -1906,6 +1946,12 @@ U+2029、`%% c` は、`title T`、`%%{x}%%`、`%% c` の 3 行に印字します
 ディレクティブの外でコメントまでの間に U+0085 があれば、
 行は書かれたまま残ります（行の後に何もないときは、
 ディレクティブとコメントの間の連なりを連なりの段落のとおりに印字します）。
+title の最初の U+2028 か U+2029 の後ろで、
+ディレクティブの外からコメントまでにある U+0085 は、
+仕様では空白でなく値の文字です。
+そこで行を分けると、mermaid.js はその U+0085 で始まる文字列を、
+新しいノードとして読み、Db にノードが増えるので、
+title の行を書かれたまま残します。
 ディレクティブとコメントが続く title の行で、title の直後か、
 コメント行の後に文があるとき、空白だけの行があるとき（その後に何もないか、
 次に文があっても）、ディレクティブだけの行があってその後に何もないとき、
@@ -2097,12 +2143,25 @@ treeView-beta
 共有の `accTitle: value` と `accDescr: value` を使います。
 コロンはキーワードに付け、両端の空白を除いた非空値の前は空白 1 個、
 空ならコロンまでです。
+コロンは図に 1 つの title か description を与え、
+キーワードに付けて非空値の前に空白 1 つを置きます。
+空値は行末の空白を残さず、コロンで終えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーのコロンと行末にこの形を与えます。
 `accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
 波括弧らしい行値と付随要素の境界を保ちます。
 共通の変換処理が許す同等の外側の隙間を選びます。
+[flowchart](./flowchart.ja.md#アクセシビリティの行) と
+[class](./class.ja.md#ラベル) は、
+`accDescr` 内の空白とタブの連なりを空白 1 つにし、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+`accTitle` の中の空白とタブは Db に残るので、
+連なりを詰めると title が変わります。
+`accDescr:` の後の波括弧は値の文字なので、block の区切りとして読むと、
+Db の description からその文字が失われます。
 次の行の文字を値に取りません。
 テキストの後にディレクティブだけが続く `accTitle:` と `accDescr:` の行は、
 title の場合と同じに印字します。
@@ -2114,10 +2173,16 @@ U+2029 があるときを除きます。
 `accDescr: T  %%{x}%%  %% c` は `accDescr: T %%{x}%% %% c` と印字し、
 ディレクティブに接するコメントは接したままにします（`accDescr: T  %%{x}%%%% c`
 は `accDescr: T %%{x}%%%% c` と印字します）。
+`accTitle:` と `accDescr:` の普通の行で、最後にディレクティブがあるときは、
+その後の空白とタブは行末の空白なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、それらを除く形を与えます。
 これらの行のほかの形は、[Title](#title)の表にあります。
 title と同じに印字しますが、ディレクティブで始まり、その後にテキストが続く値は、
 書かれたまま残ります（`accTitle: %%{x}%%  T  ` は変えません）。
 コロンの後の隙間も残ります。
+
+[corpus fixture: treeview/space-acctitle-tab]
+[corpus fixture: treeview/common-colon-block-priority]
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [test: treeview/accessibility-lines/acctitle-directive-end-two-spaces]
@@ -2247,6 +2312,9 @@ Prettier が `x = { }` を `x = {}`
 波括弧を残すブロックは、`accDescr` と `{` の間を、
 元が接していても空白 1 つにします。
 キーワードと本文の開始を見分けやすくするためです。
+`accDescr` と `{` の間の普通の空白は、
+Prettier がブロックの開始波括弧の前に置く、空白 1 つに寄せます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 普通の開始記号の前の空白は寄せ、本文行を文より 1 段深くそろえます。
 付随要素の内容は保ちます。
 別行の閉じ記号は文の段に揃えます。
@@ -2811,6 +2879,9 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 有意な字下げ連なりを移し、外側の装飾を置き換えてから、
 普通の ASCII 空行を項目間に最大 1 個とし、端の空行を除きます。
 親子を保ちながら区切りを一定にするためです。
+Prettier は項目間の普通の空行を最大 1 個にし、端の空行を除きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+有意な字下げ連なりを移した後の空行にも同じ形を与えます。
 値、ディレクティブとコメント領域の内部は保ち、
 Unicode だけの名前を空行扱いしません。
 本文を保つ図は原文の境界を保ちます。
@@ -2974,6 +3045,14 @@ mermaid.js は値を読む前にディレクティブを取り除き、
 名前や description の末尾の U+2028 と U+2029 は、
 空白やタブではなくテキストの文字なので、その後の空白は除き、
 その前の空白は残します。
+名前の末尾の U+2028 と U+2029 と、その前の空白は、Db の名前の文字なので、
+除くと名前が変わります。
+行末では区切り文字の後の空白とタブだけを除く形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+
+[corpus fixture: treeview/boundary-bare-ls]
+[corpus fixture: treeview/boundary-bare-ps]
+[corpus fixture: treeview/db-bare-internal-space]
 
 [test: treeview/trailing-whitespace/spaces-after-trailing-line-separator]
 [test: treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
@@ -2981,6 +3060,8 @@ mermaid.js は値を読む前にディレクティブを取り除き、
 構造の持ち越し連なりは 1 回だけ移し、
 共通の行値は共有の外端の空白除去に従います。
 枝行で値から除外された末尾は削り、持ち越しません。
+枝行の末尾の空白は、値にも次のノードへ持ち越す字下げにも含まれないので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が行末の空白として除きます。
 枝の追加で値の末尾の空白が新たに除かれる図は本文を保ちます。
 値と構造の余白を混同しないためです。
 有意な fixture の末尾はコードブロックには示しません。
@@ -3143,7 +3224,12 @@ CR と CRLF は LF として印字処理に届き、引用、
 block とディレクティブの中も出力は `endOfLine` に従います。
 LS・PS は値と図種固有のコメントの文字として保ち、
 Unicode の空白は ASCII の字下げへ変えません。
+裸名にある Unicode の空白は、mermaid.js が Db の名前の文字として読むので、
+書かれたまま残します。
+ASCII の字下げへ変えると、名前が変わり、親も変わりえます。
 先頭の BOM は呼び出し側が除去・復元し、共有のフロントマターの制限に従います。
+
+[corpus fixture: treeview/space-indent-nbsp]
 
 [test: treeview/line-terminators-and-unicode/eol-cr-structure]
 
@@ -3207,11 +3293,22 @@ Unicode の空白は ASCII の字下げへ変えません。
 
 ノード、名前、注釈、共通の代入と共有の付随要素は、重複、
 空値と上書きも含めて全出現を原順に保ちます。
+重複する名前も原順に残すのは、mermaid.js が出現ごとに別の Db ノードを作り、
+重複を除くとノードが失われるためです。
+空値の最後の共通代入は、前の値の反映を抑えるので、空値でも残します。
+`│` だけの行は罫線モードを選ばず、
+mermaid.js は字下げモードのノードとして読みます。
+その行を除くと Db のノードが失われるので、その行も残します。
 上の規則で許された構造の罫線だけを描き直し、
 条件を満たす枝付き注釈とその装飾を移します。
 前置部分の任意文字と値内の罫線の綴りは保ち、Db から原文を作り直しません。
 構造の太さ、ダッシュの数、兄弟の印と普通の外側の装飾は、
 読む森を示すために選び直します。
+
+[corpus fixture: treeview/db-duplicate-names]
+[corpus fixture: treeview/common-repeat-empty]
+
+[corpus fixture: treeview/box-decoration-only]
 
 [fixture: treeview/source-order/source-duplicate]
 
@@ -3430,9 +3527,16 @@ U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF で�
 改行 1 つでテキストを終えます。
 何も足さないのは、テキストがその文字の直後で終わり、
 その文字が U+2028 でも U+2029 でもないときだけです。
+Prettier はファイルを改行 1 つで終えるので、
+未完ディレクティブの末尾の空白を除いた後の最後の改行 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 `%%{unfinished` と空白 2 つは `%%{unfinished` と改行を、
 `%%{unfinished` と U+2028 は `%%{unfinished`、U+2028、改行を、
 `"R"%%{unfinished` と空白 2 つは `"R"%%{unfinished` と改行を印字します。
+Prettier はファイルを改行 1 つで終えるので、
+U+2028 か U+2029 で終わる未完ディレクティブと、
+引用名に接する未完ディレクティブの後の、最後の改行 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 拒否される未使用の字下げの連なりは、両端の空白を除いて受理させません。
 
 [fixture: treeview/final-newline/eof-node]
