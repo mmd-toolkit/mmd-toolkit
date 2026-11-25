@@ -49,12 +49,11 @@ wardley-beta
 Indent ordinary statements, metadata and standalone trivia by one configured
 step. The default is two spaces; tabWidth four uses four and tabWidth zero uses
 zero because columns have no grammatical meaning. useTabs uses a tab even at
-width zero. A level is what Prettier's `useTabs` and `tabWidth` options say
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)): Prettier prints
-the declarations of a CSS rule and the statements of a JavaScript block one
-level in, with two spaces by default, four at `tabWidth` 4, none at 0, and a tab
-with `useTabs`, also at width 0. The statements after the header stand one level
-deeper, as [flowchart](./flowchart.md#indentation),
+width zero. A level is what Prettier's `useTabs` and `tabWidth` options say:
+Prettier prints the declarations of a CSS rule and the statements of a
+JavaScript block one level in, with two spaces by default, four at `tabWidth` 4,
+none at 0, and a tab with `useTabs`, also at width 0. The statements after the
+header stand one level deeper, as [flowchart](./flowchart.md#indentation),
 [radar](./radar.md#indentation), [architecture](./architecture.md#indentation),
 and [pie](./pie.md#indentation) print theirs
 ([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)).
@@ -90,13 +89,14 @@ wardley-beta
 Print pipeline Parent { with children one step deeper and } aligned with the
 parent statement. Rule 1 names no mark for a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [class](./class.md#indentation), [er](./er.md#indentation), and
-[state](./state.md#indentation) print a block: the `{` after one space on the
-line of its name, the statements one level deeper than that line, and the `}` on
-a line of its own at the level of that line. Keep the visible LF after { and
-each child, including at tabWidth zero: the grammar requires them. These
-delimiters show the authored parent and children without adding coordinates or
-generated IDs.
+decides, as [class](./class.md#indentation), [er](./er.md#attribute-blocks), and
+[state](./state.md#composite-states) print the `{` of a block after one space on
+the line of its name, and [class](./class.md#indentation),
+[er](./er.md#indentation), and [state](./state.md#indentation) print the
+statements of the block one level deeper than that line and the `}` on a line of
+its own at the level of that line. Keep the visible LF after { and each child,
+including at tabWidth zero: the grammar requires them. These delimiters show the
+authored parent and children without adding coordinates or generated IDs.
 
 [fixture: wardley/pipeline/pipeline-depth]
 
@@ -4068,14 +4068,16 @@ wardley-beta
 Keep at most one ordinary ASCII blank line between statements or trivia,
 dropping excess document/body edge blanks and whitespace-only padding. Pipeline
 edge blanks disappear while mandatory visible LF remains. This keeps authored
-grouping without excess space.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the blank
-lines: Prettier keeps one blank line where a run of them stands, and none at the
-start or the end of a file or of a block, in JavaScript, CSS, and YAML, and
-[flowchart](./flowchart.md#blank-lines), [pie](./pie.md#blank-lines), and
-[radar](./radar.md#blank-lines) print them so. Values, hidden/directive
-interiors, retained prefixes, protected stretches and required hidden LF use
-their own preservation rules.
+grouping without excess space. Rule 1 names no mark for an empty line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [flowchart](./flowchart.md#blank-lines),
+[pie](./pie.md#blank-lines), and [radar](./radar.md#blank-lines) print them: a
+run of empty lines as one, and none at the start or the end of a body. Prettier
+keeps one blank line where a run of them stands in JavaScript, CSS, and YAML,
+and drops the blank lines at the start and the end of a file in all three, and
+at the start and the end of a block in JavaScript and CSS. Values,
+hidden/directive interiors, retained prefixes, protected stretches and required
+hidden LF use their own preservation rules.
 
 [fixture: wardley/blank-lines/blanks-collapse]
 
@@ -4103,11 +4105,10 @@ wardley-beta
 
 Remove harmless exterior ASCII padding after the header, completed structures
 and description closers. Prettier prints no whitespace at the end of a line in
-JavaScript, CSS, and YAML
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and
-[radar](./radar.md#trailing-whitespace), [pie](./pie.md#trailing-whitespace),
-and [gitgraph](./gitgraph.md#trailing-whitespace) print none after the header or
-a statement. Decide by owner: preserve link-label tails, string/flow contents,
+JavaScript, CSS, and YAML, and [radar](./radar.md#trailing-whitespace),
+[pie](./pie.md#trailing-whitespace), and
+[gitgraph](./gitgraph.md#trailing-whitespace) print none after the header or a
+statement. Decide by owner: preserve link-label tails, string/flow contents,
 comments, directives, hidden interiors, required closer padding and protected
 stretches. Trimming every physical line can change the Db or reject a
 whitespace-only link label in every version of mermaid.js that counts (see
@@ -4258,16 +4259,16 @@ wardley-beta
 
 Use the shared guarded YAML formatter only for safe real frontmatter. The YAML
 is formatted by Prettier's YAML formatter, as the YAML of any file that Prettier
-formats ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)):
-`title: 'Map'` is printed `title: "Map"`, and `config: {wardley: {width: 600}}`
-is printed `config: { wardley: { width: 600 } }`. Malformed YAML, indented
-fences, delimiter padding, HTML hazards and bodies whose formatting would create
-a fence remain written. [Frontmatter](./compatibility.md#frontmatter) gives the
-reason for the HTML hazards (mermaid.js rewrites `="..."` inside an HTML tag
-before it reads the YAML) and for a body that would create a fence (`--- !!map`
-after `%YAML 1.2`, which every version that counts accepts and rejects once it
-is split); the indented fences and the padding of a delimiter stay as written
-until they are decided (see
+formats: `title: 'Map'` is printed `title: "Map"`, and
+`config: {wardley: {width: 600}}` is printed
+`config: { wardley: { width: 600 } }`. Malformed YAML, indented fences,
+delimiter padding, HTML hazards and bodies whose formatting would create a fence
+remain written. [Frontmatter](./compatibility.md#frontmatter) gives the reason
+for the HTML hazards (mermaid.js rewrites `="..."` inside an HTML tag before it
+reads the YAML) and for a body that would create a fence (`--- !!map` after
+`%YAML 1.2`, which every version that counts accepts and rejects once it is
+split); the indented fences and the padding of a delimiter stay as written until
+they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 YAML uses the shared positive indentation minimum at tabWidth zero. Its
 indentation carries block scalars and nested values: at zero width every version
@@ -4318,8 +4319,7 @@ wardley-beta
 Use the shared host policy: read CR/CRLF as LF and print the configured line
 ending, including inside values and hidden forms. mermaid.js reads CR and CRLF
 as it reads LF, and Prettier prints the line ending of its `endOfLine` option,
-as for every other language
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark); see
+as for every other language (see
 [Line endings](./compatibility.md#line-endings)). LS/PS/NBSP/BOM retain their
 lexical roles, except shared common-value edge trimming and plain
 description-opener whitespace. Converting these to general padding can change
@@ -4380,15 +4380,16 @@ wardley-beta
 ### Final newline
 
 End ordinary accepted files with one configured newline, removing ordinary
-terminal blank lines. Prettier ends a file with one newline and removes the
-blank lines after the last statement in JavaScript, CSS, and YAML
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and
-[radar](./radar.md#final-newline), [pie](./pie.md#final-newline), and
-[gitgraph](./gitgraph.md#final-newline) end a text so. Header-only bodies,
-comments and closed hidden forms follow the same consistent file ending.
-EOF-reaching global endings, retained-prefix boundaries, protected text and
-required hidden closer padding take precedence; label padding is value text
-rather than an extra final blank.
+terminal blank lines. Rule 1 names no mark for the end of the text, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [radar](./radar.md#final-newline), [pie](./pie.md#final-newline),
+and [gitgraph](./gitgraph.md#final-newline) end a text with one newline.
+Prettier ends a file with one newline and removes the blank lines after the last
+statement in JavaScript, CSS, and YAML. Header-only bodies, comments and closed
+hidden forms follow the same consistent file ending. EOF-reaching global
+endings, retained-prefix boundaries, protected text and required hidden closer
+padding take precedence; label padding is value text rather than an extra final
+blank.
 
 [corpus fixture: wardley/header-only]
 
