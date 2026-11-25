@@ -779,10 +779,8 @@ Prettier がコードでそうするのと同じで、空行は文をまとま�
 [fixture: blank-lines/inside-values-kept]
 
 テキストはちょうど 1 つの改行で終わります。
-規則 1 は、ここの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[kanban](./kanban.ja.md#末尾の改行) と [packet](./packet.ja.md#final-newline)
-も、テキストを改行 1 つで終えます。
+Prettier は、ファイルを改行 1 つで終え、その前に空行を置かないので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この最後の改行を与えます。
 
 [fixture: blank-lines/header-only-without-line-break]
 
