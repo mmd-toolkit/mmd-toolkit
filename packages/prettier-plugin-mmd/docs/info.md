@@ -10,7 +10,9 @@ Invisible characters and physical CR examples are escaped test cases.
 ### Header
 
 Print exact `info` at column one and a written `showInfo` after one space. Join
-ordinary whitespace and line breaks before the flag, for a compact heading;
+ordinary whitespace and line breaks before the flag;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `info` and its flag, as Prettier prints `return  x` as `return x;`;
 never add or remove the flag. Comments, global directives, hidden forms and
 protected segments keep their boundaries instead of being crossed.
 
@@ -99,9 +101,11 @@ info
 ### Title
 
 Print `title`, one space and a value trimmed at its common-whitespace edges; a
-null or whitespace-only value prints bare `title`. This gives equivalent
-exterior whitespace one compact form, and a run of spaces and tabs inside the
-value is printed as one space (see
+null or whitespace-only value prints bare `title`. For equivalent exterior
+whitespace, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between `title` and its value, as Prettier prints `return  x` as
+`return x;`, and a run of spaces and tabs inside the value is printed as one
+space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Never take a value from the next physical line, including across empty, comment
 or directive lines. Trivia-bearing values, hidden suffixes and semicolon

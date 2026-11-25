@@ -926,8 +926,8 @@ mermaid.js takes the directive out before it reads the list, and every version
 of mermaid.js that counts rejects the form with one space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-between a keyword and what it takes, as Prettier prints `return  x` as
-`return x;`; the rejected one-space form is why these two spaces stay.
+between a keyword and its text, as Prettier prints `return  x` as `return x;`;
+the rejected one-space form is why these two spaces stay.
 
 [fixture: lists/whitespace-only] [fixture: lists/whitespace-only-then-directive]
 
