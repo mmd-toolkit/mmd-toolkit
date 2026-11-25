@@ -779,8 +779,8 @@ Prettier がコードでそうするのと同じで、空行は文をまとま�
 [fixture: blank-lines/inside-values-kept]
 
 テキストはちょうど 1 つの改行で終わります。
-Prettier は、ファイルを改行 1 つで終え、その前に空行を置かないので、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この最後の改行を与えます。
+Prettier は、ファイルを改行 1 つで終えるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この改行を与えます。
 
 [fixture: blank-lines/header-only-without-line-break]
 
@@ -1949,7 +1949,7 @@ flowchart にも同じ改行を与えます。
 コメントやディレクティブを含む継続行はキーワードより1段深く置きます。
 コメントやディレクティブの文字と、著者が文を区切った改行を保ちます。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [requirement](./requirement.ja.md#フィールド) と
 [sequence](./sequence.ja.md#複数行の文)も、文の続きの行と間のコメント行を、
@@ -2141,7 +2141,7 @@ sequence、class、state は、そこでは改行が空白の後でだけ数え�
 
 途中のコメント行は文の中に残り、2 行目以降と同じ段に置きます。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [requirement](./requirement.ja.md#フィールド) と
 [sequence](./sequence.ja.md#複数行の文)も、文の途中のコメント行を、

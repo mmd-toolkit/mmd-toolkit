@@ -987,10 +987,8 @@ requirementDiagram
 テキストの末尾で、空行です。
 空白文字の種類は問わず、改ページ、垂直タブ、U+00A0、U+3000、U+2028、
 U+2029 も同じです。
-規則 1 は、行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[kanban](./kanban.ja.md#空行) と [packet](./packet.ja.md#blank-lines) も、
-空白だけの行を空行として印字します。
+Prettier は、空白だけの行を空行として印字するので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 ほかの規則が空白を書かれたまま残す所は別で、
 値やテキストのブロックの行などがそうです。
 
@@ -1094,11 +1092,10 @@ Prettier が `x = { }` を `x = {}`
 すでに空の内側は空のままです。
 キーワードと開始括弧の間には空白を 1 つ置き、
 `accDescr{  }` は `accDescr {}` にします。
-規則 1 は、キーワードと開き括弧の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[gantt](./gantt.ja.md#空の説明ブロック)、
-[class](./class.ja.md#空の説明ブロック)、
-[journey](./journey.ja.md#空の説明ブロック)も、ここを空白 1 個で印字します。
+Prettier は、
+ブロックを開く `{` の前に空白を 1 つ置いて印字する（`class A{}` を `class A {}`
+と印字する）ので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの空白を与えます。
 
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: requirement Unicode and tab interiors]
@@ -1113,7 +1110,7 @@ Prettier が `x = { }` を `x = {}`
 独立した `}` は `accDescr` にそろえます。
 requirement と element の本文にある空のブロックも同じです。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [block](./block.ja.md#空の説明ブロック) と [c4](./c4.ja.md#説明ブロック)も、
 独立した注釈類をブロックの 1 段内側に、独立した `}` を文の段に置きます。
@@ -1653,7 +1650,7 @@ requirementdiagram
 本体の中ではフィールドと同じ段に置きます。
 テキストと印は書かれたまま残します。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [c4](./c4.ja.md#コメント) と [quadrant](./quadrant.ja.md#コメント) も、
 単独のコメントを、後ろの文か、テキストの末尾では最後の文の段に置き、
