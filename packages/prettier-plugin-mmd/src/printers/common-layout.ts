@@ -57,6 +57,7 @@ import {
 import { collapsedRunsAtom } from "./text-runs.ts"
 import type { Source } from "./source.ts"
 import {
+  findDirectiveEndingAt,
   findStructuralToken,
   findTokensBetween,
   findTriviaBetween,
@@ -125,6 +126,38 @@ function startsPlainComment(source: Source, offset: number): boolean {
   )
 }
 
+/**
+ * The diagram type whose `title` the oldest version that counts reads with a
+ * lexer built with jison, which takes a whitespace character that is no space
+ * or tab before a `%%` as a part of the title, where the later versions trim
+ * it (docs/pie.md, Title). That version rejects the `title` of a gitGraph
+ * (docs/gitgraph.md, Title and common values).
+ */
+const diagramTypeWithJisonTitle = "pie"
+
+/**
+ * Whether a whitespace character that is no space or tab stands between the
+ * text of a value and the `%%` comment at `commentStart`, with or without
+ * directives, which mermaid.js removes first, among the whitespace.
+ */
+function holdsOtherWhitespaceBeforeComment(
+  source: Source,
+  valueStart: number,
+  commentStart: number,
+): boolean {
+  let position = commentStart
+  for (;;) {
+    while (position > valueStart && isWhitespace(source.text[position - 1])) {
+      if (!isSpaceOrTab(source.text[position - 1])) return true
+      position--
+    }
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive === undefined || directive.range[0] <= valueStart)
+      return false
+    position = directive.range[0]
+  }
+}
+
 /** Whether the statement is an `accTitle:` line. */
 function isAccTitle(statement: CommonStatement): boolean {
   return statement.type.includes("AccTitle")
@@ -180,22 +213,43 @@ export function layoutCommonLine(
   const value = statement.value
   const hasTrivia =
     value !== null && findTriviaBetween(source, ...value.range).length > 0
+  const diagramType = source.root.diagramType
+  const commentStart =
+    value === null ? null : skipRemoved(source, value.range[1])
+  const commentFollows =
+    commentStart !== null && startsPlainComment(source, commentStart)
   // A `%%` right after the value of an `accTitle`, also after the directives
   // that mermaid.js removes first, is a part of the title to the oldest version
   // that counts, with the whitespace before it, so the line stays as written
   // (docs/pie.md, Accessibility lines).
-  const titleReachesComment =
+  const accTitleReachesComment =
+    commentFollows &&
     isAccTitle(statement) &&
-    diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType) &&
+    diagramTypesWithJisonAccessibilityLines.has(diagramType)
+  // For the `title` of a pie chart and the `accDescr` line of a pie chart and a
+  // gitGraph, that version draws only a whitespace character that is no space
+  // or tab before the `%%` as a part of the text, where the later versions trim
+  // it, so only that character stays; spaces and tabs are drawn the same, and
+  // a value with a directive inside it is printed as in the other diagrams
+  // (docs/pie.md, Title and Accessibility lines).
+  const gapReachesComment =
     value !== null &&
-    startsPlainComment(source, skipRemoved(source, value.range[1]))
+    commentStart !== null &&
+    commentFollows &&
+    !hasTrivia &&
+    !isAccTitle(statement) &&
+    (isTitle
+      ? diagramType === diagramTypeWithJisonTitle
+      : diagramTypesWithJisonAccessibilityLines.has(diagramType)) &&
+    holdsOtherWhitespaceBeforeComment(source, value.range[0], commentStart)
+  const valueReachesComment = accTitleReachesComment || gapReachesComment
   // Only spaces and tabs stand between the directives and after the last one
   // where the text counts as ending with directives: with other whitespace
   // there the line stays as written, with the spaces and tabs after it
   // (docs/compatibility.md, Texts after a keyword that are drawn the same).
   const endsInDirectives =
     hasTrivia &&
-    !titleReachesComment &&
+    !valueReachesComment &&
     (statement.textAfter?.length ?? 0) === 0 &&
     endsWithDirectives(source, value.range)
   let valueStart = value?.range[0] ?? delimiter.range[1]
@@ -206,7 +260,7 @@ export function layoutCommonLine(
     valueEnd,
     isWhitespace,
   )
-  const trimsEnd = !titleReachesComment && (!hasTrivia || endsInDirectives)
+  const trimsEnd = !valueReachesComment && (!hasTrivia || endsInDirectives)
   if (trimsEnd) valueEnd = valueTextEnd.end
   if (!hasTrivia) {
     // The text of a value that follows a second whitespace character starts
@@ -224,7 +278,7 @@ export function layoutCommonLine(
     // of the title to the oldest version that counts, which shows the title as
     // a tooltip: the whitespace before the `%%` stays (docs/pie.md,
     // Accessibility lines).
-    if (!titleReachesComment) {
+    if (!valueReachesComment) {
       while (valueStart < valueEnd && source.text[valueEnd - 1].trim() === "")
         valueEnd--
     }

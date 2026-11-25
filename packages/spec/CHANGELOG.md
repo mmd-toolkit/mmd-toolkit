@@ -1,5 +1,21 @@
 # @mmd-toolkit/spec
 
+## 0.5.2
+
+### Patch Changes
+
+- [#250](https://github.com/mmd-toolkit/mmd-toolkit/pull/250) [`f6973e7`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f6973e7f135fa1daceff2809c0c90648ae287912) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Cite fixtures of an `agentflow-beta` label that holds only whitespace and
+  comments, such as `A[ %% c` followed by a line `]`, also in a pipe label and
+  with two comments, and of a comment in a pipe label, in the label comment rules
+  of `diagrams/agentflow.md` and in AgentflowLabel of `ast/agentflow.md`: such a
+  label is its whitespace, without the comments.
+
+- [#252](https://github.com/mmd-toolkit/mmd-toolkit/pull/252) [`9d68533`](https://github.com/mmd-toolkit/mmd-toolkit/commit/9d68533bacb017b55940f0a4ad129cfba0ed51ee) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Say in Directives inside units of `diagrams/block.md` that a `%%` right after a
+  directive is the text of an id, so that `b%%{init: {}}%%%% x` is rejected as a
+  directive inside the id `b%%`, which mermaid.js reads as the blocks `b%%` and
+  `x`, while `b %%{init: {}}%%%% x` holds the id `%%` and a line
+  `%%{init: {}}%%%% x` is a comment line.
+
 ## 0.5.1
 
 ### Patch Changes
