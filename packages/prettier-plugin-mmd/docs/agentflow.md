@@ -47,10 +47,10 @@ directive which follows the header is printed like any other (`TD` as `TB`, and
 `agentflow-beta%%{init: {}}%% TD` as `agentflow-beta %%{init: {}}%%TB`), and
 next-line LR remains a vertex. Ordinary header followers move into the body;
 directive attachment follows Directives. [Flowchart](./flowchart.md#directives)
-and [class](./class.md#directives) diagrams keep a directive touching the end of
-the header in that gap, so
+and [class](./class.md#directives) diagrams keep a directive that touches the
+end of the header, with no direction after it, touching it, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) keeps
-a directive touching an agentflow header there too.
+such a directive touching an agentflow header too.
 
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated] [fixture:
@@ -230,12 +230,8 @@ Whitespace before the title is trimmed through a `;` that the line rule ignores:
 `connector style:#x ; [T]` is printed `connector style:#x;[T]`. Prettier prints
 no whitespace before the `[` of an index (`x [ 0 ];` is printed `x[0];`), so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the `[` of a
-title no space before it, and [rule 3](./printed-form.md#3-a-spelling) agrees:
-all 19 headings with a title in
-[the documentation of agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
-write the `[` touching the name, as `flow F[T]` does, and
-[flowchart](./flowchart.md#subgraph-header) and [er](./er.md#subgraphs) print it
-so too. The semicolon keeps its written place against the name.
+title no space before it. The semicolon keeps its written place against the
+name.
 
 [fixture: names-and-headings/title-after-ignored-semicolon]
 

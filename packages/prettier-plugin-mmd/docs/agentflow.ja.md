@@ -53,9 +53,9 @@ agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 になります。
 通常の後続文は本文へ移し、ディレクティブの付着はディレクティブの節に従います。
 [flowchart](./flowchart.ja.md#ディレクティブ) と
-[class](./class.ja.md#ディレクティブ) の図では、
-見出しの末尾に接するディレクティブを、その隙間に保ちます。
-見出しの末尾との接触は、
+[class](./class.ja.md#ディレクティブ) の図では、見出しの末尾に接し、
+後ろに方向がないディレクティブを、接したまま保ちます。
+そのようなディレクティブが agentflow の見出しに接する形は、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
 
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
@@ -245,12 +245,6 @@ Prettier は、
 添字の `[` の前に空白を置かずに印字する（`x [ 0 ];` を `x[0];`
 と印字する）ので、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 タイトルの `[` の前を詰める形を与えます。
-[規則 3](./printed-form.ja.md#3-綴り)も同じ形を与えます。
-タイトルのある見出しは、
-[agentflow のドキュメント](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
-に 19 個あり、すべてが `flow F[T]` のように `[` を名前に接して書いています。
-[flowchart](./flowchart.ja.md#subgraph-のヘッダー) と [er](./er.ja.md#subgraph)
-も、タイトルの `[` を名前に接して印字します。
 セミコロンは、名前との位置関係を保ちます。
 
 [fixture: names-and-headings/title-after-ignored-semicolon]
