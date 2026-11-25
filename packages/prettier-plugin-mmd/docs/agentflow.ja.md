@@ -1997,8 +1997,10 @@ tooltip/target前に必須の空白1文字を保ち、末尾の空の説明は�
 
 click 文の `href` は、`click A call ()href click "/u"` のように、
 空の呼び出しの `)` に接したまま残します。
-12.3.0 は、間に空白を置いた形を拒否するからです
-（[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)を参照）。
+12.0.0 と 12.3.0 は、間に空白を置いた形を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: click-statements/blank-call-then-href-kept]
 
