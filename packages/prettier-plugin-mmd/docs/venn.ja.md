@@ -1339,7 +1339,7 @@ FF を本文の隙間として受理はしません。
 [test: venn: unicode-role-whitespace]
 
 エスケープ表記の入出力:
-`"venn-beta\ntitle\u00a0 T" -> "venn-beta\ntitle  T\n"`。
+`"venn-beta\ntitle\u00a0 T" -> "venn-beta\n  title T\n"`。
 
 [test: venn: nbsp-title-separator]
 

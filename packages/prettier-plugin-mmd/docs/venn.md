@@ -1270,7 +1270,7 @@ bom-leading-header] [test: venn: bom-frontmatter] [test: venn:
 unicode-role-whitespace]
 
 Escaped input and output:
-`"venn-beta\ntitle\u00a0 T" -> "venn-beta\ntitle  T\n"`.
+`"venn-beta\ntitle\u00a0 T" -> "venn-beta\n  title T\n"`.
 
 [test: venn: nbsp-title-separator]
 
