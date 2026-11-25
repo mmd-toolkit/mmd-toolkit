@@ -18,7 +18,7 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 
 `eventmodeling` は第 1 列に置き、普通の最初の文を次の行へ移して、
 見出しを見つけやすくします。
-規則 1 は、見出しの後の文の印を挙げていないので、
+文が置かれる位置（行頭）は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [wardley](./wardley.ja.md#見出し)、[cynefin](./cynefin.ja.md#header)、
 [architecture](./architecture.ja.md#header)、[packet](./packet.ja.md#header)も、
@@ -82,7 +82,7 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 普通のトップレベルの文は、第 1 列から始めます。
 フレーム、モデルの実体、`data`、`note`、`gwt` が対象です。
-規則 1 は、文の字下げの印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 規則 2 は、ヘッダーの後の文を 1 段深く置きます。
 [flowchart](./flowchart.ja.md#字下げ)、[class](./class.ja.md#字下げ)、
@@ -104,7 +104,7 @@ eventmodeling tf 01 evt A %%{{x}}%%
 トップレベルの字下げを再検討します。
 
 GWT 節は設定の 1 段、項目は 2 段にします。
-規則 1 は、入れ子の文の字下げの印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#字下げ)と [state](./state.ja.md#字下げ)は、
 ブロックの文を、それを開く行より 1 段深く置きます。
@@ -200,7 +200,7 @@ note 01 {
 ### Statements one per line
 
 普通の最上位 AST 文は原順の各行へ分け、セミコロンは足しません。
-規則 1 は、文の終わりの印を挙げていないので、
+文が置かれる位置（行頭）は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [er](./er.ja.md#1-行に-1-文)、[gantt](./gantt.ja.md#1-行に-1-文)、
 [journey](./journey.ja.md#1-行に-1-文)も、各文を自分の行に印字します。
@@ -712,7 +712,8 @@ tf 01 evt Alpha { 	 x  }
 [pie](./pie.ja.md#description-blocks)、
 [radar](./radar.ja.md#description-blocks)、
 [cynefin](./cynefin.ja.md#description-blocks) は、説明ブロックの行を、
-文より 1 段内側の `tabWidth` 個の空白に置き、`tabWidth: 0` では空白を置きます。
+文より 1 段内側の `tabWidth` 個の空白に置き、
+`tabWidth: 0` では空白を置きません。
 ただし、どれでもこの形は、決まっていない形の一覧（D35）の問いです。
 そのため、その印字は決まった形ではなく、決まるまでリリース済みの形を残します。
 詳しくは
@@ -1327,7 +1328,7 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 メタデータや必須の `title` の境界を優先します。
 検出が拒否するため、スラッシュのコメントを見出し前へ移しません。
 見出しの前のコメント行は第 1 列に置きます。
-規則 1 は、見出しの前の行の字下げの印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [journey](./journey.ja.md#コメント)、[timeline](./timeline.ja.md#コメント)、
 [c4](./c4.ja.md#コメント)も、見出しの前のコメント行をそう印字します。
@@ -1767,7 +1768,7 @@ entity Shop.Buy
 [journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
 物理行を結ぶコメント領域と、`;` を含む行がそれです。
-規則 1 は、後続の行の字下げの印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [flowchart](./flowchart.ja.md#複数行の文)、
 [sequence](./sequence.ja.md#複数行の文)、

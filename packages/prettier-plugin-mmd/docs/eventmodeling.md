@@ -16,8 +16,8 @@ data boundaries constrain the line and indentation plan before it is printed.
 ### Header
 
 Keep `eventmodeling` at column one and move an ordinary first statement to the
-next line, making the header easy to find. Rule 1 names no mark for a statement
-after the header, so
+next line, making the header easy to find. Where a statement stands is no place
+of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [wardley](./wardley.md#header), [cynefin](./cynefin.md#header),
 [architecture](./architecture.md#header), and [packet](./packet.md#header) print
@@ -76,8 +76,7 @@ eventmodeling tf 01 evt A %%{{x}}%%
 ### Indentation
 
 Start ordinary top-level statements at column one: frames, model entities,
-`data`, `note` and `gwt`. Rule 1 names no mark for the indentation of a
-statement, so
+`data`, `note` and `gwt`. The start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, and it gives the statements after the header one level deeper, as
 [flowchart](./flowchart.md#indentation), [class](./class.md#indentation),
@@ -94,8 +93,8 @@ to avoid suggesting a hierarchy. Reconsider this choice if the pinned Mermaid
 later accepts whitespace before block closers, checking that raw body values and
 rendering remain unchanged.
 
-GWT clauses use one configured step and items two. Rule 1 names no mark for the
-indentation of a nested statement, so
+GWT clauses use one configured step and items two. The start of a line is no
+place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#indentation) and
 [state](./state.md#indentation) stand the statements of a block one level deeper
@@ -184,7 +183,7 @@ note 01 {
 ### Statements one per line
 
 Put ordinary top-level AST statements on separate lines in source order, without
-adding semicolons. Rule 1 names no mark for the end of a statement, so
+adding semicolons. Where a statement stands is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [er](./er.md#statements-one-per-line),
 [gantt](./gantt.md#statements-one-per-line), and
@@ -1277,8 +1276,7 @@ adjustment in [Data blocks](#data-blocks), since in a `data` block that a frame
 reads the Db holds them as a part of the value. Boundaries needed for metadata
 or a required `title` take precedence. Slash comments are not moved before the
 header, where detection would reject them. A comment line before the header
-stands at column one. Rule 1 names no mark for the indentation of a line before
-the header, so
+stands at column one. The start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), and [c4](./c4.md#comments) print it so.
@@ -1724,8 +1722,7 @@ decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep such a line break, where no
 other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`). Rule 1 names no mark for the indentation of a
-later line, so
+lines, a line that holds a `;`). The start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [flowchart](./flowchart.md#multi-line-statements),
 [sequence](./sequence.md#multi-line-statements), and
