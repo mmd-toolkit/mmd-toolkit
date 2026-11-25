@@ -929,11 +929,9 @@ mermaid.js がリストを読む前にディレクティブを取り除き、
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-規則 1 は、キーワードとそのテキストの間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がその隙間を空白 1
-個とします。
-[pie](./pie.ja.md#title) と [sequence](./sequence.ja.md#タイトル) が、
-`title` の後に空白 1 個を印字するのと同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとそれが取るものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 空白 1 個の形が拒否されるので、この 2 個の空白は残ります。
 
 [fixture: lists/whitespace-only] [fixture: lists/whitespace-only-then-directive]
@@ -1451,10 +1449,10 @@ mermaid.js が複数行にわたって読む文は、
 `title`、`section`、設定、`weekday`、`weekend`、`includes`、`excludes`、
 `accTitle:`、`accDescr:` の後、click 文の部分の間、
 `accTitle` と `accDescr` の `:` の前後が該当し、そこの空行も落とします。
-[sequence](./sequence.ja.md#タイトル) と [xychart](./xychart.ja.md#複数行の文)
-も、字句解析器が空白と読む改行では、キーワードと値を、空白 1 つでつなぎます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-キーワードと値を 1 行にする形を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとそれが取るものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じなので、
+後の行にあった値は、キーワードの後に空白 1 つで印字します。
 
 [fixture: multi-line-statements/value-on-next-line-joined]
 [fixture: multi-line-statements/blank-lines-between-keyword-and-day]
@@ -1685,9 +1683,8 @@ gantt
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[quadrant](./quadrant.ja.md#コメント)、[xychart](./xychart.ja.md#コメント)、
-[ishikawa](./ishikawa.ja.md#comments) も、単独の行のコメントを、
-後ろの文か節の段に置きます。
+[quadrant](./quadrant.ja.md#コメント) と [ishikawa](./ishikawa.ja.md#comments)
+も、単独の行のコメントを、後ろの文か節の段に置きます。
 
 [fixture: comments/levels-around-sections]
 [fixture: directives/levels-around-sections]
@@ -1828,12 +1825,6 @@ gantt
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
-[quadrant](./quadrant.ja.md#指令) と [xychart](./xychart.ja.md#指令) の図も、
-単独の行のディレクティブを、文と同じ段に置きます。
-同じ行の中では、ディレクティブがないものとして隙間を印字し、
-その空白の後ろにディレクティブを置いて、後ろの単位に接します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-ディレクティブにも、この位置を与えます。
 
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
@@ -1845,12 +1836,7 @@ gantt
 
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
-単位を別の行に分けるときは、
-[pie](./pie.ja.md#directives-and-semicolons) と
-[radar](./radar.ja.md#global-directives) も、間のディレクティブを、
-次の単位と一緒に移し、右側の接触か分離を保ちます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-分けた隙間のディレクティブに、この配置を与えます。
+
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: gantt/directives/split-directive-gap]

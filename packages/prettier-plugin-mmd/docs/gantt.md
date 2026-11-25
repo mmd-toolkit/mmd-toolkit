@@ -894,11 +894,9 @@ follows the whitespace: `includes`, two spaces, and `%%{init: {}}%%` stay, since
 mermaid.js takes the directive out before it reads the list, and every version
 of mermaid.js that counts rejects the form with one space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Rule 1 names no mark between a keyword and its text, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that gap one space, as [pie](./pie.md#title) and [sequence](./sequence.md#title)
-print `title` followed by one space; the rejected one-space form is why these
-two spaces stay.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`; the rejected one-space form is why these two spaces stay.
 
 [fixture: lists/whitespace-only] [fixture: lists/whitespace-only-then-directive]
 
@@ -1405,12 +1403,11 @@ A statement that mermaid.js reads over several lines is printed on one line
 where the line break is whitespace to the lexer: after `title`, `section`, a
 setting, `weekday`, `weekend`, `includes`, `excludes`, `accTitle:`, and
 `accDescr:`, between the parts of a click statement, and around the `:` of
-`accTitle` and `accDescr`. [Sequence diagrams](./sequence.md#title) and
-[XY charts](./xychart.md#multi-line-statements) join a keyword and its value
-with one space where the lexer treats a line break as whitespace;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the keyword/value gaps in Gantt statements the same one-line form. Empty lines
-there are dropped too.
+`accTitle` and `accDescr`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`, so a value that stood on a later line is printed after the keyword
+with one space. Empty lines there are dropped too.
 
 [fixture: multi-line-statements/value-on-next-line-joined] [fixture:
 multi-line-statements/blank-lines-between-keyword-and-day]
@@ -1633,9 +1630,9 @@ level of the task; at the end of the text it stands at the level of the last
 statement. Rule 1 gives no form here, since its table does not name the start of
 a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [quadrant](./quadrant.md#comments), [xychart](./xychart.md#comments), and
-[ishikawa](./ishikawa.md#comments) put a comment line on a line of its own at
-the level of the statement or the node after it.
+it, as [quadrant](./quadrant.md#comments) and [ishikawa](./ishikawa.md#comments)
+put a comment line on a line of its own at the level of the statement or the
+node after it.
 
 [fixture: comments/levels-around-sections] [fixture:
 directives/levels-around-sections]
@@ -1777,12 +1774,7 @@ gantt
 A directive on a line of its own stands at the level of the statements around
 it, and a directive within a printed line is placed as in a flowchart: the gap
 is printed as without the directive, and the directive stands after its space
-and touches the unit that follows it. [Quadrant](./quadrant.md#directives) and
-[XY](./xychart.md#directives) charts place a directive on its own line at
-statement level; within a line, they print the gap as without the directive and
-place the directive after the gap's space, touching the following unit.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt directives the same positions.
+and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
@@ -1793,11 +1785,7 @@ directives/after-statement-at-end-of-line] [fixture:
 directives/statement-after-directive-line]
 
 When formatting splits units that were on the same line, a directive in their
-gap moves with the following unit. [Pie](./pie.md#directives-and-semicolons) and
-[radar](./radar.md#global-directives) charts move a directive in a split gap
-with the following unit, preserving contact or separation on its right;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt directives the same placement. Keep its right-side contact or separation;
+gap moves with the following unit. Keep its right-side contact or separation;
 break its left contact.
 
 [fixture: gantt/directives/split-directive-gap]
