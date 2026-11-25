@@ -334,16 +334,13 @@ pie
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-For blocks that keep their braces, reuse
-[flowchart multiline values](./flowchart.md#multi-line-values) and
-[sequence multi-line values](./sequence.md#multi-line-values), which put the
-lines of such a block one step inside its statement: indentation after LF is
-absent from the description Db. The keyword and opener use one ordinary space,
-even when written touching. Prettier puts one space before the opening brace of
-a block, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
-one-space gap between `accDescr` and `{`. A gap made only of whitespace has that
-form even across line breaks. Protected trivia and semicolon layouts keep their
-gaps. Plain whitespace before the opener can join, including across physical or
+For blocks that keep their braces, body lines stand one step inside the
+statement. The keyword and opener use one ordinary space, even when written
+touching. Prettier puts one space before the opening brace of a block, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one-space
+gap between `accDescr` and `{`. A gap made only of whitespace has that form even
+across line breaks. Protected trivia and semicolon layouts keep their gaps.
+Plain whitespace before the opener can join, including across physical or
 Unicode line boundaries; a real comment/directive keeps its break. The form with
 `accDescr`, `%% c`, and `{D}` on separate lines stays, since mermaid.js rejects
 the form with `accDescr %% c` and `{D}` on separate lines (see
@@ -360,11 +357,11 @@ mermaid.js read it as a comment, leaving the description empty or just `D`,
 respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
-statement, as the other diagram types do. Keep line breaks and interior blank
-lines, and the whitespace at the end of each line of text except the last one.
-The oldest version that counts draws the whitespace at the end of a line of text
-before the last one in the description of the figure (`<desc>x  </desc>` for `x`
-and two spaces), so that whitespace stays (see
+statement. Keep line breaks and interior blank lines, and the whitespace at the
+end of each line of text except the last one. The oldest version that counts
+draws the whitespace at the end of a line of text before the last one in the
+description of the figure (`<desc>x  </desc>` for `x` and two spaces), so that
+whitespace stays (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A line of whitespace only becomes an empty line. The whitespace at the end of
 the last line of text is dropped where the closer stands on a line of its own,
