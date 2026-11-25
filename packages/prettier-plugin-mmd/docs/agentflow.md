@@ -46,7 +46,11 @@ stays absent, symbol directions stay written, a direction that stands after a
 directive which follows the header is printed like any other (`TD` as `TB`, and
 `agentflow-beta%%{init: {}}%% TD` as `agentflow-beta %%{init: {}}%%TB`), and
 next-line LR remains a vertex. Ordinary header followers move into the body;
-directive attachment follows Directives.
+directive attachment follows Directives. [Flowchart](./flowchart.md#directives)
+and [class](./class.md#directives) diagrams keep a directive touching the end of
+the header in that gap, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) keeps
+a directive touching an agentflow header there too.
 
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated] [fixture:
@@ -76,12 +80,17 @@ agentflow-beta
 Reuse [Indentation](./flowchart.md#indentation) for the same reason: indentation
 is set from the AST, while authored columns do not determine membership. Use one
 configured step below the header and each flow/global, align end with its
-opener, and give connectors no body. `useTabs` uses one tab per level. Agentflow
-uses the shared significant indentation width: even with `tabWidth: 0`, each
-body step is at least one space. Indented lines such as `accTitle: direction LR`
-are direction statements; moving them to column one would change the Db or
-reject a style-prefixed direction line. Non-direction lines whose reading
-depends on their columns keep their written indentation under Direction.
+opener, and give connectors no body. A [flowchart](./flowchart.md#indentation)
+subgraph puts `end` at the level of `subgraph`, and a composite
+[state](./state.md#indentation) puts `}` at the level of its opening line;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same alignment to the closing `end` of a flow or global. `useTabs` uses one
+tab per level. Agentflow uses the shared significant indentation width: even
+with `tabWidth: 0`, each body step is at least one space. Indented lines such as
+`accTitle: direction LR` are direction statements; moving them to column one
+would change the Db or reject a style-prefixed direction line. Non-direction
+lines whose reading depends on their columns keep their written indentation
+under Direction.
 
 [fixture: indentation/indent-direction-unsafe] [fixture:
 indentation/indent-nested] [fixture: indentation/indent-tabs] [fixture:
@@ -482,7 +491,12 @@ single-space-gaps/style-hex-escape-run-spaced]
 
 A `linkStyle` with link numbers keeps whether whitespace follows the `,` before
 a style that starts with `fill`, a run of whitespace becoming one space;
-`fill-opacity` counts, as mermaid.js reads only the start.
+`fill-opacity` counts, as mermaid.js reads only the start. As
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
+describes, mermaid.js adds `fill:none` when no link style starts with `fill`, so
+adding a space after the comma before `fill` can change the drawing. Where
+whitespace already follows that comma,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space.
 
 [fixture: single-space-gaps/link-style-fill-after-comma-kept] [fixture:
 single-space-gaps/link-style-fill-opacity-after-comma-kept]
@@ -496,15 +510,25 @@ with `stroke:` too, which mermaid.js reads at the start where the look is
 The other styles of such a statement, and `linkStyle default`, use the one form
 (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-In a `linkStyle` or a `classDef`, which can reach a link, a name that ends with
-`stroke` keeps whether whitespace stands between it and the `:`, a run of
-whitespace becoming one space (see
+Prettier prints a comma with no whitespace before it and one space after it;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form to
+the commas between the ordinary link styles. In a `linkStyle` or a `classDef`,
+which can reach a link, a name that ends with `stroke` keeps whether whitespace
+stands between it and the `:`, a run of whitespace becoming one space (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[Flowchart](./flowchart.md#whitespace-between-tokens) and
+[usecase](./usecase.md#classes-and-styles) diagrams print an existing gap before
+the colon of a style name ending in `stroke` as one space, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that width to the retained gap in a `linkStyle` or `classDef`.
 
 [fixture: single-space-gaps/link-style-stroke-before-colon-kept] [fixture:
 single-space-gaps/class-def-stroke-before-colon-kept]
 
-A `style` styles a node, and uses the one form.
+A `style` styles a node, and uses the one form. Prettier prints a comma with no
+whitespace before it and one space after it;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form to
+the commas between the styles of a node.
 
 [fixture: single-space-gaps/style-stroke-before-colon-spaced]
 
@@ -555,8 +579,14 @@ single-space-gaps/style-comma-beside-directive-kept] [test: agentflow: U+2028
 before the comma of a style statement]
 
 A style that starts with the `:` is printed as any other: one space after the
-`:`, and the runs between its words as one space. `style A :  red   x` is
-printed `style A : red x`.
+`:`, and the runs between its words as one space. Prettier prints one space
+after a CSS colon, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives one space after the leading colon of a style.
+[Class](./class.md#whitespace-between-tokens) and [block](./block.md#styles)
+diagrams also print each run between the words of a colon-first style as one
+space, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that form to the word gaps. `style A :  red   x` is printed `style A : red x`.
 
 [fixture: single-space-gaps/style-colon-first-run-spaced]
 
@@ -665,7 +695,12 @@ arrows.
 Pipes touch the arrow and their label; split text has one exterior space. Print
 one post-pipe gap. Only sequence/failure support split labels. Keep
 string/markdown kind, bare continuation, and split semicolons, percent text and
-line breaks; do not invent another string or split reference form.
+line breaks; do not invent another string or split reference form. A semicolon
+or line break inside split-label text is part of the label value that mermaid.js
+reads before the closing arrow. Removing a semicolon or replacing a line break
+with a space changes the edge text in the Db, so both stay as written.
+
+[corpus fixture: agentflow/lex-split-edge-semicolon-newline]
 
 [fixture: edge-labels/edge-label-forms] [fixture:
 edge-labels/split-pipe-content]
@@ -820,10 +855,12 @@ two vertices `A` and `B` instead of one vertex `A&B` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Keep tight id/shape/:::/data suffixes, property Identifiers, actual comma-list
 holes (including empty ends), comma-bearing single ids, occurrences and order.
-Do not split ids, sort lists or manufacture a trailing comma: a style target, a
-class suffix, a second class id or a vertex id that contains commas is one
-Identifier, and only the grammar's own id lists split at commas; property
-operands are Identifiers, not numbers to rewrite.
+The Agentflow grammar rejects whitespace separating an id, its shape, `:::`
+class and data suffixes, so those parts stay joined. Do not split ids, sort
+lists or manufacture a trailing comma: a style target, a class suffix, a second
+class id or a vertex id that contains commas is one Identifier, and only the
+grammar's own id lists split at commas; property operands are Identifiers, not
+numbers to rewrite.
 
 [fixture: vertices-and-lists/class-list-holes] [fixture:
 vertices-and-lists/groups-suffixes]
@@ -902,7 +939,12 @@ metadata-blocks/use-tabs-folded-empty-lines-kept] [fixture:
 metadata-blocks/surrounding-trivia] [test: data blocks: agentflow U+2029] [test:
 data blocks: agentflow CRLF]
 
-The header of a `flow` or `global` container moves its block in the same way.
+The header of a `flow` or `global` container moves its block in the same way. In
+eligible multiline data blocks, [flowchart](./flowchart.md#data-blocks) and
+[kanban](./kanban.md#data-blocks) diagrams place the shallowest body text one
+level inside its statement;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a `flow` or `global` header's block the same margin.
 
 [fixture: metadata-blocks/container-header]
 
@@ -1111,7 +1153,13 @@ agentflow-beta TB
 Reuse [Directives](./flowchart.md#directives) for the same reason: removal
 supplies no separator. Keep contents, order and continuation columns, align
 standalone directives, and place a directive within a printed line as under
-[Directives](./flowchart.md#directives). A directive after a header separator
+[Directives](./flowchart.md#directives). In
+[flowchart](./flowchart.md#directives) and [ER](./er.md#directives) diagrams,
+standalone directives stand at neighbouring statements' depth. Where an ordinary
+gap supplies a space, an inline directive follows that space and touches the
+next unit.
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+agentflow the same directive placements. A directive after a header separator
 moves into the body with its following statement, keeping whether they touch,
 just as in flowchart: the Db is the same, and no reason specific to Agentflow
 calls for attaching it to the header instead. A line already kept under Kept
@@ -1189,7 +1237,11 @@ keyword, direction value, ignored text before and after it, and authored line
 breaks. Mermaid chooses a direction by its ordered direction alternatives and
 the last matching occurrence within that alternative; formatting does not
 replace that choice with the last direction-looking word. Normalize only
-ordinary gaps.
+ordinary gaps. The ordinary gap between `direction` and its value is one space
+in [flowchart](./flowchart.md#direction) and
+[requirement](./requirement.md#direction) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that gap the same form.
 
 [fixture: direction/direction-text] [corpus fixture:
 agentflow/lex-direction-value-priority] [fixture:
@@ -1332,7 +1384,19 @@ same `useTabs` step; both options keep the exceptions.
 
 CR normalization, accepted NBSP/U+2028/U+2029 in exterior gaps, internal Unicode
 value characters and Unicode whitespace beside a kept `;` follow the same
-flowchart rule, for the same reasons. These cases use escaped tests.
+flowchart rule, for the same reasons. Prettier prints a key colon touching its
+key with one ASCII space after it, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form to
+accepted exterior gaps beside an accessibility colon. Internal NBSP, U+2028 and
+U+2029 stay because replacing them with spaces changes accessibility text in
+mermaid.js's Db, including beside a retained semicolon. U+2028 and U+2029 also
+delimit the text read by the semicolon rule, as
+[Kept lines](./agentflow.md#kept-lines) describes. These cases use escaped
+tests.
+
+[corpus fixture: agentflow/lex-acctitle-u2028] [corpus fixture:
+agentflow/lex-accdescr-u2029] [corpus fixture:
+agentflow/lex-accessibility-semicolon-value]
 
 [test: graph accessibility: agentflow cr-lines] [test: graph accessibility:
 agentflow unicode-gaps] [test: graph accessibility: agentflow unicode-values]
@@ -1372,9 +1436,13 @@ accessibility/block-right-padding-only]
 
 At the top level, align the body lines of a closed description block one step
 inside its statement: Mermaid discards this indentation from the accessibility
-description. Inside a flow or global body, keep their columns, because the raw
-text also participates in membership. Changing a global body's text can change
-the members of a later flow.
+description. The body lines of a closed description block stand one level inside
+its top-level statement in [C4](./c4.md#description-blocks) and
+[usecase](./usecase.md#direction-and-accessibility) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that indentation here. Inside a flow or global body, keep their columns, because
+the raw text also participates in membership. Changing a global body's text can
+change the members of a later flow.
 
 [fixture: accessibility/global-description-membership-kept]
 
@@ -1392,13 +1460,18 @@ The same empty-block and closer rules apply with the minimum body step at
 [fixture: accessibility/block-zero-width]
 
 Keep unclosed block contents and EOF ending as written, without adding a brace
-or newline. Unlike flowchart, comment-looking description lines are real values;
-their indentation follows the same block-context rule. Closed empty descriptions
-stay separate statements where the grammar places them; Name/click placements
-stay IgnoredText, and style statements with a final empty style stay with
-following empty description blocks under Kept lines. An erased empty string,
-empty markdown string or empty call where a statement starts is not a statement:
-it is rejected as `tokenless-empty-forms`.
+or newline. The text of an unclosed description block does not become the
+accessibility description in mermaid.js's Db. Adding `}` would apply that text,
+so the block stays open. Unlike flowchart, comment-looking description lines are
+real values; their indentation follows the same block-context rule. Closed empty
+descriptions stay separate statements where the grammar places them; Name/click
+placements stay IgnoredText, and style statements with a final empty style stay
+with following empty description blocks under Kept lines. An erased empty
+string, empty markdown string or empty call where a statement starts is not a
+statement: it is rejected as `tokenless-empty-forms`.
+
+[corpus fixture: agentflow/db-accessibility-unclosed-block] [corpus fixture:
+agentflow/db-accessibility-block]
 
 [fixture: accessibility/accessibility-block] [fixture:
 accessibility/accessibility-comment-indent-alternative] [fixture:
@@ -1476,7 +1549,12 @@ gap after the ids and the callback can reject (see
 [Click statements](#click-statements)). Agentflow folds only line whitespace
 immediately before the next LF after a closing brace; later blank LFs remain.
 Keep those raw value lines, including LS/PS/VT/FF/NBSP, and never align an
-opaque data closer as an accessibility closer.
+opaque data closer as an accessibility closer. A U+2028 inside a quoted label
+stays as written because mermaid.js stores it as part of the vertex text in the
+Db. Replacing it with a space or a line feed changes that value, beyond the
+allowed Db exceptions.
+
+[corpus fixture: agentflow/lex-quoted-u2028]
 
 [fixture: multiline-statements-and-values/brace-blank-kept] [fixture:
 multiline-statements-and-values/multiline-chain] [fixture:
@@ -1908,15 +1986,20 @@ call parentheses belongs to its name, and argument/string text is authored.
 Normalize the harmless first click-keyword gap; keep the id/list/value suffix
 and multiline columns, including href/call presence, targets,
 punctuation/numeric/prototype ids, holes, URL/tooltip whitespace and a second
-call supplying arguments. Agentflow retains each erased click/empty
-description/string/markdown/call in textBeforeUrl/textBeforeTooltip with its
-exact source gaps, including either side of href. It has no prefix field before
-a callback name or target. The single whitespace characters required before
-tooltips and targets stay written; terminal empty descriptions are following
-statements. The erased prefixes are kept because the specification accepts them
-and the tree holds them in textBeforeUrl/textBeforeTooltip, so dropping one
-would lose written text; flowchart's rule for the reserved word `click`, which
-rejects such input, does not apply to Agentflow.
+call supplying arguments. A tooltip keeps its internal runs of whitespace
+because mermaid.js stores them as part of the tooltip value in the Db.
+Collapsing a run changes that value, beyond the allowed Db exceptions. Agentflow
+retains each erased click/empty description/string/markdown/call in
+textBeforeUrl/textBeforeTooltip with its exact source gaps, including either
+side of href. It has no prefix field before a callback name or target. The
+single whitespace characters required before tooltips and targets stay written;
+terminal empty descriptions are following statements. The erased prefixes are
+kept because the specification accepts them and the tree holds them in
+textBeforeUrl/textBeforeTooltip, so dropping one would lose written text;
+flowchart's rule for the reserved word `click`, which rejects such input, does
+not apply to Agentflow.
+
+[corpus fixture: agentflow/gram-url-tooltip-whitespace-only]
 
 [fixture: click-statements/callback-padding-unsafe] [fixture:
 click-statements/tooltip-required-tab] [fixture: click-statements/url-form-kept]
@@ -1955,8 +2038,15 @@ between the parentheses of a blank callback]
 A statement whose line breaks are all inside a string or between the parentheses
 of a call with arguments has its first click-keyword gap normalized like one on
 a single line, and the rest stays written: `click   A "/u" "x` and `  y"` on the
-next line is printed `click A "/u" "x` and `  y"`. A line break in a gap, or
-between the blank parentheses of `f(` and `)`, keeps the statement as written.
+next line is printed `click A "/u" "x` and `  y"`. Both
+[class](./class.md#whitespace-between-tokens) and
+[flowchart](./flowchart.md#whitespace-between-tokens) diagrams print one space
+after `click` even when a quoted tooltip spans lines.
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that form for the first gap after `click`. The tooltip's line breaks and later
+columns are characters of its string value, so they stay as written. A line
+break in a gap, or between the blank parentheses of `f(` and `)`, keeps the
+statement as written.
 
 [fixture: click-statements/string-over-lines-keyword-gap] [fixture:
 click-statements/callback-parentheses-over-lines]

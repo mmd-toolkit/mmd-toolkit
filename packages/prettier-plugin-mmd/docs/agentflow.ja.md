@@ -52,6 +52,11 @@ agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 `agentflow-beta%%{init: {}}%% TD` は `agentflow-beta %%{init: {}}%%TB`
 になります。
 通常の後続文は本文へ移し、ディレクティブの付着はディレクティブの節に従います。
+[flowchart](./flowchart.ja.md#ディレクティブ) と
+[class](./class.ja.md#ディレクティブ) の図では、
+見出しの末尾に接するディレクティブを、その隙間に保ちます。
+見出しの末尾との接触は、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
 
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated]
@@ -81,6 +86,11 @@ agentflow-beta
 [字下げ](./flowchart.ja.md#字下げ)と同じ規則と理由です。
 字下げは木から決め、元の桁位置では所属を決めません。
 見出しとflow/globalの本文を1段深くし、endを開始語に揃えます。
+[flowchart](./flowchart.ja.md#字下げ) の subgraph は、
+`end` を `subgraph` と同じ段に置き、[state](./state.ja.md#字下げ) の複合状態は、
+`}` を開始行と同じ段に置きます。
+flow と global を閉じる `end` の字下げも、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が同じ形を与えます。
 connectorには本文がありません。
 `useTabs`では1段をタブ1つにします。
 agentflowは共有の意味を持つ字下げ幅を使い、
@@ -485,6 +495,12 @@ classDefのエスケープしたコンマ、順序と反復を保ちます。
 番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
 空白があるかないかを保ち、空白の連続は空白 1 つにします。
 mermaid.js は先頭だけを読むので、`fill-opacity` も含みます。
+[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+のとおり、mermaid.js は、`fill` で始まるリンクのスタイルがなければ、
+`fill:none` を加えるので、`fill` の前の `,` の後ろに空白を足すと、
+図が変わることがあります。
+その `,` の後ろに空白がある場合は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が空白 1 つを与えます。
 
 [fixture: single-space-gaps/link-style-fill-after-comma-kept]
 [fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept]
@@ -496,11 +512,19 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 [fixture: single-space-gaps/link-style-stroke-after-comma-kept]
 
 この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
+Prettier は、コンマの前に空白を置かず、後ろに空白を 1 つ置きます。
+通常のリンクのスタイルの間の `,` も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が同じ形を与えます。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。
 リンクにも適用される `linkStyle` と `classDef` では、
 `stroke` で終わる名前と `:` の間の空白の有無を保ち、
 空白の連続は空白 1 つにします。
+[flowchart](./flowchart.ja.md#トークンの間の空白) と
+[usecase](./usecase.ja.md#classes-and-styles) の図では、
+`stroke` で終わるスタイル名の `:` の前に空白があれば、空白 1 つにします。
+`linkStyle` と `classDef` で保つこの隙間の幅は、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が同じ形を与えます。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。
 
@@ -508,6 +532,9 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 [fixture: single-space-gaps/class-def-stroke-before-colon-kept]
 
 `style` はノードに適用され、1 つの形で印字します。
+Prettier は、コンマの前に空白を置かず、後ろに空白を 1 つ置きます。
+ノードのスタイルの間の `,` も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が同じ形を与えます。
 
 [fixture: single-space-gaps/style-stroke-before-colon-spaced]
 
@@ -562,6 +589,13 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 
 `:` で始まるスタイルも、ほかのスタイルと同じく、`:` の後ろに空白を 1 つ置き、
 語と語の間の連続は空白 1 つで印字します。
+Prettier は、CSS のコロンの後ろに空白を 1 つ置くので、
+`:` で始まるスタイルのコロンの後ろも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が同じ形を与えます。
+[class](./class.ja.md#トークンの間の空白) と [block](./block.ja.md#スタイル)
+の図も、`:` で始まるスタイルの語と語の間の連続を、空白 1 つにします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+語の隙間に同じ形を与えます。
 `style A :  red   x` は `style A : red x` と印字します。
 
 [fixture: single-space-gaps/style-colon-first-run-spaced]
@@ -684,6 +718,12 @@ Markdown ラベルは矢印の間には印字できず、
 文字列とmarkdownの種類、後続の裸の文字、分割ラベル内のセミコロン、
 パーセント文字と改行を保ちます。
 別の文字列や参照辺の分割形式を補いません。
+mermaid.js は、分割ラベル内のセミコロンと改行を、
+閉じ矢印までラベルの文字として読みます。
+セミコロンを除いたり改行を空白に変えたりすると、Db の辺のテキストが変わるので、
+どちらも書かれたままにします。
+
+[corpus fixture: agentflow/lex-split-edge-semicolon-newline]
 
 [fixture: edge-labels/edge-label-forms]
 [fixture: edge-labels/split-pipe-content]
@@ -847,6 +887,8 @@ agentflow-beta TB
 ID、形、:::、データの接触、プロパティのIdentifier、
 実際のコンマ区切りリストの穴と空の両端、コンマを含む単一ID、
 出現と順序を保ちます。
+agentflow の文法は、ID、形、`:::` の class 接尾辞、データの接尾辞を、
+空白で区切ると拒否するので、それらを接して印字します。
 IDの分割、並べ替え、末尾コンマの補完はしません。
 スタイルの対象、classの接尾辞、2つ目のclassのID、
 コンマを含む頂点IDは1つのIdentifierで、
@@ -941,6 +983,12 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 [test: data blocks: agentflow U+2029] [test: data blocks: agentflow CRLF]
 
 `flow` や `global` のコンテナの見出しにあるブロックも、同じように動かします。
+移動の条件を満たす複数行のブロックは、
+[flowchart](./flowchart.ja.md#データブロック) と
+[kanban](./kanban.ja.md#データブロック) の図で、
+文字がある本文の最も浅い行を文の 1 段内側に置きます。
+`flow` や `global` の見出しのブロックも、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 
 [fixture: metadata-blocks/container-header]
 
@@ -1154,6 +1202,13 @@ agentflow-beta TB
 除去で区切りが生まれないため、内容、順序、後続行の桁位置を保ちます。
 独立したディレクティブを揃え、同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+独立したディレクティブは、
+[flowchart](./flowchart.ja.md#ディレクティブ) と [ER](./er.ja.md#ディレクティブ)
+の図で、前後の文と同じ段に揃えます。
+通常の隙間に空白を置く場合は、同じ図で、
+行内のディレクティブをその空白の後ろに置き、次の単位に接します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この配置を与えます。
 見出しの区切りの後のディレクティブは、後続文との接触の有無を保ち、
 flowchartと同じく本文へ移します。
 Dbは同じで、agentflowだけ見出しに付ける理由がないためです。
@@ -1231,6 +1286,10 @@ frontmatterには保護付きYAML整形を使え、CR/LF変換も共通のまま
 語、方向の値、前後の無視される文字と、書かれた改行を保ちます。
 Mermaidは順に試す方向の選択肢と、その選択肢内の最後の出現で方向を決めます。
 最後の方向らしい語へ選び直さず、通常の隙間だけを整えます。
+`direction` と値の間の通常の隙間は、
+[flowchart](./flowchart.ja.md#方向) と [requirement](./requirement.ja.md#方向)
+の図で、空白を 1 つにします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 
 [fixture: direction/direction-text]
 [corpus fixture: agentflow/lex-direction-value-priority]
@@ -1378,7 +1437,20 @@ flowchartの継続行の規則を同じ理由で再利用するためです。
 CRの正規化と、外側の隙間で受理するNBSP・U+2028・U+2029、
 値内部のUnicodeの文字と保持する`;`の脇のUnicode空白も、
 flowchartと同じ理由で同じ規則を使います。
+Prettier は、キーのコロンをキーに接して印字し、
+後ろに ASCII 空白 1 つを置くので、アクセシビリティのコロンの外側で、
+受理される隙間の形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+アクセシビリティの値の内部にある、NBSP・U+2028・U+2029 は、
+保持するセミコロンの脇も含め、空白に置き換えると、
+mermaid.js の Db のテキストが変わるため残します。
+U+2028 と U+2029 は、[行の保持](./agentflow.ja.md#kept-lines) のとおり、
+セミコロンの規則が読むテキストの境界でもあります。
 これらのケースはエスケープしたテストに置きます。
+
+[corpus fixture: agentflow/lex-acctitle-u2028]
+[corpus fixture: agentflow/lex-accdescr-u2029]
+[corpus fixture: agentflow/lex-accessibility-semicolon-value]
 
 [test: graph accessibility: agentflow cr-lines]
 [test: graph accessibility: agentflow unicode-gaps]
@@ -1420,6 +1492,12 @@ flowchartと同じ理由で同じ規則を使います。
 
 トップレベルの閉じた説明ブロックの本文は文より 1 段深くそろえます。
 Mermaid がアクセシビリティの説明からこの字下げを除くためです。
+トップレベルの閉じた説明ブロックの本文は、
+[C4](./c4.ja.md#説明ブロック) と
+[usecase](./usecase.ja.md#direction-and-accessibility) の図でも、
+文より 1 段深く置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この字下げを与えます。
 flow または global の本文では、原文がメンバーの決定にも使われるため、
 元の列を保ちます。
 global 本文の原文を変えると、後続の flow のメンバーが変わる場合があります。
@@ -1438,12 +1516,18 @@ global 本文の原文を変えると、後続の flow のメンバーが変わ�
 [fixture: accessibility/block-zero-width]
 
 未閉鎖ブロックの内容と EOF の末尾は原文どおり保ち、括弧や改行を足しません。
+未閉鎖の説明ブロックのテキストは、
+mermaid.js の Db のアクセシビリティの説明に反映されません。
+`}` を足すと、そのテキストが反映されるため、未閉鎖の形を保ちます。
 flowchart と異なり、コメントに見える説明行も値であり、
 字下げは同じブロックの文脈の規則に従います。
 文法が割り当てる閉じた空の説明文は別の文で、Nameとclick内ではIgnoredTextです。
 空のstyleと後続の空の説明ブロックは行の保持に従って同じ行に保ちます。
 文の先頭にある、消される空の文字列、空のmarkdown文字列、空のcallは文ではなく、
 `tokenless-empty-forms`として拒否します。
+
+[corpus fixture: agentflow/db-accessibility-unclosed-block]
+[corpus fixture: agentflow/db-accessibility-block]
 
 [fixture: accessibility/accessibility-block]
 [fixture: accessibility/accessibility-comment-indent-alternative]
@@ -1524,6 +1608,12 @@ idと呼び出しの後のclickの隙間に、余分な空白単位を足すと�
 agentflowが閉じ波括弧の後で畳むのは直後のLF前の行空白だけです。
 それ以降の空のLFと、LS/PS/VT/FF/NBSPを含む元の値の行を保ちます。
 不透明なデータの閉じ括弧をアクセシビリティの閉じ括弧として揃えません。
+引用符付きのラベル内の U+2028 は、
+mermaid.js が Db の頂点のテキストの一部として持つので、書かれたままにします。
+空白や LF に置き換えると、その値が変わり、
+認められた Db の差の例外には当たりません。
+
+[corpus fixture: agentflow/lex-quoted-u2028]
 
 [fixture: multiline-statements-and-values/brace-blank-kept]
 [fixture: multiline-statements-and-values/multiline-chain]
@@ -1972,6 +2062,9 @@ callの括弧前の空白は名前で、引数と文字列は著者の文字だ�
 ID・リスト・値以降と後続行の桁位置を保ちます。
 href/callの有無、target、記号・数値・プロトタイプ名のID、穴、
 URLとtooltipの空白、引数を渡す2つ目のcallも含みます。
+tooltip 内の空白の連続は、mermaid.js が Db の tooltip の値の一部として持つので、
+書かれたままにします。
+空白の連続を縮めると、その値が変わり、認められた Db の差の例外には当たりません。
 agentflowのtextBeforeUrl/textBeforeTooltipには、消されるclick、
 空の説明・文字列・markdown・callを各節点と元の隙間で保ちます。
 hrefの両側も同じです。
@@ -1981,6 +2074,8 @@ tooltip/target前に必須の空白1文字を保ち、末尾の空の説明は�
 仕様がそれを受理して木のtextBeforeUrl/textBeforeTooltipに持つため、
 除くと書かれた文字が失われるからです。
 `click`を予約語として扱って拒否するflowchartの規則は、agentflowには当てません。
+
+[corpus fixture: agentflow/gram-url-tooltip-whitespace-only]
 
 [fixture: click-statements/callback-padding-unsafe]
 [fixture: click-statements/tooltip-required-tab]
@@ -2025,6 +2120,13 @@ mermaid.js はどちらの書き方も同じ呼び出しとして読むからで
 残りは書かれたままにします。
 `click   A "/u" "x` と次の行の `  y"` は、
 `click A "/u" "x` と `  y"` になります。
+引用符付きの tooltip が複数行にまたがる場合も、
+[class](./class.ja.md#トークンの間の空白) と
+[flowchart](./flowchart.ja.md#トークンの間の空白) の図は、
+最初の `click` キーワードの後に空白 1 つを置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この隙間に同じ形を与えます。
+tooltip の改行と後続行の桁位置は文字列の値なので、書かれたままにします。
 隙間に改行があるとき、または空の `f(` と `)` の間に改行があるときは、
 文を書かれたまま残します。
 
