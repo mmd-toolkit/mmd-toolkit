@@ -329,7 +329,15 @@ label is in the Db and stays, and so do whitespace-only labels (`S[ ]`,
 A quote is the start of a string only right after the opener, so `D[ "x" ]` has
 the bare text `"x"` with its quotes and the spaces around it, and the printer
 does not move them. Entities (`a#35;b`) and HTML attributes (`<a href="x">`) are
-text and stay, and so does a node written `""` or `"``"` outside a shape.
+text and stay, and so does a node written `""` or `"``"` outside a shape. Entity
+placeholders remain in the Db until mermaid.js renders them, so entity spellings
+stay: decoding or re-encoding them changes that stored form. For bare nodes that
+look like empty strings, mermaid.js stores the quotes and backticks in both ids
+and labels; removing them changes or removes a node, so those characters stay.
+Neither change falls under a documented Db exception.
+
+[corpus fixture: kanban/db-grid-entity-item-label-quoted] [corpus fixture:
+kanban/db-empty-string-node] [corpus fixture: kanban/db-empty-markdown-node]
 
 [fixture: labels/forms] [fixture: labels/inner-whitespace-trim] [fixture:
 labels/leading-space-quote] [fixture: labels/whitespace-only-forms] [fixture:
@@ -338,9 +346,14 @@ labels/bare-empty-spellings] [fixture: labels/lex-style-entity-two-semicolons]
 labels/db-grid-entity-item-label-quoted]
 
 The printer does not quote, pad, encode, or decode a label, and trims only the
-spaces and tabs at the ends of a bare label. `A[x y]` and `A["x y"]` have the
-same Db, and the form is the one of [Quotes](#quotes). A space after the closing
-quote of a string (`S["x" ]`) is rejected, so it is never a form to print (see
+spaces and tabs at the ends of a bare label. Bare labels covered by
+[Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)
+can lose their end spaces and tabs without changing the node that mermaid.js
+draws. [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no
+padding just inside the shape, as Prettier prints none inside parentheses and
+square brackets. `A[x y]` and `A["x y"]` have the same Db, and the form is the
+one of [Quotes](#quotes). A space after the closing quote of a string
+(`S["x" ]`) is rejected, so it is never a form to print (see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
 
 [fixture: labels/bare-to-quoted] [fixture: labels/space-after-string-invalid]
@@ -605,7 +618,9 @@ data-blocks/closing-after-folded-keep-text]
 Move space-only lines by the same amount, making them empty when no spaces
 remain, and leave empty lines empty. Keep trailing spaces: literal block scalars
 read both their trailing spaces and blank-line widths, so discarding them can
-change the Db.
+change the Db. Prettier leaves no spaces or tabs on an empty line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps an empty line
+outside a scalar empty when the surrounding text lines move.
 
 [fixture: data-blocks/scalar-blank-lines] [fixture:
 data-blocks/scalar-blank-lines-outdent]
@@ -694,9 +709,11 @@ types: `kanban`, two empty lines, and ` S` print `kanban` and `  S`. Prettier
 prints a run of empty lines as one and drops the empty lines at the start and at
 the end of a block, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that for the
-board. Whitespace after `kanban` on a header line with nothing else is dropped,
-whatever the character (a space, a tab, a U+00A0, a U+3000, a U+FEFF, a form
-feed, a vertical tab, a U+2028, a U+2029).
+board. Prettier drops blank lines at the start of a text, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) omits empty lines
+before the `kanban` header. Whitespace after `kanban` on a header line with
+nothing else is dropped, whatever the character (a space, a tab, a U+00A0, a
+U+3000, a U+FEFF, a form feed, a vertical tab, a U+2028, a U+2029).
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/blank-body-end] [fixture:
 blank-lines/gram-grid-lf-header-line] [fixture:
@@ -1128,9 +1145,12 @@ written, the spaces after the directive included: `A[x] %%{y}%%`, U+3000, and
 two spaces, `t %%{x}%% u` and two spaces, and `A[x] %%{y}%%`, two spaces,
 `%% c`, and two spaces are not changed. A no-break space or U+3000 before the
 first directive stays as it is, with the spaces after the last directive left
-out. On the line of a column, the line stays as written where it holds a
-directive: `A[x] %%{y}%%` and two spaces, `A %%{y}%%` and two spaces, and the
-same with a tab are not changed.
+out. Prettier omits spaces and tabs at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) also removes them
+after the last directive of a card when a no-break space or U+3000 before the
+first directive stays. On the line of a column, the line stays as written where
+it holds a directive: `A[x] %%{y}%%` and two spaces, `A %%{y}%%` and two spaces,
+and the same with a tab are not changed.
 
 [fixture: trailing-whitespace/directives-end-blanks-dropped] [test: a tab after
 the directive that ends the text of a card] [test: a tab before the directive
@@ -1180,9 +1200,17 @@ vertical tab, a form feed, a U+2028, and a U+2029 are each one character, and
 each is replaced by one space (or one tab with `useTabs`); see
 [Indentation](#indentation). Inside a label, an icon, a data block, a bare id,
 and a class they are characters of the text and stay
-(`A\u00a0B[x\ufeff\t\u3000y]`). A U+0085 is text, not whitespace, and stays. A
-U+2028 and a U+2029 are not line breaks: `S[x\u2028y]` is one node. A file that
-starts with a U+FEFF keeps it, as Prettier handles it before the plugin.
+(`A\u00a0B[x\ufeff\t\u3000y]`). The Db of mermaid.js keeps internal Unicode
+whitespace in an icon and in the id and label of a bare node, so those
+characters stay. Replacing them with ASCII spaces changes the stored values and
+falls outside the changes to end spaces and tabs allowed by
+[Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same).
+A U+0085 is text, not whitespace, and stays. A U+2028 and a U+2029 are not line
+breaks: `S[x\u2028y]` is one node. A file that starts with a U+FEFF keeps it, as
+Prettier handles it before the plugin.
+
+[corpus fixture: kanban/db-grid-ideographic-item-icon] [corpus fixture:
+kanban/lex-nbsp-bare-value]
 
 [test: kanban: whitespace-values] [test: kanban: nel-is-text] [test: kanban:
 ls-is-value] [test: kanban: ps-is-value] [test: kanban: ls-bare-value] [test:
@@ -1429,46 +1457,65 @@ kanban
 
 The output ends with one line break, the one of the `endOfLine` option, after
 the last line: `kanban`, a line break, and ` S` without a final line break print
-`  S` and a line break. An empty board is `kanban` and a line break. The
-exception is a gap that stays whole under [Blank lines](#blank-lines) at the end
-of the board: the output then ends with that gap, and the printer adds a line
-break after it only where it does not end with one: `kanban`, ` S`, a line of
-`%%`, an empty line, and a line of one space print `  S`, `%%`, the empty line,
-and the line of one space with a line break after it. Prettier ends a file with
-one line break, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives the line break after a final comment too, which the printer adds where the
-text ends without one, also where it ends with a U+2028 or a U+2029. The spaces
-at the end of a last bare id are part of the id and stay (`S   ` prints with its
-spaces, then the line break). When a directive that is not closed reaches the
-end of the text, it takes the rest up to its last character that is no
-whitespace; U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace here.
-On a line of its own, the whitespace after that character is dropped: U+0009 to
-U+000D (the tab, the line breaks, the vertical tab, and the form feed), U+0020,
-U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF, and with
-them the empty lines; one line break ends the text; nothing is added only where
-the text ends right after the character and it is no U+2028 or U+2029.
-`%%{unfinished` and two spaces print `%%{unfinished` and a line break, and
-`%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line break. On
-the line of a column, the whitespace after the directive stays up to the first
-line break instead: `S[x] %%{unfinished` and two spaces print as written, with a
-line break after them, and `S[x] %%{unfinished` with nothing after it is not
-changed. On the line of a card, the spaces and tabs after the directive are
+`  S` and a line break. Prettier ends a text with one line break and no blank
+line, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+board that ending. An empty board is `kanban` and a line break. The exception is
+a gap that stays whole under [Blank lines](#blank-lines) at the end of the
+board: the output then ends with that gap, and the printer adds a line break
+after it only where it does not end with one: `kanban`, ` S`, a line of `%%`, an
+empty line, and a line of one space print `  S`, `%%`, the empty line, and the
+line of one space with a line break after it. Prettier ends a file with one line
+break, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+line break after a final comment too, which the printer adds where the text ends
+without one, also where it ends with a U+2028 or a U+2029. The spaces at the end
+of a last bare id are part of the id and stay (`S   ` prints with its spaces,
+then the line break). When a directive that is not closed reaches the end of the
+text, it takes the rest up to its last character that is no whitespace; U+2028,
+U+2029, U+0085, U+180E, and U+200B are no whitespace here. On a line of its own,
+the whitespace after that character is dropped: U+0009 to U+000D (the tab, the
+line breaks, the vertical tab, and the form feed), U+0020, U+00A0, U+1680,
+U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF, and with them the empty
+lines; one line break ends the text; nothing is added only where the text ends
+right after the character and it is no U+2028 or U+2029. Prettier ends a text
+with one line break. When terminal spaces and tabs are removed from an
+unfinished directive on a line of its own,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the final line
+break. `%%{unfinished` and two spaces print `%%{unfinished` and a line break,
+and `%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line break.
+Prettier ends a text with one line break, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives a final line
+break after the retained U+2028 or U+2029 at the end of an unfinished directive.
+On the line of a column, the whitespace after the directive stays up to the
+first line break instead: `S[x] %%{unfinished` and two spaces print as written,
+with a line break after them, and `S[x] %%{unfinished` with nothing after it is
+not changed. On the line of a card, the spaces and tabs after the directive are
 dropped and any other whitespace character stays, and one line break ends the
 text: `A[x] %%{unfinished` and two spaces print `A[x] %%{unfinished` and a line
 break, and `A[x] %%{unfinished`, a no-break space, and nothing else print the
 no-break space after it and a line break, and `A[x] %%{unfinished`, U+3000, and
-two spaces print them as written, with a line break after them. After the
-comment of a statement or of the header line, a last line of whitespace that
-holds no U+2028 or U+2029, that has no line break after it and no empty line
-before it is left out (`S[x] %% c`, a line break, and a line of two spaces print
-`S[x] %% c` and a line break), while one that a line break follows stays, and so
-does one after an empty line, with a line break added after it (`S[x] %% c`, a
-line break, an empty line, and a line of two spaces print `S[x] %% c`, the empty
-line, and the line of two spaces with a line break after it). A last line that
-holds a U+2028 or a U+2029, alone or beside whitespace, stays after the comment
-of the header line and of a statement, a column or a card, with a line break
-added after it where none follows (`S[x] %% c`, a line break, and a U+2028 print
-the comment, the line of the U+2028, and a line break). After a comment line
+two spaces print them as written, with a line break after them. Prettier ends a
+text with one line break, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the final line
+break after a card line that holds an unfinished directive. After the comment of
+a statement or of the header line, a last line of whitespace that holds no
+U+2028 or U+2029, that has no line break after it and no empty line before it is
+left out (`S[x] %% c`, a line break, and a line of two spaces print `S[x] %% c`
+and a line break), while one that a line break follows stays, and so does one
+after an empty line, with a line break added after it (`S[x] %% c`, a line
+break, an empty line, and a line of two spaces print `S[x] %% c`, the empty
+line, and the line of two spaces with a line break after it). Prettier omits
+blank lines at the end of a text and leaves one final line break. For the
+whitespace-only line with no U+2028 or U+2029, no following line break, and no
+preceding empty line, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+therefore gives the omission and the line break after the comment. A last line
+that holds a U+2028 or a U+2029, alone or beside whitespace, stays after the
+comment of the header line and of a statement, a column or a card, with a line
+break added after it where none follows (`S[x] %% c`, a line break, and a U+2028
+print the comment, the line of the U+2028, and a line break). Prettier ends a
+text with one line break. For a retained last line that holds U+2028 or U+2029
+after a header or statement comment,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the missing
+final line break without replacing the retained character. After a comment line
 with text, every last line of whitespace is left out, one that holds a U+2028 or
 a U+2029 too (`S[x]`, a line break, `%% c`, a line break, and a U+2028 print
 `S[x]` and `%% c`, each followed by a line break), and after a line of `%%`
