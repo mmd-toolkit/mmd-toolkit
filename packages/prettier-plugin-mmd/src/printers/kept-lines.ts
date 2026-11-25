@@ -1,5 +1,6 @@
-import type { Node, Range } from "@mmd-toolkit/ast"
+import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { appendItems, findNodes, minOf, maxOf } from "./collections.ts"
+import { classifySequenceStatement } from "./sequence-statements.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
@@ -13,6 +14,7 @@ import {
   isAtLineEnd,
   isCssWhitespace,
   isSpaceOrTab,
+  isStructural,
   isWhitespace,
   isWordCharacter,
   previousRead,
@@ -59,6 +61,13 @@ export interface KeptLines {
    * - the line of every statement: treemap and treeview.
    */
   readonly ownIndentation: ReadonlySet<number>
+  /**
+   * Lines that a comment region joins to nothing, and that the printer ends at
+   * the U+2028 or U+2029 before the region: they are no joined lines, and are
+   * not printed as written for that reason (see `withJoinedLines`). Absent for
+   * a diagram that has none.
+   */
+  readonly unjoined?: ReadonlySet<number>
 }
 
 /** Grammatical punctuation and whether statement semicolons are optional. */
@@ -182,6 +191,7 @@ export function grammaticalSemicolonsOf(source: Source): ReadonlySet<number> {
  */
 export function findLinesWithOwnSemicolons(
   source: Source,
+  ignored: ReadonlySet<number> = printedIgnoredSemicolonsOf(source),
 ): ReadonlySet<number> {
   const lines = new Set<number>()
   visitOwnSemicolons(
@@ -189,6 +199,7 @@ export function findLinesWithOwnSemicolons(
     [0, source.text.length],
     (offset) => isLastOnItsLine(source, offset),
     (offset) => lines.add(lineStartOf(source, offset)),
+    ignored,
   )
   return lines
 }
@@ -205,6 +216,7 @@ export function holdsOwnSemicolonIn(
   source: Source,
   start: number,
   end: number,
+  ignored: ReadonlySet<number> = printedIgnoredSemicolonsOf(source),
 ): boolean {
   let found = false
   visitOwnSemicolons(
@@ -217,6 +229,7 @@ export function holdsOwnSemicolonIn(
     () => {
       found = true
     },
+    ignored,
   )
   return found
 }
@@ -225,12 +238,15 @@ export function holdsOwnSemicolonIn(
  * Calls `visit` with the offset of every `;` of the kind that
  * `findLinesWithOwnSemicolons` describes that lies in `range`. `isLast` says
  * whether a `;` that the line rule ignores is the last one of its line.
+ * `ignored` is the `;` that the line rule ignores in the lines that are read
+ * (see `isDroppedSemicolon`).
  */
 function visitOwnSemicolons(
   source: Source,
   range: Range,
   isLast: (offset: number) => boolean,
   visit: (offset: number) => void,
+  ignored: ReadonlySet<number>,
 ): void {
   const { root, text } = source
   const rules = semicolonRulesOf(source)
@@ -250,7 +266,7 @@ function visitOwnSemicolons(
       if (
         text[offset] === ";" &&
         !rules.grammatical.has(offset) &&
-        !isDroppedSemicolon(source, offset)
+        !isDroppedSemicolon(source, offset, ignored)
       )
         visit(offset)
     }
@@ -261,7 +277,8 @@ function visitOwnSemicolons(
       visitSemicolonsIn(token.range[0], token.range[1])
     } else if (
       !rules.grammatical.has(token.range[0]) &&
-      ((rules.kind === "text" && !isDroppedSemicolon(source, token.range[0])) ||
+      ((rules.kind === "text" &&
+        !isDroppedSemicolon(source, token.range[0], ignored)) ||
         (source.ignoredSemicolons.has(token.range[0]) &&
           (rules.kind === "required" || !isLast(token.range[0]))))
     ) {
@@ -414,8 +431,8 @@ function staysIgnoredAlone(
   const lineStart = lineStartOf(source, semicolon)
   // The item that the printer puts on a line of its own with the comment: the
   // last statement or divider (a section of a block: `else`, `and`, `option`)
-  // that starts on the line before the comment, or the `end` that closes a
-  // block there.
+  // that starts on the line before the comment, or the closing of a block
+  // there.
   let holderStart = -1
   for (const node of nodesOf(source)) {
     if (
@@ -425,9 +442,9 @@ function staysIgnoredAlone(
     )
       holderStart = Math.max(holderStart, node.range[0])
   }
-  for (const token of findTokensBetween(source, lineStart, commentStart)) {
-    if (token.type === "Keyword" && token.value === "end")
-      holderStart = Math.max(holderStart, token.range[0])
+  for (const closing of findBlockClosings(source)) {
+    if (lineStart <= closing.range[0] && closing.range[1] <= commentStart)
+      holderStart = Math.max(holderStart, closing.range[0])
   }
   if (holderStart < 0) return true
   return ignoredSemicolonsIn(
@@ -461,7 +478,10 @@ export function ignoredSemicolonNeedsItsLine(
  * every statement that lies on several lines, and each time the whole source
  * would otherwise be read again.
  */
-const semicolonLinesBySource = new WeakMap<Source, ReadonlySet<number>>()
+const semicolonLinesByIgnored = new WeakMap<
+  ReadonlySet<number>,
+  ReadonlySet<number>
+>()
 
 /**
  * The lines whose statements the formatter does not move to other lines:
@@ -473,14 +493,17 @@ const semicolonLinesBySource = new WeakMap<Source, ReadonlySet<number>>()
  * about whether a statement may be joined into one line takes these lines
  * into account (see `spansLinesThatCannotJoin`).
  */
-export function findSemicolonLines(source: Source): ReadonlySet<number> {
-  const cached = semicolonLinesBySource.get(source)
+export function findSemicolonLines(
+  source: Source,
+  ignored: ReadonlySet<number> = printedIgnoredSemicolonsOf(source),
+): ReadonlySet<number> {
+  const cached = semicolonLinesByIgnored.get(ignored)
   if (cached !== undefined) return cached
   const lines = new Set([
-    ...findLinesWithOwnSemicolons(source),
+    ...findLinesWithOwnSemicolons(source, ignored),
     ...findLinesEndedBySemicolon(source),
   ])
-  semicolonLinesBySource.set(source, lines)
+  semicolonLinesByIgnored.set(ignored, lines)
   return lines
 }
 
@@ -1061,9 +1084,16 @@ export function findSeparatorRunStart(
  * including selected semicolons in a diagram with required terminators (see
  * `semicolonRulesOf`). A style terminator after U+2028 or U+2029 stays
  * before a removed comment line with text after it: otherwise the style
- * takes that text (diagrams/er.md, The style context).
+ * takes that text (diagrams/er.md, The style context). `ignored` is the `;`
+ * that the line rule ignores in the lines that are read: those of the lines
+ * that the printer prints, unless the caller reads the source as written (see
+ * `keepsClosingOnItsLine`).
  */
-export function isDroppedSemicolon(source: Source, offset: number): boolean {
+export function isDroppedSemicolon(
+  source: Source,
+  offset: number,
+  ignored: ReadonlySet<number> = printedIgnoredSemicolonsOf(source),
+): boolean {
   if (
     !isLastOnItsLine(source, offset) ||
     source.root.comments.some((comment) => comment.range[1] === offset) ||
@@ -1073,7 +1103,7 @@ export function isDroppedSemicolon(source: Source, offset: number): boolean {
     return false
   }
   const { kind } = semicolonRulesOf(source)
-  if (source.ignoredSemicolons.has(offset)) {
+  if (ignored.has(offset)) {
     return (
       kind === "separators" ||
       (kind === "text" && endsStyleStatement(source, offset))
@@ -1312,6 +1342,26 @@ export function lineStartOf(source: Source, offset: number): number {
 }
 
 /**
+ * Where the written indentation of the statement that follows a gap starts,
+ * for the gap from `start` to `end` before the statement: the first offset from
+ * which every character up to `end` is indentation, as `isIndentation` says for
+ * the character at an offset. The block prints that indentation, so what the
+ * source has there is no part of the gap that is kept as written, and does not
+ * make the gap a kept one: the printed text has none, and a second formatting
+ * would read a gap that is not kept. Each diagram type says which characters
+ * are indentation.
+ */
+export function findIndentationStart(
+  start: number,
+  end: number,
+  isIndentation: (offset: number) => boolean,
+): number {
+  let offset = end
+  while (offset > start && isIndentation(offset - 1)) offset--
+  return offset
+}
+
+/**
  * The offset of the line feed that ends the line holding `offset`, or the
  * end of the text: the first line feed from it that no comment or directive
  * spans and that no comment region that joins lines removes (see
@@ -1393,6 +1443,67 @@ export function holdsJoiningRegion(
 }
 
 /**
+ * Where the text that the last region that joins lines takes ends, among the
+ * regions whose comment starts at or after `offset` on its line and before
+ * `gapEnd`, the end of the gap that is asked about, or `offset` where there is
+ * none: the end of the region, and of the removed text (a directive line, say)
+ * that follows it. A gap that ends before the comment, such as the branch
+ * prefix of a treeView line before its text, holds no region and stays with the
+ * layout of its line. `printBlock` keeps the gap up to there
+ * as written for a layout that prints its joining regions as written
+ * (`BlockRules.joiningRegionsPrintedAsWritten`): the region starts after a
+ * U+2028 or U+2029, which the gap holds, so the gap cannot be laid out again
+ * (docs/compatibility.md, A comment line after U+2028 or U+2029).
+ *
+ * `printInlineGap` keeps the other gaps of a kept line as written, those whose
+ * comment line cannot go to a line of its own, so that the formatter does not
+ * stop. The two are decisions of their own, and neither can take over the gaps
+ * of the other: without this one, the spaces between the U+2028 and a comment
+ * that ends in a `;` would be laid out again, and with those gaps added to it,
+ * the lines whose U+2028 stands between two directives would no longer be
+ * printed as they are (the tests of A comment line after U+2028 or U+2029 in
+ * docs/compatibility.md).
+ */
+export function findJoiningRegionEndInLine(
+  source: Source,
+  offset: number,
+  gapEnd: number,
+): number {
+  const lineEnd = lineEndOf(source, offset)
+  const afterDirective = holdsDirectiveBefore(
+    source,
+    lineStartOf(source, offset),
+    offset,
+  )
+  let end = offset
+  for (const region of source.joiningRegions) {
+    if (
+      offset <= region.comment.range[0] &&
+      region.comment.range[0] < Math.min(lineEnd, gapEnd) &&
+      !(afterDirective && !endsWithSemicolon(source, region.comment.range))
+    )
+      end = Math.max(end, skipRemoved(source, region.end))
+  }
+  return end
+}
+
+/** Whether a directive lies within the text from `start` to `end`. */
+function holdsDirectiveBefore(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  return source.root.directives.some(
+    (directive) => start <= directive.range[0] && directive.range[1] <= end,
+  )
+}
+
+/** Whether the text at `range`, a comment, ends with a `;`. */
+function endsWithSemicolon(source: Source, range: Range): boolean {
+  return source.text[range[1] - 1] === ";"
+}
+
+/**
  * The kept lines with the lines that hold a removed line feed added as
  * verbatim lines: a line that mermaid.js reads over several lines of the
  * source is printed as written, from its first line to its end. A layout that
@@ -1414,6 +1525,7 @@ export function withJoinedLines(
         ),
     )
     .map((lineFeed) => lineStartOf(source, lineFeed))
+    .filter((line) => kept.unjoined?.has(line) !== true)
   return {
     ...kept,
     verbatim: new Set([...kept.verbatim, ...joinedLines]),
@@ -1621,7 +1733,7 @@ export function followsGapsOfStyleRuleStretch(
   range: Range,
 ): boolean {
   if (usesVerbatimStyleLines(source)) return false
-  const stretch = findStyleRuleStretches(source).find(
+  const stretch = findSourceStyleRuleStretches(source).find(
     ([first, last]) => first < range[0] && range[1] <= last,
   )
   if (stretch === undefined || !ignoresSemicolonAfter(source, range[1])) {
@@ -1653,6 +1765,15 @@ const styleRuleStretchesBySource = new WeakMap<
   Source,
   readonly (readonly [number, number])[]
 >()
+
+/** The stretches that the line rule reads in the source as written. */
+const sourceStyleRuleStretchesBySource = new WeakMap<
+  Source,
+  readonly (readonly [number, number])[]
+>()
+
+/** The offsets of the closings that go to a line of their own, of each source. */
+const closingStartsBySource = new WeakMap<Source, readonly number[]>()
 
 /** The `;` that end a comment and that the line rule ignores, of each source. */
 const commentEndSemicolonsBySource = new WeakMap<Source, ReadonlySet<number>>()
@@ -1692,14 +1813,18 @@ function findLastKeptSemicolon(
   source: Source,
   lineStart: number,
   segment: ReadableSegment,
+  ignored: ReadonlySet<number>,
 ): number {
-  const keepsSeparators = findSemicolonLines(source).has(lineStart)
+  const keepsSeparators = findSemicolonLines(source, ignored).has(lineStart)
   for (let index = segment.text.lastIndexOf(";"); index !== -1;) {
     const offset = segment.offsets[index]
     const isToken =
       findTokenStartingAt(source, offset)?.value === ";" ||
       commentEndSemicolonsOf(source).has(offset)
-    if (!isToken || (keepsSeparators && !isDroppedSemicolon(source, offset))) {
+    if (
+      !isToken ||
+      (keepsSeparators && !isDroppedSemicolon(source, offset, ignored))
+    ) {
       return index
     }
     index = index === 0 ? -1 : segment.text.lastIndexOf(";", index - 1)
@@ -1720,15 +1845,258 @@ function findStyleRuleStretches(
 ): readonly (readonly [number, number])[] {
   const cached = styleRuleStretchesBySource.get(source)
   if (cached !== undefined) return cached
+  const stretches = findStretchesOfLines(
+    source,
+    findMovedClosingStarts(source),
+    printedIgnoredSemicolonsOf(source),
+  )
+  styleRuleStretchesBySource.set(source, stretches)
+  return stretches
+}
+
+/**
+ * The stretches that the line rule reads in the source as written, where no
+ * closing goes to a line of its own. A closing stays on its line where one of
+ * them holds whitespace before it (see `followsGapsOfStyleRuleStretch`), so
+ * this is the set that decides where a closing goes.
+ */
+function findSourceStyleRuleStretches(
+  source: Source,
+): readonly (readonly [number, number])[] {
+  const cached = sourceStyleRuleStretchesBySource.get(source)
+  if (cached !== undefined) return cached
+  const stretches = findStretchesOfLines(source, [], source.ignoredSemicolons)
+  sourceStyleRuleStretchesBySource.set(source, stretches)
+  return stretches
+}
+
+/**
+ * The stretches of every line of the source, with the segments of the line
+ * rule cut at the offsets in `cuts`, where the printer starts a new line.
+ * `ignored` is the `;` that the line rule ignores in those lines (see
+ * `isDroppedSemicolon`).
+ */
+function findStretchesOfLines(
+  source: Source,
+  cuts: readonly number[],
+  ignored: ReadonlySet<number>,
+): readonly (readonly [number, number])[] {
   const stretches: (readonly [number, number])[] = []
   let start = 0
   while (start <= source.text.length) {
     const end = lineEndOf(source, start)
-    appendItems(stretches, findPotentialStyleRuleStretches(source, start, end))
+    appendItems(
+      stretches,
+      findPotentialStyleRuleStretches(source, start, end, cuts, ignored),
+    )
     start = end + 1
   }
-  styleRuleStretchesBySource.set(source, stretches)
   return stretches
+}
+
+/**
+ * The offsets of the closings of a sequence diagram that the printer puts on a
+ * line of its own: the closings of the blocks that nothing keeps on the line
+ * before them (see `keepsClosingOnItsLine`). The `#` of a comment after such a
+ * closing leaves the line that it ended a stretch of, so the line that the
+ * printer prints holds the stretches of the text before the closing only, and
+ * the whitespace that lay in the longer stretch is printed as anywhere else
+ * (docs/sequence.md, Semicolons).
+ */
+function findMovedClosingStarts(source: Source): readonly number[] {
+  const cached = closingStartsBySource.get(source)
+  if (cached !== undefined) return cached
+  const starts = findBlockClosings(source)
+    .filter((closing) => !keepsClosingOnItsLine(source, closing))
+    .map((closing) => closing.range[0])
+    .sort((a, b) => a - b)
+  closingStartsBySource.set(source, starts)
+  return starts
+}
+
+/** The closings of the blocks of each source, found once. */
+const blockClosingsBySource = new WeakMap<Source, readonly Token[]>()
+
+/** Whether a node is a block statement of a sequence diagram, which `end` closes. */
+function isSequenceBlock(node: Node): boolean {
+  const kind = classifySequenceStatement(node)?.kind
+  return kind === "body" || kind === "sections"
+}
+
+/**
+ * The closings of the blocks of a sequence diagram, none for another diagram:
+ * the last token of each block statement. A closing is judged by the node that
+ * it ends and not by its spelling, here and wherever a closing is looked for.
+ */
+function findBlockClosings(source: Source): readonly Token[] {
+  const cached = blockClosingsBySource.get(source)
+  if (cached !== undefined) return cached
+  const closings: Token[] = []
+  if (source.root.body.type === "SequenceDiagram") {
+    for (const node of findNodes(source.root.body, isSequenceBlock)) {
+      const closing = findTokenEndingBefore(source, node.range[1])
+      if (closing !== undefined) closings.push(closing)
+    }
+  }
+  blockClosingsBySource.set(source, closings)
+  return closings
+}
+
+/** The `;` that the line rule ignores in the lines that the printer prints, of each source. */
+const printedIgnoredSemicolonsBySource = new WeakMap<
+  Source,
+  ReadonlySet<number>
+>()
+
+/**
+ * The offsets of the `;` that the line rule ignores in the lines that the
+ * printer prints, which are the lines of the source cut where a closing goes to
+ * a line of its own (see `findMovedClosingStarts`): the `;` that the rule
+ * ignores in the source, which mermaid.js removes from the text, and the `;`
+ * that it ignores in the text before the closing without them, whose last `;`
+ * is then the one that the rule ignores in the line that the printer prints
+ * (docs/sequence.md, Semicolons).
+ */
+export function printedIgnoredSemicolonsOf(
+  source: Source,
+): ReadonlySet<number> {
+  const cached = printedIgnoredSemicolonsBySource.get(source)
+  if (cached !== undefined) return cached
+  const cuts = findMovedClosingStarts(source)
+  let printed: ReadonlySet<number> = source.ignoredSemicolons
+  if (cuts.length > 0) {
+    const set = new Set(source.ignoredSemicolons)
+    const lines = new Set(cuts.map((cut) => lineStartOf(source, cut)))
+    for (const first of lines) {
+      const segments = readSegments(
+        source,
+        first,
+        lineEndOf(source, first),
+      ).map((segment) => withoutOffsets(segment, source.ignoredSemicolons))
+      for (const offset of ignoredSemicolonsIn(cutSegments(segments, cuts))) {
+        if (offset >= 0) set.add(offset)
+      }
+    }
+    printed = set
+  }
+  printedIgnoredSemicolonsBySource.set(source, printed)
+  return printed
+}
+
+/** The segment without the characters at the offsets in `removed`. */
+function withoutOffsets(
+  segment: ReadableSegment,
+  removed: ReadonlySet<number>,
+): ReadableSegment {
+  const kept = segment.offsets.flatMap((offset, index) =>
+    removed.has(offset) ? [] : [index],
+  )
+  return {
+    text: kept.map((index) => segment.text[index]).join(""),
+    offsets: kept.map((index) => segment.offsets[index]),
+  }
+}
+
+/** The start of the earliest node that ends at each offset, of each source. */
+const earliestNodeStartsBySource = new WeakMap<
+  Source,
+  ReadonlyMap<number, number>
+>()
+
+/**
+ * Whether the token closes a block around the block that `closing` closes: a
+ * node that starts before `closing` ends with the token. The token is judged
+ * by the node that it ends and not by its spelling, since a node or a state
+ * named `end` or `End` stands where a closing stands and is no closing.
+ */
+export function closesEnclosingBlock(
+  source: Source,
+  closing: Token,
+  token: Token,
+): boolean {
+  let starts = earliestNodeStartsBySource.get(source)
+  if (starts === undefined) {
+    const found = new Map<number, number>()
+    // The body of the diagram is no block that a closing closes: it ends with
+    // its last token, whatever that is.
+    for (const node of findNodes(
+      source.root.body,
+      (candidate) => candidate !== source.root.body,
+    )) {
+      const start = found.get(node.range[1])
+      if (start === undefined || node.range[0] < start)
+        found.set(node.range[1], node.range[0])
+    }
+    starts = found
+    earliestNodeStartsBySource.set(source, starts)
+  }
+  return (starts.get(token.range[1]) ?? Infinity) < closing.range[0]
+}
+
+/**
+ * Whether the closing keeps the line before it, which the block of the closing
+ * ends on, as the line of the closing: something follows the closing on its
+ * line, or the text before it needs the closing on its line. A `;` that the
+ * line rule ignores stays with the text on the line that makes it ignored
+ * (`style:#x` before the closing) where a line of its own would make it read:
+ * it ends a comment as an entity (`end #a;`, see `ignoredSemicolonNeedsItsLine`),
+ * also where whitespace follows it and it has no token of its own
+ * (`commentHasIgnoredSemicolonThatNeedsItsLine`). The `#` of a comment after
+ * the closing also keeps the closing on the line where it ends a stretch of the
+ * line rule that holds whitespace of the line before the closing: a line break
+ * would end the stretch earlier (see `followsGapsOfStyleRuleStretch`). A line
+ * that stays together because of a `;` after the closing, with a `;` before the
+ * closing that only separates statements, keeps the closing too: the part
+ * before it holds no `;` of its own, so a second formatting would not keep its
+ * statements and its `;` together (see `holdsOwnSemicolonIn`). The closing of
+ * a block around this one is on a line of its own after this block, unless
+ * something follows it, so it does not keep the closing of this block on the
+ * line: the second formatting would move it (see `closesEnclosingBlock`). The
+ * decision reads the `;`
+ * that the line rule ignores in the source as written, not in the lines that
+ * the printer prints, which the decisions of all closings make (see
+ * `printedIgnoredSemicolonsOf`).
+ */
+export function keepsClosingOnItsLine(source: Source, closing: Token): boolean {
+  const closingStart = closing.range[0]
+  const closingLine = lineStartOf(source, closingStart)
+  const lineEnd = lineEndOf(source, closingStart)
+  return (
+    findTokensBetween(source, closing.range[1], lineEnd).some(
+      (token) =>
+        isStructural(source, token) &&
+        !closesEnclosingBlock(source, closing, token),
+    ) ||
+    [...source.ignoredSemicolons].some(
+      (semicolon) =>
+        closing.range[1] <= semicolon &&
+        semicolon < lineEnd &&
+        !isDroppedSemicolon(source, semicolon, source.ignoredSemicolons) &&
+        ignoredSemicolonNeedsItsLine(source, semicolon),
+    ) ||
+    source.root.comments.some(
+      (comment) =>
+        closing.range[1] <= comment.range[0] &&
+        comment.range[0] < lineEnd &&
+        commentHasIgnoredSemicolonThatNeedsItsLine(source, comment.range),
+    ) ||
+    followsGapsOfStyleRuleStretch(source, closing.range) ||
+    (findTokensBetween(source, closingLine, closingStart).some(
+      (token) => token.value === ";",
+    ) &&
+      !holdsOwnSemicolonIn(
+        source,
+        closingLine,
+        closingStart,
+        source.ignoredSemicolons,
+      ) &&
+      holdsOwnSemicolonIn(
+        source,
+        closingStart,
+        lineEnd,
+        source.ignoredSemicolons,
+      ))
+  )
 }
 
 /** The first of the two literal words used by the common line rule. */
@@ -1827,13 +2195,18 @@ export function findPotentialStyleRuleStretches(
   source: Source,
   start: number,
   end: number,
+  cuts: readonly number[],
+  ignored: ReadonlySet<number>,
 ): readonly (readonly [number, number])[] {
   const first = lineStartOf(source, start)
   const lineEnd = lineEndOf(source, end)
   if (!source.text.slice(first, lineEnd).includes(";")) return []
   const stretches: (readonly [number, number])[] = []
-  for (const segment of readSegments(source, first, lineEnd)) {
-    const semicolon = findLastKeptSemicolon(source, first, segment)
+  for (const segment of cutSegments(
+    readSegments(source, first, lineEnd),
+    cuts,
+  )) {
+    const semicolon = findLastKeptSemicolon(source, first, segment, ignored)
     if (semicolon < 0) continue
     const firstWord = findStyleWord(segment.text)
     if (firstWord === -1) continue
@@ -2129,6 +2502,36 @@ function joinLines(
     },
     ...second.slice(1),
   ]
+}
+
+/**
+ * The segments cut where the printer starts a new line, at the offsets in
+ * `cuts`: the characters of a segment from a cut on are a segment of their own.
+ */
+function cutSegments(
+  segments: readonly ReadableSegment[],
+  cuts: readonly number[],
+): readonly ReadableSegment[] {
+  if (cuts.length === 0) return segments
+  const cut: ReadableSegment[] = []
+  for (const segment of segments) {
+    let from = 0
+    for (const at of cuts) {
+      const index = segment.offsets.findIndex((offset) => offset >= at)
+      if (index > from) {
+        cut.push({
+          text: segment.text.slice(from, index),
+          offsets: segment.offsets.slice(from, index),
+        })
+        from = index
+      }
+    }
+    cut.push({
+      text: segment.text.slice(from),
+      offsets: segment.offsets.slice(from),
+    })
+  }
+  return cut
 }
 
 /** The characters of a line-rule segment, with their offsets in the source. */

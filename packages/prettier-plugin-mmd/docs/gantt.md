@@ -406,6 +406,37 @@ task-data/colon-column-sections-in-different-columns] [fixture:
 task-data/colon-column-before-first-section] [fixture:
 task-data/colon-column-sections-and-preamble]
 
+A section with a task whose line a comment line after U+2028 or U+2029 joins to
+the next line, which the printer prints as written, is on its own where the
+colon of that task is not in the column of the group: the printer moves the
+colons of the other tasks and leaves that one, so the colons of the section are
+in more than one column, and a second formatting would find it on its own. A
+task that stays as written for another reason, such as a name that ends with a
+directive, is left out of the tasks of its section, as above, and does not take
+the section out of the group.
+
+[test: Gantt: a task that a comment after U+2028 joins to the next line, and a
+section with padding after it] [test: Gantt: a task that a comment only after
+U+2028 joins to the next line, and a section with padding after it] [test:
+Gantt: a section with padding, and a section whose task a comment after U+2028
+joins to the next line] [test: Gantt: a task that a comment after U+2028 joins
+to the next line, and two sections with padding after it] [test: Gantt: a task
+that a comment after U+2029 joins to the next line, and a section with padding
+after it] [test: Gantt: a task that a comment after U+2028 joins to the next
+line, with its colon at the column of the group] [test: Gantt: a task that stays
+as written for another reason does not take its section out of the group] [test:
+Gantt: a task that a comment after U+2028 joins to a directive that is not
+closed, and a section with padding after it] [test: Gantt: a task that a comment
+after U+2028 joins to a second comment line, and a section with padding after
+it] [test: Gantt: a task that a comment after U+2028 joins to a line of
+whitespace, and a section with padding after it] [test: Gantt: a task that a
+comment after U+2028 joins to an empty line, and a section with padding after
+it] [test: Gantt: a task that a comment after U+2028 joins to the end of the
+text, in the last section] [test: Gantt: a task that a comment after U+2028
+joins to the next line, under a title with an ignored semicolon] [test: Gantt: a
+task that a comment that ends in a semicolon after U+2028 joins to the next
+line, and a section with padding after it]
+
 The colons stay where they are in these cases, since moving them could change
 the figure. A section in which no name has more than one space before its colon
 is left: no colon moves, and a name that touches its colon gets its one space as
@@ -1963,6 +1994,18 @@ removing it changes recorded text outside that end-trimming exception.
 
 [test: U+2028 and spaces at the end of a title] [test: U+2029 and spaces at the
 end of a date format]
+
+A comment line that starts with `%` ends at a U+2028 or U+2029, and the text
+after the character is a line of its own. A directive and a comment on that line
+are printed as on a line after a line feed: with one space between them where
+the source has whitespace there, and none where it has none.
+
+[test: gantt: a percent comment line, U+2028, a directive, two spaces, and a
+comment at the end of the text] [test: gantt: a percent comment line, U+2028, a
+directive, two spaces, and a comment] [test: gantt: a percent comment line,
+U+2028, a directive touching a comment] [test: gantt: a percent comment line,
+U+2028, a directive, a tab, and a comment] [test: gantt: a percent comment line,
+U+2029, a directive, two spaces, and a comment]
 
 ### Whitespace characters
 
