@@ -21,7 +21,13 @@ organized and checked is described in
 The statements after the header stand one level deeper than the header. The
 fields of a requirement or an element stand one level deeper than the line of
 the statement, one on each line, and the `}` that closes the body stands on a
-line of its own, at the level of that line.
+line of its own, at the level of that line. Statements stand one level below the
+header and body contents one level below their opening statement in
+[ER diagrams](./er.md#indentation) and
+[sequence diagrams](./sequence.md#indentation), with the closing mark aligned
+with the opening statement;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the statements, fields, and `}` these same levels.
 
 [fixture: indentation/statements-and-bodies]
 
@@ -38,7 +44,11 @@ was indented with.
 [fixture: indentation/written-indentation-dropped]
 
 The header stands at the first column, also where whitespace was written before
-it.
+it. The header starts in the first column in
+[Gantt charts](./gantt.md#indentation) and
+[user journeys](./journey.md#indentation);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a requirement diagram's header that same position.
 
 [fixture: indentation/header-leading-whitespace]
 
@@ -136,18 +146,28 @@ examples in the documentation of mermaid.js use (`FUNCTIONALREQUIREMENT` is
 
 [fixture: bodies/kinds] [fixture: keyword-case/types-one-form]
 
-A statement that follows the `}` on its line stands on a line of its own.
+A statement that follows the `}` on its line stands on a line of its own. A
+statement after a body's closing mark moves to its own line in
+[ER diagrams](./er.md#statements-one-per-line) after `}` and in
+[sequence diagrams](./sequence.md#statements-one-per-line) after `end`;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same separation after a requirement or element body's `}`.
 
 [fixture: bodies/statement-after-closing-brace] [fixture:
 statements-one-per-line/closing-brace-then-statement]
 
 mermaid.js needs a line break after the `{`, so a body without fields is the `{`
-and the `}` on two lines, and the empty lines between them are dropped.
+and the `}` on two lines, and the empty lines between them are dropped. Prettier
+removes blank lines at block edges under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), so an empty body has
+no blank lines between its required opening and closing brace lines.
 
 [fixture: bodies/empty-body-on-two-lines]
 
 Empty lines at the start and the end of a body are dropped too (see
-[Blank lines](#blank-lines)).
+[Blank lines](#blank-lines)). Prettier removes blank lines at block edges under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark); the same rule
+removes blank lines immediately inside a body's opening and closing braces.
 
 [fixture: bodies/blank-lines-at-edges-dropped]
 
@@ -226,6 +246,15 @@ The whitespace at the ends of an unquoted value is not in the Db and is dropped;
 a run of spaces and tabs inside the value, or between the quotes of a string, is
 in the Db and is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+The field colon is a key colon, and Prettier removes trailing spaces and tabs;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore removes the
+padding outside an unquoted value. Message text in
+[sequence diagrams](./sequence.md#whitespace-between-tokens) and fields in
+[class diagrams](./class.md#member-lines) print internal runs of spaces and tabs
+as one space;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that form inside quoted and unquoted single-line values, subject to the cited
+exclusions.
 
 [fixture: fields/value-outer-whitespace-dropped] [fixture:
 fields/value-inner-runs-collapsed] [fixture:
@@ -349,7 +378,13 @@ after it.
 names/names-that-need-quotes] [fixture: names/names-next-to-a-direction-line]
 
 An unquoted name may hold whitespace between its words, which is part of the
-name and stays as written; the whitespace at its ends is not, and is dropped.
+name and stays as written; the whitespace at its ends is not, and is dropped. A
+keyword-to-name gap is one space in [ER subgraphs](./er.md#subgraphs) and
+[state definitions](./state.md#whitespace-between-tokens);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that gap the same form in requirement and element headers.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
+before their opening brace.
 
 [fixture: names/inner-whitespace-kept] [fixture: names/outer-whitespace-dropped]
 
@@ -570,12 +605,24 @@ requirementDiagram
 
 Name and class lists use a comma that touches the name before it and has one
 space after it, as Prettier prints a comma where mermaid.js reads the list the
-same. The two lists of a `class` statement remain separated by one space.
-Statement-ending whitespace is dropped where the style context ends at LF. The
-first style stands after one space. For ordinary single-line property/value
-styles in `style` or `classDef`, put no space before the first colon of each
-style and one before its nonempty value; separate styles with a comma and one
-following space.
+same. The two lists of a `class` statement remain separated by one space. The
+gap between target names and classes is one space in
+[block diagrams](./block.md#styles) and
+[usecase diagrams](./usecase.md#classes-and-styles);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same space between the two lists of a `class` statement. Statement-ending
+whitespace is dropped where the style context ends at LF. The first style stands
+after one space. The gap before the first style is one space in
+[block diagrams](./block.md#styles) and
+[ER diagrams](./er.md#styles-and-classes);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that gap the same form. For ordinary single-line property/value styles in
+`style` or `classDef`, put no space before the first colon of each style and one
+before its nonempty value; separate styles with a comma and one following space.
+A style property has the colon of a key, and the comma between styles separates
+items; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these
+marks their spacing: no preceding space, and one space before a nonempty value
+or the next style.
 
 [fixture: styles-and-classes/empty-style-value]
 
@@ -585,12 +632,21 @@ style with a `:` and in one without: `stroke-dasharray:  5    5` becomes
 whitespace stands between two words stays as written: `fill #f00` and `fill#f00`
 are kept apart, since a word that touches the next stays touching, as a gap does
 elsewhere (see [Directives](#directives)), and joining the words would hide
-where one word ends. Mermaid concatenates the native style units whatever
-whitespace separates them: `stroke-dasharray: 5 5` still means
-`stroke-dasharray:55`, so the Db does not change. For example,
-`fill   : navy, stroke  : black` becomes `fill: navy, stroke: black`. A style
-that starts with the `:` has no whitespace before it and one space after it, as
-any other: `style r :  red   x` is printed `style r : red x`.
+where one word ends. The words of a style keep their contact or separation in
+[flowcharts](./flowchart.md#whitespace-between-tokens) and
+[block diagrams](./block.md#styles);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same distinction between touching and separated style words. Mermaid
+concatenates the native style units whatever whitespace separates them:
+`stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does not
+change. For example, `fill   : navy, stroke  : black` becomes
+`fill: navy, stroke: black`. A style that starts with the `:` has no whitespace
+before it and one space after it, as any other: `style r :  red   x` is printed
+`style r : red x`. The gaps between words of a style that starts with `:` become
+one space in [flowcharts](./flowchart.md#whitespace-between-tokens) and
+[block diagrams](./block.md#styles);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+those word gaps the same form.
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 
@@ -780,6 +836,11 @@ direction/text-both-sides-inner-whitespace-kept] [fixture:
 direction/case-one-form]
 
 A value written on a later line is printed after `direction` on one line.
+Direction values written on later lines join `direction` on one line in
+[ER diagrams](./er.md#direction) and
+[state diagrams](./state.md#multi-line-statements);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the keyword-to-value gap that same form.
 
 [fixture: direction/value-on-next-line-joined]
 
@@ -1214,7 +1275,12 @@ Keep line breaks and interior blank lines, and the whitespace at the end of each
 line of text except the last one; a line of whitespace only becomes an empty
 line. The whitespace at the end of the last line of text is dropped where the
 closer stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Its `}` stands at the level of its statement.
+follows it on that line. Its `}` stands at the level of its statement. A
+separate `}` of a multiline `accDescr` aligns with its statement in
+[class diagrams](./class.md#multi-line-values) and
+[state diagrams](./state.md#multi-line-values);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the closing brace the same alignment.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
@@ -1354,7 +1420,10 @@ terminator leaves the Db unchanged, also with several styles.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
-Whitespace immediately before a dropped `;` is dropped with it.
+Whitespace immediately before a dropped `;` is dropped with it. Dropping a style
+terminator leaves the spaces and tabs before it at the end of the line;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them, as
+Prettier does in JavaScript, CSS, and YAML.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
 
@@ -1528,12 +1597,18 @@ requirementDiagram
 
 Where no rule above applies, a run of whitespace between two tokens of a
 statement becomes one space, and tokens that touch keep touching: the braces of
-an empty description block.
+an empty description block. The opening brace of a description block takes one
+preceding space, and empty braces take no interior whitespace under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), giving
+`accDescr {}`.
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/touching-kept]
 
-The whitespace at the end of a line is dropped.
+The whitespace at the end of a line is dropped. Prettier leaves no trailing
+spaces or tabs on lines of JavaScript, CSS, or YAML, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes spaces and
+tabs at the end of a line here too.
 
 [fixture: whitespace-between-tokens/trailing-whitespace-dropped]
 
@@ -1654,7 +1729,13 @@ of a body or of the text stays on a line of its own.
 A comment after the header, after the `{` or the `}` of a body, after a field
 whose value is a keyword or a string, and after a name or a class that is a
 string stays on the line, as written: one space stands before it where
-whitespace was written, and none where it touches.
+whitespace was written, and none where it touches. Trailing comments stay on
+their lines in [C4 diagrams](./c4.md#comments) and
+[pie charts](./pie.md#comments), with one space for a written gap and none for
+contact;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same attachment and spacing after a requirement header or a keyword or
+string field value.
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-opening-brace] [fixture: comments/after-closing-brace]
@@ -1766,7 +1847,14 @@ A directive on a line of its own stands at the level of the statements around
 it, in a body at the level of the fields, and a directive on the line of a
 statement is placed as in a flowchart: the gap is printed as without the
 directive, and the directive stands after its space and touches the unit that
-follows it.
+follows it. Standalone directives align with surrounding statements in
+[flowcharts](./flowchart.md#directives) and
+[quadrant charts](./quadrant.md#directives), and with body statements in
+flowchart subgraphs and [class namespaces](./class.md#directives). Inline
+directives keep their authored gap in flowcharts and quadrant charts, with the
+ordinary gap space before the directive and the next unit touching it.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+these directive positions and gaps their forms.
 
 [fixture: directives/kept] [fixture: directives/in-body] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]
@@ -2008,9 +2096,15 @@ the class in quotes of a class statement, with a statement after the comment]
 
 U+00A0 and U+FEFF are whitespace to the lexer between units, and characters of a
 name or a value. Where the lexer reads whitespace between units, a space stands
-for them; inside a name or a value they are characters of the text, and stay.
-The examples are written as strings, in which `\u00a0` is U+00A0 and `\ufeff` is
-U+FEFF.
+for them; inside a name or a value they are characters of the text, and stay. A
+whitespace character used as the separator after a keyword becomes an ASCII
+space in [Gantt charts](./gantt.md#whitespace-characters) and
+[user journeys](./journey.md#whitespace-characters);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that separator the same form.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
+before the opening brace of a body. The examples are written as strings, in
+which `\u00a0` is U+00A0 and `\ufeff` is U+FEFF.
 
 [test: U+00A0 around the name of a requirement] [test: U+00A0 around the value
 of a field] [test: U+00A0 around the colon of a field] [test: U+00A0 around the

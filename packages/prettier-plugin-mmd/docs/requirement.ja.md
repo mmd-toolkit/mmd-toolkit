@@ -20,6 +20,11 @@ fixture の置き方と確かめ方は、
 ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
 requirement と element のフィールドは、その文の行より 1 段深く、
 1 行に 1 つ置き、本体を閉じる `}` は、その行と同じ段に、行に単独で置きます。
+[ER](./er.ja.md#字下げ) と [sequence](./sequence.ja.md#字下げ) の図も、
+文はヘッダーより 1 段深く、本体の中は開始の文より 1 段深く置き、
+閉じる印は開始の文の段にそろえます。
+requirement の文とフィールドと `}` に、この字下げを与えるのは、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
 
 [fixture: indentation/statements-and-bodies]
 
@@ -35,6 +40,10 @@ requirement と element のフィールドは、その文の行より 1 段深�
 [fixture: indentation/written-indentation-dropped]
 
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
+[gantt](./gantt.ja.md#インデント) と [journey](./journey.ja.md#インデント)
+の図も、ヘッダーを 1 桁目に置きます。
+requirement のヘッダーにも、この位置を与えるのは、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
 
 [fixture: indentation/header-leading-whitespace]
 
@@ -131,16 +140,27 @@ mermaid.js の文書の例が使う大文字小文字で印字します。
 [fixture: bodies/kinds] [fixture: keyword-case/types-one-form]
 
 `}` の後ろに同じ行で続く文は、それぞれの行に移します。
+[ER](./er.ja.md#1-行に-1-文) の図は `}` の後ろで、
+[sequence](./sequence.ja.md#1-行に-1-文) の図は `end` の後ろで、
+同じ行の次の文をそれぞれの行に移します。
+requirement と element の本体の `}` の後ろも、同じように分けるのは、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
 
 [fixture: bodies/statement-after-closing-brace]
 [fixture: statements-one-per-line/closing-brace-then-statement]
 
 mermaid.js は `{` の後に改行を要するので、
 フィールドのない本体は `{` と `}` を 2 行に置き、間の空行は落とします。
+Prettier は、ブロックの先頭と末尾の空行を落とします。
+空の本体でも 2 行の波括弧の間に空行を置かない形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: bodies/empty-body-on-two-lines]
 
 本体の先頭と末尾の空行も落とします（[空行](#空行)を参照）。
+Prettier は、ブロックの先頭と末尾の空行を落とします。
+本体の開始と終了の波括弧のすぐ内側に空行を置かない形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: bodies/blank-lines-at-edges-dropped]
 
@@ -221,6 +241,15 @@ requirementDiagram
 値の中や文字列の引用符の間の空白とタブの連なりは Db に入りますが、
 空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+Prettier の行末の空白とタブの扱いと、キーのコロンの間隔に従って、
+引用符のない値の両端の空白を落とす形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+[sequence](./sequence.ja.md#トークンの間の空白) のメッセージのテキストと、
+[class](./class.ja.md#メンバーの行) のフィールドも、内部の空白とタブの連なりを、
+空白 1 つにして印字します。
+参照先の除外条件に従い、1 行の値の内部の連なりを、
+引用符の有無によらず同じ形にするのは、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
 
 [fixture: fields/value-outer-whitespace-dropped]
 [fixture: fields/value-inner-runs-collapsed]
@@ -348,6 +377,13 @@ mermaid.js は `"r"` と `r` を同じ名前として読み、
 引用符のない名前は、語の間に空白を持てます。
 それは名前の一部なので書かれたまま残し、
 両端の空白は名前に入らないので落とします。
+[ER](./er.ja.md#subgraph) のサブグラフと
+[state](./state.ja.md#トークンの間の空白) の定義も、
+キーワードと名前の間に空白を 1 つ置きます。
+requirement と element のヘッダーで、この間隔を与えるのは、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
+開始波括弧の前の空白を与えるのは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)です。
 
 [fixture: names/inner-whitespace-kept] [fixture: names/outer-whitespace-dropped]
 
@@ -571,14 +607,26 @@ requirementDiagram
 前の名前に接して後ろに空白を 1 つ置く comma を使います。
 Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 `class` の 2 つのリストは、空白 1 つで区切ります。
+[block](./block.ja.md#スタイル) と [usecase](./usecase.ja.md#classes-and-styles)
+の図も、対象の名前とクラスを、空白 1 つで区切ります。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+このリストの区切りの形を与えます。
 style の文脈が LF で終わる場合、文の末尾の空白は落とします。
 最初のスタイルは空白 1 つの後に置きます。
+[block](./block.ja.md#スタイル) と [ER](./er.ja.md#スタイルとクラス) の図も、
+最初のスタイルの前に空白を 1 つ置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+このスタイルの前の隙間を決めます。
 `style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
 最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
 
 [fixture: styles-and-classes/empty-style-value]
 
 スタイル間は `,` とその後の空白 1 つで区切ります。
+スタイルのプロパティのコロンはキーのコロンで、スタイルの間のコンマは、
+項目を区切るコンマです。
+その前を詰め、空でない値と次のスタイルの前に空白 1 つを置く形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 `:` のあるスタイルでも、ないスタイルでも、語と語の間の空白かタブの連続は、
 空白 1 つで印字します。
 `stroke-dasharray:  5    5` は `stroke-dasharray: 5 5` に、
@@ -588,12 +636,22 @@ style の文脈が LF で終わる場合、文の末尾の空白は落としま�
 そのため、`fill #f00` と `fill#f00` は区別して残します。
 [ディレクティブ](#ディレクティブ)を参照してください。
 語をつなぐと、どこで語が終わるかが見えなくなるからです。
+[flowchart](./flowchart.ja.md#トークンの間の空白) と
+[block](./block.ja.md#スタイル) の図も、スタイルの語が接するか、
+空白で離れるかを保ちます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この語の間の隙間の形を与えます。
 Mermaid は、区切る空白にかかわらずスタイルの単位をつなげて読むため、
 `stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` で、Db は変わりません。
 `fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
 `:` で始まるスタイルも、ほかのスタイルと同じく、`:` の前に空白を置かず、
 後ろに空白を 1 つ置きます。
 `style r :  red   x` は `style r : red x` と印字します。
+[flowchart](./flowchart.ja.md#トークンの間の空白) と
+[block](./block.ja.md#スタイル) の図も、`:` で始まるスタイルの語の間を、
+空白 1 つにして印字します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この語の間の隙間を決めます。
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 
@@ -784,6 +842,10 @@ requirementDiagram
 [fixture: direction/case-one-form]
 
 次の行に書かれた値は、`direction` の後ろに寄せて 1 行にします。
+[ER](./er.ja.md#方向) と [state](./state.ja.md#複数行の文) の図も、
+後の行に書かれた方向の値を、`direction` の後ろに寄せて 1 行にします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+このキーワードと値の間を決めます。
 
 [fixture: direction/value-on-next-line-joined]
 
@@ -1232,6 +1294,10 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 `}` は文と同じ段に置きます。
+[class](./class.ja.md#複数行の値) と [state](./state.ja.md#複数行の値) の図も、
+複数行の `accDescr` を閉じる単独の `}` を、文と同じ段に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この閉じ括弧の段を決めます。
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1369,6 +1435,9 @@ accDescr: direction RL
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
 削除する `;` の直前の空白も一緒に削除します。
+スタイルの終端を削除すると、直前の空白とタブは行末に残ります。
+Prettier は JavaScript、CSS、YAML の行末の空白とタブを落とすので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がそれらも落とします。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
 
@@ -1543,11 +1612,17 @@ requirementDiagram
 文の中の 2 つのトークンの間の空白は 1 つの空白にし、
 接しているトークンは接したままにします。
 空の説明ブロックの波括弧がそうです。
+説明ブロックの開始波括弧の前には空白 1 つを置き、
+空の波括弧の中には空白を置きません。
+`accDescr {}` と印字するこの形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/touching-kept]
 
 行末の空白は落とします。
+Prettier は、JavaScript、CSS、YAML の行末に空白とタブを残さないので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が行末の空白とタブを落とします。
 
 [fixture: whitespace-between-tokens/trailing-whitespace-dropped]
 
@@ -1669,6 +1744,12 @@ requirementdiagram
 ヘッダーの後ろ、本体の `{` と `}` の後ろ、キーワードか文字列の値の後ろ、
 文字列の名前かクラスの後ろのコメントは、その行に書かれたまま残します。
 空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
+[c4](./c4.ja.md#コメント) と [pie](./pie.ja.md#comments) の図も、
+後ろのコメントをその行に残し、前の隙間は空白 1 つにして、
+接していれば接したままにします。
+ヘッダーや、キーワードか文字列のフィールドの値の後のコメントにも、
+この位置と間隔を与えるのは、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-opening-brace] [fixture: comments/after-closing-brace]
@@ -1780,6 +1861,15 @@ requirementDiagram
 本体の中ではフィールドと同じ段に置きます。
 文の行の中では、flowchart と同じく、隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
+単独のディレクティブは、
+[flowchart](./flowchart.ja.md#ディレクティブ) と
+[quadrant](./quadrant.ja.md#指令) の図でも、周りの文と段をそろえ、
+flowchart のサブグラフと [class](./class.ja.md#ディレクティブ) の名前空間でも、
+本体の文と段をそろえます。
+文の行の中のディレクティブも、flowchart と quadrant の図と同じく、
+書かれた隙間に残し、通常の隙間の空白の後ろに置き、後ろの単位に接します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+このディレクティブの段と隙間を決めます。
 
 [fixture: directives/kept] [fixture: directives/in-body]
 [fixture: directives/before-header]
@@ -2024,6 +2114,13 @@ U+00A0 と U+FEFF は、字句解析器にとって単位の間の空白であ�
 名前や値の文字でもあります。
 字句解析器が単位の間の空白を読む所には空白 1 つを置き、
 名前や値の中のものはテキストの文字なので残します。
+キーワードの後の区切りに使う空白文字は、
+[gantt](./gantt.ja.md#空白の文字) と [journey](./journey.ja.md#空白の文字)
+の図でも、ASCII 空白 1 つになります。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この区切りの形を与えます。
+本体の開始波括弧の前の空白は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 例は文字列で書かれていて、`\u00a0` は U+00A0、`\ufeff` は U+FEFF です。
 
 [test: U+00A0 around the name of a requirement]
