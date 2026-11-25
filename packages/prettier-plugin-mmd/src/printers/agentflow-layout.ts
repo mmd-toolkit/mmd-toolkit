@@ -30,7 +30,7 @@ import {
   keptAsWritten,
   walk,
 } from "./layout.ts"
-import { readGapElement } from "./gap.ts"
+import { readGapElement, readRunOnItsLine } from "./gap.ts"
 import {
   endsEntityName,
   holdsJoiningRegion,
@@ -168,7 +168,7 @@ export function layoutContainerHeader(
         (findAgentflowKeptLines(source).verbatim.has(
           lineStartOf(source, name.range[0]),
         ) ||
-          keepsSemicolonBeforeDirective(source, semicolon)) &&
+          keepsSemicolon(source, name.range[1], semicolon)) &&
         endsEntityName(source, nameEnd)
       )
         nameEnd = name.range[1]
@@ -264,25 +264,28 @@ export function layoutContainerHeader(
 }
 
 /**
- * Whether the printer keeps the `;` at `offset`, which separates statements,
- * because a directive follows it on its line, after whitespace and other `;`
- * only: without the `;`, the whitespace before the directive would be read
- * with the statement before it (see `toRun` in gap.ts, which keeps a `;` before
- * an item that stands after a statement on its line). A comment after the `;`
- * does not keep it.
+ * Whether the block of an agentflow diagram drops a `;` that separates
+ * statements before a comment (see `readGap`). The layouts that plan around
+ * the printed gap ask `readRunOnItsLine` with the same value.
  */
-function keepsSemicolonBeforeDirective(
+export const agentflowDropsSeparatorsBeforeComments = true
+
+/**
+ * Whether the printed run after the name, which starts at `nameEnd`, keeps the
+ * `;` at `semicolon`, which separates statements: the gap prints it as an item
+ * where an item that is not a comment follows it on its line (see `toRun`,
+ * which decides it once), because without the `;` the whitespace before that
+ * item would be read with the statement before it.
+ */
+function keepsSemicolon(
   source: Source,
-  offset: number,
+  nameEnd: number,
+  semicolon: number,
 ): boolean {
-  let position = offset + 1
-  for (;;) {
-    const { element, end } = readGapElement(source, position)
-    if (element.kind === "item") return element.item.type === "Directive"
-    if (element.kind !== "whitespace" && element.kind !== "separator")
-      return false
-    position = end
-  }
+  const run = readRunOnItsLine(source, nameEnd, {
+    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
+  })
+  return run?.separators.includes(semicolon) === true
 }
 
 /**

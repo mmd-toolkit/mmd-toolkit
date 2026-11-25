@@ -319,9 +319,13 @@ connector の見出しのときも同じです。
 [fixture: names-and-headings/heading-nonentity-gap-before-directive-and-kept-semicolons]
 
 同じことは、
-ディレクティブが同じ行で後に続くためにプリンタが残す `;` の前でも成り立ちます。
-ディレクティブの前には、空白と別の `;` だけがあるものとします。
-`flow Front#fin ;  %%{x}%%` は `flow Front#fin ; %%{x}%%` と印字します。
+コメントでない項目が同じ行で後に続くためにプリンタが残す `;`
+の前でも成り立ちます。
+その項目は、ディレクティブか、コメントの末尾にある、
+行の規則が無視する `;` です。
+`flow Front#fin ;  %%{x}%%` は `flow Front#fin ; %%{x}%%`、
+`flow Front#fin ;  %% style:#x;` は `flow Front#fin ; %% style:#x;`
+と印字します。
 `flow Front#fin; %%{x}%%` は名前にエンティティ `#fin;` を含み、
 mermaid.js が拒否するためです。
 名前の末尾が `#` と 1 つ以上の単語文字のとき、
@@ -348,6 +352,19 @@ connector の見出しも、flow の中の flow も同じです。
 [fixture: names-and-headings/heading-entity-name-end-semicolon-alone-dropped]
 [fixture: names-and-headings/heading-hash-name-end-semicolon-directive-space-dropped]
 [fixture: names-and-headings/heading-plain-name-end-semicolon-directive-space-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-open-directive-kept]
+[fixture: names-and-headings/connector-entity-name-semicolon-directive-ignored-semicolon-kept]
+[fixture: names-and-headings/connector-entity-name-semicolon-comment-ignored-semicolon-kept]
+[fixture: names-and-headings/connector-entity-name-two-semicolons-directive-kept]
+[fixture: names-and-headings/connector-entity-name-semicolon-comment-line-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-two-comment-lines-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-empty-line-directive-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-whitespace-line-directive-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-directive-end-of-text-kept]
+[fixture: names-and-headings/connector-entity-name-semicolon-comment-end-of-text-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-end-of-text-dropped]
+[test: agentflow: U+2028 between a semicolon that a directive follows and an entity-shaped name end]
+[test: agentflow: U+2029 between a semicolon that a directive follows and an entity-shaped name end]
 [test: agentflow: a tab between an entity-shaped name end and a semicolon that a directive follows]
 [test: agentflow: no-break space between an entity-shaped name end and a semicolon that a directive follows]
 

@@ -318,11 +318,13 @@ Where removing the whitespace forms no entity, the usual trimming still applies:
 [fixture:
 names-and-headings/heading-nonentity-gap-before-directive-and-kept-semicolons]
 
-The same holds before a `;` that the printer keeps because a directive follows
-it on its line, after whitespace and other `;` only: `flow Front#fin ;  %%{x}%%`
-is printed `flow Front#fin ; %%{x}%%`, since `flow Front#fin; %%{x}%%` has the
-entity `#fin;` in its name, which mermaid.js rejects. The end of a name that is
-a `#` and one or more word characters forms the entity wherever the `#` stands
+The same holds before a `;` that the printer keeps because an item follows it on
+its line that is not a comment: a directive, or the `;` that the line rule
+ignores at the end of a comment. `flow Front#fin ;  %%{x}%%` is printed
+`flow Front#fin ; %%{x}%%`, and `flow Front#fin ;  %% style:#x;` is printed
+`flow Front#fin ; %% style:#x;`, since `flow Front#fin; %%{x}%%` has the entity
+`#fin;` in its name, which mermaid.js rejects. The end of a name that is a `#`
+and one or more word characters forms the entity wherever the `#` stands
 (`Fr#ont`, `F#r#ont`, `Front #fin`, `Front#38`), in a connector heading, and in
 a flow in a flow. The whitespace before the `;` is printed as written, a tab
 included. Where a comment follows the `;`, or nothing does, the printer drops
@@ -353,9 +355,34 @@ names-and-headings/heading-entity-name-end-semicolon-alone-dropped] [fixture:
 names-and-headings/heading-hash-name-end-semicolon-directive-space-dropped]
 [fixture:
 names-and-headings/heading-plain-name-end-semicolon-directive-space-dropped]
-[test: agentflow: a tab between an entity-shaped name end and a semicolon that a
-directive follows] [test: agentflow: no-break space between an entity-shaped
-name end and a semicolon that a directive follows]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-open-directive-kept]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-directive-ignored-semicolon-kept]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-comment-ignored-semicolon-kept]
+[fixture:
+names-and-headings/connector-entity-name-two-semicolons-directive-kept]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-comment-line-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-two-comment-lines-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-empty-line-directive-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-whitespace-line-directive-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-directive-end-of-text-kept]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-comment-end-of-text-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-end-of-text-dropped] [test:
+agentflow: U+2028 between a semicolon that a directive follows and an
+entity-shaped name end] [test: agentflow: U+2029 between a semicolon that a
+directive follows and an entity-shaped name end] [test: agentflow: a tab between
+an entity-shaped name end and a semicolon that a directive follows] [test:
+agentflow: no-break space between an entity-shaped name end and a semicolon that
+a directive follows]
 
 The whitespace after the word `flow`, `connector`, or `global` is one space,
 however many spaces or tabs were written: the word takes one whitespace
