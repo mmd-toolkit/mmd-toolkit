@@ -1,6 +1,7 @@
 import type { KeptLines } from "./kept-lines.ts"
 import { maxOf } from "./collections.ts"
 import {
+  findIndentationStart,
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   lineEndOf,
@@ -126,12 +127,11 @@ export function vennKeptGapEnd(
   const gap = source.text.slice(start, end)
   if (gap.indexOf("\n") === gap.lastIndexOf("\n")) return undefined
   if (!beforeStatement) return end
-  let stop = end
-  while (
-    stop > start &&
-    (source.text[stop - 1] === " " || source.text[stop - 1] === "\t") &&
-    !holdsRemoved(source, stop - 1, stop)
+  return findIndentationStart(
+    start,
+    end,
+    (offset) =>
+      (source.text[offset] === " " || source.text[offset] === "\t") &&
+      !holdsRemoved(source, offset, offset + 1),
   )
-    stop--
-  return stop
 }

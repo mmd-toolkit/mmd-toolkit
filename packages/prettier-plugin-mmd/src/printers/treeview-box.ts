@@ -43,6 +43,11 @@ export type TreeviewBoxPlan =
         readonly TreeviewIgnoredText[]
       >
       readonly omitted: readonly Range[]
+      /**
+       * The gaps whose whitespace is a run that carried to a node that is
+       * given a branch, which the branch replaces (see `planTreeviewBox`).
+       */
+      readonly relocated: readonly Range[]
       readonly joinedAnnotations: ReadonlySet<number>
       readonly keptOpenerGaps: ReadonlyMap<
         TreeviewAccDescrBlockStatement,
@@ -445,6 +450,25 @@ export function planTreeviewBox(
         : "",
     )
   }
+
+  /**
+   * Whether trivia follow a node line on its line so that the whitespace
+   * before them stays in the printed line and carries to the next node: after
+   * a comment on any line, and after a directive on a line without a branch.
+   */
+  function keepsRunBeforeTrivia(line: TreeviewLine): boolean {
+    const lineFeed = source.text.indexOf("\n", line.range[1])
+    const tail = findTriviaBetween(
+      source,
+      line.range[1],
+      lineFeed === -1 ? source.text.length : lineFeed,
+    )
+    return (
+      tail.some((item) => item.type === "Comment") ||
+      (tail.length > 0 && heads.get(line.item as TreeviewNode) === "")
+    )
+  }
+
   const planned: TreeviewLine[] = []
   for (const line of lines) {
     if (line.item.type === "TreeviewIgnoredText") {
@@ -466,6 +490,29 @@ export function planTreeviewBox(
       ],
     })
   }
+  // A run after a quote, a class or an icon carries to the next node, across
+  // trivia and decorations. A branch that the node is given is a second run,
+  // which mermaid.js rejects, if the run stands before trivia that stay on the
+  // line: a comment, or a directive on a line without a branch. So the run
+  // disappears, and the trivia that stood after it touch the thing before them
+  // (docs/treeview.md, Carried indentation).
+  const relocated: Range[] = []
+  let previous: TreeviewLine | undefined
+  for (const line of lines) {
+    const { item } = line
+    if (item.type === "TreeviewIgnoredText") continue
+    if (
+      item.type === "TreeviewNode" &&
+      previous !== undefined &&
+      item.prefix === null &&
+      heads.get(item) !== "" &&
+      item.indent > 0 &&
+      !isWhitespace(physicalLineAt(item.name.range[0])?.text[0] ?? "x") &&
+      keepsRunBeforeTrivia(previous)
+    )
+      relocated.push([previous.range[1], treeviewContentStart(source, item)])
+    previous = item.type === "TreeviewNode" ? line : undefined
+  }
   return {
     kind: "drawn",
     lines: planned,
@@ -476,6 +523,7 @@ export function planTreeviewBox(
       .filter((form) => !keptSelectors.has(form))
       .map((form) => form.range)
       .sort((a, b) => a[0] - b[0]),
+    relocated,
     joinedAnnotations,
     keptOpenerGaps,
   }

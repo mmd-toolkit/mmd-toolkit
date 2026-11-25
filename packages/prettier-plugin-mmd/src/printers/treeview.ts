@@ -234,7 +234,9 @@ export function printTreeview(
           .get(line.item)
           ?.some((decoration) => drawing.decorations.get(decoration) === "") ===
           true,
-      relocatedWhitespace: boxMode ? [] : relocatedWhitespace,
+      relocatedWhitespace: boxMode
+        ? (drawing?.relocated ?? [])
+        : relocatedWhitespace,
       indentsOnlyCommentLines: true,
       extraIndentationOf: (line) => placements.get(line)!.indentation,
       joiningRegionsPrintedAsWritten: true,

@@ -19,6 +19,7 @@ import {
   printDiagramBlock,
 } from "./blocks.ts"
 import {
+  agentflowDropsSeparatorsBeforeComments,
   classifyAgentflowStatement,
   findNamePrintedEnd,
   layoutStatement,
@@ -244,7 +245,7 @@ function agentflowBlockRules(
     keepsWhitespaceLineAfterComment: false,
     // A real comment after a separator needs no retained semicolon, unlike
     // flowchart's percent-as-vertex text (docs/agentflow.md, Comments).
-    dropsSeparatorsBeforeComments: true,
+    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
     // Adding LF to an unclosed description would add value text, unlike
     // flowchart's closed-only blocks (docs/agentflow.md, Final newline).
     endsInsideValue: () => {

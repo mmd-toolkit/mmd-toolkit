@@ -1274,13 +1274,89 @@ Prettier が `x = { }` を `x = {}`
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `accTitle: Column zero  %%{x}%%  ` も `accTitle: Column zero  %%{x}%%` も、
 `accTitle: Column zero %%{x}%%` と印字します。
-アクセシビリティの値の最後のディレクティブは、前に空白やタブがあれば、
-直前を空白 1 個にします。
-[pie のタイトル](./pie.ja.md#title) や
-[state の別名の第 2 説明](./state.ja.md#別名) も同じで、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの隙間を与えます。
-最後の閉じたディレクティブの後の空白とタブは、外側の行末の空白なので、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が残さない形を与えます。
+行をまたぐディレクティブと `;` を含むディレクティブも、最後に置いても、
+後ろのディレクティブと接していても、ほかのディレクティブと同じに値を終えます。
+`accDescr: A  b  %%{init: {`、改行、`}}%%`、空白とタブは、
+`accDescr: A b %%{init: {`、改行、`}}%%` と印字します。
+値は、あらゆる空白文字を両端から除くので、最後のディレクティブの後の空白文字は、
+空白とタブと同じに、すべて空白として落とします。
+U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF、U+000B、
+U+000C が当たり、空白、タブ、互いとの連なりも同じです。
+U+0085 と U+200B は空白ではないので、その行は書かれたままにします。
+
+[fixture: direction-and-accessibility/acctitle-directive-unclosed-end-runs-collapsed]
+[fixture: direction-and-accessibility/acctitle-directive-lines-end-blanks-dropped]
+[fixture: direction-and-accessibility/accdescr-directive-lines-end-of-text-blanks-dropped]
+[fixture: direction-and-accessibility/accdescr-directive-lines-end-blanks-dropped]
+[fixture: direction-and-accessibility/acctitle-directive-semicolon-end-blanks-dropped]
+[test: usecase accTitle: U+00A0 after a directive over lines]
+[test: usecase accTitle: U+1680 after a directive over lines]
+[test: usecase accTitle: U+2000 after a directive over lines]
+[test: usecase accTitle: U+2001 after a directive over lines]
+[test: usecase accTitle: U+2002 after a directive over lines]
+[test: usecase accTitle: U+2003 after a directive over lines]
+[test: usecase accTitle: U+2004 after a directive over lines]
+[test: usecase accTitle: U+2005 after a directive over lines]
+[test: usecase accTitle: U+2006 after a directive over lines]
+[test: usecase accTitle: U+2007 after a directive over lines]
+[test: usecase accTitle: U+2008 after a directive over lines]
+[test: usecase accTitle: U+2009 after a directive over lines]
+[test: usecase accTitle: U+200A after a directive over lines]
+[test: usecase accTitle: U+202F after a directive over lines]
+[test: usecase accTitle: U+205F after a directive over lines]
+[test: usecase accTitle: U+3000 after a directive over lines]
+[test: usecase accTitle: U+FEFF after a directive over lines]
+[test: usecase accTitle: U+000B after a directive over lines]
+[test: usecase accTitle: U+000C after a directive over lines]
+[test: usecase accTitle: a space and U+00A0 after a directive over lines]
+[test: usecase accTitle: U+00A0 and a space after a directive over lines]
+[test: usecase accTitle: a tab and U+00A0 after a directive over lines]
+[test: usecase accTitle: U+00A0 and U+3000 after a directive over lines]
+[test: usecase accDescr: U+00A0 after a directive over lines]
+[test: usecase accDescr: U+3000 after a directive over lines]
+[test: usecase accTitle: U+00A0 after a directive with a `;`]
+[test: usecase accTitle: U+00A0 after a directive over lines with a `;`]
+[test: usecase accDescr: U+3000 after a directive with a `;`]
+[test: usecase accTitle: U+00A0 after two directives over lines that touch each other]
+[test: usecase accTitle: U+0085 after a directive over lines is no blank]
+[test: usecase accTitle: U+200B after a directive over lines is no blank]
+
+値の末尾のディレクティブの前のテキストが、`;`、テキスト自身のディレクティブ、
+U+2028、U+2029 を含んでも、末尾は同じに印字します。
+`accTitle: A;b  %%{z}%%  ` は `accTitle: A;b %%{z}%%` と印字します。
+`accDescr:` の行のテキストの連なりは、
+テキストの中にディレクティブがなければ空白 1 つにし、
+あれば書かれたままにします。
+`accDescr: A;  b  %%{z}%%  ` は `accDescr: A; b %%{z}%%` と印字します。
+空白かタブで最後のディレクティブから隔てられたディレクティブは書かれたままにし、
+最後のディレクティブの前の隙間だけを空白 1 つにします。
+`accTitle: A;b  %%{x}%%  %%{z}%%  ` は `accTitle: A;b  %%{x}%% %%{z}%%`
+と印字します。
+テキストの前のディレクティブが変えるのは、1 つだけです。
+`accDescr:` のテキストの連なりは、空白 1 つにして印字しますが、
+ディレクティブが前にあると書かれたままにします。
+`accDescr: A  b  %%{z}%%  ` は `accDescr: A b %%{z}%%` と印字し、
+`accDescr: %%{x}%% A  b  %%{z}%%  ` は `accDescr: %%{x}%% A  b %%{z}%%`
+と印字します。
+最後のディレクティブの前の隙間は、どちらでも空白 1 つにします。
+`accTitle: %%{x}%% T  %%{init: {`、改行、`}}%%`、空白 2 つは、
+`accTitle: %%{x}%% T %%{init: {`、改行、`}}%%` と印字します。
+空白かタブで最後のディレクティブから隔てられたディレクティブの前の隙間は、
+書かれたままにします。
+`accTitle: %%{x}%% T  %%{y}%%  %%{z}%%  ` は
+`accTitle: %%{x}%% T  %%{y}%% %%{z}%%` と印字します。
+
+[fixture: direction-and-accessibility/accdescr-directive-end-two-comment-lines-blanks-dropped]
+[fixture: direction-and-accessibility/accdescr-trailing-directive-blanks-dropped]
+[fixture: direction-and-accessibility/acctitle-directives-before-text-end-directives-gap-kept]
+[fixture: direction-and-accessibility/accdescr-directive-before-text-trailing-directive-blanks-dropped]
+[fixture: direction-and-accessibility/acctitle-directive-after-semicolon-text-end-blanks-dropped]
+[fixture: direction-and-accessibility/accdescr-directive-after-semicolon-run-text-end-blanks-dropped]
+[fixture: direction-and-accessibility/acctitle-directive-after-inner-directive-text-end-blanks-dropped]
+[fixture: direction-and-accessibility/acctitle-directives-after-semicolon-text-last-gap-printed]
+[fixture: direction-and-accessibility/acctitle-directive-before-text-directive-lines-end-blanks-dropped]
+[test: usecase accTitle: U+2028 in the text before the last directive]
+[test: usecase accDescr: U+2029 in the text before the last directive]
 
 [fixture: direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: direction-and-accessibility/direction-values]
@@ -1579,6 +1655,51 @@ id、隙間、プロパティ、CSS の拒否位置を修復しません。
 [test: usecase: unicode-semicolon-segments]
 [test: usecase: crlf-metadata-blank-lines] [test: usecase: nbsp-css-string]
 [test: usecase: unicode-boundary-title] [test: usecase: crlf-output-values]
+
+コメント行が続く U+2028 か U+2029 でテキストが終わる、
+1 行の `accTitle:` と `accDescr:` の文は、コメント行の次の行が空か、
+互いに接するディレクティブだけを含むか、行がないとき、
+その文字がない文と同じに印字します。
+コメントは独立した行になり、テキストがあるときはコロンの後ろは空白 1 つで、
+値が空か空白だけのときは空白を置かず、テキストの末尾の空白は削除します。
+1 回目の整形が、2 回目の整形が前に印字した形を印字するので、
+2 回整形しても変わりません。
+続くコメント行は 1 つのコメント行と数え、最後のコメント行の次の行で決めます。
+コメント行の次の行に文か `;` があるときは、ディレクティブが前にあっても、
+文は書かれたままにします。
+その行に空白があるときも同じです。
+ディレクティブの前、後、ディレクティブの間の空白と、空白だけの行の空白は、
+文のテキストに含まれるからです。
+
+[test: usecase: U+2028, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, a directive, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and an empty line after the text of an accDescr line with a tab before it]
+[test: usecase: U+2028, a comment, and an empty line after an accTitle line without text]
+[test: usecase: U+2029, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and an empty line after the text of an accDescr line with a tab inside]
+[test: usecase: U+2028, a comment, and a statement on the next line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a line of whitespace after the text of an accTitle line]
+[test: usecase: U+2028 and a comment at the end of the text after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a line of two touching directives after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive line with a space before it after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive line with a space after it after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a line of two directives with a space between them after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive line with a semicolon after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive and a statement on the next line after the text of an accTitle line]
+[test: usecase: U+2028, two comments that touch, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, two comments that touch, and a statement on the next line after the text of an accTitle line]
+[test: usecase: U+2028 and two comments that touch at the end of the text after the text of an accTitle line]
+[test: usecase: U+2028 and a directive that is not closed after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and an empty line after an accTitle line whose text holds an ignored semicolon]
+[test: usecase: U+2028, a comment, and a directive that is not closed after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and an empty line after an accTitle line of whitespace]
+[test: usecase: U+2028, a comment that ends in a semicolon, and an empty line after an accDescr line whose text holds an ignored semicolon]
+[test: usecase: two U+2028, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2029, a comment, and a directive line after the text of an accDescr line]
+[test: usecase: U+2029, a comment, and a directive line with a space before it after the text of an accDescr line]
+[test: usecase: U+2029, a comment, and a line of whitespace after the text of an accDescr line]
+[test: usecase: U+2028, two comments that touch, and a line of whitespace after the text of an accTitle line]
 
 ### Frontmatter YAML
 
