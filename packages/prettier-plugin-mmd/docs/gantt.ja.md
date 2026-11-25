@@ -418,6 +418,13 @@ U+2028 か U+2029 の後のコメント行が次の行につなぐタスクの�
 [test: Gantt: a task that a comment after U+2029 joins to the next line, and a section with padding after it]
 [test: Gantt: a task that a comment after U+2028 joins to the next line, with its colon at the column of the group]
 [test: Gantt: a task that stays as written for another reason does not take its section out of the group]
+[test: Gantt: a task that a comment after U+2028 joins to a directive that is not closed, and a section with padding after it]
+[test: Gantt: a task that a comment after U+2028 joins to a second comment line, and a section with padding after it]
+[test: Gantt: a task that a comment after U+2028 joins to a line of whitespace, and a section with padding after it]
+[test: Gantt: a task that a comment after U+2028 joins to an empty line, and a section with padding after it]
+[test: Gantt: a task that a comment after U+2028 joins to the end of the text, in the last section]
+[test: Gantt: a task that a comment after U+2028 joins to the next line, under a title with an ignored semicolon]
+[test: Gantt: a task that a comment that ends in a semicolon after U+2028 joins to the next line, and a section with padding after it]
 
 次の場合は、コロンを動かすと図が変わりうるので、コロンをその位置に残します。
 どの名前もコロンの前の空白が 1 つ以下のセクションは、どのコロンも動かさず、
