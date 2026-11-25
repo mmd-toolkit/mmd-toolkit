@@ -676,6 +676,9 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 行の末尾にある、規則が無視する `;` は落とします。
 印字した行には規則が読む `;` がないので、その空白はほかと同じに整えます。
+無視される末尾の `;` を落とした後も、リンクは 2 つのものの間の記号です。
+リンクの両側の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 
 [fixture: semicolons/style-line-dropped-semicolon-formats-the-gap]
 
@@ -803,6 +806,10 @@ flowchart LR
 図種のキーワードの直後の隙間は、書かれたままの空白を保ちます。
 図種の検出は、`;` を取り除く前のテキストを読むためです。
 `cynefin-beta ;complex` は検出され、`cynefin-beta; complex` は検出されません。
+行の規則が読む範囲は、`style` の後の最初の `:` から、
+行の最後の `;` の前の最後の `#` までです。
+`A[style]   -->   B[:#x;y]` の矢印の両側の隙間は、その範囲の外なので、
+ほかの隙間と同じに整えます。
 行の末尾の `;` は、直前のトークンに付けます。
 
 [fixture: semicolons/ignored-semicolon-before-edge-id-touching]
@@ -920,6 +927,9 @@ flowchart LR
 mermaid.js には、接しているときだけ読むトークンがあります。
 `A%%{init: {}}%%B-->C` は id `AB` です。
 接するトークンの間に空白を書く規則は、その場所ごとの例外を要するからです。
+`&` と両側の頂点の間に空白があるときは、`&` は 2 つの間に立つ印なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+両側に空白 1 つの形を与えます。
 
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
@@ -949,7 +959,12 @@ Markdown 文字列ではバッククォートの間の文字です。
 `style`・`classDef`・`linkStyle` の文では、
 各スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
 後ろに空白を 1 つ置きます。
-スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
+スタイルは名前に値を与えるので、最初の `:` はキーのコロンです。
+その前に空白を置かず、値が空でなければ後ろに空白 1 つを置く形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置く形は、
+Prettier が `f(a,b)` を `f(a, b);` と印字するとおり、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 `style A fill :#f00,stroke:  #333` は、
 `style A fill: #f00, stroke: #333` になります。
 
@@ -960,6 +975,8 @@ Markdown 文字列ではバッククォートの間の文字です。
 番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
 空白があるかないかを保ち、空白の連続は空白 1 つにします。
 mermaid.js は先頭だけを読むので、`fill-opacity` で始まるスタイルも含みます。
+番号つきの `linkStyle` で、`,` と `fill` で始まるスタイルの間に空白があれば、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、その幅を空白 1 つにします。
 
 [fixture: whitespace-between-tokens/link-style-fill-after-comma-kept]
 [fixture: whitespace-between-tokens/link-style-fill-opacity-after-comma-kept]
@@ -1002,6 +1019,11 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 と印字します。
 直前の `,` に接し、名前と `:` の間に空白があるスタイルも同じで、
 前に空白を置いて印字します。
+`style` の文で、前に空白がある `color` や `text-align` のスタイルは、
+名前と `:` の間に空白があってもなくても、
+mermaid.js がラベルのスタイルとして読みません。
+キーの `:` の前の空白を除き、後ろを空白 1 つにするのは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 `style A fill:#f00,color   :red` は `style A fill: #f00, color: red`
 と印字します。
 `style A fill:#f00,color:white` は `style A fill: #f00,color: white` と印字し、
@@ -1055,6 +1077,10 @@ swimlane 図で最初ではないスタイルがそうです。
 番号つきの `linkStyle` は、番号を付けたすべての辺について、
 後の `linkStyle` に置き換えられる場合です。
 `linkStyle default` は、後の `linkStyle default` に置き換えられる場合です。
+`linkStyle` のスタイルがすべて後の文に置き換えられると、
+ラベルはそのスタイルを読みません。
+そのキーの `:` の前には空白を置かず、値が空でなければ後ろに空白を 1 つ置く形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 一部の辺についてだけ置き換えられる `linkStyle` のスタイルは、そのまま残します。
 `linkStyle 0,1 fill :#f00` の後に `linkStyle 0 stroke:#000` があるとき、
 `:` の前の空白を保ちます。
@@ -1128,6 +1154,9 @@ mermaid.js はリンクのスタイルを書かれたまま `;` でつなぐの�
 除くと `:` がエスケープされるので残し、その空白の後ろの空白は、
 ほかの `:` の前と同じく除きます。
 `style A fill\   :#f00` は `style A fill\ : #f00` と印字します。
+エスケープされた空白はスタイル名の一部です。
+その後に続く空白だけが、キーの `:` の前の空白なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が取り除きます。
 最後のスタイルの終わりより前にコメントやディレクティブがある文、
 空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
 書かれたまま残します。
@@ -1161,6 +1190,11 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 その空白をディレクティブの前に置きます。
 `style A %%{init: {}}%%  fill:red` は、
 `style A %%{init: {}}%%fill:red` と印字し、両者の Db は同じです。
+最初のスタイルの前は、
+[ER](./er.ja.md#スタイルとクラス) と
+[requirement](./requirement.ja.md#スタイルとクラス) の図でも空白 1 つです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この隙間の形を与えます。
 スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
 語と語の間に空白があるかどうかは、書かれたまま残します。
 `classDef c fill:#f00    stroke:#333` は、
@@ -1170,6 +1204,10 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 書かれたまま残します。
 エスケープは、最大 6 桁の 16 進数字とその直後の空白かタブ 1 文字、
 または 16 進数字が続かないときの次の 1 文字です。
+閉じていないコメントの中の連続は、Db がそれを持つので、書かれたまま残します。
+Db では、`fill:red/* a   b` と `fill:red/* a b` が違い、
+[スタイルの例外](./compatibility.ja.md#同じに描かれるスタイル)は、
+スタイルの語と語の間の連続だけを挙げています。
 エスケープの後ろの連続は、ほかと同じ連続です。
 `font-family:a\   b` は `font-family: a\  b` と印字します。
 `font-family:Arial\20   Black` は、`font-family: Arial\20  Black` と印字します。
@@ -1194,8 +1232,14 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 バックスラッシュがエスケープする空白のほかは `:` の前に空白を置かず、
 後ろに空白 1 つを置き、語と語の間の連続を空白 1 つで印字します。
 CSS が `:` の前後の空白を捨て、連続を 1 つとして読むためです。
+エスケープされた空白の後の `:` は、スタイル名に値を与える印なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+空でない値の前の空白 1 つを与えます。
 `style A :  red   x` は `style A : red x` と印字し、
 `style A fill\ :red   x` は `style A fill\ : red x` と印字します。
+スタイル名が、エスケープされた空白で終わっても、`:` は名前に値を与える印です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+空でない値の前の空白 1 つを与えます。
 
 [fixture: whitespace-between-tokens/style-colon-first-run-spaced]
 [fixture: whitespace-between-tokens/style-escaped-space-run-spaced]
@@ -1336,6 +1380,10 @@ mermaid.js は引用符の外の `,` で引数を分け、各部分の両端の�
 同じ引数で関数を呼ぶからです。
 （[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
 引用符の中の空白は残し、空の部分を含む引数も書かれたままにします。
+通常の呼び出しの引数は、mermaid.js が引用符の外の `,` で分け、
+各部分の両端の空白を除くので、その空白を変えても引数は変わりません。
+引数を分ける `,` の前の空白をなくし、後ろを空白 1 つにする形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: whitespace-between-tokens/callback-arguments-spaced]
 
@@ -1352,6 +1400,11 @@ mermaid.js の行の規則が読むかもしれない引数の間の隙間は、
 mermaid.js はどちらも引数のない同じ呼び出しとして読むからです。
 括弧の間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおり、
 両側の括弧に接します。
+mermaid.js は呼び出しを読む前に、ディレクティブを取り除くので、
+ほかに引数がなければ、括弧の中は空です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+空の括弧の内側を空白なしにします。
+残すディレクティブも、その隙間に置くので、両側の括弧に接します。
 
 [fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
 
@@ -1405,6 +1458,10 @@ flowchart LR
 [fixture: arrow-spacing/arrow-length-kept]
 
 2 つの矢印の間に書いたテキストは、両側に空白を 1 つずつ置きます。
+テキストを挟む矢印の各部分は、2 つの間に立つ印です。
+矢印の各部分の両側に、空白 1 つを置く形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+このため、間にあるテキストの両側にも、空白 1 つを置きます。
 
 [fixture: arrow-spacing/text-between-other-link-kinds]
 [fixture: arrow-spacing/directive-in-text-between-arrows]
@@ -1417,14 +1474,12 @@ flowchart LR
 [agentflow](./agentflow.ja.md#arrows) と
 [usecase](./usecase.ja.md#relationship-labels-and-ids) は辺の id
 をこのページと同じに印字し、ほかの図種に辺の id はないからです。
-[規則 3](./printed-form.ja.md#3-綴り)が形を与えます。
-mermaid.js のドキュメントの例は、辺の id をその `@` と矢印に接して 17 回書き、
-そこに空白を置いた例は 1 つもありません。
-内訳は、
-[flowchart のページ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L810-L1321)
-が 13 回、
-[use case のページ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L297-L561)
-が 4 回です。
+規則 3 も形を与えません。
+規則 3 は綴りを決め、空白は決めないからです。
+そのため、この形を与える規則はなく、決まるまでリリース済みの形を残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 
 [fixture: arrow-spacing/pipe-label-other-link-kinds]
 [fixture: arrow-spacing/edge-id-with-labels]
@@ -1960,6 +2015,8 @@ flowchartの通常のアクセシビリティ行に固有の理由はないの�
 
 値が空または空白だけでも文の形を保ち、`accTitle:`または`accDescr:`とし、
 後ろに空白を足しません。
+行末の空白とタブは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が除くからです。
 
 [fixture: accessibility-lines/empty-title]
 [fixture: accessibility-lines/empty-description]
@@ -1967,10 +2024,20 @@ flowchartの通常のアクセシビリティ行に固有の理由はないの�
 [corpus fixture: flowchart/db-acc-descr-empty-replaces]
 
 Mermaidはコロンの次行の通常の文字を値と読むので、語と同じ行につなぎます。
+アクセシビリティの語は、図にタイトルか説明を与えるので、
+コロンはキーのコロンです。
+値を次行から読む場合も、コロンの前に空白を置かず、
+同じ行の値の前に空白 1 つを置く形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: accessibility-lines/next-line-values]
 
 文中の実コメントやディレクティブがあれば短い形につなぎません。
+アクセシビリティの文では、コメントやディレクティブの前後の改行を、
+[class](./class.ja.md#複数行の文) と [C4](./c4.ja.md#アクセシビリティの行)
+の図も保ちます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+flowchart にも同じ改行を与えます。
 従来の[複数行の文](#複数行の文)の配置を保ち、
 コメントやディレクティブを含む継続行はキーワードより1段深く置きます。
 コメントやディレクティブの文字と、著者が文を区切った改行を保ちます。
@@ -2007,9 +2074,18 @@ flowchartはコロンの後のコメントを読み飛ばして後の値を読�
 
 方向の文字列がある行は[字下げ](#字下げ)に従い、原文、改行、桁位置を保ちます。
 ほかの文書化された保持行の理由も優先します。
+`accTitle:direction` とコメント行と `TB` を、
+1 行の `accTitle: direction TB` につなぐと、Db が変わります。
+書かれたテキストでは、タイトルが `direction` で、頂点が `TB` です。
+つないだテキストでは、タイトルが `direction TB` になり、図も変わります。
+対象にするどの版も、つないだテキストで別の図を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: accessibility-lines/direction-text-kept]
 [fixture: accessibility-lines/next-line-direction-kept]
+[fixture: accessibility-lines/direction-text-after-comment-kept]
 
 通常の行には`tabWidth: 0`での最小幅と`useTabs`を含む設定の字下げを使い、
 これらの設定でも保持の例外を保ちます。
@@ -2024,7 +2100,13 @@ flowchartはコロンの後のコメントを読み飛ばして後の値を読�
 CRには共通の改行の正規化を使います。
 受理する外側の隙間のNBSP、U+2028、U+2029も同じコロンと値の規則で整え、
 値内部の文字と保持する`;`の脇の空白は保ちます。
+コロン形式のアクセシビリティの文では、mermaid.js は値を LF で終え、
+値内部の U+2028 と U+2029 を、Db のテキストの一部として保存します。
+値内部の U+2028 と U+2029 は、LF に置き換えると値が変わるので、
+書かれたまま残します。
 これらの文字はエスケープしたinlineテストに置きます。
+
+[corpus fixture: flowchart/db-acc-title-line-separator]
 
 [test: graph accessibility: flowchart cr-lines]
 [test: graph accessibility: flowchart unicode-gaps]
@@ -2045,16 +2127,15 @@ usecaseのDbが同じ形に従います。
 [fixture: accessibility-lines/empty-block-lines]
 
 空ブロック内で受理するNBSP、U+2028、U+2029も落とします。
+受理される NBSP、U+2028、U+2029 だけの説明ブロックには、
+波括弧で囲む内容がありません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+内側に空白のない形を与えます。
 
 [test: accessibility blocks: flowchart empty-block-unicode]
 
 保持行の例外を優先し、複数行でコメント行か、
 自分の行にあるディレクティブを持つブロックは従来の配置を保ちます。
-規則 1 は、ブロックの中の行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[xychart](./xychart.ja.md#空の説明ブロック) と
-[quadrant](./quadrant.ja.md#空の説明ブロック) も、コメント行か、
-自分の行にあるディレクティブを持つブロックの内容と改行を、そのまま残します。
 
 [fixture: accessibility-lines/empty-block-semicolon-kept]
 [fixture: accessibility-lines/empty-block-directive-line-kept]
@@ -2076,7 +2157,6 @@ mermaid.js の文書には、1 行のブロックの例がありません。
 [複数行の値](#複数行の値)のトップレベルと subgraph の規則に従い、
 単独行の閉じ括弧を `accDescr` に揃えます。
 閉じ括弧が0桁目でも字下げされていても同じです。
-兄弟の図種と同じ形で、flowchart固有の理由はありません。
 
 [fixture: accessibility-lines/block-close-column-zero]
 [fixture: accessibility-lines/block-close-indented]
@@ -2313,6 +2393,8 @@ mermaid.js は 1 行のブロックの文字列を、前に `{` と改行、
 
 取り除くのは半角空白とタブだけで、
 U+00A0 などの空白は文字列の一部として残します。
+1 行のブロックの端にある U+00A0 は、mermaid.js が読み込むテキストの一部です。
+普通の空白に置き換えると、Db（読み込んだラベルとその種類）と図が変わります。
 
 [test: data blocks: flowchart one line with no-break spaces at the ends]
 
@@ -2724,6 +2806,11 @@ Mermaid はブロック全体の両端の空白を除いて最初の行の字下
 前後のディレクティブ、コメント、空行、空の説明ブロック、
 捨てる文区切りの `;` はそれぞれの規則に従います。
 CRLF と CR は `endOfLine` に従い、値の U+2028 と U+2029 は文字として保ちます。
+データブロックの値の中の U+2028 と U+2029 は、読み込むテキストの文字です。
+空白に置き換えると Db が変わります（`A\u2028B` と `A B` は違います）。
+空白でもタブでもないので、
+[空白の連なりの例外](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+の対象外です。
 
 [fixture: data-blocks/surrounding-trivia] [test: data blocks: flowchart CRLF]
 [test: data blocks: flowchart CR] [test: data blocks: flowchart U+2028]
@@ -2769,7 +2856,7 @@ flowchart LR
 [fixture: multi-line-values/markdown-string-kept]
 
 トップレベルの `accDescr { ... }` の本文行は、文より 1 段深くそろえます。
-Mermaid がアクセシビリティの説明から LF 後の字下げを除くためです。
+mermaid.js は説明から行送り後の字下げを除きます。
 subgraph の中では、本文があるブロックの原文が字下げごとメンバーに入るため、
 元の列を保ちます。
 
@@ -2794,8 +2881,7 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 注釈類のない空ブロックは、
 [アクセシビリティの行](#アクセシビリティの行)に従います。
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
-そのコメント行は、文の中のコメント行と同じく、
-`accDescr` より 1 段深く置き（[コメント](#コメント)を参照）、
+そのコメント行は、`accDescr` より 1 段深く置き、
 `}` は `accDescr` と同じ段に置きます。
 
 [fixture: multi-line-values/accdescr-block-comment-only-several-comments]
@@ -2885,7 +2971,8 @@ flowchart LR
 ### コメント
 
 1 行に置かれたコメントは、周りの文と同じ段に置きます。
-コメントはどの文にも属さないので、読む人が探す場所の隣の段にします。
+コメントはどの文にも属しません。
+隣の文と同じ段にします。
 ヘッダーの前でも同じで、行の先頭に置きます。
 
 [fixture: comments/only-comment-in-subgraph] [fixture: comments/after-end]
@@ -3003,7 +3090,6 @@ U+2028 か U+2029 の後のコメント行が次の行をその行につなぐ�
 ### ディレクティブ
 
 1 行に置かれたディレクティブ（`%%{ ... }%%`）は、周りの文と同じ段に置きます。
-コメントと同じ理由です。
 
 [fixture: directives/own-line-in-subgraph]
 [fixture: directives/several-on-own-line]
@@ -3261,7 +3347,10 @@ swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
 ラベルや文字列を含みうるテキストとして読み、値の後の `;` はそのテキストに属し、
 区切りではありません。
 そのテキストは書かれたまま残し、それと `direction` の間、
-`direction` と値の間の空白は、ほかのトークンの間と同じく空白 1 つにします。
+`direction` と値の間の空白は、空白 1 つにします。
+`direction` は取る値の前に置くキーワードなので、この空白の形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+「取るものの前に置くキーワード」の行で与えます。
 `A[direction TB]` のような行も `direction` の文で、頂点も接続も読まれず、
 そのように、その段の字下げで印字します。
 
@@ -3270,6 +3359,8 @@ swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
 ヘッダーの方向は、記号がキーワードに接していても空白 1 つの後に置きます。
 `graph>` は `graph >` に、`flowchart^` は `flowchart ^` と印字します。
 この空白は Db に入らず、`TD` のような文字の方向には、もともと空白が必要です。
+ヘッダーは取る方向の前に置くキーワードなので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、その間に空白を 1 つ置きます。
 その間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
 規則 1 の表に、これを含む間隔の印はないので、
@@ -3400,6 +3491,10 @@ mermaid.js は、名前のテキストに空白がないときだけ名前を id
 後ろに空白があってもなくても id が生成されるため、行末の空白を除きます。
 ただし、名前をブロック、保持する `;`、
 または同じ行のディレクティブから区切る空白は残します。
+Prettier は、行末に空白を残しません。
+複数の語からなる subgraph の名前は、
+後ろの空白の有無によらず id が生成されるので、行末の空白を除く形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 その空白は、あるかどうかを保ち、連続は空白 1 つにします。
 [トークンの間のディレクティブ](./compatibility.ja.md#トークンの間のディレクティブ)
 を参照してください。
@@ -3467,6 +3562,11 @@ subgraph の id は `subGraph0` になり、空白がなければ `S` になり�
 swimlane 図を描く、対象にする版の一部も、そう読みます。
 id を挙げる文がなければ、id は見えないので、空白は 1 つにします。
 タイトルのある名前、複数の語の名前、タブ 1 つの場合も同じです。
+`subgraph` の後の名前の前は、空白 1 つです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+Prettier が `return  x` を `return x;` と印字するのと同じく、
+タイトルのある名前、複数の語の名前、id を挙げる文のない 1 語の名前の前や、
+タブ 1 つの場合に、この空白 1 つの形を与えます。
 
 [fixture: subgraph-header/name-leading-space-run-named-kept]
 [fixture: subgraph-header/name-leading-space-run-style-kept]
@@ -3882,6 +3982,10 @@ flowchart LR
 下の段落と図種の文書が名前を挙げている文がそれです。
 最後のスタイルを終えるバックスラッシュの後の空白かタブは、1 文字として残し、
 空白だけのスタイルは、書かれたまま残します。
+スタイルの末尾のバックスラッシュがエスケープするのは、その直後の 1 文字だけで、
+残りの空白とタブはエスケープされない行末の空白です。
+Prettier と同じく、残りの空白とタブを取り除く形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: style-trailing-whitespace/removed]
 [fixture: style-trailing-whitespace/removed-tab]
