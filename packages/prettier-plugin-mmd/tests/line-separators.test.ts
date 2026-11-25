@@ -8834,6 +8834,46 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
       "kanban\n  S[x]\n    A[y]  %% c\n  \u2029%% d\n    B\n",
       "kanban\n  S[x]\n    A[y] %% c\n    %% d\n    B\n",
     ],
+    [
+      "kanban: ls-indentation-after-comment-after-closed-directive",
+      "kanban\n  S[x] %%{x}%%  %% c\n\u2028    A\n",
+      "kanban\n  S[x] %%{x}%%  %% c\n    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-unclosed-directive-kept",
+      "kanban\n  S[x] %%{x\n\u2028    A\n",
+      "kanban\n  S[x] %%{x\n\u2028    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-with-ignored-semicolon",
+      "kanban\n  S[x]  %% style:#x;\n\u2028    A\n",
+      "kanban\n  S[x] %% style:#x;\n    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-with-two-ignored-semicolons",
+      "kanban\n  S[x]  %% style classDef:#x;;\n\u2028    A\n",
+      "kanban\n  S[x]  %% style classDef:#x;;\n    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-two-comment-lines",
+      "kanban\n  S[x]  %% c\n%% d\n%% e\n\u2028    A\n",
+      "kanban\n  S[x] %% c\n    %% d\n    %% e\n    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-and-whitespace-line-kept",
+      "kanban\n  S[x]  %% c\n \t\n\u2028    A\n",
+      "kanban\n  S[x]  %% c\n \t\n    A\n",
+    ],
+    [
+      "kanban: comment-at-end-of-text-without-line-feed",
+      "kanban\n  S[x]  %% c",
+      "kanban\n  S[x] %% c\n",
+    ],
+    [
+      "kanban: node-named-end-after-comment-and-ls-indentation",
+      "kanban\n  S[x]  %% c\n\u2028    End\n",
+      "kanban\n  S[x] %% c\n    End\n",
+    ],
   ]
 
 /**
@@ -18986,6 +19026,41 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
     "c4: ls-indentation-before-comment-line-after-comment-before-closer",
     'C4Context\nBoundary(b,"B") {\n  Person(a,"A")  %% c\n\u2028  %% d\n}\n',
     'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")  %% c\n\u2028  %% d\n  }\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-after-closed-directive",
+    'C4Context\nPerson(a,"A") %%{x}%%  %% c\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A") %%{x}%% %% c\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-with-ignored-semicolon",
+    'C4Context\nPerson(a,"A")  %% style:#x;\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A") %% style:#x;\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-with-two-ignored-semicolons-kept",
+    'C4Context\nPerson(a,"A")  %% style classDef:#x;;\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a,"A")  %% style classDef:#x;;\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-two-comment-lines-kept",
+    'C4Context\nPerson(a,"A")  %% c\n%% d\n%% e\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n%% d\n%% e\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-and-whitespace-line-kept",
+    'C4Context\nPerson(a,"A")  %% c\n \t\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n \t\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: comment-at-end-of-text-without-line-feed",
+    'C4Context\nPerson(a,"A")  %% c',
+    'C4Context\n  Person(a, "A") %% c\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-after-unclosed-directive-kept",
+    'C4Context\nPerson(a,"A")  %% c %%{x: 0\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a,"A")  %% c %%{x: 0\n\u2028Person(b,"B")\n',
   ],
 ]
 

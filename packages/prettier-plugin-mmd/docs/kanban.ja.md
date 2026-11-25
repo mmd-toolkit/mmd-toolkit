@@ -927,6 +927,14 @@ kanban
 区切りの行の前にあるコメント行は、何も取り除きません。
 `S[x]  %% c`、`%% d`、U+2028 だけの行、`A` は、書かれたまま残します。
 
+[test: kanban: ls-indentation-after-comment-after-closed-directive]
+[test: kanban: ls-indentation-after-unclosed-directive-kept]
+[test: kanban: ls-indentation-after-comment-with-ignored-semicolon]
+[test: kanban: ls-indentation-after-comment-with-two-ignored-semicolons]
+[test: kanban: ls-indentation-after-two-comment-lines]
+[test: kanban: ls-indentation-after-comment-and-whitespace-line-kept]
+[test: kanban: comment-at-end-of-text-without-line-feed]
+[test: kanban: node-named-end-after-comment-and-ls-indentation]
 [test: kanban: ls-indentation-after-comment]
 [test: kanban: ps-indentation-after-comment-tab]
 [test: kanban: ls-indentation-after-comment-header]

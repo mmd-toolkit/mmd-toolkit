@@ -862,9 +862,16 @@ the comment line, or before its `%%`, is dropped. A comment line before the
 separator line takes nothing with it: `S[x]  %% c`, `%% d`, a line of a U+2028,
 and `A` stay as written.
 
-[test: kanban: ls-indentation-after-comment] [test: kanban:
-ps-indentation-after-comment-tab] [test: kanban:
-ls-indentation-after-comment-header] [test: kanban:
+[test: kanban: ls-indentation-after-comment-after-closed-directive] [test:
+kanban: ls-indentation-after-unclosed-directive-kept] [test: kanban:
+ls-indentation-after-comment-with-ignored-semicolon] [test: kanban:
+ls-indentation-after-comment-with-two-ignored-semicolons] [test: kanban:
+ls-indentation-after-two-comment-lines] [test: kanban:
+ls-indentation-after-comment-and-whitespace-line-kept] [test: kanban:
+comment-at-end-of-text-without-line-feed] [test: kanban:
+node-named-end-after-comment-and-ls-indentation] [test: kanban:
+ls-indentation-after-comment] [test: kanban: ps-indentation-after-comment-tab]
+[test: kanban: ls-indentation-after-comment-header] [test: kanban:
 ls-indentation-after-comment-card-shape] [test: kanban:
 ls-indentation-after-comment-icon] [test: kanban:
 ls-indentation-after-comment-data-block] [test: kanban: ls-ends-comment-kept]

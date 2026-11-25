@@ -2,6 +2,7 @@
 "prettier-plugin-mmd": patch
 ---
 
-Print one space before a comment in a `c4` or `kanban` diagram where the next
-line starts with a U+2028 or U+2029: `Person(a,"A")  %% c` becomes
-`Person(a, "A") %% c` when `\u2028Person(b,"B")` follows on the next line.
+Fix a `c4` or `kanban` comment that is followed by a line starting with U+2028
+or U+2029 being printed differently the second time it is formatted:
+`Person(a,"A")  %% c` was printed `Person(a, "A")  %% c` and is now printed
+`Person(a, "A") %% c`.
