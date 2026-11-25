@@ -325,8 +325,7 @@ tf 01 evt Alpha ->> 02 ->> 001
 Prettier が入れ子の角括弧に印字する形です。
 部品間の普通の改行も詰めます。
 `[[title]]` なら前置空白付きの title composite も作りません。
-参照の前の空白 1 個と、部品の間の改行が置き換わる空白 1 個は、
-規則 2 が与える形です。
+部品の間の改行が置き換わる空白 1 個は、規則 2 が与える形です。
 理由は [Declarations and notes](#declarations-and-notes) と同じです。
 所有する隙間の隠れた形形と注釈類は保ち、単一の参照名を修飾付きにしません。
 参照は識別子を 1 つだけ持ち、ドットと別の区間を付けた形は拒否されます。
@@ -1249,11 +1248,12 @@ tf 02 evt Beta
 普通の独立コメントは所属本文の段に揃え、GWT 項目間では項目の段にします。
 規則 1 は、行の始まりの印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#コメント)、[sequence](./sequence.ja.md#コメント)、
-[gantt](./gantt.ja.md#コメント)は、コメント行を周りの文の段に置きます。
+[flowchart](./flowchart.ja.md#コメント)は、コメント行を周りの文の段に置きます。
+[sequence](./sequence.ja.md#コメント)も同じです。
 [journey](./journey.ja.md#コメント)、[timeline](./timeline.ja.md#コメント)、
-[block](./block.ja.md#コメント)、[quadrant](./quadrant.ja.md#コメント)は、
-コメント行を後ろの文の段に置きます。
+[block](./block.ja.md#コメント)、[quadrant](./quadrant.ja.md#コメント)、
+[gantt](./gantt.ja.md#コメント)は、コメント行を後ろの文の段に置きます。
+eventmodeling の本文は平らなので、どちらも同じ段になります。
 同じ印字行では、接するコメントは接したまま残し、
 前の空白とタブの連なりは空白 1 つにします。
 ただし、ヘッダー行とフレーム文の行の title、accTitle、accDescr では、
@@ -1961,8 +1961,12 @@ data Unused {
 ### Final newline
 
 普通の受理入力は設定の改行 1 個で終え、末尾の普通の空行列を削除します。
-規則 1 が与える形です。
-Prettier は、JavaScript、CSS、YAML でファイルを 1 つの改行で終え、
+規則 1 は、テキストの終わりの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[pie](./pie.ja.md#final-newline)、[packet](./packet.ja.md#final-newline)、
+[kanban](./kanban.ja.md#末尾の改行)は、テキストを改行 1 個で終え、
+その前の空行を削除します。
+Prettier も、JavaScript、CSS、YAML でファイルを 1 つの改行で終え、
 最後の行の後に空行を置きません。
 mermaid.js は、読む前にテキストへ LF を足します。
 詳しくは [テキストの終わり](../../spec/docs/common.ja.md#テキストの終わり)

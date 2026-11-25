@@ -303,11 +303,11 @@ tf 01 evt Alpha ->> 02 ->> 001
 Use one ordinary space before a data reference and tight inner edges, `[[D]]`.
 This is how Prettier prints nested brackets, with none inside. Compact ordinary
 component newlines too; `[[title]]` also avoids a padded title composite. The
-one space before the reference, and the one space that a line break between
-components becomes, are the form that rule 2 gives, for the reason under
-[Declarations and notes](#declarations-and-notes). Preserve hidden forms and
-trivia in their owned gaps, and never qualify a single reference name: a
-reference holds one identifier, and a dot with another segment is rejected.
+one space that a line break between components becomes is the form that rule 2
+gives, for the reason under [Declarations and notes](#declarations-and-notes).
+Preserve hidden forms and trivia in their owned gaps, and never qualify a single
+reference name: a reference holds one identifier, and a dot with another segment
+is rejected.
 
 [fixture: eventmodeling/data-references/reference-padded]
 
@@ -1214,13 +1214,14 @@ Align ordinary standalone comments with their owning body; between GWT items
 this is item depth. Rule 1 names no mark for the start of a line, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [flowchart](./flowchart.md#comments),
-[sequence](./sequence.md#comments), and [gantt](./gantt.md#comments) stand a
-comment line at the level of the statements around it, and
-[journey](./journey.md#comments), [timeline](./timeline.md#comments),
-[block](./block.md#comments), and [quadrant](./quadrant.md#comments) at the
-level of the statement after it. Within a printed line, a comment that touches
-stays touching, and a run of spaces and tabs before it becomes one space, except
-in the title, the accTitle, and the accDescr of the header line and of a frame
+[sequence](./sequence.md#comments) stand a comment line at the level of the
+statements around it, and [journey](./journey.md#comments),
+[timeline](./timeline.md#comments), [block](./block.md#comments),
+[quadrant](./quadrant.md#comments), and [gantt](./gantt.md#comments) at the
+level of the statement after it, which is the same level in the flat body of an
+eventmodeling diagram. Within a printed line, a comment that touches stays
+touching, and a run of spaces and tabs before it becomes one space, except in
+the title, the accTitle, and the accDescr of the header line and of a frame
 statement, where the run before a comment mark after the text belongs to the
 value (see [Title](#title)). Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
@@ -1923,9 +1924,13 @@ data Unused {
 ### Final newline
 
 End ordinary accepted text with one configured newline, removing ordinary
-terminal blank runs. Rule 1 gives it: Prettier ends a file with one line break
-and no blank line after the last line, in JavaScript, CSS, and YAML, and
-mermaid.js appends a LF to the text before it reads it (see
+terminal blank runs. Rule 1 names no mark at the end of the text, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [pie](./pie.md#final-newline), [packet](./packet.md#final-newline),
+and [kanban](./kanban.md#final-newline) end the text with one line break and
+drop the empty lines before it, as Prettier ends a file with one line break and
+no blank line after the last line in JavaScript, CSS, and YAML. mermaid.js
+appends a LF to the text before it reads it (see
 [End of text](../../spec/docs/common.md#end-of-text)), so the final LF is a
 character that it already reads. Required hidden/data closing padding, protected
 source and EOF-reaching unfinished directives retain their lexical endings. This
