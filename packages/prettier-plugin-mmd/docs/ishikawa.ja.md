@@ -244,7 +244,9 @@ ishikawa
 見出しに付く図のコメントの後も同じで、見出しに接していても、
 空白で離れていても変わりません（[コメント](#comments) を参照）。
 コメントの前のディレクティブに mermaid.js が取り除く改行があっても同じです。
-最後の図コメントの後の隙間は、末尾まで全体を保ちます。
+最後の `%%` だけの行の後の隙間は、末尾まで全体を書かれたまま残し、
+テキストつきの最後のコメントの後の空行は落とします。
+詳しくは [Final newline](#final-newline) を参照してください。
 
 [fixture: ishikawa/blank-lines/blank-comment-accepted]
 [fixture: ishikawa/blank-lines/blank-header-comment-accepted]
@@ -413,6 +415,44 @@ kanban が見出し行のディレクティブを節点と一緒に移すのと�
 
 [fixture: ishikawa/standalone-directives/directive-open-eof]
 
+ディレクティブの後に、テキストを挟まずに続くコメント（`%%{x}%% %% c  d`）は、
+リテラルではなく、ディレクティブの行のコメントです。
+コメントの中の連なりは書かれたまま残ります。
+
+テキストのないディレクティブの行と、ヘッダーの行では、
+2 つのディレクティブの間と、最後のディレクティブとコメントの間の空白文字は、
+何であっても空白 1 つにして印字します（空白、タブ、改行しない空白、U+3000、
+U+2028、U+2029、そのほかの仕様の空白文字）。
+`%%{x}%%  %% c  d` は `%%{x}%% %% c  d` と印字し、`%%{x}%%`、U+3000、
+`%% c  d` も同じで、`%%{x}%%  %%{y}%%` は `%%{x}%% %%{y}%%` と印字します。
+何もない隙間は何もないままで、接する 2 つのディレクティブや、
+ディレクティブとコメントは接したままです。
+例外はヘッダーの行だけです。
+隙間に U+2028 か U+2029 があり、行がコメントで終わるときは、ほかの隙間も含めて、
+行全体が書かれたまま残ります（`ishikawa %%{x}%%`、空白 3 つ、`%%{y}%%`、U+2029、
+`%% c` は変えません）。
+行がディレクティブで終わるときは、U+2028 か U+2029 を含む隙間も、
+ほかと同じに空白 1 つにします（`ishikawa %%{x}%%`、U+2029、
+`%%{y}%%` は `ishikawa %%{x}%% %%{y}%%` と印字します）。
+
+ディレクティブが 2 つ以上でコメントのないヘッダーの行と根の前の行は、
+書かれたテキストも印字したテキストも mermaid.js は受け付けません。
+これは既知の相違
+[`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)
+で、コーパスの fixture `ishikawa/div-header-space-directive-node` が示します。
+
+[test: ishikawa: comment-line-after-a-directive-kept]
+[test: ishikawa: comment-line-after-a-directive-gap-collapsed]
+[test: ishikawa: comment-line-after-a-directive-tab-gap-collapsed]
+[test: ishikawa: comment-line-touching-a-directive-kept]
+[test: a whitespace character between a directive and the comment on a line of a directive of an ishikawa diagram]
+[test: spaces and tabs between a directive and the comment on a line of a directive of an ishikawa diagram, and a comment that touches the directive]
+[test: a whitespace character between two directives on a line of an ishikawa diagram with no text]
+[test: a whitespace character between two or three directives and the comment on a line of directives of an ishikawa diagram, in each place]
+[test: mixed gaps between the directives and the comment on the header line of an ishikawa diagram]
+[test: a whitespace character between two directives on the header line and on the line before the root of an ishikawa diagram]
+[corpus fixture: ishikawa/div-header-space-directive-node]
+
 入力（エスケープ表記）:
 
 ```json
@@ -463,11 +503,46 @@ ishikawa
 
 テキスト中のディレクティブの両側の空白は、書かれたとおり保ちます。
 ディレクティブの除去は両側をつなぐだけで、空白を補わないためです。
+ディレクティブの前にテキストがあり、そのディレクティブの後に、
+テキストの終わりまで、空白とタブとディレクティブ以外のもの（テキスト、コメント、
+`;`、改行しない空白や U+2028 のような文字）が続くテキストでは、
+ほかの空白とタブの連なりも書かれたままです。
+mermaid.js は、それを空白 1 つと同じに描きます。
+`A %%{init: {}}%% b  c`、`D  e %%{init: {}}%% f`、
+`A  b %%{init: {}}%%  %% c` はそのままです。
+どちらに当たるかは、前にテキストがあるディレクティブで決まります。
+そのようなディレクティブがないか、
+どれの後にも空白とタブとディレクティブだけが続くときは、
+連なりを空白 1 つにして印字し、先頭のディレクティブは連なりを残しません。
+（`D A  b E  %% c`（`D` と `E` はディレクティブ）は、`E` の前にテキストがあり、
+後にコメントがあるので残します。） `%%{init: {}}%% A  b  c` は
+`%%{init: {}}%% A b c` と、
+`%%{init: {}}%% A  b  %% c` は `%%{init: {}}%% A b %% c` と、
+`A  b %%{init: {}}%%` は `A b %%{init: {}}%%` と印字します。
 
 [fixture: ishikawa/inline-directives/directive-gap-trim-unsafe]
 [fixture: ishikawa/inline-directives/directive-single-space-gaps]
 [fixture: ishikawa/inline-directives/directive-in-value]
 [fixture: ishikawa/inline-directives/literal-side-whitespace]
+[fixture: ishikawa/inline-directives/directive-middle-runs-kept]
+[fixture: ishikawa/inline-directives/directive-leading-runs-collapsed]
+[fixture: ishikawa/inline-directives/directive-then-comment-runs-kept]
+[fixture: ishikawa/inline-directives/directive-two-then-text-runs-kept]
+[fixture: ishikawa/inline-directives/directive-then-tab-and-comment-runs-kept]
+[test: ishikawa: directive-last-then-u3000-runs-kept]
+[fixture: ishikawa/inline-directives/directive-then-touching-comment-runs-kept]
+[fixture: ishikawa/inline-directives/directive-then-semicolon-runs-kept]
+[fixture: ishikawa/inline-directives/directive-start-and-end-runs-collapsed]
+[fixture: ishikawa/inline-directives/directive-start-and-end-then-comment-runs-kept]
+[fixture: ishikawa/inline-directives/directive-start-then-comment-runs-collapsed]
+[fixture: ishikawa/inline-directives/directive-two-end-runs-collapsed]
+[fixture: ishikawa/inline-directives/directive-two-end-then-comment-runs-kept]
+[fixture: ishikawa/inline-directives/directive-middle-tab-runs-kept]
+[test: ishikawa: directive-last-then-nbsp-runs-kept]
+[test: ishikawa: directive-last-then-u2028-runs-kept]
+[test: ishikawa: directive-last-then-u2029-runs-kept]
+[test: ishikawa: directive-then-nbsp-and-text-runs-kept]
+[test: ishikawa: directive-start-then-nbsp-runs-collapsed]
 [fixture: ishikawa/inline-directives/joined-line-spaces]
 
 先頭のディレクティブの隙間は、節点の深さによる字下げに数えます。
@@ -517,17 +592,67 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+ただし、ディレクティブの前にテキストがあり、
+その後に空白とタブとディレクティブ以外が続くテキストは別です。
+[Inline directives](#inline-directives)を参照してください。
 結合した継続列は保ちます。
 コメントの空白とディレクティブの内容も同じです。
-テキストを終えるディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-最後のディレクティブの後の空白は除きます。
-最後のディレクティブの後に空白が続くときも続かないときも、
+最後のディレクティブの後に空白とタブだけが続くテキストを終えるディレクティブは、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブは除きます。
+最後のディレクティブの後に空白とタブが続くときも続かないときも、
 テキストの中の連なりは空白 1 つにして印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+連なりを書かれたままにするテキストでは、
+各ディレクティブの前の空白とタブも書かれたままにし、
+最後のディレクティブの後の空白とタブだけを除きます。
+条件は[Inline directives](#inline-directives)にあります。
+`A  b %%{x}%% c  %%{y}%%` と空白 2 つは `A  b %%{x}%% c  %%{y}%%` と印字します。
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-gap-collapsed]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
+[fixture: ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
+
+前にテキストのあるディレクティブの隣の、空白でもタブでもない空白文字（U+000B、
+U+000C、改行しない空白、U+1680、U+2000 から U+200A、U+2028、U+2029、U+202F、
+U+205F、U+3000、U+FEFF）は、
+それがないと mermaid.js が別のテキストを描くので残り、
+最後のディレクティブの後の空白とタブは除きます。
+2 つのディレクティブの間の文字も残ります。
+`A %%{x}%%`、U+3000、空白 2 つは `A %%{x}%%` と U+3000 に、`A`、改行しない空白、
+`%%{x}%%`、空白 2 つも `A`、改行しない空白、`%%{x}%%` になります。
+リテラルを終えるコメントの中の空白とタブの連なりは、
+前にテキストのあるディレクティブがあるリテラルを除いて、
+空白 1 つにして印字します（そのリテラルでは、
+すべての連なりを書かれたままにします。
+[Inline directives](#inline-directives) を参照）。
+`A %% c  d` は `A %% c d` と印字し、`A %% c`、タブ 2 つ、`d` も同じです。
+改行しない空白の前でも同じです（`A %% c`、空白 2 つ、改行しない空白、`d` は、
+`A %% c`、空白 1 つ、改行しない空白、`d` と印字します）。
+ディレクティブが先頭にしかない `%%{x}%% A  b %% c  d` も同じで、
+`%%{x}%% A b %% c d` と印字します。
+前にテキストのあるディレクティブがあるときは、コメントは書かれたまま残ります。
+`A %%{x}%%  %% c  d`、`A %%{x}%% b %% c  d`、`A  b %%{x}%% %% c  d`、
+`%%{x}%% A %%{y}%% b %% c  d` は変えず、
+改行しない空白の前の連なりとタブの連なりも変えません。
+
+[test: U+3000 after the last directive of an ishikawa literal]
+[test: U+3000 between two directives of an ishikawa literal]
+[test: U+3000 before the first directive of an ishikawa literal]
+[test: a no-break space after the last directive of an ishikawa literal]
+[test: a no-break space before the first directive of an ishikawa literal]
+[test: a whitespace character that is no space or tab beside the directives of an ishikawa literal]
+[test: ishikawa: comment-run-collapsed]
+[test: ishikawa: comment-run-before-nbsp-collapsed]
+[test: ishikawa: comment-tab-run-collapsed]
+[test: ishikawa: comment-run-after-directive-kept]
+[test: ishikawa: comment-run-after-text-and-directive-kept]
+[test: ishikawa: comment-run-before-nbsp-after-directive-kept]
+[test: ishikawa: comment-tab-run-after-directive-kept]
+[test: ishikawa: comment-run-after-leading-directive-collapsed]
+[test: ishikawa: comment-run-after-directive-between-words-kept]
+[test: ishikawa: comment-run-after-leading-and-between-directives-kept]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。
@@ -561,6 +686,10 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 引用符、バッククォート、空に見える文字列や括弧や呼び出し、閉じ忘れ、数、句読点、
 実体参照、HTML、プロトタイプの名前もテキストです。
 title、アクセシビリティ、style、装飾、データらしい形も同じです。
+ディレクティブの前にテキストがあり、
+その後に空白とタブとディレクティブ以外が続くテキストでは、
+空白とタブの連なりを書かれたままにします。
+[Inline directives](#inline-directives)を参照してください。
 
 [fixture: ishikawa/node-text/values-opaque]
 [fixture: ishikawa/node-text/values-quote-unsafe]
@@ -975,13 +1104,68 @@ ishikawa
 [fixture: ishikawa/final-newline/multiple-final-lf]
 
 拒否される裸の見出しを、改行の追加で救済しません。
-最後の図コメントの隙間全体と EOF までの開いたディレクティブは、
-書かれた終わりを保ちます。
+最後の `%%` だけの行は、その後ろの隙間を書かれたまま残し、
+改行 1 つでテキストを終えます。
+隙間が改行で終わっていないときは、印字が改行を足します。
+最後のテキストつきのコメントは、テキストの後に同じ行で続くものを残します。
+コメントだけの行では、空白、タブ、空白でもタブでもない仕様の空白文字（U+00A0、
+U+3000、U+2028、U+2029 を含みます）、U+0085、U+180E、U+200B です。
+節点の行では、空白とタブを除いたものです。
+空行は落とし、改行 1 つでテキストを終えます。
+閉じていないディレクティブはテキストの終わりまで届き、
+空白でない最後の文字までの残りを取ります。
+ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
+その文字の後ろの空白は、文の行でも落とします。
+落とすのは U+0009 から U+000D（タブ、改行、垂直タブ、改ページ）、U+0020、
+U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF と、
+空行です。
+改行 1 つでテキストを終えます。
+何も足さないのは、テキストがその文字の直後で終わり、
+その文字が U+2028 でも U+2029 でもないときだけです。
 末尾のテキストの余白は、末尾の空白に従い除きます。
 
 [fixture: ishikawa/final-newline/final-comment]
 [corpus fixture: ishikawa/directive-open-root-eof]
 [fixture: ishikawa/final-newline/final-value-spaces]
+[fixture: ishikawa/final-newline/open-directive-trailing-blanks]
+[test: an open directive with nothing after it]
+[test: an open directive followed by two spaces]
+[test: an open directive followed by a tab]
+[test: an open directive followed by a no-break space]
+[test: an open directive followed by U+3000]
+[test: an open directive followed by U+FEFF]
+[test: an open directive followed by a vertical tab]
+[test: an open directive followed by a form feed]
+[test: an open directive followed by a line break]
+[test: an open directive followed by CR and LF]
+[test: an open directive followed by spaces and a line break]
+[test: an open directive followed by empty lines]
+[test: an open directive followed by a line break and spaces]
+[test: an open directive followed by U+2028]
+[test: an open directive followed by U+2029]
+[test: an open directive followed by a space and U+2028]
+[test: an open directive followed by U+2028 and a space]
+[test: an open directive followed by U+0085]
+[test: an open directive followed by U+200B]
+[test: an open directive followed by U+180E]
+[test: an open directive followed by U+2003]
+[test: an open directive followed by U+1680]
+[test: an open directive followed by U+2000]
+[test: an open directive followed by U+200A]
+[test: an open directive followed by U+202F]
+[test: an open directive followed by U+205F]
+[test: a final line of %% alone, two empty lines, and a space in an ishikawa diagram]
+[test: a final line of %% alone and U+2028 in an ishikawa diagram]
+[test: a final comment with text and a tab on a line of its own in an ishikawa diagram]
+[test: a final comment with text and empty lines in an ishikawa diagram]
+[test: a final comment with text and a no-break space on a line of its own in an ishikawa diagram]
+[test: a final comment with text and U+3000 on a line of its own in an ishikawa diagram]
+[test: a final comment with text and U+2028 on a line of its own in an ishikawa diagram]
+[test: a final comment with text and U+2029 on a line of its own in an ishikawa diagram]
+[test: a final comment with text and two spaces after a node in an ishikawa diagram]
+[test: a final comment with text and each whitespace character on a line of its own in an ishikawa diagram]
+[test: a final comment with text and each whitespace character after a node in an ishikawa diagram]
+[test: a final comment with text and a no-break space after a node in an ishikawa diagram]
 
 入力（エスケープ表記）:
 
