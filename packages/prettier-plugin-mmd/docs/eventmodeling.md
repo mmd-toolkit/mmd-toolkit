@@ -1459,9 +1459,10 @@ default-size-branches/size-below-planned-fits-indented-comment]
 
 This keeps indentation or the final line break from moving the text across the
 limit, where the comment lines in a value would be removed and the Db would
-change. At 50000 units, and at 49999, indenting the first line of a data body
-whose later lines, a comment line included, stand at least one space in makes
-one of the versions that count draw different text, structure and geometry (see
+change. At 50000 units, and at 49999, one of the versions that count draws
+different text, structure and geometry when the first line of a data body whose
+later lines, a comment line included, stand at least one space in is indented
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The boundary itself is covered by the corpus, also with CRLF, an inline
 directive and frontmatter.
