@@ -1415,7 +1415,8 @@ ignored semicolon] [test: usecase: U+2028, a comment, and a directive that is
 not closed after the text of an accTitle line] [test: usecase: U+2028, a
 comment, and an empty line after an accTitle line of whitespace] [test: usecase:
 U+2028, a comment that ends in a semicolon, and an empty line after an accDescr
-line whose text holds an ignored semicolon]
+line whose text holds an ignored semicolon] [test: usecase: U+2028, two comments
+that touch, and a line of whitespace after the text of an accTitle line]
 
 ### Frontmatter YAML
 
