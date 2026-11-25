@@ -144,9 +144,9 @@ braces on different lines all declare the entity without attributes. Rule 1
 gives `{}` for braces that hold nothing, as Prettier prints `x = { }` as
 `x = {}` ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), so `{ }`
 is printed against rule 1 and waits to be fixed by it. The versions that were
-run accept `{}` for an entity, also in a subgraph, so the space has a reason
-only after an entity with a class, `C:::c { }`, where some of the versions that
-count reject `{}`.
+run accept `{}` for an entity, also in a subgraph, and give `{ }` the same
+result: the one that rejects `{}` after an entity with a class, `C:::c {}`,
+rejects `{ }` there as well. No version needs the space, so it has no reason.
 
 [fixture: attribute-blocks/empty-unified] [corpus fixture: er/gram-block-empty]
 [corpus fixture: er/gram-block-empty-space] [corpus fixture:
