@@ -61,6 +61,7 @@ import {
   findStructuralToken,
   findTokensBetween,
   findTriviaBetween,
+  isInlineWhitespace,
   isSpaceOrTab,
   isStructural,
   isWhitespace,
@@ -117,12 +118,18 @@ type CommonStatement = (
   readonly textBeforeOpen?: readonly Node[]
 }
 
-/** Whether a `%%` comment, and no directive, starts at `offset`. */
-function startsPlainComment(source: Source, offset: number): boolean {
-  return (
-    source.text.startsWith("%%", offset) &&
-    !source.text.startsWith("%%{", offset)
-  )
+/**
+ * Whether a `%%` starts at `offset`: that of a comment, or that of a `%%{` that
+ * mermaid.js does not remove as a directive, which is one that no word
+ * character follows after the whitespace behind the `%%{` (`%%{}%%`), and which
+ * the pinned grammar hides as a directive of its own. The caller has skipped
+ * the directives that mermaid.js removes (`skipRemoved`), so a `%%{` found here
+ * is of the second kind, and the oldest version that counts reads its `%%` as
+ * text, as it does the `%%` of a comment (docs/compatibility.md, Accessibility
+ * lines that the oldest version reads to the end).
+ */
+function startsPercent(source: Source, offset: number): boolean {
+  return source.text.startsWith("%%", offset)
 }
 
 /**
@@ -238,11 +245,12 @@ export function layoutCommonLine(
   const commentStart =
     value === null ? null : skipRemoved(source, value.range[1])
   const commentFollows =
-    commentStart !== null && startsPlainComment(source, commentStart)
+    commentStart !== null && startsPercent(source, commentStart)
   // A `%%` right after the value of an `accTitle`, also after the directives
-  // that mermaid.js removes first, is a part of the title to the oldest version
-  // that counts, with the whitespace before it, so the line stays as written
-  // (docs/pie.md, Accessibility lines).
+  // that mermaid.js removes first, and the `%%` of a `%%{}%%` that it does not
+  // remove, is a part of the title to the oldest version that counts, with the
+  // whitespace before it, so the line stays as written (docs/pie.md,
+  // Accessibility lines).
   const accTitleReachesComment =
     commentFollows &&
     isAccTitle(statement) &&
@@ -337,13 +345,16 @@ export function layoutCommonLine(
   ]
   // A text that ends with directives prints them as at the end of a line, and
   // leaves out the whitespace at its end (docs/compatibility.md, Texts after a
-  // keyword that are drawn the same). The runs inside an `accTitle` stay.
+  // keyword that are drawn the same). The runs inside an `accTitle` stay. The
+  // run before the last directive holds any whitespace of a line, which the
+  // line without blanks after the directive prints as one space too.
   if (endsInDirectives) {
     trimTextAfterKeyword(
       source,
       atoms,
       [valueStart, valueEnd],
       statement.type.includes("AccTitle") ? "kept" : "collapsed",
+      isInlineWhitespace,
     )
   }
   // An ignored `;` at the trimmed end stays against the text, as when its
