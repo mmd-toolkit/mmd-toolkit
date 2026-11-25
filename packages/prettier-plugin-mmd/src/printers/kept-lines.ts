@@ -1421,9 +1421,12 @@ export function holdsJoiningRegion(
 
 /**
  * Where the text that the last region that joins lines takes ends, among the
- * regions whose comment starts at or after `offset` on its line, or `offset`
- * where there is none: the end of the region, and of the removed text (a
- * directive line, say) that follows it. `printBlock` keeps the gap up to there
+ * regions whose comment starts at or after `offset` on its line and before
+ * `gapEnd`, the end of the gap that is asked about, or `offset` where there is
+ * none: the end of the region, and of the removed text (a directive line, say)
+ * that follows it. A gap that ends before the comment, such as the branch
+ * prefix of a treeView line before its text, holds no region and stays with the
+ * layout of its line. `printBlock` keeps the gap up to there
  * as written for a layout that prints its joining regions as written
  * (`BlockRules.joiningRegionsPrintedAsWritten`): the region starts after a
  * U+2028 or U+2029, which the gap holds, so the gap cannot be laid out again
@@ -1441,6 +1444,7 @@ export function holdsJoiningRegion(
 export function findJoiningRegionEndInLine(
   source: Source,
   offset: number,
+  gapEnd: number,
 ): number {
   const lineEnd = lineEndOf(source, offset)
   const afterDirective = holdsDirectiveBefore(
@@ -1452,7 +1456,7 @@ export function findJoiningRegionEndInLine(
   for (const region of source.joiningRegions) {
     if (
       offset <= region.comment.range[0] &&
-      region.comment.range[0] < lineEnd &&
+      region.comment.range[0] < Math.min(lineEnd, gapEnd) &&
       !(afterDirective && !endsWithSemicolon(source, region.comment.range))
     )
       end = Math.max(end, skipRemoved(source, region.end))

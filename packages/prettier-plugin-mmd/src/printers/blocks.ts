@@ -505,11 +505,11 @@ export function printBlock<Statement extends Positioned>(
    * U+2029 before a comment line stays as written (docs/compatibility.md, A
    * comment line after U+2028 or U+2029).
    */
-  function keptInlineGapEnd(start: number): number {
+  function keptInlineGapEnd(start: number, end: number): number {
     const own = rules.keptInlineGapEnd?.(start)
     if (own !== undefined && own > start) return own
     return rules.joiningRegionsPrintedAsWritten === true
-      ? findJoiningRegionEndInLine(source, start)
+      ? findJoiningRegionEndInLine(source, start, end)
       : (own ?? start)
   }
 
@@ -1566,12 +1566,16 @@ export function printInlineGap(
   start: number,
   end: number,
   place: InlinePlace,
-  keptEnd?: (start: number) => number,
+  keptEnd?: (start: number, end: number) => number,
   ordinaryRule?: GapRule,
   omittedRanges: readonly Range[] = [],
   relocatedWhitespace: readonly Range[] = [],
 ): Doc {
-  if (keptEnd !== undefined && keptEnd(start) > start && end <= keptEnd(start))
+  if (
+    keptEnd !== undefined &&
+    keptEnd(start, end) > start &&
+    end <= keptEnd(start, end)
+  )
     return printAsWritten(source, start, end)
   if (start >= end)
     return ordinaryRule === "space" && !place.atLineStart && !place.atLineEnd
