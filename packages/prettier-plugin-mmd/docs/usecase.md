@@ -1365,15 +1365,16 @@ usecase: crlf-output-values]
 
 A one-line `accTitle:` or `accDescr:` statement whose text ends at a U+2028 or
 U+2029 that a comment line follows is printed as such a statement is printed
-without the character, where the line after the comment line is empty, or holds
-directives that touch each other and nothing else: the comment goes to a line of
-its own, the colon has one space after it, and the whitespace at the end of the
-text goes. It is the form that the second formatting printed from the first
-form, so that formatting twice changes nothing. The statement stays as written
-where a statement, a comment line, or a `;` stands on the line after the comment
-line, with or without a directive before it, and where whitespace stands there:
-whitespace before a directive, after it, between directives, or alone on the
-line belongs to the text of the statement.
+without the character, where the line after the comment line is empty, holds
+directives that touch each other and nothing else, or is not there: the comment
+goes to a line of its own, the colon has one space after it, and the whitespace
+at the end of the text goes. It is the form that the second formatting printed
+from the first form, so that formatting twice changes nothing. Comment lines
+that follow each other count as one comment line, and the line after the last of
+them decides. The statement stays as written where a statement or a `;` stands
+on the line after the comment line, with or without a directive before it, and
+where whitespace stands there: whitespace before a directive, after it, between
+directives, or alone on the line belongs to the text of the statement.
 
 [test: usecase: U+2028, a comment, and an empty line after the text of an
 accTitle line] [test: usecase: U+2028, a directive, a comment, and an empty line
@@ -1402,7 +1403,10 @@ and an empty line after the text of an accTitle line] [test: usecase: U+2029, a
 comment, and a directive line after the text of an accDescr line] [test:
 usecase: U+2029, a comment, and a directive line with a space before it after
 the text of an accDescr line] [test: usecase: U+2029, a comment, and a line of
-whitespace after the text of an accDescr line]
+whitespace after the text of an accDescr line] [test: usecase: U+2028, two
+comments that touch, and a statement on the next line after the text of an
+accTitle line] [test: usecase: U+2028 and two comments that touch at the end of
+the text after the text of an accTitle line]
 
 ### Frontmatter YAML
 

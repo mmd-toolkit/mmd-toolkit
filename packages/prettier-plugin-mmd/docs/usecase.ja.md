@@ -1456,13 +1456,15 @@ id、隙間、プロパティ、CSS の拒否位置を修復しません。
 
 コメント行が続く U+2028 か U+2029 でテキストが終わる、
 1 行の `accTitle:` と `accDescr:` の文は、コメント行の次の行が空か、
-互いに接するディレクティブだけを含むとき、その文字がない文と同じに印字します。
+互いに接するディレクティブだけを含むか、行がないとき、
+その文字がない文と同じに印字します。
 コメントは独立した行になり、コロンの後ろは空白 1 つで、
 テキストの末尾の空白は削除します。
 1 回目の整形が、2 回目の整形が前に印字した形を印字するので、
 2 回整形しても変わりません。
-コメント行の次の行に文、コメント行、`;` があるときは、
-ディレクティブが前にあっても、文は書かれたままにします。
+続くコメント行は 1 つのコメント行と数え、最後のコメント行の次の行で決めます。
+コメント行の次の行に文か `;` があるときは、ディレクティブが前にあっても、
+文は書かれたままにします。
 その行に空白があるときも同じです。
 ディレクティブの前、後、ディレクティブの間の空白と、空白だけの行の空白は、
 文のテキストに含まれるからです。
@@ -1484,6 +1486,8 @@ id、隙間、プロパティ、CSS の拒否位置を修復しません。
 [test: usecase: U+2028, a comment, and a directive line with a semicolon after the text of an accTitle line]
 [test: usecase: U+2028, a comment, and a directive and a statement on the next line after the text of an accTitle line]
 [test: usecase: U+2028, two comments that touch, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, two comments that touch, and a statement on the next line after the text of an accTitle line]
+[test: usecase: U+2028 and two comments that touch at the end of the text after the text of an accTitle line]
 [test: usecase: two U+2028, a comment, and an empty line after the text of an accTitle line]
 [test: usecase: U+2029, a comment, and a directive line after the text of an accDescr line]
 [test: usecase: U+2029, a comment, and a directive line with a space before it after the text of an accDescr line]
