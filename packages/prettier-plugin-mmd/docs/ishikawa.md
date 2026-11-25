@@ -30,7 +30,14 @@ ishikawa/header/header-lowercase] [fixture: ishikawa/header/header-valid]
 [fixture: ishikawa/header/header-beta]
 
 Exterior padding disappears; a failed beta boundary leaves its suffix with the
-root, and attached trivia follows the rules below.
+root, and attached trivia follows the rules below. Prettier omits spaces and
+tabs at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+omission of exterior spaces and tabs at the end of the header line. When the
+`-beta` boundary fails, mermaid.js reads the stable header followed by literal
+root text, so dropping the suffix would change the root's value.
+
+[corpus fixture: ishikawa/header-beta-letter-suffix]
 
 [fixture: ishikawa/header/header-beta-fallback]
 
@@ -165,7 +172,9 @@ This agrees with the other printers' header/body convention while keeping the
 Db. A root that contains semicolons moves whole as well: the Ishikawa header
 adds no `style` or `classDef` trigger to the shared line rule. Header comments
 and directive attachment follow their narrower rules; apparent statements inside
-the root are never split.
+the root are never split. Semicolons inside a root do not separate Ishikawa
+nodes in mermaid.js, so splitting apparent statements there would change the
+node text or add nodes to the Db.
 
 [fixture: ishikawa/root-on-header-line/header-root] [fixture:
 ishikawa/root-on-header-line/header-root-kept] [fixture:
@@ -227,8 +236,14 @@ ishikawa
 Ordinary blank runs collapse to one, keeping visual grouping without arbitrary
 runs; plain body-edge blanks disappear, including after leading common comments
 or directive-only lines, because blank lines change no node and no parent in
-Ishikawa. A blank after a diagram comment is that comment's separating gap, not
-a plain body-edge blank, so it stays.
+Ishikawa. Prettier prints no blank line at the start of a text and at most one
+between items. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+the same form for leading blank lines and ordinary interior blank runs. A blank
+after a diagram comment is that comment's separating gap, not a plain body-edge
+blank, so it stays. A blank separating a diagram comment from the next item,
+including a directive, lies inside the body.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) retains one such
+interior blank, as Prettier does between items.
 
 [fixture: ishikawa/blank-lines/blank-runs] [fixture:
 ishikawa/blank-lines/blank-around-trivia]
@@ -577,7 +592,10 @@ ishikawa
 
 The spaces and tabs at the end of an `IshikawaLiteral` are left out, on ordinary
 and kept lines alike, after a colon, and at the end of the input: Mermaid trims
-the literal, so the Db and the figure are the same without them. Any other
+the literal, so the Db and the figure are the same without them. Prettier omits
+spaces and tabs at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+omission at literal line ends, on ordinary and kept lines alike. Any other
 whitespace character at the end, such as a no-break space, a byte order mark, a
 Unicode separator, or an ideographic space, stays as written.
 
@@ -723,7 +741,10 @@ ishikawa/trailing-whitespace/directive-after-white-space-text-blanks-gap-one-spa
 ishikawa/trailing-whitespace/directive-before-angle-text-blanks-gap-one-space]
 
 Only exterior header-line padding is dropped under [Header](#header) and
-[Blank lines](#blank-lines); it is not a literal value.
+[Blank lines](#blank-lines); it is not a literal value. Prettier omits spaces
+and tabs at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+omission of exterior spaces and tabs at the end of the header line.
 
 [fixture: ishikawa/trailing-whitespace/trailing-header-div]
 
@@ -764,7 +785,12 @@ ishikawa/node-text/values-html-entities]
 
 No foreign token-spacing or value conversion applies. This preserves authored
 forms and configuration-sensitive reading rather than reconstructing labels from
-the Db.
+the Db. Punctuation, quotes and number-like spellings are literal node text in
+mermaid.js. Apart from the stated changes to spaces and tabs, applying another
+syntax's token-spacing or value conversions would change the text stored in the
+Db.
+
+[corpus fixture: ishikawa/lex-text-punctuation]
 
 [fixture: ishikawa/node-text/values-spacing-unsafe] [fixture:
 ishikawa/node-text/value-single-space-and-colon]
