@@ -599,11 +599,11 @@ printed with each `end` on a line of its own, one level apart, and so are three
 subgraphs. A `;` that stands alone between them is a statement of the subgraph
 around it, so it is printed on a line of its own after the inner `end`, as on
 any line: `end ; end` is printed as `end`, `;`, and `end` on three lines. An
-`end` that a statement follows on its line stays with that statement, and with
-the `end` after the statement where there is one: `end end ; C` stays as it is,
-and in `subgraph F; subgraph G; A[x;] --> B; end; C; end` only the last `end`
-goes to a line of its own. U+2028 and U+2029 between or after the `end` are
-whitespace as after any `end`.
+`end` that a statement follows on its line stays with that statement, and with a
+closing that stands between them: `end end ; C` stays as it is. A closing that
+stands after the statement goes to a line of its own where nothing follows it:
+in `subgraph F; subgraph G; A[x;] --> B; end; C; end` only the last `end` does.
+U+2028 and U+2029 between or after the `end` are whitespace as after any `end`.
 
 [fixture: semicolons/nested-closings-after-kept-line] [fixture:
 semicolons/nested-closings-style-space-after-kept-line] [fixture:
@@ -623,7 +623,21 @@ nested subgraphs on a kept line, in a flowchart] [test: U+2029 after the `;`
 between two `end` of nested subgraphs on a kept line, in a flowchart] [test:
 U+2029 after a space after the `;` between two `end` of nested subgraphs on a
 kept line, in a flowchart] [test: U+2029 after two `end` of nested subgraphs on
-a kept line, in a flowchart]
+a kept line, in a flowchart] [fixture:
+semicolons/nested-closings-statement-between-closings-closed-directive-before-statement]
+[fixture:
+semicolons/nested-closings-statement-between-closings-unclosed-directive-after-last-end]
+[fixture:
+semicolons/nested-closings-statement-between-closings-ignored-semicolon-after-last-end]
+[fixture:
+semicolons/nested-closings-statement-between-closings-comment-line-after-last-end]
+[fixture:
+semicolons/nested-closings-statement-between-closings-empty-line-after-last-end]
+[fixture: semicolons/nested-closings-statement-between-closings-at-end-of-text]
+[test: U+2028 after the `;` after the inner `end` of nested subgraphs, before a
+statement and the last `end`, in a flowchart] [test: U+2029 after the `;` after
+the inner `end` of nested subgraphs, before a statement and the last `end`, in a
+flowchart]
 
 A `;` at the end of a statement is kept too when a directive follows it on the
 same line: without the `;`, the whitespace before the directive would be read as

@@ -1109,11 +1109,11 @@ agentflow-beta TB
 その間にそれだけで置かれた `;` は、外側の `flow` の文なので、
 内側の `end` の後ろの自分の行に、ほかの行と同じように印字します。
 `end ; end` は、`end`、`;`、`end` を 3 行に印字します。
-同じ行で文が続く `end` は、その文と一緒に残り、文の後ろに `end` があるときは、
-その `end` も残ります。
+同じ行で文が続く `end` は、その文と、間にある閉じと一緒に残ります。
 `end end ; C` は、そのままです。
+文の後ろにある閉じは、後ろに何も続かないとき、自分の行に移ります。
 `flow F; flow G; A[x;] --> B; end; C; end` では、
-最後の `end` だけが自分の行に移ります。
+最後の `end` だけがそうなります。
 `end` の間か後ろにある U+2028 と U+2029 は、空白です。
 Agentflow の `end` は、スペースとタブだけを取り、改行は取りません。
 残す行でも、ほかの行と同じように落とします。
@@ -1126,6 +1126,14 @@ Agentflow の `end` は、スペースとタブだけを取り、改行は取り
 [fixture: semicolons/nested-closings-semicolons-after-kept-line]
 [fixture: semicolons/nested-closings-semicolon-after-outer-after-kept-line]
 [fixture: semicolons/nested-closings-statement-between-closings]
+[fixture: semicolons/nested-closings-statement-between-closings-closed-directive-before-statement]
+[fixture: semicolons/nested-closings-statement-between-closings-unclosed-directive-after-last-end]
+[fixture: semicolons/nested-closings-statement-between-closings-ignored-semicolon-after-last-end]
+[fixture: semicolons/nested-closings-statement-between-closings-comment-line-after-last-end]
+[fixture: semicolons/nested-closings-statement-between-closings-empty-line-after-last-end]
+[fixture: semicolons/nested-closings-statement-between-closings-at-end-of-text]
+[test: agentflow: U+2028 after the `;` after the inner `end` of nested flows, before a statement and the last `end`]
+[test: agentflow: U+2029 after the `;` after the inner `end` of nested flows, before a statement and the last `end`]
 [fixture: semicolons/nested-closings-statement-after-kept-line-kept]
 [fixture: semicolons/nested-closings-line-break-between-after-kept-line]
 [fixture: semicolons/nested-closings-without-kept-line]

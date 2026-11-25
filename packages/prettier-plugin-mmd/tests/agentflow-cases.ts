@@ -420,4 +420,18 @@ export const agentflowCases: readonly AgentflowCase[] = [
     input: "agentflow-beta TB\nflow F[style:#x;]; A --> B; end ;;\u2029\n",
     output: "agentflow-beta TB\n  flow F[style:#x;]; A --> B; end ;;\u2029\n",
   },
+  {
+    name: "agentflow: U+2028 after the `;` after the inner `end` of nested flows, before a statement and the last `end`",
+    input:
+      "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end;\u2028 C; end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B; end; C;\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the `;` after the inner `end` of nested flows, before a statement and the last `end`",
+    input:
+      "agentflow-beta TB\nflow F; flow G; A[x;] --> B; end;\u2029 C; end\n",
+    output:
+      "agentflow-beta TB\n  flow F; flow G; A[x;] --> B; end; C;\n  end\n",
+  },
 ]

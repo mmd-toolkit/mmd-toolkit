@@ -1071,12 +1071,13 @@ each `end` on a line of its own, one level apart, and so are three flows. A `;`
 that stands alone between them is a statement of the `flow` around it, so it is
 printed on a line of its own after the inner `end`, as on any line: `end ; end`
 is printed as `end`, `;`, and `end` on three lines. An `end` that a statement
-follows on its line stays with that statement, and with the `end` after the
-statement where there is one: `end end ; C` stays as it is, and in
-`flow F; flow G; A[x;] --> B; end; C; end` only the last `end` goes to a line of
-its own. U+2028 and U+2029 between or after the `end` are whitespace, as
-Agentflow's `end` takes only spaces and tabs and no line feed, and they are
-dropped on a kept line as on any line.
+follows on its line stays with that statement, and with a closing that stands
+between them: `end end ; C` stays as it is. A closing that stands after the
+statement goes to a line of its own where nothing follows it: in
+`flow F; flow G; A[x;] --> B; end; C; end` only the last `end` does. U+2028 and
+U+2029 between or after the `end` are whitespace, as Agentflow's `end` takes
+only spaces and tabs and no line feed, and they are dropped on a kept line as on
+any line.
 
 [fixture: semicolons/nested-closings-after-kept-line] [fixture:
 semicolons/nested-closings-style-space-after-kept-line] [fixture:
@@ -1106,7 +1107,20 @@ statement] [test: agentflow: U+2029 after the `end` of a flow on a kept line,
 then a line break] [test: agentflow: U+2029 after the `end` of a flow on a kept
 line, then the end of the text] [test: agentflow: U+2029 after the `end` of a
 flow on a kept line, then a statement] [test: agentflow: U+2029 after the `end`
-of a flow on a kept line, then a line break and a statement]
+of a flow on a kept line, then a line break and a statement] [fixture:
+semicolons/nested-closings-statement-between-closings-closed-directive-before-statement]
+[fixture:
+semicolons/nested-closings-statement-between-closings-unclosed-directive-after-last-end]
+[fixture:
+semicolons/nested-closings-statement-between-closings-ignored-semicolon-after-last-end]
+[fixture:
+semicolons/nested-closings-statement-between-closings-comment-line-after-last-end]
+[fixture:
+semicolons/nested-closings-statement-between-closings-empty-line-after-last-end]
+[fixture: semicolons/nested-closings-statement-between-closings-at-end-of-text]
+[test: agentflow: U+2028 after the `;` after the inner `end` of nested flows,
+before a statement and the last `end`] [test: agentflow: U+2029 after the `;`
+after the inner `end` of nested flows, before a statement and the last `end`]
 
 Keep a separating semicolon after a statement or name ending in `accTitle`,
 `accDescr`, `direction`, `click`, `call` or `href`, and after any id ending in

@@ -1566,6 +1566,16 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2029\n",
     "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2029\n",
   ],
+  [
+    "U+2028 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end;\u2028 C; end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B; end; C;\n  end\n",
+  ],
+  [
+    "U+2029 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end;\u2029 C; end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B; end; C;\n  end\n",
+  ],
 ]
 
 /**
