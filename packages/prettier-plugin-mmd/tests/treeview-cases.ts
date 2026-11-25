@@ -711,6 +711,80 @@ export const treeviewCases: readonly TreeviewCase[] = [
     options: {},
   },
   {
+    name: "treeview/branch-prefixes/continued-name-line-separator-comment",
+    input: "treeView-beta\nroot\n├── a\u2028%% c\n└── z\n",
+    output: "treeView-beta\nroot\n└── a\u2028%% c\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-paragraph-separator-comment",
+    input: "treeView-beta\nroot\n├── a\u2029%% c\n└── z\n",
+    output: "treeView-beta\nroot\n└── a\u2029%% c\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-semicolon-line-separator-comment",
+    input: "treeView-beta\nroot\n├── a;\u2028%% c\n└── z\n",
+    output: "treeView-beta\nroot\n└── a;\u2028%% c\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-nested-line-separator-comment",
+    input:
+      "treeView-beta\nroot\n├── a\n│   ├── b\u2028%% c\n│   └── y\n└── z\n",
+    output:
+      "treeView-beta\nroot\n├── a\n│   └── b\u2028%% c\n│   └── y\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-middle-line-separator-comment",
+    input: "treeView-beta\nroot\n├── a\n├── b\u2028%% c\n└── z\n",
+    output: "treeView-beta\nroot\n├── a\n└── b\u2028%% c\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-line-separator-comment-sibling-follows",
+    input: "treeView-beta\nroot\n├── a\u2028%% c\n├── b\n└── z\n",
+    output: "treeView-beta\nroot\n├── a\u2028%% c\n├── b\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-line-separator-directive-without-comment",
+    input: "treeView-beta\nroot\n├── a\u2028%%{x}%%\n└── z\n",
+    output: "treeView-beta\nroot\n├── a %%{x}%%\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-line-separator-comment-blank-row",
+    input: "treeView-beta\nroot\n├── a\u2028%% c\n\n└── z\n",
+    output: "treeView-beta\nroot\n├── a\n%% c\n\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-line-separator-comment-at-end",
+    input: "treeView-beta\nroot\n├── a\n└── z\u2028%% c\n",
+    output: "treeView-beta\nroot\n├── a\n└── z\n%% c\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-line-separator-directive-comment",
+    input: "treeView-beta\nroot\n├── a\u2028%%{x}%%%% c\n└── z\n",
+    output: "treeView-beta\nroot\n└── a\u2028%%{x}%%%% c\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-line-separator-comment-crlf",
+    input: "treeView-beta\r\nroot\r\n├── a\u2028%% c\r\n└── z\r\n",
+    output: "treeView-beta\nroot\n└── a\u2028%% c\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-line-separator-comment-line-follows",
+    input: "treeView-beta\nroot\n├── a\u2028%% c\n%% d\n└── z\n",
+    output: "treeView-beta\nroot\n└── a\u2028%% c\n%% d\n└── z\n",
+    options: {},
+  },
+  {
     name: "treeview/decorations/box-redraw-decoration-comment-region-ps",
     input: "treeView-beta\nr\n├─ a\n│\u2029%% note\n┃\n└─ b\n",
     output: "treeView-beta\nr\n├─ a\n│\u2029%% note\n┃\n└─ b\n",

@@ -133,6 +133,62 @@ export const agentflowCases: readonly AgentflowCase[] = [
     output: "agentflow-beta TB\n  connector F  \u2029\n",
   },
   {
+    name: "agentflow: U+2028 after the keyword at the end of a flow name before a semicolon and a comment",
+    input: "agentflow-beta TB\nflow Front end \u2028 ;  %% c\nA\nend\n",
+    output: "agentflow-beta TB\n  flow Front end \u2028; %% c\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: vertical tab after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\u000b%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: form feed after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\f%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+3000 after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\u3000%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: no-break space after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\u00a0%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\u2028%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the semicolon after the keyword at the end of a flow name before a comment",
+    input: "agentflow-beta TB\nflow Front end ;\u2029%% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+3000 after the semicolon after the keyword at the end of a connector name before a comment",
+    input: "agentflow-beta TB\nconnector Front global ;\u3000%% c\n",
+    output: "agentflow-beta TB\n  connector Front global%% c\n",
+  },
+  {
+    name: "agentflow: a tab before the keyword at the end of a flow name before a semicolon and a comment",
+    input: "agentflow-beta TB\nflow Front\tend ;  %% c\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Front\tend%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: a no-break space before the keyword at the end of a flow name before a semicolon and a comment",
+    input: "agentflow-beta TB\nflow Front\u00a0end ;  %% c\nA --> B\nend\n",
+    output:
+      "agentflow-beta TB\n  flow Front\u00a0end%% c\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the keyword at the end of a flow name before a semicolon and a comment",
+    input: "agentflow-beta TB\nflow Front end \u2029 ;  %% c\nA\nend\n",
+    output: "agentflow-beta TB\n  flow Front end \u2029; %% c\n    A\n  end\n",
+  },
+  {
     name: "agentflow: a tab between an entity-shaped name end and a semicolon that a directive follows",
     input: "agentflow-beta TB\nflow Fr#ont\t;  %%{x}%%\nA --> B\nend\n",
     output: "agentflow-beta TB\n  flow Fr#ont\t; %%{x}%%\n    A --> B\n  end\n",

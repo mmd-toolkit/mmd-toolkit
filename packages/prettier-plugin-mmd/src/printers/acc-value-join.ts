@@ -1,4 +1,5 @@
 import type { Source } from "./source.ts"
+import { isLineSeparator, skipRemoved } from "./source.ts"
 
 /**
  * The diagram types whose accessibility lines the oldest version that counts
@@ -75,4 +76,53 @@ function hasNoValue(item: BodyItem): boolean {
     typeof value.value === "string" &&
     value.value.trim() === ""
   )
+}
+
+/**
+ * Where a `%%` ends that the oldest version that counts reads as part of the
+ * value of a title, an `accTitle:`, or an `accDescr:` line, or undefined. A
+ * value that ends at a U+2028 or U+2029 is followed by a comment region, which
+ * mermaid.js removes with the line feed that ends it; the line after the
+ * region then goes on the line of the value. A line of `%%` and nothing else
+ * is no comment line, so it stays, and the oldest version reads it as the
+ * text of the value (a title), or as the text of the value that the drawing
+ * shows (an accessibility line), while the pinned grammar reads it as a
+ * comment. The statement and the text up to that `%%` stay as written:
+ * printing the comment region and the `%%` on lines of their own gives the
+ * value and a `%%` line there (docs/pie.md, Title and Accessibility lines).
+ */
+export function findPercentLineReadByOlderVersions(
+  source: Source,
+  statement: BodyItem,
+): number | undefined {
+  // The oldest version that counts reads the title of a pie chart with that
+  // lexer; it rejects the title of a gitGraph, which has no such reading.
+  const isTitle =
+    statement.type.endsWith("TitleStatement") &&
+    !statement.type.endsWith("AccTitleStatement")
+  const readsValue =
+    statement.type.endsWith("AccTitleStatement") ||
+    statement.type.endsWith("AccDescrStatement") ||
+    (isTitle && source.root.diagramType === "pie")
+  if (
+    !diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType) ||
+    !readsValue
+  )
+    return undefined
+  const { value } = statement
+  if (typeof value !== "object" || value === null || !("range" in value))
+    return undefined
+  const valueEnd = (value.range as readonly [number, number])[1]
+  if (!isLineSeparator(source.text[valueEnd - 1])) return undefined
+  const position = skipRemoved(source, valueEnd)
+  if (
+    position === valueEnd ||
+    !source.text.startsWith("%%", position) ||
+    source.text.startsWith("%%{", position)
+  )
+    return undefined
+  const after = source.text[position + 2]
+  return after === undefined || after === "\n" || after === "\r"
+    ? position + 2
+    : undefined
 }
