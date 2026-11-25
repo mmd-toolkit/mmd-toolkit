@@ -1133,8 +1133,8 @@ Print each IgnoredText once from its source range at its AST owner. Keep
 pre-header/body forms, required and optional named gaps, qualified-name tails,
 tags and GWT clause/item gaps. Do not parse retained YAML or native DIRECTIVE as
 configuration. The shared hidden path preserves internal columns, consumed LF
-and closing lookahead padding; ordinary body openers align with their body. Rule
-1 names no mark for the start of a line, so
+and closing lookahead padding; ordinary body openers align with their body. The
+start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [radar](./radar.md#hidden-forms) indents the ordinary body openers,
 and [pie](./pie.md#indentation) and [packet](./packet.md#indentation) stand a
@@ -1211,7 +1211,7 @@ tf 02 evt Beta
 ### Comments
 
 Align ordinary standalone comments with their owning body; between GWT items
-this is item depth. Rule 1 names no mark for the start of a line, so
+this is item depth. The start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [flowchart](./flowchart.md#comments),
 [sequence](./sequence.md#comments) stand a comment line at the level of the
@@ -1491,7 +1491,7 @@ decides: [sequence](./sequence.md#directives),
 [flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
 print such a gap in the same way. Keep content, order, multiline interiors,
 positions inside values and unfinished EOF endings. Standalone starts align with
-the owning body. Rule 1 names no mark for the start of a line, so
+the owning body. The start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [flowchart](./flowchart.md#directives) and
 [sequence](./sequence.md#directives) stand a directive on a line of its own at

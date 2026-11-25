@@ -1167,7 +1167,7 @@ GWT 節・項目の隙間を保ちます。
 保持 YAML と図固有の `DIRECTIVE` を設定として解釈しません。
 隠れた形を扱う共有経路が内部の列、消費 LF、閉じの先読み空白を保ち、
 普通の本文開始記号は本文の段に揃えます。
-規則 1 は、行の始まりの印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [radar](./radar.ja.md#hidden-forms) は、普通の本文開始記号を字下げします。
 [pie](./pie.ja.md#indentation)と [packet](./packet.ja.md#indentation)は、
@@ -1246,7 +1246,7 @@ tf 02 evt Beta
 ### Comments
 
 普通の独立コメントは所属本文の段に揃え、GWT 項目間では項目の段にします。
-規則 1 は、行の始まりの印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [flowchart](./flowchart.ja.md#コメント)は、コメント行を周りの文の段に置きます。
 [sequence](./sequence.ja.md#コメント)も同じです。
@@ -1530,7 +1530,7 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 [journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 内容、順序、複数行の内部、値の中の位置、未完 EOF の終端を保ちます。
 独立した開始は所属本文の段に揃えます。
-規則 1 は、行の始まりの印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [flowchart](./flowchart.ja.md#ディレクティブ)と
 [sequence](./sequence.ja.md#ディレクティブ)は、自分の行にあるディレクティブを、
