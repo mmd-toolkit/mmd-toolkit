@@ -211,8 +211,15 @@ keeps its kind, since markdown changes the label type, and every label keeps its
 interior characters, including empty quoted values. No-break spaces at a label's
 ends and literal backslashes are part of its Db text; entity decoding and HTML
 stripping also change the text mermaid.js records. Those characters therefore
-stay as written. The padding inside the backquotes of a markdown label is part
-of its Db label too, so it stays (see
+stay as written. 12.0.0 and 12.3.0 draw a label with no-break spaces at its
+ends, a label with two literal backslashes, `A("a &amp; b")`, and
+`A("<b>x</b>")` differently from the same label without the no-break spaces,
+without the backslashes, with the entity decoded, and with the HTML stripped,
+and 12.3.0 holds another label in the Db `useCases` for each of them (for the
+no-break spaces, see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The padding inside the backquotes of a markdown label is part of its Db label
+too, so it stays (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A plain label is printed in the form that the examples use (see
 [Quotes](#quotes)). Only exterior ASCII HWS outside a bare label's contributing
