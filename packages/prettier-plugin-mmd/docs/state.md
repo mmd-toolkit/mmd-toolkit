@@ -738,11 +738,7 @@ mermaid.js that count draw different structure and style for
 whitespace-between-tokens/class-ids-beside-directive-runs] [fixture:
 whitespace-between-tokens/class-ids-with-ignored-semicolon]
 
-A U+2028 or U+2029 after the `,` stays where it is. The gap after a list comma
-keeps U+2028 or U+2029 as written in [journey](./journey.md#line-separators)
-lists of people and [block](./block.md#shapes) lists of arrow directions;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same form here.
+A U+2028 or U+2029 after the `,` stays where it is.
 
 [test: U+2028 after the comma of a state class statement] [test: U+2029 after
 the comma of a state class statement]

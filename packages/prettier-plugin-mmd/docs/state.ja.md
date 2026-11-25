@@ -710,6 +710,9 @@ Db が書かれたまま保つからです。
 `:` で始まるスタイルと、バックスラッシュと空白の後に `:` があるスタイルも、
 ほかのスタイルと同じく、`:` の後ろに空白を 1 つ置き、
 語と語の間の連続は空白 1 つで印字します。
+空でない名前がエスケープした空白で終わるときの `:` はキーのコロンなので、
+値が空でなければ、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+その後ろに空白を 1 つ置きます。
 
 `style A :  red   x` は `style A : red x` と印字します。
 
@@ -769,11 +772,6 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 [fixture: whitespace-between-tokens/class-ids-with-ignored-semicolon]
 
 `,` の後ろの U+2028 と U+2029 は、そのまま残します。
-人を並べる [journey](./journey.ja.md#行区切り文字) と、
-矢印の方向を並べる [block](./block.ja.md#形) も、
-カンマの後の隙間にある U+2028 と U+2029 を保ちます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-その隙間を書かれたまま残す形を与えます。
 
 [test: U+2028 after the comma of a state class statement]
 [test: U+2029 after the comma of a state class statement]
