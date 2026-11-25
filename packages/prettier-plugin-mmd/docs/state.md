@@ -600,7 +600,8 @@ are printed as they are, apart from the space after the `:`): the oldest version
 of mermaid.js that counts has no `style` statement in a state diagram and reads
 such a line as states and the description of one (`a,b,c` is the description of
 the state `fill`), which it draws as it is, so a space after a comma changes the
-text; it rejects a line with a second `:`.
+text; it rejects a line with a second `:` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/style-color-function-commas-kept] [fixture:
 whitespace-between-tokens/style-description-commas-kept]
@@ -1532,8 +1533,9 @@ A `style` statement whose styles after the first hold no `:` keeps its colors as
 written (`style A fill:#ABC` is printed `style A fill: #ABC`), because the
 oldest version of mermaid.js that counts draws the line as text, as a
 description of a state (see
-[Whitespace between tokens](#whitespace-between-tokens)); the `classDef`
-statement follows the color rule above.
+[Whitespace between tokens](#whitespace-between-tokens) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
+the `classDef` statement follows the color rule above.
 
 [fixture: colors/style-read-as-description-kept] [fixture:
 colors/style-read-as-description-kept-v1]

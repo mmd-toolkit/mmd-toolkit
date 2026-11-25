@@ -624,7 +624,10 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 そのような行を、状態と、
 その 1 つの説明として読みます（`a,b,c` は状態 `fill` の説明です）。
 説明はそのまま描かれるので、コンマの後の空白はテキストを変えます。
-2 つ目の `:` がある行は、その版が拒否します。
+2 つ目の `:` がある行は、
+その版が拒否します（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 
 [fixture: whitespace-between-tokens/style-color-function-commas-kept]
 [fixture: whitespace-between-tokens/style-description-commas-kept]
@@ -1607,7 +1610,9 @@ state 図の `style`、`classDef` 文のスタイルの色が対象です。
 色を書かれたままにします（`style A fill:#ABC` は `style A fill: #ABC`
 と印字します）。
 対象にする版のうち最も古い mermaid.js が、その行を、状態の説明として、
-テキストのまま描くからです（[トークンの間の空白](#トークンの間の空白)を参照）。
+テキストのまま描くからです（[トークンの間の空白](#トークンの間の空白)と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 `classDef` 文は、上記の色の規則に従います。
 
 [fixture: colors/style-read-as-description-kept]
