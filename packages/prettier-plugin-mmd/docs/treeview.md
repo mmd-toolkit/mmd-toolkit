@@ -2743,8 +2743,11 @@ semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 Treeview has no grammatical semicolon and style/classDef words alone do not
 freeze a line. Draw a safe outer box head around protected content, while
-protected interiors and value columns remain written. Retain the whole body when
-protected source row boundaries constrain parentage or when another Branch
+protected interiors and value columns remain written. The columns of the
+continuation lines of a quoted name are part of the name: moving the column of
+an enclosed branch changes the name in the Db (`one\n            style:#x` and
+`one\n        style:#x` are two names) and the figure. Retain the whole body
+when protected source row boundaries constrain parentage or when another Branch
 prefixes condition applies. These protections compose with unchanged value-owned
 prefixes on the same line or elsewhere in the diagram; they are not permission
 to discard a semicolon or partially redraw an unsafe body.
@@ -3636,11 +3639,14 @@ setting.
 ### Markdown fences
 
 Apply the same rules to dedented payloads; the Markdown host supplies fence,
-list and quote columns. Do not add host columns to value continuations. Test
-host output/idempotence separately from the payload Db. The host can trim
-padding on the final code line, limiting authored-byte preservation; quoted
-interior padding stays inside the quotes. Rejected fences follow the host route,
-which can also trim source padding.
+list and quote columns. Do not add host columns to value continuations. The
+columns of the continuation lines of a quoted name are part of the name in the
+Db, and the figures differ with them: `"first\n last"` and `"first\n   last"`
+are two names, so a host column added there would change the name. Test host
+output/idempotence separately from the payload Db. The host can trim padding on
+the final code line, limiting authored-byte preservation; quoted interior
+padding stays inside the quotes. Rejected fences follow the host route, which
+can also trim source padding.
 
 [test: treeview Markdown: top-level]
 
