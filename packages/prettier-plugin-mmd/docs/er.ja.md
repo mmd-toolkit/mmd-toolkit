@@ -48,7 +48,7 @@ subgraph や複合状態の文を、それを開く行より 1 段深く置き�
 subgraph の中でも同じです。
 規則 2 が形を与えます。
 [class](./class.ja.md#メンバーの本体)と
-[requirement](./requirement.ja.md#本体)が、
+[requirement](./requirement.ja.md#インデント)が、
 本体のメンバーを class や requirement の行より 1 段深く置き、
 `}` をその行と同じ段に置くためです。
 
@@ -112,9 +112,11 @@ Prettier はそこに空白 1 つを置きます（`function f(){}` は `functio
 行の形は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
 [class](./class.ja.md#メンバーの本体)、[requirement](./requirement.ja.md#本体)、
 [state](./state.ja.md#複合状態)が、本体の `{` を、
-`{` が名前に接して書かれていても、開く行に空白 1 つの後に置き、
+`{` が名前に接して書かれていても、開く行に空白 1 つの後に置くためです。
+[class](./class.ja.md#メンバーの本体)、
+[requirement](./requirement.ja.md#インデント)、[state](./state.ja.md#字下げ)は、
 メンバーを 1 段深く、行に 1 つずつ置き、`}` を開く行と同じ段に、
-行に単独で置くためです。
+行に単独で置きます。
 
 [fixture: attribute-blocks/opening-brace-after-one-space]
 [fixture: attribute-blocks/split]
@@ -1844,7 +1846,7 @@ erDiagram
 [fixture: direction/case-kept] [fixture: direction/case-bt-rl-kept]
 
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
-[requirement](./requirement.ja.md#方向)、[class](./class.ja.md#方向の行)、
+[requirement](./requirement.ja.md#方向)、[class](./class.ja.md#複数行の文)、
 [state](./state.ja.md#複数行の文)も、
 次の行に書かれた `direction` の値を 1 行で印字します（規則 2）。
 
@@ -2124,7 +2126,8 @@ Db は両端の空白を持たないからです。
 LF 直後の ASCII 空白とタブだけを置き換えます。
 説明の設定関数がこの字下げを捨てるためです。
 改行とディレクティブの内部は保ちます。
-字下げの段の理由は
+段と、
+字下げを置き換えても Db が変わらない理由は
 [説明ブロックの字下げ](./compatibility.ja.md#説明ブロックの字下げ)
 に書いてあります。
 改行と内部の空行は保ちます。
@@ -2180,7 +2183,7 @@ agentflow、usecase に合わせます。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [xychart](./xychart.ja.md#空の説明ブロック)、
 [quadrant](./quadrant.ja.md#空の説明ブロック)、
-[flowchart](./flowchart.ja.md#アクセシビリティの行)も、
+[flowchart](./flowchart.ja.md#複数行の値)も、
 ディレクティブかコメント行があるブロックの内容と改行を、そのまま残し、
 その行をブロックの内側に 1 段深く置きます。
 

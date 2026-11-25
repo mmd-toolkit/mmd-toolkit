@@ -47,7 +47,7 @@ subgraphs/end-on-the-line-of-a-statement]
 The attributes of an entity stand one level deeper than the line of the entity,
 and its `}` stands at the level of that line, also in a subgraph. Rule 2 gives
 it, as [class](./class.md#member-bodies) and
-[requirement](./requirement.md#bodies) put the members of a body one level
+[requirement](./requirement.md#indentation) put the members of a body one level
 deeper than the line of the class or of the requirement, with the `}` at the
 level of that line.
 
@@ -111,8 +111,10 @@ on a line of its own at the level of the entity. Rule 1 names no mark before the
 the lines, as [class](./class.md#member-bodies),
 [requirement](./requirement.md#bodies), and [state](./state.md#composite-states)
 print the `{` of a body after one space on the line of its opener, also where it
-was written touching it, the members one level deeper on lines of their own, and
-the `}` on a line of its own at the level of the opener.
+was written touching it, and [class](./class.md#member-bodies),
+[requirement](./requirement.md#indentation), and [state](./state.md#indentation)
+put the members one level deeper on lines of their own and the `}` on a line of
+its own at the level of the opener.
 
 [fixture: attribute-blocks/opening-brace-after-one-space] [fixture:
 attribute-blocks/split]
@@ -1872,9 +1874,10 @@ direction/text-both-sides-inner-whitespace-kept] [fixture: direction/case-kept]
 [fixture: direction/case-bt-rl-kept]
 
 A value written on a later line is printed after `direction` on one line, as
-[requirement](./requirement.md#direction), [class](./class.md#direction-lines),
-and [state](./state.md#multi-line-statements) print `direction` and a value
-written on the next line (rule 2).
+[requirement](./requirement.md#direction),
+[class](./class.md#multi-line-statements), and
+[state](./state.md#multi-line-statements) print `direction` and a value written
+on the next line (rule 2).
 
 [fixture: direction/value-on-next-line-joined] [corpus fixture:
 er/lex-direction-value-next-line]
@@ -2136,15 +2139,16 @@ its statement, replacing only ASCII spaces and tabs immediately after LF. The
 description setter drops that indentation; line breaks and directive interiors
 stay written (see
 [Description block indentation](./compatibility.md#description-block-indentation),
-which gives the reason of the level). Keep line breaks and interior blank lines,
-and the whitespace at the end of each line of text except the last one; a line
-of whitespace only becomes an empty line. The whitespace at the end of the last
-line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. Inside a
-subgraph, keep the original body columns because the raw description also
-participates in its membership reading; there a line of whitespace only stays as
-written, and the whitespace at the end of the last line of text is dropped, or
-printed as one space before a closer on that line, as above.
+which states the level and why replacing the indentation keeps the Db). Keep
+line breaks and interior blank lines, and the whitespace at the end of each line
+of text except the last one; a line of whitespace only becomes an empty line.
+The whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. Inside a subgraph, keep the original body columns
+because the raw description also participates in its membership reading; there a
+line of whitespace only stays as written, and the whitespace at the end of the
+last line of text is dropped, or printed as one space before a closer on that
+line, as above.
 
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
@@ -2187,9 +2191,9 @@ for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks),
 [quadrant](./quadrant.md#empty-description-blocks), and
-[flowchart](./flowchart.md#accessibility-lines) keep the contents and line
-breaks of a block with a directive or comment line and put such a line one level
-inside the block.
+[flowchart](./flowchart.md#multi-line-values) keep the contents and line breaks
+of a block with a directive or comment line and put such a line one level inside
+the block.
 
 [fixture: accessibility-statements/empty-blocks] [fixture:
 accessibility-statements/empty-block-with-directive-or-comment-line] [corpus
