@@ -11,10 +11,13 @@ Formatting rules for cynefin-beta and cynefin-beta:, following the
 
 ### Header
 
-Put cynefin-beta at column one. A colon right after the header word is removed:
-mermaid.js reads `cynefin-beta:` and `cynefin-beta` as the same header, and the
-examples in its documentation write the header without the colon 3 times against
-none (see
+Put cynefin-beta at column one. The headers of [packet](./packet.md#header) and
+[architecture](./architecture.md#header) diagrams stand at column one;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the cynefin-beta header the same position. A colon right after the header word
+is removed: mermaid.js reads `cynefin-beta:` and `cynefin-beta` as the same
+header, and the examples in its documentation write the header without the colon
+3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
@@ -34,11 +37,15 @@ cynefin/header/colon-unclosed-directive-kept] [fixture:
 cynefin/header/colon-directive-before-hidden-yaml-kept]
 
 Move an ordinary first statement to the next line so the header is easy to find.
-Global directive contact, hidden neighbors and protected lines use their shared
-rules: a kept header line also keeps its domain and item openings on that line.
-A spaced colon is rejected rather than repaired: `cynefin-beta %%{x}%%:`,
-`cynefin-beta%%{x}%% :`, and `cynefin-beta :` are rejected by 11.16.1, 11.17.2,
-12.0.0, and 12.3.0, and `cynefin-beta %%{x}%%` with no colon is not changed.
+In [packet](./packet.md#header) and [architecture](./architecture.md#header)
+diagrams, an ordinary first statement starts on the line below the header;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the first statement the same position here. Global directive contact, hidden
+neighbors and protected lines use their shared rules: a kept header line also
+keeps its domain and item openings on that line. A spaced colon is rejected
+rather than repaired: `cynefin-beta %%{x}%%:`, `cynefin-beta%%{x}%% :`, and
+`cynefin-beta :` are rejected by 11.16.1, 11.17.2, 12.0.0, and 12.3.0, and
+`cynefin-beta %%{x}%%` with no colon is not changed.
 
 [fixture: cynefin/header/directive-no-colon-space-kept] [test: a space before a
 directive between the header and the colon of a cynefin diagram] [test: a space
@@ -111,9 +118,14 @@ cynefin-beta
 ### Indentation
 
 Use one configured step for body statements and two for domain items. Columns do
-not define parents: the authored item lists do. tabWidth zero adds no spaces;
-useTabs adds one tab per step even at width zero. Other value continuations and
-protected interiors retain their written columns.
+not define parents: the authored item lists do. In [ER](./er.md#indentation) and
+[state](./state.md#indentation) diagrams, statements stand one level below the
+header, and entity attributes or composite-state statements stand one further
+level inside their owner.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+body statements one level of indentation and domain items one additional level.
+tabWidth zero adds no spaces; useTabs adds one tab per step even at width zero.
+Other value continuations and protected interiors retain their written columns.
 
 [fixture: cynefin/indentation/indent-two]
 
@@ -142,9 +154,19 @@ cynefin-beta
 Put the domain word on its own line and each item one step deeper, as the other
 diagram types nest a block. The grammar requires no EOL between a domain and its
 items, adjacent strings or adjacent domains, so splitting these units keeps the
-Db. Keep empty strings, repeated items and multiline strings. Comments,
-directives, blanks and hidden forms between items leave the sequence open.
-Protected or hidden inline neighbors take precedence; add no closing delimiter.
+Db. Keep empty strings, repeated items and multiline strings. For an empty
+string, mermaid.js records an empty-labeled item, and for repeated items it
+records a separate list entry for each occurrence. Removing an empty item or a
+duplicate changes the domain's item list in the Db. Comments, directives, blanks
+and hidden forms between items leave the sequence open. Protected or hidden
+inline neighbors take precedence; add no closing delimiter. The Cynefin grammar
+has no braces around a domain, and mermaid.js rejects braces used as domain
+delimiters, so no closing delimiter is added.
+
+[corpus fixture: cynefin/gram-domain-braces]
+
+[corpus fixture: cynefin/db-empty-texts] [corpus fixture:
+cynefin/gram-item-duplicates]
 
 On a kept semicolon line, keep the domain word with its first item too. Moving
 only the items could make the next formatting split them again.
@@ -220,10 +242,18 @@ cynefin-beta
 ### Statements one per line
 
 Print ordinary domains, transitions and common statements in source order on
-separate lines; add no semicolon, as the other diagram types do. Transitions and
-common statements need visible EOL. A title containing apparent domain syntax
-remains one value, and an empty description block remains a statement that ends
-an item sequence.
+separate lines; add no semicolon, as the other diagram types do. Ordinary
+statements stand on separate lines in
+[flowchart](./flowchart.md#statements-one-per-line) and
+[Venn](./venn.md#statements-one-per-line) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+ordinary domains, transitions and common statements the same line separation.
+Cynefin has no grammatical semicolon, and mermaid.js rejects a semicolon after
+an ordinary domain, so no semicolon is added. Transitions and common statements
+need visible EOL. A title containing apparent domain syntax remains one value,
+and an empty description block remains a statement that ends an item sequence.
+
+[corpus fixture: cynefin/tail-domain-semicolon]
 
 [fixture: cynefin/statements-one-per-line/statement-boundaries]
 
@@ -253,9 +283,11 @@ cynefin-beta
 ### Arrow spacing
 
 Use from --> to with one ordinary space on each side of the whole arrow,
-distinguishing it from the fixed endpoint words. Never split the arrow or wrap
-its components. Hidden named gaps and global directive contact keep their source
-boundaries.
+distinguishing it from the fixed endpoint words. The arrow stands between two
+domain names, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+treats it as a mark between two things and prints one space on each side. Never
+split the arrow or wrap its components. Hidden named gaps and global directive
+contact keep their source boundaries.
 
 [fixture: cynefin/arrow-spacing/arrow-bare]
 
@@ -285,8 +317,12 @@ whitespace before the colon (step 3 of
 write a space after the colon write a space before it (counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
 Retain an absent label, an empty quoted label and a whitespace-only label as
-distinct authored forms. Hidden and global trivia gaps override ordinary
-spacing.
+distinct authored forms. For a whitespace-only transition label, mermaid.js
+records the space, while an empty or absent label has no label field in the Db.
+Removing that space would change the label, so a whitespace-only label stays.
+Hidden and global trivia gaps override ordinary spacing.
+
+[corpus fixture: cynefin/db-empty-texts]
 
 [fixture: cynefin/label-colon/colon-tabs]
 
@@ -368,7 +404,11 @@ cynefin-beta
 
 Keep a word-only empty domain as its own line. It can replace an earlier
 declaration with an empty list, so deleting it can change the Db even when a
-standalone empty domain draws nothing. Add neither braces nor an item.
+standalone empty domain draws nothing. Ordinary declarations and statements
+stand on separate lines in [Venn](./venn.md#statements-one-per-line) and
+[flowchart](./flowchart.md#statements-one-per-line) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a word-only empty domain its own line too. Add neither braces nor an item.
 
 [fixture: cynefin/empty-domains/empty-domain-alone]
 
@@ -390,8 +430,14 @@ cynefin-beta
 
 Keep every domain block and item in source order, including duplicate items and
 all confusion items. A later declaration replaces its predecessor; merging
-blocks changes that reading. Neither the effective Db order nor a rendering
-limit justifies sorting, deletion or truncation.
+blocks changes that reading. For each authored item, mermaid.js records an entry
+in an ordered list, including confusion items beyond the displayed subset.
+Reordering items, removing duplicates or truncating confusion items changes the
+Db, so item order and all these occurrences stay. Neither the effective Db order
+nor a rendering limit justifies sorting, deletion or truncation.
+
+[corpus fixture: cynefin/db-all-fields] [corpus fixture:
+cynefin/gram-item-duplicates]
 
 [fixture: cynefin/redeclarations/domain-repeat-order]
 
@@ -442,17 +488,36 @@ cynefin-beta
 ### Title
 
 Use the shared common-line layout: trim ordinary outer common whitespace, insert
-one space before a nonempty value and retain its internal text. Empty or
+one space before a nonempty value and retain its internal text, except that a
+run of spaces and tabs inside it is printed as one space. The titles of
+[pie](./pie.md#title) and [packet](./packet.md#title) diagrams separate the
+keyword from a nonempty value with one space;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a nonempty title the same gap here. Those titles also print an interior run of
+spaces and tabs as one space, and
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same form here. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+removes the spaces and tabs at the end of the title line. Empty or
 whitespace-only values print as bare title and never take text from the next
-line. This chooses a compact Db-equal edge without interpreting quotes as string
-delimiters. Preserve empty resets and trivia contact. Where only directives
-follow the text of a title, they are printed with one space before each that has
-spaces or tabs before it, and the spaces and tabs after the last one are left
-out, unless a directive of the line holds a line break, a `;`, a U+2028, or a
-U+2029 (see
+line. A title without a value ends at the keyword because
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
+and tabs at the line end. mermaid.js reads statement-looking text on the title
+line as title text, so the following statement stays on its own line rather than
+becoming part of an empty title. This chooses a compact Db-equal edge without
+interpreting quotes as string delimiters. Preserve empty resets and trivia
+contact. Where only directives follow the text of a title, they are printed with
+one space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out, unless a directive of the line holds a line
+break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+In the titles of [pie](./pie.md#title) and [packet](./packet.md#title) diagrams,
+a written gap before an ordinary trailing directive becomes one space.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same gap before a directive that remains after the title text.
+
+[corpus fixture: cynefin/gram-title-inline-domain]
 
 [fixture: title/title-directives-end-blanks-dropped]
 
@@ -500,16 +565,32 @@ cynefin-beta
 
 Use shared accTitle: value and accDescr: value layouts, attaching the colon and
 adding one space before a nonempty value. Empty assignments end at the colon and
-never join the next line. Trim ordinary outer whitespace, retain internal text
-and trivia contact, and keep braces after a colon as line-value text. These
-compact common forms do not reinterpret authored values. Where only directives
-follow the text of the value, they are printed with one space before each that
-has spaces or tabs before it, and the spaces and tabs after the last one are
-left out, unless a directive of the line holds a line break, a `;`, a U+2028, or
-a U+2029 (see
+never join the next line. An empty accessibility assignment ends at its colon
+because [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the
+spaces and tabs at the line end. mermaid.js reads text after that colon on the
+same line as the accessibility value, so the following statement stays on a
+separate line to preserve the empty reset and the statement. Trim ordinary outer
+whitespace, retain internal text and trivia contact, and keep braces after a
+colon as line-value text. These compact common forms do not reinterpret authored
+values. The accessibility colon assigns the diagram its single title or
+description value, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+prints it as a key colon, with one space before a nonempty value and no spaces
+or tabs at the line end. Braces after the colon remain value text: mermaid.js
+reads `accDescr: {A}` as `{A}`, whereas `accDescr {A}` has the description `A`.
+Where only directives follow the text of the value, they are printed with one
+space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out, unless a directive of the line holds a line
+break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+In the accessibility lines of [pie](./pie.md#accessibility-lines) and
+[packet](./packet.md#accessibility-lines) diagrams, a written gap before an
+ordinary trailing directive becomes one space.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same gap before a directive that remains after the accessibility value.
+
+[corpus fixture: cynefin/common-colon-block-priority]
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 cynefin/accessibility-lines/accessibility-padding]
@@ -540,18 +621,24 @@ cynefin-beta
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-Whitespace-only interiors become `{}`. For blocks that keep their braces,
-separate the keyword and opening brace with one space so the block boundary is
-clear. Join plain opener whitespace and align a separate closer with the
-statement. Ordinary description body and standalone comment lines align one
+Whitespace-only interiors become `{}`. Prettier leaves no whitespace inside
+empty braces, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+prints whitespace-only description interiors as `{}`. For blocks that keep their
+braces, separate the keyword and opening brace with one space so the block
+boundary is clear. Join plain opener whitespace and align a separate closer with
+the statement. Ordinary description body and standalone comment lines align one
 level inside it, since the Db removes indentation after LF. Keep line breaks and
 interior blank lines, and the whitespace at the end of each line of text except
-the last one; a line of whitespace only becomes an empty line. The whitespace at
-the end of the last line of text is dropped where the closer stands on a line of
-its own, and is printed as one space where the closer follows it on that line.
-Directives and shared removed comment regions keep their complete source.
-Comments/directives inside empty blocks retain their shared layout.
-Native-looking text inside a value remains value text.
+the last one; a line of whitespace only becomes an empty line. A block
+description's line breaks form part of its value in mermaid.js, so joining
+description lines with spaces changes the Db. The whitespace at the end of the
+last line of text is dropped where the closer stands on a line of its own, and
+is printed as one space where the closer follows it on that line. Directives and
+shared removed comment regions keep their complete source. Comments/directives
+inside empty blocks retain their shared layout. Native-looking text inside a
+value remains value text.
+
+[corpus fixture: cynefin/line-block-values]
 
 [fixture: cynefin/description-blocks/description-empty] [fixture:
 description-blocks/block-trailing-whitespace] [fixture:
@@ -833,10 +920,20 @@ Keep Root directive source and order. Within a printed line, place a directive
 as under [Directives](./flowchart.md#directives). When formatting splits units
 that were on the same line, a directive in their gap moves with the following
 unit: its right boundary stays touching or separated, while its left contact is
-broken. Ordinary standalone lines align with their body, including item depth
-between items. Multiline interiors and unfinished EOF endings remain written.
-Reordering directives or editing their JSON can change the text that common
-removal joins; native hidden directives remain separate forms.
+broken. In [flowchart](./flowchart.md#directives) and
+[state](./state.md#directives) diagrams, a directive between units that split
+onto separate lines moves with the following unit, retaining its right contact
+or separation and breaking its left contact.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a directive in a split gap the same placement. Ordinary standalone lines align
+with their body, including item depth between items. In
+[pie](./pie.md#indentation) and [packet](./packet.md#indentation) diagrams,
+standalone directives stand at the depth of their surrounding body.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+ordinary standalone directives the same placement here, including the additional
+body level between domain items. Multiline interiors and unfinished EOF endings
+remain written. Reordering directives or editing their JSON can change the text
+that common removal joins; native hidden directives remain separate forms.
 
 [fixture: cynefin/global-directives/header-to-body]
 
@@ -870,9 +967,14 @@ cynefin-beta
 ### Comments
 
 Align ordinary standalone comments with their body, item comments at item depth
-and prefix comments at column one. Inline comments keep their line, touching
-where they touch, and a run of spaces and tabs before one becomes one space.
-Rule 1 names no mark before a comment, so
+and prefix comments at column one. In [pie](./pie.md#indentation) and
+[packet](./packet.md#indentation) diagrams, standalone comments stand at the
+depth of their surrounding body.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+standalone comments the same placement here: item comments follow the deeper
+domain body, and prefix comments stand at column one. Inline comments keep their
+line, touching where they touch, and a run of spaces and tabs before one becomes
+one space. Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
@@ -920,9 +1022,13 @@ cynefin-beta
 
 Keep at most one ordinary ASCII blank line between statements, items or trivia,
 and remove document/body edge blanks. Whitespace-only lines become empty. This
-retains authored grouping without excess space. Values, descriptions,
-hidden/directive interiors, retained prefixes, joining regions, semicolon
-protection and required hidden LF keep their own rules.
+retains authored grouping without excess space. Prettier collapses ordinary
+blank-line runs to one empty line and removes blank lines at block and text
+edges. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+form to ordinary blank lines between statements, items or trivia and at
+document/body edges. Values, descriptions, hidden/directive interiors, retained
+prefixes, joining regions, semicolon protection and required hidden LF keep
+their own rules.
 
 [fixture: cynefin/blank-lines/blanks-between-items]
 
@@ -949,10 +1055,13 @@ cynefin-beta
 ### Trailing whitespace
 
 Remove harmless exterior ASCII padding after the header, domain words, completed
-items/transitions and description closers. Preserve value continuations,
-comments, directive/hidden interiors, required closer padding and protected
-text. Decide by owner: trimming every physical line can change values or cause
-rejection.
+items/transitions and description closers. Prettier leaves no spaces or tabs at
+ordinary line ends, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes harmless
+exterior spaces and tabs after completed structural units. Preserve value
+continuations, comments, directive/hidden interiors, required closer padding and
+protected text. Decide by owner: trimming every physical line can change values
+or cause rejection.
 
 [fixture: cynefin/trailing-whitespace/trailing-structure]
 
@@ -1238,7 +1347,10 @@ cynefin-beta
 
 End ordinary accepted files with one configured newline, including empty
 domains, final comments and closed hidden forms. Remove ordinary terminal blanks
-for a consistent file ending. Unfinished global directives, retained-prefix
+for a consistent file ending. Prettier ends ordinary text with one line break
+and no terminal blank line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives ordinary
+accepted files the same ending. Unfinished global directives, retained-prefix
 boundaries, required hidden padding and protected endings take precedence.
 
 [fixture: cynefin/final-newline/final-newline-domain]
