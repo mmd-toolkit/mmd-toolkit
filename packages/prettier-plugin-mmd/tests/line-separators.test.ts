@@ -4975,6 +4975,26 @@ const requirementLineSeparatorExamples: readonly (readonly [
     'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n%%{y}%%\n"e" \n:::c {\n  }\n',
   ],
   [
+    "requirement: U+2028, a comment, and an empty line inside the line of an element, with an ignored semicolon in its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %% c\n\n"style:#x;" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %% c\n\n"style:#x;" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive that is not closed, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %%{x: y\n%% c\n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %%{x: y\n%% c\n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, two comments, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %% c\n%% d\n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %% c\n%% d\n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and a line of whitespace inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %% c\n \t\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %% c\n \t\n"e" \n:::c {\n  }\n',
+  ],
+  [
     "requirement: U+2028, a directive, a comment, and an empty line after the string and the class of a style statement",
     'requirementDiagram\nstyle r fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n\nclass r c "r"\n- satisfies -> b\n',
     'requirementDiagram\n  style r fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n\n  class r c\n  r - satisfies -> b\n',

@@ -2058,7 +2058,15 @@ requirement, with its name in quotes on a later line] [test: requirement:
 U+2028, a directive, a comment, and an empty line inside the line of a
 requirement, with its name in quotes and the rest of the statement on its line]
 [test: requirement: U+2028, a directive, a comment, and an empty line inside a
-relationship, with the name in quotes that ends it]
+relationship, with the name in quotes that ends it] [test: requirement: U+2028,
+a comment, and an empty line inside the line of an element, with an ignored
+semicolon in its name in quotes on a later line] [test: requirement: U+2028, a
+directive that is not closed, a comment, and an empty line inside the line of an
+element, with its name in quotes on a later line] [test: requirement: U+2028,
+two comments, and an empty line inside the line of an element, with its name in
+quotes on a later line] [test: requirement: U+2028, a comment, and a line of
+whitespace inside the line of an element, with its name in quotes on a later
+line]
 
 ### Whitespace characters
 

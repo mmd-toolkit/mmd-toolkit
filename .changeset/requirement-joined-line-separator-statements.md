@@ -2,7 +2,6 @@
 "prettier-plugin-mmd": patch
 ---
 
-Keep a `requirement` statement that a comment line after U+2028 or U+2029 cuts
-as written to its end, so that mermaid.js accepts the formatted text. `element`,
-U+2028, `%% c`, an empty line, `"e"`, and `:::c {` on the next line were printed
-with `e ` and `:::c {` on the next line, and are now printed as written.
+Keep the quotes of the name of a `requirement` element that U+2028 and a comment
+separate from its keyword, so that mermaid.js accepts the formatted text: `"e" `
+is no longer printed `e `.
