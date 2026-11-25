@@ -1772,9 +1772,10 @@ gantt
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, and a directive within a printed line is placed as in a flowchart: the gap
-is printed as without the directive, and the directive stands after its space
-and touches the unit that follows it.
+it, and a directive within a printed line is placed as under
+[Directives](./flowchart.md#directives) of a flowchart: the gap is printed as
+without the directive, and the directive stands after its space and touches the
+unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
