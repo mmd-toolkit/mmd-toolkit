@@ -1624,6 +1624,8 @@ railroad/comments/abnf-semicolon-sp-style-two-bl-ls] [test:
 railroad/comments/abnf-semicolon-sp-style-two-bl-ps] [test:
 railroad/comments/abnf-semicolon-sp-style-spaced-bl-ls] [test:
 railroad/comments/abnf-semicolon-sp-style-spaced-bl-ps] [test:
+railroad/comments/abnf-semicolon-sp-classdef-in-rule-bl] [test:
+railroad/comments/abnf-semicolon-sp-classdef-in-rule-bl-ls] [test:
 railroad/comments/abnf-semicolon-sp-endsemi-bl-ls] [test:
 railroad/comments/abnf-semicolon-sp-endsemi-bl-ps] [test:
 railroad/comments/abnf-semicolon-sp-dir-endsemi-bl-ls] [test:

@@ -595,6 +595,18 @@ export const railroadCases: readonly RailroadCase[] = [
     options: {},
   },
   {
+    name: "railroad/comments/abnf-semicolon-sp-classdef-in-rule-bl",
+    input: 'railroad-abnf-beta\nr=("x" ;  %% classDef\n\n "y");',
+    output: 'railroad-abnf-beta\n  r=("x" ;  %% classDef\n\n "y");\n',
+    options: {},
+  },
+  {
+    name: "railroad/comments/abnf-semicolon-sp-classdef-in-rule-bl-ls",
+    input: 'railroad-abnf-beta\nr=("x" ; \u2028%% classDef\n\n"y");',
+    output: 'railroad-abnf-beta\n  r=("x" ; \u2028%% classDef\n\n"y");\n',
+    options: {},
+  },
+  {
     name: "railroad/comments/abnf-semicolon-sp-endsemi-bl-ls",
     input: 'railroad-abnf-beta\n; \u2028%% c;\n\nr=("x");',
     output: 'railroad-abnf-beta\n  ; \n  %% c;\n\n  r = ("x");\n',
