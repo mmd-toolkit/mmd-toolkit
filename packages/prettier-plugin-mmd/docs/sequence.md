@@ -318,9 +318,11 @@ sequenceDiagram
 
 ### Whitespace between tokens
 
-Within a line, a run of spaces and tabs between two tokens becomes one space,
-and tokens that touch keep touching, as in a flowchart, except for the text
-after a prefix or a keyword of a block, which stands after one space.
+Within a line, a run of spaces and tabs between two tokens becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`. Tokens that touch keep touching, as in a flowchart, except for the
+text after a prefix or a keyword of a block, which stands after one space.
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed]
@@ -334,7 +336,7 @@ after `wrap:` and `nowrap:`. The text after the keyword of a block or a section
 (`loop`, `alt`, `else`, `opt`, `par`, `and`, `critical`, `option`, `break`,
 `rect`, `box`) stands after one space too: `loop$$x$$` is printed `loop $$x$$`,
 and `par-:<>,;# comment` is printed `par -:<>,;# comment`. The whitespace is not
-in the Db. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+in the Db; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
 space between a block or section keyword and its text, as Prettier prints
 `return  x` as `return x;`.
 

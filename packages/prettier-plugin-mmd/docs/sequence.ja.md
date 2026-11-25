@@ -317,7 +317,10 @@ sequenceDiagram
 
 ### トークンの間の空白
 
-行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにし、
+行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードとそれが取るものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 接しているトークンは接したまま残します。
 flowchart と同じです。
 ただし、接頭辞やブロックのキーワードの後のテキストは、空白 1 つの後に置きます。
@@ -339,8 +342,8 @@ Prettier は値の前のコロンの後に、空白を 1 つ置きます。
 `par-:<>,;# comment` は `par -:<>,;# comment` と印字します。
 この空白は Db に入りません。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
-ブロックや section のキーワードとそのテキストの間に空白 1 つを与えます。
-Prettier は `return  x` を `return x;` と印字します。
+ブロックや節のキーワードとそのテキストの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 
 [fixture: whitespace-between-tokens/wrap-text-spaced]
 [fixture: whitespace-between-tokens/block-text-touching-spaced]
