@@ -166,10 +166,12 @@ usecase-beta
 
 ### Declarations
 
-Reuse [ER's compact entity layout](./er.md#entities): one gap after `actor`,
-tight id/shape delimiters and metadata/class suffixes, no exterior ASCII label
-padding, and comma-space between actor items, which shows the separate actor
-occurrences that one `actor` keyword introduces. Stereotype spacing follows
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one gap after
+`actor`, as Prettier prints `return  x` as `return x;`; the rest follows
+[ER's compact entity layout](./er.md#entities): tight id/shape delimiters and
+metadata/class suffixes, no exterior ASCII label padding, and comma-space
+between actor items, which shows the separate actor occurrences that one `actor`
+keyword introduces. Stereotype spacing follows
 [its class-based rule](#stereotypes). Keep explicit ids, ellipse/rectangle
 spelling, markdown labels, suffix order and every declaration/reference
 occurrence; a name and a label are printed in the form that the examples use
@@ -1008,10 +1010,12 @@ usecase-beta
 ### Classes and styles
 
 Reuse [ER's class lists](./er.md#styles-and-classes): a comma touches the target
-or class name before it and has one space after it, with one gap between lists
-and before the first declaration; CSS declarations use comma-space. A
-declaration has no whitespace before its first colon and one space after it, as
-in the other diagram types (see
+or class name before it and has one space after it, with one space between lists
+and before the first declaration given by
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), as Prettier prints
+CSS `margin: 1px    2px;` as `margin: 1px 2px;`; CSS declarations use
+comma-space. A declaration has no whitespace before its first colon and one
+space after it, as in the other diagram types (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 Mermaid stores the padding before and after the colon, so the Db changes, but it
 draws the same figure. A name that ends with `stroke` is the exception, since a
@@ -1075,10 +1079,12 @@ usecase-beta
 
 Print `note for <target> <label>` with one ordinary gap between parts, keeping
 the target, markdown or empty label and note order; a plain label is printed in
-quotes (see [Quotes](#quotes)). This reuses the source-value and keyword-spacing
-reasons of [class notes](./class.md#whitespace-between-tokens). Forward
-resolution never manufactures an id, position or declaration; inline percent
-text remains label content.
+quotes (see [Quotes](#quotes)). This reuses the source-value reason of
+[class notes](./class.md#whitespace-between-tokens), and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one ordinary
+space between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`. Forward resolution never manufactures an id, position or
+declaration; inline percent text remains label content.
 
 [fixture: notes/notes-forms] [fixture: notes/notes-forward] [fixture:
 notes/notes-empty-markdown] [fixture: notes/empty-and-markdown-order]
