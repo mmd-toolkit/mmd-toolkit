@@ -4041,7 +4041,7 @@ between the keyword and the colon: `cynefin-beta%%{x}%%:` and
 `radar-beta%%{x}%%:` are not changed. A bare `radar-beta` header must end before
 `%%`, specification whitespace, or the end of the text. Removing the colon
 before a touching hidden YAML block would put `---` against that bare header,
-which 11.7.0, 11.17.2, 12.0.0, and 12.3.0 reject (see
+which the versions that count reject (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)),
 so the colon stays. A radar header with spaces or tabs before that directive,
 before the colon, or on both sides is printed without them:
