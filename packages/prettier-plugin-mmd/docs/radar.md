@@ -27,9 +27,14 @@ the header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
-not closed touches it. For `radar-beta%%{wrap}%%:axis North`, the colon stays,
-since every version of mermaid.js that counts rejects
-`radar-beta%%{wrap}%%axis North` (see
+not closed touches it. For `radar-beta%%{wrap}%%:axis North`, the formatter
+prints the statement on the next line and keeps the colon. The versions of
+mermaid.js that were run accept `radar-beta%%{wrap}%%`, a line break, and
+`axis North`, and draw it as they draw the form with the colon, so the colon is
+printed against rule 3 (the examples write the header without a colon) and waits
+to be fixed by the rule. The text with the statement on the same line,
+`radar-beta%%{wrap}%%axis North`, which the formatter does not print, is
+rejected by every version of mermaid.js that counts (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Spaces or tabs before a closed directive that stands before the colon, before
 the colon, or on both sides are printed away: `radar-beta %%{x}%%:`,
@@ -4044,7 +4049,10 @@ axis/curve/options statements and description closers, since Prettier prints no
 whitespace at the end of a line in JavaScript, CSS, or YAML. Shared common-line
 trimming handles value edges. Keep comment tails, physical value continuations,
 directive/hidden interiors, protected segments and retained prefixes. Hidden
-closer padding remains even at EOF because it can decide acceptance.
+closer padding remains before another statement, where it can decide acceptance.
+At the end of the text the versions that were run accept the text with and
+without it and draw them alike, so there it stays as written without a reason,
+and its row stays in the list (D39).
 
 [fixture: radar/trailing-whitespace/trailing-safe]
 
@@ -4235,8 +4243,10 @@ repaired output.
 Apply the same rules to dedented payloads through the shared Markdown route. The
 host supplies fence/list/quote indentation and EOL; it trims final payload-line
 padding, including final hidden padding. Interior common-suffix padding remains
-necessary before another statement. This keeps one payload rule while testing
-host output/idempotence separately from payload Db and written text.
+necessary before another statement: the versions of mermaid.js that were run
+reject `accTitle: T%%{!s}%%` followed by a line break and a statement when the
+space after the hidden form is taken away. This keeps one payload rule while
+testing host output/idempotence separately from payload Db and written text.
 
 [test: radar Markdown: top-level]
 
