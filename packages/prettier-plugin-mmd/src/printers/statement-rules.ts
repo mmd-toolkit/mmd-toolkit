@@ -11,7 +11,7 @@ import {
   replaceInAtoms,
 } from "./layout.ts"
 import { styleRunEdits } from "./style-text.ts"
-import { collapseRunEdits } from "./text-runs.ts"
+import { collapseRunEdits, staysAsWritten } from "./text-runs.ts"
 import {
   findLinesWithOwnSemicolons,
   isInsideStyleRuleStretch,
@@ -32,7 +32,7 @@ import {
   isSpaceOrTab,
   isStructural,
   skipRemoved,
-  skipSpacesAndTabs,
+  skipBlanks,
   textRead,
 } from "./source.ts"
 
@@ -454,7 +454,7 @@ export function normalizeStyleList(
     const keepsValue =
       isLinkStyle && hasBlankStrokeValue(textRead(source, start, comma))
     let core: Range = keepsValue
-      ? [skipSpacesAndTabs(source, start, comma), comma]
+      ? [skipBlanks(source, start, comma), comma]
       : trimStyle(source, [start, comma], { keepsEscapedSpace: escapesComma })
     if (core[0] === core[1]) return
     if (
@@ -604,6 +604,251 @@ export function endsWithDirectives(
 }
 
 /**
+ * What the edits of a text print of the runs of spaces and tabs inside it,
+ * where directives may precede it and end it. The rule of the texts
+ * (`collapsedRunsAtom`) prints each run as one space, but it does not reach a
+ * text that holds a directive or stays as written (see `staysAsWritten`). So a
+ * layout whose text holds directives decides which of its runs the edits print
+ * as one space, and each layout keeps the form it has released. A text that
+ * holds a directive between its words keeps the runs around it, whatever the
+ * value:
+ *
+ * - `"kept"`: none. The runs stay as written (a date format).
+ * - `"collapsed"`: all of them, those after the directives that precede the
+ *   text and those before the directives that end it included. The parser
+ *   starts the value of the title of a Gantt chart, a user journey, or a
+ *   timeline after the first directive that follows the keyword and its
+ *   whitespace, so the second printing, with the directives touching the text,
+ *   has its runs printed as one space by the rule of the texts, and the first
+ *   printing has to print them so too. The titles of a Venn diagram and a C4
+ *   diagram and the accessibility lines take a directive before the text too,
+ *   but their printers keep that line as written, so they never reach the trim
+ *   with a directive before the text, and have only the rule of the texts and
+ *   the runs before the directives that end it to print, which is the same
+ *   here.
+ * - `"collapsedBeforeEndingDirectives"`: all of them where no directive
+ *   precedes the text; where one does, only those before the directives that
+ *   end it, and the runs after the directive that precedes it stay. The title
+ *   of a sequence diagram is read from the keyword on, so the directives that
+ *   precede it are in its text whichever form is printed, and the rule of the
+ *   texts does not reach it.
+ * - `"collapsedWithoutLeadingDirectives"`: all of them where no directive
+ *   precedes the text, and none where one does, those before the directives
+ *   that end it included (the `accDescr:` line of a usecase diagram, the
+ *   literal of an ishikawa node).
+ */
+export type TextRuns =
+  | "kept"
+  | "collapsed"
+  | "collapsedBeforeEndingDirectives"
+  | "collapsedWithoutLeadingDirectives"
+
+/**
+ * Whether the edits print the runs of spaces and tabs before the directives
+ * that end a text as one space, for a text that directives do
+ * (`skipsDirective`) or do not precede (see `TextRuns`).
+ */
+function collapsesBeforeEnd(runs: TextRuns, skipsDirective: boolean): boolean {
+  return runs === "collapsedWithoutLeadingDirectives"
+    ? !skipsDirective
+    : runs !== "kept"
+}
+
+/**
+ * What a layout tells of the line that `collectLineEndEdits` reads. `isBlank`
+ * says which characters are blanks to the line, which the layout of the line
+ * drops after its last directive: spaces and tabs by default, every whitespace
+ * character for a text that is trimmed of whitespace as a usecase value is.
+ * `runs` tells what the layout prints of the runs of spaces and tabs in the
+ * text. `gapBeforePlace` tells how the layout prints the gap before the last
+ * place after a text that holds a `;`, a line break or separator, or a
+ * directive of its own, which the line without the blanks after it prints as
+ * one space or as the runs of that text: as one space whatever the text holds
+ * (`"oneSpace"`), or as one space where the text collapses and as written where
+ * it stays as written (`"likeRuns"`; see `staysAsWritten`). Without it, such a
+ * text stays as written.
+ */
+export interface LineEndRules {
+  readonly isBlank?: (character: string) => boolean
+  readonly runs: Extract<TextRuns, "kept" | "collapsedWithoutLeadingDirectives">
+  readonly gapBeforePlace?: "oneSpace" | "likeRuns"
+}
+
+/**
+ * The edits that print the end of a line whose text, in `[from, to)`, ends with
+ * directives and blanks, or null where it does not. mermaid.js removes a
+ * directive before it reads the lines, and reads the last directive of a line
+ * as part of its text only where whitespace follows it, so the line with and
+ * without the blanks after its last directive is the same text, and is printed
+ * the same: the blanks after the directive are left out, and the gaps before
+ * the directives are printed as the same line without them has them. The one
+ * exception is a text that stays as written (see `staysAsWritten`) and holds
+ * no `;`, line break, or directive of its own, in an ishikawa literal. The
+ * text without the blanks ends before its last directive, and the layout
+ * prints that gap as it prints the runs of the text, as written; the text with
+ * the blanks holds the directive, and these edits print its gap as one space.
+ * Both forms are the ones of the released versions, and both stay
+ * (docs/ishikawa.md, Trailing whitespace). The directives and the blanks that
+ * precede the text are no part of it, and `runs` says which of its runs are
+ * printed as one space (see `TextRuns`). The gaps between the directives at
+ * its end stay, but the one before the last place (see
+ * `endsWithPlaceAfterText`). The edits reach `editsEnd`, which is `to` unless
+ * the layout reads the line further. This is the one place that decides it for
+ * the lines of an ishikawa literal, a usecase accessibility line, and a
+ * treeView node.
+ */
+export function collectLineEndEdits(
+  source: Source,
+  [from, to]: Range,
+  { isBlank = isSpaceOrTab, runs, gapBeforePlace }: LineEndRules,
+  editsEnd: number = to,
+): TextEdit[] | null {
+  const { start, skipsDirective } = findTextStart(source, [from, to], isBlank)
+  const text: Range = [start, to]
+  if (
+    !skipsDirective &&
+    (endsWithDirectives(source, text, isBlank) ||
+      endsWithBreakingDirectives(source, text, isBlank))
+  )
+    return collectTextEndEdits(source, start, editsEnd, runs, false, isBlank)
+  if (
+    gapBeforePlace !== undefined &&
+    endsWithPlaceAfterText(source, text, isBlank, gapBeforePlace)
+  )
+    return collectPlaceEdits(
+      source,
+      [start, editsEnd],
+      collapsesBeforeEnd(runs, skipsDirective),
+    )
+  return null
+}
+
+/** Whether only blanks stand between `to` and the end of its line. */
+function holdsOnlyBlanksToLineEnd(
+  source: Source,
+  to: number,
+  isBlank: (character: string) => boolean,
+): boolean {
+  const lineEnd = lineEndOf(source, to, true)
+  return skipBlanks(source, to, lineEnd, isBlank) === lineEnd
+}
+
+/**
+ * The place at the end of `[from, to)`: the directives that touch each other
+ * after the spaces and tabs at its end. `afterPlace` is where the place ends,
+ * `placeStart` where it starts, the same offset where there is none, and
+ * `headEnd` where the text before it ends, without the spaces and tabs that
+ * stand before the place.
+ */
+function findPlace(
+  source: Source,
+  [from, to]: Range,
+): {
+  readonly placeStart: number
+  readonly afterPlace: number
+  readonly headEnd: number
+} {
+  let afterPlace = to
+  while (afterPlace > from && isSpaceOrTab(source.text[afterPlace - 1]))
+    afterPlace--
+  let placeStart = afterPlace
+  for (;;) {
+    const directive = findDirectiveEndingAt(source, placeStart)
+    if (directive === undefined || directive.range[0] <= from) break
+    placeStart = directive.range[0]
+  }
+  let headEnd = placeStart
+  while (headEnd > from && isSpaceOrTab(source.text[headEnd - 1])) headEnd--
+  return { placeStart, afterPlace, headEnd }
+}
+
+/**
+ * Whether the text in `range` ends with directives as `endsWithDirectives`
+ * says, except that the directives at its end that hold a line break or a `;`
+ * do not end the text: the directives that touch each other at its end, with
+ * spaces and tabs after the last, are one place, and a line break or a `;` in
+ * a directive of that place is no part of the text. A line break or a `;` in a
+ * directive before the place, which a space or a tab separates from it, keeps
+ * the text as written, and so does a directive or a text after the range on
+ * its line: the place is then not the end of the line, and the text holds its
+ * directives. False where the place holds neither, which `endsWithDirectives`
+ * decides, and where it holds a U+2028 or U+2029.
+ */
+function endsWithBreakingDirectives(
+  source: Source,
+  [from, to]: Range,
+  isBlank: (character: string) => boolean,
+): boolean {
+  if (!holdsOnlyBlanksToLineEnd(source, to, isBlank)) return false
+  const { placeStart, afterPlace } = findPlace(source, [from, to])
+  const place = [...source.text.slice(placeStart, afterPlace)]
+  if (
+    place.some(isLineSeparator) ||
+    !place.some(
+      (character) =>
+        character === "\n" || character === "\r" || character === ";",
+    )
+  )
+    return false
+  return endsWithDirectives(source, [from, placeStart])
+}
+
+/**
+ * Whether the line in `range` ends with a place, after a text that
+ * `endsWithDirectives` leaves out because it holds a `;`, a line break or
+ * separator, or a directive of its own. mermaid.js reads the last directive as
+ * part of the text only where whitespace follows it, so the same line without
+ * that whitespace has the place after its text, and the gap before it is
+ * printed as one space, which the line with the whitespace must print too (see
+ * `collectPlaceEdits`). The text before the place, and the directives in it
+ * that whitespace separates from the place, stay as written. With
+ * `gapBeforePlace` `"likeRuns"`, a text that stays as written (see
+ * `staysAsWritten`) is not accepted: the line without the blanks after it
+ * prints the gap before the place as the rule of the texts reaches it, and that
+ * rule does not reach such a text (see `LineEndRules`).
+ */
+function endsWithPlaceAfterText(
+  source: Source,
+  [from, to]: Range,
+  isBlank: (character: string) => boolean,
+  gapBeforePlace: "oneSpace" | "likeRuns",
+): boolean {
+  if (!holdsOnlyBlanksToLineEnd(source, to, isBlank)) return false
+  const { placeStart, afterPlace, headEnd } = findPlace(source, [from, to])
+  if (
+    placeStart === afterPlace ||
+    [...source.text.slice(placeStart, afterPlace)].some(isLineSeparator)
+  )
+    return false
+  if (headEnd <= from) return false
+  return gapBeforePlace === "oneSpace" || !staysAsWritten(source, from, headEnd)
+}
+
+/**
+ * The edits that print the end of a line that `endsWithPlaceAfterText` accepts:
+ * the spaces and tabs after the place are left out, and those before it are
+ * printed as one space, as the gap before a directive that ends a line is.
+ * `collapsesRuns` tells that the runs of spaces and tabs in the text before the
+ * place are printed as one space too, which the collapse of the runs in the
+ * texts prints for the same text when the place stands after it, and which it
+ * does not reach while the place is in the text (see `collapsesBeforeEnd`).
+ */
+function collectPlaceEdits(
+  source: Source,
+  range: Range,
+  collapsesRuns: boolean,
+): TextEdit[] {
+  const [from, to] = range
+  const { placeStart, afterPlace, headEnd } = findPlace(source, range)
+  const edits: TextEdit[] = []
+  if (afterPlace < to) edits.push({ range: [afterPlace, to], replacement: "" })
+  if (headEnd < placeStart)
+    edits.push({ range: [headEnd, placeStart], replacement: " " })
+  if (collapsesRuns) appendItems(edits, collapseRunEdits(source, from, headEnd))
+  return edits
+}
+
+/**
  * The layout of a line that stays as written, apart from the end of its text
  * where directives end it: the whitespace after the last directive is left out,
  * and each directive keeps whether whitespace precedes it, a run becoming one
@@ -620,7 +865,7 @@ export function keptWithDirectiveEnd(
 ): AtomLayout {
   const layout = keptAsWritten(start, end)
   if (!endsWithDirectives(source, [start, end])) return layout
-  const edits = collectTextEndEdits(source, start, end, false)
+  const edits = collectTextEndEdits(source, start, end, "kept")
   if (edits.length === 0) return layout
   const endStart = minOf(edits.map((edit) => edit.range[0]))
   const atoms: Atom[] = [
@@ -647,38 +892,67 @@ export function keptWithDirectiveEnd(
  * whitespace after the last one is left out, whether the last one is read as
  * part of the statement or not: the figure is the same whatever the whitespace
  * at the end of the line, and a directive at the end of a line is printed so
- * elsewhere (docs/flowchart.md, Directives). `collapsesRuns` tells that the
- * runs of spaces and tabs inside the text are printed as one space (a title),
- * and not kept as written (a date format). `isBlank` is the one of
- * `collectTextEndEdits`.
+ * elsewhere (docs/flowchart.md, Directives). The exception is a text that
+ * stays as written (see `staysAsWritten`): where no whitespace follows its last
+ * directive, the text ends before it and the gap stays as written, and where
+ * whitespace follows, the directive is in the text and its gap is one space;
+ * both are the forms of the released versions, and both stay
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ * `runs` tells which of the runs of spaces and tabs inside the text are printed
+ * as one space (see `TextRuns`). `isBlank` is the one of `collectTextEndEdits`.
  */
 export function trimTextAfterKeyword(
   source: Source,
   atoms: Atom[],
   text: Range | null,
-  collapsesRuns: boolean,
+  runs: TextRuns,
   isBlank: (character: string) => boolean = isSpaceOrTab,
 ): void {
   if (text === null) return
-  const [from, to] = text
-  const edits: TextEdit[] = []
-  let offset = from
-  for (;;) {
-    const blanks = skipSpacesAndTabs(source, offset, to)
-    if (blanks > offset)
-      edits.push({ range: [offset, blanks], replacement: "" })
-    if (blanks >= to) return
-    const directive = findTriviaBetween(source, blanks, blanks + 1).find(
-      (item) => item.type === "Directive" && item.range[0] === blanks,
-    )
-    if (directive === undefined) break
-    offset = directive.range[1]
-  }
+  const [, to] = text
+  const textStart = findTextStart(source, text, isSpaceOrTab)
+  if (textStart.start >= to) return
+  const { start, blanks, skipsDirective } = textStart
+  const edits: TextEdit[] = blanks.map((range) => ({ range, replacement: "" }))
   appendItems(
     edits,
-    collectTextEndEdits(source, offset, to, collapsesRuns, isBlank),
+    collectTextEndEdits(source, start, to, runs, skipsDirective, isBlank),
   )
   replaceInAtoms(source, atoms, edits)
+}
+
+/**
+ * Where the text of a line starts in `[from, to)`: after the whitespace and the
+ * directives that precede it, which mermaid.js removes before it reads the
+ * line. `start` is `to` where only whitespace and directives stand there.
+ * `blanks` are the runs of whitespace before the text, among the directives
+ * too, and `skipsDirective` tells that a directive stands among them.
+ * `isBlank` tells which characters are whitespace to the line.
+ */
+function findTextStart(
+  source: Source,
+  [from, to]: Range,
+  isBlank: (character: string) => boolean,
+): {
+  readonly start: number
+  readonly blanks: readonly Range[]
+  readonly skipsDirective: boolean
+} {
+  const blanks: Range[] = []
+  let skipsDirective = false
+  let offset = from
+  for (;;) {
+    const position = skipBlanks(source, offset, to, isBlank)
+    if (position > offset) blanks.push([offset, position])
+    if (position >= to) return { start: to, blanks, skipsDirective }
+    const start = position
+    const directive = findTriviaBetween(source, start, start + 1).find(
+      (item) => item.type === "Directive" && item.range[0] === start,
+    )
+    if (directive === undefined) return { start, blanks, skipsDirective }
+    skipsDirective = true
+    offset = directive.range[1]
+  }
 }
 
 /**
@@ -686,9 +960,12 @@ export function trimTextAfterKeyword(
  * tabs and directives: the spaces and tabs at its end are left out, and each
  * directive that ends it keeps whether whitespace precedes it, a run becoming
  * one space. `offset` is where the text starts, after the spaces, tabs and
- * directives that precede its content. `collapsesRuns` tells that the runs of
- * spaces and tabs in the text are printed as one space as well (a title), which
- * the general rule of the texts prints for a text that no directive ends.
+ * directives that precede its content, and `skipsDirective` tells that there
+ * are some. `runs` tells which of the runs of spaces and tabs in the text are
+ * printed as one space as well (see `TextRuns`), where the general rule of the
+ * texts does not reach them: the runs before the directives that end the text,
+ * and with `"collapsed"` the runs of a text that directives precede, and the
+ * gap before a directive that follows it, whatever ends it.
  *
  * mermaid.js removes a directive from the text before it reads it, so the
  * spaces and tabs before a directive that ends the text are at the end too, and
@@ -710,9 +987,12 @@ export function collectTextEndEdits(
   source: Source,
   offset: number,
   end: number,
-  collapsesRuns: boolean,
+  runs: TextRuns,
+  skipsDirective = false,
   isBlank: (character: string) => boolean = isSpaceOrTab,
 ): TextEdit[] {
+  const collapsesRuns = collapsesBeforeEnd(runs, skipsDirective)
+  const collapsesWholeText = runs === "collapsed" && skipsDirective
   const edits: TextEdit[] = []
   const textEnd = trimmedTextEnd(source, offset, end, isSpaceOrTab)
   if (textEnd.trailingBlanks !== null)
@@ -728,7 +1008,11 @@ export function collectTextEndEdits(
     let blanks = to
     while (blanks > offset && isSpaceOrTab(source.text[blanks - 1])) blanks--
     const last = findDirectiveEndingAt(source, blanks)
-    if (last === undefined || last.range[0] <= offset) return edits
+    if (last === undefined || last.range[0] <= offset) {
+      if (collapsesWholeText)
+        appendItems(edits, collapseRunEdits(source, offset, to))
+      return edits
+    }
   }
   // A comment that starts right after the text stays on its line, one space
   // after it.
@@ -772,7 +1056,7 @@ export function collectTextEndEdits(
   // A text that directives end holds them, so the collapse of the runs in the
   // texts does not reach it; the runs before them are the same as when the
   // directives stand after the text.
-  if (collapsesRuns && position !== to) {
+  if (collapsesRuns && (position !== to || collapsesWholeText)) {
     appendItems(edits, collapseRunEdits(source, offset, headEnd))
   }
   return edits

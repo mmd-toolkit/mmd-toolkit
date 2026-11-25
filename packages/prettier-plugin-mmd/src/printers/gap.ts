@@ -19,6 +19,7 @@ import {
   isLineSeparator,
   findTokenStartingAt,
   findTriviaBetween,
+  isSpaceOrTab,
   isWhitespace,
   previousRead,
   textRead,
@@ -56,6 +57,12 @@ export interface ItemRun {
   /** Whether the source had whitespace between two of the printed items. */
   readonly spaceWithin: boolean
   /**
+   * The offsets of the `;` that separate statements and that the run prints
+   * as items, because an item follows them that they must not touch (see
+   * `toRun`).
+   */
+  readonly separators: readonly number[]
+  /**
    * The items, when each is a directive or a `;` that the line rule ignores,
    * which mermaid.js reads as not there; null when the run holds any other
    * item, such as a comment.
@@ -63,9 +70,17 @@ export interface ItemRun {
   readonly absentItems: readonly AbsentItem[] | null
   /**
    * Whether the run ends with whitespace that must be kept: a comment that
-   * ends with spaces or tabs. `%% ` is a comment; `%%` is not.
+   * ends with spaces or tabs, or a `tail`. `%% ` is a comment; `%%` is not.
    */
   readonly endsWithWhitespace: boolean
+  /**
+   * The whitespace that is printed after the last item although the item does
+   * not hold it, or an empty string: after the `;` of an ABNF comment, the
+   * spaces and tabs written after it, or one space where none was written
+   * (`bareSemicolonTail`). `doc` ends with it, and a line printed as written
+   * adds it to the text of the items (`printRunAsWritten`).
+   */
+  readonly tail: string
 }
 
 /** An item that mermaid.js reads as not there. */
@@ -319,6 +334,30 @@ export function readGap(
     trailingEndsWithComment: first.parts.at(-1)?.item.type === "Comment",
     whitespaceLineAfter: whitespaceLineSeen,
   }
+}
+
+/**
+ * The run that `readGap` makes of the rest of the line that starts at
+ * `offset`, which is what the block prints on the line of what ends at
+ * `offset` (`Gap.trailing`), or undefined where anything but a gap stands in
+ * the rest of the line, such as a statement. A layout that plans around the
+ * printed run asks it here, so that which `;` stay, and where the run starts,
+ * are decided once, by `toRun`.
+ */
+export function readRunOnItsLine(
+  source: Source,
+  offset: number,
+  options: { readonly dropsSeparatorsBeforeComments?: boolean } = {},
+): ItemRun | null | undefined {
+  let end = offset
+  while (end < source.text.length) {
+    const element = readGapElement(source, end)
+    if (element.element.kind === "text") return undefined
+    end = element.end
+    if (element.element.kind === "lineTerminator") break
+  }
+  return readGap(source, offset, end, false, { ...options, endsText: true })
+    .trailing
 }
 
 /**
@@ -665,6 +704,7 @@ function toRun(
     if (!part.separates) lastItem = index
   }
   const doc: Doc[] = []
+  const separators: number[] = []
   let spaceBefore = false
   let spaceWithin = false
   let spacePending = false
@@ -689,18 +729,22 @@ function toRun(
       doc.push(" ")
       spaceWithin = true
     }
+    if (part.separates) separators.push(part.item.range[0])
     firstPrinted ??= part
     doc.push(printItem(source, part.item))
     printed = part
     spacePending = false
   }
   if (printed === undefined) return null
+  const tail = bareSemicolonTail(source, printed.item)
+  if (tail !== "") doc.push(tail)
   return {
     range: [(firstPrinted as Part).item.range[0], printed.item.range[1]],
     doc,
     spaceBefore,
     spaceAfter: spaceAfter || spacePending,
     spaceWithin,
+    separators,
     absentItems: parts.every(
       (part) =>
         !part.separates &&
@@ -712,20 +756,44 @@ function toRun(
           isSemicolon: part.item.type === "IgnoredSemicolon",
         }))
       : null,
+    tail,
     // The same comment-end decision that allows statements to split also
     // lets hardline remove the whitespace after the comment of a statement; a
     // comment line keeps it, as every comment does (docs/sequence.md,
     // Statements one per line; docs/flowchart.md, Comments).
     endsWithWhitespace:
-      endsWithSpaceOrTab(
+      tail !== "" ||
+      (endsWithSpaceOrTab(
         source.text.slice(printed.item.range[0], printed.item.range[1]),
       ) &&
-      !(
-        printed.item.type === "Comment" &&
-        !isFirstOnItsLine(source, printed.item.range[0]) &&
-        ignoredSemicolonAtCommentEnd(source, printed.item.range) !== undefined
-      ),
+        !(
+          printed.item.type === "Comment" &&
+          !isFirstOnItsLine(source, printed.item.range[0]) &&
+          ignoredSemicolonAtCommentEnd(source, printed.item.range) !== undefined
+        )),
   }
+}
+
+/**
+ * The whitespace that stays after a `;` that is a comment of its own in a
+ * railroad diagram, or an empty string. In ABNF a bare `;` is punctuation and
+ * every version of mermaid.js that counts rejects it where a comment is meant:
+ * a `;` is a comment only where a space or other text follows it on its line
+ * (diagrams/railroad.md, Native comments). The printer starts the next line
+ * where a U+2028 or U+2029 stood, so the whitespace written after the `;` stays
+ * as written, and one space stands where only the character followed it
+ * (docs/railroad.md, Comments).
+ */
+function bareSemicolonTail(source: Source, item: GapItem): string {
+  if (
+    source.root.body.type !== "RailroadDiagram" ||
+    item.type !== "Comment" ||
+    source.text.slice(item.range[0], item.range[1]) !== ";"
+  )
+    return ""
+  let end = item.range[1]
+  while (isSpaceOrTab(source.text[end])) end++
+  return end > item.range[1] ? source.text.slice(item.range[1], end) : " "
 }
 
 /**

@@ -243,10 +243,6 @@ export function layoutCommonLine(
       : diagramTypesWithJisonAccessibilityLines.has(diagramType)) &&
     holdsOtherWhitespaceBeforeComment(source, value.range[0], commentStart)
   const valueReachesComment = accTitleReachesComment || gapReachesComment
-  // Only spaces and tabs stand between the directives and after the last one
-  // where the text counts as ending with directives: with other whitespace
-  // there the line stays as written, with the spaces and tabs after it
-  // (docs/compatibility.md, Texts after a keyword that are drawn the same).
   const endsInDirectives =
     hasTrivia &&
     !valueReachesComment &&
@@ -330,7 +326,7 @@ export function layoutCommonLine(
       source,
       atoms,
       [valueStart, valueEnd],
-      !statement.type.includes("AccTitle"),
+      statement.type.includes("AccTitle") ? "kept" : "collapsed",
       isInlineWhitespace,
     )
   }
