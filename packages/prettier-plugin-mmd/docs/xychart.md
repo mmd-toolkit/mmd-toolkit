@@ -340,7 +340,10 @@ text-units/directive-between-words-apart] [fixture:
 text-units/directive-between-words-on-one-side] [fixture:
 text-units/directive-inside-a-category-word]
 
-The whitespace at the ends of a text is dropped: it is not in the Db.
+The spaces and tabs after a text at the end of a line are dropped: Prettier
+removes spaces and tabs at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them. The
+whitespace at the other ends of a text is dropped too: it is not in the Db.
 
 [fixture: text-units/whitespace-at-the-ends-dropped]
 
@@ -478,13 +481,14 @@ xychart
 ### Values and labels
 
 A value and the label after it are separated by one space (`20 "peak"`), also
-where they were written touching (`10"peak"`), and a comma follows the label
-with no space before it. mermaid.js reads the label whether it touches the value
-or not; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
-space between values that follow one another, as Prettier prints CSS
-`margin: 1px    2px;` as `margin: 1px 2px;`. Prettier prints a comma with no
-space before it; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives the comma after a value label the same form.
+where they were written touching (`10"peak"`): mermaid.js reads the label
+whether it touches the value or not, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between values that follow one another, as Prettier prints CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`. A comma follows the label with no
+space before it: Prettier prints a comma with no space before it, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the comma after
+a value label the same form.
 
 [fixture: values-and-labels/label-touching-the-value] [fixture:
 values-and-labels/label-with-more-whitespace] [fixture:
@@ -791,15 +795,10 @@ space: `accDescr{  }` becomes `accDescr {}`.
 Unicode and tab interiors]
 
 A block with a directive or comment line keeps its contents and line breaks,
-with standalone trivia one level inside and its closer at statement level. Rule
-1 names no mark for a line inside a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [block](./block.md#empty-description-blocks) and
-[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block with a directive or comment line. It stands on a line of its
-own, also after the header and after another statement. A block that is not
-closed, at the end of the text, is printed as `accDescr {` with no `}`, as in
-[Accessibility statements](#accessibility-statements).
+with standalone trivia one level inside and its closer at statement level. It
+stands on a line of its own, also after the header and after another statement.
+A block that is not closed, at the end of the text, is printed as `accDescr {`
+with no `}`, as in [Accessibility statements](#accessibility-statements).
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:

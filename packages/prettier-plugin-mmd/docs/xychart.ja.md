@@ -356,7 +356,10 @@ title は `Twowords`）ので、空白の連なりは空白 1 つにします。
 [fixture: text-units/directive-between-words-on-one-side]
 [fixture: text-units/directive-inside-a-category-word]
 
-テキストの前後の空白は、Db に入らないので落とします。
+行末にあるテキストの後ろの空白とタブは落とします。
+Prettier が行末の空白とタブを除くので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が除きます。
+テキストのそれ以外の端の空白も、Db に入らないので落とします。
 
 [fixture: text-units/whitespace-at-the-ends-dropped]
 
@@ -501,15 +504,14 @@ xychart
 
 値とその後ろのラベルは、空白 1 つで離します（`20 "peak"`）。
 接して書かれていても（`10"peak"`）同じです。
-ラベルの後ろのコンマの前に、空白は置きません。
 mermaid.js は、ラベルが値に接していても離れていても同じに読みます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白) が、
 並んで続く値の間を空白 1 つにします。
 Prettier が CSS の `margin: 1px    2px;` を印字すると、
 `margin: 1px 2px;` になるためです。
 
-Prettier はコンマの前に空白を置きません。
-値のラベルの後ろのコンマにも、
+ラベルの後ろのコンマの前に、空白は置きません。
+Prettier はコンマの前に空白を置かず、値のラベルの後ろのコンマにも、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
 
 [fixture: values-and-labels/label-touching-the-value]
@@ -832,11 +834,6 @@ Prettier は中身のない `{}` の内側に、空白を置きません。
 
 指令かコメント行を持つブロックは、内容と改行を保ち、独立した注釈を 1 段内側、
 閉じ括弧を文の段に置きます。
-規則 1 は、ブロックの中の行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[block](./block.ja.md#空の説明ブロック) と
-[quadrant](./quadrant.ja.md#空の説明ブロック) も、
-ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 テキストの最後で閉じていないブロックは、
 `}` を足さずに `accDescr {` と印字します（詳しくは、
