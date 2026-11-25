@@ -353,6 +353,23 @@ block/db-tail-class-directive] [fixture: block/db-tail-style-directive]
 block/db-tail-composite-end-directive] [fixture:
 block/db-tail-composite-end-keyword-directive]
 
+A `%%` right after a directive is the text of an id too, as is any `%%` that
+does not start a line (see Comments in
+[Units and contexts](#units-and-contexts)): `b%%{init: {}}%%%% x` puts the
+directive inside the id `b%%` and is rejected, where mermaid.js reads the blocks
+`b%%` and `x`, and so is `b-->c%%{init: {}}%%%% x`, with the id `c%%` at the end
+of the edge. With whitespace on either side of the directive, the `%%` is an id
+of its own: `b %%{init: {}}%%%% x` and `b%%{init: {}}%% %% x` are the blocks
+`b`, `%%`, and `x`. A `%%` that only whitespace and directives precede on its
+line starts a comment line (see [Comment lines](../common.md#comment-lines)), so
+a line `%%{init: {}}%%%% x` changes nothing.
+
+[fixture: block/div-directive-in-id-before-percent-pair] [fixture:
+block/div-directive-in-edge-end-before-percent-pair] [fixture:
+block/db-directive-then-percent-pair-id] [fixture:
+block/db-directive-then-space-percent-pair-id] [fixture:
+block/db-directive-then-percent-pair-at-line-start]
+
 ### The statement context
 
 The rules of the statement context, in the order they are tried:

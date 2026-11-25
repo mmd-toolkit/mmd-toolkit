@@ -132,4 +132,124 @@ export const agentflowCases: readonly AgentflowCase[] = [
     input: "agentflow-beta TB\nconnector F  \u2029  \n",
     output: "agentflow-beta TB\n  connector F  \u2029\n",
   },
+  {
+    name: "agentflow: a no-break space before a comment that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\u00a0%% c\n]\n",
+    output: 'agentflow-beta TB\n  A["x" %% c\n    ]\n',
+  },
+  {
+    name: "agentflow: U+3000 before a comment that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\u3000%% c\n]\n",
+    output: 'agentflow-beta TB\n  A["x" %% c\n    ]\n',
+  },
+  {
+    name: "agentflow: U+2003 before a comment that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\u2003%% c\n]\n",
+    output: 'agentflow-beta TB\n  A["x" %% c\n    ]\n',
+  },
+  {
+    name: "agentflow: U+2028 before a comment that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\u2028%% c\n]\n",
+    output: 'agentflow-beta TB\n  A["x" %% c\n    ]\n',
+  },
+  {
+    name: "agentflow: U+2029 before a comment that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\u2029%% c\n]\n",
+    output: 'agentflow-beta TB\n  A["x" %% c\n    ]\n',
+  },
+  {
+    name: "agentflow: a no-break space before a comment that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\u00a0%% c\n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c\n    | B\n",
+  },
+  {
+    name: "agentflow: U+3000 before a comment that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\u3000%% c\n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c\n    | B\n",
+  },
+  {
+    name: "agentflow: U+2003 before a comment that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\u2003%% c\n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c\n    | B\n",
+  },
+  {
+    name: "agentflow: U+2028 before a comment that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\u2028%% c\n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c\n    | B\n",
+  },
+  {
+    name: "agentflow: U+2029 before a comment that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\u2029%% c\n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c\n    | B\n",
+  },
+  {
+    name: "agentflow: a tab before a comment that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\t%% c\n]\n",
+    output: 'agentflow-beta TB\n  A["x" %% c\n    ]\n',
+  },
+  {
+    name: "agentflow: a no-break space before a comment with a semicolon that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\u00a0%% c;  \n]\n",
+    output: "agentflow-beta TB\n  A[x %% c;  \n    ]\n",
+  },
+  {
+    name: "agentflow: U+3000 before a comment with a semicolon that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\u3000%% c;  \n]\n",
+    output: "agentflow-beta TB\n  A[x %% c;  \n    ]\n",
+  },
+  {
+    name: "agentflow: U+2003 before a comment with a semicolon that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\u2003%% c;  \n]\n",
+    output: "agentflow-beta TB\n  A[x %% c;  \n    ]\n",
+  },
+  {
+    name: "agentflow: U+2028 before a comment with a semicolon that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\u2028%% c;  \n]\n",
+    output: "agentflow-beta TB\n  A[x %% c;  \n    ]\n",
+  },
+  {
+    name: "agentflow: U+2029 before a comment with a semicolon that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\u2029%% c;  \n]\n",
+    output: "agentflow-beta TB\n  A[x %% c;  \n    ]\n",
+  },
+  {
+    name: "agentflow: a tab before a comment with a semicolon that ends the label of a vertex",
+    input: "agentflow-beta TB\nA[x\t%% c;  \n]\n",
+    output: "agentflow-beta TB\n  A[x %% c;  \n    ]\n",
+  },
+  {
+    name: "agentflow: a tab before a comment that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\t%% c\n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c\n    | B\n",
+  },
+  {
+    name: "agentflow: a no-break space before a comment with a semicolon that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\u00a0%% c;  \n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c;  \n    | B\n",
+  },
+  {
+    name: "agentflow: U+3000 before a comment with a semicolon that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\u3000%% c;  \n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c;  \n    | B\n",
+  },
+  {
+    name: "agentflow: U+2003 before a comment with a semicolon that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\u2003%% c;  \n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c;  \n    | B\n",
+  },
+  {
+    name: "agentflow: U+2028 before a comment with a semicolon that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\u2028%% c;  \n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c;  \n    | B\n",
+  },
+  {
+    name: "agentflow: U+2029 before a comment with a semicolon that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\u2029%% c;  \n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c;  \n    | B\n",
+  },
+  {
+    name: "agentflow: a tab before a comment with a semicolon that ends the label of an edge",
+    input: "agentflow-beta TB\nA -->|x\t%% c;  \n| B\n",
+    output: "agentflow-beta TB\n  A -->|x %% c;  \n    | B\n",
+  },
 ]
