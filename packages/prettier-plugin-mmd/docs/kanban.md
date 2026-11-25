@@ -551,16 +551,56 @@ kanban one line with U+2028 inside] [test: data blocks: kanban one line with
 U+2029 inside] [test: data blocks: kanban one line with no-break spaces at the
 ends]
 
+A card whose block is on one line and that ends with directives is printed by
+both rules in one formatting: the block gets one space inside each end, and the
+spaces and tabs after the last directive are left out (see
+[Trailing whitespace](#trailing-whitespace)), so formatting the output again
+changes nothing. The block does not stay as written because of those spaces and
+tabs. This holds for a directive that is closed and for one that is not closed,
+which runs to the end of the text, for a card with a shape and for one without,
+and for directives that touch the block, that follow each other, or that also
+start the card. A block whose line is too long is not split where a directive
+follows its `}`, as in [Data blocks](./flowchart.md#data-blocks): it is printed
+on its line with one space inside each end. A block over several lines is not
+padded, and the whitespace after the last directive of its card stays as
+written, as on any continuation line of a multi-line value (see
+[Trailing whitespace](#trailing-whitespace)).
+
+[fixture: data-blocks/one-line-padded-closed-directive-blanks] [fixture:
+data-blocks/one-line-padded-closed-directive-tab] [fixture:
+data-blocks/one-line-padded-closed-directive-blanks-end-of-text] [fixture:
+data-blocks/one-line-padded-open-directive-blanks-end-of-text] [fixture:
+data-blocks/one-line-padded-open-directive-tab-end-of-text] [fixture:
+data-blocks/one-line-padded-bare-id-directive-blanks] [fixture:
+data-blocks/one-line-padded-touching-directive-blanks] [fixture:
+data-blocks/one-line-padded-two-directives-blanks] [fixture:
+data-blocks/one-line-padded-leading-directive-blanks] [fixture:
+data-blocks/one-line-padded-tab-inside-directive-blanks] [fixture:
+data-blocks/one-line-padded-long-directive-blanks] [fixture:
+data-blocks/multiline-directive-blanks-kept]
+
 Apply the movement and safety conditions of
 [Data blocks](./flowchart.md#data-blocks): when a newline immediately follows
 `@{`, shift every body line by the same number of ASCII spaces to put the
 shallowest text one level inside its node. A section's body is two levels below
 the header, an item's three; nested YAML keeps its relative indentation. A
 separate `}` aligns with the node, even if it had no margin; a closer after text
-stays on that line.
+stays on that line. A `}` after the text of a literal or folded scalar (`|`,
+`|-`, `|+`, `>`, `>-`, and `>+`) stays on its line: on a line of its own it
+changes the end of the text of the scalar in the Db, and formatting does not
+change the Db. The drawing is the same, but no kind of exception that
+[How the printed form is decided](./printed-form.md#the-check-and-formatting-that-changes-the-db)
+defines covers that gap. The formatter does not look at the kind of scalar, so a
+`}` after the text of a plain scalar stays too.
 
 [fixture: data-blocks/section-and-item-margins] [fixture:
-data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text]
+data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text] [fixture:
+data-blocks/closing-after-literal-text] [fixture:
+data-blocks/closing-after-folded-text] [fixture:
+data-blocks/closing-after-strip-text] [fixture:
+data-blocks/closing-after-keep-text] [fixture:
+data-blocks/closing-after-folded-strip-text] [fixture:
+data-blocks/closing-after-folded-keep-text]
 
 Move space-only lines by the same amount, making them empty when no spaces
 remain, and leave empty lines empty. Keep trailing spaces: literal block scalars
@@ -648,11 +688,17 @@ After the header, empty lines, comment lines, and diagram comments change
 nothing in the Db between nodes, before decorations, and at the end of the board
 (diagrams/kanban.md, Blank lines). Runs of empty lines between statements become
 one empty line, whitespace-only lines are empty lines, and empty lines at the
-start and at the end of the board are dropped, as in the other diagram types:
-`kanban`, two empty lines, and ` S` print `kanban` and `  S`. Whitespace after
-`kanban` on a header line with nothing else is dropped, whatever the character
-(a space, a tab, a U+00A0, a U+3000, a U+FEFF, a form feed, a vertical tab, a
-U+2028, a U+2029).
+start and at the end of the board are dropped, where no other rule keeps the gap
+as written (see the gap with a diagram comment below), as in the other diagram
+types: `kanban`, two empty lines, and ` S` print `kanban` and `  S`. Rule 1
+names no mark for an empty line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [gantt](./gantt.md#blank-lines),
+[journey](./journey.md#blank-lines), and [sankey](./sankey.md#blank-lines) print
+a run of empty lines as one and drop the empty lines at the start and at the end
+of the board. Whitespace after `kanban` on a header line with nothing else is
+dropped, whatever the character (a space, a tab, a U+00A0, a U+3000, a U+FEFF, a
+form feed, a vertical tab, a U+2028, a U+2029).
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/blank-body-end] [fixture:
 blank-lines/gram-grid-lf-header-line] [fixture:
@@ -1056,17 +1102,52 @@ column (`S   ` is the id `S   `, and so is the space before its shape), in a
 comment, and inside labels, icons, data blocks, directives, and the continuation
 lines of multi-line values. This is the distinction of
 [mindmap](./mindmap.md#node-text), with the data block added, and with the id of
-a column kept. On a kept line the same holds. The directives that end the text
-of a card are printed with one space before each that has whitespace before it,
-and the whitespace after the last one is left out (see
-[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same));
-those that end the id of a column stay as written, since the figure depends on
-its whitespace.
+a column kept. On a kept line the same holds. On the line of a card, the spaces
+and tabs after the last directive are left out, and the run of spaces and tabs
+before each directive is printed as one space, unless a directive of the line
+holds a line break or a `;` (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
+`A[x]  %%{y}%%  ` is printed `A[x] %%{y}%%`, and `A[x] %%{y}%%  %%{z}%%  ` is
+printed `A[x] %%{y}%% %%{z}%%`. A whitespace character that is no space or tab
+(U+000B, U+000C, a no-break space, U+1680, U+2000 to U+200A, U+2028, U+2029,
+U+202F, U+205F, U+3000, or U+FEFF) after a directive, text after a directive of
+a card with a bare id, and a comment after the last directive keep the line as
+written, the spaces after the directive included: `A[x] %%{y}%%`, U+3000, and
+two spaces, `t %%{x}%% u` and two spaces, and `A[x] %%{y}%%`, two spaces,
+`%% c`, and two spaces are not changed. A no-break space or U+3000 before the
+first directive stays as it is, with the spaces after the last directive left
+out. On the line of a column, the line stays as written where it holds a
+directive: `A[x] %%{y}%%` and two spaces, `A %%{y}%%` and two spaces, and the
+same with a tab are not changed.
 
-[fixture: trailing-whitespace/directives-end-blanks-dropped] [test: kanban:
-bare-trailing-trim] [test: kanban: closed-trailing-trim] [test: kanban:
-closed-whitespace-trim] [fixture: trailing-whitespace/class-trailing-trim]
-[fixture: trailing-whitespace/lex-after-quoted-spaces] [fixture:
+[fixture: trailing-whitespace/directives-end-blanks-dropped] [test: a tab after
+the directive that ends the text of a card] [test: a tab before the directive
+that ends the text of a card] [test: spaces before and after the directive that
+ends the text of a card] [test: a no-break space before the directive that ends
+the text of a card] [test: U+3000 before the directive that ends the text of a
+card] [test: a no-break space after the directive that ends the text of a card]
+[test: U+3000 after the directive that ends the text of a card] [test: tabs
+around the directive that ends the bare id of a card] [test: U+2003 after the
+directive that ends the text of a card] [test: U+2002 after the directive that
+ends the text of a card] [test: U+2028 after the directive that ends the text of
+a card] [test: a comment and spaces after the directive of a card] [test: a tab
+after the directive on the line of a column] [test: U+3000 before the first
+directive that ends the text of a card, with spaces after the last] [test: a
+no-break space between two directives that end the text of a card] [test: U+3000
+between two directives that end the text of a card] [test: U+3000 after the last
+of two directives that end the text of a card] [test: U+3000 and spaces after
+the directive of a card] [test: text after the directive of a bare card, with
+spaces at the end] [test: text between two directives of a bare card, with
+spaces at the end] [test: two spaces before the first directive of a bare card
+whose text follows it] [test: spaces after the directive on the line of a column
+with a shape] [test: spaces after the directive on the line of a column with a
+bare id] [test: a whitespace character that is no space or tab after the
+directive that ends the text of a card] [test: kanban: bare-trailing-trim]
+[test: kanban: closed-trailing-trim] [test: kanban: closed-whitespace-trim]
+[fixture: trailing-whitespace/class-trailing-trim] [fixture:
+trailing-whitespace/lex-after-quoted-spaces] [fixture:
 trailing-whitespace/kept-line-kept]
 
 ### Line terminators
@@ -1340,16 +1421,167 @@ The output ends with one line break, the one of the `endOfLine` option, after
 the last line: `kanban`, a line break, and ` S` without a final line break print
 `  S` and a line break. An empty board is `kanban` and a line break. The
 exception is a gap that stays whole under [Blank lines](#blank-lines) at the end
-of the board: the output then ends with that gap, and the printer adds no line
-break after it. The spaces at the end of a last bare id are part of the id and
-stay (`S   ` prints with its spaces, then the line break). When a directive that
-is not closed reaches the end of the text, it takes the rest, and the printer
-adds nothing after it. In Markdown, the indentation of the code fence or of its
-list item is the indentation of the host, and is not part of the indentation of
-the board.
+of the board: the output then ends with that gap, and the printer adds a line
+break after it only where it does not end with one: `kanban`, ` S`, a line of
+`%%`, an empty line, and a line of one space print `  S`, `%%`, the empty line,
+and the line of one space with a line break after it. Rule 1 names no mark for
+the end of a text after a diagram comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [c4](./c4.md#final-newline) and [ishikawa](./ishikawa.md#final-newline)
+end the text with one line break after a final comment too, which the printer
+adds where the text ends without one, also where it ends with a U+2028 or a
+U+2029. The spaces at the end of a last bare id are part of the id and stay
+(`S   ` prints with its spaces, then the line break). When a directive that is
+not closed reaches the end of the text, it takes the rest up to its last
+character that is no whitespace; U+2028, U+2029, U+0085, U+180E, and U+200B are
+no whitespace here. On a line of its own, the whitespace after that character is
+dropped: U+0009 to U+000D (the tab, the line breaks, the vertical tab, and the
+form feed), U+0020, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000,
+and U+FEFF, and with them the empty lines; one line break ends the text; nothing
+is added only where the text ends right after the character and it is no U+2028
+or U+2029. `%%{unfinished` and two spaces print `%%{unfinished` and a line
+break, and `%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line
+break. On the line of a column, the whitespace after the directive stays up to
+the first line break instead: `S[x] %%{unfinished` and two spaces print as
+written, with a line break after them, and `S[x] %%{unfinished` with nothing
+after it is not changed. On the line of a card, the spaces and tabs after the
+directive are dropped and any other whitespace character stays, and one line
+break ends the text: `A[x] %%{unfinished` and two spaces print
+`A[x] %%{unfinished` and a line break, and `A[x] %%{unfinished`, a no-break
+space, and nothing else print the no-break space after it and a line break, and
+`A[x] %%{unfinished`, U+3000, and two spaces print them as written, with a line
+break after them. After the comment of a statement or of the header line, a last
+line of whitespace that holds no U+2028 or U+2029, that has no line break after
+it and no empty line before it is left out (`S[x] %% c`, a line break, and a
+line of two spaces print `S[x] %% c` and a line break), while one that a line
+break follows stays, and so does one after an empty line, with a line break
+added after it (`S[x] %% c`, a line break, an empty line, and a line of two
+spaces print `S[x] %% c`, the empty line, and the line of two spaces with a line
+break after it). A last line that holds a U+2028 or a U+2029, alone or beside
+whitespace, stays after the comment of the header line and of a statement, a
+column or a card, with a line break added after it where none follows
+(`S[x] %% c`, a line break, and a U+2028 print the comment, the line of the
+U+2028, and a line break). After a comment line with text, every last line of
+whitespace is left out, one that holds a U+2028 or a U+2029 too (`S[x]`, a line
+break, `%% c`, a line break, and a U+2028 print `S[x]` and `%% c`, each followed
+by a line break), and after a line of `%%` only, a last line that holds a U+2028
+or a U+2029, alone or beside whitespace, stays as written with the gap before
+it, and so does a last line of whitespace that a line break follows or an empty
+line precedes (the gap stays whole, see [Blank lines](#blank-lines)), while a
+last line of whitespace with neither is left out and the `%%` is aligned
+(`S[x]`, a line of `%%`, a line break, and one space print `S[x]`, the `%%`
+aligned, and a line break). On the header line, an open directive takes the rest
+as on a line of its own: `kanban %%{unfinished` and two spaces print
+`kanban %%{unfinished` and a line break. In Markdown, the indentation of the
+code fence or of its list item is the indentation of the host, and is not part
+of the indentation of the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
+[fixture: final-newline/open-directive-at-eof-trailing-blanks] [fixture:
+final-newline/open-directive-at-eof-after-statement] [fixture:
+final-newline/comment-gap-without-final-line-break] [test: an open directive
+with nothing after it] [test: an open directive followed by two spaces] [test:
+an open directive followed by a tab] [test: an open directive followed by a
+no-break space] [test: an open directive followed by U+3000] [test: an open
+directive followed by U+FEFF] [test: an open directive followed by a vertical
+tab] [test: an open directive followed by a form feed] [test: an open directive
+followed by a line break] [test: an open directive followed by CR and LF] [test:
+an open directive followed by spaces and a line break] [test: an open directive
+followed by empty lines] [test: an open directive followed by a line break and
+spaces] [test: an open directive followed by U+2028] [test: an open directive
+followed by U+2029] [test: an open directive followed by a space and U+2028]
+[test: an open directive followed by U+2028 and a space] [test: an open
+directive followed by U+0085] [test: an open directive followed by U+200B]
+[test: an open directive followed by U+180E] [test: an open directive followed
+by U+2003] [test: an open directive followed by U+1680] [test: an open directive
+followed by U+2000] [test: an open directive followed by U+200A] [test: an open
+directive followed by U+202F] [test: an open directive followed by U+205F]
+[test: an open directive on the line of a column and with nothing after it]
+[test: an open directive on the line of a column and followed by two spaces]
+[test: an open directive on the line of a column and followed by a tab] [test:
+an open directive on the line of a column and followed by a no-break space]
+[test: an open directive on the line of a column and followed by spaces and a
+line break] [test: an open directive on the line of a column and followed by
+empty lines] [test: an open directive on the line of a column and followed by a
+line break and spaces] [test: an open directive on the line of a column and
+followed by U+2028] [test: an open directive on the line of a column and
+followed by U+2028 and a space] [test: an open directive on the line of a card
+with nothing after it] [test: an open directive on the line of a card followed
+by two spaces] [test: an open directive on the line of a card followed by a tab]
+[test: an open directive on the line of a card followed by a no-break space]
+[test: an open directive on the line of a card followed by U+3000] [test: an
+open directive on the line of a card followed by U+3000 and two spaces] [test:
+an open directive on the line of a card followed by U+2003] [test: an open
+directive on the line of a card followed by spaces and a line break] [test: an
+open directive on the line of a card followed by a line break and spaces] [test:
+an open directive on the line of a card followed by U+2028] [test: an open
+directive on the line of a card followed by U+0085] [test: an open directive on
+the line of a card with a bare id and followed by two spaces] [test: an open
+directive on the line of a column with a bare id and followed by two spaces]
+[test: an open directive on the line of a column and followed by U+2029] [test:
+an open directive on the line of a column and followed by U+3000] [test: an open
+directive on the line of a column and followed by U+FEFF] [test: an open
+directive on the line of a column and followed by U+2003] [test: an open
+directive on the line of a column and followed by a vertical tab] [test: an open
+directive on the line of a column and followed by a form feed] [test: an open
+directive on the line of a column and followed by CR and LF] [test: an open
+directive on the line of a column and followed by U+0085] [test: an open
+directive on the line of a column and followed by U+180E] [test: an open
+directive on the line of a column and followed by U+200B] [test: a final line of
+%% alone, two empty lines, and a space in a kanban board] [test: a final line of
+%% alone and U+2029 in a kanban board] [test: a final comment with text and
+U+2029 in a kanban board] [test: a final comment after a statement and a last
+line of two spaces without a line break in a kanban board] [test: a final
+comment after a statement and a last line of a U+2028 without a line break in a
+kanban board] [test: a final comment after a statement and a last line of a
+U+2029 without a line break in a kanban board] [test: a final comment after a
+statement, an empty line, and a last line of a U+2028 in a kanban board] [test:
+a final comment after a statement and a last line of one space after a line
+break in a kanban board] [test: a final comment after a statement and a last
+line of a tab without a line break in a kanban board] [test: a final comment
+after a statement and a last line of a no-break space without a line break in a
+kanban board] [test: a final comment with text and empty lines in a kanban
+board] [test: a final comment after a statement, an empty line, and a last line
+of one space in a kanban board] [test: a final comment after a statement, two
+empty lines, and a last line of two spaces in a kanban board] [test: a final
+comment on the header line and a last line of one space without a line break in
+a kanban board] [test: a final comment on the header line and a last line of one
+space after a line break in a kanban board] [test: a final comment on the header
+line, an empty line, and a last line of one space in a kanban board] [test: a
+final comment on the header line and a last line of a U+2028 without a line
+break in a kanban board] [test: a final comment on the header line and a last
+line of a U+2029 without a line break in a kanban board] [test: a final comment
+after a card and a last line of a U+2028 without a line break in a kanban board]
+[test: a last line of a U+2028 after a line of %% alone in a kanban board]
+[test: a last line of a space and a U+2028 after a line of %% alone in a kanban
+board] [test: a last line of a U+2029 and a space after a line of %% alone in a
+kanban board] [test: a final comment after a statement and a last line of a
+space and a U+2028 without a line break in a kanban board] [test: a last line of
+one space without a line break after a line of %% alone in a kanban board]
+[test: a last line of one space after a line break, after a line of %% alone in
+a kanban board] [test: a last line of a U+2029 after a line of %% alone in a
+kanban board] [test: a last line of a U+2028 after a final comment on a line of
+its own in a kanban board] [test: a last line of a U+2029 after a final comment
+on a line of its own in a kanban board] [test: a last line of a space and a
+U+2028 after a final comment on a line of its own in a kanban board] [test: a
+last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final
+comment after a statement in a kanban board] [test: a last line that holds a
+U+2028 or a U+2029, alone or beside whitespace, a final comment after a card in
+a kanban board] [test: a last line that holds a U+2028 or a U+2029, alone or
+beside whitespace, a final comment after a card with a data block in a kanban
+board] [test: a last line that holds a U+2028 or a U+2029, alone or beside
+whitespace, a final comment after an icon line in a kanban board] [test: a last
+line that holds a U+2028 or a U+2029, alone or beside whitespace, a final
+comment on the header line of a kanban board] [test: a last line that holds a
+U+2028 or a U+2029, alone or beside whitespace, a final line of %% alone in a
+kanban board] [test: a last line that holds a U+2028 or a U+2029, alone or
+beside whitespace, a final comment on a line of its own in a kanban board]
+[test: a last line of one space after an empty line and a line break after a
+final comment on a line of its own in a kanban board] [test: an open directive
+on the header line of a kanban board] [test: an open directive on the header
+line of a kanban board and empty lines] [fixture:
+blank-lines/comment-blank-trailing] [test: kanban: selected-terminal-separator]
 
 Input
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

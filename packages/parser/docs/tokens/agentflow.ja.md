@@ -226,6 +226,10 @@ frontmatter と directive の除去後、
 コメントは裸のラベルを別々の RawText の列へ分ける。
 ラベルが読む内部の空白と LF は保持する。
 コメントとそのテキストは、これらのトークンとラベル値の外にある。
+空白だけのラベルも同じように分かれる。
+`A[ %% c` とそれに続く行 `]` では、空白と LF が 2 つの `RawText` のトークンで、
+ラベルの値はその 2 つをつないだものである。
+2 つのコメントの間の空白は、一つのトークンになる。
 共通の除去が適用されないとき、文字列、リンクテキスト、コールバックテキスト、
 アクセシビリティ値、データでは、コメントに見えるテキストも内容として保持する。
 
@@ -237,3 +241,10 @@ frontmatter と directive の除去後、
 [fixture: agentflow/lex-accessibility-block-comment]
 [fixture: agentflow/db-metadata-comment-directive-body]
 [fixture: agentflow/comment-before-callback-does-not-join-lines]
+[fixture: agentflow/lex-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-label-whitespace-only-comment-after-tab]
+[fixture: agentflow/lex-label-whitespace-only-comment]
+[fixture: agentflow/lex-slanted-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-ellipse-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-pipe-label-whitespace-only-comment]
+[fixture: agentflow/lex-label-whitespace-only-two-comments]

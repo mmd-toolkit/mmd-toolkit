@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md (label comment rules) and ast/agentflow.md (AgentflowLabel): two comments in one bracket label each leave their line feed, and the spaces before them stay label content, so the label is the whitespace-only label of a space, a line feed, a space, and a line feed; mermaid.js gives A the empty text."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

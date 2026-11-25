@@ -1,0 +1,192 @@
+{
+  "type": "Root",
+  "diagramType": "block",
+  "body": {
+    "type": "BlockDiagram",
+    "body": [
+      {
+        "type": "BlockNodeStatement",
+        "node": {
+          "type": "BlockNode",
+          "id": {
+            "type": "Identifier",
+            "name": "b",
+            "range": [
+              30,
+              31
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1
+              }
+            }
+          },
+          "shape": null,
+          "range": [
+            30,
+            31
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 1
+            }
+          }
+        },
+        "width": null,
+        "links": [],
+        "range": [
+          30,
+          31
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 1
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      31
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 1
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " x",
+      "range": [
+        25,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    }
+  ],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {}",
+      "closed": true,
+      "range": [
+        11,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "block-beta",
+      "range": [
+        0,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{init: {}}%%",
+      "range": [
+        11,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "b",
+      "range": [
+        30,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    32
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}
