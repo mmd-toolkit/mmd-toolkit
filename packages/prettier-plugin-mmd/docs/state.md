@@ -114,9 +114,8 @@ multi-line-statements/brace-after-directive-kept]
 
 A body written on one line, as in `state A { B --> C }`, is split into lines,
 and a divider `--` stands on a line of its own, at the level of the statements
-around it. A nonempty namespace in [class](./class.md#indentation) and a
-nonempty body in [requirement](./requirement.md#bodies) place their contents and
-closing brace on separate lines.
+around it. A nonempty body in [requirement](./requirement.md#bodies) places its
+contents and closing brace on separate lines.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 a nonempty body of a composite state the same layout, including one written on
 one line.
@@ -1853,8 +1852,8 @@ Dropping that source semicolon leaves no style entry, so the semicolon stays. In
 `style A fill : #f00;`, mermaid.js reads the `#` and the `;` as an escaped
 character, so the style that the Db holds, and the drawing, differ from those of
 `style A fill : #f00`; the semicolon stays too. The same holds for
-`style A fill: #f00;`: 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 draw another
-figure without the `;`, and 12.3.0 holds another style in the Db `states` (see
+`style A fill: #f00;`: every version that counts draws another figure without
+the `;`, and the Db holds another style (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: state/db-classdef-semicolon-in-each-part] [corpus fixture:
@@ -2085,13 +2084,9 @@ keeps its written indentation.
 
 A line that holds U+2028 or U+2029 is kept as written, the second description of
 an alias included, whitespace after the character too: `state "d" as A : x`, two
-spaces, U+2028, and two spaces stays as written. Removing the separator and the
-spaces after it changes the description that the Db holds for the state, and the
-drawing of the state changes with it, so the line stays whole. 10.9.8, 11.7.0,
-11.17.2, 12.0.0, and 12.3.0 draw the state with another description without the
-separator and the spaces around it, and 12.3.0 holds another description in the
-Db `states` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+spaces, U+2028, and two spaces stays as written. Removing the separator changes
+the description that the Db holds for the state, and the drawing of the state
+changes with it.
 
 [test: a second description of an alias with spaces after a U+2028]
 
