@@ -673,14 +673,16 @@ tf 01 evt Alpha { 	 x  }
 For ordinary data and note blocks written as `{` immediately followed by LF and
 closed by LF followed by `}`, align every nonblank body line to `tabWidth` ASCII
 spaces (U+0020) where the conditions below permit it. Rule 1 names no mark for
-the margin of a body line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [pie](./pie.md#description-blocks),
-[radar](./radar.md#description-blocks), and
+the margin of a body line, and no rule gives it:
+[pie](./pie.md#description-blocks), [radar](./radar.md#description-blocks), and
 [cynefin](./cynefin.md#description-blocks) stand the lines of a description
 block one level inside their statement, `tabWidth` spaces and none at
-`tabWidth: 0`. Use `2 * tabWidth` spaces when an ordinary header continuation
-remains, putting the body one further step inside its opening line, as
+`tabWidth: 0`, but in each of them this is a question of the list of undecided
+forms (D35), so their printing is no decided form, and the released form stays
+until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Use `2 * tabWidth` spaces when an ordinary header continuation remains, putting
+the body one further step inside its opening line, as
 [sequence](./sequence.md#indentation) and [state](./state.md#indentation) stand
 the body of a block one level deeper than the line that opens it, and the
 continued line is that line. An authored LF that joins into the header, or an LF
@@ -688,15 +690,14 @@ inside an inline directive, does not add this step: the step stands for a
 continuation line that the printer indents, a joined LF leaves none, and the
 lines of a directive stay as written. Native hidden header forms retain their
 boundary columns and use the ordinary one-step body rule. Use spaces even with
-`useTabs`. At `tabWidth: 0`, keep the body as written, since the margin that
-rule 2 gives there is none, and removing the margin of a later line draws a
-different diagram (see
+`useTabs`. At `tabWidth: 0`, keep the body as written, since the margin there is
+none, and removing the margin of a later line draws a different diagram (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count):
 a later line at column one against two spaces in). A body of one line, and a
-body none of whose later lines has a margin, is kept against rule 2 here, since
-removing the margin of its first line draws the same, and waits to be fixed by
-the rule. This does not parse the body into data fields or format it as JSON or
-code; authored indentation differences are not preserved.
+body none of whose later lines has a margin, is kept as written, which no rule
+gives either (D35); removing the margin of its first line draws the same. This
+does not parse the body into data fields or format it as JSON or code; authored
+indentation differences are not preserved.
 
 [fixture: eventmodeling/declarations-and-notes/header-completion-comments]
 
@@ -731,10 +732,10 @@ eventmodeling/declarations-and-notes/header-inline-multiline-directive]
 
 Only the first physical body line may gain a space prefix where it had none.
 Every later nonblank physical line must have at least one leading ASCII space
-both before and after the change. Otherwise keep the complete body as written:
-the margin that rule 2 gives every line would add the first space to a later
-line, which can change the rendered label: 11.15.0 to 12.3.0 draw different text
-and geometry for it (see
+both before and after the change. Otherwise keep the complete body as written: a
+margin on every line would add the first space to a later line, which can change
+the rendered label: 11.15.0 to 12.3.0 draw different text and geometry for it
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A leading empty line does not make the next line the first physical line.
 
