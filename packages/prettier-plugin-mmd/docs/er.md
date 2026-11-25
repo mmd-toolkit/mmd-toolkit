@@ -21,8 +21,7 @@ organized and checked is described in
 The statements after the header stand one level deeper than the header, as
 Prettier prints the body of a block one level deeper than the line that opens it
 (the body of a function in JavaScript, the declarations of a rule in CSS). Rule
-1 gives no form here, since its table names the whitespace beside a mark and not
-the start of a line
+1 gives no form here, since the start of a line is no place that its table names
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [flowchart](./flowchart.md#indentation), [class](./class.md#indentation),
@@ -2361,8 +2360,8 @@ accTitle: direction BT
 
 A comment line, `%%` at the start of a line, stands at the level of the
 statements around it, and its text is kept as written; this diagram has no other
-comment (diagrams/er.md, Comments). Rule 1 gives no form here, since its table
-names the whitespace beside a mark and not the start of a line
+comment (diagrams/er.md, Comments). Rule 1 gives no form here, since the start
+of a line is no place that its table names
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
