@@ -1426,6 +1426,166 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "treeView-beta\ntitle t\u2028%% c\n\n;\n",
     "treeView-beta\n  title t\u2028%% c\n\n  ;\n",
   ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028C\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B; end ; C\n",
+  ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028\nC\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then a comment, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028%% c\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B; end ;\u2028%% c\n",
+  ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then a directive, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028%%{x}%%\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end ; %%{x}%%\n",
+  ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then a second `;`, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028;\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 after `end ;` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2028",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029C\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B; end ; C\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029\nC\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then a comment, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029%% c\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B; end ;\u2029%% c\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then a directive, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029%%{x}%%\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end ; %%{x}%%\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then a second `;`, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029;\n",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after `end ;` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph S; A[x;] --> B; end ;\u2029",
+    "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end \u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2028 after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ;\u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2028 after a space after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ; \u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2028 after two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end end\u2028\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2029 between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end \u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2029 after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ;\u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2029 after a space after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ; \u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2029 after two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end end\u2029\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028C\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B; end C\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a line break and a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028\nC\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029C\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B; end C\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a line break and a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029\nC\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
+    "U+2028 after `end ;;` of a subgraph with an ignored `;`, in a flowchart",
+    "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2028\n",
+    "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2028\n",
+  ],
+  [
+    "U+2029 after `end ;;` of a subgraph with an ignored `;`, in a flowchart",
+    "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2029\n",
+    "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2029\n",
+  ],
+  [
+    "U+2028 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end;\u2028 C; end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B; end; C;\n  end\n",
+  ],
+  [
+    "U+2029 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end;\u2029 C; end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B; end; C;\n  end\n",
+  ],
 ]
 
 /**
@@ -4660,6 +4820,76 @@ const ganttLineSeparatorExamples: readonly (readonly [
     "gantt\ndateFormat X  \u2029  \n",
     "gantt\n  dateFormat X  \u2029\n",
   ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to the next line, and a section with padding after it",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long               :a2, after a1, 2d\n  section B\n    Other                     :a3, after a2, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n  section B\n    Other : a3, after a2, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment only after U+2028 joins to the next line, and a section with padding after it",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %% c\n\n    Task B long               :a2, after a1, 2d\n  section B\n    Other                     :a3, after a2, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %% c\n\n    Task B long : a2, after a1, 2d\n  section B\n    Other : a3, after a2, 1d\n",
+  ],
+  [
+    "Gantt: a section with padding, and a section whose task a comment after U+2028 joins to the next line",
+    "gantt\n  section A\n    Other                     :a3, 1d\n  section B\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long               :a2, after a1, 2d\n",
+    "gantt\n  section A\n    Other : a3, 1d\n  section B\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to the next line, and two sections with padding after it",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long               :a2, after a1, 2d\n  section B\n    Other                     :a3, after a2, 1d\n  section C\n    Third                     :a4, after a3, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n  section B\n    Other : a3, after a2, 1d\n  section C\n    Third : a4, after a3, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2029 joins to the next line, and a section with padding after it",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2029 %%{x}%%  %% c  \n\n    Task B long               :a2, after a1, 2d\n  section B\n    Other                     :a3, after a2, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 2014-01-01, 3d \u2029 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n  section B\n    Other : a3, after a2, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to the next line, with its colon at the column of the group",
+    "gantt\n  section A\n    Task A      :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long :a2, after a1, 2d\n  section B\n    Other       :a3, after a2, 1d\n",
+    "gantt\n  section A\n    Task A      :a1, 2014-01-01, 3d \u2028 %%{x}%%  %% c  \n\n    Task B long : a2, after a1, 2d\n  section B\n    Other       : a3, after a2, 1d\n",
+  ],
+  [
+    "Gantt: a task that stays as written for another reason does not take its section out of the group",
+    "gantt\nsection A\nTask A              :a1, 1d\nPadded name         : %%{init: {}}%%\nTask B long         :a2, 2d\nsection B\nOther               :a3, 1d\n",
+    "gantt\n  section A\n    Task A      : a1, 1d\n    Padded name         : %%{init: {}}%%\n    Task B long : a2, 2d\n  section B\n    Other       : a3, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to a directive that is not closed, and a section with padding after it",
+    "gantt\nsection A\nTask A                    :a1, 1d \u2028 %% c\n%%{x\nTask B long               :a2, 2d\nsection B\nOther                     :a3, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 1d \u2028 %% c\n%%{x\nTask B long               :a2, 2d\n  section B\n    Other : a3, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to a second comment line, and a section with padding after it",
+    "gantt\nsection A\nTask A                    :a1, 1d \u2028 %% c\n%% d\nTask B long               :a2, 2d\nsection B\nOther                     :a3, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 1d \u2028 %% c\n%% d\nTask B long               :a2, 2d\n  section B\n    Other : a3, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to a line of whitespace, and a section with padding after it",
+    "gantt\nsection A\nTask A                    :a1, 1d \u2028 %% c\n   \t\nTask B long               :a2, 2d\nsection B\nOther                     :a3, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 1d \u2028 %% c\n   \t\n    Task B long : a2, 2d\n  section B\n    Other : a3, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to an empty line, and a section with padding after it",
+    "gantt\nsection A\nTask A                    :a1, 1d \u2028 %% c\n\nTask B long               :a2, 2d\nsection B\nOther                     :a3, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 1d \u2028 %% c\n\n    Task B long : a2, 2d\n  section B\n    Other : a3, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to the end of the text, in the last section",
+    "gantt\nsection A\nOther                     :a3, 1d\nsection B\nTask B long               :a2, 2d\nTask A                    :a1, 1d \u2028 %% c",
+    "gantt\n  section A\n    Other       : a3, 1d\n  section B\n    Task B long : a2, 2d\n    Task A      : a1, 1d\n    %% c\n",
+  ],
+  [
+    "Gantt: a task that a comment after U+2028 joins to the next line, under a title with an ignored semicolon",
+    "gantt\ntitle style:#x;\nsection A\nTask A                    :a1, 1d \u2028 %% c\n\nTask B long               :a2, 2d\nsection B\nOther                     :a3, 1d\n",
+    "gantt\n  title style:#x;\n  section A\n    Task A                    :a1, 1d \u2028 %% c\n\n    Task B long : a2, 2d\n  section B\n    Other : a3, 1d\n",
+  ],
+  [
+    "Gantt: a task that a comment that ends in a semicolon after U+2028 joins to the next line, and a section with padding after it",
+    "gantt\nsection A\nTask A                    :a1, 1d \u2028 %% c;\n\nTask B long               :a2, 2d\nsection B\nOther                     :a3, 1d\n",
+    "gantt\n  section A\n    Task A                    :a1, 1d \u2028 %% c;\n\n    Task B long : a2, 2d\n  section B\n    Other : a3, 1d\n",
+  ],
 ]
 
 /**
@@ -4973,6 +5203,191 @@ const requirementLineSeparatorExamples: readonly (readonly [
     "a directive line after a comment line after U+2028, and the block of a requirement on the next line",
     "requirementDiagram\nrequirement\u2028%% heading\n%%{init: {}}%%\n r {\nid: 1\ntext: t\nrisk: low\nverifymethod: test\n}\n",
     "requirementDiagram\n  requirement\u2028%% heading\n%%{init: {}}%%\n r {\n    id: 1\n    text: t\n    risk: low\n    verifymethod: test\n  }\n",
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-region-ps",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2029 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2029 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-comment-semicolon-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c;',
+    'requirementDiagram\n  style r fill:red "r"\n:::c\u2028 %% c;\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-comment-semicolon-region-ps",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2029 %% c;',
+    'requirementDiagram\n  style r fill:red "r"\n:::c\u2029 %% c;\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-classdef-semicolon-comment-region-ls",
+    'requirementDiagram\nclassDef c fill:red "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  classDef c fill:red "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-class-semicolon-comment-region-ls",
+    'requirementDiagram\nclass r c "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  class r c "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-relationship-semicolon-comment-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n- satisfies -> a;b\u2028 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n- satisfies -> a;b\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-with-directive-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %%{x}%%  %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %%{x}%%  %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-comment-line-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n%% d\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n  %% d\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-empty-line-and-statement-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n\n  class r c\n  r - satisfies -> b\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;  %% c\n \t\nclass r c\n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c; %% c\n\n  class r c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n \t\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n \t\n  class r c\n  r - satisfies -> b\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and a directive line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n%%{y}%%\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n%%{y}%%\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and an empty line inside the line of an element, with an ignored semicolon in its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %% c\n\n"style:#x;" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %% c\n\n"style:#x;" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive that is not closed, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %%{x: y\n%% c\n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %%{x: y\n%% c\n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, two comments, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %% c\n%% d\n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %% c\n%% d\n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and a line of whitespace inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %% c\n \t\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %% c\n \t\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n\n  class r c\n  r - satisfies -> b\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and a directive line after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n%%{y}%%\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n%%{y}%%\n  class r c\n  r - satisfies -> b\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line after the string and the class of a classDef statement",
+    'requirementDiagram\nrequirement r {\nid: 1\n}\nstyle r fill:red "r"\n:::c\nclassDef c fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n\nclass r c "r"\n- satisfies -> b\nclass r c "r"\n:::d\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  style r fill: red\n  "r":::c\n  classDef c fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n\n  class r c\n  r - satisfies -> b\n  class r c\n  "r":::d\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line after a relationship that goes on a later line",
+    'requirementDiagram\nrequirement r {\nid: 1\n}\nstyle r fill:red "r"\n:::c\nclassDef c fill:red "r"\n:::c\nclass r c "r"\n- satisfies -> b \u2028 %%{x}%%  %% c  \n\nclass r c "r"\n:::d\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  style r fill: red\n  "r":::c\n  classDef c fill: red\n  "r":::c\n  class r c "r"\n- satisfies -> b \u2028 %%{x}%%  %% c  \n\n  class r c\n  "r":::d\n',
+  ],
+  [
+    "requirement: U+2028 and a comment at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028 and a comment at the end of the text after the string and the class of a classDef statement",
+    'requirementDiagram\nclassDef c fill:red "r"\n:::c\u2028 %% c',
+    'requirementDiagram\n  classDef c fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028 and a comment at the end of the text after the string and the class of a class statement",
+    'requirementDiagram\nclass r c "r"\n:::c\u2028 %% c',
+    'requirementDiagram\n  class r c\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2029 and a comment at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2029 %% c',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and a comment line at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c\n%% d\n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n  %% d\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and a line of whitespace at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c\n   \n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028 and a directive that is not closed at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %%{x',
+    'requirementDiagram\n  style r fill: red\n  "r":::c %%{x',
+  ],
+  [
+    "requirement: U+2028 and a comment before an ignored semicolon after the string of a style statement",
+    'requirementDiagram\nstyle r fill:#f00 "r";\n:::c\u2028 %% c',
+    'requirementDiagram\n  style r fill:#f00 "r";\n:::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line after a block, with a name in quotes after them",
+    'requirementDiagram\nrequirement "r" {\n}\nrequirement s {\n} \u2028 %%{x}%%  %% c  \n\n"r" - satisfies -> s\n',
+    "requirementDiagram\n  requirement r {\n  }\n  requirement s {\n} \u2028 %%{x}%%  %% c  \n\n  r - satisfies -> s\n",
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes and the rest of the statement on its line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n\n"e" {\n}\n',
+    "requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n\ne {\n  }\n",
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes and a class on its line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n\n"e" :::c {\n}\n',
+    "requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n\ne :::c {\n  }\n",
+  ],
+  [
+    "requirement: U+2029, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2029 %%{x}%%  %% c  \n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2029 %%{x}%%  %% c  \n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of a requirement, with its name in quotes on a later line",
+    'requirementDiagram\nrequirement  \u2028 %%{x}%%  %% c  \n\n"q" \n:::c {\nid: 2\n}\n',
+    'requirementDiagram\n  requirement  \u2028 %%{x}%%  %% c  \n\n"q" \n:::c {\n    id: 2\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of a requirement, with its name in quotes and the rest of the statement on its line",
+    'requirementDiagram\nrequirement  \u2028 %%{x}%%  %% c  \n\n"q" {\nid: 2\n}\n',
+    "requirementDiagram\n  requirement  \u2028 %%{x}%%  %% c  \n\nq {\n    id: 2\n  }\n",
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside a relationship, with the name in quotes that ends it",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\n"r" - satisfies ->\u2028 %%{x}%%  %% c  \n\n"r"\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  "r" - satisfies ->\u2028 %%{x}%%  %% c  \n\nr\n',
   ],
 ]
 
@@ -5448,6 +5863,76 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "a line separator and a comment line after the closing brace of a description block that starts on the line of the timeline header, before a period",
     "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
     "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %%{x}%%  %% c  \n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %%{x}%% %% c  \n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment alone after U+2028 joins to a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %% c  \n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to an indented directive line, with an event after it",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %% c  \n   %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %% c  \n %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that U+2028 ends before an indented directive line, with an event after it",
+    "timeline\n  2004 : Facebook\n       : Google \u2028\n   %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028\n       %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a directive line, with a period after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2029 joins to a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2029 %%{x}%%  %% c  \n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2029 %%{x}%% %% c  \n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a comment line and a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %%{x}%%  %% c  \n%% d\n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %%{x}%% %% c  \n%% d\n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2029 joins to a comment line and a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2029 %% c\n%% d\n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2029 %% c\n%% d\n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to the next event line stays as written",
+    "timeline\n2004 : Google   :   Pear \u2028 %% c\n   : Apple   :   Plum\n",
+    "timeline\n  2004 : Google   :   Pear \u2028 %% c\n   : Apple   :   Plum\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a directive that is not closed, with an event after it",
+    "timeline\n2004 : Google \u2028 %% c\n%%{y\n   : Apple\n",
+    "timeline\n  2004 : Google \u2028 %% c\n%%{y\n   : Apple\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a line of whitespace and a directive line, with an event after it",
+    "timeline\n2004 : Google \u2028 %% c\n  \t \n%%{y}%%\n   : Apple\n",
+    "timeline\n  2004 : Google \u2028 %% c\n  \t \n%%{y}%%\n   : Apple\n",
+  ],
+  [
+    "timeline: an event with an ignored semicolon that a comment after U+2028 joins to a directive line, with an event after it",
+    "timeline\n2004 : style:#x; \u2028 %% c\n%%{y}%%\n   : Apple\n",
+    "timeline\n  2004 : style:#x; \u2028 %% c\n%%{y}%%\n   : Apple\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a directive line at the end of the text",
+    "timeline\n2004 : Google \u2028 %% c\n%%{y}%%",
+    "timeline\n  2004 : Google \u2028 %% c\n%%{y}%%\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to an empty line and a directive line, with an event after it",
+    "timeline\n2004 : Google \u2028 %% c\n\n%%{y}%%\n   : Apple\n",
+    "timeline\n  2004 : Google \u2028 %% c\n\n%%{y}%%\n   : Apple\n",
   ],
 ]
 
@@ -8364,6 +8849,16 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
       "kanban\n  S[x]\n  %%\n  %%\u2028   A\n",
     ],
     [
+      "kanban: separator line before a comment line is dropped, one empty line stays",
+      "kanban\nS\n\u2028\n%% note\n  A\n",
+      "kanban\n  S\n\n    %% note\n    A\n",
+    ],
+    [
+      "kanban: separator line before a comment line after the header leaves no empty line",
+      "kanban\n\u2028\n%% note\nS\n  A\n",
+      "kanban\n  %% note\n  S\n    A\n",
+    ],
+    [
       "kanban: indent-whitespace-kind",
       "kanban\n\u00a0\ufeffS\n\t\u3000\u000b\fA\n",
       "kanban\n  S\n    A\n",
@@ -8743,6 +9238,136 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
       "kanban\n  S[x]%% c\u2028%% d\n%%{x}%% C\n",
       "kanban\n S[x]%% c\u2028%% d\n%%{x}%%C\n",
       { tabWidth: 0 },
+    ],
+    [
+      "kanban: ls-indentation-after-comment",
+      "kanban\n  S[x]  %% c\n\u2028   A\n",
+      "kanban\n  S[x] %% c\n    A\n",
+    ],
+    [
+      "kanban: ps-indentation-after-comment-tab",
+      "kanban\n  S[x]\t%% c\n\u2029  A\n",
+      "kanban\n  S[x] %% c\n    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-header",
+      "kanban  %% c\n\u2028  S[x]\n",
+      "kanban %% c\n  S[x]\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-card-shape",
+      "kanban\n  S[x]\n    A[y]  %% c\n\u2028    B\n",
+      "kanban\n  S[x]\n    A[y] %% c\n    B\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-icon",
+      "kanban\n  S[x]\n    A\n    ::icon(fa fa-book)  %% c\n\u2028    B\n",
+      "kanban\n  S[x]\n    A\n    ::icon(fa fa-book) %% c\n    B\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-data-block",
+      "kanban\n  S[x]\n    A@{ ticket: T }  %% c\n\u2028    B\n",
+      "kanban\n  S[x]\n    A@{ ticket: T } %% c\n    B\n",
+    ],
+    [
+      "kanban: ls-ends-comment-kept",
+      "kanban\n  S[x]  %% c\u2028   A\n",
+      "kanban\n  S[x]  %% c\u2028   A\n",
+    ],
+    [
+      "kanban: ls-own-line-after-comment-kept",
+      "kanban\n  S[x]  %% c\n\u2028\n   A\n",
+      "kanban\n  S[x]  %% c\n\u2028\n    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-and-blank-line-kept",
+      "kanban\n  S[x]  %% c\n\n\u2028   A\n",
+      "kanban\n  S[x]  %% c\n\n    A\n",
+    ],
+    [
+      "kanban: ls-line-then-comment-line-header",
+      "kanban  %% c\n\u2028\n%% d\n  S[x]\n",
+      "kanban %% c\n  %% d\n  S[x]\n",
+    ],
+    [
+      "kanban: ls-line-then-comment-line",
+      "kanban\n  S[x]  %% c\n\u2028\n%% d\n  A\n",
+      "kanban\n  S[x] %% c\n\n  %% d\n  A\n",
+    ],
+    [
+      "kanban: ps-line-then-comment-line-card-shape",
+      "kanban\n  S[x]\n    A[y]  %% c\n\u2029\n%% d\n    B\n",
+      "kanban\n  S[x]\n    A[y] %% c\n\n    %% d\n    B\n",
+    ],
+    [
+      "kanban: ls-line-then-comment-line-icon",
+      "kanban\n  S[x]\n    A\n    ::icon(fa fa-book)  %% c\n\u2028\n%% d\n    B\n",
+      "kanban\n  S[x]\n    A\n    ::icon(fa fa-book) %% c\n\n    %% d\n    B\n",
+    ],
+    [
+      "kanban: ps-line-then-comment-line-data-block",
+      "kanban\n  S[x]\n    A@{ ticket: T }  %% c\n\u2029\n%% d\n    B\n",
+      "kanban\n  S[x]\n    A@{ ticket: T } %% c\n\n    %% d\n    B\n",
+    ],
+    [
+      "kanban: comment-line-then-ls-line-kept",
+      "kanban\n  S[x]  %% c\n%% d\n\u2028\n  A\n",
+      "kanban\n  S[x]  %% c\n%% d\n\u2028\n  A\n",
+    ],
+    [
+      "kanban: comment-line-then-ps-line-kept-data-block",
+      "kanban\n  S[x]\n    A@{ ticket: T }  %% c\n%% d\n\u2029\n    B\n",
+      "kanban\n  S[x]\n    A@{ ticket: T }  %% c\n%% d\n\u2029\n    B\n",
+    ],
+    [
+      "kanban: ls-in-comment-line-indentation",
+      "kanban\n  S[x]  %% c\n\u2028  %% d\n  A\n",
+      "kanban\n  S[x] %% c\n  %% d\n  A\n",
+    ],
+    [
+      "kanban: ps-before-comment-line-mark-card-shape",
+      "kanban\n  S[x]\n    A[y]  %% c\n  \u2029%% d\n    B\n",
+      "kanban\n  S[x]\n    A[y] %% c\n    %% d\n    B\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-after-closed-directive",
+      "kanban\n  S[x] %%{x}%%  %% c\n\u2028    A\n",
+      "kanban\n  S[x] %%{x}%%  %% c\n    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-unclosed-directive-kept",
+      "kanban\n  S[x] %%{x\n\u2028    A\n",
+      "kanban\n  S[x] %%{x\n\u2028    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-with-ignored-semicolon",
+      "kanban\n  S[x]  %% style:#x;\n\u2028    A\n",
+      "kanban\n  S[x] %% style:#x;\n    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-with-two-ignored-semicolons",
+      "kanban\n  S[x]  %% style classDef:#x;;\n\u2028    A\n",
+      "kanban\n  S[x]  %% style classDef:#x;;\n    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-two-comment-lines",
+      "kanban\n  S[x]  %% c\n%% d\n%% e\n\u2028    A\n",
+      "kanban\n  S[x] %% c\n    %% d\n    %% e\n    A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-and-whitespace-line-kept",
+      "kanban\n  S[x]  %% c\n \t\n\u2028    A\n",
+      "kanban\n  S[x]  %% c\n \t\n    A\n",
+    ],
+    [
+      "kanban: comment-at-end-of-text-without-line-feed",
+      "kanban\n  S[x]  %% c",
+      "kanban\n  S[x] %% c\n",
+    ],
+    [
+      "kanban: node-named-end-after-comment-and-ls-indentation",
+      "kanban\n  S[x]  %% c\n\u2028    End\n",
+      "kanban\n  S[x] %% c\n    End\n",
     ],
   ]
 
@@ -18777,6 +19402,161 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
     'C4Context\naccDescription D  \u2029  \nPerson(a, "A")\n',
     'C4Context\n  accDescription D  \u2029\n  Person(a, "A")\n',
   ],
+  [
+    "c4: ls-indentation-after-comment",
+    'C4Context\nPerson(a,"A")  %% c\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A") %% c\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ps-indentation-after-comment-tab",
+    'C4Context\nPerson(a,"A")\t%% c\n \u2029 Person(b,"B")\n',
+    'C4Context\n  Person(a, "A") %% c\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-opener",
+    'C4Context\nBoundary(b1,"B") {  %% c\n\u2028Person(b,"B")\n}\n',
+    'C4Context\n  Boundary(b1, "B") { %% c\n    Person(b, "B")\n  }\n',
+  ],
+  [
+    "c4: ps-indentation-after-comment-closer",
+    'C4Context\nBoundary(b1,"B") {\nPerson(b,"B")\n}  %% c\n\u2029Person(c,"C")\n',
+    'C4Context\n  Boundary(b1, "B") {\n    Person(b, "B")\n  } %% c\n  Person(c, "C")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-header",
+    'C4Context  %% c\n\u2028Person(a,"A")\n',
+    'C4Context %% c\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-before-closer",
+    'C4Context\nBoundary(b1,"B") {\nPerson(b,"B")  %% c\n\u2028}\n',
+    'C4Context\n  Boundary(b1, "B") {\n    Person(b, "B") %% c\n  }\n',
+  ],
+  [
+    "c4: ps-indentation-after-comment-before-closer-tab",
+    'C4Context\nBoundary(b1,"B") {\nPerson(b,"B")\t%% c\n \t\u2029\t}\n',
+    'C4Context\n  Boundary(b1, "B") {\n    Person(b, "B") %% c\n  }\n',
+  ],
+  [
+    "c4: ls-whitespace-line-after-comment-kept",
+    'C4Context\nPerson(a,"A")  %% c\n\u2028\nPerson(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n\u2028\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-whitespace-line-after-comment-before-closer-kept",
+    'C4Context\nBoundary(b1,"B") {\nPerson(b,"B")  %% c\n\u2028\n}\n',
+    'C4Context\n  Boundary(b1, "B") {\n    Person(b, "B")  %% c\n\u2028\n  }\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-and-blank-line-kept",
+    'C4Context\nPerson(a,"A")  %% c\n\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-and-blank-line-before-closer-kept",
+    'C4Context\nBoundary(b1,"B") {\nPerson(b,"B")  %% c\n\n\u2028}\n',
+    'C4Context\n  Boundary(b1, "B") {\n    Person(b, "B")  %% c\n\n  }\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-and-comment-line-kept",
+    'C4Context\nPerson(a,"A")  %% c\n%% d\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n%% d\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: comment-line-after-comment-before-closer-kept",
+    'C4Context\nBoundary(b1,"B") {\nPerson(b,"B")  %% c\n%% d\n }\n',
+    'C4Context\n  Boundary(b1, "B") {\n    Person(b, "B")  %% c\n%% d\n  }\n',
+  ],
+  [
+    "c4: ls-in-description-block-kept",
+    'C4Context\naccDescr {\n  line one\n\u2028  line two\n}\nPerson(a,"A")\n',
+    'C4Context\n  accDescr {\n    line one\n    \u2028  line two\n  }\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ps-in-description-block-kept",
+    'C4Context\naccDescr {\nline one\n\u2029line two\n}\nPerson(a,"A")\n',
+    'C4Context\n  accDescr {\n    line one\n    \u2029line two\n  }\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-indentation-no-comment",
+    'C4Context\nPerson(a,"A")\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A")\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ps-indentation-no-comment-closer",
+    'C4Context\nBoundary(b1,"B") {\nPerson(b,"B")\n \u2029 }\n',
+    'C4Context\n  Boundary(b1, "B") {\n    Person(b, "B")\n  }\n',
+  ],
+  [
+    "c4: ls-after-comment-at-end-kept",
+    'C4Context\nPerson(a,"A")  %% c\n\u2028',
+    'C4Context\n  Person(a, "A")  %% c\n\u2028\n',
+  ],
+  [
+    "c4: ls-indentation-before-comment-line-after-comment",
+    'C4Context\nPerson(a,"A")  %% c\n\u2028  %% d\nPerson(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n\u2028  %% d\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ps-before-percent-of-comment-line-after-comment",
+    'C4Context\nPerson(a,"A")  %% c\n  \u2029%% d\nPerson(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n  \u2029%% d\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-before-comment-line-after-comment-opener",
+    'C4Context\nBoundary(b,"B") {  %% c\n\u2028  %% d\n  Person(a,"A")\n}\n',
+    'C4Context\n  Boundary(b, "B") {  %% c\n\u2028  %% d\n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ls-indentation-before-comment-line-after-comment-closer",
+    'C4Context\nBoundary(b,"B") {\n  Person(a,"A")\n}  %% c\n\u2028  %% d\nPerson(b,"B")\n',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  }  %% c\n\u2028  %% d\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-before-comment-line-after-comment-header",
+    'C4Context  %% c\n\u2028  %% d\nPerson(a,"A")\n',
+    'C4Context  %% c\n\u2028  %% d\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-indentation-before-comment-line-after-comment-before-closer",
+    'C4Context\nBoundary(b,"B") {\n  Person(a,"A")  %% c\n\u2028  %% d\n}\n',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")  %% c\n\u2028  %% d\n  }\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-after-closed-directive",
+    'C4Context\nPerson(a,"A") %%{x}%%  %% c\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A") %%{x}%% %% c\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-with-ignored-semicolon",
+    'C4Context\nPerson(a,"A")  %% style:#x;\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A") %% style:#x;\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-with-two-ignored-semicolons-kept",
+    'C4Context\nPerson(a,"A")  %% style classDef:#x;;\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a,"A")  %% style classDef:#x;;\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-two-comment-lines-kept",
+    'C4Context\nPerson(a,"A")  %% c\n%% d\n%% e\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n%% d\n%% e\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-and-whitespace-line-kept",
+    'C4Context\nPerson(a,"A")  %% c\n \t\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n \t\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: comment-at-end-of-text-without-line-feed",
+    'C4Context\nPerson(a,"A")  %% c',
+    'C4Context\n  Person(a, "A") %% c\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-after-unclosed-directive-kept",
+    'C4Context\nPerson(a,"A")  %% c %%{x: 0\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a,"A")  %% c %%{x: 0\n\u2028Person(b,"B")\n',
+  ],
 ]
 
 describe("C4 whitespace and line boundaries", () => {
@@ -27385,8 +28165,40 @@ describe("a comment after the directives that end the title or the value of an a
   )
 })
 
+/** A separator before a comment or directive keeps a quoted box line as written (docs/treeview.md, Carried indentation). */
+const treeviewBoxLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "treeview: a quote in box mode, U+2028, and a comment before the next line of the box",
+    'treeView-beta\n"a"\u2028%% c\n─\n"b"\n',
+    'treeView-beta\n"a"\u2028%% c\n─\n"b"\n',
+  ],
+  [
+    "treeview: a quote in box mode, U+2029, and a directive before the next line of the box",
+    'treeView-beta\n"a"\u2029%%{x}%%\n─\n"b"\n',
+    'treeView-beta\n"a"\u2029%%{x}%%\n─\n"b"\n',
+  ],
+]
+
+describe("a treeView box line with a separator before a comment or directive", () => {
+  it.each(treeviewBoxLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
 /** Venn separators are characters inside values and whole diagram comments. */
 const vennExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "a venn set with two spaces before a comment and an empty line after the comment",
+    "venn-beta\nset A  %% c\n\n  set B\n",
+    "venn-beta\n  set A %% c\n\n  set B\n",
+  ],
   [
     "U+2028 inside the brackets of a venn label with a semicolon",
     "venn-beta\nset A[ a;b \u2028]\n",
@@ -36636,6 +37448,486 @@ describe("style semicolons", () => {
       'treemap\n  classDef aa fill: coral\n  %% c\n  "x": 1\n  classDef bb fill: coral\n  %% d\n  "y": 2\n',
     ],
     [
+      "kanban title: two separators before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028\u2029 %% d;\n",
+      "kanban\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban title: a U+2028 before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028 %% d;\n",
+      "kanban\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "kanban title: a U+2029 before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2029 %% d;\n",
+      "kanban\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "kanban title: a U+2029 and a U+2028 before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2029\u2028 %% d;\n",
+      "kanban\n  title T\u2029\u2028 %% d;\n",
+    ],
+    [
+      "kanban title: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028   %% d;\n",
+      "kanban\n  title T\u2028   %% d;\n",
+    ],
+    [
+      "kanban title: a tab between a U+2028 and a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028\t%% d;\n",
+      "kanban\n  title T\u2028\t%% d;\n",
+    ],
+    [
+      "kanban title: a comment that ends in a semicolon touches the U+2028",
+      "kanban\ntitle T\u2028%% d;\n",
+      "kanban\n  title T\u2028%% d;\n",
+    ],
+    [
+      "kanban title: spaces after a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028 %% d;  \n",
+      "kanban\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "kanban title: a space between the two separators before a comment that ends in a semicolon",
+      "kanban\ntitle T\u2028 \u2029 %% d;\n",
+      "kanban\n  title T\u2028 \u2029 %% d;\n",
+    ],
+    [
+      "kanban title: a comment line after the comment",
+      "kanban\ntitle T\u2028\u2029 %% d;\n%% e\n",
+      "kanban\n  title T\u2028\u2029 %% d;\n  %% e\n",
+    ],
+    [
+      "kanban title: a directive line after the comment",
+      "kanban\ntitle T\u2028\u2029 %% d;\n%%{x}%%\n",
+      "kanban\n  title T\u2028\u2029 %% d;\n%%{x}%%\n",
+    ],
+    [
+      "kanban title: a statement after the comment",
+      "kanban\ntitle T\u2028\u2029 %% d;\nTodo\n",
+      "kanban\n  title T\u2028\u2029 %% d;\nTodo\n",
+    ],
+    [
+      "kanban title: the end of the text with no line break after the comment",
+      "kanban\ntitle T\u2028\u2029 %% d;",
+      "kanban\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban title: two semicolons that end the comment",
+      "kanban\ntitle T\u2028\u2029 %% d;;\n",
+      "kanban\n  title T\u2028\u2029 %% d;;\n",
+    ],
+    [
+      "kanban title: a directive before the separators",
+      "kanban\ntitle T%%{x}%%\u2028\u2029 %% d;\n",
+      "kanban\n  title T%%{x}%%\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban title: a directive between the separators",
+      "kanban\ntitle T\u2028%%{x}%%\u2029 %% d;\n",
+      "kanban\n  title T\u2028%%{x}%%\u2029 %% d;\n",
+    ],
+    [
+      "kanban title: a directive after the separators and before the comment",
+      "kanban\ntitle T\u2028\u2029 %%{x}%% %% d;\n",
+      "kanban\n  title T\u2028\u2029 %%{x}%% %% d;\n",
+    ],
+    [
+      "kanban title: a semicolon in the text and a comment without a semicolon",
+      "kanban\ntitle a;b\u2028\u2029 %% d\n",
+      "kanban\n  title a;b\u2028\u2029 %% d\n",
+    ],
+    [
+      "kanban title: a comment without a semicolon after two separators",
+      "kanban\ntitle T\u2028\u2029 %% d\n",
+      "kanban\n  title T\u2028\n  %% d\n",
+    ],
+    [
+      "treemap title: two separators before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028\u2029 %% d;\n",
+      "treemap\ntitle T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap title: a U+2028 before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028 %% d;\n",
+      "treemap\ntitle T\u2028 %% d;\n",
+    ],
+    [
+      "treemap title: a U+2029 before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2029 %% d;\n",
+      "treemap\ntitle T\u2029 %% d;\n",
+    ],
+    [
+      "treemap title: a U+2029 and a U+2028 before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2029\u2028 %% d;\n",
+      "treemap\ntitle T\u2029\u2028 %% d;\n",
+    ],
+    [
+      "treemap title: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028   %% d;\n",
+      "treemap\ntitle T\u2028   %% d;\n",
+    ],
+    [
+      "treemap title: a tab between a U+2028 and a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028\t%% d;\n",
+      "treemap\ntitle T\u2028\t%% d;\n",
+    ],
+    [
+      "treemap title: a comment that ends in a semicolon touches the U+2028",
+      "treemap\ntitle T\u2028%% d;\n",
+      "treemap\ntitle T\u2028%% d;\n",
+    ],
+    [
+      "treemap title: spaces after a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028 %% d;  \n",
+      "treemap\ntitle T\u2028 %% d;  \n",
+    ],
+    [
+      "treemap title: a space between the two separators before a comment that ends in a semicolon",
+      "treemap\ntitle T\u2028 \u2029 %% d;\n",
+      "treemap\ntitle T\u2028 \u2029 %% d;\n",
+    ],
+    [
+      "treemap title: a comment line after the comment",
+      "treemap\ntitle T\u2028\u2029 %% d;\n%% e\n",
+      "treemap\ntitle T\u2028\u2029 %% d;\n%% e\n",
+    ],
+    [
+      "treemap title: a directive line after the comment",
+      "treemap\ntitle T\u2028\u2029 %% d;\n%%{x}%%\n",
+      "treemap\ntitle T\u2028\u2029 %% d;\n%%{x}%%\n",
+    ],
+    [
+      "treemap title: a statement after the comment",
+      'treemap\ntitle T\u2028\u2029 %% d;\n"A": 1\n',
+      'treemap\ntitle T\u2028\u2029 %% d;\n"A": 1\n',
+    ],
+    [
+      "treemap title: the end of the text with no line break after the comment",
+      "treemap\ntitle T\u2028\u2029 %% d;",
+      "treemap\ntitle T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap title: two semicolons that end the comment",
+      "treemap\ntitle T\u2028\u2029 %% d;;\n",
+      "treemap\ntitle T\u2028\u2029 %% d;;\n",
+    ],
+    [
+      "treemap title: a directive before the separators",
+      "treemap\ntitle T%%{x}%%\u2028\u2029 %% d;\n",
+      "treemap\ntitle T%%{x}%%\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap title: a directive between the separators",
+      "treemap\ntitle T\u2028%%{x}%%\u2029 %% d;\n",
+      "treemap\ntitle T\u2028%%{x}%%\u2029 %% d;\n",
+    ],
+    [
+      "treemap title: a directive after the separators and before the comment",
+      "treemap\ntitle T\u2028\u2029 %%{x}%% %% d;\n",
+      "treemap\ntitle T\u2028\u2029 %%{x}%% %% d;\n",
+    ],
+    [
+      "treemap title: a semicolon in the text and a comment without a semicolon",
+      "treemap\ntitle a;b\u2028\u2029 %% d\n",
+      "treemap\ntitle a;b\u2028\u2029 %% d\n",
+    ],
+    [
+      "treemap title: a comment without a semicolon after two separators",
+      "treemap\ntitle T\u2028\u2029 %% d\n",
+      "treemap\ntitle T\n%% d\n",
+    ],
+    [
+      "treeview title: two separators before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;\n",
+      "treeView-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treeview title: a U+2028 before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028 %% d;\n",
+      "treeView-beta\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "treeview title: a U+2029 before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2029 %% d;\n",
+      "treeView-beta\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "treeview title: a U+2029 and a U+2028 before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2029\u2028 %% d;\n",
+      "treeView-beta\n  title T\u2029\u2028 %% d;\n",
+    ],
+    [
+      "treeview title: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028   %% d;\n",
+      "treeView-beta\n  title T\u2028   %% d;\n",
+    ],
+    [
+      "treeview title: a tab between a U+2028 and a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028\t%% d;\n",
+      "treeView-beta\n  title T\u2028\t%% d;\n",
+    ],
+    [
+      "treeview title: a comment that ends in a semicolon touches the U+2028",
+      "treeView-beta\ntitle T\u2028%% d;\n",
+      "treeView-beta\n  title T\u2028%% d;\n",
+    ],
+    [
+      "treeview title: spaces after a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028 %% d;  \n",
+      "treeView-beta\n  title T\u2028 %% d;  \n",
+    ],
+    [
+      "treeview title: a space between the two separators before a comment that ends in a semicolon",
+      "treeView-beta\ntitle T\u2028 \u2029 %% d;\n",
+      "treeView-beta\n  title T\u2028 \u2029 %% d;\n",
+    ],
+    [
+      "treeview title: a comment line after the comment",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;\n%% e\n",
+      "treeView-beta\n  title T\u2028\u2029 %% d;\n  %% e\n",
+    ],
+    [
+      "treeview title: a directive line after the comment",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;\n%%{x}%%\n",
+      "treeView-beta\n  title T\u2028\u2029 %% d;\n%%{x}%%\n",
+    ],
+    [
+      "treeview title: a statement after the comment",
+      'treeView-beta\ntitle T\u2028\u2029 %% d;\n"R"\n',
+      'treeView-beta\n  title T\u2028\u2029 %% d;\n"R"\n',
+    ],
+    [
+      "treeview title: the end of the text with no line break after the comment",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;",
+      "treeView-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treeview title: two semicolons that end the comment",
+      "treeView-beta\ntitle T\u2028\u2029 %% d;;\n",
+      "treeView-beta\n  title T\u2028\u2029 %% d;;\n",
+    ],
+    [
+      "treeview title: a directive before the separators",
+      "treeView-beta\ntitle T%%{x}%%\u2028\u2029 %% d;\n",
+      "treeView-beta\n  title T%%{x}%%\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treeview title: a directive between the separators",
+      "treeView-beta\ntitle T\u2028%%{x}%%\u2029 %% d;\n",
+      "treeView-beta\n  title T\u2028%%{x}%%\u2029 %% d;\n",
+    ],
+    [
+      "treeview title: a directive after the separators and before the comment",
+      "treeView-beta\ntitle T\u2028\u2029 %%{x}%% %% d;\n",
+      "treeView-beta\n  title T\u2028\u2029 %%{x}%% %% d;\n",
+    ],
+    [
+      "treeview title: a semicolon in the text and a comment without a semicolon",
+      "treeView-beta\ntitle a;b\u2028\u2029 %% d\n",
+      "treeView-beta\n  title a;b\u2028\u2029 %% d\n",
+    ],
+    [
+      "treeview title: a comment without a semicolon after two separators",
+      "treeView-beta\ntitle T\u2028\u2029 %% d\n",
+      "treeView-beta\n  title T\n  %% d\n",
+    ],
+    [
+      "pie title: two separators before a comment that ends in a semicolon",
+      "pie\ntitle T\u2028\u2029 %% d;\n",
+      "pie\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie title: a U+2028 before a comment that ends in a semicolon",
+      "pie\ntitle T\u2028 %% d;\n",
+      "pie\n  title T\u2028 %% d;\n",
+    ],
+    [
+      "pie title: a U+2029 before a comment that ends in a semicolon",
+      "pie\ntitle T\u2029 %% d;\n",
+      "pie\n  title T\u2029 %% d;\n",
+    ],
+    [
+      "pie title: a U+2029 and a U+2028 before a comment that ends in a semicolon",
+      "pie\ntitle T\u2029\u2028 %% d;\n",
+      "pie\n  title T\u2029\u2028 %% d;\n",
+    ],
+    [
+      "pie title: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "pie\ntitle T\u2028   %% d;\n",
+      "pie\n  title T\u2028   %% d;\n",
+    ],
+    [
+      "pie title: a tab between a U+2028 and a comment that ends in a semicolon",
+      "pie\ntitle T\u2028\t%% d;\n",
+      "pie\n  title T\u2028\t%% d;\n",
+    ],
+    [
+      "pie title: a comment that ends in a semicolon touches the U+2028",
+      "pie\ntitle T\u2028%% d;\n",
+      "pie\n  title T\u2028%% d;\n",
+    ],
+    [
+      "pie title: spaces after a comment that ends in a semicolon",
+      "pie\ntitle T\u2028 %% d;  \n",
+      "pie\n  title T\u2028 %% d;  \n",
+    ],
+    [
+      "pie title: a space between the two separators before a comment that ends in a semicolon",
+      "pie\ntitle T\u2028 \u2029 %% d;\n",
+      "pie\n  title T\u2028 \u2029 %% d;\n",
+    ],
+    [
+      "pie title: a comment line after the comment",
+      "pie\ntitle T\u2028\u2029 %% d;\n%% e\n",
+      "pie\n  title T\u2028\u2029 %% d;\n  %% e\n",
+    ],
+    [
+      "pie title: a directive line after the comment",
+      "pie\ntitle T\u2028\u2029 %% d;\n%%{x}%%\n",
+      "pie\n  title T\u2028\u2029 %% d;\n%%{x}%%\n",
+    ],
+    [
+      "pie title: a statement after the comment",
+      'pie\ntitle T\u2028\u2029 %% d;\n"A": 1\n',
+      'pie\n  title T\u2028\u2029 %% d;\n"A": 1\n',
+    ],
+    [
+      "pie title: the end of the text with no line break after the comment",
+      "pie\ntitle T\u2028\u2029 %% d;",
+      "pie\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie title: two semicolons that end the comment",
+      "pie\ntitle T\u2028\u2029 %% d;;\n",
+      "pie\n  title T\u2028\u2029 %% d;;\n",
+    ],
+    [
+      "pie title: a directive before the separators",
+      "pie\ntitle T%%{x}%%\u2028\u2029 %% d;\n",
+      "pie\n  title T%%{x}%%\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie title: a directive between the separators",
+      "pie\ntitle T\u2028%%{x}%%\u2029 %% d;\n",
+      "pie\n  title T\u2028%%{x}%%\u2029 %% d;\n",
+    ],
+    [
+      "pie title: a directive after the separators and before the comment",
+      "pie\ntitle T\u2028\u2029 %%{x}%% %% d;\n",
+      "pie\n  title T\u2028\u2029 %%{x}%% %% d;\n",
+    ],
+    [
+      "pie title: a semicolon in the text and a comment without a semicolon",
+      "pie\ntitle a;b\u2028\u2029 %% d\n",
+      "pie\n  title a;b\u2028\u2029 %% d\n",
+    ],
+    [
+      "pie title: a comment without a semicolon after two separators",
+      "pie\ntitle T\u2028\u2029 %% d\n",
+      "pie\n  title T\n  %% d\n",
+    ],
+    [
+      "kanban column: two separators before a comment that ends in a semicolon",
+      "kanban\nTodo\u2028\u2029 %% d;\n",
+      "kanban\n  Todo\u2028\u2029 %% d;\n",
+    ],
+    [
+      "kanban card: a U+2028 before a comment that ends in a semicolon",
+      "kanban\nTodo\n  t1[Task]\u2028 %% d;\n",
+      "kanban\n  Todo\n    t1[Task]\u2028 %% d;\n",
+    ],
+    [
+      "kanban card: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "kanban\nTodo\n  t1[Task]\u2028   %% d;\n",
+      "kanban\n  Todo\n    t1[Task]\u2028   %% d;\n",
+    ],
+    [
+      "treemap classDef: two separators before a comment that ends in a semicolon",
+      "treemap\nclassDef zz color:red\u2028\u2029 %% d;\n",
+      "treemap\n  classDef zz color:red\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap classDef: three spaces between a U+2028 and a comment that ends in a semicolon",
+      "treemap\nclassDef zz color:red\u2028   %% d;\n",
+      "treemap\n  classDef zz color:red\u2028   %% d;\n",
+    ],
+    [
+      "treemap classDef: a tab between a U+2028 and a comment that ends in a semicolon",
+      "treemap\nclassDef zz color:red\u2028\t%% d;\n",
+      "treemap\n  classDef zz color:red\u2028\t%% d;\n",
+    ],
+    [
+      "treemap classDef two styles: two separators before a comment that ends in a semicolon",
+      "treemap\nclassDef zz fill:red , color:blue\u2028\u2029 %% d;\n",
+      "treemap\n  classDef zz fill:red , color:blue\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap classDef without a style: two separators before a comment that ends in a semicolon",
+      "treemap\nclassDef zz\u2028\u2029 %% d;\n",
+      "treemap\n  classDef zz\u2028\u2029 %% d;\n",
+    ],
+    [
+      "treemap classDef: a statement after the comment",
+      'treemap\nclassDef zz color:red\u2028\u2029 %% d;\n"A": 1\n',
+      'treemap\n  classDef zz color:red\u2028\u2029 %% d;\n"A": 1\n',
+    ],
+    [
+      "treemap classDef: a directive before the separators",
+      "treemap\nclassDef zz color:red%%{x}%%\u2028\u2029 %% d;\n",
+      "treemap\n  classDef zz color:red%%{x}%%\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie accTitle: two separators before a comment that ends in a semicolon",
+      "pie\naccTitle: T\u2028\u2029 %% d;\n",
+      "pie\n  accTitle: T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "pie title: a directive, a U+2028, two spaces, and a comment that ends in a semicolon",
+      "pie\ntitle T   %%{x}%%\u2028  %% d;\n",
+      "pie\n  title T   %%{x}%%\u2028  %% d;\n",
+    ],
+    [
+      "architecture title: two separators before a comment that ends in a semicolon",
+      "architecture-beta\ntitle T\u2028\u2029 %% d;\n",
+      "architecture-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "cynefin title: two separators before a comment that ends in a semicolon",
+      "cynefin-beta\ntitle T\u2028\u2029 %% d;\n",
+      "cynefin-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "gitgraph title: two separators before a comment that ends in a semicolon",
+      "gitGraph\ntitle T\u2028\u2029 %% d;\n",
+      "gitGraph\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "radar title: two separators before a comment that ends in a semicolon",
+      "radar-beta\ntitle T\u2028\u2029 %% d;\n",
+      "radar-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "info title: two separators before a comment that ends in a semicolon",
+      "info\ntitle T\u2028\u2029 %% d;\n",
+      "info\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "packet title: two separators before a comment that ends in a semicolon",
+      "packet\ntitle T\u2028\u2029 %% d;\n",
+      "packet\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "wardley title: two separators before a comment that ends in a semicolon",
+      "wardley-beta\ntitle T\u2028\u2029 %% d;\n",
+      "wardley-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
+      "railroad title: two separators before a comment that ends in a semicolon",
+      "railroad-beta\ntitle T\u2028\u2029 %% d;\n",
+      "railroad-beta\n  title T\u2028\u2029 %% d;\n",
+    ],
+    [
       "ER directives before comments on the same line",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%% %% c\nx\nclassDef c fill:coral\u2029;\n%%{init: {}}%% %% d\ny\n",
       "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%% %% c\n  x\n  classDef c fill: coral\n  %%{init: {}}%% %% d\n  y\n",
@@ -37233,6 +38525,1368 @@ describe("requirement color words with rejected tabs", () => {
 })
 
 /**
+ * Each example is an `accTitle:` or `accDescr:` line of a usecase diagram, or
+ * an ishikawa literal, that ends with a directive that holds a line break or a
+ * `;` and is followed by a whitespace character that no fixture file holds.
+ * The usecase value is trimmed of every whitespace character, so each of them
+ * after the last directive is a blank that is dropped, and the line is printed
+ * as it is without it; the ishikawa literal drops spaces and tabs only, and
+ * U+0085 and U+200B are no whitespace (docs/usecase.md, Accessibility lines;
+ * docs/ishikawa.md, Trailing whitespace).
+ */
+const directiveEndsLineAfterWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "usecase accTitle: U+00A0 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+1680 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u1680\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2000 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2000\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2001 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2001\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2002 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2002\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2003 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2003\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2004 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2004\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2005 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2005\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2006 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2006\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2007 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2007\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2008 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2008\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2009 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2009\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+200A after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u200a\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+202F after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u202f\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+205F after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u205f\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+3000 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u3000\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+FEFF after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\ufeff\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+000B after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u000b\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+000C after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\f\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: a space and U+00A0 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%% \u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 and a space after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u00a0 \nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: a tab and U+00A0 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\t\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 and U+3000 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u00a0\u3000\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+00A0 after a directive over lines",
+    "usecase-beta\naccDescr: T  b  %%{init: {\n}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accDescr: T b %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+3000 after a directive over lines",
+    "usecase-beta\naccDescr: T  b  %%{init: {\n}}%%\u3000\nactor A\n",
+    "usecase-beta\n  accDescr: T b %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 after a directive with a `;`",
+    "usecase-beta\naccTitle: T  %%{init: {;}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {;}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 after a directive over lines with a `;`",
+    "usecase-beta\naccTitle: T  %%{init: {\n;}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n;}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+3000 after a directive with a `;`",
+    "usecase-beta\naccDescr: T  b  %%{init: {;}}%%\u3000\nactor A\n",
+    "usecase-beta\n  accDescr: T b %%{init: {;}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 after two directives over lines that touch each other",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%%%{init: {\n}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%%%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+0085 after a directive over lines is no blank",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u0085\nactor A\n",
+    "usecase-beta\n  accTitle: T  %%{init: {\n}}%%\u0085\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+200B after a directive over lines is no blank",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u200b\nactor A\n",
+    "usecase-beta\n  accTitle: T  %%{init: {\n}}%%\u200b\n  actor A\n",
+  ],
+  [
+    "ishikawa: U+00A0 after a directive over lines stays",
+    "ishikawa\nP\n  A  b %%{init: {\n}}%%\u00a0\n",
+    "ishikawa\n  P\n    A  b %%{init: {\n}}%%\u00a0\n",
+  ],
+]
+
+describe("a text that ends with a directive over lines or with a `;` and a whitespace character", () => {
+  it.each(directiveEndsLineAfterWhitespaceExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * Each example is a treeView node whose last directive holds a line break or a
+ * `;` and is followed by a character that no fixture file holds. The name and
+ * the description drop the spaces and tabs at their end only, so a no-break
+ * space or a line separator after the directive is text, and a directive that
+ * holds a U+2028 or U+2029 holds no line break (docs/treeview.md, Trailing
+ * whitespace).
+ */
+const treeviewDirectiveEndsLineExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "treeview: spaces and tabs after a directive over lines with a CRLF",
+    "treeView-beta\r\nR  %%{init: {\r\n}}%% \t\r\n",
+    "treeView-beta\n  R %%{init: {\n}}%%\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive over lines stays",
+    "treeView-beta\nR  %%{init: {\n}}%%\u00a0\n",
+    "treeView-beta\n  R  %%{init: {\n}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive with a `;` stays",
+    "treeView-beta\nR  %%{init: {a;b}}%%\u00a0\n",
+    "treeView-beta\n  R  %%{init: {a;b}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive over lines stays after a description",
+    "treeView-beta\nR ## note  %%{init: {\n}}%%\u00a0\n",
+    "treeView-beta\n  R ## note  %%{init: {\n}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+2028 after a directive over lines stays",
+    "treeView-beta\nR  %%{init: {\n}}%%\u2028\n",
+    "treeView-beta\n  R  %%{init: {\n}}%%\u2028\n",
+  ],
+  [
+    "treeview: a directive that holds U+2028 is no directive over lines",
+    "treeView-beta\nR  %%{init: {\u2028}}%% \t\n",
+    "treeView-beta\n  R  %%{init: {\u2028}}%%\n",
+  ],
+  [
+    "treeview: a directive that holds U+2029 is no directive over lines",
+    "treeView-beta\nR  %%{init: {\u2029}}%% \t\n",
+    "treeView-beta\n  R  %%{init: {\u2029}}%%\n",
+  ],
+]
+
+describe("a treeView node that ends with a directive over lines or with a `;`", () => {
+  it.each(treeviewDirectiveEndsLineExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * Each example is the title of a Gantt chart with two directives between the
+ * keyword and the text, separated by whitespace, and a character that no
+ * fixture file holds: a U+2028 or U+2029 in the text, and a no-break space
+ * between the directives. The text with a line separator stays as written, and
+ * so does the whitespace around the no-break space, which is no space or tab
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ */
+const titleAfterSeparatedDirectivesExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "gantt title: U+2028 in the text after directives that whitespace separates",
+    "gantt\ntitle %%{x}%% %%{y}%% A\u2028  b\nsection S\n",
+    "gantt\n  title %%{x}%%%%{y}%%A\u2028  b\n  section S\n",
+  ],
+  [
+    "gantt title: U+2029 in the text after directives that whitespace separates",
+    "gantt\ntitle %%{x}%% %%{y}%% A  \u2029b\nsection S\n",
+    "gantt\n  title %%{x}%%%%{y}%%A  \u2029b\n  section S\n",
+  ],
+  [
+    "gantt title: a no-break space between two directives",
+    "gantt\ntitle %%{x}%%\u00a0%%{y}%% A  b\nsection S\n",
+    "gantt\n  title %%{x}%%\u00a0%%{y}%% A  b\n  section S\n",
+  ],
+]
+
+describe("the title of a Gantt chart after directives that whitespace separates", () => {
+  it.each(titleAfterSeparatedDirectivesExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * Each example is a line of a usecase diagram or an ishikawa literal whose text
+ * holds a U+2028 or U+2029, which no fixture file holds, before a last
+ * directive that spaces follow. The usecase line prints the last directive as
+ * the line without those spaces does, one space after the text; the ishikawa
+ * literal stays as written, as it does without them, and loses the spaces
+ * after the last directive only (docs/usecase.md, Direction and accessibility;
+ * docs/ishikawa.md, Trailing whitespace).
+ */
+const textWithSeparatorBeforeDirectiveExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "usecase accTitle: U+2028 in the text before the last directive",
+    "usecase-beta\naccTitle: A\u2028 b  %%{z}%%  \nactor A\n",
+    "usecase-beta\n  accTitle: A\u2028 b %%{z}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+2029 in the text before the last directive",
+    "usecase-beta\naccDescr: A  \u2029b  %%{z}%%  \nactor A\n",
+    "usecase-beta\n  accDescr: A  \u2029b %%{z}%%\n  actor A\n",
+  ],
+  [
+    "ishikawa: U+2028 in the literal before the last directive",
+    "ishikawa\nP\n  A\u2028 b  %%{z}%%  \n",
+    "ishikawa\n  P\n    A\u2028 b  %%{z}%%\n",
+  ],
+  [
+    "ishikawa: U+2029 in the literal before the last directive",
+    "ishikawa\nP\n  A  \u2029b  %%{z}%%  \n",
+    "ishikawa\n  P\n    A  \u2029b  %%{z}%%\n",
+  ],
+]
+
+describe("a text with a line separator before a last directive that spaces follow", () => {
+  it.each(textWithSeparatorBeforeDirectiveExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * Each example is the title of a diagram, or the `accDescription` of a C4
+ * diagram, whose text holds a U+2028 and ends with a directive. The text stays
+ * as written, so the gap before the last directive is printed as written where
+ * no whitespace follows that directive, and as one space where whitespace
+ * follows it (docs/compatibility.md, Texts after a keyword that are drawn the
+ * same).
+ */
+const directiveAfterSeparatorTextExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "Gantt title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    "gantt\ntitle A\u2028  b  %%{z}%%\nsection S\nA : a1, 2024-01-01, 1d\n",
+    "gantt\n  title A\u2028  b  %%{z}%%\n  section S\n    A : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "Gantt title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    "gantt\ntitle A\u2028  b  %%{z}%%  \nsection S\nA : a1, 2024-01-01, 1d\n",
+    "gantt\n  title A\u2028  b %%{z}%%\n  section S\n    A : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "journey title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    "journey\ntitle A\u2028  b  %%{z}%%\nsection S\nT: 5: Me\n",
+    "journey\n  title A\u2028  b  %%{z}%%\n  section S\n    T: 5: Me\n",
+  ],
+  [
+    "journey title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    "journey\ntitle A\u2028  b  %%{z}%%  \nsection S\nT: 5: Me\n",
+    "journey\n  title A\u2028  b %%{z}%%\n  section S\n    T: 5: Me\n",
+  ],
+  [
+    "timeline title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    "timeline\ntitle A\u2028  b  %%{z}%%\n2020 : e\n",
+    "timeline\n  title A\u2028  b  %%{z}%%\n  2020 : e\n",
+  ],
+  [
+    "timeline title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    "timeline\ntitle A\u2028  b  %%{z}%%  \n2020 : e\n",
+    "timeline\n  title A\u2028  b %%{z}%%\n  2020 : e\n",
+  ],
+  [
+    "sequence title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    "sequenceDiagram\ntitle A\u2028  b  %%{z}%%\nA->>B: hi\n",
+    "sequenceDiagram\n  title A\u2028  b  %%{z}%%\n  A ->> B: hi\n",
+  ],
+  [
+    "sequence title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    "sequenceDiagram\ntitle A\u2028  b  %%{z}%%  \nA->>B: hi\n",
+    "sequenceDiagram\n  title A\u2028  b %%{z}%%\n  A ->> B: hi\n",
+  ],
+  [
+    "Venn title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    "venn-beta\nset A\ntitle A\u2028  b  %%{z}%%\n",
+    "venn-beta\n  set A\n  title A\u2028  b  %%{z}%%\n",
+  ],
+  [
+    "Venn title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    "venn-beta\nset A\ntitle A\u2028  b  %%{z}%%  \n",
+    "venn-beta\n  set A\n  title A\u2028  b %%{z}%%\n",
+  ],
+  [
+    "C4 title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    'C4Context\ntitle A\u2028  b  %%{z}%%\nPerson(a,"A")\n',
+    'C4Context\n  title A\u2028  b  %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    'C4Context\ntitle A\u2028  b  %%{z}%%  \nPerson(a,"A")\n',
+    'C4Context\n  title A\u2028  b %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 accDescription with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    'C4Context\naccDescription A\u2028  b  %%{z}%%\nPerson(a,"A")\n',
+    'C4Context\n  accDescription A\u2028  b  %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 accDescription with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    'C4Context\naccDescription A\u2028  b  %%{z}%%  \nPerson(a,"A")\n',
+    'C4Context\n  accDescription A\u2028  b %%{z}%%\n  Person(a, "A")\n',
+  ],
+]
+
+/** The same examples with a U+2029 where each one has a U+2028. */
+const directiveAfterParagraphSeparatorTextExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "Gantt title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "gantt\ntitle A\u2029  b  %%{z}%%\nsection S\nA : a1, 2024-01-01, 1d\n",
+    "gantt\n  title A\u2029  b  %%{z}%%\n  section S\n    A : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "Gantt title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "gantt\ntitle A\u2029  b  %%{z}%%  \nsection S\nA : a1, 2024-01-01, 1d\n",
+    "gantt\n  title A\u2029  b %%{z}%%\n  section S\n    A : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "journey title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "journey\ntitle A\u2029  b  %%{z}%%\nsection S\nT: 5: Me\n",
+    "journey\n  title A\u2029  b  %%{z}%%\n  section S\n    T: 5: Me\n",
+  ],
+  [
+    "journey title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "journey\ntitle A\u2029  b  %%{z}%%  \nsection S\nT: 5: Me\n",
+    "journey\n  title A\u2029  b %%{z}%%\n  section S\n    T: 5: Me\n",
+  ],
+  [
+    "timeline title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "timeline\ntitle A\u2029  b  %%{z}%%\n2020 : e\n",
+    "timeline\n  title A\u2029  b  %%{z}%%\n  2020 : e\n",
+  ],
+  [
+    "timeline title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "timeline\ntitle A\u2029  b  %%{z}%%  \n2020 : e\n",
+    "timeline\n  title A\u2029  b %%{z}%%\n  2020 : e\n",
+  ],
+  [
+    "sequence title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "sequenceDiagram\ntitle A\u2029  b  %%{z}%%\nA->>B: hi\n",
+    "sequenceDiagram\n  title A\u2029  b  %%{z}%%\n  A ->> B: hi\n",
+  ],
+  [
+    "sequence title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "sequenceDiagram\ntitle A\u2029  b  %%{z}%%  \nA->>B: hi\n",
+    "sequenceDiagram\n  title A\u2029  b %%{z}%%\n  A ->> B: hi\n",
+  ],
+  [
+    "Venn title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "venn-beta\nset A\ntitle A\u2029  b  %%{z}%%\n",
+    "venn-beta\n  set A\n  title A\u2029  b  %%{z}%%\n",
+  ],
+  [
+    "Venn title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "venn-beta\nset A\ntitle A\u2029  b  %%{z}%%  \n",
+    "venn-beta\n  set A\n  title A\u2029  b %%{z}%%\n",
+  ],
+  [
+    "C4 title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    'C4Context\ntitle A\u2029  b  %%{z}%%\nPerson(a,"A")\n',
+    'C4Context\n  title A\u2029  b  %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    'C4Context\ntitle A\u2029  b  %%{z}%%  \nPerson(a,"A")\n',
+    'C4Context\n  title A\u2029  b %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 accDescription with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    'C4Context\naccDescription A\u2029  b  %%{z}%%\nPerson(a,"A")\n',
+    'C4Context\n  accDescription A\u2029  b  %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 accDescription with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    'C4Context\naccDescription A\u2029  b  %%{z}%%  \nPerson(a,"A")\n',
+    'C4Context\n  accDescription A\u2029  b %%{z}%%\n  Person(a, "A")\n',
+  ],
+]
+
+describe("a title that holds a line separator and ends with a directive", () => {
+  it.each([
+    ...directiveAfterSeparatorTextExamples,
+    ...directiveAfterParagraphSeparatorTextExamples,
+  ])("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
+
+/**
+ * Each example is a line that the printer keeps as written and that ends at a
+ * U+2028 or U+2029, followed by a directive, a comment, and a blank line. The
+ * text after the character is a line of its own, so the directive and the
+ * comment have one space between them where the source has whitespace, as
+ * after a line feed (for example docs/requirement.md, Line separators).
+ */
+const directiveAfterSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "requirement: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, a directive, one space, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%% %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, a directive, a tab, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%\t%% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, a directive touching a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%%% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%%%% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "requirementDiagram\n# c \u2029 %%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n% c \u2028 %%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  % c\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, two directives, and a comment",
+    "requirementDiagram\n# c \u2028 %%{x}%%  %%{y}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # c\n  %%{x}%% %%{y}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2028, a directive, two spaces, and a comment",
+    "sequenceDiagram\n; \u2028 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "timeline\n# c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "timeline\n% c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "timeline\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "journey\n# c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "journey\n% c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "journey\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, two spaces, and a comment",
+    "gantt\n% c \u2028 %%{x}%%  %% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive, two spaces, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%  %% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive, two spaces, and a comment",
+    "xychart\n; \u2028 %%{x}%%  %% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive, two spaces, and a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028 right after the text, a directive, two spaces, and a comment",
+    "usecase-beta\naccTitle: T\u2028%%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "sequence: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "sequenceDiagram\n# c \u2028 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  # c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive touching a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%%% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%%%% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%\t%% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2029, a directive, two spaces, and a comment",
+    "sequenceDiagram\n% c \u2029 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    "sequenceDiagram\n; \u2029 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%  %% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive touching a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%%% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%%%% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, a tab, and a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%\t%% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "stateDiagram-v2\n# c \u2029 %%{x}%%  %% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive touching a comment",
+    "timeline\n# c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "timeline\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "timeline\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "timeline\n# c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive touching a comment",
+    "journey\n# c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "journey: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "journey\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "journey\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "journey\n# c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive touching a comment",
+    "gantt\n% c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "gantt\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2029, a directive, two spaces, and a comment",
+    "gantt\n% c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive touching a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%%% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%%%% c\n\n  r = ("x");\n',
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive, a tab, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%\t%% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2029 %%{x}%%  %% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive touching a comment",
+    "xychart\n; \u2028 %%{x}%%%% c\n\nline [1]\n",
+    "xychart\n  %%{x}%%%% c\n\n  line [1]\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive, a tab, and a comment",
+    "xychart\n; \u2028 %%{x}%%\t%% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    "xychart\n; \u2029 %%{x}%%  %% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "usecase: an accDescr line, U+2028, a directive, two spaces, and a comment",
+    "usecase-beta\naccDescr: D \u2028 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accDescr: D\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive touching a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%%% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%%%% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive, a tab, and a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%\t%% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2029, a directive, two spaces, and a comment",
+    "usecase-beta\naccTitle: T \u2029 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "requirement: a hash comment line with an ignored semicolon, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# style:#x;\u2028%%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # style:#x;\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line with two ignored semicolons, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# style classDef:#x;;\u2028%%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # style classDef:#x;;\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line in a body, U+2028, a directive, two spaces, a comment, and the closing brace after an empty line",
+    "requirementDiagram\nrequirement r {\n# c\u2028%%{x}%%  %% c\n\n}\n",
+    "requirementDiagram\n  requirement r {\n    # c\n    %%{x}%% %% c\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, and a directive that is not closed",
+    "requirementDiagram\n# c\u2028%%{x",
+    "requirementDiagram\n  # c\u2028%%{x",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, a comment, and a comment line after it",
+    "stateDiagram-v2\n# c\u2028%%{x}%%  %% c\n%% d\n[*]-->A\n",
+    "stateDiagram-v2\n  # c\u2028%%{x}%%  %% c\n%% d\n[*]-->A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, a comment, and a node named End",
+    "stateDiagram-v2\n# c\u2028%%{x}%%  %% c\nEnd\n",
+    "stateDiagram-v2\n  # c\u2028%%{x}%%  %% c\nEnd\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive, two spaces, a comment, and two comment lines after it",
+    "timeline\n# c\u2028%%{x}%%  %% c\n%% d\n%% e\ntitle T\n",
+    "timeline\n  # c\u2028%%{x}%%  %% c\n%% d\n%% e\ntitle T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive, two spaces, a comment, and a line of whitespace only after it",
+    "journey\n# c\u2028%%{x}%%  %% c\n \t\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, two spaces, and a comment at the end of the text",
+    "gantt\n% c\u2028%%{x}%%  %% c",
+    "gantt\n  % c\n  %%{x}%% %% c\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2028, and a directive at the end of the text",
+    "sequenceDiagram\n;\u2028%%{x}%%",
+    "sequenceDiagram\n  %%{x}%%\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2029, a directive, two spaces, a comment, and an empty line at the end of the text",
+    "xychart\n;\u2029%%{x}%%  %% c\n\n",
+    "xychart\n  %%{x}%% %% c\n",
+  ],
+]
+
+describe("a line kept as written that ends at a line separator, with a directive and a comment after it", () => {
+  it.each(directiveAfterSeparatorExamples)(
+    "prints one space between them: %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * Each example is a title, an `accTitle:` line or an `accDescr:` line that
+ * ends with a directive, in a diagram type whose figure is the same whatever
+ * the whitespace at the end of a text, with whitespace other than spaces and
+ * tabs before the directive. A run of whitespace before the last directive of
+ * the line is one space, whatever it holds, and `{B}` stands for the spaces
+ * and tabs after the directive, which are left out: the line is printed the
+ * same with and without them (docs/compatibility.md, Texts after a keyword
+ * that are drawn the same). In a usecase diagram a U+2028 or U+2029 is
+ * whitespace here too.
+ */
+const textEndDirectiveExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "radar title: U+00A0 before the directive",
+      "radar-beta\ntitle T\u00a0%%{x}%%{B}\naxis a, b\ncurve c{1, 2}\n",
+      "radar-beta\n  title T %%{x}%%\n  axis a, b\n  curve c{1, 2}\n",
+    ],
+    [
+      "architecture title: U+00A0 before the directive",
+      "architecture-beta\ntitle T\u00a0%%{x}%%{B}\nservice a(server)[A]\n",
+      "architecture-beta\n  title T %%{x}%%\n  service a(server)[A]\n",
+    ],
+    [
+      "wardley title: U+00A0 before the directive",
+      "wardley-beta\ntitle T\u00a0%%{x}%%{B}\ncomponent A [0.5, 0.5]\n",
+      "wardley-beta\n  title T %%{x}%%\n  component A [0.5, 0.5]\n",
+    ],
+    [
+      "pie title: U+00A0 before the directive",
+      'pie\ntitle T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "info title: U+00A0 before the directive",
+      "info\ntitle T\u00a0%%{x}%%{B}\n",
+      "info\n  title T %%{x}%%\n",
+    ],
+    [
+      "packet title: U+00A0 before the directive",
+      'packet-beta\ntitle T\u00a0%%{x}%%{B}\n0-7: "x"\n',
+      'packet-beta\n  title T %%{x}%%\n  0-7: "x"\n',
+    ],
+    [
+      "gitGraph title: U+00A0 before the directive",
+      "gitGraph\ntitle T\u00a0%%{x}%%{B}\ncommit\n",
+      "gitGraph\n  title T %%{x}%%\n  commit\n",
+    ],
+    [
+      "treemap title: U+00A0 before the directive",
+      'treemap\ntitle T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'treemap\ntitle T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "treeView title: U+00A0 before the directive",
+      'treeView-beta\ntitle T\u00a0%%{x}%%{B}\n"R"\n',
+      'treeView-beta\n  title T %%{x}%%\n  "R"\n',
+    ],
+    [
+      "cynefin title: U+00A0 before the directive",
+      "cynefin-beta\ntitle T\u00a0%%{x}%%{B}\n",
+      "cynefin-beta\n  title T %%{x}%%\n",
+    ],
+    [
+      "railroad title: U+00A0 before the directive",
+      'railroad-abnf-beta\ntitle T\u00a0%%{x}%%{B}\nr = "a";\n',
+      'railroad-abnf-beta\n  title T %%{x}%%\n  r = "a";\n',
+    ],
+    [
+      "pie accTitle: U+00A0 before the directive",
+      'pie\naccTitle: T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'pie\n  accTitle: T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie accDescr: U+00A0 before the directive",
+      'pie\naccDescr: T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'pie\n  accDescr: T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+3000 before the directive",
+      'pie\ntitle T\u3000%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+2003 before the directive",
+      'pie\ntitle T\u2003%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+000C before the directive",
+      'pie\ntitle T\f%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+FEFF before the directive",
+      'pie\ntitle T\ufeff%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+000B before the directive",
+      'pie\ntitle T\v%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+1680 before the directive",
+      'pie\ntitle T\u1680%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+202F before the directive",
+      'pie\ntitle T\u202f%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: a space and U+00A0 before the directive",
+      'pie\ntitle T \u00a0%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+00A0 and a space before the directive",
+      'pie\ntitle T\u00a0 %%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: a tab and U+00A0 before the directive",
+      'pie\ntitle T\t\u00a0%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+00A0 before the first of two directives, a space between them",
+      'pie\ntitle T\u00a0%%{x}%% %%{y}%%{B}\n"A": 1\n',
+      'pie\n  title T\u00a0%%{x}%% %%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+0085 before the directive is no whitespace",
+      'pie\ntitle T\u0085%%{x}%%{B}\n"A": 1\n',
+      'pie\n  title T\u0085%%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "usecase accTitle: U+00A0 before the directive",
+      "usecase-beta\naccTitle: T\u00a0%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accDescr: U+00A0 before the directive",
+      "usecase-beta\naccDescr: T\u00a0%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accDescr: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+00A0 between two directives",
+      "usecase-beta\naccTitle: T %%{x}%%\u00a0%%{y}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%% %%{y}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+00A0 before, between and after two directives",
+      "usecase-beta\naccTitle: T\u00a0%%{x}%%\u00a0%%{y}%%\u00a0{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T\u00a0%%{x}%% %%{y}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+00A0 before the first of two directives, a space between them",
+      "usecase-beta\naccTitle: T\u00a0%%{x}%% %%{y}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T\u00a0%%{x}%% %%{y}%%\n  actor A\n",
+    ],
+    [
+      "radar accTitle: U+00A0 before the directive",
+      "radar-beta\naccTitle: T\u00a0%%{x}%%{B}\naxis a, b\ncurve c{1, 2}\n",
+      "radar-beta\n  accTitle: T %%{x}%%\n  axis a, b\n  curve c{1, 2}\n",
+    ],
+    [
+      "radar accDescr: U+00A0 before the directive",
+      "radar-beta\naccDescr: T\u00a0%%{x}%%{B}\naxis a, b\ncurve c{1, 2}\n",
+      "radar-beta\n  accDescr: T %%{x}%%\n  axis a, b\n  curve c{1, 2}\n",
+    ],
+    [
+      "architecture accTitle: U+00A0 before the directive",
+      "architecture-beta\naccTitle: T\u00a0%%{x}%%{B}\nservice a(server)[A]\n",
+      "architecture-beta\n  accTitle: T %%{x}%%\n  service a(server)[A]\n",
+    ],
+    [
+      "architecture accDescr: U+00A0 before the directive",
+      "architecture-beta\naccDescr: T\u00a0%%{x}%%{B}\nservice a(server)[A]\n",
+      "architecture-beta\n  accDescr: T %%{x}%%\n  service a(server)[A]\n",
+    ],
+    [
+      "wardley accTitle: U+00A0 before the directive",
+      "wardley-beta\naccTitle: T\u00a0%%{x}%%{B}\ncomponent A [0.5, 0.5]\n",
+      "wardley-beta\n  accTitle: T %%{x}%%\n  component A [0.5, 0.5]\n",
+    ],
+    [
+      "wardley accDescr: U+00A0 before the directive",
+      "wardley-beta\naccDescr: T\u00a0%%{x}%%{B}\ncomponent A [0.5, 0.5]\n",
+      "wardley-beta\n  accDescr: T %%{x}%%\n  component A [0.5, 0.5]\n",
+    ],
+    [
+      "info accTitle: U+00A0 before the directive",
+      "info\naccTitle: T\u00a0%%{x}%%{B}\n",
+      "info\n  accTitle: T %%{x}%%\n",
+    ],
+    [
+      "info accDescr: U+00A0 before the directive",
+      "info\naccDescr: T\u00a0%%{x}%%{B}\n",
+      "info\n  accDescr: T %%{x}%%\n",
+    ],
+    [
+      "packet accTitle: U+00A0 before the directive",
+      'packet-beta\naccTitle: T\u00a0%%{x}%%{B}\n0-7: "x"\n',
+      'packet-beta\n  accTitle: T %%{x}%%\n  0-7: "x"\n',
+    ],
+    [
+      "packet accDescr: U+00A0 before the directive",
+      'packet-beta\naccDescr: T\u00a0%%{x}%%{B}\n0-7: "x"\n',
+      'packet-beta\n  accDescr: T %%{x}%%\n  0-7: "x"\n',
+    ],
+    [
+      "gitGraph accTitle: U+00A0 before the directive",
+      "gitGraph\naccTitle: T\u00a0%%{x}%%{B}\ncommit\n",
+      "gitGraph\n  accTitle: T %%{x}%%\n  commit\n",
+    ],
+    [
+      "gitGraph accDescr: U+00A0 before the directive",
+      "gitGraph\naccDescr: T\u00a0%%{x}%%{B}\ncommit\n",
+      "gitGraph\n  accDescr: T %%{x}%%\n  commit\n",
+    ],
+    [
+      "treemap accTitle: U+00A0 before the directive",
+      'treemap\naccTitle: T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'treemap\naccTitle: T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "treemap accDescr: U+00A0 before the directive",
+      'treemap\naccDescr: T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'treemap\naccDescr: T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "treeView accTitle: U+00A0 before the directive",
+      'treeView-beta\naccTitle: T\u00a0%%{x}%%{B}\n"R"\n',
+      'treeView-beta\n  accTitle: T %%{x}%%\n  "R"\n',
+    ],
+    [
+      "treeView accDescr: U+00A0 before the directive",
+      'treeView-beta\naccDescr: T\u00a0%%{x}%%{B}\n"R"\n',
+      'treeView-beta\n  accDescr: T %%{x}%%\n  "R"\n',
+    ],
+    [
+      "cynefin accTitle: U+00A0 before the directive",
+      "cynefin-beta\naccTitle: T\u00a0%%{x}%%{B}\n",
+      "cynefin-beta\n  accTitle: T %%{x}%%\n",
+    ],
+    [
+      "cynefin accDescr: U+00A0 before the directive",
+      "cynefin-beta\naccDescr: T\u00a0%%{x}%%{B}\n",
+      "cynefin-beta\n  accDescr: T %%{x}%%\n",
+    ],
+    [
+      "railroad accTitle: U+00A0 before the directive",
+      'railroad-abnf-beta\naccTitle: T\u00a0%%{x}%%{B}\nr = "a";\n',
+      'railroad-abnf-beta\n  accTitle: T %%{x}%%\n  r = "a";\n',
+    ],
+    [
+      "railroad accDescr: U+00A0 before the directive",
+      'railroad-abnf-beta\naccDescr: T\u00a0%%{x}%%{B}\nr = "a";\n',
+      'railroad-abnf-beta\n  accDescr: T %%{x}%%\n  r = "a";\n',
+    ],
+    [
+      "usecase accTitle: U+2028 before the directive",
+      "usecase-beta\naccTitle: T\u2028%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+2029 before the directive",
+      "usecase-beta\naccTitle: T\u2029%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accDescr: U+2028 before the directive",
+      "usecase-beta\naccDescr: T\u2028%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accDescr: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+00A0 and U+2028 before the directive",
+      "usecase-beta\naccTitle: T\u00a0\u2028%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: a space, U+2028, and a space before the directive",
+      "usecase-beta\naccTitle: T \u2028 %%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+2028 between two directives",
+      "usecase-beta\naccTitle: T %%{x}%%\u2028%%{y}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%% %%{y}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+2028 before, between and after two directives",
+      "usecase-beta\naccTitle: T\u2028%%{x}%%\u2028%%{y}%%\u2028{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T\u2028%%{x}%% %%{y}%%\n  actor A\n",
+    ],
+    [
+      "radar title: U+00A0 before two directives that touch each other",
+      "radar-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\naxis a, b\ncurve c{1, 2}\n",
+      "radar-beta\n  title T %%{x}%%%%{y}%%\n  axis a, b\n  curve c{1, 2}\n",
+    ],
+    [
+      "architecture title: U+00A0 before two directives that touch each other",
+      "architecture-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\nservice a(server)[A]\n",
+      "architecture-beta\n  title T %%{x}%%%%{y}%%\n  service a(server)[A]\n",
+    ],
+    [
+      "wardley title: U+00A0 before two directives that touch each other",
+      "wardley-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\ncomponent A [0.5, 0.5]\n",
+      "wardley-beta\n  title T %%{x}%%%%{y}%%\n  component A [0.5, 0.5]\n",
+    ],
+    [
+      "pie title: U+00A0 before two directives that touch each other",
+      'pie\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "info title: U+00A0 before two directives that touch each other",
+      "info\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n",
+      "info\n  title T %%{x}%%%%{y}%%\n",
+    ],
+    [
+      "packet title: U+00A0 before two directives that touch each other",
+      'packet-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n0-7: "x"\n',
+      'packet-beta\n  title T %%{x}%%%%{y}%%\n  0-7: "x"\n',
+    ],
+    [
+      "gitGraph title: U+00A0 before two directives that touch each other",
+      "gitGraph\ntitle T\u00a0%%{x}%%%%{y}%%{B}\ncommit\n",
+      "gitGraph\n  title T %%{x}%%%%{y}%%\n  commit\n",
+    ],
+    [
+      "treemap title: U+00A0 before two directives that touch each other",
+      'treemap\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'treemap\ntitle T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "treeView title: U+00A0 before two directives that touch each other",
+      'treeView-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n"R"\n',
+      'treeView-beta\n  title T %%{x}%%%%{y}%%\n  "R"\n',
+    ],
+    [
+      "cynefin title: U+00A0 before two directives that touch each other",
+      "cynefin-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\n",
+      "cynefin-beta\n  title T %%{x}%%%%{y}%%\n",
+    ],
+    [
+      "railroad title: U+00A0 before two directives that touch each other",
+      'railroad-abnf-beta\ntitle T\u00a0%%{x}%%%%{y}%%{B}\nr = "a";\n',
+      'railroad-abnf-beta\n  title T %%{x}%%%%{y}%%\n  r = "a";\n',
+    ],
+    [
+      "pie title: U+00A0 before three directives that touch each other",
+      'pie\ntitle T\u00a0%%{x}%%%%{y}%%%%{z}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%%%{y}%%%%{z}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+3000 before two directives that touch each other",
+      'pie\ntitle T\u3000%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: a tab and U+00A0 before two directives that touch each other",
+      'pie\ntitle T\t\u00a0%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'pie\n  title T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "pie accTitle: U+00A0 before two directives that touch each other",
+      'pie\naccTitle: T\u00a0%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'pie\n  accTitle: T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "pie accDescr: U+00A0 before two directives that touch each other",
+      'pie\naccDescr: T\u00a0%%{x}%%%%{y}%%{B}\n"A": 1\n',
+      'pie\n  accDescr: T %%{x}%%%%{y}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+00A0 before a directive, a space, and two directives that touch each other",
+      'pie\ntitle T\u00a0%%{x}%% %%{y}%%%%{z}%%{B}\n"A": 1\n',
+      'pie\n  title T\u00a0%%{x}%% %%{y}%%%%{z}%%\n  "A": 1\n',
+    ],
+    [
+      "pie title: U+00A0 before two directives that touch each other, a space, and a third",
+      'pie\ntitle T\u00a0%%{x}%%%%{y}%% %%{z}%%{B}\n"A": 1\n',
+      'pie\n  title T\u00a0%%{x}%%%%{y}%% %%{z}%%\n  "A": 1\n',
+    ],
+    [
+      "usecase accTitle: U+00A0 before two directives that touch each other",
+      "usecase-beta\naccTitle: T\u00a0%%{x}%%%%{y}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%%%{y}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+2028 before two directives that touch each other",
+      "usecase-beta\naccTitle: T\u2028%%{x}%%%%{y}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%%%{y}%%\n  actor A\n",
+    ],
+    [
+      "usecase accDescr: U+00A0 before three directives that touch each other",
+      "usecase-beta\naccDescr: T\u00a0%%{x}%%%%{y}%%%%{z}%%{B}\nactor A\n",
+      "usecase-beta\n  accDescr: T %%{x}%%%%{y}%%%%{z}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: a space, a directive, U+00A0, and two directives that touch each other",
+      "usecase-beta\naccTitle: T %%{x}%%\u00a0%%{y}%%%%{z}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%% %%{y}%%%%{z}%%\n  actor A\n",
+    ],
+  ]
+
+describe("a text that ends with a directive after whitespace that no fixture file holds", () => {
+  it.each(textEndDirectiveExamples)(
+    "prints %s alike whether or not blanks follow the directive",
+    async (_name, template, output) => {
+      for (const blanks of ["", " ", "\t", " \t"]) {
+        await expectKept(template.replace("{B}", blanks), output)
+      }
+    },
+  )
+})
+
+/**
+ * Each example is a title in one of the diagram types of the table above, with
+ * whitespace other than a space or a tab between two directives or after the
+ * last one: the line stays as written, with the spaces and tabs after it
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ */
+const textEndDirectiveKeptExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "radar title: U+00A0 between two directives, and a space after the last",
+    "radar-beta\ntitle T %%{x}%%\u00a0%%{y}%% \naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "radar title: U+00A0 and a space after the last directive",
+    "radar-beta\ntitle T %%{x}%%\u00a0 \naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T %%{x}%%\u00a0 \n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "architecture title: U+00A0 between two directives, and a space after the last",
+    "architecture-beta\ntitle T %%{x}%%\u00a0%%{y}%% \nservice a(server)[A]\n",
+    "architecture-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  service a(server)[A]\n",
+  ],
+  [
+    "architecture title: U+00A0 and a space after the last directive",
+    "architecture-beta\ntitle T %%{x}%%\u00a0 \nservice a(server)[A]\n",
+    "architecture-beta\n  title T %%{x}%%\u00a0 \n  service a(server)[A]\n",
+  ],
+  [
+    "wardley title: U+00A0 between two directives, and a space after the last",
+    "wardley-beta\ntitle T %%{x}%%\u00a0%%{y}%% \ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "wardley title: U+00A0 and a space after the last directive",
+    "wardley-beta\ntitle T %%{x}%%\u00a0 \ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T %%{x}%%\u00a0 \n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "pie title: U+00A0 between two directives, and a space after the last",
+    'pie\ntitle T %%{x}%%\u00a0%%{y}%% \n"A": 1\n',
+    'pie\n  title T %%{x}%%\u00a0%%{y}%% \n  "A": 1\n',
+  ],
+  [
+    "pie title: U+00A0 and a space after the last directive",
+    'pie\ntitle T %%{x}%%\u00a0 \n"A": 1\n',
+    'pie\n  title T %%{x}%%\u00a0 \n  "A": 1\n',
+  ],
+  [
+    "info title: U+00A0 between two directives, and a space after the last",
+    "info\ntitle T %%{x}%%\u00a0%%{y}%% \n",
+    "info\n  title T %%{x}%%\u00a0%%{y}%% \n",
+  ],
+  [
+    "info title: U+00A0 and a space after the last directive",
+    "info\ntitle T %%{x}%%\u00a0 \n",
+    "info\n  title T %%{x}%%\u00a0 \n",
+  ],
+  [
+    "packet title: U+00A0 between two directives, and a space after the last",
+    'packet-beta\ntitle T %%{x}%%\u00a0%%{y}%% \n0-7: "x"\n',
+    'packet-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  0-7: "x"\n',
+  ],
+  [
+    "packet title: U+00A0 and a space after the last directive",
+    'packet-beta\ntitle T %%{x}%%\u00a0 \n0-7: "x"\n',
+    'packet-beta\n  title T %%{x}%%\u00a0 \n  0-7: "x"\n',
+  ],
+  [
+    "gitGraph title: U+00A0 between two directives, and a space after the last",
+    "gitGraph\ntitle T %%{x}%%\u00a0%%{y}%% \ncommit\n",
+    "gitGraph\n  title T %%{x}%%\u00a0%%{y}%% \n  commit\n",
+  ],
+  [
+    "gitGraph title: U+00A0 and a space after the last directive",
+    "gitGraph\ntitle T %%{x}%%\u00a0 \ncommit\n",
+    "gitGraph\n  title T %%{x}%%\u00a0 \n  commit\n",
+  ],
+  [
+    "treemap title: U+00A0 between two directives, and a space after the last",
+    'treemap\ntitle T %%{x}%%\u00a0%%{y}%% \n"A": 1\n',
+    'treemap\ntitle T %%{x}%%\u00a0%%{y}%% \n  "A": 1\n',
+  ],
+  [
+    "treemap title: U+00A0 and a space after the last directive",
+    'treemap\ntitle T %%{x}%%\u00a0 \n"A": 1\n',
+    'treemap\ntitle T %%{x}%%\u00a0 \n  "A": 1\n',
+  ],
+  [
+    "treeView title: U+00A0 between two directives, and a space after the last",
+    'treeView-beta\ntitle T %%{x}%%\u00a0%%{y}%% \n"R"\n',
+    'treeView-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  "R"\n',
+  ],
+  [
+    "treeView title: U+00A0 and a space after the last directive",
+    'treeView-beta\ntitle T %%{x}%%\u00a0 \n"R"\n',
+    'treeView-beta\n  title T %%{x}%%\u00a0 \n  "R"\n',
+  ],
+  [
+    "cynefin title: U+00A0 between two directives, and a space after the last",
+    "cynefin-beta\ntitle T %%{x}%%\u00a0%%{y}%% \n",
+    "cynefin-beta\n  title T %%{x}%%\u00a0%%{y}%% \n",
+  ],
+  [
+    "cynefin title: U+00A0 and a space after the last directive",
+    "cynefin-beta\ntitle T %%{x}%%\u00a0 \n",
+    "cynefin-beta\n  title T %%{x}%%\u00a0 \n",
+  ],
+  [
+    "railroad title: U+00A0 between two directives, and a space after the last",
+    'railroad-abnf-beta\ntitle T %%{x}%%\u00a0%%{y}%% \nr = "a";\n',
+    'railroad-abnf-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  r = "a";\n',
+  ],
+  [
+    "railroad title: U+00A0 and a space after the last directive",
+    'railroad-abnf-beta\ntitle T %%{x}%%\u00a0 \nr = "a";\n',
+    'railroad-abnf-beta\n  title T %%{x}%%\u00a0 \n  r = "a";\n',
+  ],
+]
+
+describe("a text that ends with a directive after whitespace other than spaces and tabs that no fixture file holds", () => {
+  it.each(textEndDirectiveKeptExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
  * A whitespace character that is no space or tab between the text of a value
  * and a comment: the oldest version that counts reads it as a part of the text
  * of the title of a pie chart and of an accDescr line of a pie chart and a
@@ -37467,6 +40121,53 @@ describe("each whitespace character that is no space or tab before a comment", (
       await expectKept(
         `gitGraph\naccDescr: T${character}%% c\ncommit\n`,
         `gitGraph\n  accDescr: T${character}%% c\n  commit\n`,
+      )
+    }
+  })
+})
+
+describe("each whitespace character that is no space or tab before an empty directive", () => {
+  it("a whitespace character that is no space or tab before an empty directive after the title of a pie chart", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `pie\n"a": 1\ntitle T${character}%%{}%%\n`,
+        `pie\n  "a": 1\n  title T${character}%%{}%%\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before an empty directive after the accDescr line of a pie chart", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `pie\n"a": 1\naccDescr: T${character}%%{}%%\n`,
+        `pie\n  "a": 1\n  accDescr: T${character}%%{}%%\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before an empty directive after the accTitle line of a pie chart", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `pie\n"a": 1\naccTitle: T${character}%%{}%%\n`,
+        `pie\n  "a": 1\n  accTitle: T${character}%%{}%%\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before an empty directive after the accDescr line of a gitGraph", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `gitGraph\ncommit\naccDescr: T${character}%%{}%%\n`,
+        `gitGraph\n  commit\n  accDescr: T${character}%%{}%%\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before an empty directive after the accTitle line of a gitGraph", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `gitGraph\ncommit\naccTitle: T${character}%%{}%%\n`,
+        `gitGraph\n  commit\n  accTitle: T${character}%%{}%%\n`,
       )
     }
   })
@@ -41232,4 +43933,162 @@ describe("a cynefin header with whitespace before a directive or the colon", () 
   ])("rejects %s", async (_name, input) => {
     await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
   })
+})
+
+/**
+ * Each example is a line that a `;` of its text keeps together, with U+2028 or
+ * U+2029 and a comment after it. The comment line of such a region gets no line
+ * of its own on a kept line, so the line is printed as written, whatever
+ * follows the comment (docs/compatibility.md, A comment line after U+2028 or
+ * U+2029).
+ */
+const keptLineCommentRegionExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "pie: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'pie\ntitle T;\u2028%% c\n\n"A":1\n',
+    'pie\n  title T;\u2028%% c\n\n  "A": 1\n',
+  ],
+  [
+    "pie: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "pie\ntitle T;\u2028%% c",
+    "pie\n  title T;\u2028%% c\n",
+  ],
+  [
+    "radar: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "radar-beta\ntitle T;\u2028%% c\n\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T;\u2028%% c\n\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "radar: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "radar-beta\ntitle T;\u2028%% c",
+    "radar-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "packet: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'packet\ntitle T;\u2028%% c\n\n0-7: "x"\n',
+    'packet\n  title T;\u2028%% c\n\n  0-7: "x"\n',
+  ],
+  [
+    "packet: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "packet\ntitle T;\u2028%% c",
+    "packet\n  title T;\u2028%% c\n",
+  ],
+  [
+    "architecture: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "architecture-beta\ntitle T;\u2028%% c\n\nservice a(server)[A]\n",
+    "architecture-beta\n  title T;\u2028%% c\n\n  service a(server)[A]\n",
+  ],
+  [
+    "architecture: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "architecture-beta\ntitle T;\u2028%% c",
+    "architecture-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "wardley: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "wardley-beta\ntitle T;\u2028%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T;\u2028%% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "wardley: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "wardley-beta\ntitle T;\u2028%% c",
+    "wardley-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "gitGraph: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "gitGraph\ntitle T;\u2028%% c\n\ncommit\n",
+    "gitGraph\n  title T;\u2028%% c\n\n  commit\n",
+  ],
+  [
+    "gitGraph: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "gitGraph\ntitle T;\u2028%% c",
+    "gitGraph\n  title T;\u2028%% c\n",
+  ],
+  [
+    "info: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "info\ntitle T;\u2028%% c\n\n",
+    "info\n  title T;\u2028%% c\n",
+  ],
+  [
+    "info: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "info\ntitle T;\u2028%% c",
+    "info\n  title T;\u2028%% c\n",
+  ],
+  [
+    "cynefin: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'cynefin-beta\ntitle T;\u2028%% c\n\ncomplex "x"\n',
+    'cynefin-beta\n  title T;\u2028%% c\n\n  complex\n    "x"\n',
+  ],
+  [
+    "cynefin: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "cynefin-beta\ntitle T;\u2028%% c",
+    "cynefin-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "kanban: a section with a `;` in its text, U+2028, a comment, and an empty line",
+    "kanban\n  S[x;]\u2028%% c\n\n    A\n",
+    "kanban\n  S[x;]\u2028%% c\n\n    A\n",
+  ],
+  [
+    "kanban: a section with a `;` in its text, U+2028, and a comment at the end of the text",
+    "kanban\n  S[x;]\u2028%% c",
+    "kanban\n  S[x;]\u2028%% c\n",
+  ],
+  [
+    "treemap: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'treemap\ntitle T;\u2028%% c\n\n"A":1\n',
+    'treemap\ntitle T;\u2028%% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "treemap\ntitle T;\u2028%% c",
+    "treemap\ntitle T;\u2028%% c\n",
+  ],
+  [
+    "railroad: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "railroad-beta\ntitle T;\u2028%% c",
+    "railroad-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "treemap: a title that ends with a `;`, a space, U+2028, a directive, two spaces, a comment, and an empty line",
+    'treemap\ntitle T; \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    'treemap\ntitle T; \u2028 %%{x}%%  %% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title that ends with a `;`, a space, U+2029, a directive, two spaces, a comment, and an empty line",
+    'treemap\ntitle T; \u2029 %%{x}%%  %% c\n\n"A":1\n',
+    'treemap\ntitle T; \u2029 %%{x}%%  %% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: an accTitle that ends with a `;`, U+2028, a directive, two spaces, a comment, and an empty line",
+    'treemap\naccTitle: T;\u2028%%{x}%%  %% c\n\n"A":1\n',
+    'treemap\naccTitle: T;\u2028%%{x}%%  %% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title with a `;` inside, U+2028, a directive, three spaces, and a comment",
+    "treemap\ntitle a;b\u2028%%{x}%%   %% d\n",
+    "treemap\ntitle a;b\u2028%%{x}%%   %% d\n",
+  ],
+  [
+    "treemap: a title with a `;` inside, a directive, U+2028, three spaces, a comment, and an empty line",
+    'treemap\ntitle a;b%%{x}%%\u2028   %% d\n\n"A":1\n',
+    'treemap\ntitle a;b%%{x}%%\u2028   %% d\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title with a `;` inside, a directive, U+2028, a directive, U+2028, three spaces, and a comment",
+    "treemap\ntitle a;b%%{x}%%\u2028%%{y}%%\u2028   %% d\n",
+    "treemap\ntitle a;b%%{x}%%\u2028%%{y}%%\u2028   %% d\n",
+  ],
+]
+
+describe("a line that a `;` keeps together, with a comment line after a line separator", () => {
+  it.each(keptLineCommentRegionExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
 })

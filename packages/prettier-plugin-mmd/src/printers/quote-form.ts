@@ -13,6 +13,7 @@ import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   findCommentAfter,
+  holdsJoiningRegion,
   isFollowedByComment,
   joinsNextLine,
   lineEndOf,
@@ -30,6 +31,7 @@ import {
   findTokensBetween,
   findTriviaAt,
   isBracketPadding,
+  isInlineWhitespace,
   isStructural,
   isSpaceOrTab,
   isWordCharacter,
@@ -1132,19 +1134,6 @@ function c4NameIsNotBeforeComma(_before: string, after: string): boolean {
 }
 
 /**
- * Whether a character is whitespace that the printer replaces in a C4 call: any
- * but a line terminator. A gap with a line break or with a U+2028 or U+2029 is
- * written as it is (docs/c4.md, Argument spacing).
- */
-function isReplacedGapSpace(character: string | undefined): boolean {
-  return (
-    character !== undefined &&
-    isWhitespace(character) &&
-    !"\n\r\u2028\u2029".includes(character)
-  )
-}
-
-/**
  * Whether a text without quotes of a C4 call does not stand right after a `,`
  * or a `(` and right before a `,` on its line, once the whitespace that the
  * printer replaces is taken away. mermaid.js reads a string only after ASCII
@@ -1156,10 +1145,10 @@ function isReplacedGapSpace(character: string | undefined): boolean {
  */
 function c4TextIsNotBetweenCommas(before: string, after: string): boolean {
   let gap = before.length
-  while (gap > 0 && isReplacedGapSpace(before[gap - 1])) gap--
+  while (gap > 0 && isInlineWhitespace(before[gap - 1])) gap--
   const previous = before[gap - 1]
   let next = 0
-  while (next < after.length && isReplacedGapSpace(after[next])) next++
+  while (next < after.length && isInlineWhitespace(after[next])) next++
   return (
     after[next] !== "," ||
     previous === undefined ||
@@ -1580,6 +1569,23 @@ function startsItsLine(source: Source, offset: number): boolean {
 }
 
 /**
+ * Whether the text at `offset` follows a comment region that joins lines, with
+ * only whitespace, line feeds, and directives between: mermaid.js reads it as
+ * part of the line that ends at the U+2028 or U+2029 before the region. Where
+ * the region is in the statement of the text, the statement is printed as
+ * written, and a name that ends its line, with the rest of the statement on a
+ * later line, keeps its quotes: without them the name would go on over the line
+ * break, which mermaid.js rejects (docs/requirement.md, Line separators).
+ */
+function followsJoiningRegion(source: Source, offset: number): boolean {
+  return source.joiningRegions.some(
+    (region) =>
+      region.end <= offset &&
+      [...textRead(source, region.end, offset)].every(isWhitespace),
+  )
+}
+
+/**
  * Records the respelling of one field of a node, when its rule applies to the
  * node and the field is written in the other form (see
  * `findQuoteFormRespellings`).
@@ -1711,7 +1717,14 @@ function respell(
       source,
       start,
     ) !== true &&
-    !isKept(source, start)
+    !isKept(source, start) &&
+    !(
+      rule.form === "bare" &&
+      after === undefined &&
+      node.range[1] > lineEnd &&
+      holdsJoiningRegion(source, node.range[0], start) &&
+      followsJoiningRegion(source, start)
+    )
   ) {
     found.set(item.range[0], {
       end: stringEnd,

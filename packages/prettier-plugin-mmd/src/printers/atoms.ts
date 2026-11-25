@@ -16,6 +16,7 @@ import {
   withTrailing,
 } from "./lines.ts"
 import type { Source } from "./source.ts"
+import { isSpaceOrTab } from "./source.ts"
 import { mergeRespelledAtoms } from "./spelling.ts"
 import { collapseTextAtoms } from "./text-runs.ts"
 
@@ -102,6 +103,14 @@ export interface AtomLayout {
   readonly textGapsBefore?: ReadonlySet<number>
   /** Align these atoms after retained hidden LF, outside the hidden source. */
   readonly alignedGapsBefore?: ReadonlySet<number>
+  /**
+   * Whether a line that a comment region joins to the line before it starts at
+   * the first column, as written, and not at the indentation of the trivia: the
+   * whitespace before it is part of the text that the line before it ends
+   * with, as for the later event of a period in a timeline, which the printer
+   * does not add to.
+   */
+  readonly keepsJoinedLinesFlush?: boolean
 }
 
 /** Where the lines of a statement start. */
@@ -287,10 +296,17 @@ export function printAtoms(
           gapOffset = gap.trailing.range[1]
         }
         for (const line of gap.lines) {
+          // A line that a comment region joins to the line before it, by the
+          // line feed that it removes, has no indentation of its own: the
+          // whitespace before it is part of the text that the line before it
+          // ends with, which the printer does not add to.
           breakCurrentLine(
             line.blankBefore,
             false,
-            alignedIndentation ?? indentation.trivia,
+            layout.keepsJoinedLinesFlush === true &&
+              joinsLineBefore(source, line.run.range[0])
+              ? ""
+              : (alignedIndentation ?? indentation.trivia),
           )
           currentWrittenBreak = keepsBreaks
             ? literalBreaksBetween(source, gapOffset, line.run.range[0])
@@ -413,4 +429,15 @@ function literalBreaksBetween(
   return breaks.length === 0
     ? undefined
     : breaks.map(() => builders.literalline)
+}
+
+/**
+ * Whether the line feed before the line that starts at `offset` is one that a
+ * comment region removes (`Source.removedLineFeeds`), with only whitespace
+ * between them, so that mermaid.js reads the line with the one before it.
+ */
+function joinsLineBefore(source: Source, offset: number): boolean {
+  let position = offset
+  while (position > 0 && isSpaceOrTab(source.text[position - 1])) position--
+  return position > 0 && source.removedLineFeeds.has(position - 1)
 }
