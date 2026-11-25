@@ -2139,11 +2139,8 @@ of an `accDescr` as one space (see
 but not that of an `accTitle`, which the browser shows as a tooltip, and retain
 brace-looking line values and trivia boundaries. The common converter permits
 these equivalent outer gaps. An `accDescr` run of spaces and tabs becomes one
-space in [flowchart](./flowchart.md#accessibility-lines) and
-[class](./class.md#labels) diagrams, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that form here. The Db retains spaces and tabs inside `accTitle`, so collapsing
-them changes the title. Braces after `accDescr:` are description characters, so
+space. The Db retains spaces and tabs inside `accTitle`, so collapsing them
+changes the title. Braces after `accDescr:` are description characters, so
 reading them as block delimiters removes them from the Db. Never borrow text
 from the next line. Where only directives follow the text of an `accTitle:` or
 `accDescr:` line, they are printed as after the text of a title, unless a

@@ -2154,10 +2154,7 @@ treeView-beta
 その連なりは書かれたまま残します。
 波括弧らしい行値と付随要素の境界を保ちます。
 共通の変換処理が許す同等の外側の隙間を選びます。
-[flowchart](./flowchart.ja.md#アクセシビリティの行) と
-[class](./class.ja.md#ラベル) は、
-`accDescr` 内の空白とタブの連なりを空白 1 つにし、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+`accDescr` 内の空白とタブの連なりを空白 1 つにします。
 `accTitle` の中の空白とタブは Db に残るので、
 連なりを詰めると title が変わります。
 `accDescr:` の後の波括弧は値の文字なので、block の区切りとして読むと、
