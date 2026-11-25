@@ -402,6 +402,30 @@ mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度
 [fixture: task-data/colon-column-before-first-section]
 [fixture: task-data/colon-column-sections-and-preamble]
 
+U+2028 か U+2029 の後のコメント行が次の行につなぐタスクの行を、
+書かれたまま印字するタスクがあるセクションは、
+そのタスクのコロンが組の桁にないとき、それだけで桁を決めます。
+ほかのタスクのコロンは動かし、そのタスクは動かさないので、
+セクションのコロンが複数の桁に分かれ、
+2 回目の整形ではそれだけのセクションとして扱われるからです。
+ディレクティブで終わる名前など、ほかの理由で書かれたまま残るタスクは、
+上のとおりセクションのタスクから外れ、セクションを組から外しません。
+
+[test: Gantt: a task that a comment after U+2028 joins to the next line, and a section with padding after it]
+[test: Gantt: a task that a comment only after U+2028 joins to the next line, and a section with padding after it]
+[test: Gantt: a section with padding, and a section whose task a comment after U+2028 joins to the next line]
+[test: Gantt: a task that a comment after U+2028 joins to the next line, and two sections with padding after it]
+[test: Gantt: a task that a comment after U+2029 joins to the next line, and a section with padding after it]
+[test: Gantt: a task that a comment after U+2028 joins to the next line, with its colon at the column of the group]
+[test: Gantt: a task that stays as written for another reason does not take its section out of the group]
+[test: Gantt: a task that a comment after U+2028 joins to a directive that is not closed, and a section with padding after it]
+[test: Gantt: a task that a comment after U+2028 joins to a second comment line, and a section with padding after it]
+[test: Gantt: a task that a comment after U+2028 joins to a line of whitespace, and a section with padding after it]
+[test: Gantt: a task that a comment after U+2028 joins to an empty line, and a section with padding after it]
+[test: Gantt: a task that a comment after U+2028 joins to the end of the text, in the last section]
+[test: Gantt: a task that a comment after U+2028 joins to the next line, under a title with an ignored semicolon]
+[test: Gantt: a task that a comment that ends in a semicolon after U+2028 joins to the next line, and a section with padding after it]
+
 次の場合は、コロンを動かすと図が変わりうるので、コロンをその位置に残します。
 どの名前もコロンの前の空白が 1 つ以下のセクションは、どのコロンも動かさず、
 コロンに接する名前にだけ上の空白 1 つを置きます。
@@ -1318,10 +1342,10 @@ Prettier が `x = { }` を `x = {}`
 すでに空の内側は空のままです。
 通常のキーワードと開き括弧の間には空白 1 つを置き、
 `accDescr{  }` は `accDescr {}` にします。
-規則 1 は、キーワードと開き括弧の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[class](./class.ja.md#空の説明ブロック) と
-[journey](./journey.ja.md#空の説明ブロック) も、ここを空白 1 個で印字します。
+Prettier は、
+ブロックを開く `{` の前に空白を 1 つ置いて印字する（`class A{}` を `class A {}`
+と印字する）ので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの空白を与えます。
 
 [fixture: gantt/empty-description-blocks/touching-comment-body]
 [fixture: empty-description-blocks/empty-whitespace-interiors]
@@ -1333,7 +1357,7 @@ Prettier が `x = { }` を `x = {}`
 ディレクティブやコメント行の内容と改行は保ち、
 本文の字下げは [アクセシビリティの文](#アクセシビリティの文)に従います。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [pie](./pie.ja.md#description-blocks) は、コメントだけのブロックを、
 コメントを 1 段内側に、独立した閉じ括弧を文の段に置き、
@@ -1565,9 +1589,9 @@ mermaid.js はどちらも同じ呼び出しとして読むからです。
 [fixture: click-statements/callback-args-comment-line-kept]
 
 ヘッダーの行末の空白は落とします。
-規則 1 は、行末の空白を決めません。
-規則 1 の表が挙げるのは印の横の空白だからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+Prettier は、行末に空白を置かずに印字するので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+この空白を落とす形を与えます。
 [radar](./radar.ja.md#trailing-whitespace) と
 [architecture](./architecture.ja.md#trailing-whitespace)も、
 ヘッダーの後ろの空白を落とします。
@@ -1610,7 +1634,7 @@ gantt
 `section` の前のコメントは `section` の段、タスクの前のコメントはタスクの段、
 テキストの末尾のコメントは最後の文の段です。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [quadrant](./quadrant.ja.md#コメント)、[xychart](./xychart.ja.md#コメント)、
 [ishikawa](./ishikawa.ja.md#comments) も、単独の行のコメントを、

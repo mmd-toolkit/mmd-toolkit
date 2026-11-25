@@ -1625,6 +1625,107 @@ railroad-peg-beta
   r <- "bare comment";#
 ```
 
+ABNF のコメントの `;` の後ろの空白は、そのコメントの本文の末尾で、
+書かれたまま残します（上の規則）。
+`;` の後ろに U+2028 か U+2029 があるときは、
+その文字の後ろに続くコメント行の次の行で決めます。
+mermaid.js はコメント行を取り除いて、
+その行を `;` の行とつなげて読むからです（詳しくは、
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照）。
+その行が空か、空白だけか、ないときは、コメント行を自分の行で始め、
+`;` は後ろに書かれていた空白とタブを残します。
+`;`、空白、U+2028、`%% c`、空の行、規則は、`; ` と `%% c` の 2 行に印字します。
+`;` と文字の間に空白がなかったときは、上の離れた隙間の空白 1 つと同じに、
+`;` の後ろに空白を 1 つ置きます。
+`;` だけのものは句読点で、数える版の mermaid.js はどれも、
+コメントのつもりのその形を受け付けないので、空白なしで印字すると、
+2 回目の整形が読めないテキストになります。
+コメントの本文が `;` だけでないとき（`; %%{x}%%`）は、何も足しません。
+コメント行が `;` で終わるとき（`%% style:#x;`、`%% c;`）も、
+コメントが規則の中にあるとき（アトムの後ろでも自分の行でも）も同じです。
+
+コメント行の次の行に規則、ディレクティブの行、`;` があるときは、`;`、文字、
+コメント行を書かれたまま残します。
+行に `style` か `classDef` があるか、`;` で終わるために、
+最後まで書かれたまま残る文の中にあるときも、
+書かれたまま残します（セミコロンを参照）。
+`r=("x" ; `、U+2028、`%% style:#x;`、空の行、`"y");` はそのままで、
+文字の前に無視される `;` があるときもそうです。
+文字の後ろにディレクティブが続き、コメント行が続かないときも、
+閉じていてもいなくても、書かれたまま残します。
+
+[test: railroad/comments/abnf-semicolon-sp-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-tight-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-dircomment-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp2-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-tab-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-comment-eot-ls]
+[test: railroad/comments/abnf-semicolon-tight-comment-eot-ls]
+[test: railroad/comments/abnf-semicolon-after-rule-dircomment-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-comment-nobl-ls]
+[test: railroad/comments/abnf-semicolon-sp-dir-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-text-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-tight-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-dircomment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp2-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-tab-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-comment-eot-ps]
+[test: railroad/comments/abnf-semicolon-tight-comment-eot-ps]
+[test: railroad/comments/abnf-semicolon-after-rule-dircomment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-comment-nobl-ps]
+[test: railroad/comments/abnf-semicolon-sp-dir-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-text-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-style-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-style-bl-ps]
+[test: railroad/comments/abnf-semicolon-tight-style-bl-ls]
+[test: railroad/comments/abnf-semicolon-tight-style-bl-ps]
+[test: railroad/comments/abnf-semicolon-tab-style-bl-ls]
+[test: railroad/comments/abnf-semicolon-tab-style-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-style-eot-ls]
+[test: railroad/comments/abnf-semicolon-sp-style-eot-ps]
+[test: railroad/comments/abnf-semicolon-after-rule-style-bl-ls]
+[test: railroad/comments/abnf-semicolon-after-rule-style-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-style-two-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-style-two-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-style-spaced-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-style-spaced-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-classdef-in-rule-bl]
+[test: railroad/comments/abnf-semicolon-sp-classdef-in-rule-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-endsemi-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-endsemi-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-dir-endsemi-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-dir-endsemi-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-unclosed-dir-ls]
+[test: railroad/comments/abnf-semicolon-sp-unclosed-dir-ps]
+[test: railroad/comments/abnf-semicolon-in-rule-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-in-rule-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-in-rule-line-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-in-rule-line-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-two-comments-bl-ls]
+[test: railroad/comments/abnf-semicolon-sp-two-comments-bl-ps]
+[test: railroad/comments/abnf-semicolon-sp-two-comments-rule-ls]
+[test: railroad/comments/abnf-semicolon-sp-two-comments-rule-ps]
+[test: railroad/comments/abnf-semicolon-sp-comment-directive-line-ls]
+[test: railroad/comments/abnf-semicolon-sp-comment-directive-line-ps]
+[test: railroad/comments/abnf-semicolon-sp-comment-semicolon-line-ls]
+[test: railroad/comments/abnf-semicolon-sp-comment-semicolon-line-ps]
+[test: railroad/comments/abnf-semicolon-sp-comment-whitespace-line-ls]
+[test: railroad/comments/abnf-semicolon-sp-comment-whitespace-line-ps]
+[test: railroad/comments/abnf-semicolon-in-rule-style-line-ls]
+[test: railroad/comments/abnf-semicolon-in-rule-style-line-ps]
+[test: railroad/comments/abnf-semicolon-in-rule-semicolon-line-ls]
+[test: railroad/comments/abnf-semicolon-in-rule-semicolon-line-ps]
+[test: railroad/comments/abnf-semicolon-marker-eot-ls]
+[test: railroad/comments/abnf-semicolon-marker-eot-ps]
+[test: railroad/comments/abnf-semicolon-closed-directive-before-separator-ls]
+[test: railroad/comments/abnf-semicolon-closed-directive-before-separator-ps]
+[test: railroad/comments/abnf-semicolon-unclosed-directive-before-separator-ls]
+[test: railroad/comments/abnf-semicolon-unclosed-directive-before-separator-ps]
+[test: railroad/comments/abnf-semicolon-after-ignored-semicolon-ls]
+[test: railroad/comments/abnf-semicolon-after-ignored-semicolon-ps]
+
 `;` で始まるコメント行は U+2028 か U+2029 で終わり、
 その文字の後ろの文字列は独立した行になります。
 その行のディレクティブとコメントは、改行の後の行と同じに印字し、

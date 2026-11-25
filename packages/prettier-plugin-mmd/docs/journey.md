@@ -874,12 +874,10 @@ block on one line follows
 
 [fixture: whitespace-between-tokens/description-block-braces]
 
-The whitespace at the end of the header's line is dropped. Rule 1 names no mark
-at the end of a line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [radar](./radar.md#trailing-whitespace) and
-[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
-the header.
+The whitespace at the end of the header's line is dropped. Prettier prints no
+whitespace at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) drops the whitespace
+after the header.
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -913,8 +911,7 @@ end of the line. A comment on a line of its own stands at the level of the
 statement after it, and its text and its mark are kept as written: a comment
 before a `section` stands at its level, and one before a task at the level of
 the task; at the end of the text it stands at the level of the last statement.
-Rule 1 gives no form here, since its table names the whitespace beside a mark
-and not the start of a line
+Rule 1 gives no form here, since its table does not name the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [gantt](./gantt.md#comments), [block](./block.md#comments), and

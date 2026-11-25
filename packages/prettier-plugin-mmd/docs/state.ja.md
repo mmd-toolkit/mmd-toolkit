@@ -1485,7 +1485,7 @@ stateDiagram-v2
 行に単独のコメント（`%%` か `#`）は、周りの文と同じ段に置き、
 本文は書かれたまま残します。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [flowchart](./flowchart.ja.md#コメント)、[class](./class.ja.md#コメント)、
 [sequence](./sequence.ja.md#コメント)も、
