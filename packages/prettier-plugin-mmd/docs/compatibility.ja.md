@@ -236,6 +236,7 @@ ELK の配置のパッケージのどのリリースも、
 | [flowchart](./flowchart.ja.md#スタイルの行末の空白)                                                                                   | `style A fill:red,%%{init: {}}%% `                                                                                                            | 同じ行の末尾の空白を削除                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が拒否する                                                                                            | [fixture: flowchart/style-trailing-whitespace/whitespace-only-value-after-directive-kept]                                                                             |
 | [flowchart](./flowchart.ja.md#字下げ)                                                                                                 | 字下げしていない `accTitle: t;direction TB`                                                                                                   | 字下げした `accTitle: t;direction TB`           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が、`A-->B` とこの行だけの図で違うアクセシビリティのタイトルを読む                                    | [fixture: flowchart/indentation/direction-text-kept]                                                                                                                  |
 | [flowchart](./flowchart.ja.md#アクセシビリティの行)                                                                                   | 字下げしていない `accTitle : direction LR`                                                                                                    | 字下げした `accTitle : direction LR`            | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が違うアクセシビリティのタイトルを読む                                                                | [fixture: flowchart/accessibility-lines/zero-width]                                                                                                                   |
+| [flowchart](./flowchart.ja.md#アクセシビリティの行)                                                                                   | 3 行に書いた `accTitle:direction`、コメント行、`TB`                                                                                           | `accTitle: direction TB` と、その後のコメント行 | なし                                                  | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が別の図を描き、12.3.0 は Db の `accTitle` と `vertices` も変える                | [fixture: flowchart/accessibility-lines/direction-text-after-comment-kept]                                                                                            |
 | [flowchart](./flowchart.ja.md#スタイルの行末の空白)                                                                                   | `linkStyle default stroke-width:4px\ `、その後に `linkStyle 0 stroke:#0f0`                                                                    | 同じ行から空白を除いた形                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.7.0 が違う style を描く                                                                                               | [fixture: flowchart/style-trailing-whitespace/link-style-backslash-at-end-kept]                                                                                       |
 | [swimlane](./flowchart.ja.md#辺のラベルの書き方)                                                                                      | swimlane 図の `I -- left\|right --> J`                                                                                                        | `I -->\|left\|right\| J`                        | [3](./printed-form.ja.md#3-綴り)                      | 11.16.1 から 12.3.0 がもう一方の形を拒否する                                                                             | [fixture: flowchart/link-label-form/swimlane-arrows-to-pipes]                                                                                                         |
 | [class](./class.ja.md#トークンの間の空白)                                                                                             | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と印字                                                                   | `style A fill: #f00, color: white`              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、`color:` か `text-align:` で始まるスタイルからラベルの色と寄せを取る                                          | [fixture: class/whitespace-between-tokens/style-color-touching-kept]                                                                                                  |
@@ -314,6 +315,7 @@ ELK の配置のパッケージのどのリリースも、
 | [railroad](./railroad.ja.md#accessibility-の行)                                                                                       | `accTitle:`、改行、`r=terminal("x");`（`accDescr:` も同じ）                                                                                   | `accTitle: r=terminal("x");`                    | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 が別の図を描き、12.3.0 は Db も変える                                                                | [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]                                                                                                      |
 | [radar](./radar.ja.md#header)                                                                                                         | `radar-beta%%{wrap}%%:axis North`                                                                                                             | `radar-beta%%{wrap}%%axis North`                | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.17.2、12.0.0、12.3.0 は `:` のない形を拒否します                                                              | [fixture: radar/header/header-global-colon]                                                                                                                           |
 | [radar](./radar.ja.md#header)                                                                                                         | `radar-beta:%%{x y`、改行、`axis North`                                                                                                       | `radar-beta%%{x y`、改行、`axis North`          | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.17.2、12.0.0、12.3.0 が `:` のない形を拒否する                                                                | [fixture: radar/header/colon-unclosed-directive-kept]                                                                                                                 |
+| [radar](./radar.ja.md#header)                                                                                                         | 隠れた YAML ブロックの前の `radar-beta:`（コロンがブロックの `---` に接する）                                                                 | ブロックの前の `radar-beta---`                  | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.17.2、12.0.0、12.3.0 は `:` のない形を拒否します                                                              | [fixture: radar/header/colon-yaml-kept]                                                                                                                               |
 | [radar](./radar.ja.md#multi-line-statements)                                                                                          | `curve c["style:#a"]` の項目の改行と `} title tail;`                                                                                          | `curve c["style:#a"]{ 1 } title tail;`          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.17.2、12.0.0、12.3.0 は題を違って描き、12.3.0 は Db の `.title` も変えます                                    | [fixture: radar/multi-line-statements/semicolon-terminal-line]                                                                                                        |
 | [radar](./radar.ja.md#hidden-forms)                                                                                                   | 本文の YAML の `not: [yaml` と閉じの `---` が第 1 列にある形                                                                                  | 内部と閉じの `---` を空白 2 つ字下げ            | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.17.2、12.0.0、12.3.0 は字下げした形を拒否します                                                               | [fixture: radar/hidden-forms/yaml-body-opaque]                                                                                                                        |
 | [radar](./radar.ja.md#named-entries)                                                                                                  | `curve c{accTitle 1, accDescr 2}`                                                                                                             | `curve c{accTitle: 1, accDescr 2}`              | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0 から 12.3.0 がもう一方の形を拒否する                                                                              | [fixture: radar/named-entries/accessibility-identifiers]                                                                                                              |
@@ -324,9 +326,11 @@ ELK の配置のパッケージのどのリリースも、
 | [timeline](./timeline.ja.md#title-と-section)                                                                                         | `title` の後に空白 2 つ、タブ、空白 1 つ                                                                                                      | `title` の後に何もない形                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が他方の形を違って描く                                                                                | [fixture: timeline/titles-and-sections/title-blank-kept]                                                                                                              |
 | [timeline](./timeline.ja.md#コメント)                                                                                                 | `accDescr {a} %% c`                                                                                                                           | `accDescr: a %% c`                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.3.0 が Db の `accDescr` を `a` でなく `a %% c` と読む                                                                 | [fixture: timeline/comments/block-then-percent-comment-kept]                                                                                                          |
 | [timeline](./timeline.ja.md#title-と-section)                                                                                         | 改行しない空白か U+3000 を先頭か末尾に持つ title                                                                                              | それらのない title                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の title の末尾を変える                                            | [test: a no-break space and U+3000 at both ends of the title of a timeline diagram]                                                                                   |
-| [gantt](./gantt.ja.md#リスト)                                                                                                         | `includes`、空白 2 個、`%%{init: {}}%%`                                                                                                       | `includes`、空白 1 個、ディレクティブ           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 がもう一方の形を拒否する                                                                              | [fixture: gantt/lists/whitespace-only-then-directive]                                                                                                                 |
+| [gantt](./gantt.ja.md#リスト)                                                                                                         | `includes`、空白 2 個、`%%{init: {}}%%`                                                                                                       | `includes`、空白 1 個、ディレクティブ           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 がもう一方の形を拒否する                                                                              | [fixture: gantt/lists/whitespace-only-then-directive]                                                                                                                 |
 | [gantt](./gantt.ja.md#タイトルとセクション)                                                                                           | 改行しない空白か U+3000 を先頭か末尾に持つ title                                                                                              | それらのない title                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の title の末尾を変える                                            | [test: a no-break space and U+3000 at both ends of the title of a gantt diagram]                                                                                      |
 | [gantt](./gantt.ja.md#設定)                                                                                                           | 末尾に改行しない空白を持つ `axisFormat`                                                                                                       | それのない書式                                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の書式の末尾を変える                                               | [test: a no-break space at the end of the axis format of a gantt diagram]                                                                                             |
+| [gantt](./gantt.ja.md#複数行の値)                                                                                                     | `accDescr {`、2 つの空白が続く行 `x`、空行、行 `y`、`}`                                                                                       | 2 つの空白のない行 `x`                          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は SVG に別の説明のテキストを書き、12.3.0 は Db も変える                         | [fixture: gantt/multi-line-values/description-line-trailing-spaces-kept]                                                                                              |
+| [gantt](./gantt.ja.md#アクセシビリティの文)                                                                                           | `}` の後ろに単独の `%` がある 1 行のブロック `accDescr {d}%c`                                                                                 | `accDescr: d%c`                                 | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は SVG に別の説明のテキストを書き、12.3.0 は Db も変える                         | [fixture: gantt/accessibility-statements/block-then-percent-kept]                                                                                                     |
 | [ER](./er.ja.md#トークンの間の空白)                                                                                                   | `class-A a`                                                                                                                                   | `class -A a`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を入れた形を拒否する                                                                                      | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                               |
 | [ER](./er.ja.md#トークンの間の空白)                                                                                                   | `subgraph-x`、`end-x`                                                                                                                         | `subgraph -x`、`end` と単独の行の `-x`          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が空白を入れた形を拒否し、11.7.0 が違って描く                                                                     | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                              |
 | [ER](./er.ja.md#方向)                                                                                                                 | `DIRECTION lr`                                                                                                                                | `direction LR`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、その行をエンティティとして読む                                                                                | [fixture: er/direction/case-kept]                                                                                                                                     |
@@ -888,6 +892,9 @@ mermaid.js の line rule は、`style` と `classDef` の行の最後の `;` を
 treemap でその文字が `;` の後にある行と、
 スタイル末尾の空白の中で指令の前か後にある行、
 残る別の `;` を含む行です（[`;` を含む行](#-を含む行)を参照）。
+残す指令や、無視される最後の `;` の後の空白とタブは、行末の空白です。
+書かれたまま残す行を除き、Prettier と同じく取り除く形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 treemap でも、`classDef` の末尾にある指令の後の空白、タブ、改ページは、
 スタイル末尾の空白の中に上の文字がなければ除きます。
 その行のスタイルの内側の空白は、書かれたまま残します。
@@ -952,6 +959,8 @@ flowchart、agentflow、class、state、block、usecase の `style`、`classDef`
 `style A fill :#f00,stroke:  #333` は `style A fill: #f00, stroke: #333`
 になります。
 スタイルの語と語の間の空白とタブの連なりは、空白 1 つで印字します（後述）。
+swimlane 図のスタイルでは、語と語の間の空白とタブの連続を、`:` の有無によらず、
+空白 1 つで印字します。
 
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced]
 [fixture: flowchart/whitespace-between-tokens/style-colon-empty-value-kept]
@@ -1052,6 +1061,10 @@ CSS が空白として読まない文字は残し、
 `linkStyle 0 stroke  :#f00` は `linkStyle 0 stroke : #f00` と印字します。
 `style` はノードに適用され、1 つの形で印字します。
 `style A stroke :#f00` と `style A stroke: #f00` の画素は同じでした。
+ノードのスタイルのプロパティは、名前に 1 つの値を与えるので、
+コロンはキーのコロンです。
+コロンの前を空けず、後ろに空白を 1 つ置く形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: flowchart/whitespace-between-tokens/link-style-stroke-before-colon-kept]
 [fixture: flowchart/whitespace-between-tokens/class-def-stroke-before-colon-kept]
@@ -1516,6 +1529,10 @@ timeline の行の最後の event と、別名を持つ state の 2 つ目の説
 その空白は timeline のコロンをそろえます。
 `2020 : e   ` は `2020 : e` と印字し、
 `state "d" as A : x   ` は `state "d" as A : x` と印字します。
+timeline の行の最後の event と、別名を持つ state の 2 つ目の説明の後では、
+空白とタブが行末にあります。
+Prettier は、行末に空白を印字しないので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が除く形を与えます。
 timeline の period と、後ろに別のコロンが続く event は、末尾に空白がなければ、
 そのコロンの前に空白を 1 つ足します。
 `2004: a: b` は `2004 : a : b` と印字します。
@@ -1569,9 +1586,24 @@ user journey
 のタスクの説明（説明にディレクティブがあるタスクは書かれたまま残します。
 [タスクのデータ](./journey.ja.md#タスクのデータ)を参照）、
 別名を持つ state の 2 つ目の説明に当てはまります。
+[mindmap](./mindmap.ja.md#ディレクティブ)
+のノードのテキストの末尾のディレクティブは、
+前に空白かタブがあれば空白 1 つを置き、接していれば接したままにします。
+[kanban](./kanban.ja.md#行末の空白) のカードも同じです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+mindmap と同じ隙間を、ここでも与えます。
+最後のディレクティブの後の空白とタブは、ほかの行末と同じく、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が除きます。
 日付書式、軸の書式、`accTitle:` の行の値の中の空白とタブの連続は、
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
+軸の書式とアクセシビリティのタイトルでは、
+mermaid.js が末尾のディレクティブを除いた後も、
+中の空白とタブの連続が Db の値に残ります。
+軸の書式の両端の空白とタブや、アクセシビリティの説明中の連続には、
+変更を認める例外があります。
+これらの値の中の連続を空白 1 つにすると、例外の範囲を超えて値が変わるので、
+書かれたまま残します。
 テキストを終える最後のディレクティブの前にある、
 空白でもタブでもない空白文字（U+00A0 や U+3000 など）は、pie、radar、packet、
 architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、
@@ -1581,6 +1613,8 @@ usecase 図では、U+2028 と U+2029 も同じです。
 `title T`、U+00A0、`%%{x}%%`、空白は `title T %%{x}%%` と印字します。
 Gantt、user journey、timeline、sequence、Venn、C4 の図のタイトルでは、
 その文字は書かれたままにします。
+
+[corpus fixture: gantt/db-axis-format]
 
 改行しない空白、U+3000、U+2003、U+2028、U+2029 は空白でもタブでもなく、
 ディレクティブやコメントを含むタイトルは、
@@ -1741,6 +1775,12 @@ treeView ではディレクティブを 1 桁目に置き、
 そこに空白があったときは、ディレクティブとコメントの間を空白 1 つにし、
 その後の行は通常どおりに印字します。
 文のない行は、その後でテキストが終わるものです。
+Gantt 図では、最初の空白文字の後に、タイトルのテキストが必要です。
+最後の行の `title` の後に、U+2028 とディレクティブとコメントが続く場合は、
+U+2028 がそのテキストになります。
+ディレクティブとコメントを別の行に移すと、
+`title` だけになって mermaid.js が拒否するため、
+区切りとディレクティブとコメントを、タイトルの行に残します。
 表は、タイトルの行 1 つと、
 その後の行のうち第 1 列に書いたものについてのものです。
 タイトルの行は、`title`、空白、U+2028 か U+2029 が 1 つ、空白か何もなし、
@@ -1767,6 +1807,9 @@ info は、空行、空白だけの行、
 そこに文を置く行は、ほかの Langium の型について示します。
 treemap は、ディレクティブとコメントの間に空白があるとき、第 2 行、第 5 行、
 第 9 行で、1 回目と 2 回目でコメントの印字が違うので、印字した形がありません。
+
+[corpus fixture: gantt/lex-title-line-separator-comment-line-end-of-text]
+[corpus fixture: gantt/lex-title-at-end]
 
 | タイトルの後                                                                   | Langium の型（treeView を除く） | treeView     | quadrant     | そのほかの型 |
 | ------------------------------------------------------------------------------ | ------------------------------- | ------------ | ------------ | ------------ |
@@ -1825,11 +1868,20 @@ Langium の型ではそれぞれの前に空白 1 つを置いて印字し、
 ディレクティブのないタイトルの末尾の U+2028 か U+2029 は、その前の空白と一緒に、
 Langium の型と quadrant では除き、ほかの型では残します。
 これは、タイトルのすぐ後に文が続くか、そこでテキストが終わるときです。
+Gantt、user journey、timeline、sequence、C4、Venn の図では、
+末尾の U+2028 や U+2029 は、タイトルの値の一部です。
+区切りを除くと、その値が変わり、Gantt、user journey、timeline、sequence、
+C4 の図では、描画も変わるので、区切りを残します。
 
 テキストのある `accTitle:` と `accDescr:` の行は、次の表のとおりに印字します。
 Langium の型は最初の表と同じ形ですが、値の先頭のディレクティブは、
 その後ろの文字と一緒に残ります。
 ほかの型は表の最後の列のとおりです（Venn 図にはこの行がありません）。
+quadrant 図では、mermaid.js は `%%` とその後ろを、
+`accTitle:` と `accDescr:` の値の一部として読みます。
+そのため `%%` の前の U+3000 は両方の行で、同じ位置のタブは `accTitle:` の行で、
+書かれたまま保ちます。
+ASCII の空白に置き換えると、許される空白の例外を超えて、Db が変わるためです。
 その表の 7 つの行（`T %%{x}%%\u2028  `、`T %%{x}%%\u2029  `、`T\u2028%%{x}%%`、
 `T\u2028`、`T  \u2028`、`T\u2029`、`T\u2028  `）は、その行のすぐ後に文が続くか、
 そこでテキストが終わるときについてのもので、最初の表の同じ行と同じです。
@@ -1866,6 +1918,12 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 の pie と gitGraph の行を参照してください。
 [Accessibility lines](./pie.ja.md#accessibility-lines)も参照してください。
+
+[corpus fixture: quadrant/db-grid-ideographic-acc-title]
+[corpus fixture: quadrant/db-grid-ideographic-acc-descr]
+[corpus fixture: quadrant/db-grid-tab-acc-title]
+[corpus fixture: quadrant/db-acc-title-comment-kept]
+[corpus fixture: quadrant/db-acc-descr-comment-kept]
 
 | 書かれた形（`accTitle: ` か `accDescr: ` の後） | Langium の型                                               | quadrant、Gantt、journey、timeline、sequence、C4  |
 | ----------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------- |
@@ -2762,6 +2820,13 @@ timeline の event、state の説明、Gantt 図のタスクの名前は、
 | kanban のカードと mindmap の素のノードで、ディレクティブだけのもの                                                                                            | ディレクティブがないときと同じ | ディレクティブがないときと同じ | 拒否                           | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | 拒否                           | 書かれたまま                   | 書かれたまま                   | 書かれたまま                   | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
 | user journey のタスクの説明（最初のコロンの前のテキスト）                                                                                                     | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | ディレクティブがないときと同じ | –                              | –                              | –                              | –                              | ディレクティブがないときと同じ | ディレクティブがないときと同じ |
 
+表で連なりを縮めるテキストの中は、空白とタブの連なりを空白 1 つにします。
+これらのテキストで、末尾のコメントの前に空白やタブがあるときは、
+[radar チャート](./radar.ja.md#comments) と [mindmap](./mindmap.ja.md#コメント)
+と同じく、空白 1 つにしてコメントを同じ行に残します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+末尾のコメントの前の形を与えます。
+
 改行、`;`、U+2028、U+2029 を含むディレクティブは、
 行のどのディレクティブでもよく、
 その後ろの空白の代わりにタブがあってもかまいません。
@@ -3019,8 +3084,16 @@ railroad 図の文字列と特殊シーケンスです。
   tags、リンク）と、本来の位置にない名前付き属性。
   mermaid.js の読み方は、その場所によって変わります。
   （[引数の形](./c4.ja.md#引数の形)を参照してください）。
+  12.3.0 の Db は、tags とリンクを書かれたまま格納するので、
+  `a  b` と `a b` は別の値です。
+  `$tags` が label の位置に書かれたときは、
+  label のテキストが `{tags: "a  b"}` で、`{tags: "a b"}` ではありません。
+  これらの値の中の連なりは残します。
 
   [fixture: c4/named-attributes/named-text-places-runs-collapsed]
+  [fixture: c4/argument-forms/tags-run-kept]
+  [fixture: c4/argument-forms/link-run-kept]
+  [fixture: c4/named-attributes/label-place-run-kept]
 
 - ほかの文が参照する名前。
   連なりで異なる 2 つの名前は別のもので、連なりがなくなると 1 つになります。
@@ -3518,6 +3591,10 @@ mindmap のノードのテキスト、形のテキスト、アイコン、class 
 両端の空白とタブを除いて印字します。
 `a (x)` は `a(x)`、`b[ y ]` は `b[y]`、`::icon( fa )` は `::icon(fa)`、
 `::: big ` は `:::big` と印字します。
+Prettier は、角括弧と丸括弧の内側に余白を置きません。
+同じに描かれる余白について、mindmap の形の角括弧とアイコンの丸括弧の内側から、
+空白とタブを除き、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+この形を与えます。
 テキストの中の空白は残します。
 折り返すノードは連なりを描くからです。
 （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
@@ -3557,6 +3634,10 @@ class は要素の class の並びに入り、
 
 kanban のボードも、カードのテキスト、列とカードのラベル、アイコン、class に、
 同じ規則を適用します（[Kanban](./kanban.ja.md#形)を参照）。
+Prettier は、角括弧と丸括弧の内側に余白を置きません。
+同じに描かれる余白について、kanban の列とカードのラベルの角括弧と、
+アイコンの丸括弧の内側から空白とタブを除き、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 列の id は例外で、mermaid.js はそれで 2 つの列を区別します。
 `todo [A]` と `todo[B]` は別々に描かれる 2 つの列で、
 空白を除くと描かれ方が異なりました。
@@ -4552,6 +4633,13 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 閉じていないディレクティブが接するコロンは残します。
 閉じたディレクティブがキーワードとコロンの間にあるときも残し、
 `cynefin-beta%%{x}%%:` と `radar-beta%%{x}%%:` は変えません。
+コロンのない `radar-beta` の直後には、`%%`、仕様の空白、
+テキストの終わりのいずれかが必要です。
+接する隠れた YAML ブロックの前のコロンを除くと、`---` がそのヘッダーに接し、
+対象にする版が拒否するので、コロンを残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 radar のヘッダーで、そのディレクティブの前、コロンの前、
 またはその両方に空白かタブがあるときは、それらを除いて印字します。
 `radar-beta %%{x}%%:`、`radar-beta%%{x}%% :`、
@@ -4693,6 +4781,11 @@ mermaid.js は、`accDescr {text}` と `accDescr: text` を、
 説明が一方では ` accDescr {a}`、他方では ` accDescr: a` になります。
 本文が 1 行のブロックは、コロンの形で独立した行に印字します。
 `accDescr {a}`、`accDescr { a }`、`accDescr{ a }` は、`accDescr: a` になります。
+[ER 図](./er.ja.md#1-行に-1-文) と [sequence 図](./sequence.ja.md#1-行に-1-文)
+は、各文を独立した行に印字します。
+コロンの形に変えた `accDescr:` の説明も文なので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+独立した行を与えます。
 キーワードと `{` の間は、改行を含めてどの空白でもよく、
 本文と波かっこの間も同じです。
 `accDescr {`、`a`、`}` を 3 行に書いたものも、`accDescr: a` になります。
@@ -4891,6 +4984,10 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   `accDescr: direction RL` は行頭では説明で、
   行を字下げすると方向の行になります。
   印字は、本文の文を字下げします。
+  agentflow の本文の文をヘッダーより 1 段深く置く形は、
+  [class 図](./class.ja.md#字下げ) と [Gantt 図](./gantt.ja.md#インデント)
+  と同じで、[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+  この位置を与えます。
 
   [fixture: class/multi-line-values/block-direction-on-its-own-line-kept]
   [fixture: class/multi-line-values/block-brace-on-the-next-line-direction-kept]
@@ -4956,19 +5053,31 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
 - ブロックに本文がない場合です。
   [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)のとおり、
   `accDescr {}` と印字します。
+  flowchart では、mermaid.js は空の `accDescr {}` の後も、前の説明を保ちますが、
+  空の `accDescr:` は説明を空にします。
+  そのため、空のブロックはブロックの形を保ちます。
   ディレクティブだけを持つブロックはブロックのままで、
   整形ツールは `accDescr {%%{init: {}}%% }` を `accDescr { %%{init: {}}%%}`
   と印字します。
   自分の行にあるディレクティブは行を保ちます。
 
-  [fixture: flowchart/accessibility-lines/empty-block-tight]
-  [fixture: flowchart/accessibility-lines/empty-block-spaced]
-  [fixture: flowchart/accessibility-lines/empty-block-directive-kept]
-  [fixture: flowchart/accessibility-lines/empty-block-directive-line-kept]
+[corpus fixture: flowchart/db-acc-descr-empty-block-keeps]
+[corpus fixture: flowchart/db-acc-descr-empty-replaces]
+
+[fixture: flowchart/accessibility-lines/empty-block-tight]
+[fixture: flowchart/accessibility-lines/empty-block-spaced]
+[fixture: flowchart/accessibility-lines/empty-block-directive-kept]
+[fixture: flowchart/accessibility-lines/empty-block-directive-line-kept]
 
 - ブロックが閉じていない場合です。
+  flowchart では、mermaid.js は閉じていない `accDescr {a` を、
+  Db の空の説明として読みます。
+  `accDescr: a` に変えると、説明が `a` になるため、
+  閉じていないブロックは書かれたまま残します。
 
-  [fixture: flowchart/accessibility-lines/block-unclosed]
+[corpus fixture: flowchart/lex-acc-descr-block-unclosed]
+
+[fixture: flowchart/accessibility-lines/block-unclosed]
 
 - 文を同じ行に保つ行のブロックで、
   同じ行の後ろに図が読む文か `;` が続く場合です。
@@ -5346,6 +5455,10 @@ gitGraph では、ASCII の英字、数字、`_` と、その間の `-`、`.`、
 gitGraph で対象にする版で、`branch` の中で引用符の有無を変えて描きました。
 そのうち 240 個は `checkout` と `merge` の中でも描きました。
 引用符で描画か受理が変わったのは、引用符を残す名前だけでした。
+mermaid.js はディレクティブを除いてから、ブランチの参照を読み、
+`branch` の文は参照を 1 つだけ受け取ります。
+引用符のない `branch a %%{init: {}}%% b` は、
+`a` と `b` の 2 つの参照になって拒否されるため、ブランチ名は引用符を残します。
 
 [fixture: gitgraph/references/plain-names-without-quotes]
 [fixture: gitgraph/references/names-next-to-a-keyword-without-quotes]
@@ -5775,6 +5888,8 @@ U+2028 と U+2029、テキストの終わり、字下げなど）と、
 ishikawa 図のヘッダーは小文字の `ishikawa` と印字します。
 書かれた名前や大文字小文字は問いません。
 どの版も読まない `TREEMAP-BETA` は整形しません。
+[規則 3](./printed-form.ja.md#3-綴り)が、ヘッダーのこの名前を与えます。
+小文字は、ドキュメントの例が使う綴りです。
 例外は、ishikawa 図のヘッダーの直後に、`-beta` という語で始まる根が続く形です。
 間にあるのが指令だけの場合も同じで、
 mermaid.js は指令をヘッダーを読む前に取り除きます。
@@ -6055,6 +6170,9 @@ mermaid.js は、`style`、続いて空白をはさまずに `#` が後に続く
 そのため、文を区切る `;` と文の終わりの `;` 以外の `;` を含む行は、
 規則が当てはまるかどうかにかかわらず、文を行に残し、`;` をその位置に残します。
 規則はほかのトークンの間の空白を読まないので、そこは通常どおり整形します。
+セミコロンの行の規則は、リンクの両側の隙間を読まないので、
+セミコロンの位置を保ったまま、リンクの両側に空白 1 つを置き、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 [1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
 [fixture: flowchart/statements-one-per-line/line-with-semicolon-kept]
@@ -6136,6 +6254,13 @@ treemap の `classDef` を終わらせる `;` は、
 [Semicolons](./treemap.ja.md#semicolons)を参照してください。
 これらの文は、
 その文字も残します（[スタイルの末尾の空白](#スタイルの末尾の空白)を参照）。
+flowchart のスタイルでは、mermaid.js は残す終端の前の U+2028 を、
+最後のスタイルの値に格納します。
+この文字の削除は、末尾の空白とタブを除く例外の範囲を超えて値を変えるので、
+文字を終端と一緒に残します。
+
+[corpus fixture: flowchart/style-line-separator-semicolon-4e7b7434]
+[corpus fixture: flowchart/gram-style-semicolon-ends-statement]
 
 [fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
 [test: treemap style terminators kept after U+2028 and U+2029 before comments]
@@ -6295,6 +6420,10 @@ ER 図では、そのような行にある、複数行の属性ブロックを�
 `"style:#x" ;`、U+2028、` A {`、改行、`}` は、`"style:#x"; `、U+2028、
 ` A { }` になります。
 波括弧の間に属性があるときは、行は ` A {` で終わります。
+セミコロンと U+2028 や U+2029 は、行の規則が読む位置に残し、
+ほかの印の隣の通常の空白は、その位置を変えません。
+ER の属性ブロックの開始波括弧の前を空白 1 つにし、セミコロンの前の空白を除き、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [test: an empty attribute block over several lines after a semicolon that the line rule ignores and U+2028]
 [test: an attribute block over several lines after a semicolon that the line rule ignores and U+2028]
@@ -6729,9 +6858,15 @@ mermaid.js の行単位の規則は、`:` の直後から `#` までのテキス
 
 通常の閉じた複数行の `accDescr` 本文は文の継続行の字下げを使い、
 独立した `}` は文と同じ段に置きます。
-Mermaid が説明から LF 後の先頭の空白とタブを除くためです。
+mermaid.js は説明から行送り後の字下げを除きます。
 それ以外の文字、改行、行末の空白、ディレクティブの内容は保ちます。
+2 行の `accDescr` 本文では、mermaid.js が行の間の改行を説明の値に保存し、
+[コロンの後の説明](./compatibility.ja.md#1-行の説明ブロック) は 1 行です。
+改行を空白に替えると、定義された空白の例外を超えて Db が変わるため、
+本文の改行を残します。
 引用符付きの文字列と不透明なデータブロックは、それぞれの値の保持規則に従います。
+
+[corpus fixture: flowchart/db-acc-descr-block-two-lines-alone]
 
 [fixture: flowchart/multi-line-values/accdescr-block-kept]
 
@@ -6745,6 +6880,11 @@ mermaid.js は `{` の後の空白を改行も含めて `{` と一緒に読む�
 ここでは、空白の連続やタブを空白 1 つにします。
 行末のディレクティブの後の空白は、`{` の後の空白と同じく落とします。
 コメントの後の空白はコメントの一部なので残します。
+mermaid.js は、説明を読む前にディレクティブを除き、
+残る空白を開始波括弧と一緒に読みます。
+開始行のディレクティブの後の空白は、ディレクティブにも説明にも属さないので、
+行末の空白として除き、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+この形を与えます。
 `{` の行にある本文は、ほかのトークンと同じように空白を整えます。
 これは、このブロックを持つすべての図種に適用します。
 
@@ -7201,6 +7341,10 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   Db が持ち、図にも描かれるので、空白 2 つの `tickInterval  1week` は、
   目盛りが既定のものになり、`section  A` は `section A` とは別のセクションです。
   `dateFormat`、`axisFormat`、`title` の両端の空白とタブは除きます。
+  [規則 1](./printed-form.ja.md#1-記号の横の空白)が、キーワードと、
+  それが取るものとの間に、空白 1 つを与えます。
+  Gantt 図の空でない `axisFormat` と `title` の値の前も、同じです。
+  Prettier は `return  x` を `return x;` と印字します。
   タスクの説明のテキストとコロンの間の空白は、
   名前に桁そろえの空白があるセクション、
   または桁を共有するセクションどうしのコロンを、
@@ -7322,6 +7466,10 @@ mermaid.js は、journey の一部の値の空白を持ち、一部の行を、
   桁をそろえない節の説明のコロンの前の空白と、
   `title` の両端の空白とタブは除きます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
+  [規則 1](./printed-form.ja.md#1-記号の横の空白)が、キーワードと、
+  それが取るものとの間に、空白 1 つを与えます。
+  journey の空でない `title` の値の前も、同じです。
+  Prettier は `return  x` を `return x;` と印字します。
 
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]
@@ -7365,6 +7513,15 @@ mermaid.js は、requirement 図の名前や値の一部の空白を持ち、一
   名前、値、クラスの両端の空白は Db に入らないので落とし、値、クラス、
   文字列の中の連なりは空白 1 つで印字します。
   （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+  requirement のフィールドのコロンの後を空白 1 つにし、
+  引用符のない値とクラス行の末尾の空白とタブを除き、
+  [規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
+  ID の一覧とクラスの間の空白 1 つは、
+  [flowchart](./flowchart.ja.md#トークンの間の空白) と
+  [state](./state.ja.md#トークンの間の空白) の図と同じで、
+  [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+  この形を与えます。
+  値、クラス、文字列の単語間の連なりは、空白 1 つにします。
 
   [fixture: requirement/names/inner-whitespace-kept]
   [fixture: requirement/fields/value-inner-runs-collapsed]
@@ -7444,6 +7601,10 @@ mindmap の Db は、ノードの字下げを level として読みます。
   [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
   ヘッダーの後のものは落とすので、出力は受理されます。
   ノードの間の図のコメントの後のものは、入力と同じく 1 つ残ります。
+  本文の途中の空行の連なりは 1 行になり、
+  [規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
+  mindmap のノードの間の図のコメントの後も、本文の途中の隙間なので、
+  空行を 1 つ残します。
 
   [fixture: mindmap/blank-lines/after-the-header-dropped]
   [fixture: mindmap/blank-lines/after-a-comment-between-nodes-kept]
@@ -7795,6 +7956,10 @@ Db や字句解析器が読むものは変えません。
   [test: U+2028 around the arrow of an axis]
 
 通常の点とクラスのスタイルは `name: value` と印字します。
+スタイルのプロパティは、名前に 1 つの値を与えるので、
+最初のコロンはキーのコロンです。
+コロンの前を空けず、後ろに空白を 1 つ置く形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 正規化するのは最初のコロンに接する ASCII 空白とタブだけで、値の綴りは保ちます。
 注釈類、ASCII 空白とタブ以外の空白文字、セミコロン、
 2 個目のコロンがあるスタイルや、保護対象のセミコロン行にあるスタイルの内部は、
@@ -8390,6 +8555,10 @@ kanban のボードの Db は字下げを持たず、
 空白とタブだけの裸のラベル、アイコン、class のテキストは、
 空白 1 つを残します（`A[ ]`）。
 詳しくは [Trailing whitespace](./kanban.ja.md#行末の空白) を参照してください。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+角括弧の内側と行末に余白を置きません。
+裸の kanban ラベルの両端の対象となる空白とタブと、
+裸のカードの id の後の外側の空白とタブは、その余白として除きます。
 装飾はノードの桁に揃え、インラインディレクティブの行は、
 ディレクティブと隣の隙間を保ち、最初のディレクティブの前の空白を印字が決めます。
 YAML として正しくないデータブロックは、パーサーが不透明なテキストとして受理し、
@@ -8574,10 +8743,15 @@ Venn の図コメントは LF か末尾まで続きます。
 通常の ASCII の隙間、設定の暗黙の字下げ、title の最初の区切りです。
 CR と CRLF は共通の改行処理を使います。
 値の Unicode 文字は保ち、不正な通常の隙間は拒否のままです。
+Venn の裸のラベルの中の U+00A0 は、Db にあるラベルの値の一部です。
+ASCII の空白に置き換えると、記録されたラベルが変わるので、
+改行しない空白を残します。
 失敗、Markdown、フロントマター、最後の改行は共通の経路に従います。
 仕様の単位境界の乖離は失敗のままで、
 C4 の検出と不透明な YAML の乖離は仕様の読み方を使います。
 生の拒否には生の Db はありません。
+
+[corpus fixture: venn/db-grid-nbsp-label-bare]
 
 [fixture: venn/whitespace-characters/tab-gaps]
 [fixture: venn/title/title-next-line] [fixture: venn/header/div-c4-detector]
@@ -8733,6 +8907,7 @@ JSON の表データは不透明で、数とエスケープの綴り、プロパ
 CSS 宣言の最初のコロンの前後の空白は、
 [同じに描かれるスタイル](#同じに描かれるスタイル)に従います。
 宣言の中の空白の連なりも、空白 1 つで印字します。
+usecase の CSS 宣言の単語間の連なりは、空白 1 つにします。
 
 [fixture: usecase/native-metadata/metadata-inline]
 [fixture: usecase/native-metadata/metadata-blank-lines-kept]
@@ -8874,6 +9049,11 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 
 共有の EOL、BOM、フロントマター、末尾改行、Markdown の処理を適用します。
 アクセシビリティ行の外側の空白は、単独ファイルと Markdown の両方で除きます。
+アクセシビリティの行は、タイトルか説明のキーに、1 つの値を与えます。
+コロンの前を空けず、空でない値の前に空白を 1 つ置く形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は、行末の空白を取り除くので、値が空でも、
+その後の空白とタブは残りません。
 
 [fixture: usecase/final-newline/final-value-padding]
 [test: usecase Markdown: last-value-padding]
@@ -8885,6 +9065,10 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 [同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
 共通の title/アクセシビリティ行の両端は C4 と同様に整えますが、
 pie は次の物理行の値を結合しません。
+pie のアクセシビリティのキーのコロンは、前に空白を置かず、
+後ろに空白を 1 つ置き、行末の空白とタブを除き、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
+この通常の隙間は、`accTitle: Access` のように印字します。
 空のラベルと説明 block も実際の構文です。
 
 [fixture: pie/labels/label-quotes] [fixture: pie/numbers/number-spellings]
@@ -9196,6 +9380,15 @@ Markdown では埋め込みを辞退して本文を修復しません。
 作者のセミコロンはすべて共有の区間保護で保ちます。
 選択された1個の削除が別の選択を生み、ラベルを変え得るためです。
 原文順、繰り返す制約、空の共通代入も保ちます。
+architecture 図では、mermaid.js が辺と整列制約を、
+繰り返しも含めて Db の順序付きリストに記録するため、
+順序と繰り返す項目を保ちます。
+空の共通代入は、削除すると最後の値が変わり得るため、
+[原文順](./architecture.ja.md#source-order) が説明するように、
+書かれたまま保ちます。
+
+[corpus fixture: architecture/db-duplicate-edges]
+[corpus fixture: architecture/db-align-forward-repeat]
 
 [fixture: architecture/hidden-forms/yaml-named-icon-title-and-parent-gaps]
 [fixture: architecture/hidden-boundaries/header-and-statement]
@@ -9241,12 +9434,18 @@ Markdown の埋め込み先は本文の最終行の余白を除きますが、
 倍精度浮動小数点の値から再出力しません。
 オプションの値は作者のままです。
 ticks の制限、min・max の並べ替え、描画設定からの置換はしません。
+radar 図では、mermaid.js は、最小値が最大値を超えても受理し、
+両方のオプションの値を Db に格納するので、`min 10,max 1` では、
+`min = 10` と `max = 1` になります。
+入れ替えると、記録されたオプションが変わるので、両方の値を残します。
 ラベルの `StringLiteral` は空・空白だけの文字列、エスケープ、HTML、
 実体参照を保ち、ラベルの中の空白とタブの連なりは空白 1 つで印字します。
 `'` で囲むラベルは、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字し、
 `singleQuote` は読みません。
 空ラベルの削除は ID を代わりに使う処理を変えます。
+
+[corpus fixture: radar/db-min-above-max]
 
 [fixture: radar/source-order/declaration-order-kept]
 [fixture: radar/source-order/mixed-curve-forms]
@@ -10099,8 +10298,15 @@ Markdown は最後のコード行の末尾空白を除きます。
 領域と項目の行は木を示すもので、列が親を選ぶわけではありません。
 有効な Db からの再構築は出現を失い、置換やリセットの読みを変え得ます。
 文字列は空の値や図固有の形に見える文字も含め、エスケープ、内部の列を保ちます。
+cynefin 図では、mermaid.js は、空の文字列も項目として Db に格納し、
+文字列の中の隠れた形に見える文字も、項目のラベルに含めます。
+空の項目を除いたり、文字列の中身を隠れた形として読んだりすると、
+領域の項目が変わるので、どちらも残します。
 `'` で囲む文字列は、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字します。
+
+[corpus fixture: cynefin/db-empty-texts]
+[corpus fixture: cynefin/hidden-directive-string]
 
 [fixture: cynefin/empty-domains/empty-domain-last-reset]
 [fixture: cynefin/redeclarations/domain-repeat-order]
