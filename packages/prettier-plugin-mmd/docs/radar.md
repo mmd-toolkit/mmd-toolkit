@@ -327,21 +327,23 @@ rejects one. Keep newlines holding comments or Root directives; ordinary
 continuation lines and comments use two indentation steps, while a separate `}`
 aligns with its statement. A comment takes the rest of its line, so joining the
 next entry onto it would put the entry into the comment. Rule 1 names no mark
-for a line break next to a comment or a directive, so
+for the level of a line next to a comment or a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#multi-line-statements) keeps the line breaks
-that hold a comment or a directive and puts the continuation lines one level
-inside the statement, and the separate `}` stands at the level of its statement,
-as the `}` of an attribute block does in [er](./er.md#attribute-blocks) and the
-`}` of a description block in [flowchart](./flowchart.md#multi-line-values).
-Preserve other authored entry newlines in such a statement too, keeping the
-commented list as a block as written.
-[xychart](./xychart.md#multi-line-statements) joins the other line breaks of
-such a list, so this is printed against rule 2 and waits to be fixed by the
-rule. Hidden boundaries, value lines and protected semicolon segments remain
-written, including their continuation columns. No continuation indentation is
-added inside a protected segment; ordinary spacing still applies after it.
-Shared joining checks also keep a terminal line containing another statement's
+decides, as [xychart](./xychart.md#multi-line-statements) puts the continuation
+lines one level inside the statement, and the separate `}` stands at the level
+of its statement, as the `}` of an attribute block does in
+[er](./er.md#attribute-blocks) and the `}` of a description block in
+[flowchart](./flowchart.md#multi-line-values). No rule gives the line breaks
+that hold a directive, or the other authored entry newlines of a commented list,
+which stay as written: [xychart](./xychart.md#multi-line-statements) keeps the
+line breaks that hold a comment or a directive, but in it this is a question of
+the list of undecided forms (D45), so its printing is no decided form, and the
+released form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Hidden boundaries, value lines and protected semicolon segments remain written,
+including their continuation columns. No continuation indentation is added
+inside a protected segment; ordinary spacing still applies after it. Shared
+joining checks also keep a terminal line containing another statement's
 semicolon: joining a preceding style-like label could change that statement's
 Db, and every version of mermaid.js that counts draws different title text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
