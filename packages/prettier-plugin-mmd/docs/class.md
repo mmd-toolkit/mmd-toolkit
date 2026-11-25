@@ -1884,9 +1884,10 @@ because changing it would change the diagram or the input would be rejected:
   [fixture: indentation/header-v2-kept]
 
 Some text is kept as written by choice, because the Db is the same either way:
-whether whitespace is written before the mark of a comment after a statement, a
-run of it being printed as one space (see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+whether whitespace is written before the mark of a comment after a statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 [fixture: comments/mark-run-one-space]
 

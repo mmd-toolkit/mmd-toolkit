@@ -3987,11 +3987,13 @@ its table names ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 it, as [flowchart](./flowchart.md#comments) and [wardley](./wardley.md#comments)
 align a comment on a line of its own with the body in the same way. Inline
 comments keep their line, touching where they touch, and a run of spaces and
-tabs before one becomes one space. Rule 2 decides the gap before an inline
-comment too, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
-comment after a statement in the same way, where no other rule keeps the
-whitespace as written; each of them names those cases in its own sections or in
+tabs before one becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`, where no other rule keeps the whitespace as
+written. As for [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments), each
+of them names those cases in its own sections or in
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
 (whitespace that the Db holds, as after a `section` or a period, and whitespace
 that changes what mermaid.js reads). Preserve marks, content and trailing

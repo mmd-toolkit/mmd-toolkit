@@ -1405,13 +1405,14 @@ mark for a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides. A standalone comment stands one body step in, or at column one before
 the header, and an inline comment keeps its line and keeps touching what it
-touches, with one space for a separated gap, as in [radar](./radar.md#comments),
-[wardley](./wardley.md#comments), and
-[architecture](./architecture.md#comments), where no other rule keeps the
-whitespace as written (a comment right after a character, whitespace that
-mermaid.js reads, and the like). The text of a comment is kept as written, with
-the whitespace at its end: mermaid.js does not read it, as
-[flowchart](./flowchart.md#comments) says of the text of its comments.
+touches, with one space for a separated gap, which
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives before a
+comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`, where no other rule keeps the whitespace as
+written (a comment right after a character, whitespace that mermaid.js reads,
+and the like). The text of a comment is kept as written, with the whitespace at
+its end: mermaid.js does not read it, as [flowchart](./flowchart.md#comments)
+says of the text of its comments.
 
 Inside an ordinary IR call, a block comment before an argument moves with that
 argument onto its line. Comments before a comma or the closing parenthesis

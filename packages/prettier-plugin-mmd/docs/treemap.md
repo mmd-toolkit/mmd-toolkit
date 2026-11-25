@@ -486,7 +486,9 @@ whitespace at the end. That character ends the last style, and the form feeds
 beside it stay: the spaces and tabs after the last such character are dropped as
 at the end of any style, and a run of them before it is one space. Before a `%%`
 comment on the same line, a run of spaces, tabs, and form feeds is printed as
-one space, as in the other diagram types (see
+one space under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark),
+which gives one space before a comment that stands after something on its line,
+as Prettier prints `x = 1;   // c` as `x = 1; // c` (see
 [Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
 
 [test: leaves out a form feed at the end of a style that CSS reads as

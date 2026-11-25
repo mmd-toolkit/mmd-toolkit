@@ -3648,13 +3648,13 @@ around it, before the header too, where it starts the line, as under
 [Comments](./flowchart.md#comments) of a flowchart, and as Prettier prints the
 comment lines of code (a `//` line in a block is printed at the level of the
 statements around it). Inline comments keep their line, touching where they
-touch, and a run of spaces and tabs before one becomes one space. Rule 1 names
-no mark before a comment, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
-comment after a statement in the same way, where no other rule keeps the
-whitespace as written; each of them names those cases in its own sections or in
+touch, and a run of spaces and tabs before one becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`, where no other rule keeps the whitespace as
+written. As for [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments), each
+of them names those cases in its own sections or in
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
 (whitespace that the Db holds, as after a `section` or a period, and whitespace
 that changes what mermaid.js reads). Preserve marks, content and trailing

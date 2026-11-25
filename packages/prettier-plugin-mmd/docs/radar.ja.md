@@ -2832,13 +2832,12 @@ Prettier もコードのコメント行をそう印字します（ブロック�
 周りの文と同じ字下げで印字します）。
 同じ行のコメントは行を保ち、接していれば接したまま、
 空白とタブの連なりがあれば空白 1 つにします。
-規則 1 は、コメントの前の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
-[timeline](./timeline.ja.md#コメント)も、
-文の後ろのコメントを同じように印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) は、
+同じ行の何かの後ろにあるコメントの前を、空白 1 つにします。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 ほかの規則が空白を書かれたまま残す所は別です。
-どの図の文書も、その所を、
+[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
+[timeline](./timeline.ja.md#コメント)の、どの図の文書も、その所を、
 自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。

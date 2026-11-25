@@ -2116,8 +2116,9 @@ Some text is kept as written by choice, because the Db is the same either way:
 the case of the keywords that the table under
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
 does not list, and whether whitespace is written before the mark of a comment
-after a statement, a run of it being printed as one space (see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+after a statement; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives one space before a comment that stands after something on its line, as
+Prettier prints `x = 1;   // c` as `x = 1; // c`.
 
 [fixture: comments/mark-run-one-space]
 
