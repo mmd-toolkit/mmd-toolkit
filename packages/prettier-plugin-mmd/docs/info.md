@@ -10,7 +10,9 @@ Invisible characters and physical CR examples are escaped test cases.
 ### Header
 
 Print exact `info` at column one and a written `showInfo` after one space. Join
-ordinary whitespace and line breaks before the flag, for a compact heading;
+ordinary whitespace and line breaks before the flag;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `info` and its flag, as Prettier prints `return  x` as `return x;`;
 never add or remove the flag. Comments, global directives, hidden forms and
 protected segments keep their boundaries instead of being crossed.
 
@@ -99,9 +101,11 @@ info
 ### Title
 
 Print `title`, one space and a value trimmed at its common-whitespace edges; a
-null or whitespace-only value prints bare `title`. This gives equivalent
-exterior whitespace one compact form, and a run of spaces and tabs inside the
-value is printed as one space (see
+null or whitespace-only value prints bare `title`. For equivalent exterior
+whitespace, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between `title` and its value, as Prettier prints `return  x` as
+`return x;`, and a run of spaces and tabs inside the value is printed as one
+space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Never take a value from the next physical line, including across empty, comment
 or directive lines. Trivia-bearing values, hidden suffixes and semicolon
@@ -112,6 +116,9 @@ directive of the line holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Prettier removes spaces and tabs at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes spaces and
+tabs after the last closed directive of a title.
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 info/title/title-trim]
@@ -146,9 +153,12 @@ info
 
 Reuse the [shared accessibility layout](./pie.md#accessibility-lines): the colon
 touches `accTitle` or `accDescr`, followed by one space and the trimmed nonempty
-value. Empty values end at the colon. This consistent compact form preserves
-interior text and touching comments. A brace after the colon remains line
-content. Empty values never take the next physical line across
+value. An accessibility line gives the diagram its one accessible title or
+description, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+prints the colon as the colon of a key: no space before it and one before a
+nonempty value. Empty values end at the colon. This consistent compact form
+preserves interior text and touching comments. A brace after the colon remains
+line content. Empty values never take the next physical line across
 blank/comment/directive gaps; hidden suffixes and protected gaps remain. Where
 only directives follow the text of the value, they are printed with one space
 before each that has spaces or tabs before it, and the spaces and tabs after the
@@ -157,6 +167,9 @@ a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Prettier removes spaces and tabs at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes spaces and
+tabs after the last closed directive of an accessibility value.
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 info/accessibility-lines/a11y-lines]
@@ -193,22 +206,27 @@ For blocks that keep their braces, use the
 [shared description layout](./pie.md#description-blocks): separate the keyword
 and opening brace with one space so the block boundary is clear. Collapse
 exterior runs to one space, including plain opener whitespace across physical or
-Unicode line boundaries. Real opener trivia keeps its break and uses the shared
-continuation indentation. For example, `accDescr`, `%% c` and `{D}` on
-successive lines stay separate, since mermaid.js rejects `accDescr %% c`
+Unicode line boundaries. The `accDescr` keyword takes a description block, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives plain
+whitespace before its opening brace the one-space gap that Prettier prints
+between a keyword and what it takes. Real opener trivia keeps its break and uses
+the shared continuation indentation. For example, `accDescr`, `%% c` and `{D}`
+on successive lines stay separate, since mermaid.js rejects `accDescr %% c`
 followed by `{D}` on the next line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Empty whitespace-only blocks print `{}` because no text needs surrounding
-spaces. Comment-only blocks keep their comments one level inside; a standalone
-closer aligns with the statement. Ordinary description body and standalone
-comment lines align one level inside the statement; LF indentation is absent
-from the Db. Keep line breaks and interior blank lines, and the whitespace at
-the end of each line of text except the last one; a line of whitespace only
-becomes an empty line. The whitespace at the end of the last line of text is
-dropped where the closer stands on a line of its own, and is printed as one
-space where the closer follows it on that line. Directives and shared removed
-comment regions keep their complete source. Quotes and backslashes do not
-protect the first closing brace.
+spaces. Prettier prints empty braces without interior whitespace, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives a
+whitespace-only description block the form `{}`. Comment-only blocks keep their
+comments one level inside; a standalone closer aligns with the statement.
+Ordinary description body and standalone comment lines align one level inside
+the statement; LF indentation is absent from the Db. Keep line breaks and
+interior blank lines, and the whitespace at the end of each line of text except
+the last one; a line of whitespace only becomes an empty line. The whitespace at
+the end of the last line of text is dropped where the closer stands on a line of
+its own, and is printed as one space where the closer follows it on that line.
+Directives and shared removed comment regions keep their complete source. Quotes
+and backslashes do not protect the first closing brace.
 
 [fixture: info/description-blocks/block-gap-presence] [fixture:
 description-blocks/block-trailing-whitespace-closer-on-the-text-line]
@@ -458,11 +476,13 @@ info
 ### Global directives
 
 Keep opaque Root directive source and order because common removal joins the
-surrounding text. Within a printed line, place a directive as under
-[Directives](./flowchart.md#directives). When formatting splits units that were
-on the same line, a directive in their gap moves with the following unit: its
-right boundary stays touching or separated, while its left contact is broken.
-Rule 1 names no mark for a directive between two units, so
+surrounding text, and because the later of two `init` directives that set the
+same key decides the figure: reversing `theme: dark` and `theme: default` draws
+another figure in every version that counts. Within a printed line, place a
+directive as under [Directives](./flowchart.md#directives). When formatting
+splits units that were on the same line, a directive in their gap moves with the
+following unit: its right boundary stays touching or separated, while its left
+contact is broken. Rule 1 names no mark for a directive between two units, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [sequence](./sequence.md#directives),
 [flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
@@ -565,13 +585,16 @@ info
 
 Collapse ordinary internal ASCII blank runs to one and remove ordinary
 document/body edge blanks, preserving visible grouping without excess space.
-Apply this around comments too. Values, directives, hidden interiors,
-common-region joins and retained prefixes keep their breaks, since these can
-affect source roles. After a hidden form consumes LF, keep one spare LF only
-when a following statement needs it. At the document end use one configured
-final newline; directly after the header remove blank lines, since the header
-needs no EOL before its first statement. Elsewhere apply the ordinary blank-line
-rules after the spare LF: collapse a run to one blank line and clear
+Prettier prints at most one blank line between statements and none at the start
+or end of a text or block, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives ordinary ASCII
+blank lines the same limits. Apply this around comments too. Values, directives,
+hidden interiors, common-region joins and retained prefixes keep their breaks,
+since these can affect source roles. After a hidden form consumes LF, keep one
+spare LF only when a following statement needs it. At the document end use one
+configured final newline; directly after the header remove blank lines, since
+the header needs no EOL before its first statement. Elsewhere apply the ordinary
+blank-line rules after the spare LF: collapse a run to one blank line and clear
 whitespace-only lines. The spare LF meets the grammar; later blanks express
 grouping, just as after comments.
 
@@ -682,9 +705,13 @@ info
 Keep the complete prefix whenever textBeforeHeader holds a hidden form,
 including leading LF, comment columns, passed bare-line trivia, second-scan
 forms and real/hidden order. Removing leading LF could promote ignored YAML into
-real frontmatter and enable configuration or reject malformed YAML. Passed
-percent-brace/unclosed lines remain shared Comments without duplicate printing.
-A prefix containing only ordinary passed comments uses the shared root path.
+real frontmatter and enable configuration or reject malformed YAML. Real
+frontmatter supplies YAML properties to mermaid.js and a following hidden YAML
+block does not, so the blocks keep their order. If the hidden block contains
+configuration, swapping the blocks would enable previously ignored settings.
+Passed percent-brace/unclosed lines remain shared Comments without duplicate
+printing. A prefix containing only ordinary passed comments uses the shared root
+path.
 
 [fixture: info/retained-prefix/prefix-leading-lf-kept]
 
@@ -718,9 +745,12 @@ Follow [shared line endings](./compatibility.md#line-endings): Prettier
 normalizes CR/CRLF and emits configured LF/CRLF/CR, including in values, hidden
 text and frontmatter. Preserve internal LS/PS/NBSP/BOM according to their
 lexical role; common line edges trim and plain block-opener whitespace joins.
-Invalid native Unicode gaps remain rejected. Prettier removes and restores a
-leading BOM; an opening-fence BOM can therefore let the host read hidden YAML as
-real frontmatter. Byte identity is not guaranteed.
+Prettier prints one space between a keyword and what it takes, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) makes plain
+whitespace between `accDescr` and its block opener one space. Invalid native
+Unicode gaps remain rejected. Prettier removes and restores a leading BOM; an
+opening-fence BOM can therefore let the host read hidden YAML as real
+frontmatter. Byte identity is not guaranteed.
 
 [test: info/line-terminators-and-unicode/eol-cr-body]
 
@@ -760,9 +790,12 @@ Output (escaped): `"info showInfo\n  title Topic\n"`.
 End ordinary accepted files with one configured newline for a predictable
 terminator. Header/flag-only files, common lines, empty blocks, bare/triple
 comments and closed hidden forms use this path; ordinary terminal blank runs
-disappear. Keep hidden closing padding and required boundaries, and the original
-ending of EOF-reaching global directives. Adding LF to a C4-bearing EOF comment
-can change raw detection while keeping the specified info reading.
+disappear. Prettier ends a text with one line break and no blank line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes ordinary
+terminal blank lines and leaves one final line break. Keep hidden closing
+padding and required boundaries, and the original ending of EOF-reaching global
+directives. Adding LF to a C4-bearing EOF comment can change raw detection while
+keeping the specified info reading.
 
 [fixture: info/final-newline/final-common]
 

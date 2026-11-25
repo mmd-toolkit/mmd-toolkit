@@ -173,7 +173,7 @@ fixture は tests の SKILL で直す。
   ほかの文を持たない文などである。
   その関数の switch は、文の型をすべて挙げ、各 case を種類の型と照らし、
   最後の `satisfies` の検査で、
-  挙げ忘れた文の型を捕まえる（`sequence-layout.ts` の
+  挙げ忘れた文の型を捕まえる（`sequence-statements.ts` の
   `classifySequenceStatement`）。
   ほかの所は型の一覧を持たず、その関数に問う。
 - 値のノード（`Identifier`、`StringLiteral`、ラベルなど）は、

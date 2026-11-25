@@ -51,6 +51,9 @@ mermaid.js はコロンのない `gitGraph LR` を拒否するためです。
 
 ブロックの後の、単独の行にあるコロンは、その前の改行と一緒に除くので、
 空の行は残りません。
+コロンだけを除くと本文の先頭に空行が残りますが、
+Prettier はブロックの先頭に空行を残さないので、
+この形は[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 ブロックとそのコロンの間のコメントやディレクティブは、ブロックへの接続か、
 最初の文の前での通常の字下げを保ちます。
 コロンを除いても空行は残りません。
@@ -154,6 +157,10 @@ gitGraph
 
 通常の連続空行は 1 行にし、文書と本文の端の通常空行は削除します。
 コメントの前後にも同じ規則を使い、作者の区切りを残します。
+Prettier は、空白とタブだけの行を空行として扱い、項目の間は最大 1 行にし、
+ブロックや文書の先頭と末尾には残しません。
+コメントの前後を含む通常の空行には、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 引用値・説明ブロック・ディレクティブと隠れた形の内部と、
 保持する前置部分の空行は、値や字句上の役割に属するため保持します。
 隠れた形が LF を消費した後は、次の文に必要なときだけ予備の LF 1 つを保ちます。
@@ -198,8 +205,12 @@ gitGraph
 ### Operation spacing
 
 通常の操作語・参照・オプションの間は、接していても空白 1 個にします。
+Prettier は `return x;` のように、キーワードとその値の間に空白 1 個を置きます。
+CSS 宣言の値が続く場合も、値の間は空白 1 個です。
+操作語の後と通常の参照・オプションの部品の間の空白 1 個は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 桁揃えはしません。
-部品を一定の形で印字し、引用符なしの名前に必要な境界を残します。
+引用符なしの名前に必要な境界は残します。
 コメント・大域的なディレクティブ・隠れた形を含む隙間は、
 接触と物理境界を保持します。
 
@@ -513,10 +524,17 @@ U+2029 があるときを除きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
+[fixture: gitgraph/title-and-common-values/acc-title-empty-directive-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-unclosed-empty-directive-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-empty-directive-no-final-newline-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-descr-empty-directive-gap-printed]
+[test: a whitespace character that is no space or tab before an empty directive after the accTitle line of a gitGraph]
+[test: a whitespace character that is no space or tab before an empty directive after the accDescr line of a gitGraph]
 
-gitGraph の `accDescr` の値の後の `%%` の前の、空白でもタブでもない空白文字は、
-pie 図と同じに、その場に残し、その両側の空白とタブは、
-それぞれ空白 1 つにして印字します。
+gitGraph の `accDescr` の値の後の `%%` か、`%%{` の後ろに、
+空白を除いて語の文字が続かないもの（`%%{}%%` など）の前の、
+空白でもタブでもない空白文字は、pie 図と同じに、その場に残し、
+その両側の空白とタブは、それぞれ空白 1 つにして印字します。
 詳しくは [Accessibility lines](./pie.ja.md#accessibility-lines)
 を参照してください。
 gitGraph の `title` は、後ろの `%%` の前に何があっても、
@@ -566,7 +584,7 @@ Db で LF 後の字下げが取り除かれるためです。
 行形式は次の物理行を取り込みません。
 対象にする版のうち最も古い版は、
 空の `accTitle:` または `accDescr:` の後の文を値として読みます。
-そのため、その文と、`accTitle` の値の後の `%%` の前の空白は、
+そのため、その文と、`accTitle` の値の後の `%%` か `%%{}%%` の前の空白は、
 書かれたまま残します。
 詳しくは
 [最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
@@ -592,6 +610,36 @@ Db で LF 後の字下げが取り除かれるためです。
 [fixture: gitgraph/title-and-common-values/block-opener-trivia]
 [corpus fixture: gitgraph/common-title-only-whitespace]
 [test: gitgraph/title-and-common-values/block-opener-join-fixed]
+
+`accTitle:` か `accDescr:` の行で、値が U+2028 か U+2029 で終わり、
+コメントの領域が続き、その後に `%%` だけの行があるものは、
+その `%%` まで書かれたまま印字します。
+mermaid.js はコメントの領域を、それを終える改行と一緒に取り除くので、
+その後の行は値の行に続き、数える版のうち最も古い版は、`%%` の行を、
+描画に出る値に取り込みます。
+固定した文法はそれをコメントと読みます。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+これまでどおり、その行と領域を独立した行に移します。
+gitGraph の title はそう読まれません。
+数える版のうち最も古い版が拒否するからです。
+
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-at-end-moved]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/acctitle-ps-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-at-end-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-two-percent-lines-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-crlf-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-blank-line-moved]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-unclosed-directive-line-moved]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/accdescr-ps-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-at-end-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-two-percent-lines-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-crlf-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-blank-line-moved]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-unclosed-directive-line-moved]
 
 入力（エスケープ表記）: `"gitGraph\ntitle\t  A  B\t C  \n"`
 
@@ -983,7 +1031,9 @@ gitGraph
 
 通常の受理ファイルは設定した終端改行 1 個で終えます。
 見出しのみ、最後の操作文、通常のコメント、空ブロックも同じです。
-通常の末尾空行列は削除します。
+Prettier は、文書を改行 1 個で終え、末尾に空行を残しません。
+通常の末尾空行列は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)に従って除きます。
 EOF に達する大域的なディレクティブ、隠れた形の閉じの余白、
 保持する前置部分の境界は残し、閉じた隠れた形には終端 LF を足せます。
 共通のファイル終端を使いながら、消費 LF の境界を守ります。

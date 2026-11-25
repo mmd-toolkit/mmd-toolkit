@@ -10,10 +10,12 @@ output reparsing. Invisible-character examples are escaped test cases.
 ### Header
 
 Reuse [XY chart header/body layout](./xychart.md#header-and-orientation): an
-exact lower-case `pie` starts at column one and a written `showData` follows one
-space, as in the other diagram types. An ordinary inline first statement moves
-below it. Hidden predecessors of the flag retain their position and consumed
-breaks; moving them would end the flag opportunity.
+exact lower-case `pie` starts at column one;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `pie` and a written `showData`, as Prettier prints `return  x` as
+`return x;`. An ordinary inline first statement moves below it. Hidden
+predecessors of the flag retain their position and consumed breaks; moving them
+would end the flag opportunity.
 
 [fixture: pie/header/header-space] [fixture: pie/header/header-absent] [fixture:
 pie/header/flag-hidden-yaml] [fixture: pie/header/flag-hidden-directive]
@@ -184,56 +186,71 @@ pie showData
 
 ### Title
 
-Reuse the compact common-value reason of
-[C4 accessibility lines](./c4.md#accessibility-lines): equivalent exterior
-whitespace gets one form. Print `title`, one space, and a trimmed nonempty
-value; a null/empty/whitespace-only value prints bare `title`. Print a run of
-spaces and tabs inside the value as one space (see
+For equivalent exterior whitespace,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `title` and its value, as Prettier prints `return  x` as `return x;`.
+Print `title`, one space, and a trimmed nonempty value; a
+null/empty/whitespace-only value prints bare `title`. Print a run of spaces and
+tabs inside the value as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and preserve quotes and backslashes, and all repeated assignments, including
-frontmatter fallback. Pie never joins the next physical line into a title: even
-across blank/comment/directive gaps, a following section is a separate
-statement. Protected trivia and semicolon groups take precedence. A whitespace
-character that is no space or tab (U+000B, U+000C, a no-break space, U+1680,
-U+2000 to U+200A, U+202F, U+205F, U+3000, or U+FEFF) between the text and a `%%`
-comment stays where it is, with the spaces and tabs beside it printed as one
-space each: the oldest version that counts draws it as a part of the title,
-where the later versions trim it (see
+frontmatter fallback. The quotes and backslashes in a title are literal title
+characters in the Db read by mermaid.js. Removing the quotes or decoding a
+backslash sequence would change that title, so those characters stay as written.
+The pinned grammar never joins the next physical line into a title: even across
+blank/comment/directive gaps, a following section is a separate statement, and
+where the oldest version that counts reads it otherwise, the cases below say so.
+Protected trivia and semicolon groups take precedence. A whitespace character
+that is no space or tab (U+000B, U+000C, a no-break space, U+1680, U+2000 to
+U+200A, U+202F, U+205F, U+3000, or U+FEFF) between the text and a `%%` comment
+stays where it is, with the spaces and tabs beside it printed as one space each:
+the oldest version that counts draws it as a part of the title, where the later
+versions trim it (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 `title T`, a no-break space, and `%% c` is not changed, `title T`, two spaces,
 and `%% c` print `title T %% c`, and a directive that touches the comment does
 not change that (`title T`, a no-break space, `%%{x}%%`, and `%% c` is not
-changed). Where whitespace follows a directive that follows the text, the title
-is printed as in the other diagrams: `title    T`, a no-break space, `%%{x}%%`,
-two spaces, and `%% c` print `title T`, the no-break space, and `%%{x}%% %% c`.
-Where only directives follow the text of a title, they are printed with one
-space before each that has spaces or tabs before it, and the spaces and tabs
-after the last one are left out, unless a directive of the line holds a line
-break, a `;`, a U+2028, or a U+2029 (see
+changed). A `%%{` that no word character follows after its whitespace, such as
+`%%{}%%`, is read as text by that version, as a `%%` is, so the same holds
+before it: `title T`, a no-break space, and `%%{}%%` is not changed, and
+`title T`, two spaces, and `%%{}%%` print `title T %%{}%%` (see
+[Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
+Where whitespace follows a directive that follows the text, the title is printed
+as in the other diagrams: `title    T`, a no-break space, `%%{x}%%`, two spaces,
+and `%% c` print `title T`, the no-break space, and `%%{x}%% %% c`. Where only
+directives follow the text of a title, they are printed with one space before
+each that has spaces or tabs before it, and the spaces and tabs after the last
+one are left out, unless a directive of the line holds a line break, a `;`, a
+U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
+[corpus fixture: pie/title-quotes]
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 pie/title/title-trim] [fixture: pie/title/title-empty] [fixture:
 pie/title/title-next-section] [fixture: pie/title/title-next-trivia] [fixture:
 pie/title/title-inner-text] [fixture: pie/title/empty-value-with-directive]
-[test: a no-break space before a comment after the title of a pie chart] [test:
-U+3000 before a comment after the title of a pie chart] [test: U+2003 before a
-comment after the title of a pie chart] [test: spaces and a no-break space
+[fixture: pie/title/title-empty-directive-gap-printed] [test: a whitespace
+character that is no space or tab before an empty directive after the title of a
+pie chart] [test: a no-break space before a comment after the title of a pie
+chart] [test: U+3000 before a comment after the title of a pie chart] [test:
+U+2003 before a comment after the title of a pie chart] [test: spaces and a
+no-break space before a comment after the title of a pie chart] [test: a
+no-break space before a directive and a comment after the title of a pie chart]
+[test: two spaces before a comment after the title of a pie chart] [test: a
+no-break space at the end of the title of a pie chart] [test: a whitespace
+character that is no space or tab before a comment after the title of a pie
+chart] [test: a no-break space before a directive and two spaces before a
+comment after the title of a pie chart] [test: spaces before the text, a
+no-break space before a directive and two spaces before a comment after the
+title of a pie chart] [test: a no-break space before a directive and a tab
 before a comment after the title of a pie chart] [test: a no-break space before
-a directive and a comment after the title of a pie chart] [test: two spaces
-before a comment after the title of a pie chart] [test: a no-break space at the
-end of the title of a pie chart] [test: a whitespace character that is no space
-or tab before a comment after the title of a pie chart] [test: a no-break space
-before a directive and two spaces before a comment after the title of a pie
-chart] [test: spaces before the text, a no-break space before a directive and
-two spaces before a comment after the title of a pie chart] [test: a no-break
-space before a directive and a tab before a comment after the title of a pie
-chart] [test: a no-break space before two directives and a comment after the
-title of a pie chart] [test: a no-break space before a comment after the title
-of a pie chart, with CRLF line ends] [test: a no-break space before a comment
-after the last line of a pie chart, with no line break]
+two directives and a comment after the title of a pie chart] [test: a no-break
+space before a comment after the title of a pie chart, with CRLF line ends]
+[test: a no-break space before a comment after the last line of a pie chart,
+with no line break]
 
 Input (escaped): `"pie\ntitle\t   Sales  report  \n\"Sales\":8"`.
 
@@ -245,6 +262,38 @@ pie
   title Sales report
   "Sales": 8
 ```
+
+In the oldest version that counts, a title that ends at a U+2028 or U+2029,
+which a comment region follows, takes a line of `%%` and nothing else after the
+region as part of its text. mermaid.js removes the comment region with the line
+feed that ends it, so the line after it goes on the line of the title; a line
+that holds only `%%` is no comment line, so it stays, while the pinned grammar
+reads it as a comment. A title that such a line follows is printed as written,
+up to that `%%`, since the title on a line of its own, the comment region, and
+the `%%` line after it draw a different title there. A blank line, a directive
+line, or the end of the text after the region moves the title and the region
+onto lines of their own, as for any title; a comment line with text after it, or
+a line of whitespace only, keeps the title and what follows as written; and a
+title that no U+2028 or U+2029 ends is printed as usual, each as before.
+
+[test: pie/title/title-text-ls-comment-then-whitespace-line-kept] [test:
+pie/title/title-text-ls-comment-at-end-moved] [test:
+pie/title/title-ignored-semicolon-ls-comment-then-percent-line-kept] [test:
+pie/title/title-two-ignored-semicolons-ls-comment-then-percent-line-kept] [test:
+pie/title/title-ls-comment-then-percent-line-kept] [test:
+pie/title/title-text-ls-comment-then-percent-line-kept] [test:
+pie/title/title-ps-comment-then-percent-line-kept] [test:
+pie/title/title-ls-spaced-comment-then-percent-line-kept] [test:
+pie/title/title-ls-comment-only-then-percent-line-kept] [test:
+pie/title/title-ls-comment-then-percent-line-at-end-kept] [test:
+pie/title/title-ls-comment-then-blank-line-moved] [test:
+pie/title/title-ls-comment-then-directive-line-moved] [test:
+pie/title/title-ls-comment-then-comment-line-kept] [test:
+pie/title/title-comment-then-percent-line-without-separator] [test:
+pie/title/title-text-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/title/title-text-ls-comment-then-two-percent-lines-kept] [test:
+pie/title/title-text-ls-comment-then-percent-line-crlf-kept] [test:
+pie/title/title-text-ls-comment-then-unclosed-directive-line-moved]
 
 ### Accessibility lines
 
@@ -267,10 +316,12 @@ breaks too, and reads the next statement, after the blank lines and the comments
 and directives that mermaid.js removes first, as the value. That statement stays
 as written (`"A":1` is not printed `"A": 1`), as does the whitespace before a
 `%%` that follows an `accTitle` value, which that version reads as part of the
-title (`accTitle: Value   %% note`), and so does a whitespace character that is
-no space or tab, one of those named in [Title](#title), before a `%%` that
-follows an `accDescr` value, which that version draws as a part of the
-description (`accDescr: Value`, a no-break space, and `%% note`), while the
+title (`accTitle: Value   %% note`), and before a `%%{` that no word character
+follows after its whitespace, such as `%%{}%%`, which it reads as text too
+(`accTitle: Value   %%{}%%`), and so does a whitespace character that is no
+space or tab, one of those named in [Title](#title), before a `%%` or such a
+`%%{` that follows an `accDescr` value, which that version draws as a part of
+the description (`accDescr: Value`, a no-break space, and `%% note`), while the
 spaces and tabs beside it are printed as one space each, and a value with a
 directive in it is printed as in the other diagrams; a comment after the `}` of
 a description block keeps the block, since the text of the form with the colon
@@ -299,18 +350,63 @@ pie/accessibility-lines/accessibility-next-trivia] [fixture:
 pie/accessibility-lines/accessibility-directive-edges] [fixture:
 pie/accessibility-lines/accessibility-inner-tab] [fixture:
 pie/accessibility-lines/acc-title-inner-spaces-kept] [fixture:
-pie/accessibility-lines/accessibility-only-global-trivia] [test: a no-break
-space before a comment after the accDescr line of a pie chart] [test: U+3000
-before a comment after the accDescr line of a pie chart] [test: two spaces
-before a comment after the accDescr line of a pie chart] [test: a no-break space
-before a comment after the accDescr line of a gitGraph] [test: U+3000 before a
-comment after the accDescr line of a gitGraph] [test: U+2003 before a comment
-after the accDescr line of a pie chart] [test: a whitespace character that is no
-space or tab before a comment after the accDescr line of a pie chart] [test: a
-no-break space and spaces before a comment after the accDescr line of a pie
-chart] [test: a no-break space before a directive and two spaces before a
-comment after the accDescr line of a pie chart] [test: a no-break space before a
-comment after the accDescr line, with no line break at the end of a pie chart]
+pie/accessibility-lines/accessibility-only-global-trivia] [fixture:
+pie/accessibility-lines/acc-title-empty-directive-gap-kept] [fixture:
+pie/accessibility-lines/acc-title-empty-directive-tab-kept] [fixture:
+pie/accessibility-lines/acc-title-spaced-directive-gap-kept] [fixture:
+pie/accessibility-lines/acc-title-punctuation-directive-gap-kept] [fixture:
+pie/accessibility-lines/acc-title-empty-directive-then-comment-gap-kept]
+[fixture:
+pie/accessibility-lines/acc-title-directive-then-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-unclosed-empty-directive-gap-kept]
+[fixture:
+pie/accessibility-lines/acc-title-empty-directive-no-final-newline-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-spaced-word-directive-gap-printed]
+[fixture: pie/accessibility-lines/acc-descr-empty-directive-gap-printed] [test:
+a whitespace character that is no space or tab before an empty directive after
+the accTitle line of a pie chart] [test: a whitespace character that is no space
+or tab before an empty directive after the accDescr line of a pie chart] [test:
+a no-break space before a comment after the accDescr line of a pie chart] [test:
+U+3000 before a comment after the accDescr line of a pie chart] [test: two
+spaces before a comment after the accDescr line of a pie chart] [test: a
+no-break space before a comment after the accDescr line of a gitGraph] [test:
+U+3000 before a comment after the accDescr line of a gitGraph] [test: U+2003
+before a comment after the accDescr line of a pie chart] [test: a whitespace
+character that is no space or tab before a comment after the accDescr line of a
+pie chart] [test: a no-break space and spaces before a comment after the
+accDescr line of a pie chart] [test: a no-break space before a directive and two
+spaces before a comment after the accDescr line of a pie chart] [test: a
+no-break space before a comment after the accDescr line, with no line break at
+the end of a pie chart]
+
+The same holds for an `accTitle:` or an `accDescr:` line: a value that ends at a
+U+2028 or U+2029, a comment region after it, and a line of `%%` and nothing else
+after the region are printed as written, up to that `%%`, since the oldest
+version that counts takes the `%%` line into the value that the drawing shows. A
+blank line, a directive line, or the end of the text after the region moves the
+line and the region onto lines of their own as before.
+
+[test: pie/accessibility-lines/accdescr-ps-directive-comment-at-end-moved]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ps-comment-then-percent-line-kept]
+[test:
+pie/accessibility-lines/acctitle-ls-comment-then-percent-line-at-end-kept]
+[test:
+pie/accessibility-lines/acctitle-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-blank-line-moved] [test:
+pie/accessibility-lines/acctitle-ls-comment-then-unclosed-directive-line-moved]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ps-comment-then-percent-line-kept]
+[test:
+pie/accessibility-lines/accdescr-ls-comment-then-percent-line-at-end-kept]
+[test:
+pie/accessibility-lines/accdescr-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-blank-line-moved] [test:
+pie/accessibility-lines/accdescr-ls-comment-then-unclosed-directive-line-moved]
 
 Input (escaped):
 `"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`.
@@ -329,35 +425,42 @@ pie
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-For blocks that keep their braces, reuse
-[flowchart multiline values](./flowchart.md#multi-line-values) and
-[sequence multi-line values](./sequence.md#multi-line-values), which put the
-lines of such a block one step inside its statement: indentation after LF is
-absent from the description Db. The keyword and opener use one ordinary space,
-even when written touching. Protected trivia and semicolon layouts keep their
-gaps. Plain whitespace before the opener can join, including across physical or
+For blocks that keep their braces, body lines stand one step inside the
+statement. The keyword and opener use one ordinary space, even when written
+touching. Prettier puts one space before the opening brace of a block, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one-space
+gap between `accDescr` and `{`. A gap made only of whitespace has that form even
+across line breaks. Protected trivia and semicolon layouts keep their gaps.
+Plain whitespace before the opener can join, including across physical or
 Unicode line boundaries; a real comment/directive keeps its break. The form with
 `accDescr`, `%% c`, and `{D}` on separate lines stays, since mermaid.js rejects
 the form with `accDescr %% c` and `{D}` on separate lines (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Empty whitespace-only interiors print `{}` because no text needs surrounding
-whitespace. Keep comment-only blocks with comments one level inside and a
-separate closer at statement level. In `accDescr {%% c` followed by `}` or `D}`
-on the next line, `%% c` stays after `{` as description text, since moving it to
-its own line one level inside the block, with `D` and `}` also on separate lines
-in the second case, makes mermaid.js read it as a comment, leaving the
-description empty or just `D`, respectively (see
+whitespace. Prettier prints empty braces without interior whitespace, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives `{}` for a
+description block whose interior contains only whitespace. Keep comment-only
+blocks with comments one level inside and a separate closer at statement level.
+In `accDescr {%% c` followed by `}` or `D}` on the next line, `%% c` stays after
+`{` as description text, since moving it to its own line one level inside the
+block, with `D` and `}` also on separate lines in the second case, makes
+mermaid.js read it as a comment, leaving the description empty or just `D`,
+respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
-statement, as the other diagram types do. Keep line breaks and interior blank
-lines, and the whitespace at the end of each line of text except the last one; a
-line of whitespace only becomes an empty line. The whitespace at the end of the
-last line of text is dropped where the closer stands on a line of its own, and
-is printed as one space where the closer follows it on that line. A separate `}`
-aligns with the statement. Directives and shared removed comment regions keep
-their complete source. Trivia-bearing interiors keep their trivia. The first
-closing brace still closes the block, even inside quote/backslash/hidden-looking
-text.
+statement. Keep line breaks and interior blank lines, and the whitespace at the
+end of each line of text except the last one. The oldest version that counts
+draws the whitespace at the end of a line of text before the last one in the
+description of the figure (`<desc>x  </desc>` for `x` and two spaces), so that
+whitespace stays (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A line of whitespace only becomes an empty line. The whitespace at the end of
+the last line of text is dropped where the closer stands on a line of its own,
+and is printed as one space where the closer follows it on that line. A separate
+`}` aligns with the statement. Directives and shared removed comment regions
+keep their complete source. Trivia-bearing interiors keep their trivia. The
+first closing brace still closes the block, even inside
+quote/backslash/hidden-looking text.
 
 [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:
@@ -535,17 +638,17 @@ comment after a statement in the same way, where no other rule keeps the
 whitespace as written; each of them names those cases in its own sections or in
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
 (whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). The whitespace before a `%%` that follows
-an `accTitle` value is the exception: the oldest version that counts reads it as
-part of the title (see [Accessibility lines](#accessibility-lines)). Keep
-bare/triple-percent marks and trailing comment spaces. Pie native comments end
-at LF, retaining LS/PS inside them, because pie does not treat them as
-separators: ending a comment at one would expose the rest of the line as a
-statement and change the Db; strings and block interiors keep percent content,
-while line common values stop at it. Common removed regions keep their complete
-swallowed source and joined continuation columns, because re-indenting a
-continuation adds spaces to the joined label. A protected preheader prefix
-overrides ordinary alignment.
+that changes what mermaid.js reads). The whitespace before a `%%` or a `%%{}%%`
+that follows an `accTitle` value is the exception: the oldest version that
+counts reads it as part of the title (see
+[Accessibility lines](#accessibility-lines)). Keep bare/triple-percent marks and
+trailing comment spaces. Pie native comments end at LF, retaining LS/PS inside
+them, because pie does not treat them as separators: ending a comment at one
+would expose the rest of the line as a statement and change the Db; strings and
+block interiors keep percent content, while line common values stop at it.
+Common removed regions keep their complete swallowed source and joined
+continuation columns, because re-indenting a continuation adds spaces to the
+joined label. A protected preheader prefix overrides ordinary alignment.
 
 [fixture: pie/comments/comments-align] [fixture:
 pie/comments/inline-gap-run-before-comment] [fixture: pie/comments/comment-bare]
@@ -646,16 +749,22 @@ pie title style:#a;b
 
 Reuse [shared blank grouping](./flowchart.md#blank-lines): collapse ordinary
 ASCII blank runs to one and remove ordinary document/body edge blanks,
-preserving a visible grouping choice. Values, directives, ignored interiors,
-common-region joins and complete retained prefixes keep authored blanks:
-changing these can alter source roles or promote YAML. After a hidden form
-consumes LF, keep one spare LF only when a following statement needs it. At the
-document end use one configured final newline; directly after the header remove
-blank lines, since the header needs no EOL before its first statement. Elsewhere
-apply the ordinary blank-line rules after the spare LF: collapse a run to one
-blank line and clear whitespace-only lines. The spare LF meets the grammar;
-later blanks express grouping, just as after comments. Unicode-only invalid body
-lines remain corpus failures.
+preserving a visible grouping choice. Prettier keeps at most one ordinary blank
+line between statements and none at the document or body edges, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that grouping
+for ordinary blank lines. Values, directives, ignored interiors, common-region
+joins and complete retained prefixes keep authored blanks: changing these can
+alter source roles or promote YAML. After a hidden form consumes LF, keep one
+spare LF only when a following statement needs it. At the document end use one
+configured final newline; directly after the header remove blank lines, since
+the header needs no EOL before its first statement. Elsewhere apply the ordinary
+blank-line rules after the spare LF: collapse a run to one blank line and clear
+whitespace-only lines. The spare LF meets the grammar; later blanks express
+grouping, just as after comments. Prettier treats a line containing only spaces
+and tabs as a blank line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) clears those spaces
+and tabs and leaves at most one ordinary blank line after the required spare LF.
+Unicode-only invalid body lines remain corpus failures.
 
 A hidden boundary or semicolon protection can keep a statement on the header's
 line; the gap after that statement's hidden suffix still lies between
@@ -697,8 +806,11 @@ pie
 ### Trailing whitespace
 
 Reuse [C4 exterior cleanup](./c4.md#trailing-whitespace): remove harmless ASCII
-padding after headers, numbers and completed blocks. Common line edges follow
-Title and Accessibility lines. Preserve label lines, comments, directive/ignored
+padding after headers, numbers and completed blocks. Prettier removes spaces and
+tabs at the end of an ordinary line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that cleanup
+after headers, numbers and completed blocks. Common line edges follow Title and
+Accessibility lines. Preserve label lines, comments, directive/ignored
 interiors, common-region continuations and protected semicolon text. Hidden
 closing-boundary spaces are outside the node range but can preserve required
 EOL, so they remain, including at EOF.
@@ -734,11 +846,28 @@ Reuse [flowchart value columns](./flowchart.md#multi-line-values) and
 [shared no wrapping](./flowchart.md#line-wrapping): source text is authored and
 one layout should apply independently of width. Keep physical label lines, their
 continuation columns and internal blanks; description bodies follow
-[Description blocks](#description-blocks). Do not reflow long statements at
-printWidth or wrap section components. Preserve insertion order, duplicate
-converted labels, prototype/numeric-looking keys, repeated/empty common
-assignments and zero/small slices; reconstructing the resolved Map would lose
-source occurrences or change the first value.
+[Description blocks](#description-blocks). Line breaks inside a quoted label are
+label content for mermaid.js. Keeping physical label lines and internal blank
+lines preserves that content in the Db; removing an internal blank line would
+change the label. Do not reflow long statements at printWidth or wrap section
+components. A visible line break between a slice's quoted label, colon and
+number makes mermaid.js reject the section, so these components stay together
+even when the statement exceeds `printWidth`. Preserve insertion order,
+duplicate converted labels, prototype/numeric-looking keys, repeated/empty
+common assignments and zero/small slices; reconstructing the resolved Map would
+lose source occurrences or change the first value. Prototype-looking labels name
+real slices in mermaid.js, and numeric-looking labels keep Map insertion order.
+Keeping those entries and their order preserves the sections in the Db; dropping
+entries or reordering them as object keys would change the sections or their
+order.
+
+[corpus fixture: pie/db-prototype-labels] [corpus fixture:
+pie/db-numeric-label-order]
+
+[corpus fixture: pie/gram-newline-before-colon] [corpus fixture:
+pie/gram-newline-before-number]
+
+[corpus fixture: pie/label-multiline]
 
 [fixture: pie/multiline-values-and-order/multiline-label] [fixture:
 pie/multiline-values-and-order/no-wrap] [fixture:

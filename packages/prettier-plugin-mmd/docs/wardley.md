@@ -19,9 +19,9 @@ Where a statement stands is no place of rule 1, so
 decides, as [architecture](./architecture.md#header),
 [cynefin](./cynefin.md#header), [radar](./radar.md#header), and
 [treemap](./treemap.md#header) print the header on a line of its own and an
-ordinary first statement on the next line. mermaid.js 12.3.0 rejects a colon
-after the header, so none is added. Hidden forms, retained prefixes and
-protected lines keep their shared boundaries, including an empty body.
+ordinary first statement on the next line. mermaid.js rejects a colon after the
+header, so none is added. Hidden forms, retained prefixes and protected lines
+keep their shared boundaries, including an empty body.
 
 [fixture: wardley/header/header-glued]
 
@@ -166,17 +166,10 @@ wardley-beta
 
 Put one ordinary space between each command keyword and its first complete name,
 number, string or bracket.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the space before a name, a number, or a string: the gap between a keyword and
-its text is one space in the other diagram types, as `title    Pets` in a pie
-chart and `title    Plan` in a Gantt chart are printed with one. No rule gives
-the space before a bracket that a keyword takes: the table of
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) has no row for the
-`[` that opens the values of a keyword, and
-[xychart](./xychart.md#brackets-and-commas), which prints one space before such
-a `[`, gives that form no reason beyond its choice. The released version prints
-one space there, which stays until it is decided (see
-[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that space,
+also before a bracket: Prettier prints one space between a keyword and what it
+takes (`return  x` is printed `return x;`), including the `[` that opens the
+values of the keyword (`return  [800, 600]` is printed `return [800, 600];`).
 The same rule formats glued keywords, including the pipeline keyword: keyword
 terminals have no trailing boundary, and the AST already separates them from the
 name. Keep trivia and hidden boundaries instead of applying ordinary gap rules
@@ -240,10 +233,10 @@ internal spaces/tabs, hyphens, parentheses, ampersands, escapes, empty strings
 and whitespace-only strings, except for the label of a link, which prints a run
 of spaces and tabs as one space (see [Semicolon labels](#semicolon-labels)). The
 name of a component is its id in the Db, and a pipeline finds its component by
-the exact id, so a name with another run of whitespace is another name: 12.3.0
-holds the id with the whitespace as written, and rejects a pipeline whose name
-differs from its component's by a tab for a space. The figures differ too for
-two components whose names differ by a run (see
+the exact id, so a name with another run of whitespace is another name: the Db
+holds the id with the whitespace as written, and mermaid.js rejects a pipeline
+whose name differs from its component's by a tab for a space. The figures differ
+too for two components whose names differ by a run (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 A string of a name between `'` is printed between `"` unless its text holds a
 `'`, a `"`, a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or
@@ -290,11 +283,16 @@ bare name exactly title keeps its authored contact or separation before
 coordinates, a pipeline brace, an evolve target, arrows, ports, @ and /. The one
 space is the gap of [Component spacing](#component-spacing) after a keyword, of
 [Pipeline](#pipeline) before a `{`, and of [Links](#links) around an arrow. The
-space before the number of an `evolve` is the one that [Evolves](#evolves) says
-no rule gives. The released version prints one space before the `[` of a
-coordinate pair. Whitespace after title makes it metadata instead of a name.
-Quoted "title" and bare titlex follow ordinary spacing; uppercase names stay
-names.
+space before the number of an `evolve` is the one that
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives between values
+that follow one another, as Prettier prints CSS `margin: 1px    2px;` as
+`margin: 1px 2px;` (see [Evolves](#evolves)). Before the `[` of a coordinate
+pair the space is the one that
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives before the `[`
+that opens the values of a statement, also after a name or a string, since the
+coordinates are what the statement takes and no label of the name. Whitespace
+after title makes it metadata instead of a name. Quoted "title" and bare titlex
+follow ordinary spacing; uppercase names stay names.
 
 [fixture: wardley/name-boundaries/component-title-contact]
 
@@ -391,31 +389,25 @@ wardley-beta
 Keep every authored label offset, strategy and inertia decoration in grammar
 order. Separate decorations by one space and compact parenthesized interiors.
 Prettier prints no space inside parentheses
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). No rule gives the
-space before the `[` of a label offset, which the keyword `label` takes (see
-[Component spacing](#component-spacing)), and the released version prints one
-space there. Rule 1 names no mark for the other gaps before a decoration, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides where another diagram type has a gap of that kind. Two gaps have one:
-[quadrant](./quadrant.md#styles) prints one space between the `]` of a point and
-its first style, written touching or not (`]radius:9`), as wardley prints one
-between a `]` and the word `label` or the bare `inertia` that follows it; and
-[class](./class.md#member-lines) prints one space between the `)` of a method
-and its return type, where no other rule keeps the method as written (class
-keeps a method with a directive inside it as written), as wardley prints one
-between the `)` of a strategy in parentheses and the bare `inertia` that follows
-it. Those descriptions are of a gap in which no directive stands. A directive in
-the gap is printed after one space and touches the unit that follows it, in
-xychart as in wardley (`line %%{init: {}}%% [1]` is printed
-`line %%{init: {}}%%[1]`, and `label [1, 2] %%{x}%% (build)` is printed
-`label [1, 2] %%{x}%%(build)`). The gap before a `(` that follows a `]` or a
-`)`, which holds a strategy or `(inertia)` in parentheses, has none: the
-documents of the other printers name no such gap, no printed fixture of another
-diagram type holds a `] (` or a `) (`, and the one space that
-[ER](./er.md#attribute-spacing) prints between the keys of an attribute and its
-comment stands before a quoted string, not before a `(`. So the form that the
-released version prints, one space, stays for the gap before a `(` until it is
-decided (see
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
+before the `[` of a label offset, which the keyword `label` takes (see
+[Component spacing](#component-spacing)). The decorations are values that follow
+one another, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+one space between a `]` and the word `label` or the bare `inertia` that follows
+it, and between the `)` of a strategy in parentheses and the bare `inertia` that
+follows it, as Prettier prints CSS `margin: 1px    2px;` as `margin: 1px 2px;`.
+Those descriptions are of a gap in which no directive stands. A directive in the
+gap is printed after one space and touches the unit that follows it, in xychart
+as in wardley (`line %%{init: {}}%% [1]` is printed `line %%{init: {}}%%[1]`,
+and `label [1, 2] %%{x}%% (build)` is printed `label [1, 2] %%{x}%%(build)`).
+The gap before a `(` that follows a `]` or a `)`, which holds a strategy or
+`(inertia)` in parentheses, has none: the documents of the other printers name
+no such gap, no printed fixture of another diagram type holds a `] (` or a
+`) (`, and the one space that [ER](./er.md#attribute-spacing) prints between the
+keys of an attribute and its comment stands before a quoted string, not before a
+`(`. So the form that the released version prints, one space, stays for the gap
+before a `(` until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep bare inertia and (inertia) distinct, along with build, buy, outsource and
 market. The inertia forms can share a Db, but converting them loses an authored
@@ -635,15 +627,13 @@ wardley-beta
 
 Print evolve Name 0.80 with one ordinary space between components, preserving
 the authored reference and decimal.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the one space after the keyword (see [Component spacing](#component-spacing)).
-No rule gives the space between the name and its number:
-[radar](./radar.md#named-entries) prints a name and its number with one space as
-well (`North 4`), but gives that form no reason, so it is no basis for rule 2,
-and the released form stays until it is decided (see
-[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
-Keep empty quoted names and unpublished targets. A missing ID does not justify
-deleting the statement, and joining a bare name to its number can reject it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between the keyword and its name, as Prettier prints `return  x` as `return x;`
+(see [Component spacing](#component-spacing)), and one space between the name
+and its number as values that follow one another, as Prettier prints CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`. Keep empty quoted names and
+unpublished targets. A missing ID does not justify deleting the statement, and
+joining a bare name to its number can reject it.
 
 [fixture: wardley/evolves/evolve-numeric-gap]
 
@@ -667,11 +657,12 @@ Separate note, annotations, annotation and force components with one space; the
 outer annotation comma has no preceding space and one following space too. This
 follows coordinate punctuation without aligning columns. The space between a
 keyword and a string is that of [Component spacing](#component-spacing), the
-space before the `[` after a string is the one of
-[Name boundaries](#name-boundaries), where rule 1 gives none, the space before
-the `[` of `annotations` is the one of [Component spacing](#component-spacing),
-which no rule gives, and the comma is the whitespace that Prettier prints beside
-a comma ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Keep empty
+space before the `[` after a string and the one before the `[` of `annotations`
+are the space that [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives before the `[` that opens the values of a statement (see
+[Component spacing](#component-spacing)), and the comma is the whitespace that
+Prettier prints beside a comma
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Keep empty
 strings, annotation zero, integer/decimal coordinate forms and later unchecked
 annotations boxes.
 
@@ -734,7 +725,9 @@ pairs consistent. The comma and the brackets are those of
 [Coordinates](#coordinates)
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): none inside a
 bracket, none before a comma and one after it), the space between `size` and the
-`[` is the one of [Component spacing](#component-spacing), which no rule gives.
+`[` is the one that [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives before the `[` that opens the values of a keyword (see
+[Component spacing](#component-spacing)).
 
 [fixture: wardley/size/size-spacing]
 
@@ -758,11 +751,12 @@ ordinary outer common whitespace and retain internal text, including unmatched
 quotes, apart from a run of spaces and tabs inside the value, which is printed
 as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-Empty titles stay empty and never take a value from the next line. This chooses
-a compact Db-equal edge without treating the common value as a quoted string.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the one space after `title`, as `title    Pets` in a pie chart and
-`title    Plan` in a Gantt chart are printed with one, and
+Empty titles stay empty and never take a value from the next line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `title` and a nonempty value, as Prettier prints `return  x` as
+`return x;`. This chooses a Db-equal edge without treating the common value as a
+quoted string.
+
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
 gives the reason of the trim. The text of a title stops before the line break,
 so an empty title takes no value from the next line, and a quote in a title is a

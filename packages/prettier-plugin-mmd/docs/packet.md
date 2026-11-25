@@ -10,11 +10,14 @@ escaped fixed tests.
 
 ### Header
 
-Keep the authored `packet` or `packet-beta` keyword at column one. Move an
-ordinary first statement below it, as in the other diagram types. Only `packet`
-requires a following boundary; never create a glued spelling. Hidden boundaries
-and protected header/body groups take precedence. Keep the authored synonym:
-some versions that count read `packet-beta` only (see
+Keep the authored `packet` or `packet-beta` keyword at column one. The header of
+an [info](./info.md#header) diagram also starts at column one.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the packet header the same placement. Move an ordinary first statement below it,
+as in the other diagram types. Only `packet` requires a following boundary;
+never create a glued spelling. Hidden boundaries and protected header/body
+groups take precedence. Keep the authored synonym: some versions that count read
+`packet-beta` only (see
 [The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
@@ -115,7 +118,11 @@ as written.
 Keep every occurrence in order, repeated labels and empty common assignments.
 Never merge or reconstruct statements from the Db: row splitting and the
 publication cap lose authored structure, and deleting empty assignments can
-change the final value.
+change the final value. The mermaid.js Db records separate packet blocks for
+repeated labels at different positions; merging or deleting an occurrence
+changes those blocks.
+
+[corpus fixture: packet/db-same-label]
 
 [fixture: packet/block-forms-and-order/block-three-forms]
 
@@ -203,10 +210,13 @@ of mermaid.js decide the whitespace before it (step 3 of
 examples that write a space after the colon, 29 write no space before it and
 none writes one (counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
-Trivia-bearing gaps retain their boundaries. For
-`0%%{!before}%% :%%{!after}%% "Gap"`, the space before `:` stays, since some of
-the versions of mermaid.js that count reject `0%%{!before}%%:%%{!after}%% "Gap"`
-(see
+A directive in the gap after the colon is printed after the space that the gap
+gets, touching the label, as under
+[Directives between tokens](./compatibility.md#directives-between-tokens):
+`0:  %%{wrap}%%  "A"` is printed `0: %%{wrap}%%"A"`. A hidden form keeps the
+boundaries of its gap. For `0%%{!before}%% :%%{!after}%% "Gap"`, the space
+before `:` stays, since some of the versions of mermaid.js that count reject
+`0%%{!before}%%:%%{!after}%% "Gap"` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: packet/block-colons/colon-compact]
@@ -323,21 +333,29 @@ packet
 ### Title
 
 Print `title`, one space and a nonempty value trimmed at common-whitespace
-edges; null or whitespace-only values print bare `title`. This compacts
-equivalent exterior whitespace while keeping interior text, quotes and escapes,
-apart from a run of spaces and tabs inside the value, which is printed as one
-space (see
+edges; null or whitespace-only values print bare `title`. For equivalent
+exterior whitespace, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives one space between `title` and its value, as Prettier prints `return  x` as
+`return x;`, while keeping interior text, quotes and escapes, apart from a run
+of spaces and tabs inside the value, which is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-Never take a value from the next physical line, even across
-blank/comment/directive gaps. Keep empty final assignments and frontmatter
-fallback; protected trivia/hidden boundaries take precedence. Where only
-directives follow the text of a title, they are printed with one space before
-each that has spaces or tabs before it, and the spaces and tabs after the last
-one are left out, unless a directive of the line holds a line break, a `;`, a
-U+2028, or a U+2029 (see
+Quotes and backslashes are literal title text in the mermaid.js Db, so they
+remain as written. Removing quotes or decoding an escape changes the title. With
+no title text, spaces and tabs after `title` stand at the end of the line, where
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them. Never
+take a value from the next physical line, even across blank/comment/directive
+gaps. Keep empty final assignments and frontmatter fallback; protected
+trivia/hidden boundaries take precedence. Where only directives follow the text
+of a title, they are printed with one space before each that has spaces or tabs
+before it, and the spaces and tabs after the last one are left out, unless a
+directive of the line holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+The spaces and tabs after the final directive stand at the end of the line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them.
+
+[corpus fixture: packet/title-quotes]
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 packet/title/title-trim]
@@ -369,15 +387,22 @@ interior text or comment attachment, except that a run of spaces and tabs inside
 the value of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
-tooltip. Braces after the colon are line text. Never join a next-line value;
-hidden suffixes and protected groups keep their gaps. Where only directives
-follow the text of the value, they are printed with one space before each that
-has spaces or tabs before it, and the spaces and tabs after the last one are
-left out, unless a directive of the line holds a line break, a `;`, a U+2028, or
-a U+2029 (see
+tooltip. An accessibility line gives the diagram one accessible title or
+description, so its colon is a key colon:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) places it against the
+keyword with one space before a nonempty value.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) also removes the
+spaces and tabs at the line end, so an empty value ends at the colon. Braces
+after the colon are line text. Never join a next-line value; hidden suffixes and
+protected groups keep their gaps. Where only directives follow the text of the
+value, they are printed with one space before each that has spaces or tabs
+before it, and the spaces and tabs after the last one are left out, unless a
+directive of the line holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+The spaces and tabs after the final directive stand at the end of the line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them.
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 packet/accessibility-lines/a11y-lines]
@@ -404,20 +429,33 @@ packet
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-For blocks that keep their braces, separate the keyword and opening brace with
-one space so the block boundary is clear. Plain opener whitespace can join
-across physical or Unicode lines; real opener trivia keeps its break.
+For blocks that keep their braces,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between the keyword and the opening brace, as Prettier prints `class A{}` as
+`class A {}`. Plain opener whitespace can join across physical or Unicode lines;
+real opener trivia keeps its break. Moving a removed comment region beside
+`accDescr` makes it a native comment that mermaid.js cannot read between the
+keyword and `{`, so the opening gap keeps the comment region on its own line.
 Whitespace-only interiors become `{}` because no text needs surrounding
-whitespace. Comment/directive-only interiors keep their trivia. Ordinary
-description body and standalone comment lines align one level inside the
-statement, since the Db removes indentation after LF. Keep line breaks and
-interior blank lines, and the whitespace at the end of each line of text except
-the last one; a line of whitespace only becomes an empty line. The whitespace at
-the end of the last line of text is dropped where the closer stands on a line of
-its own, and is printed as one space where the closer follows it on that line. A
-separate closer aligns with the statement. Directives and shared removed comment
-regions keep their complete source. Quotes, backslashes and hidden-looking text
-do not protect the first closing brace.
+whitespace. Prettier prints empty objects and arrays with no interior
+whitespace, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+`{}` for a description body containing only whitespace. Comment/directive-only
+interiors keep their trivia. A bare `%%` line inside a description block is
+accessible-description text in the mermaid.js Db, so the block retains it:
+removing it changes the description. Ordinary description body and standalone
+comment lines align one level inside the statement, since the Db removes
+indentation after LF. Keep line breaks and interior blank lines, and the
+whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. A separate closer
+aligns with the statement. Directives and shared removed comment regions keep
+their complete source. Quotes, backslashes and hidden-looking text do not
+protect the first closing brace.
+
+[corpus fixture: packet/common-block-bare]
+
+[corpus fixture: packet/lex-block-native-comment-inline-gap]
 
 [fixture: packet/description-blocks/description-gaps] [fixture:
 description-blocks/block-trailing-whitespace] [fixture:
@@ -560,10 +598,16 @@ textBeforeHeader/body/named-gap/textAfter owner, as its complete source span.
 Preserve consumed LF outside the range and closing padding, including EOF:
 moving or trimming a required boundary can reject a following statement.
 Exterior spare LF and edge blanks follow [Blank lines](#blank-lines). Never
-format its opaque body as YAML or add LF before it. Ordinary body openers may
-indent; internal and closing columns stay. Preserve empty/three-fence matches,
-multiple forms, later qualifying closers and global cuts. Earlier values retain
-lexical priority.
+format its opaque body as YAML or add LF before it. A line break before hidden
+YAML between `+` and its count adds a visible LF between block components, which
+mermaid.js rejects, so that hidden form keeps its inline position. Ordinary body
+openers may indent; internal and closing columns stay. An ordinary hidden YAML
+opener uses one level of body indentation. Mermaid.js does not recognize an
+indented fence as the end of hidden YAML, so the closing fence stays at column
+one. Preserve empty/three-fence matches, multiple forms, later qualifying
+closers and global cuts. Earlier values retain lexical priority.
+
+[corpus fixture: packet/hidden-yaml-indent-close]
 
 [fixture: packet/hidden-yaml/yaml-gap-count]
 
@@ -765,15 +809,18 @@ packet
 
 Collapse ordinary internal ASCII blank runs to one blank line and remove
 ordinary document/body edge blanks, also around comments, for visible grouping
-without excess space. Keep value, block, directive and hidden interiors,
-common-region joins and retained prefixes: those breaks belong to content or
-source roles. After a hidden form consumes LF, keep one spare LF only when a
-following statement needs it. At the document end use one configured final
-newline; directly after the header remove blank lines, since the header needs no
-EOL before its first statement. Elsewhere apply the ordinary blank-line rules
-after the spare LF: collapse a run to one blank line and clear whitespace-only
-lines. The spare LF meets the grammar; later blanks express grouping, just as
-after comments.
+without excess space. Prettier prints at most one blank line between items and
+none at block edges in JavaScript, CSS, YAML and Markdown, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the ordinary
+blank-line form. The LF consumed by a hidden form is a separate grammatical
+boundary. Keep value, block, directive and hidden interiors, common-region joins
+and retained prefixes: those breaks belong to content or source roles. After a
+hidden form consumes LF, keep one spare LF only when a following statement needs
+it. At the document end use one configured final newline; directly after the
+header remove blank lines, since the header needs no EOL before its first
+statement. Elsewhere apply the ordinary blank-line rules after the spare LF:
+collapse a run to one blank line and clear whitespace-only lines. The spare LF
+meets the grammar; later blanks express grouping, just as after comments.
 
 A hidden boundary or semicolon protection can keep a statement on the header's
 line; the gap after that statement's hidden suffix still lies between

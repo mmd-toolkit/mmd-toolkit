@@ -165,7 +165,7 @@ How it is built (under `src/printers/`):
   of sections, statements that hold no other), decide the kinds in one function
   whose switch lists every statement type, checks each case against the type of
   its kind, and ends with a `satisfies` check that fails when a statement type
-  is not listed (`classifySequenceStatement` in `sequence-layout.ts`);
+  is not listed (`classifySequenceStatement` in `sequence-statements.ts`);
   everything else asks that function, rather than keeping its own list of types.
 - Value nodes (`Identifier`, `StringLiteral`, labels, and so on) are printed as
   the text of their ranges. Each diagram type has its list of them

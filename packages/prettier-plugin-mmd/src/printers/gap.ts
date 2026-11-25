@@ -7,6 +7,7 @@ import {
   isInsideStyleRuleStretch,
   ignoredSemicolonAtCommentEnd,
   keepsStyleTerminator,
+  printedIgnoredSemicolonsOf,
 } from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
@@ -56,6 +57,12 @@ export interface ItemRun {
   readonly spaceAfter: boolean
   /** Whether the source had whitespace between two of the printed items. */
   readonly spaceWithin: boolean
+  /**
+   * The offsets of the `;` that separate statements and that the run prints
+   * as items, because an item follows them that they must not touch (see
+   * `toRun`).
+   */
+  readonly separators: readonly number[]
   /**
    * The items, when each is a directive or a `;` that the line rule ignores,
    * which mermaid.js reads as not there; null when the run holds any other
@@ -331,6 +338,30 @@ export function readGap(
 }
 
 /**
+ * The run that `readGap` makes of the rest of the line that starts at
+ * `offset`, which is what the block prints on the line of what ends at
+ * `offset` (`Gap.trailing`), or undefined where anything but a gap stands in
+ * the rest of the line, such as a statement. A layout that plans around the
+ * printed run asks it here, so that which `;` stay, and where the run starts,
+ * are decided once, by `toRun`.
+ */
+export function readRunOnItsLine(
+  source: Source,
+  offset: number,
+  options: { readonly dropsSeparatorsBeforeComments?: boolean } = {},
+): ItemRun | null | undefined {
+  let end = offset
+  while (end < source.text.length) {
+    const element = readGapElement(source, end)
+    if (element.element.kind === "text") return undefined
+    end = element.end
+    if (element.element.kind === "lineTerminator") break
+  }
+  return readGap(source, offset, end, false, { ...options, endsText: true })
+    .trailing
+}
+
+/**
  * For a line that holds a comment with the mark `%%` that starts with `%%{`,
  * which is no directive, since the directives are items of their own: the
  * number of its items, from the second to the comment, that have whitespace
@@ -469,8 +500,16 @@ export function readGapElement(
   }
   const token = findTokenStartingAt(source, offset)
   if (token?.value === ";") {
-    return source.ignoredSemicolons.has(offset)
-      ? { element: { kind: "item", item: token }, end: token.range[1] }
+    return printedIgnoredSemicolonsOf(source).has(offset)
+      ? {
+          element: {
+            kind: "item",
+            item: source.ignoredSemicolons.has(offset)
+              ? token
+              : { ...token, type: "IgnoredSemicolon" },
+          },
+          end: token.range[1],
+        }
       : { element: { kind: "separator", token }, end: token.range[1] }
   }
   return { element: { kind: "text" }, end: offset + 1 }
@@ -674,6 +713,7 @@ function toRun(
     if (!part.separates) lastItem = index
   }
   const doc: Doc[] = []
+  const separators: number[] = []
   let spaceBefore = false
   let spaceWithin = false
   let spacePending = false
@@ -698,6 +738,7 @@ function toRun(
       doc.push(" ")
       spaceWithin = true
     }
+    if (part.separates) separators.push(part.item.range[0])
     firstPrinted ??= part
     doc.push(printItem(source, part.item))
     printed = part
@@ -712,6 +753,7 @@ function toRun(
     spaceBefore,
     spaceAfter: spaceAfter || spacePending,
     spaceWithin,
+    separators,
     absentItems: parts.every(
       (part) =>
         !part.separates &&

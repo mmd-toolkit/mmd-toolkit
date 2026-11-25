@@ -368,6 +368,9 @@ d,e,2
 
 これらは他の図種の規則と同じで、sankey だけの規則を足さないためです。
 mermaid.js の文書がヘッダーの後に書く空行も、本体の先頭の空行として落とします。
+Prettier は JavaScript、CSS、YAML、Markdown の先頭に空行を置きません。
+テキストの先頭でヘッダーの前にある空行を落とす形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 入力
 ([blank-lines/collapsed-input.mmd](../tests/fixtures/sankey/blank-lines/collapsed-input.mmd)):
@@ -394,7 +397,7 @@ c,d,2
 ### ヘッダー
 
 ヘッダーの `sankey` と `sankey-beta` は、書かれた大文字小文字を保ちます。
-mermaid.js 12.3.0 ではどちらも同じ図種で、Db も同じですが、
+mermaid.js ではどちらも同じ図種で、Db も同じですが、
 対象にする版に `sankey-beta` だけを読むものがあるため、
 作者が書いた綴りを保ちます。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
@@ -409,6 +412,12 @@ mermaid.js は、指令とコメント行以外が続くと拒否します。
 [fixture: header/upper-case-beta] [fixture: header/leading-whitespace-dropped]
 
 ヘッダーに接した指令は、接したままです。
+mermaid.js はヘッダーを読む前に指令を取り除くので、指令の前に空白を置くと、
+その空白がヘッダーの行に残ります。
+mermaid.js はそれを拒否します。
+
+[corpus fixture: sankey/header-directive-glued-to-header]
+[corpus fixture: sankey/header-directive-after-space-on-header-line]
 
 [fixture: header/directive-glued-to-the-header]
 
@@ -590,6 +599,10 @@ mermaid.js が受理するタブ、U+00A0、U+3000、U+2028、U+2029、U+FEFF �
 テキストの末尾にあるものだけです。
 テキストの末尾では、空白は読む前に落とされます。
 出力ではそれらを落とし、テキストは最後の記録の後の改行で終わります。
+Prettier は JavaScript、CSS、YAML、Markdown の末尾に改行を 1 つ置き、
+空行は置きません。
+入力の末尾に改行がなくても、出力の末尾に改行を 1 つ置き、空行を置かない形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 例は文字列で書き、`\u00a0` は U+00A0、`\u3000` は U+3000、`\n` は改行です。
 
 [test: U+00A0 at the end of the text]

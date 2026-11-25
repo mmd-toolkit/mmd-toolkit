@@ -87,11 +87,9 @@ printed as written, for the reason given under [Header](#header). The keyword
 `block:` holds its colon, and one space separates it from its node: `block:G` is
 printed `block: G`, and `block:G:2` is printed `block: G:2`, the colon of the
 width touching the node as it does elsewhere in a block diagram, for the reason
-given under [Shapes](#shapes). A gap between a keyword and what follows it has
-one form in every diagram type (`title Pets`; see
-[A gap of a kind that Prettier does not have](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)),
-and that rule comes before the spelling of the examples of mermaid.js, which
-write `block:` touching its node 4 times and never with a space after it.
+given under [Shapes](#shapes).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `block:` and its node, as Prettier prints `return  x` as `return x;`.
 mermaid.js reads `block: G` and `block:G` alike, and so do all the versions that
 count, so none needs the touching form. They all reject a space before the colon
 (`block : G`), which the keyword `block:` forbids, so the printer never writes
@@ -323,9 +321,9 @@ block-beta
 
 ### Header
 
-The header, `block-beta` or `block`, is printed as written: mermaid.js 12.3.0
-reads them as the same diagram type, but some versions that count detect
-`block-beta` only, so the spelling is the author's (see
+The header, `block-beta` or `block`, is printed as written: mermaid.js reads
+them as the same diagram type, but some versions that count detect `block-beta`
+only, so the spelling is the author's (see
 [The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The whitespace before it is dropped (see [Indentation](#indentation)), and a
@@ -378,9 +376,10 @@ block-beta
 
 `columns` is followed by its number or `auto` after one space, whatever
 whitespace was written between them (a tab, a line break): mermaid.js reads any
-whitespace there, and the form is one line, as every diagram type prints the gap
-between a keyword and what follows it (see [Composites](#composites)). `space:2`
-is printed with the `:` touching, by the rule of
+whitespace there, and the form is one line;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `columns` and what it takes, as Prettier prints `return  x` as
+`return x;`. `space:2` is printed with the `:` touching, by the rule of
 [Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace):
 every version of mermaid.js that counts rejects `space: 2`, so no space follows
 the colon, and none stands before it either (`a :2` is printed `a:2`) (see
@@ -709,12 +708,14 @@ block-beta
 
 `classDef`, `style`, and `class` are followed by one space, the name of the
 class or the id, and one space; the whitespace after the keyword and before the
-first style is not in the Db, so it becomes one space, the one form of a gap
-between a keyword and what follows it in every diagram type (see
-[Composites](#composites)). The styles of `classDef` and `style` use the spacing
-below; the value of a `class` is printed as written, except that a run of spaces
-and tabs inside a class name is printed as one space: the Db changes, but every
-version of mermaid.js that counts draws the same figure (see
+first style is not in the Db, so it becomes one space, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes (Prettier prints `return  x` as `return x;`)
+and between values that follow one another (Prettier prints CSS
+`margin: 1px    2px` as `margin: 1px 2px`). The styles of `classDef` and `style`
+use the spacing below; the value of a `class` is printed as written, except that
+a run of spaces and tabs inside a class name is printed as one space: the Db
+changes, but every version of mermaid.js that counts draws the same figure (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 `class A,B c1` stays, since every version of mermaid.js that counts draws
 `class A, B c1` differently (see
@@ -884,14 +885,9 @@ A style that starts with the `:` is printed as any other: one space after the
 [fixture: styles/style-colon-first-run-spaced]
 
 A `style` with no styles is printed as `style A`: the id stands after one space
-and nothing follows it. Rule 1 of
-[How the printed form is decided](./printed-form.md#1-the-whitespace-beside-a-mark)
-names no mark between a keyword and its id, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [wardley](./wardley.md#component-spacing) puts one ordinary space
-between each command keyword and its first complete name, and
-[radar](./radar.md#groups-and-commas) between a group keyword and its first
-member.
+and nothing follows it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `style` and its ID, as Prettier prints `return  x` as `return x;`.
 
 [fixture: styles/style-without-styles] [corpus fixture: block/db-style-none]
 
@@ -1746,17 +1742,16 @@ right before the statement, it is in lower case (`style a fill:#F00;`, U+2028,
 and `%% c` are printed `style a fill:#f00;`, U+2028, and `%% c`). In a block
 diagram, mermaid.js reads the U+2028 as the end of the line and `%% c` as a
 comment. For `style a fill:#F00`, a U+2028, and `%% c` at the end of the text,
-the Db of 12.3.0 holds neither of them in the style, and differs from that of
-the plain line only in the whitespace after the first `:` and in the case of the
-color, which
+the Db holds neither of them in the style, and differs from that of the plain
+line only in the whitespace after the first `:` and in the case of the color,
+which
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
-define, and the drawings of 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 are the
-same; so are the drawings of the other rows of the table that drop the U+2028
-after a style statement, and the record holds the row where nothing follows and
-twelve inputs of the others (one row holds two). In a label they are characters
-and stay.
+define, and the drawings of every version that counts are the same; so are the
+drawings of the other rows of the table that drop the U+2028 after a style
+statement, and the record holds the row where nothing follows and twelve inputs
+of the others (one row holds two). In a label they are characters and stay.
 
 [test: U+2028 between two statements of a row] [test: U+2029 between two
 statements of a row] [test: U+2028 around the arrow of an edge] [test: U+2028

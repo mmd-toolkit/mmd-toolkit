@@ -11,8 +11,10 @@
 ### Header
 
 XY chart の[ヘッダーと向き](./xychart.ja.md#ヘッダーと向き) を再利用します。
-ほかの図種と同じく、正確な小文字の `pie` を先頭列に置き、
-書かれた `showData` の前を空白1つにします。
+ほかの図種と同じく、正確な小文字の `pie` を先頭列に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`pie` と書かれた `showData` の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 通常の同一行の最初の文は次行へ移します。
 指定前の隠れた形と消費される改行は保持します。
 移動すると指定を読めなくなるためです。
@@ -199,16 +201,22 @@ pie showData
 
 ### Title
 
-C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行)と同じ理由で、
-共通値の同等な外側空白を1つの形にします。
+共通値の同等な外側空白には、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードと値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 `title` の後は空白1つと両端を除いた空でない値にし、
 `null`・空・空白だけなら `title` だけにします。
 値の中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 引用符、バックスラッシュ、
 重複代入と代わりに使われるフロントマターの値は残します。
-pie は次の物理行を title に結合しません。
-空行・コメント・ディレクティブを挟んでも次の区分は別文です。
+mermaid.js はタイトルの引用符とバックスラッシュを、
+タイトルの文字そのものとして読みます。
+引用符を除くか、バックスラッシュの並びをエスケープとして解釈すると、
+Db のタイトルが変わるため、そのまま残します。
+固定した文法は次の物理行を title に結合しません。
+空行・コメント・ディレクティブを挟んでも次の区分は別文で、
+数える版のうち最も古い版が別に読む場合は、下の場合に書きます。
 保持する注釈類とセミコロンのまとまりを優先します。
 テキストと `%%` のコメントの間の、空白でもタブでもない空白文字（U+000B、U+000C、
 改行しない空白、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF）は、
@@ -220,6 +228,13 @@ pie は次の物理行を title に結合しません。
 `%% c` は `title T %% c` と印字します。
 コメントに接するディレクティブがあっても同じです（`title T`、改行しない空白、
 `%%{x}%%`、`%% c` は変えません）。
+`%%{` の後ろに、空白を除いて語の文字が続かないもの（`%%{}%%` など）は、
+その版が `%%` と同じようにテキストとして読むので、その前の空白も同じに扱います。
+`title T`、改行しない空白、`%%{}%%` は変えません。
+`title T`、空白 2 つ、`%%{}%%` は `title T %%{}%%` と印字します。
+詳しくは
+[最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
+を参照してください。
 テキストの後のディレクティブの後に空白が続くときは、ほかの図と同じに印字します。
 `title    T`、改行しない空白、`%%{x}%%`、空白 2 つ、`%% c` は、`title T`、
 その改行しない空白、`%%{x}%% %% c` と印字します。
@@ -231,11 +246,15 @@ U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
+[corpus fixture: pie/title-quotes]
+
 [fixture: title/title-directives-end-blanks-dropped]
 [fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
 [fixture: pie/title/title-inner-text]
 [fixture: pie/title/empty-value-with-directive]
+[fixture: pie/title/title-empty-directive-gap-printed]
+[test: a whitespace character that is no space or tab before an empty directive after the title of a pie chart]
 [test: a no-break space before a comment after the title of a pie chart]
 [test: U+3000 before a comment after the title of a pie chart]
 [test: U+2003 before a comment after the title of a pie chart]
@@ -261,6 +280,42 @@ pie
   title Sales report
   "Sales": 8
 ```
+
+数える版のうち最も古い版では、U+2028 か U+2029 でテキストが終わり、
+コメントの領域が続く title は、その領域の後の `%%` だけの行を、
+テキストの一部として取り込みます。
+mermaid.js はコメントの領域を、それを終える改行と一緒に取り除くので、
+その後の行は title の行に続きます。
+`%%` だけの行はコメント行ではないので残り、
+固定した文法はそれをコメントと読みます。
+そのような行が続く title は、その `%%` まで書かれたまま印字します。
+title を独立した行にして、コメントの領域と `%%` の行を続けると、
+その版は違う title を描くためです。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+どの title とも同じく、title と領域を独立した行に移します。
+テキストのあるコメント行か、空白だけの行が続くときは、
+title と続きを書かれたまま残します。
+U+2028 か U+2029 で title が終わらないときは、通常どおり印字します。
+どれもこれまでどおりです。
+
+[test: pie/title/title-text-ls-comment-then-whitespace-line-kept]
+[test: pie/title/title-text-ls-comment-at-end-moved]
+[test: pie/title/title-ignored-semicolon-ls-comment-then-percent-line-kept]
+[test: pie/title/title-two-ignored-semicolons-ls-comment-then-percent-line-kept]
+[test: pie/title/title-ls-comment-then-percent-line-kept]
+[test: pie/title/title-text-ls-comment-then-percent-line-kept]
+[test: pie/title/title-ps-comment-then-percent-line-kept]
+[test: pie/title/title-ls-spaced-comment-then-percent-line-kept]
+[test: pie/title/title-ls-comment-only-then-percent-line-kept]
+[test: pie/title/title-ls-comment-then-percent-line-at-end-kept]
+[test: pie/title/title-ls-comment-then-blank-line-moved]
+[test: pie/title/title-ls-comment-then-directive-line-moved]
+[test: pie/title/title-ls-comment-then-comment-line-kept]
+[test: pie/title/title-comment-then-percent-line-without-separator]
+[test: pie/title/title-text-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/title/title-text-ls-comment-then-two-percent-lines-kept]
+[test: pie/title/title-text-ls-comment-then-percent-line-crlf-kept]
+[test: pie/title/title-text-ls-comment-then-unclosed-directive-line-moved]
 
 ### Accessibility lines
 
@@ -290,7 +345,10 @@ mermaid.js が先に取り除く空行・コメント・ディレクティブの
 その文は書かれたまま残します（`"A":1` を `"A": 1` と印字しません）。
 `accTitle` の値の後の `%%` の前の空白も、その版が title の一部として読むので、
 書かれたまま残します（`accTitle: Value   %% note`）。
-`accDescr` の値の後の `%%` の前の、
+`%%{` の後ろに、空白を除いて語の文字が続かないもの（`%%{}%%` など）も、
+その版はテキストとして読むので、
+その前の空白は同じに残します（`accTitle: Value   %%{}%%`）。
+`accDescr` の値の後の `%%` か、そうした `%%{` の前の、
 空白でもタブでもない空白文字（[Title](./pie.ja.md#title)
 が挙げる文字）も同じです。
 その版が説明の一部として描くので、その場に残します（`accDescr: Value`、
@@ -315,6 +373,18 @@ U+2029 があるときを除きます。
 [fixture: accessibility-lines/acc-title-percent-gap-kept]
 [fixture: accessibility-lines/acc-value-after-blank-and-directive-kept]
 [fixture: accessibility-lines/acc-value-with-value-then-row-split]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-tab-kept]
+[fixture: pie/accessibility-lines/acc-title-spaced-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-punctuation-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-then-comment-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-directive-then-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-unclosed-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-no-final-newline-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-spaced-word-directive-gap-printed]
+[fixture: pie/accessibility-lines/acc-descr-empty-directive-gap-printed]
+[test: a whitespace character that is no space or tab before an empty directive after the accTitle line of a pie chart]
+[test: a whitespace character that is no space or tab before an empty directive after the accDescr line of a pie chart]
 [fixture: pie/accessibility-lines/a11y-lines]
 [fixture: pie/accessibility-lines/a11y-empty]
 [fixture: pie/accessibility-lines/a11y-next-section]
@@ -337,6 +407,31 @@ U+2029 があるときを除きます。
 [test: a no-break space before a directive and two spaces before a comment after the accDescr line of a pie chart]
 [test: a no-break space before a comment after the accDescr line, with no line break at the end of a pie chart]
 
+`accTitle:` と `accDescr:` の行も同じです。
+U+2028 か U+2029 で値が終わり、コメントの領域が続き、
+その後に `%%` だけの行がある行は、その `%%` まで書かれたまま印字します。
+数える版のうち最も古い版が、`%%` の行を、描画に出る値に取り込むためです。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+これまでどおり、その行と領域を独立した行に移します。
+
+[test: pie/accessibility-lines/accdescr-ps-directive-comment-at-end-moved]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ps-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-at-end-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-blank-line-moved]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-unclosed-directive-line-moved]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ps-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-at-end-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-blank-line-moved]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-unclosed-directive-line-moved]
+
 入力（エスケープ表記）:
 `"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`
 
@@ -354,12 +449,11 @@ pie
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
-波括弧を残すブロックは、
-flowchart の[複数行の値](./flowchart.ja.md#複数行の値)と、
-sequence の[複数行の値](./sequence.ja.md#複数行の値)を再利用します。
-どちらも、ブロックの行を文の 1 段内側に置きます。
-説明の Db では LF 後の字下げが取り除かれるためです。
+波括弧を残すブロックでは、本文の行を文の 1 段内側に置きます。
 通常の隙間では、接して書かれていても語と開き括弧の間に空白 1 つを置きます。
+Prettier はブロックの開き括弧の前に、空白 1 つを置くので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が語と `{` の隙間を決めます。
+`accDescr` と `{` の間が空白だけなら、改行を含んでも同じ形にします。
 保護対象の注釈類やセミコロンの配置では、その隙間を保ちます。
 開き括弧の前が空白だけなら改行や Unicode の境界も結合できます。
 コメント・ディレクティブの改行は残します。
@@ -369,6 +463,8 @@ mermaid.js が拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください）。
 空白だけの内部は囲む値がないため `{}` にします。
+空白だけの説明ブロックは、Prettier が空の波括弧を内側の空白なしで印字するので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が `{}` の形を与えます。
 コメントだけなら1段内側に置き、別行の閉じを文の列に揃えます。
 `accDescr {%% c` の次行が `}` または `D}` のブロックで、
 `{` の後の `%% c` を説明のテキストとしてその位置に残すのは、
@@ -377,10 +473,15 @@ mermaid.js が拒否するためです（詳しくは
 説明がそれぞれ空または `D` だけになるためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください）。
-ほかの図種と同じく、通常の後続本文と独立したコメント行は、
-文より1段内側に揃えます。
+通常の後続本文と独立したコメント行は、文より 1 段内側に揃えます。
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
+対象にする版のうち最も古い版は、最後より前のテキスト行の行末の空白を、
+図の説明に描きます（`x` と空白 2 つなら `<desc>x  </desc>`）。
+そのため、その空白は残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
@@ -578,7 +679,8 @@ pie
 自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。
-コメントの前の空白が例外になるのは、`accTitle` の値の後ろの `%%` です。
+コメントの前の空白が例外になるのは、
+`accTitle` の値の後ろの `%%` と `%%{}%%` です。
 数える版のうち最も古い版が、その空白をタイトルの一部として読むためです。
 詳しくは [アクセシビリティの行](#accessibility-lines) を参照してください。
 裸・3つのパーセントと末尾の空白を残します。
@@ -693,6 +795,9 @@ pie title style:#a;b
 
 見えるまとまりを保つため、共有の[空行](./flowchart.ja.md#空行)を再利用します。
 通常の ASCII の空行の連続は1行にし、文書・本文の端の通常の空行は除きます。
+通常の空行は、Prettier が文の間の空行を最大 1 行にし、
+文書・本文の端には置かないので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
 値・ディレクティブ・無視された部分の内部、
 共通領域の結合と前置き全体は元の空行を保ちます。
 変えると原文の役割や YAML の意味が変わり得るためです。
@@ -702,6 +807,9 @@ pie title style:#a;b
 それ以外は予備の LF の後に通常の空行の規則を適用し、連続空行を1行、
 空白だけの行を空行にします。
 予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
+必要な予備の LF の後でも、Prettier は空白とタブだけの行を空行とみなすので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が空行の形を与えます。
+行の空白とタブを除き、通常の空行を最大 1 行にします。
 Unicode だけの不正な本文行はコーパスの解析失敗です。
 
 隠れた形の境界やセミコロンの保護で文が見出しの行に残っても、
@@ -744,6 +852,9 @@ pie
 
 C4 の[末尾空白](./c4.ja.md#末尾空白)を再利用し、
 見出し・数値・完了したブロック後の無害な ASCII 空白を除きます。
+見出し・数値・完了したブロックの後の行末は、
+Prettier が通常の行末の空白とタブを除くので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
 共通の行形式の両端はタイトルとアクセシビリティの行に従います。
 ラベル行・コメント・ディレクティブと、
 無視された部分の内部・共通領域の継続・セミコロンの保護範囲は残します。
@@ -781,11 +892,28 @@ flowchart の [複数行の値](./flowchart.ja.md#複数行の値) と共有の
 [折り返し](./flowchart.ja.md#折り返し) を再利用します。
 原文は著者の選択で、幅によらず同じ配置にするためです。
 ラベルの物理行、継続列、内部の空行を保持します。
+引用符で囲まれたラベルの改行は、mermaid.js がラベルの内容として読むので、
+物理行と内部の空行を残します。
+内部の空行を除くと、Db のラベルが変わります。
 説明本文は [説明ブロック](#description-blocks) に従います。
 `printWidth` で長い文を折り返さず、区分の部品も別行にしません。
+区分の引用符で囲まれたラベル・コロン・数値の間に、見える改行を入れると、
+mermaid.js が拒否するため、`printWidth` を超えてもこれらを別行にしません。
 挿入順、変換後に重なるラベル、プロトタイプ・数値に見えるキー、
 共通文の重複・空代入、ゼロや小さい扇形を残します。
 解決した `Map` から組み直すと出現を失うか最初の値が変わるためです。
+mermaid.js では、プロトタイプに見えるラベルも実際の区分で、
+数値に見えるラベルも `Map` の挿入順を保ちます。
+区分を落とすか、オブジェクトのキー順に並べ替えると、
+Db の区分や順序が変わるため、そのまま残します。
+
+[corpus fixture: pie/db-prototype-labels]
+[corpus fixture: pie/db-numeric-label-order]
+
+[corpus fixture: pie/gram-newline-before-colon]
+[corpus fixture: pie/gram-newline-before-number]
+
+[corpus fixture: pie/label-multiline]
 
 [fixture: pie/multiline-values-and-order/multiline-label]
 [fixture: pie/multiline-values-and-order/no-wrap]

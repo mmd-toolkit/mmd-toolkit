@@ -261,6 +261,9 @@ timeline
 ### 空行
 
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+Prettier は、テキストの先頭の空行を落とします。
+`timeline` ヘッダーの前の空行を落とす形も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 journey と同じ規則です。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
@@ -270,10 +273,16 @@ journey と同じ規則です。
 [fixture: blank-lines/around-comment-lines]
 
 `section` の周りの空行は、1 つにして、隣の行と同じ段に残します。
+Prettier は、連続する空行を 1 つにします。
+`section` の周りでも、空行を同じ文の間に 1 つ残す形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: blank-lines/around-sections]
 
 period とその event の間の空行も同じに扱い、その中に残します。
+Prettier は、連続する空行を 1 つにします。
+period と event の間でも、空行を同じ位置に 1 つ残す形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: blank-lines/between-a-period-and-its-events]
 
@@ -343,6 +352,8 @@ event の `:` の後ろの 1 文字を除いた両端の空白を、値として
 `a : e   ` の event は `e   ` です。
 そのため、timeline の `:` をそろえるための空白は残します。
 行末の `a : e   ` は `a : e` と印字し、`c : g   : h` は書かれたままにします。
+event の `:` に区切り文字だけが続く形は、mermaid.js が拒否します。
+空白かタブだけの event も、それらを除くとこの形になるので、そのまま残します。
 末尾に空白のないテキストの後の `:` には、その前に空白を 1 つ足します。
 mermaid.js の文書の例は、
 テキストの後の `:` をすべてこう書きます（88 個が前に空白を置き、
@@ -369,6 +380,13 @@ period が `title` か `section` の語（大文字小文字は問いません�
 最後のディレクティブの後ろの空白は除きますが、その前の空白の連なりは残します。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+Prettier は、行末に空白やタブを置かずに印字します。
+event の最後の指令の後ろも行末なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+空白とタブを落とす形を与えます。
+
+[corpus fixture: timeline/db-event-two-spaces]
+[corpus fixture: timeline/gram-event-empty-after-colon-space]
 
 [fixture: periods-and-events/event-trailing-directive-blanks-dropped]
 [fixture: periods-and-events/event-two-directives-trailing-blanks-dropped]
@@ -631,6 +649,9 @@ title の後ろの event を読む人がどう読むかは、整形の問題で�
 [fixture: event-statements/in-a-section]
 
 その前のコメント行、指令の行、空行は、ほかの文の前と同じに扱います。
+Prettier は、文の間に続く空行を 1 つにします。
+event の文の前の空行も同じ隙間なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [fixture: event-statements/comment-line-before]
 [fixture: event-statements/directive-line-before]
@@ -693,10 +714,17 @@ timeline
 ### title と section
 
 `title` は、キーワードの後ろに空白 1 つを置いて印字します。
-この形は journey と同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとその値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 値の先頭と末尾の空白とタブは除きます。
 Db はそれらを持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+値の末尾の空白とタブは行末にあり、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+Prettier が行末の空白とタブを落とすのと同じく、そこに何も置きません。
+[タイトルの両端の空白の例外](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+が、これによる Db の変更を認めます。
 `title   History  ` は `title History` と印字します。
 中の空白とタブの連なりも、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
@@ -742,6 +770,9 @@ period `title` とコメントとして読みますが、残りの版は、
 `#` が行頭にあると、その版でも両方の形が period `title` になるので、
 値はキーワードにつなげます。
 `#` の前の空白が 1 文字（半角空白かタブ）のときは、空白 1 つで印字します。
+Prettier は、`return  x` を `return x;` と印字します。
+`title` の後ろの `#` の前が、空白かタブ 1 文字のときに、空白 1 つにする形も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: titles-and-sections/title-hash-on-next-line-kept]
 [fixture: titles-and-sections/title-hash-after-padding-kept]
@@ -908,6 +939,13 @@ timeline について対象にする版は、どちらの形も同じに描き�
 `accDescr   {alpha}    accDescr {beta}` は、
 `accDescr {alpha} accDescr {beta}` になります。
 元に空白がない所には、何も足しません（`accDescr{ alpha}`）。
+対象にする版のうち古い版は、方向の後のテキストを文字として描くので、
+`timeline TD accDescr{x}` と `timeline TD accDescr {x}` は別の図になります。
+空白がそのテキストの一部になるためです。
+規則 1 がブロックの `{` の前に置く空白は、ここでは足しません。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 空白でもタブでもない空白文字（U+00A0、U+2003 など）は、
 ブロックの `}` の後ろでも、行のほかの場所と同じく、書かれた場所に残ります。
 複数行のブロックの `}` の後ろも同じです。
@@ -1173,6 +1211,11 @@ mermaid.js が複数行にわたって読む文は、字句解析器が改行を
 `title`、`section`、`accTitle:`、`accDescr:` の後ろ、
 `accTitle` と `accDescr` の `:` の前後、そして event の `:` の後ろです。
 event の `:` の後ろの改行は、字句解析器が読む区切りの空白 1 文字です。
+Prettier は、キーワードとその値の間に、空白 1 つを置き、
+キーの `:` には前の空白を置かず、後ろに空白 1 つを置きます。
+行をつなぐときのこれらの隙間と、event の `:` の後ろの空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+event の区切りより後ろのテキストは変えません。
 テキストは `:` の行に移り、行頭の空白は event の一部としてそのまま残ります。
 
 [fixture: multi-line-statements/value-on-next-line-joined]
@@ -1208,6 +1251,12 @@ title と section、event テキストの続きでは、値の空白が Db の�
 event の `:` の後ろにある、字下げされた指令だけの行は、
 event の始まりの空白です。
 そのため event は `:` の行に、その空白と、後ろの指令とともに印字します。
+指令だけの event 行の字下げは、`:` の区切り文字より後ろのテキストです。
+それを除くと、指令の除去後に event のテキストがなくなり、
+mermaid.js が拒否するので、その空白を残します。
+
+[corpus fixture: timeline/lex-event-line-feed-directive-line]
+[corpus fixture: timeline/lex-event-line-feed-directive-line-unindented]
 
 [fixture: multi-line-statements/directive-line-after-the-colon-is-the-text]
 
@@ -1215,6 +1264,11 @@ event の始まりの空白です。
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+アクセシビリティのテキストの `;` は文字なので、行の規則が変わらなければ、
+改行をつなげます。
+Prettier は、キーの `:` の後ろに空白 1 つを置きます。
+行をつなぐときも、この空白 1 つの形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 title、section、period、event は、改行が残る場合、書かれたままにします。
 Db がそれらの先頭の空白を持つからです。
 [1 行 1 文](#1-行-1-文)を参照してください。
@@ -1329,6 +1383,11 @@ Db の設定処理はこの字下げを捨てるので、section の中でも、
 [fixture: multi-line-values/description-directive-only-lines]
 
 テキスト行の中の U+2028 と U+2029 は書かれたまま残します。
+mermaid.js は、説明の中の U+2028 と U+2029 を、Db の値の文字として持ちます。
+LF への置き換えは、認められた空白変更の例外には含まれず、Db の説明が変わるので、
+その文字を残します。
+
+[corpus fixture: timeline/lex-acc-descr-block-line-separator-inside]
 
 [test: U+2028 inside a description line]
 [test: U+2029 inside a description line]
@@ -1675,6 +1734,13 @@ period、event、title、section の名前、アクセシビリティのテキ�
 タイトルの末尾と行の最後の event の末尾では、
 U+2028 と U+2029 は空白やタブではなくテキストの文字なので、
 その後の空白はテキスト末尾のほかの空白とタブと一緒に除き、前の空白は残します。
+Prettier は、行末の空白とタブを落とします。
+U+2028 と U+2029 の後ろでも、
+[テキスト末尾の空白の例外](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+の範囲で、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
+それらの前の空白は値の内部にあり、変えると Db が変わり、
+[テキスト中の空白の連なりの例外](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+も、これらの文字を含むテキストを対象にしないので残します。
 
 [test: U+2029 and spaces at the end of a timeline title]
 [test: U+2028 and spaces at the end of the last event of a line]
@@ -1710,15 +1776,36 @@ period の前でも同じです（詳しくは、
 [test: timeline: an event that a comment after U+2028 joins to a directive line at the end of the text]
 [test: timeline: an event that a comment after U+2028 joins to an empty line and a directive line, with an event after it]
 
+`#` か `%` で始まるコメント行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字します。
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
+なければ空白を置きません。
+空行を挟まずに次の行から 2 つのコメント行が続くときは、
+行を書かれたまま残します。
+
+[test: timeline: a hash comment line, U+2028, a directive, two spaces, a comment, and two comment lines after it]
+[test: timeline: a hash comment line, U+2028, a directive, two spaces, and a comment]
+[test: timeline: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: timeline: a hash comment line, U+2028, a directive touching a comment]
+[test: timeline: a percent comment line, U+2028, a directive, a tab, and a comment]
+[test: timeline: a hash comment line, U+2029, a directive, two spaces, and a comment]
+
 ### 空白文字
 
 U+00A0、U+3000、U+FEFF は、字句解析器にとって空白です。
 `title` の後ろや event の `:` の後ろのように、規則が空白 1 文字を読む所では、
 その代わりに空白を印字します。
+字句解析器は、event の `:` の後ろの区切りを 1 文字だけ読み、
+event のテキストには入れないので、ASCII の空白に置き換えても Db は変わりません。
+Prettier は、この種類の `:` の後ろに空白 1 つを置き、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 文の間と文の前では落とします。
 テキストの中と、period の `:` の前の空白では、テキストの文字なので残します。
 例は文字列で書き、`\u00a0` は U+00A0、`\u3000` は U+3000、
 `\ufeff` は U+FEFF です。
+
+[corpus fixture: timeline/lex-event-separator-no-break-space]
 
 [test: U+00A0 as the separator after a title keyword]
 [test: U+00A0 as the separator after the colon of an event]

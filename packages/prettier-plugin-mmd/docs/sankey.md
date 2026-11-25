@@ -358,7 +358,10 @@ blank-lines/around-directive-lines]
 
 These are the rules of the other diagram types, so that this diagram type has no
 rule of its own: the empty line that the documentation of mermaid.js writes
-after the header is dropped like any other at the start of the body.
+after the header is dropped like any other at the start of the body. Prettier
+leaves no blank line at the start of JavaScript, CSS, YAML, and Markdown texts.
+Under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), the formatter
+therefore drops empty lines at the start of the text, before the header.
 
 Input
 ([blank-lines/collapsed-input.mmd](../tests/fixtures/sankey/blank-lines/collapsed-input.mmd)):
@@ -385,8 +388,8 @@ c,d,2
 ### Header
 
 The header `sankey` or `sankey-beta` keeps the case in which it is written: Both
-are the same diagram type and give the same Db in mermaid.js 12.3.0, but some
-versions that count read `sankey-beta` only (see
+are the same diagram type and give the same Db in mermaid.js, but some versions
+that count read `sankey-beta` only (see
 [The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
 so the printer keeps the spelling that the author wrote. It stands at the first
@@ -396,7 +399,12 @@ but a directive or a comment line there.
 [fixture: header/sankey] [fixture: header/sankey-beta] [fixture:
 header/upper-case-beta] [fixture: header/leading-whitespace-dropped]
 
-A directive glued to the header stays glued.
+A directive glued to the header stays glued: mermaid.js removes a directive
+before it reads the header, so a space before the directive would remain on the
+header line, which mermaid.js rejects.
+
+[corpus fixture: sankey/header-directive-glued-to-header] [corpus fixture:
+sankey/header-directive-after-space-on-header-line]
 
 [fixture: header/directive-glued-to-the-header]
 
@@ -577,8 +585,12 @@ a,b,1
 mermaid.js accepts a tab, U+00A0, U+3000, U+2028, U+2029, and U+FEFF only at the
 end of the text, where whitespace is dropped before the text is read. They are
 dropped from the output, and the text ends with the line break after the last
-record. The examples are written as strings, in which `\u00a0` is U+00A0,
-`\u3000` is U+3000, and `\n` is a line break.
+record. Prettier ends JavaScript, CSS, YAML, and Markdown texts with one line
+break and no blank line. Under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), the formatter
+therefore prints one final line break and no blank line, even when the input has
+no final line break. The examples are written as strings, in which `\u00a0` is
+U+00A0, `\u3000` is U+3000, and `\n` is a line break.
 
 [test: U+00A0 at the end of the text] [test: U+3000 at the end of the text
 without a line feed] [test: U+2028 at the end of the text without a line feed]

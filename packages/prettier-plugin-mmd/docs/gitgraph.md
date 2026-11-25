@@ -42,11 +42,13 @@ colon.
 [fixture: gitgraph/header/header-yaml-before-colon]
 
 A colon on a line of its own after the block is left out with the line break
-before it, so that no empty line stays. A comment or directive between the block
-and that colon keeps its attachment to the block or its normal indentation
-before the first statement; the omitted colon leaves no empty line. This also
-applies when an unclosed directive, or a directive inside its argument, precedes
-the colon.
+before it, so that no empty line stays. Removing only the colon would leave an
+empty line at the start of the body, and Prettier keeps no blank line at the
+start of a block, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this form. A comment or directive between the block and that colon keeps
+its attachment to the block or its normal indentation before the first
+statement; the omitted colon leaves no empty line. This also applies when an
+unclosed directive, or a directive inside its argument, precedes the colon.
 
 [fixture: gitgraph/header/yaml-colon-after-comment] [fixture:
 gitgraph/header/yaml-colon-after-inline-directive] [fixture:
@@ -139,7 +141,11 @@ gitGraph
 ### Blank lines
 
 Collapse ordinary blank runs to one blank line and remove ordinary document/body
-edge blanks, retaining visible grouping around comments too. Quoted values,
+edge blanks, retaining visible grouping around comments too. Prettier keeps at
+most one blank line between items and none at the start or end of a block or the
+text, treating lines of spaces and tabs as blank lines.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same form
+to ordinary blank lines, including those beside comments. Quoted values,
 description blocks, directive/hidden interiors and retained prefixes keep their
 authored blanks because those belong to source values or lexical roles. After a
 hidden form consumes LF, keep one spare LF only when a following statement needs
@@ -185,10 +191,13 @@ gitGraph
 ### Operation spacing
 
 Use one space between ordinary operation, reference and option components, even
-when authored components touch. Do not align columns. The components get a
-consistent form; bare names retain their required boundaries. Gaps containing
-comments, global directives or hidden forms retain their attachment and physical
-boundaries.
+when authored components touch. Prettier puts one space after a keyword before
+what it takes, as in `return x;`, and between successive values in a CSS
+declaration. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+the same one-space gaps after an operation keyword and between ordinary
+reference and option components. Do not align columns. Bare names retain their
+required boundaries. Gaps containing comments, global directives or hidden forms
+retain their attachment and physical boundaries.
 
 [corpus fixture: gitgraph/gram-commit-glued-options] [fixture:
 gitgraph/operation-spacing/gap-branch-quoted] [fixture:
@@ -481,11 +490,21 @@ empty blocks as `{}`. Where only directives follow the text of the value of such
 a line, they are printed as they are after the text of a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
-[fixture: title-and-common-values/acc-directives-end-blanks-dropped]
+[fixture: title-and-common-values/acc-directives-end-blanks-dropped] [fixture:
+gitgraph/title-and-common-values/acc-title-empty-directive-gap-kept] [fixture:
+gitgraph/title-and-common-values/acc-title-unclosed-empty-directive-gap-kept]
+[fixture:
+gitgraph/title-and-common-values/acc-title-empty-directive-no-final-newline-gap-kept]
+[fixture:
+gitgraph/title-and-common-values/acc-descr-empty-directive-gap-printed] [test: a
+whitespace character that is no space or tab before an empty directive after the
+accTitle line of a gitGraph] [test: a whitespace character that is no space or
+tab before an empty directive after the accDescr line of a gitGraph]
 
-A whitespace character that is no space or tab before a `%%` that follows an
-`accDescr` value stays where it is, with the spaces and tabs beside it printed
-as one space each, as in a pie chart (see
+A whitespace character that is no space or tab before a `%%`, or before a `%%{`
+that no word character follows after its whitespace, that follows an `accDescr`
+value stays where it is, with the spaces and tabs beside it printed as one space
+each, as in a pie chart (see
 [Accessibility lines](./pie.md#accessibility-lines)). The `title` of a gitGraph
 is printed as in the other diagrams, whatever stands before a `%%` after it: the
 oldest version that counts rejects it (see
@@ -528,7 +547,7 @@ interleaved assignment, including frontmatter fallback. The pinned grammar reads
 no line form on the next physical line, even across blanks/comments/directives,
 and the oldest version that counts reads the statement after an empty
 `accTitle:` or `accDescr:` as its value, so that statement and the whitespace
-before a `%%` after an `accTitle` value stay as written (see
+before a `%%` or a `%%{}%%` after an `accTitle` value stay as written (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end));
 colon-form braces stay line text. These choices compact equivalent outer
 whitespace without changing the description text or lexical ownership.
@@ -551,6 +570,49 @@ gitgraph/title-and-common-values/title-next-trivia] [fixture:
 gitgraph/title-and-common-values/block-opener-trivia] [corpus fixture:
 gitgraph/common-title-only-whitespace] [test:
 gitgraph/title-and-common-values/block-opener-join-fixed]
+
+An `accTitle:` or an `accDescr:` line whose value ends at a U+2028 or U+2029,
+with a comment region after it and a line of `%%` and nothing else after the
+region, is printed as written, up to that `%%`: mermaid.js removes the comment
+region with the line feed that ends it, so the line after it goes on the line of
+the value, and the oldest version that counts takes the `%%` line into the value
+that the drawing shows, while the pinned grammar reads it as a comment. A blank
+line, a directive line, or the end of the text after the region moves the line
+and the region onto lines of their own as before. The title of a gitGraph is not
+read so: the oldest version that counts rejects it.
+
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-at-end-moved] [test:
+gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-kept]
+[test:
+gitgraph/title-and-common-values/acctitle-ps-comment-then-percent-line-kept]
+[test:
+gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-at-end-kept]
+[test:
+gitgraph/title-and-common-values/acctitle-ls-comment-then-comment-lines-then-percent-line-kept]
+[test:
+gitgraph/title-and-common-values/acctitle-ls-comment-then-two-percent-lines-kept]
+[test:
+gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-crlf-kept]
+[test:
+gitgraph/title-and-common-values/acctitle-ls-comment-then-blank-line-moved]
+[test:
+gitgraph/title-and-common-values/acctitle-ls-comment-then-unclosed-directive-line-moved]
+[test:
+gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-kept]
+[test:
+gitgraph/title-and-common-values/accdescr-ps-comment-then-percent-line-kept]
+[test:
+gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-at-end-kept]
+[test:
+gitgraph/title-and-common-values/accdescr-ls-comment-then-comment-lines-then-percent-line-kept]
+[test:
+gitgraph/title-and-common-values/accdescr-ls-comment-then-two-percent-lines-kept]
+[test:
+gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-crlf-kept]
+[test:
+gitgraph/title-and-common-values/accdescr-ls-comment-then-blank-line-moved]
+[test:
+gitgraph/title-and-common-values/accdescr-ls-comment-then-unclosed-directive-line-moved]
 
 Input (escaped): `"gitGraph\ntitle\t  A  B\t C  \n"`.
 
@@ -926,11 +988,13 @@ gitGraph
 ### Final newline
 
 Ordinary accepted files end with one configured newline, including header-only
-input, final operations, bare comments and empty blocks. Remove ordinary
-terminal blank runs. Preserve EOF-reaching global directives, hidden closing
-padding and retained-prefix boundaries; a closed hidden form can gain the final
-LF. This reuses the shared predictable file ending while respecting consumed-LF
-boundaries.
+input, final operations, bare comments and empty blocks. Prettier ends the text
+with one line break and no blank line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore removes
+ordinary terminal blank runs. Preserve EOF-reaching global directives, hidden
+closing padding and retained-prefix boundaries; a closed hidden form can gain
+the final LF. This reuses the shared predictable file ending while respecting
+consumed-LF boundaries.
 
 [corpus fixture: gitgraph/header-eof] [fixture:
 gitgraph/final-newline/final-commit] [fixture:

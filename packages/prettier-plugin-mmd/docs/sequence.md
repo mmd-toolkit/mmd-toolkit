@@ -306,9 +306,11 @@ sequenceDiagram
 
 ### Whitespace between tokens
 
-Within a line, a run of spaces and tabs between two tokens becomes one space,
-and tokens that touch keep touching, as in a flowchart, except for the text
-after a prefix or a keyword of a block, which stands after one space.
+Within a line, a run of spaces and tabs between two tokens becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`. Tokens that touch keep touching, as in a flowchart, except for the
+text after a prefix or a keyword of a block, which stands after one space.
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed]
@@ -319,10 +321,10 @@ the text of a note or of the alias of a participant. The text after the keyword
 of a block or a section (`loop`, `alt`, `else`, `opt`, `par`, `and`, `critical`,
 `option`, `break`, `rect`, `box`) stands after one space too: `loop$$x$$` is
 printed `loop $$x$$`, and `par-:<>,;# comment` is printed `par -:<>,;# comment`.
-The whitespace is not in the Db, so the form is a choice, and the documentation
-of mermaid.js writes a space after every block keyword
-([`loop Loop text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L472),
-[`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492)).
+The whitespace is not in the Db;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a block or section keyword and its text, as Prettier prints `return  x`
+as `return x;`.
 
 [fixture: whitespace-between-tokens/wrap-text-spaced] [fixture:
 whitespace-between-tokens/block-text-touching-spaced]
@@ -488,14 +490,14 @@ whatever whitespace characters it holds but a line break. So the gap before the
 block, the block, and that gap before the comment stay as written, and the block
 is not padded: `participant A   @{ x }` and `actor B@{x}` stay, and so does the
 whitespace before the `%%` in `participant C@{ y }   %% c`. The reason of the
-versions holds for a `participant`: with one space before the `%%`, 10.9.8 and
-11.7.0 draw another name. The whitespace before the `%%` of an `actor`, and
-before the `%%` of a participant that `create` makes, stays as written too,
-though no version that counts draws another figure for it. After the block, a
-`#` comment is a comment like any other, and one space stands before it.
-mermaid.js removes the directives before it reads the name, so the name runs
-over a directive in that whitespace, one that is not closed included, and the
-whitespace on both sides of it stays:
+versions holds for a `participant`: with one space before the `%%`, the older
+versions that count draw another name. The whitespace before the `%%` of an
+`actor`, and before the `%%` of a participant that `create` makes, stays as
+written too, though no version that counts draws another figure for it. After
+the block, a `#` comment is a comment like any other, and one space stands
+before it. mermaid.js removes the directives before it reads the name, so the
+name runs over a directive in that whitespace, one that is not closed included,
+and the whitespace on both sides of it stays:
 `participant B@{x}   %%{init: {}}%%   %% c`. A directive that ends the line,
 with no comment after it, is an ordinary gap, printed
 `participant E@{z} %%{init: {}}%%`. A block with one of these characters or with
@@ -647,9 +649,9 @@ The whitespace immediately after the `(` and before the `)` of a `rect` stays
 too, since every version that counts draws another `fill` attribute for
 `rect rgb( 1,2,3)` and `rect rgb(1,2,3 )` (see the same table). In a `box` they
 stay for the same reasons, and so does the whitespace before a comma, which
-changes `boxes[0].fill` in the Db of 12.3.0 with the same drawing. Of the
-whitespace in a color, only the space after a comma is a kind of exception that
-is drawn the same.
+changes `boxes[0].fill` in the Db with the same drawing. Of the whitespace in a
+color, only the space after a comma is a kind of exception that is drawn the
+same.
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/rect-leading-and-comma-padding-kept] [fixture:
@@ -1390,6 +1392,76 @@ statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-s
 [fixture:
 statements-one-per-line/box-end-comment-in-style-rule-stretch-trigger-in-other-statement]
 
+The `end` stays on that line for this reason only where nothing but spaces and
+tabs follow the `;` of its comment. Where a comment or a directive follows it
+(`end #;  %% c`), the `end` and its comment go to a line of their own, and the
+`#` of the comment is no more on the line of the text before the `end`. The
+stretch of the line rule then ends earlier, so that text is printed as anywhere
+else in the first formatting:
+`loop style:#x;; loop x; A->>B: body; end #;  %% c` is printed
+`loop style:#x;; loop x; A ->> B: body;` and `end #;  %% c`. This holds with one
+space, no whitespace, or a tab between the `;` and the comment, with a directive
+after the `;`, with a space or a tab after the `:` of `style`, with `classDef`
+in place of `style`, with a space before the `;` after the message, with two
+statements before the `end`, and in each of the other blocks (`opt`, `break`,
+`rect`, `alt`, `par`, `par_over`, `critical`, and `box`). A message that is
+spaced as written is printed the same.
+
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-one-space]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-touching]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-tab]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-directive]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-directive-only]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-style-space-after-colon]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-style-tab-after-colon]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-classdef]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-classdef-space-after-colon]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-space-before-semicolon]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-opt]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-break]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-rect]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-par]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-par-over]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-critical]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-box]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-two-statements]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-already-spaced]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-with-ignored-semicolon-in-comment]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-comment-line]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-two-comment-lines]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-empty-line]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-whitespace-line]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-at-end-of-text]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-entity-comment]
+
 The `;` that the line rule ignores after an `end` that goes to a line of its own
 is dropped, as it is on a line of its own, whatever the lines before it hold:
 `A->>B: style:#x;; end;` is printed `A ->> B: style:#x;;` and `end`. A line that
@@ -1493,9 +1565,9 @@ characters as escapes too (see
 
 - At the end of the text of a `box`, after the whitespace that may stand before
   them. A box whose text holds such a character has the fill `transparent` in
-  the Db of 12.3.0, and without it `box red` has the fill `red`; the fill of the
-  drawing differs in 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0. Rule 1 names
-  no mark for the end of a text of a `box`, so
+  the Db, and without it `box red` has the fill `red`; the fill of the drawing
+  differs in every version that counts. Rule 1 names no mark for the end of a
+  text of a `box`, so
   [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
   decides, as [journey](./journey.md#line-separators) at the end of a title, and
   [timeline](./timeline.md#line-separators) at the end of a title and of the
@@ -1537,8 +1609,8 @@ characters as escapes too (see
   - `accTitle` and a line of `accDescr`: the `#` and what follows are part of
     the value.
   - A `title`, and a `box` that has a text: the text holds the character. The
-    title of the Db of 12.3.0 ends with it, and the fill of a box whose text
-    holds it is `transparent` in that Db.
+    title of the Db ends with it, and the fill of a box whose text holds it is
+    `transparent` in that Db.
 
   [test: a `#` comment after U+2028, which joins no lines] [test: a `%%` comment
   line after U+2028, which joins the next line] [test: a `%%` comment line after
@@ -1650,6 +1722,22 @@ closed, an ignored `;` next to another `;`, and one before a U+2028 or U+2029
 fixture: sequence/ignored-semicolon-then-separator-line-15c6520f] [fixture:
 statements-one-per-line/unclosed-directive-semicolon-kept] [fixture:
 statements-one-per-line/ignored-semicolon-next-to-semicolon-kept]
+
+A comment line that starts with `#` or `%`, and a line of only a `;`, end at a
+U+2028 or U+2029, and the text after the character is a line of its own. A
+directive and a comment on that line are printed as on a line after a line feed,
+with one space between them where the source has whitespace there. The `;` is
+dropped, as on a line of its own.
+
+[test: sequence: a line of a semicolon, U+2028, and a directive at the end of
+the text] [test: sequence: a percent comment line, U+2028, a directive, two
+spaces, and a comment] [test: sequence: a line of a semicolon, U+2028, a
+directive, two spaces, and a comment] [test: sequence: a hash comment line,
+U+2028, a directive, two spaces, and a comment] [test: sequence: a percent
+comment line, U+2028, a directive touching a comment] [test: sequence: a percent
+comment line, U+2028, a directive, a tab, and a comment] [test: sequence: a
+percent comment line, U+2029, a directive, two spaces, and a comment] [test:
+sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment]
 
 ### Directives
 

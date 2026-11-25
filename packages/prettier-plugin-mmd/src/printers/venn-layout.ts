@@ -161,7 +161,7 @@ export function layoutVennStatement(
     trimBracketedText(source, atoms, statement.label.range)
   }
   if (statement.type === "VennTitleStatement") {
-    trimTextAfterKeyword(source, atoms, statement.value.range, true)
+    trimTextAfterKeyword(source, atoms, statement.value.range, "collapsed")
   }
   // mermaid.js joins the words of a value that is not a string with one space,
   // so a run between them is no part of the Db (docs/venn.md, Style
