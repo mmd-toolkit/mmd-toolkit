@@ -13,9 +13,13 @@ from mermaid.js.
 ### Header
 
 Put the header at column one and an ordinary first statement on the next line,
-making the heading easy to find. The keyword is printed `treemap`, also where it
-was written `treemap-beta`: every version of mermaid.js that counts and has the
-diagram reads both names and draws them the same (see
+making the heading easy to find. [Kanban](./kanban.md#header) and
+[pie](./pie.md#header) diagrams place the header at column one and move an
+ordinary first statement below it, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same header-to-statement gap here. The keyword is printed `treemap`, also
+where it was written `treemap-beta`: every version of mermaid.js that counts and
+has the diagram reads both names and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Add no
 colon: [rule 3](./printed-form.md#3-a-spelling) gives the header without one, as
 the examples in the documentation of mermaid.js write all 8 headers of the
@@ -50,13 +54,17 @@ later deep row after a leaf can be another root. Common statements and class
 definitions in statementsBefore keep their source position and do not determine
 parents. Print ordinary roots one configured step in and children one step
 deeper than their parent; common statements and class definitions use one body
-step. This chooses consistent depths from equivalent widths. Use at least one
-character per step at tabWidth zero because indentation determines parentage. A
-title or an accessibility statement that was not written indented is the
-exception and is printed at the start of its line (see [Title](#title)). A
-styleless, unterminated class definition touching a row keeps that contact; in
-such a diagram every root uses baseline zero, so later roots cannot become
-children accidentally.
+step. This chooses consistent depths from equivalent widths. Ordinary roots
+stand one configured step below the header and children one below their parent
+under [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
+following the indentation gaps in [kanban](./kanban.md#indentation) and
+[ishikawa](./ishikawa.md#indentation) diagrams. Use at least one character per
+step at tabWidth zero because indentation determines parentage. A title or an
+accessibility statement that was not written indented is the exception and is
+printed at the start of its line (see [Title](#title)). A styleless,
+unterminated class definition touching a row keeps that contact; in such a
+diagram every root uses baseline zero, so later roots cannot become children
+accidentally.
 
 [fixture: treemap/indentation/irregular]
 
@@ -103,8 +111,11 @@ Use the AST hierarchy, which already accounts for assigned indentation, before
 removing exterior padding. A run after a header, section, leaf, class terminator
 or description closer, or on a whitespace-only line, can indent the next row
 across LF. Move its information once to that row’s planned column. Do not
-measure only physical leading whitespace or add a second indentation run. Common
-removals have already decided which runs count.
+measure only physical leading whitespace or add a second indentation run.
+Mermaid.js counts spaces and tabs carried from the preceding line as the next
+row’s indentation. Measuring only physical leading whitespace would turn that
+child into another root, so the carried run is counted once, in the column of
+the next row. Common removals have already decided which runs count.
 
 Use the resulting row column for standalone comment lines too, including when
 common comment removal discarded an earlier whitespace-only run.
@@ -146,7 +157,9 @@ treemap
 Count each source ASCII space and tab as one character, without tab-stop
 expansion. Print one tab per depth with useTabs, otherwise the configured
 positive space width. The character choice changes presentation while preserving
-the ordered forest.
+the ordered forest. A step is what the `useTabs` and `tabWidth` options of
+Prettier say, as in [kanban](./kanban.md#indentation) and
+[ishikawa](./ishikawa.md#indentation) diagrams.
 
 [fixture: treemap/tabs/mixed]
 
@@ -239,7 +252,11 @@ treemap
 Print `"section":::class` and `"leaf": value:::class`. Join trivia-free
 marker/name newlines and add no spaces around `:::`: indentation there is
 forbidden. Keep selector spelling and presence, including one-character and
-keyword-like identifiers.
+keyword-like identifiers. Mermaid.js stores the identifier of a selector in the
+Db as `classSelector`. A one-character or keyword-like identifier is therefore
+kept: replacing or removing it changes that field.
+
+[corpus fixture: treemap/lex-selector-single-letter]
 
 [fixture: treemap/selectors/section-newlines]
 
@@ -315,9 +332,18 @@ treemap
 Keep complete StringLiteral source spans: empty names, padding, backslashes,
 HTML, entities, percent text and physical continuation columns, with a run of
 spaces and tabs inside the name printed as one space, so a name of spaces and
-tabs only becomes one space. A name between `'` is printed between `"`, unless
-it holds a `'`, a `"`, a backslash, a line break, a backquote, `&`, `#`, or `<`
-(see
+tabs only becomes one space. An empty quoted name still names a node in the Db,
+so deleting its occurrence removes that node. Padding at the ends of a name is
+name text: the exception for runs of whitespace shortens a run to one space and
+never deletes the last space. Removing HTML from a name, or replacing an entity
+by the text it decodes to, changes the name that mermaid.js stores. A pair of
+percent signs inside a quoted name is name text too, and treating it as a
+comment would change the name or leave the string unclosed. The columns of
+continuation lines are characters of a multiline name as well, and
+[the exception for runs of whitespace](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+excludes multiline text, so reindenting them changes the Db. A name between `'`
+is printed between `"`, unless it holds a `'`, a `"`, a backslash, a line break,
+a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. [Rule 3](./printed-form.md#3-a-spelling) gives
 the `"`: the examples in the documentation of mermaid.js write 408 of the 409
@@ -325,6 +351,11 @@ strings of the diagram types that read a string between `'` as well as between
 `"`, as counted in [Strings between `"`](./compatibility.md#strings-between-).
 Backslashes do not escape quotes or decode `\n`; these authored choices can
 affect the name or acceptance.
+
+[corpus fixture: treemap/db-empty-names] [corpus fixture:
+treemap/space-name-values] [corpus fixture: treemap/html-fields] [corpus
+fixture: treemap/entity-names] [corpus fixture: treemap/comment-in-name] [corpus
+fixture: treemap/lex-string-multiline]
 
 [fixture: treemap/names/quotes]
 
@@ -358,9 +389,14 @@ treemap
 
 Use one ordinary ASCII space between `classDef` and its authored class name.
 Join plain separating newlines and Unicode whitespace there because the
-composite rule requires whitespace but does not retain its width. Do not
-reinterpret names beginning with `title`; class names require at least two
-characters, unlike selectors.
+composite rule requires whitespace but does not retain its width. A plain
+newline between `classDef` and its name becomes one space under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have):
+[ER class definitions](./er.md#multi-line-statements) and
+[requirement declarations](./requirement.md#multi-line-statements) also join a
+keyword/name line break that the lexer reads as whitespace. Do not reinterpret
+names beginning with `title`; class names require at least two characters,
+unlike selectors.
 
 [fixture: treemap/class-definitions/keyword-space]
 
@@ -382,15 +418,19 @@ treemap
 
 ### Style gaps
 
-Put one ordinary space before a non-null style. Plain maximal separator
-whitespace may cross blank lines; join it even when the literal looks like
-another row or class definition. The AST already owns that text as style. Keep
-the line breaks in separator gaps containing comments/directives and align their
-standalone trivia and style continuation one level inside `classDef`, so the
-style remains visibly attached to its definition. The maximal separator discards
-this indentation; the style value itself is unchanged. Inline native comments
-that already supply an indentation run and semicolon-protected segments of a
-statement over several lines retain their existing columns.
+Put one ordinary space before a non-null style. The first style follows one
+space in [flowchart](./flowchart.md#whitespace-between-tokens) and
+[ER](./er.md#styles-and-classes) diagrams, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same gap before a non-null style. Plain maximal separator whitespace may
+cross blank lines; join it even when the literal looks like another row or class
+definition. The AST already owns that text as style. Keep the line breaks in
+separator gaps containing comments/directives and align their standalone trivia
+and style continuation one level inside `classDef`, so the style remains visibly
+attached to its definition. The maximal separator discards this indentation; the
+style value itself is unchanged. Inline native comments that already supply an
+indentation run and semicolon-protected segments of a statement over several
+lines retain their existing columns.
 
 [fixture: treemap/style-gaps/spaces]
 
@@ -748,18 +788,31 @@ treemap
 
 Use shared common-line placement: trim ordinary common-whitespace edges and
 print one space before a nonempty value, or bare `title` for
-null/whitespace-only text. This selects one Db-equivalent outer spacing and
-prints a run of spaces and tabs inside the text as one space (see
+null/whitespace-only text. A title with only whitespace as its value prints bare
+`title` under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as in
+[pie](./pie.md#title) and [radar](./radar.md#title) charts. This selects one
+Db-equivalent outer spacing and prints a run of spaces and tabs inside the text
+as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-without rewriting quote-looking text. Never take a value from the next physical
+without rewriting quote-looking text. Quotes in title text are characters of the
+title: mermaid.js reads the content after `title` as line text, so removing them
+would change the title that it stores. Never take a value from the next physical
 line, across comments or directives. Trivia-bearing values retain their written
-boundaries. Where only directives follow the text of a title, they are printed
-with one space before each that has spaces or tabs before it, and the spaces and
-tabs after the last one are left out, unless a directive of the line holds a
-line break, a `;`, a U+2028, or a U+2029 (see
+boundaries. A directive between touching parts of a title disappears before
+mermaid.js reads the text, so `title A%%{init: {}}%%B` is the title `AB`. Adding
+whitespace beside that directive would change the title to `A B`, so the
+touching boundaries stay. Where only directives follow the text of a title, they
+are printed with one space before each that has spaces or tabs before it, and
+the spaces and tabs after the last one are left out, unless a directive of the
+line holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
+[corpus fixture: treemap/common-quotes-entities]
+
+[corpus fixture: treemap/directive-title]
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 title/inline-directive-contact-kept]
@@ -796,17 +849,28 @@ becoming the title's value.
 A title that was not written indented is printed at the start of its line, and
 the rows below it stay one step in: one that starts its line stays there, and
 one that follows the header on its line (`treemaptitle T`) goes to the start of
-the next line. The first version with the diagram rejects a title, an
-`accTitle`, and an `accDescr` that is indented, while the later versions read
-the same statement at the start of its line and one step in and draw both the
-same, so printing it one step in would give a text that the first version
-rejects (see
+the next line. A title adds no nesting level, so the roots below it stand one
+configured step in, the step that [kanban](./kanban.md#indentation) and
+[ishikawa](./ishikawa.md#indentation) diagrams give their roots under the
+header;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that step. A title on the header’s line moves to the next line under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as in
+[pie](./pie.md#header) and [packet](./packet.md#header) diagrams. The first
+version with the diagram rejects a title, an `accTitle`, and an `accDescr` that
+is indented, while the later versions read the same statement at the start of
+its line and one step in and draw both the same, so printing it one step in
+would give a text that the first version rejects (see
 [Treemap parentage and authored values](./compatibility.md#treemap-parentage-and-authored-values)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A comment line before such a title aligns with it. A title that is indented in
 the source is printed one step in, like the other statements, since the first
-version rejects it as written too.
+version rejects it as written too. Titles in [pie](./pie.md#indentation) and
+[packet](./packet.md#indentation) diagrams stand one configured step below the
+header, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that same body step to an already-indented title.
 
 [fixture: treemap/header/common] [fixture:
 treemap/title/after-header-spaced-line-start] [fixture: treemap/title/padding]
@@ -846,19 +910,30 @@ Use the shared `accTitle: value` and `accDescr: value` layout: colon touching
 the keyword, one space before a trimmed nonempty value, and no space after an
 empty colon. Keep internal text; braces after a colon remain line text. These
 equivalent outer gaps follow the other diagrams. Trivia retains boundaries and
-no next-line value is joined. Where only directives follow the text of the
-value, they are printed with one space before each that has spaces or tabs
-before it, and the spaces and tabs after the last one are left out, unless a
-directive of the line holds a line break, a `;`, a U+2028, or a U+2029 (see
+no next-line value is joined. An accessibility value ends at a line terminator
+or at the first `%%`, so a statement on the next line is not part of it:
+mermaid.js reads `accTitle:` followed by a leaf line as an empty title and a
+separate leaf. Joining the leaf to the value would make mermaid.js read
+accessibility text instead of the leaf and change the Db, so the line boundary
+stays. Where only directives follow the text of the value, they are printed with
+one space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out, unless a directive of the line holds a line
+break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
+[corpus fixture: treemap/common-acctitle-next-statement]
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 An `accTitle` or `accDescr` statement is placed like a title: it is printed at
 the start of its line unless it was written indented, in which case it is
-printed one step in (see [Title](#title)).
+printed one step in (see [Title](#title)). An accessibility statement already
+written indented uses one configured body step under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as
+accessibility statements do in [pie](./pie.md#indentation) and
+[packet](./packet.md#indentation) diagrams.
 
 [fixture: treemap/accessibility-lines/title-padding]
 
@@ -904,11 +979,20 @@ Whitespace-only interiors become `{}` because no text needs surrounding padding.
 Join plain opener whitespace, keep comment/directive contents and their
 boundaries, and align body lines one step inside the statement while retaining
 internal blank lines. Mermaid discards indentation after LF from the
-description. The body uses the configured indentation, including tabs and the
-positive minimum step at width zero. Align a separate opener or closer with its
-statement. The first `}` still closes the block. A block that was not written
-indented is printed at the start of its line, with its body one step inside it
-(see [Title](#title)).
+description. Multiline description blocks in
+[flowchart](./flowchart.md#multi-line-values) and
+[pie](./pie.md#description-blocks) diagrams put body lines one step inside the
+statement and retain internal blank lines;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that same relative spacing here. The body uses the configured indentation,
+including tabs and the positive minimum step at width zero. Align a separate
+opener or closer with its statement. A description block’s separate closing
+brace stands at the statement’s indentation under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as in
+the description blocks of [flowchart](./flowchart.md#multi-line-values) and
+[pie](./pie.md#description-blocks) diagrams. The first `}` still closes the
+block. A block that was not written indented is printed at the start of its
+line, with its body one step inside it (see [Title](#title)).
 
 [fixture: treemap/description-blocks/block-touching-with-text-fixed] [fixture:
 treemap/description-blocks/empty]
@@ -990,13 +1074,18 @@ treemap
 
 Join trivia-free leaf name/separator/number and selector component newlines into
 ordinary spacing. These component boundaries admit equivalent layouts. Keep gaps
-containing comments/directives and their required newlines. Separate selector
-markers and identifiers start at column one because spaces/tabs there reject;
-leaf separator/number continuations align with their statement unless an earlier
-native-comment gap already supplies an indentation run, when no second run is
-added. Standalone trivia marks inside these component gaps start at column one
-except in the class style separator described in [Style gaps](#style-gaps).
-Comments between statements follow [Comments](#comments).
+containing comments/directives and their required newlines. A selector after a
+native comment keeps the line feed in front of it: without it mermaid.js reads
+the selector as part of the comment, and the Db has no `classSelector` for it.
+Separate selector markers and identifiers start at column one because
+spaces/tabs there reject; leaf separator/number continuations align with their
+statement unless an earlier native-comment gap already supplies an indentation
+run, when no second run is added. Standalone trivia marks inside these component
+gaps start at column one except in the class style separator described in
+[Style gaps](#style-gaps). Comments between statements follow
+[Comments](#comments).
+
+[corpus fixture: treemap/comment-value-selector-gap]
 
 [fixture: treemap/component-newlines/leaf]
 
@@ -1048,6 +1137,11 @@ positive minimum step at tabWidth zero.
 treemap/comments/aligned-zero]
 
 Comments before the header or in a body without statements stand at column one.
+Comments before the header stand at column one in
+[mindmap](./mindmap.md#comments) and [ishikawa](./ishikawa.md#comments)
+diagrams, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same column for those comments here.
 
 [fixture: treemap/prefix/comment] [fixture: treemap/comments/only-comments]
 
@@ -1071,7 +1165,12 @@ Keep inline comments on their line and preserve content, marks, tails, order and
 ownership. When whitespace before an inline comment supplied the next row’s
 indent, move it to that row even if the comment then touches the preceding
 token. Use the AST hierarchy rather than whitespace already removed with common
-comment regions. Native comments retain LS/PS as content.
+comment regions. Native comments retain LS/PS as content. Mermaid.js reads the
+text after a U+2028 or U+2029 inside a native comment as part of the comment.
+Replacing the character with a line feed would expose that text as diagram
+syntax, which can change the Db or produce a rejected row.
+
+[corpus fixture: treemap/comment-ls] [corpus fixture: treemap/comment-ps]
 
 [test: treemap/comments/standalone-ls] [test: treemap/comments/standalone-ps]
 [fixture: treemap/comments/standalone]
@@ -1115,7 +1214,11 @@ count spaces/tabs on both sides. Use shared leading-gap placement: retain
 following gaps while they fit, shorten excess from the last gap, then supply the
 remaining configured indentation before the first directive. Earlier-line
 carried units move once instead. Keep necessary class keyword/name whitespace
-and never use a directive as its substitute.
+and never use a directive as its substitute. Mermaid.js requires whitespace
+between `classDef` and its class name after the directives are removed. A
+directive supplies no separating whitespace, so removing both gaps around it
+would leave the rejected form `classDefzz`; at least one whitespace character
+stays.
 
 A directive that is not closed takes the whitespace after its argument, line
 breaks included, so the next row goes on its line (see
@@ -1205,6 +1308,12 @@ Keep at most one ordinary blank line and remove ordinary blanks at document/body
 edges, choosing a bounded separation between statements. First move any
 meaningful whitespace-only indentation run to its row. Preserve blank lines
 inside names, descriptions, directives and common comment regions as owned text.
+Blank lines inside a quoted name stay because removing one removes a line feed
+from the name in the Db, and
+[the exception for runs of whitespace](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+excludes multiline text.
+
+[corpus fixture: treemap/lex-string-multiline]
 
 Blank lines between a comment line and its following statement do not change the
 comment's target column.
@@ -1234,10 +1343,16 @@ treemap
 
 Decide by owner rather than trimming every line. Retain tails inside names,
 styles, comments and directives; common line values use their shared exterior
-trimming. Exterior runs after structural text may supply the next row’s indent
-and move there once. This keeps authored values and parentage distinct. The
-fixtures contain significant trailing whitespace that code blocks cannot display
-reliably.
+trimming. A multiline name keeps the whitespace at the ends of its lines because
+mermaid.js stores physical continuation whitespace in the name. Trimming a line
+tail would change that text in the Db, and
+[the exception for runs of whitespace](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+excludes multiline text. Exterior runs after structural text may supply the next
+row’s indent and move there once. This keeps authored values and parentage
+distinct. The fixtures contain significant trailing whitespace that code blocks
+cannot display reliably.
+
+[corpus fixture: treemap/lex-string-multiline]
 
 [fixture: treemap/trailing-whitespace/comment-content]
 
@@ -1248,11 +1363,13 @@ reliably.
 ### Line terminators and unicode
 
 Use shared host EOL handling: physical CR and CRLF reach the printer as LF,
-including inside values, and output follows endOfLine. Keep LS/PS, NBSP and BOM
-where they belong to value text; native comments do not end at LS/PS. Ordinary
-common-value edges trim common Unicode whitespace, and class separators admit
-it. This does not add Unicode row indentation. The host removes/restores a
-file-leading BOM with the shared frontmatter limitation.
+including inside values, and output follows endOfLine. Prettier converts CR and
+CRLF to LF before the plugin reads the text, and the printer writes the line
+ending that `endOfLine` selects (see [kanban](./kanban.md#line-terminators)).
+Keep LS/PS, NBSP and BOM where they belong to value text; native comments do not
+end at LS/PS. Ordinary common-value edges trim common Unicode whitespace, and
+class separators admit it. This does not add Unicode row indentation. The host
+removes/restores a file-leading BOM with the shared frontmatter limitation.
 
 [test: treemap/line-terminators-and-unicode/cr-structure]
 
@@ -1271,12 +1388,20 @@ file-leading BOM with the shared frontmatter limitation.
 ### Frontmatter yaml
 
 Format only safe real leading frontmatter through shared guarded YAML
-formatting. Keep indented fences, closing padding, malformed YAML, HTML quote
-hazards and bodies that formatting could turn into fences as written. The
-frontmatter line `title: "<a b=\"c\">"` stays, since every version of mermaid.js
-that counts rejects `title: '<a b="c">'` (see
+formatting. Safe leading frontmatter uses Prettier’s YAML formatter, as
+[Frontmatter](./compatibility.md#frontmatter) specifies;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore gives no
+space before and one after mapping key colons, and one space inside braces
+holding named values. Keep indented fences, closing padding, malformed YAML,
+HTML quote hazards and bodies that formatting could turn into fences as written.
+The frontmatter line `title: "<a b=\"c\">"` stays, since every version of
+mermaid.js that counts rejects `title: '<a b="c">'` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-YAML nested values and block scalars use at least one space at tabWidth zero.
+YAML nested values and block scalars use at least one space at tabWidth zero. At
+zero width, every version of mermaid.js that counts rejects a block scalar and
+draws the diagram differently when a nested `config` value is no longer nested
+(see [Frontmatter](./compatibility.md#frontmatter) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 These guards preserve preprocessing and values while ordinary safe YAML gets
 consistent spacing.
 
@@ -1419,10 +1544,17 @@ raw Db to compare.
 
 Apply these rules to the dedented payload; the Markdown host supplies
 fence/list/quote indentation. Do not add container columns to value
-continuations. Test host output and idempotence separately from the payload Db.
-The host trims padding on the final code line, including style tails; this
-limits authored-byte preservation while leaving the reading unchanged in the
-tested cases. Rejected fences follow the host’s unchanged-code route.
+continuations. Continuation whitespace inside a multiline quoted name is part of
+the name in the Db, so a column of the Markdown container added inside that name
+would add characters to it.
+[the exception for runs of whitespace](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+excludes multiline text. Test host output and idempotence separately from the
+payload Db. The host trims padding on the final code line, including style
+tails; this limits authored-byte preservation while leaving the reading
+unchanged in the tested cases. Rejected fences follow the host’s unchanged-code
+route.
+
+[corpus fixture: treemap/lex-string-multiline]
 
 [test: treemap Markdown: top-level]
 

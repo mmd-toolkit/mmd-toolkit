@@ -15,6 +15,10 @@
 
 見出しを第 1 列に置き、普通の最初の文を次行に移します。
 見出しを見つけやすくするためです。
+[kanban](./kanban.ja.md#ヘッダー) と [pie](./pie.ja.md#header) の図も、
+見出しを第 1 列に置き、普通の最初の文をその下へ移します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+ここでも見出しと文の間に同じ隙間を与えます。
 キーワードは `treemap-beta` と書かれていても `treemap` と印字します。
 この図を持つ対象の版は、どれも両方の名前を読み、同じに描くからです。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
@@ -57,6 +61,10 @@ AST の `children` から、書かれた順に親を読みます。
 普通の根は設定の 1 段、子は親より 1 段深く置きます。
 共通文と classDef は本文の 1 段に置きます。
 同じ読みを持つ幅から、一貫した深さを選ぶためです。
+普通の根を見出しより設定の 1 段、子を親より 1 段深く置く形は、
+[kanban](./kanban.ja.md#インデント) と [ishikawa](./ishikawa.ja.md#indentation)
+の図の字下げの間隔と同じです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 字下げして書かれていない title とアクセシビリティの文だけは、
 行頭に置いて印字します。
 詳しくは [タイトル](#title) を参照してください。
@@ -111,6 +119,9 @@ treemap
 空白だけの行の連なりが、LF を越えて次行の字下げになりえます。
 その情報を次行の予定の列へ一度だけ移します。
 物理行の先頭だけを測り直したり、二つ目の連なりを足したりしません。
+mermaid.js は、前の行から渡る空白とタブを次の行の字下げに数えます。
+物理行の先頭だけを測るとその子が別の根になるので、
+渡された連なりは次の行の列に一度だけ数えます。
 数える連なりは共通の除去処理で既に決まっています。
 
 共通コメントの除去で前の空白だけの連なりが消えていても、
@@ -154,6 +165,9 @@ treemap
 tab stop へは展開しません。
 useTabs なら深さごとに 1 tab、それ以外は設定の正の幅の space で印字します。
 見た目の文字をそろえ、順序つきの森を保つためです。
+字下げ 1 段は、Prettier の `useTabs` と `tabWidth` の設定が決める幅です。
+[kanban](./kanban.ja.md#インデント) と [ishikawa](./ishikawa.ja.md#indentation)
+の図も同じです。
 
 [fixture: treemap/tabs/mixed]
 
@@ -249,6 +263,11 @@ treemap
 注釈のない印と名前の間の改行を詰め、`:::` の前後には空白を足しません。
 そこでは字下げが許されないためです。
 1 文字やキーワードに似た名前も含め、selector の綴りと有無を保ちます。
+mermaid.js は selector の識別子を Db の `classSelector` に格納します。
+そのため、1 文字やキーワードに似た識別子もそのまま保ちます。
+置き換えたり除いたりすると、そのフィールドが変わるためです。
+
+[corpus fixture: treemap/lex-selector-single-letter]
 
 [fixture: treemap/selectors/section-newlines]
 
@@ -328,6 +347,17 @@ treemap
 空名、余白、バックスラッシュ、HTML、文字参照、`%` の文字と物理継続列を残します。
 名前の中の空白とタブの連なりは空白 1 つにして印字します。
 空白とタブだけの名前は空白 1 つになります。
+空の名前も Db のノードを作るので、その出現を消すとノードが消えます。
+名前の両端の余白は名前のテキストです。
+空白の連なりの例外は連なりを空白 1 つに縮めるだけで、最後の空白は除きません。
+名前の HTML を除いたり、文字参照を復号したテキストに置き換えたりすると、
+mermaid.js が格納する名前が変わります。
+引用符で囲んだ名前の `%` 二つも名前のテキストで、
+コメントとみなすと名前が変わるか、文字列が閉じなくなります。
+複数行の名前の継続行の列も名前の文字です。
+複数行のテキストは
+[空白の連なりの例外](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+の対象外なので、字下げを変えると Db が変わります。
 `'` で囲んだ名前は `"` で囲んで印字しますが、内容に `'`、`"`、バックスラッシュ、
 改行、バッククォート、`&`、`#`、`<` が含まれる場合は書かれたままにします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
@@ -339,6 +369,12 @@ mermaid.js のドキュメントの例は、
 数えたのは、[`"` で囲む文字列](./compatibility.ja.md#-で囲む文字列)です。
 バックスラッシュは引用符をエスケープせず、`\n` も復号しません。
 これらの書き方は名前や受理を変えうるためです。
+
+[corpus fixture: treemap/db-empty-names]
+[corpus fixture: treemap/space-name-values]
+[corpus fixture: treemap/html-fields] [corpus fixture: treemap/entity-names]
+[corpus fixture: treemap/comment-in-name]
+[corpus fixture: treemap/lex-string-multiline]
 
 [fixture: treemap/names/quotes]
 
@@ -373,6 +409,12 @@ treemap
 `classDef` と作者の class 名の間を、普通の ASCII の空白 1 個にします。
 この区切りの普通の改行や Unicode 空白も詰めます。
 複合規則は空白を要求しますが、幅は保持しないためです。
+`classDef` と名前の間の普通の改行は、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)により空白 1
+つにします。
+[ER](./er.ja.md#複数行の文) の class 定義と
+[requirement](./requirement.ja.md#複数行の文) の宣言も、
+字句解析で空白と読まれるキーワードと名前の間の改行を詰めます。
 `title` で始まる名前を読み替えません。
 selector と違い、class 名は 2 文字以上必要です。
 
@@ -397,6 +439,10 @@ treemap
 ### Style gaps
 
 `null` でない style の前に、普通の空白 1 個を置きます。
+[flowchart](./flowchart.ja.md#トークンの間の空白) と
+[ER](./er.ja.md#スタイルとクラス) の図でも、最初の style の前は空白 1 個です。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+`null` でない style の前にも同じ隙間を与えます。
 最大区切り空白は空行を越えることもあります。
 次の行や classDef に見える原文でも、その空白を詰めます。
 AST が既に style として所有しているためです。
@@ -787,11 +833,23 @@ treemap
 共通の行の配置を使います。
 普通の共通空白の外端を除き、非空値の前を空白 1 個にします。
 `null` と空白だけの値は `title` だけにします。
+空白だけの値を持つ title は、
+[pie](./pie.ja.md#title) と [radar](./radar.ja.md#title) と同じく、
+`title` だけにします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 Db の等しい外側の空白から 1 つを選び、引用符に見える文字を保ち、
 内側の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+題のテキストの引用符は題の文字です。
+mermaid.js は `title` の後を行のテキストとして読むので、その引用符を除くと、
+mermaid.js が格納する題が変わります。
 コメントやディレクティブを越えて次の物理行から値を取りません。
 注釈を持つ値は書かれた境界を保ちます。
+接した題のテキストの間にあるディレクティブは、
+mermaid.js がテキストを読む前に除かれるので、
+`title A%%{init: {}}%%B` の題は `AB` です。
+そのディレクティブの前後に空白を足すと題が `A B` に変わるので、
+接した境界を保ちます。
 題のテキストの後にディレクティブだけが続くときは、
 それぞれの前に空白かタブがあれば空白 1 つを置き、
 最後のディレクティブの後の空白とタブを除いて印字します。
@@ -799,6 +857,10 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
+[corpus fixture: treemap/common-quotes-entities]
+
+[corpus fixture: treemap/directive-title]
 
 [fixture: title/title-directives-end-blanks-dropped]
 [fixture: title/inline-directive-contact-kept]
@@ -840,6 +902,14 @@ U+2029 があるときを除きます。
 その下の行は 1 段深いままにします。
 行頭から始まる title はそのまま行頭に置き、
 ヘッダーと同じ行に続く title（`treemaptitle T`）は次の行の行頭に移します。
+title は入れ子を 1 段増やさないので、その下の根は設定の字下げ 1 段に置きます。
+[kanban](./kanban.ja.md#インデント) と [ishikawa](./ishikawa.ja.md#indentation)
+の図が、見出しの下の根に与える段と同じです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この段を与えます。
+見出しと同じ行の title は、
+[pie](./pie.ja.md#header) と [packet](./packet.ja.md#header) の図と同じく、
+次の行へ移します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 treemap を持つ最初の版は、字下げされた title、`accTitle`、
 `accDescr` を拒否します。
 それ以降の版は、行頭の同じ文も 1 段深い同じ文も受け付け、同じに描きます。
@@ -851,6 +921,10 @@ treemap を持つ最初の版は、字下げされた title、`accTitle`、
 その title の前のコメント行は title にそろえます。
 書かれた時点で字下げされた title は、最初の版が書かれたままでも拒否するので、
 ほかの文と同じく 1 段深く印字します。
+[pie](./pie.ja.md#indentation) と [packet](./packet.ja.md#indentation) の図は、
+title を見出しより設定の 1 段深く置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+書かれた時点で字下げされた title にも同じ段幅を与えます。
 
 [fixture: treemap/header/common]
 [fixture: treemap/title/after-header-spaced-line-start]
@@ -893,6 +967,12 @@ title Topic words
 内側の文字を保ち、コロン後の波括弧は行の文字として残します。
 同じ読みの外側の空白を、ほかの図種とそろえるためです。
 注釈の境界を保ち、次行の値を連結しません。
+アクセシビリティの値は改行文字か最初の `%%` で終わるので、
+次行の文は値に含まれません。
+mermaid.js は `accTitle:` の次の行を、空の題と独立した leaf として読みます。
+leaf を値につなぐと、
+mermaid.js が leaf ではなくアクセシビリティのテキストとして読み、
+Db が変わるので、行の境界を保ちます。
 値のテキストの後にディレクティブだけが続くときは、
 それぞれの前に空白かタブがあれば空白 1 つを置き、
 最後のディレクティブの後の空白とタブを除いて印字します。
@@ -901,11 +981,17 @@ U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
+[corpus fixture: treemap/common-acctitle-next-statement]
+
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 `accTitle` と `accDescr` の文は title と同じ位置に置きます。
 字下げして書かれていなければ行頭に置いて印字し、
 字下げして書かれていれば 1 段深く印字します。
+書かれた時点で字下げされたアクセシビリティの文は、
+[pie](./pie.ja.md#indentation) と [packet](./packet.ja.md#indentation)
+のアクセシビリティの文と同じく、設定の本文の字下げ 1 段で印字します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 詳しくは [タイトル](#title) を参照してください。
 
 [fixture: treemap/accessibility-lines/title-padding]
@@ -955,8 +1041,18 @@ accTitle: Access  words
 コメントやディレクティブの中身と境界、内部の空行は保ちます。
 本文行は文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
+[flowchart](./flowchart.ja.md#複数行の値) と
+[pie](./pie.ja.md#description-blocks) の図の複数行の説明ブロックも、
+本文行を文より 1 段深く置き、内部の空行を保ちます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+ここでも同じ相対的な配置を与えます。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 別行の開始記号と閉じ記号は文の列にそろえます。
+説明ブロックの別行の閉じ記号は、
+[flowchart](./flowchart.ja.md#複数行の値) と
+[pie](./pie.ja.md#description-blocks) の図と同じく、文の列にそろえます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この位置を与えます。
 最初の `}` がブロックを閉じます。
 字下げして書かれていないブロックは行頭に置いて印字し、
 本文はその 1 段内側に置きます。
@@ -1044,6 +1140,9 @@ treemap
 普通の空白へ詰めます。
 これらの部品の境界には同じ読みの配置があるためです。
 コメントやディレクティブがある隙間と必要な改行は保ちます。
+図種固有のコメントの後の selector は、その前の LF を保ちます。
+LF がないと mermaid.js が selector をコメントの内容として読み、
+Db にその `classSelector` がなくなるためです。
 別行の selector の印と名前は第 1 列に置きます。
 そこに空白やタブがあると拒否されるためです。
 leaf の区切りと数の継続行は文にそろえます。
@@ -1052,6 +1151,8 @@ leaf の区切りと数の継続行は文にそろえます。
 これらの部品の隙間内の独立した注釈の印は、
 [スタイルの隙間](#style-gaps) の class style 区切りを除き、第 1 列に置きます。
 文の間のコメントは [Comments](#comments) に従います。
+
+[corpus fixture: treemap/comment-value-selector-gap]
 
 [fixture: treemap/component-newlines/leaf]
 
@@ -1102,6 +1203,11 @@ treemap
 [fixture: treemap/comments/aligned-zero]
 
 見出しの前のコメントと、文のない本文のコメントは第 1 列に置きます。
+見出しの前のコメントは、
+[mindmap](./mindmap.ja.md#コメント) と [ishikawa](./ishikawa.ja.md#comments)
+の図でも第 1 列に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+ここでも同じ列を与えます。
 
 [fixture: treemap/prefix/comment] [fixture: treemap/comments/only-comments]
 
@@ -1129,6 +1235,12 @@ treemap
 その結果コメントが直前の token に接しても、親子を保ちます。
 共通コメント領域とともに消えた空白を復元せず、AST の親子を使います。
 図種固有のコメント内の LS と PS は内容として保ちます。
+mermaid.js は、図種固有のコメント内の U+2028 と U+2029 の後のテキストを、
+コメントの一部として読みます。
+その文字を LF に変えると、そのテキストが図の構文として読まれ、Db が変わったり、
+行が拒否されたりしうるためです。
+
+[corpus fixture: treemap/comment-ls] [corpus fixture: treemap/comment-ps]
 
 [test: treemap/comments/standalone-ls] [test: treemap/comments/standalone-ps]
 [fixture: treemap/comments/standalone]
@@ -1173,6 +1285,11 @@ treemap
 余れば最後の隙間から縮め、残りを最初のディレクティブ前に置きます。
 前の行から渡る単位は、代わりに一度だけ次行へ移します。
 class キーワードと名前の必須空白を保ち、ディレクティブで代用しません。
+mermaid.js は、
+ディレクティブを除いた後の `classDef` と class 名の間に空白を必要とします。
+ディレクティブは区切りの空白を補わないので、その前後の隙間を両方除くと、
+拒否される `classDefzz` の形になります。
+そのため、少なくとも空白 1 文字を残します。
 
 閉じていないディレクティブは引数の後の空白を改行も含めて取り込むため、
 次の行はディレクティブと同じ行に続きます。
@@ -1266,6 +1383,13 @@ treemap
 文の間の空きを一定の範囲にそろえるためです。
 空白だけの行が意味のある字下げなら、先に次の行へ移します。
 名前、説明、ディレクティブ、共通コメント領域が所有する空行は保ちます。
+引用符で囲んだ名前の中の空行は、
+除くと Db の名前から LF が一つ失われるため保ちます。
+複数行のテキストは
+[空白の連なりの例外](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+の対象外です。
+
+[corpus fixture: treemap/lex-string-multiline]
 
 コメント行と次の文の間に空行があっても、コメントをそろえる桁は変わりません。
 
@@ -1295,11 +1419,19 @@ treemap
 
 全行の末尾を一括で削らず、所有者で決めます。
 名前、style、コメント、ディレクティブの末尾は保ちます。
+複数行の名前は、行末の空白を保ちます。
+mermaid.js が物理的な継続行の空白を名前に格納するからです。
+行末を削るとその Db のテキストが変わります。
+複数行のテキストは
+[空白の連なりの例外](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+の対象外です。
 共通の行値は共有の外端除去を使います。
 構造の文字の後の連なりは次行の字下げになりうるので、
 その場合は一度だけ次行へ移します。
 作者の値と親子の情報を分けて保つためです。
 fixture の意味のある行末空白は、コードブロックでは正確に表示できません。
+
+[corpus fixture: treemap/lex-string-multiline]
 
 [fixture: treemap/trailing-whitespace/comment-content]
 
@@ -1312,6 +1444,9 @@ fixture の意味のある行末空白は、コードブロックでは正確に
 共有の呼び出し側の行末処理を使います。
 値の中も含め、物理 CR と CRLF は印字処理に LF として届き、
 出力は `endOfLine` に従います。
+CR と CRLF は、Prettier がプラグインの読む前に LF に変えます。
+出力する改行は、`endOfLine` の設定が選びます。
+詳しくは [kanban](./kanban.ja.md#改行) を参照してください。
 値に属する LS、PS、NBSP、BOM は保ちます。
 図種固有のコメントは LS と PS では終わりません。
 普通の共通値の外端は共通 Unicode 空白を除き、
@@ -1337,6 +1472,12 @@ Unicode の行の字下げを追加する規則ではありません。
 ### Frontmatter yaml
 
 安全な実際の先頭フロントマターだけを、共有の保護条件付き YAML 整形へ渡します。
+安全な先頭フロントマターは、
+[フロントマター](./compatibility.ja.md#フロントマター)にあるとおり、
+Prettier の YAML 整形を使います。
+そのため、[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+キーのコロンの前には空白を置かず、後には空白 1 つを置きます。
+名前と値を持つ波括弧の内側にも、空白 1 つを置きます。
 字下げした囲みの区切り、閉じ記号の余白、不正 YAML、HTML 引用符の危険や、
 整形で囲みの区切りになる本文は原文を保ちます。
 フロントマター行 `title: "<a b=\"c\">"` を保つのは、
@@ -1345,6 +1486,11 @@ Unicode の行の字下げを追加する規則ではありません。
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 YAML の入れ子と複数行のスカラー値は、`tabWidth` 0 でも空白 1 つ以上にします。
+字下げが 0 だと、対象にする版の mermaid.js はどれも複数行のスカラー値を拒否し、
+入れ子の `config` の値が入れ子でなくなると別の図を描きます。
+詳しくは [フロントマター](./compatibility.ja.md#フロントマター) と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 前処理と値を守りながら、安全な YAML の空白をそろえるためです。
 
 [fixture: treemap/frontmatter-yaml/safe]
@@ -1491,10 +1637,17 @@ c4-keyword-anywhere です。
 外側の字下げを除いた図のテキストに同じ規則を適用します。
 囲みの区切り、リスト、引用の外側の字下げは Markdown 側に任せます。
 値の継続列に container の幅を足しません。
+複数行の引用符で囲んだ名前の継続行の空白は、Db の名前の一部です。
+その名前の中に Markdown の container の幅を足すと、名前の文字が増えます。
+複数行のテキストは
+[空白の連なりの例外](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+の対象外です。
 呼び出し側の出力と冪等性を、図のテキストの Db と別々に検査します。
 呼び出し側は最後のコード行の余白を、style の末尾も含めて除きます。
 試験した場合の読みは保ちますが、作者のバイトの保持にはこの制限があります。
 拒否されたコードブロックは、呼び出し側のコードを変えない経路に任せます。
+
+[corpus fixture: treemap/lex-string-multiline]
 
 [test: treemap Markdown: top-level]
 
