@@ -407,8 +407,7 @@ mermaid.js はそこのどの空白も同じに読むので、形は 1 行にな
 [mermaid.js が空白を許さない所](./printed-form.ja.md#mermaidjs-が空白を許さない所)
 の決まりによります。
 対象にする版の mermaid.js はすべて `space: 2` を拒否するので、
-コロンの後ろに空白を置かず、
-前にも置きません（`space :2` は `space:2` になります）。
+コロンの後ろに空白を置かず、前にも置きません（`a :2` は `a:2` になります）。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。

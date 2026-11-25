@@ -383,8 +383,7 @@ between a keyword and what follows it (see [Composites](#composites)). `space:2`
 is printed with the `:` touching, by the rule of
 [Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace):
 every version of mermaid.js that counts rejects `space: 2`, so no space follows
-the colon, and none stands before it either (`space :2` is printed `space:2`)
-(see
+the colon, and none stands before it either (`a :2` is printed `a:2`) (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A `space` statement and a `columns` statement are never moved to another place:
 the last `columns` statement of a block is its columns, wherever it stands, and
