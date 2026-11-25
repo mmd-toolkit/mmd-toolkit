@@ -528,11 +528,6 @@ Prettier は、コンマの前に空白を置かず、後ろに空白を 1 つ�
 リンクにも適用される `linkStyle` と `classDef` では、
 `stroke` で終わる名前と `:` の間の空白の有無を保ち、
 空白の連続は空白 1 つにします。
-[flowchart](./flowchart.ja.md#トークンの間の空白) と
-[usecase](./usecase.ja.md#classes-and-styles) の図では、
-`stroke` で終わるスタイル名の `:` の前に空白があれば、空白 1 つにします。
-`linkStyle` と `classDef` で保つこの隙間の幅は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が同じ形を与えます。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。
 
@@ -1503,12 +1498,6 @@ U+2028 と U+2029 は、[行の保持](./agentflow.ja.md#kept-lines) のとお�
 
 トップレベルの閉じた説明ブロックの本文は文より 1 段深くそろえます。
 Mermaid がアクセシビリティの説明からこの字下げを除くためです。
-トップレベルの閉じた説明ブロックの本文は、
-[C4](./c4.ja.md#説明ブロック) と
-[usecase](./usecase.ja.md#direction-and-accessibility) の図でも、
-文より 1 段深く置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この字下げを与えます。
 flow または global の本文では、原文がメンバーの決定にも使われるため、
 元の列を保ちます。
 global 本文の原文を変えると、後続の flow のメンバーが変わる場合があります。
@@ -2131,12 +2120,10 @@ mermaid.js はどちらの書き方も同じ呼び出しとして読むからで
 残りは書かれたままにします。
 `click   A "/u" "x` と次の行の `  y"` は、
 `click A "/u" "x` と `  y"` になります。
-引用符付きの tooltip が複数行にまたがる場合も、
-[class](./class.ja.md#トークンの間の空白) と
-[flowchart](./flowchart.ja.md#トークンの間の空白) の図は、
-最初の `click` キーワードの後に空白 1 つを置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この隙間に同じ形を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとそれが取るものの間に空白 1 つを与えます。
+Prettier が `return  x;` を `return x;` と印字する形です。
+引用符付きの tooltip が複数行にまたがる場合も同じです。
 tooltip の改行と後続行の桁位置は文字列の値なので、書かれたままにします。
 隙間に改行があるとき、または空の `f(` と `)` の間に改行があるときは、
 文を書かれたまま残します。

@@ -522,11 +522,6 @@ the commas between the ordinary link styles. In a `linkStyle` or a `classDef`,
 which can reach a link, a name that ends with `stroke` keeps whether whitespace
 stands between it and the `:`, a run of whitespace becoming one space (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-[Flowchart](./flowchart.md#whitespace-between-tokens) and
-[usecase](./usecase.md#classes-and-styles) diagrams print an existing gap before
-the colon of a style name ending in `stroke` as one space, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that width to the retained gap in a `linkStyle` or `classDef`.
 
 [fixture: single-space-gaps/link-style-stroke-before-colon-kept] [fixture:
 single-space-gaps/class-def-stroke-before-colon-kept]
@@ -1444,12 +1439,9 @@ accessibility/block-right-padding-only]
 At the top level, align the body lines of a closed description block one step
 inside its statement: Mermaid discards this indentation from the accessibility
 description. The body lines of a closed description block stand one level inside
-its top-level statement in [C4](./c4.md#description-blocks) and
-[usecase](./usecase.md#direction-and-accessibility) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that indentation here. Inside a flow or global body, keep their columns, because
-the raw text also participates in membership. Changing a global body's text can
-change the members of a later flow.
+its top-level statement. Inside a flow or global body, keep their columns,
+because the raw text also participates in membership. Changing a global body's
+text can change the members of a later flow.
 
 [fixture: accessibility/global-description-membership-kept]
 
@@ -2045,12 +2037,10 @@ between the parentheses of a blank callback]
 A statement whose line breaks are all inside a string or between the parentheses
 of a call with arguments has its first click-keyword gap normalized like one on
 a single line, and the rest stays written: `click   A "/u" "x` and `  y"` on the
-next line is printed `click A "/u" "x` and `  y"`. Both
-[class](./class.md#whitespace-between-tokens) and
-[flowchart](./flowchart.md#whitespace-between-tokens) diagrams print one space
-after `click` even when a quoted tooltip spans lines.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that form for the first gap after `click`. The tooltip's line breaks and later
+next line is printed `click A "/u" "x` and `  y"`. Rule 1 gives one space
+between a keyword and what it takes, as Prettier prints `return  x;` as
+`return x;` (see [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)),
+also where a quoted tooltip spans lines. The tooltip's line breaks and later
 columns are characters of its string value, so they stay as written. A line
 break in a gap, or between the blank parentheses of `f(` and `)`, keeps the
 statement as written.
