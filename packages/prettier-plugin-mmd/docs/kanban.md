@@ -349,7 +349,7 @@ The printer does not quote, pad, encode, or decode a label, and trims only the
 spaces and tabs at the ends of a bare label. Bare labels covered by
 [Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)
 can lose their end spaces and tabs without changing the node that mermaid.js
-draws. [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no
+draws. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no
 padding just inside the shape, as Prettier prints none inside parentheses and
 square brackets. `A[x y]` and `A["x y"]` have the same Db, and the form is the
 one of [Quotes](#quotes). A space after the closing quote of a string
