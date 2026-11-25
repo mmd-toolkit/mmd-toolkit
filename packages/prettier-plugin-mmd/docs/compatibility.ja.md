@@ -6880,11 +6880,10 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   Db が持ち、図にも描かれるので、空白 2 つの `tickInterval  1week` は、
   目盛りが既定のものになり、`section  A` は `section A` とは別のセクションです。
   `dateFormat`、`axisFormat`、`title` の両端の空白とタブは除きます。
-  [円グラフ](./pie.ja.md#title) と [timeline](./timeline.ja.md#title-と-section)
-  のタイトルは、キーワードと空でないテキストの間に、空白を 1 つ置きます。
-  Gantt 図でも、`axisFormat` や `title` の値が空でないときは、
-  [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-  同じ間隔を与えます。
+  [規則 1](./printed-form.ja.md#1-記号の横の空白)が、キーワードと、
+  それが取るものとの間に、空白 1 つを与えます。
+  Gantt 図の空でない `axisFormat` と `title` の値の前も、同じです。
+  Prettier は `return  x` を `return x;` と印字します。
   タスクの説明のテキストとコロンの間の空白は、
   名前に桁そろえの空白があるセクション、
   または桁を共有するセクションどうしのコロンを、
@@ -7006,11 +7005,10 @@ mermaid.js は、journey の一部の値の空白を持ち、一部の行を、
   桁をそろえない節の説明のコロンの前の空白と、
   `title` の両端の空白とタブは除きます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
-  [円グラフ](./pie.ja.md#title) と [timeline](./timeline.ja.md#title-と-section)
-  のタイトルは、キーワードと空でないテキストの間に、空白を 1 つ置きます。
-  journey の `title` の値が空でないときも、
-  [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-  同じ間隔を与えます。
+  [規則 1](./printed-form.ja.md#1-記号の横の空白)が、キーワードと、
+  それが取るものとの間に、空白 1 つを与えます。
+  journey の空でない `title` の値の前も、同じです。
+  Prettier は `return  x` を `return x;` と印字します。
 
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]

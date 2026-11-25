@@ -6631,12 +6631,10 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   section whose names have padding, or of the sections that share a column, and
   one space after a name that touches its colon (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
-  The titles of [pie charts](./pie.md#title) and
-  [timelines](./timeline.md#titles-and-sections) have one space between the
-  keyword and nonempty text.
-  [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-  gives the gap before a nonempty Gantt `axisFormat` or `title` value the same
-  form.
+  [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+  between a keyword and what it takes, as Prettier prints `return  x` as
+  `return x;`: a nonempty Gantt `axisFormat` or `title` value has one space
+  before it.
 
   [fixture: gantt/settings/trailing-whitespace-by-setting] [fixture:
   gantt/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
@@ -6742,11 +6740,9 @@ See [Task data](./journey.md#task-data) and
   section without padding is left out, as are the spaces and tabs at the ends of
   a `title` (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
-  The titles of [pie charts](./pie.md#title) and
-  [timelines](./timeline.md#titles-and-sections) have one space between the
-  keyword and nonempty text.
-  [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-  gives the gap before a nonempty user journey `title` value the same form.
+  [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+  between a keyword and what it takes, as Prettier prints `return  x` as
+  `return x;`: a nonempty user journey `title` value has one space before it.
 
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]
