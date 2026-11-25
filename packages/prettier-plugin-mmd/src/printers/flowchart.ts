@@ -221,6 +221,7 @@ function flowchartBlockRules(
     isDroppedAtTopLevel: (statement) =>
       statement.type === "FlowchartEmptyStatement" &&
       !keepsStyleTerminator(source, statement.range[0]),
+    dropsTrailingLineSeparators: true,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
   }

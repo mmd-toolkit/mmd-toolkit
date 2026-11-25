@@ -34,6 +34,277 @@ export const treemapCases: readonly TreemapCase[] = [
     options: {},
   },
   {
+    name: "treemap/title/bare-title-line-separator-directive-comment-touch",
+    input: 'treemap\ntitle \u2028 %%{x}%%  %% c  \n\n"A":1\n',
+    output: 'treemap\ntitle\n%%{x}%%%% c  \n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-paragraph-separator-tabs-directive-comment-touch",
+    input: 'treemap\ntitle\t\u2029\t%%{x}%%\t%% c\n\n"A":1\n',
+    output: 'treemap\ntitle\n%%{x}%%%% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-touch-before-directive-line",
+    input: 'treemap\ntitle \u2028 %%{x}%% %% c\n%%{y}%%\n"A":1\n',
+    output: 'treemap\ntitle\n%%{x}%%%% c\n%%{y}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-touch",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\ntitle T\n%%{x}%%%% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-directive-text-line-separator-directive-comment-touch",
+    input: 'treemap\ntitle %%{w}%% T \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\ntitle %%{w}%%T\n%%{x}%%%% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-text-line-separator-directive-comment-touch",
+    input: 'treemap\naccTitle: T \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\naccTitle: T\n%%{x}%%%% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-bare-line-separator-directive-comment-touch",
+    input: 'treemap\naccTitle: \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\naccTitle:\n%%{x}%%%% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-row-kept",
+    input: 'treemap\ntitle \u2028 %%{x}%%  %% c  \n"A":1\n',
+    output: 'treemap\ntitle \u2028 %%{x}%%  %% c  \n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-at-end-one-space",
+    input: "treemap\ntitle \u2028 %%{x}%%  %% c\n",
+    output: "treemap\ntitle\n%%{x}%% %% c\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-comment-line-kept",
+    input: 'treemap\ntitle \u2028 %%{x}%%  %% c\n%% d\n"A":1\n',
+    output: 'treemap\ntitle \u2028 %%{x}%%  %% c\n%% d\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-only-kept",
+    input: 'treemap\ntitle \u2028 %%{x}%%  \n\n"A":1\n',
+    output: 'treemap\ntitle \u2028 %%{x}%%  \n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-directive-before-line-separator-comment-kept",
+    input: 'treemap\ntitle %%{x}%% \u2028 %% c\n\n"A":1\n',
+    output: 'treemap\ntitle %%{x}%% \u2028 %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-directive-text-line-separator-directive-comment-kept",
+    input: 'treemap\naccTitle: %%{w}%% T \u2028%%{x}%% %% c\n\n"A":1\n',
+    output: 'treemap\naccTitle: %%{w}%% T \u2028%%{x}%% %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-empty-line-and-comment-line-kept",
+    input: 'treemap\ntitle \u2028 %%{x}%%  %% c\n\n%% d\n"A":1\n',
+    output: 'treemap\ntitle \u2028 %%{x}%%  %% c\n\n%% d\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-whitespace-line-kept",
+    input: 'treemap\ntitle \u2028 %%{x}%%  %% c\n  \n"A":1\n',
+    output: 'treemap\ntitle \u2028 %%{x}%%  %% c\n  \n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-directive-comment-line-kept",
+    input: 'treemap\ntitle \u2028 %%{x}%%  %% c\n%%{y}%% %% d\n"A":1\n',
+    output: 'treemap\ntitle \u2028 %%{x}%%  %% c\n%%{y}%% %% d\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-comment-line-at-end-one-space",
+    input: "treemap\ntitle \u2028 %%{x}%%  %% c\n%% d\n",
+    output: "treemap\ntitle\n%%{x}%% %% c\n%% d\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-directive-line-at-end-one-space",
+    input: "treemap\ntitle \u2028 %%{x}%%  %% c\n%%{y}%%\n",
+    output: "treemap\ntitle\n%%{x}%% %% c\n%%{y}%%\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-directive-before-line-separator-directive-comment-before-empty-line-one-space",
+    input: 'treemap\ntitle %%{w}%% \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\ntitle %%{w}%% \u2028 %%{x}%% %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-directive-text-line-separator-directive-comment-before-empty-line-one-space",
+    input: 'treemap\naccTitle: %%{w}%% T \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\naccTitle: %%{w}%% T \u2028 %%{x}%% %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-directive-before-line-separator-directive-comment-before-row-kept",
+    input: 'treemap\ntitle %%{w}%% \u2028 %%{x}%%  %% c\n"A":1\n',
+    output: 'treemap\ntitle %%{w}%% \u2028 %%{x}%%  %% c\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-directive-text-line-separator-directive-comment-before-row-kept",
+    input: 'treemap\naccTitle: %%{w}%% T \u2028 %%{x}%%  %% c\n"A":1\n',
+    output: 'treemap\naccTitle: %%{w}%% T \u2028 %%{x}%%  %% c\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-touch-before-directive-line",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%%\n"A":1\n',
+    output: 'treemap\ntitle T\n%%{x}%%%% c\n%%{y}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-text-line-separator-directive-comment-touch-before-directive-line",
+    input: 'treemap\naccTitle: T \u2028 %%{x}%%  %% c\n%%{y}%%\n"A":1\n',
+    output: 'treemap\naccTitle: T\n%%{x}%%%% c\n%%{y}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-paragraph-separator-directive-comment-touch-before-directive-line",
+    input: 'treemap\ntitle \u2029 %%{x}%%  %% c\n%%{y}%%\n"A":1\n',
+    output: 'treemap\ntitle\n%%{x}%%%% c\n%%{y}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-touch-before-touching-directives-line",
+    input: 'treemap\ntitle \u2028 %%{x}%%  %% c\n%%{y}%%%%{z}%%\n"A":1\n',
+    output: 'treemap\ntitle\n%%{x}%%%% c\n%%{y}%%%%{z}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-touch-before-empty-line-and-directive-line-with-trailing-blanks",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n\n%%{y}%% \n"A":1\n',
+    output: 'treemap\ntitle T\n%%{x}%%%% c\n\n%%{y}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-touch-before-empty-line-and-indented-directive-line",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n\n  %%{y}%%\n"A":1\n',
+    output: 'treemap\ntitle T\n%%{x}%%%% c\n\n%%{y}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-touch-before-empty-line-and-directive-line-with-two-directives",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n\n%%{y}%% %%{z}%%\n"A":1\n',
+    output: 'treemap\ntitle T\n%%{x}%%%% c\n\n%%{y}%%%%{z}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-text-paragraph-separator-directive-comment-touch-before-empty-line-and-directive-line-with-trailing-blanks",
+    input: 'treemap\naccTitle: T \u2029 %%{x}%%  %% c\n\n%%{y}%% \n"A":1\n',
+    output: 'treemap\naccTitle: T\n%%{x}%%%% c\n\n%%{y}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-trailing-blanks-kept",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%% \n"A":1\n',
+    output: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%% \n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-semicolon-kept",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%%;\n"A":1\n',
+    output: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%%;\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-indented-directive-line-kept",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n  %%{y}%%\n"A":1\n',
+    output: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n  %%{y}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-two-directives-kept",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%% %%{z}%%\n"A":1\n',
+    output:
+      'treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%% %%{z}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-text-paragraph-separator-directive-comment-before-directive-line-with-trailing-blanks-kept",
+    input: 'treemap\naccTitle: T \u2029 %%{x}%%  %% c\n%%{y}%% \n"A":1\n',
+    output: 'treemap\naccTitle: T \u2029 %%{x}%%  %% c\n%%{y}%% \n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-directive-line-at-end-one-space",
+    input: "treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%%\n",
+    output: "treemap\ntitle T\n%%{x}%% %% c\n%%{y}%%\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-text-line-separator-directive-comment-before-directive-line-at-end-one-space",
+    input: "treemap\naccTitle: T \u2028 %%{x}%%  %% c\n%%{y}%%\n",
+    output: "treemap\naccTitle: T\n%%{x}%% %% c\n%%{y}%%\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-paragraph-separator-directive-comment-before-directive-line-at-end-one-space",
+    input: "treemap\ntitle \u2029 %%{x}%%  %% c\n%%{y}%%\n",
+    output: "treemap\ntitle\n%%{x}%% %% c\n%%{y}%%\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-trailing-blanks-at-end-kept",
+    input: "treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%% \n",
+    output: "treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%% \n",
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-semicolon-at-end-kept",
+    input: "treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%%;\n",
+    output: "treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%%;\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-text-paragraph-separator-directive-comment-before-directive-line-with-semicolon-at-end-kept",
+    input: "treemap\naccTitle: T \u2029 %%{x}%%  %% c\n%%{y}%%;\n",
+    output: "treemap\naccTitle: T \u2029 %%{x}%%  %% c\n%%{y}%%;\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-indented-directive-line-at-end-kept",
+    input: "treemap\ntitle T \u2028 %%{x}%%  %% c\n  %%{y}%%\n",
+    output: "treemap\ntitle T \u2028 %%{x}%%  %% c\n  %%{y}%%\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-directive-line-with-two-directives-at-end-kept",
+    input: "treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%% %%{z}%%\n",
+    output: "treemap\ntitle T \u2028 %%{x}%%  %% c\n%%{y}%% %%{z}%%\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-directive-before-line-separator-directive-comment-before-empty-line-one-space",
+    input: 'treemap\ntitle T %%{w}%% \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\ntitle T %%{w}%% \u2028 %%{x}%% %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-directive-before-paragraph-separator-directive-comment-before-empty-line-one-space",
+    input: 'treemap\ntitle T %%{w}%% \u2029 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\ntitle T %%{w}%% \u2029 %%{x}%% %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
     name: "treemap/comments/standalone-ls",
     input:
       'treemap\n"SeparatorRoot"\n%% note\u2028still comment\n "SeparatorChild":2\n',
@@ -168,6 +439,160 @@ export const treemapCases: readonly TreemapCase[] = [
     name: "treemap/comments/comment-ls-semicolon-both",
     input: 'treemap\n"Root"\n "A":1%% c;\u2028 "B;y":2\n',
     output: 'treemap\n  "Root"\n    "A": 1%% c;\u2028 "B;y":2\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-unclosed-directive-joins-rest",
+    input: 'treemap\ntitle T \u2028 %%{x\n\n"A":1\n',
+    output: 'treemap\ntitle T %%{x\n\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-before-two-comment-lines-kept",
+    input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%% d\n%% e\n"A":1\n',
+    output: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%% d\n%% e\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-line-separator-directive-comment-at-end-without-line-feed-one-space",
+    input: "treemap\ntitle T \u2028 %%{x}%%  %% c",
+    output: "treemap\ntitle T\n%%{x}%% %% c\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-ignored-semicolon-line-separator-directive-comment-kept",
+    input: 'treemap\ntitle style:#x; \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\ntitle style:#x; \u2028 %%{x}%%  %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/title-text-two-ignored-semicolons-line-separator-directive-comment-kept",
+    input: 'treemap\ntitle style classDef:#x;; \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output:
+      'treemap\ntitle style classDef:#x;; \u2028 %%{x}%%  %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-directive-comment-class-on-next-line",
+    input:
+      "treemap\nclassDef zz \u2028 %%{x}%%  %% c  \n\n classDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-directive-comment-row-as-style",
+    input: 'treemap\nclassDef zz \u2028 %%{x}%%  %% c  \n\n"A": 1\n',
+    output: 'treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-after-row-line-separator-directive-comment-row-as-style",
+    input: 'treemap\n"A": 1\nclassDef zz \u2028 %%{x}%%  %% c  \n\n  "B": 2\n',
+    output:
+      'treemap\n  "A": 1\n  classDef zz\n    %%{x}%% %% c  \n\n    "B": 2\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-comment-class-on-next-line",
+    input: "treemap\nclassDef zz \u2028 %% c  \n\n classDef yy color:red\n",
+    output: "treemap\n  classDef zz\n    %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-directive-comment-class-follows-at-once",
+    input:
+      "treemap\nclassDef zz \u2028 %%{x}%%  %% c  \n classDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-directive-comment-class-at-first-column",
+    input:
+      "treemap\nclassDef zz \u2028 %%{x}%%  %% c  \n\nclassDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-feed-directive-comment-class-on-next-line",
+    input: "treemap\nclassDef zz\n %%{x}%%  %% c  \n\n classDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-on-next-line",
+    input:
+      "treemap\nclassDef zz \u2029 %%{x}%%  %% c  \n\n classDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-directive-comment-row-as-style",
+    input: 'treemap\nclassDef zz \u2029 %%{x}%%  %% c  \n\n"A": 1\n',
+    output: 'treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-after-row-directive-comment-row-as-style",
+    input: 'treemap\n"A": 1\nclassDef zz \u2029 %%{x}%%  %% c  \n\n  "B": 2\n',
+    output:
+      'treemap\n  "A": 1\n  classDef zz\n    %%{x}%% %% c  \n\n    "B": 2\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-comment-class-on-next-line",
+    input: "treemap\nclassDef zz \u2029 %% c  \n\n classDef yy color:red\n",
+    output: "treemap\n  classDef zz\n    %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-follows-at-once",
+    input:
+      "treemap\nclassDef zz \u2029 %%{x}%%  %% c  \n classDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-at-first-column",
+    input:
+      "treemap\nclassDef zz \u2029 %%{x}%%  %% c  \n\nclassDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-comment-then-unclosed-directive",
+    input: 'treemap\nclassDef zz \u2028 %%{x: y\n%% c\n\n"A": 1\n',
+    output: 'treemap\n  classDef zz\n    %%{x: y\n%% c\n\n    "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-two-comment-lines",
+    input: 'treemap\nclassDef zz \u2028 %% c\n%% d\n\n"A": 1\n',
+    output: 'treemap\n  classDef zz\n    %% c\n    %% d\n\n    "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-comment-then-whitespace-line",
+    input: 'treemap\nclassDef zz \u2028 %% c\n \t\n"A": 1\n',
+    output: 'treemap\n  classDef zz\n    %% c\n\n    "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-ignored-semicolon-line-separator-comment",
+    input: 'treemap\nclassDef zz style:#x;\u2028 %% c\n\n"A": 1\n',
+    output: 'treemap\n  classDef zz style:#x;\u2028%% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-comment-at-end-of-text",
+    input: "treemap\nclassDef zz \u2028 %% c",
+    output: "treemap\n  classDef zz \u2028 %% c\n",
     options: {},
   },
 ]
