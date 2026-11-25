@@ -1175,6 +1175,19 @@ the end of the title, and the spaces before it stay.
 
 [test: U+2028 and spaces at the end of a journey title]
 
+A comment line that starts with `#` or `%` ends at a U+2028 or U+2029, and the
+text after the character is a line of its own. A directive and a comment on that
+line are printed as on a line after a line feed: with one space between them
+where the source has whitespace there, and none where it has none.
+
+[test: journey: a hash comment line, U+2028, a directive, two spaces, a comment,
+and a line of whitespace only after it] [test: journey: a hash comment line,
+U+2028, a directive, two spaces, and a comment] [test: journey: a percent
+comment line, U+2028, a directive, two spaces, and a comment] [test: journey: a
+hash comment line, U+2028, a directive touching a comment] [test: journey: a
+percent comment line, U+2028, a directive, a tab, and a comment] [test: journey:
+a hash comment line, U+2029, a directive, two spaces, and a comment]
+
 ### Whitespace characters
 
 U+00A0 and U+FEFF are whitespace to the lexer between units, and characters of a

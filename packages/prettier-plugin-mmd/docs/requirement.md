@@ -895,6 +895,39 @@ statements-one-per-line/continued-with-directive-kept] [fixture:
 statements-one-per-line/continued-on-semicolon-line-kept] [fixture:
 statements-one-per-line/continued-on-ignored-semicolon-line-kept]
 
+A statement of that kind that ends on a line that holds a kept `;`, such as the
+`;` of the class `c;` in `:::c;` or the last character of a comment, is printed
+on a line of its own with its parts on one line, as it is without the `;`. Where
+a comment line starts after a U+2028 or U+2029 on that line, the line is printed
+as written, from the statement before it to the end of the comment line: on a
+line of its own, the string would stand alone, which mermaid.js rejects.
+
+[fixture: statements-one-per-line/string-continued-on-semicolon-line-joined]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-comment-region-ps]
+[test:
+requirement/statements-one-per-line/continued-comment-semicolon-region-ls]
+[test:
+requirement/statements-one-per-line/continued-comment-semicolon-region-ps]
+[test:
+requirement/statements-one-per-line/continued-classdef-semicolon-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-class-semicolon-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-relationship-semicolon-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-with-directive-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-then-comment-line-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-then-empty-line-and-statement-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls]
+
 A line that holds a kept `;` keeps its statements together: the line rule of
 mermaid.js removes the last `;` of a line that holds `style`, a `:` after it,
 and a `#` after that, and moving a statement to a line of its own makes the rule
@@ -2082,6 +2115,27 @@ two comments, and an empty line inside the line of an element, with its name in
 quotes on a later line] [test: requirement: U+2028, a comment, and a line of
 whitespace inside the line of an element, with its name in quotes on a later
 line]
+
+A comment line that starts with `#` or `%` ends at a U+2028 or U+2029, and the
+text after the character is a line of its own. A directive and a comment on that
+line are printed as on a line after a line feed: with one space between them
+where the source has whitespace there, and none where it has none. A directive
+that is not closed keeps the line as written.
+
+[test: requirement: a hash comment line with an ignored semicolon, U+2028, a
+directive, two spaces, and a comment] [test: requirement: a hash comment line
+with two ignored semicolons, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line in a body, U+2028, a directive, two
+spaces, a comment, and the closing brace after an empty line] [test:
+requirement: a hash comment line, U+2028, and a directive that is not closed]
+[test: requirement: a hash comment line, U+2028, a directive, two spaces, and a
+comment] [test: requirement: a hash comment line, U+2028, a directive, one
+space, and a comment] [test: requirement: a hash comment line, U+2028, a
+directive, a tab, and a comment] [test: requirement: a hash comment line,
+U+2028, a directive touching a comment] [test: requirement: a hash comment line,
+U+2029, a directive, two spaces, and a comment] [test: requirement: a percent
+comment line, U+2028, a directive, two spaces, and a comment] [test:
+requirement: a hash comment line, U+2028, two directives, and a comment]
 
 ### Whitespace characters
 
