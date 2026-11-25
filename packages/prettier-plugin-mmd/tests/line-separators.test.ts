@@ -5579,6 +5579,76 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
     "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
   ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %%{x}%%  %% c  \n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %%{x}%% %% c  \n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment alone after U+2028 joins to a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %% c  \n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to an indented directive line, with an event after it",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %% c  \n   %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %% c  \n %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that U+2028 ends before an indented directive line, with an event after it",
+    "timeline\n  2004 : Facebook\n       : Google \u2028\n   %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028\n       %%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a directive line, with a period after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n         : Google \u2028 %% c  \n%%{y}%%\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2029 joins to a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2029 %%{x}%%  %% c  \n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2029 %%{x}%% %% c  \n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a comment line and a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2028 %%{x}%%  %% c  \n%% d\n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2028 %%{x}%% %% c  \n%% d\n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2029 joins to a comment line and a directive line, with an event after it",
+    "timeline\n2004 : Facebook\n         : Google \u2029 %% c\n%% d\n%%{y}%%\n   : Apple\n2005 : YouTube\n",
+    "timeline\n  2004 : Facebook\n       : Google \u2029 %% c\n%% d\n%%{y}%%\n       : Apple\n  2005 : YouTube\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to the next event line stays as written",
+    "timeline\n2004 : Google   :   Pear \u2028 %% c\n   : Apple   :   Plum\n",
+    "timeline\n  2004 : Google   :   Pear \u2028 %% c\n   : Apple   :   Plum\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a directive that is not closed, with an event after it",
+    "timeline\n2004 : Google \u2028 %% c\n%%{y\n   : Apple\n",
+    "timeline\n  2004 : Google \u2028 %% c\n%%{y\n   : Apple\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a line of whitespace and a directive line, with an event after it",
+    "timeline\n2004 : Google \u2028 %% c\n  \t \n%%{y}%%\n   : Apple\n",
+    "timeline\n  2004 : Google \u2028 %% c\n  \t \n%%{y}%%\n   : Apple\n",
+  ],
+  [
+    "timeline: an event with an ignored semicolon that a comment after U+2028 joins to a directive line, with an event after it",
+    "timeline\n2004 : style:#x; \u2028 %% c\n%%{y}%%\n   : Apple\n",
+    "timeline\n  2004 : style:#x; \u2028 %% c\n%%{y}%%\n   : Apple\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to a directive line at the end of the text",
+    "timeline\n2004 : Google \u2028 %% c\n%%{y}%%",
+    "timeline\n  2004 : Google \u2028 %% c\n%%{y}%%\n",
+  ],
+  [
+    "timeline: an event that a comment after U+2028 joins to an empty line and a directive line, with an event after it",
+    "timeline\n2004 : Google \u2028 %% c\n\n%%{y}%%\n   : Apple\n",
+    "timeline\n  2004 : Google \u2028 %% c\n\n%%{y}%%\n   : Apple\n",
+  ],
 ]
 
 /**
