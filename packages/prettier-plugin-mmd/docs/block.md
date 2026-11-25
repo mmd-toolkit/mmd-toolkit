@@ -378,9 +378,10 @@ block-beta
 
 `columns` is followed by its number or `auto` after one space, whatever
 whitespace was written between them (a tab, a line break): mermaid.js reads any
-whitespace there, and the form is one line, as every diagram type prints the gap
-between a keyword and what follows it (see [Composites](#composites)). `space:2`
-is printed with the `:` touching, by the rule of
+whitespace there, and the form is one line;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `columns` and what it takes, as Prettier prints `return  x` as
+`return x;`. `space:2` is printed with the `:` touching, by the rule of
 [Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace):
 every version of mermaid.js that counts rejects `space: 2`, so no space follows
 the colon, and none stands before it either (`a :2` is printed `a:2`) (see
@@ -709,12 +710,14 @@ block-beta
 
 `classDef`, `style`, and `class` are followed by one space, the name of the
 class or the id, and one space; the whitespace after the keyword and before the
-first style is not in the Db, so it becomes one space, the one form of a gap
-between a keyword and what follows it in every diagram type (see
-[Composites](#composites)). The styles of `classDef` and `style` use the spacing
-below; the value of a `class` is printed as written, except that a run of spaces
-and tabs inside a class name is printed as one space: the Db changes, but every
-version of mermaid.js that counts draws the same figure (see
+first style is not in the Db, so it becomes one space, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes (Prettier prints `return  x` as `return x;`)
+and between values that follow one another (Prettier prints CSS
+`margin: 1px    2px` as `margin: 1px 2px`). The styles of `classDef` and `style`
+use the spacing below; the value of a `class` is printed as written, except that
+a run of spaces and tabs inside a class name is printed as one space: the Db
+changes, but every version of mermaid.js that counts draws the same figure (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 `class A,B c1` stays, since every version of mermaid.js that counts draws
 `class A, B c1` differently (see

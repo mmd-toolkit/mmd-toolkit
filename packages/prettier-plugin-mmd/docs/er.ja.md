@@ -1280,8 +1280,10 @@ mermaid.js が、テキストを読む前にディレクティブを取り除く
 また、キーワードとそのテキストの間の隙間は空白 1 つだからです。
 詳しくは
 [置かれた場所や空白で読みが決まる ER の行](./compatibility.ja.md#置かれた場所や空白で読みが決まる-er-の行)
-と [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)
 を参照してください。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとそのテキストの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 行の規則が無視する `;` も、キーワードと `-` を分けません。
 
 [fixture: whitespace-between-tokens/class-then-dash-ignored-semicolon-kept]
@@ -1834,9 +1836,9 @@ erDiagram
 を参照してください。
 テキストと `direction` の間（離して書かれていれば）と、
 `direction` と値の間には空白 1 つを置きます。
-`direction` と値の間は、キーワードとそのテキストの間の隙間で、
-空白 1
-つにするのは[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`direction` とその値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 値は書かれた大文字小文字を保ちます。
 `lr` は `lr` のままです。
 対象にする版の一部はその行をエンティティとして読み、
@@ -1914,11 +1916,10 @@ erDiagram
 前の名前に接して後ろに空白を 1 つ置くコンマを使います。
 Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 最初のスタイルは空白 1 つの後に置きます。
-規則 1 は、文の名前と最初のスタイルの間を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[state](./state.ja.md#トークンの間の空白)と
-[requirement](./requirement.ja.md#スタイルとクラス)が、
-`style` と `classDef` の最初のスタイルを、空白 1 つの後に印字するためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+続く値の間に空白 1 つを与えます。
+Prettier が CSS の `margin: 1px    2px` を `margin: 1px 2px`
+と印字するのと同じです。
 `style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
 最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
 スタイル間は `,` とその後の空白 1 つで区切ります。

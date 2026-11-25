@@ -250,7 +250,13 @@ entity Shop.Beta
 フレームキーワード、数字の名前、実体の種類、修飾名の間は、
 元が図固有の空白の改行でも普通の空白 1 個にします。
 `01 evt` のように完全な部品を見分けるためです。
-部品の間の空白の連なりや改行は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードとそれが取るものの間に空白 1 個を与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
+続く値の間にも空白 1 個を与えます。
+Prettier が CSS の `margin: 1px    2px;` を `margin: 1px 2px;`
+と印字するためです。
+部品の間の改行は、
 [Declarations and notes](#declarations-and-notes) で述べる理由で空白 1
 個にします。
 必須の識別子がちょうど `title` のときは成立する境界を保ちます。

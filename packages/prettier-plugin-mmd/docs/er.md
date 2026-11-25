@@ -1329,8 +1329,8 @@ and `style` are not among them: `classDef-x` is printed `classDef -x`, since
 each version that accepts `classDef-x` or `style-y` draws it the same with a
 space (see
 [ER lines that the place or the whitespace decides](./compatibility.md#er-lines-that-the-place-or-the-whitespace-decides)),
-and the gap between a keyword and its text is one space
-([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)). A
+and [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its text, as Prettier prints `return  x` as `return x;`. A
 `;` that the line rule ignores does not part the keyword and the `-` either.
 
 [fixture: whitespace-between-tokens/class-then-dash-ignored-semicolon-kept]
@@ -1863,11 +1863,11 @@ of [How the printed form is decided](./printed-form.md) gives, so the released
 form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 One space stands between it and `direction`, where they were written apart, and
-between `direction` and the value, which is the gap between a keyword and its
-text: one space, as
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it; the value keeps the case in which it is written (`lr` stays `lr`), since a
-version that counts reads the line as entities and draws `direction tb` and
+between `direction` and the value, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its text (Prettier prints `return  x` as `return x;`); the
+value keeps the case in which it is written (`lr` stays `lr`), since a version
+that counts reads the line as entities and draws `direction tb` and
 `direction TB` differently (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -1938,12 +1938,10 @@ erDiagram
 
 Name and class lists use a comma that touches the name before it and has one
 space after it, as Prettier prints a comma where mermaid.js reads the list the
-same. The first style stands after one space: rule 1 names no mark between the
-name of a statement and its first style, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [state](./state.md#whitespace-between-tokens) and
-[requirement](./requirement.md#styles-and-classes) print the first style of a
-`style` and of a `classDef` statement after one space. For ordinary single-line
+same. The first style stands after one space:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between values that follow one another, as Prettier prints CSS
+`margin: 1px    2px` as `margin: 1px 2px`. For ordinary single-line
 property/value styles in `style` or `classDef`, put no space before the first
 colon of each style and one before its nonempty value; separate styles with a
 comma and one following space: the colon of a style is the colon of a key

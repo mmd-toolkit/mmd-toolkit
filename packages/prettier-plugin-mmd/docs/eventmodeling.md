@@ -230,12 +230,16 @@ entity Shop.Beta
 
 Separate the frame keyword, digit-string name, entity-type word and qualified
 name by one ordinary space, including where native whitespace originally crossed
-lines. This distinguishes complete components such as `01 evt`. A run of
-whitespace or a line break between two components is one space for the reason
-given under [Declarations and notes](#declarations-and-notes). A required
-identifier exactly `title` keeps its successful boundary: an ordinary LF remains
-a continuation, while padding after a hidden form's consumed LF stays exact.
-Introducing padded `title` there can turn the required name into EM_TITLE.
+lines. This distinguishes complete components such as `01 evt`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`, and between values that follow one another, as Prettier prints CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`; a line break between two components
+is one space for the reason given under
+[Declarations and notes](#declarations-and-notes). A required identifier exactly
+`title` keeps its successful boundary: an ordinary LF remains a continuation,
+while padding after a hidden form's consumed LF stays exact. Introducing padded
+`title` there can turn the required name into EM_TITLE.
 
 [fixture: eventmodeling/frame-components/time-parts-glued-number-type]
 

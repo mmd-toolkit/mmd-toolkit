@@ -398,8 +398,9 @@ block-beta
 `columns` の後には、その数か `auto` を、空白 1 つで続けます。
 間に書かれた空白（タブ、改行）はどれも同じです。
 mermaid.js はそこのどの空白も同じに読むので、形は 1 行になります。
-キーワードとその後ろのものの間の隙間は、
-どの図種でも同じ形です（[composite](#composite)を参照）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとその後ろのものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 `space:2` は `:` を接して印字します。
 この形は、
 [mermaid.js が空白を許さない所](./printed-form.ja.md#mermaidjs-が空白を許さない所)
@@ -756,8 +757,10 @@ block-beta
 空白 1 つを置きます。
 キーワードの後と最初のスタイルの前の空白は Db に入らないので、
 空白 1 つにします。
-キーワードとその後ろのものの間の隙間は、
-どの図種でも同じ形です（[composite](#composite)を参照）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとその後ろのものの間と、続く値の間に空白 1 つを与えます。
+Prettier は `return  x` を `return x;` と印字し、
+CSS の `margin: 1px    2px` を `margin: 1px 2px` と印字します。
 `classDef` と `style` のスタイルは下の空白の規則に従い、
 `class` の値は書かれたまま印字しますが、
 クラス名の中の空白とタブの連なりは空白 1 つで印字します。
