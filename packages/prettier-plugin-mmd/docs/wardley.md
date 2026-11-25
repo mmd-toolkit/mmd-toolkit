@@ -488,15 +488,11 @@ Separate complete AST names, ports and arrows by one ordinary space, including
 arrowless links. Preserve every port and arrow spelling.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
 around an arrow, a mark between two things: a flowchart prints `A-->B` as
-`A --> B`, and Prettier prints `x = a+b` as `x = a + b;`. The examples in the
-documentation of mermaid.js write all 31 of their links with a space on each
-side (see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram))
-(`Customer -> Service`, `App +> API`, `Cache +'backup'> Database`). A-->B is the
-name A- and arrow ->, but the first version with the diagram rejects a name with
-a `-` in it and reads the same text as the name A and the arrow -->, so an arrow
-is not separated from a name that ends with `-`: A-->B prints A--> B, which
-every version draws as it draws A-->B, not A- -> B (see
+`A --> B`, and Prettier prints `x = a+b` as `x = a + b;`. A-->B is the name A-
+and arrow ->, but the first version with the diagram rejects a name with a `-`
+in it and reads the same text as the name A and the arrow -->, so an arrow is
+not separated from a name that ends with `-`: A-->B prints A--> B, which every
+version draws as it draws A-->B, not A- -> B (see
 [Wardley authored text and required line breaks](./compatibility.md#wardley-authored-text-and-required-line-breaks)).
 A directive between the name and the arrow does not part them, as mermaid.js
 takes the directive away before it reads the text: A-%%{init: {}}%%->B prints

@@ -523,12 +523,6 @@ port と矢印の原綴は保ちます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が矢印の前後の空白を決めます。
 矢印は 2 つのものの間の記号で、flowchart は `A-->B` を `A --> B` と印字し、
 Prettier は `x = a+b` を `x = a + b;` と印字します。
-mermaid.js の文書の例は、
-link 31 個のすべてを両側に空白を置いて書いています（`Customer -> Service`、
-`App +> API`、`Cache +'backup'> Database`）。
-詳しくは
-[Wardley 図の空白を決める例](./compatibility.ja.md#wardley-図の空白を決める例)
-を参照してください。
 A-->B は名前 A- と矢印 -> ですが、図を持つ最初の版は、`-` を含む名前を拒否して、
 同じテキストを名前 A と矢印 --> として読みます。
 そのため、`-` で終わる名前と矢印の間は空けません。
