@@ -3503,7 +3503,8 @@ The 6 not counted are the coordinates after the comma of an annotation
 | The arrow of a link | `wardley.md` | 31                 | 0                     | 0           |
 
 The 31 arrows are `->` 28 times, `+>` once, `+<>` once, and `+'backup'>` once,
-and none of them is `-->`.
+and none of them is `-->`. The inertia of a component is written in parentheses,
+`(inertia)`, 2 times, and bare, `inertia`, never.
 
 ## Lists separated by commas
 

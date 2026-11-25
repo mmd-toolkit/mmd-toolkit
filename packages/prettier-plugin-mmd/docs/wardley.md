@@ -422,7 +422,11 @@ decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep bare inertia and (inertia) distinct, along with build, buy, outsource and
 market. The inertia forms can share a Db, but converting them loses an authored
-node form; do not supply defaults.
+node form; do not supply defaults. The versions that were run accept both forms
+and draw them alike, and the examples write `(inertia)` 2 times and the bare
+form never (see
+[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)),
+so the bare form is printed against rule 3 and waits to be fixed by the rule.
 
 [fixture: wardley/decorations/decorations-all] [fixture:
 wardley/decorations/decorations-spaced] [fixture:
@@ -507,8 +511,12 @@ A-%%{init: {}}%%-> B.
 
 [fixture: wardley/links/link-glued-directive-between]
 
-Do not search the source for arrow-shaped text. A -->B instead keeps -->. This
-spacing follows the components already read by the parser.
+Do not search the source for arrow-shaped text. A -->B instead keeps -->. The
+versions that were run accept `-->` and `->` and draw them alike, and the
+examples write 28 of the 31 links with `->` and none with `-->` (see
+[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)),
+so keeping `-->` is printed against rule 3 and waits to be fixed by the rule.
+This spacing follows the components already read by the parser.
 
 [fixture: wardley/links/link-short]
 
@@ -4274,14 +4282,16 @@ remain written. [Frontmatter](./compatibility.md#frontmatter) gives the reason
 for the HTML hazards (mermaid.js rewrites `="..."` inside an HTML tag before it
 reads the YAML) and for a body that would create a fence (`--- !!map` after
 `%YAML 1.2`, which every version that counts accepts and rejects once it is
-split); the indented fences and the padding of a delimiter stay as written until
-they are decided (see
+split); the indented fences stay as written until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
-YAML uses the shared positive indentation minimum at tabWidth zero. Its
-indentation carries block scalars and nested values: at zero width every version
-that counts rejects a block scalar and draws a diagram differently where a
-nested `config` value is no longer nested (see
-[Frontmatter](./compatibility.md#frontmatter) and the rows of
+Prettier prints the delimiter of a front matter without the whitespace after
+`---`, and the versions that were run read a delimiter with it like one without
+it (the same Db and the same drawing), so the padding of a delimiter is printed
+against rule 1 and waits to be fixed by the rule. YAML uses the shared positive
+indentation minimum at tabWidth zero. Its indentation carries block scalars and
+nested values: at zero width every version that counts rejects a block scalar
+and draws a diagram differently where a nested `config` value is no longer
+nested (see [Frontmatter](./compatibility.md#frontmatter) and the rows of
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 If textBeforeHeader is present, keep the complete prefix, including leading LF,
 passed trivia, second-scan forms and real/retained order. The shared keepsPrefix
