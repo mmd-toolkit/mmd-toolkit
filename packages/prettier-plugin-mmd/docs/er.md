@@ -103,9 +103,9 @@ erDiagram
 
 The `{` of an attribute block stays on the line of the entity, after one space;
 each attribute stands on a line of its own, one level deeper; and the `}` stands
-on a line of its own at the level of the entity. Rule 1 names no mark before the
-`{` of a block, but Prettier prints one space there (`function f(){}` is printed
-`function f() {}`), and
+on a line of its own at the level of the entity. Rule 1 gives the one space
+before the `{` of a block (Prettier prints `function f(){}` as
+`function f() {}`). The start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the lines, as [class](./class.md#member-bodies),
 [requirement](./requirement.md#bodies), and [state](./state.md#composite-states)
@@ -2183,9 +2183,8 @@ whitespace runs, line breaks and an NBSP-only interior, as Prettier prints
 `x = { }` as `x = {}`
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). An already empty
 interior stays empty, and the keyword and opening brace have one space between
-them: rule 1 names no mark between a keyword and its opening brace, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [gantt](./gantt.md#empty-description-blocks) and
+them: rule 1 gives one space before the `{` that opens a block (`class A{}` is
+printed `class A {}`), as [gantt](./gantt.md#empty-description-blocks) and
 [journey](./journey.md#empty-description-blocks) print one space there. No text
 needs surrounding whitespace, so the Db-equal choice follows
 [flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
@@ -2197,12 +2196,16 @@ Blocks with comments or directives keep their line breaks and complete contents,
 while ordinary standalone trivia aligns inside the block. Rule 1 names no mark
 for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#multi-line-values) keeps the contents and
-line breaks of a block with a directive or comment line and puts such a line one
-level inside the block. [xychart](./xychart.md#empty-description-blocks) and
-[quadrant](./quadrant.md#empty-description-blocks) do so too, but in them this
-is a question of the list of undecided forms (D34) and a form printed against a
-rule, so their printing gives no form.
+decides, as [flowchart](./flowchart.md#multi-line-values) keeps the comment
+lines of a block without text and puts them one level inside the block, with its
+`}` at the level of the `accDescr`. A block that holds a directive is another
+case: [flowchart](./flowchart.md#multi-line-values),
+[xychart](./xychart.md#empty-description-blocks), and
+[quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
+breaks, but in them this is a question of the list of undecided forms (D34) and
+a form printed against a rule, so their printing gives no form, and the released
+form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: accessibility-statements/empty-blocks] [fixture:
 accessibility-statements/empty-block-with-directive-or-comment-line] [corpus
@@ -3190,8 +3193,9 @@ directive is rejected, by mermaid.js too, since the directive leaves its
 whitespace behind and the text ends in the style context. A directive that
 touches the character leaves nothing behind: `style A fill:red`, U+2028, and a
 directive are printed as written. A color before a dropped character is printed
-in lower case at once, since the color then ends the printed text and a second
-formatting would print it so: `fill:#F9F` and U+2028 is printed `fill: #f9f`.
+in lower case at once, by the rule of [Colors](#colors): the color then stands
+alone at the end of the printed text. `fill:#F9F` and U+2028 is printed
+`fill: #f9f`.
 
 [test: ER a style that no semicolon ends is printed without the U+2028 or U+2029
 that ends it, before a statement and at the end of the text] [test: ER a style

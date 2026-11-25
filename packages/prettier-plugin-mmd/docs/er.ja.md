@@ -106,9 +106,10 @@ erDiagram
 属性ブロックの `{` は、空白 1 つの後に、実体の行に置きます。
 各属性は、1 段深く、行に 1 つずつ置き、`}` は、実体と同じ段に、
 行に単独で置きます。
-規則 1 は、ブロックの `{` の前を挙げていませんが、
-Prettier はそこに空白 1 つを置きます（`function f(){}` は `function f() {}`
-と印字されます）。
+規則 1 は、
+ブロックの `{` の前に空白 1 つを置きます（Prettier は `function f(){}` を
+`function f() {}` と印字します）。
+行頭は規則 1 の場所ではないので、
 行の形は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
 [class](./class.ja.md#メンバーの本体)、[requirement](./requirement.ja.md#本体)、
 [state](./state.ja.md#複合状態)が、本体の `{` を、
@@ -2176,11 +2177,11 @@ Prettier が `x = { }` を `x = {}`
 と印字するからです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 すでに空の内側は空のままです。
 キーワードと開始括弧の間には空白を 1 つ置きます。
-規則 1 は、キーワードと開始括弧の間を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+規則 1 は、
+ブロックを開く `{` の前に空白 1 つを置きます（`class A{}` は `class A {}`
+と印字します）。
 [gantt](./gantt.ja.md#空の説明ブロック)と
-[journey](./journey.ja.md#空の説明ブロック)が、
-そこに空白 1 つを印字するためです。
+[journey](./journey.ja.md#空の説明ブロック)も、そこに空白 1 つを印字します。
 空白で囲む本文がないので、Db が同じ形の選択は、
 [flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
 agentflow、usecase に合わせます。
@@ -2192,12 +2193,18 @@ agentflow、usecase に合わせます。
 規則 1 は、ブロックの中の行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [flowchart](./flowchart.ja.md#複数行の値)は、
-ディレクティブかコメント行があるブロックの内容と改行を、そのまま残し、
-その行をブロックの内側に 1 段深く置きます。
-[xychart](./xychart.ja.md#空の説明ブロック) と
-[quadrant](./quadrant.ja.md#空の説明ブロック) も同じですが、どちらでもこの形は、
-決まっていない形の一覧（D34）の問いと、決まりに反して印字している形なので、
-その印字は形を与えません。
+本文のないブロックのコメント行をそのまま残し、ブロックの内側に 1 段深く置いて、
+`}` を `accDescr` と同じ段に置きます。
+ディレクティブがあるブロックは別の場合です。
+[flowchart](./flowchart.ja.md#複数行の値)、
+[xychart](./xychart.ja.md#空の説明ブロック)、
+[quadrant](./quadrant.ja.md#空の説明ブロック)は、その内容と改行を残しますが、
+どれでもこの形は、決まっていない形の一覧（D34）の問いと、
+決まりに反して印字している形なので、その印字は形を与えません。
+リリース済みの形は、決まるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
@@ -3121,8 +3128,8 @@ mermaid.js は style 自身の行にあるコメントを拒否し、
 
 文字に接するディレクティブは何も残しません。
 `style A fill:red`、U+2028、ディレクティブは、書かれたまま印字します。
-落とす文字の前の色は、すぐに小文字で印字します。
-色がそこで印字するテキストの終わりになり、2 回目の整形もそう印字するからです。
+落とす文字の前の色は、[色](#色)の規則により、すぐに小文字で印字します。
+色が印字するテキストの終わりに単独で立つためです。
 `fill:#F9F` と U+2028 は `fill: #f9f` と印字します。
 
 [test: ER a style that no semicolon ends is printed without the U+2028 or U+2029 that ends it, before a statement and at the end of the text]
