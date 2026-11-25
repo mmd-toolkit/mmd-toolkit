@@ -290,6 +290,31 @@ the prefix is drawn like any other.
 
 [fixture: treeview/branch-prefixes/branch-semicolon-name]
 
+A U+2028 or U+2029 before a comment region carries the name onto the next row:
+the comment region removes the rest of its line, the line break included, and
+the name goes on with that row
+([Comments and boundaries](../../spec/docs/diagrams/treeview.md#comments-and-boundaries)).
+A prefix on that row is text of the name, not a branch, so the row holds no node
+of its own. The node of the name takes `└── ` when no sibling follows it, also
+where it was written with `├── `, and `├── ` when one does, as the first, a
+middle or the last of its siblings and at any depth: `├── a`, the character,
+`%% c` and `└── z` print as `└── a`, the character, `%% c` and `└── z`, which is
+one node, while with a `├── b` row between the comment and `└── z` the node
+keeps `├── `, since `└── z` follows it. A directive without a comment, a blank
+row after the comment and the end of the text do not carry the name, so the
+nodes keep the branches that their siblings give them.
+
+[test: treeview/branch-prefixes/continued-name-line-separator-comment] [test:
+treeview/branch-prefixes/continued-name-paragraph-separator-comment] [test:
+treeview/branch-prefixes/continued-name-semicolon-line-separator-comment] [test:
+treeview/branch-prefixes/continued-name-nested-line-separator-comment] [test:
+treeview/branch-prefixes/continued-name-middle-line-separator-comment] [test:
+treeview/branch-prefixes/continued-name-line-separator-comment-sibling-follows]
+[test:
+treeview/branch-prefixes/continued-name-line-separator-directive-without-comment]
+[test: treeview/branch-prefixes/continued-name-line-separator-comment-blank-row]
+[test: treeview/branch-prefixes/continued-name-line-separator-comment-at-end]
+
 Choose body retention once before drawing. Keep the complete body as written if
 an outer prefix or its separator crosses arbitrary text, a directive, selected
 semicolon or comment region, or a decoration line crosses shared trivia. Also
