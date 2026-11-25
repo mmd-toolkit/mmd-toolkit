@@ -2060,7 +2060,10 @@ U+2028 の後を空白 1 つにして印字します）。
 [test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with nothing or a mark that touches it after it]
 [test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces or a tab after it, or a mark after a space]
 
-次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
+次の行から値を取らず、Db の等しい一定の外側の配置で印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`title` と空でない値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 `titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。
 値の最初の文字より前にある、行の規則が無視する `;` は、
 その前の空白が 1 文字でもそれ以上でも、隙間の項目です。

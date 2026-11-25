@@ -288,16 +288,12 @@ Print the braces of a curve of values only tight, `c{1, 2}`, and the braces of a
 curve of named entries with one space inside each end, `c["C"]{ A: 1, B: 2 }`;
 the gap before the opening brace is empty in both. A list of named entries is
 the kind of braces that Prettier prints as an object, `{ a: 1, b: 2 }`, and a
-list of values is the kind it prints as an array, `[1, 2, 3]`. The examples in
-the documentation of mermaid.js write the 14 curves of values only with none
-inside, and the one curve of named entries with one space inside each end. A
-named entry without a colon (`{ A 1, B 2 }`) is a named entry too. The colon of
-a named entry is the colon of a key: the entry gives its axis one value, so none
-stands before it and one follows (step 2 of
-[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). Attached
-components and the list's tight inner edges follow the architecture and xychart
-choices. These are entry braces; description-block spacing uses the shared
-description rule.
+list of values is the kind it prints as an array, `[1, 2, 3]`. A named entry
+without a colon (`{ A 1, B 2 }`) is a named entry too. The colon of a named
+entry is the colon of a key: the entry gives its axis one value, so none stands
+before it and one follows (step 2 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). These are
+entry braces; description-block spacing uses the shared description rule.
 
 [fixture: radar/curve-braces/brace-tight]
 

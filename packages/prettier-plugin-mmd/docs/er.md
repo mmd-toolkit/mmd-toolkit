@@ -484,8 +484,11 @@ parts becomes one space.
 The parts are not aligned in columns: aligning would change every line of a
 block when one attribute changes, the width of a name cannot be counted in
 characters, and the examples in the documentation of mermaid.js are not aligned
-either. The one space, and the `?` touching its type, are the form of those
-examples. The `?` of an optional type touches the type, however it was written.
+either. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between the parts of an attribute as values that follow one another, as
+Prettier prints CSS `margin: 1px    2px;` as `margin: 1px 2px;`; the `?`
+touching its type is the form of those examples. The `?` of an optional type
+touches the type, however it was written.
 
 [fixture: attribute-spacing/optional-touching]
 

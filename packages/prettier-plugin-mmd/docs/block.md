@@ -89,9 +89,7 @@ printed `block: G`, and `block:G:2` is printed `block: G:2`, the colon of the
 width touching the node as it does elsewhere in a block diagram, for the reason
 given under [Shapes](#shapes).
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-between `block:` and its node, as Prettier prints `return  x` as `return x;`,
-and that rule comes before the spelling of the examples of mermaid.js, which
-write `block:` touching its node 4 times and never with a space after it.
+between `block:` and its node, as Prettier prints `return  x` as `return x;`.
 mermaid.js reads `block: G` and `block:G` alike, and so do all the versions that
 count, so none needs the touching form. They all reject a space before the colon
 (`block : G`), which the keyword `block:` forbids, so the printer never writes

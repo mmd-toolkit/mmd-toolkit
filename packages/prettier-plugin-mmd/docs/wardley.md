@@ -392,29 +392,22 @@ Prettier prints no space inside parentheses
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)).
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
 before the `[` of a label offset, which the keyword `label` takes (see
-[Component spacing](#component-spacing)). Rule 1 names no mark for the other
-gaps before a decoration, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides where another diagram type has a gap of that kind. Two gaps have one:
-[quadrant](./quadrant.md#styles) prints one space between the `]` of a point and
-its first style, written touching or not (`]radius:9`), as wardley prints one
-between a `]` and the word `label` or the bare `inertia` that follows it; and
-[class](./class.md#member-lines) prints one space between the `)` of a method
-and its return type, where no other rule keeps the method as written (class
-keeps a method with a directive inside it as written), as wardley prints one
-between the `)` of a strategy in parentheses and the bare `inertia` that follows
-it. Those descriptions are of a gap in which no directive stands. A directive in
-the gap is printed after one space and touches the unit that follows it, in
-xychart as in wardley (`line %%{init: {}}%% [1]` is printed
-`line %%{init: {}}%%[1]`, and `label [1, 2] %%{x}%% (build)` is printed
-`label [1, 2] %%{x}%%(build)`). The gap before a `(` that follows a `]` or a
-`)`, which holds a strategy or `(inertia)` in parentheses, has none: the
-documents of the other printers name no such gap, no printed fixture of another
-diagram type holds a `] (` or a `) (`, and the one space that
-[ER](./er.md#attribute-spacing) prints between the keys of an attribute and its
-comment stands before a quoted string, not before a `(`. So the form that the
-released version prints, one space, stays for the gap before a `(` until it is
-decided (see
+[Component spacing](#component-spacing)). The decorations are values that follow
+one another, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+one space between a `]` and the word `label` or the bare `inertia` that follows
+it, and between the `)` of a strategy in parentheses and the bare `inertia` that
+follows it, as Prettier prints CSS `margin: 1px    2px;` as `margin: 1px 2px;`.
+Those descriptions are of a gap in which no directive stands. A directive in the
+gap is printed after one space and touches the unit that follows it, in xychart
+as in wardley (`line %%{init: {}}%% [1]` is printed `line %%{init: {}}%%[1]`,
+and `label [1, 2] %%{x}%% (build)` is printed `label [1, 2] %%{x}%%(build)`).
+The gap before a `(` that follows a `]` or a `)`, which holds a strategy or
+`(inertia)` in parentheses, has none: the documents of the other printers name
+no such gap, no printed fixture of another diagram type holds a `] (` or a
+`) (`, and the one space that [ER](./er.md#attribute-spacing) prints between the
+keys of an attribute and its comment stands before a quoted string, not before a
+`(`. So the form that the released version prints, one space, stays for the gap
+before a `(` until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep bare inertia and (inertia) distinct, along with build, buy, outsource and
 market. The inertia forms can share a Db, but converting them loses an authored

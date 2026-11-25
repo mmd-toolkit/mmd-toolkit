@@ -323,10 +323,11 @@ packet
 ### Title
 
 Print `title`, one space and a nonempty value trimmed at common-whitespace
-edges; null or whitespace-only values print bare `title`. This compacts
-equivalent exterior whitespace while keeping interior text, quotes and escapes,
-apart from a run of spaces and tabs inside the value, which is printed as one
-space (see
+edges; null or whitespace-only values print bare `title`. For equivalent
+exterior whitespace, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives one space between `title` and its value, as Prettier prints `return  x` as
+`return x;`, while keeping interior text, quotes and escapes, apart from a run
+of spaces and tabs inside the value, which is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Never take a value from the next physical line, even across
 blank/comment/directive gaps. Keep empty final assignments and frontmatter

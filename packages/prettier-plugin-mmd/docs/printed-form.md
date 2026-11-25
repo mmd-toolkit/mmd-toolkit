@@ -73,7 +73,7 @@ same way. The texts of Prettier are JavaScript where no language is named.
 | The `(` of a call                        | `f (a)` is printed `f(a);`                                           | none before                                                                        | `terminal ("x")` in a railroad diagram                     | `terminal("x")`               |
 | The `[` of an index                      | `x [ 0 ];` is printed `x[0];`                                        | none before                                                                        | `service a (server) [A]` in an architecture diagram        | `service a(server)[A]`        |
 | The `{` that opens a block               | `class A{}` is printed `class A {}`                                  | one space before                                                                   | `A   {` in an ER diagram                                   | `A {`                         |
-| Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                               | one space inside                                                                   | `A@{shape:rect}` in a flowchart                            | `A@{ shape:rect }`            |
+| Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                               | one space inside                                                                   | `A@{shape: rect}` in a flowchart                           | `A@{ shape: rect }`           |
 | Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                              | none inside                                                                        | `x-axis [ jan, feb ]` in an XY chart                       | `x-axis [jan, feb]`           |
 | Braces that hold nothing                 | `x = { }` is printed `x = {};`                                       | none inside                                                                        | `accDescr { }` in a Gantt chart                            | `accDescr {}`                 |
 | The end of a line                        | `a = 1;` and three spaces is printed `a = 1;`                        | none                                                                               | `radar-beta` and three spaces in a radar chart             | `radar-beta`                  |
@@ -92,12 +92,14 @@ printed `return [800, 600];`, so the `[` that opens the list of values of
 one space before it. Values that follow one another, as the values of a CSS
 declaration do, have one space between them, so the `[` that opens the values
 that a statement takes also stands one space after a name or a title that comes
-before it: `anchor Coord   [0.3, 0.6]` is printed `anchor Coord [0.3, 0.6]`. A
-bracket that opens the title or the label of a name touches the name, as the `[`
-of an index touches what it indexes and has no space before it: `subgraph S [t]`
-is printed `subgraph S[t]` in a flowchart, and `service a (server) [A]` is
-printed `service a(server)[A]` in an architecture diagram. A `(` that opens a
-call and a `{` that opens a block keep their rows.
+before it: `anchor Coord   [0.3, 0.6]` is printed `anchor Coord [0.3, 0.6]`. The
+`{` that opens the values of a curve in a radar chart (`curve c{1, 2}`) is such
+a bracket too, as Prettier prints `return  {a: 1}` as `return { a: 1 };`: it has
+one space before it. A bracket that opens the title or the label of a name
+touches the name, as the `[` of an index touches what it indexes and has no
+space before it: `subgraph S [t]` is printed `subgraph S[t]` in a flowchart, and
+`service a (server) [A]` is printed `service a(server)[A]` in an architecture
+diagram. A `(` that opens a call and a `{` that opens a block keep their rows.
 
 The end of a line, the end of the text, and blank lines are the same in
 JavaScript, CSS, YAML, and Markdown, and a line of whitespace only is a blank

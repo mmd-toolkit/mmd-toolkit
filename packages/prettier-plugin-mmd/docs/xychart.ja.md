@@ -400,9 +400,19 @@ xychart
 同じに空白 1 つで離します（`title"T"` は `title "T"` と印字します）。
 この空白はどれも Db に入らず、単位の読みも変えません。
 角括弧、コンマ、引用符は単語の文字ではないからです。
-そのため、この形は選択です。
-mermaid.js の文書の例の多くがこの形で（`[jan, feb, mar]`、
-`[5000, 6000, 7500]`）、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとその値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
+文が取る値を開く `[` の前も同じです。
+Prettier は `return  [800, 600]` を `return [800, 600];` と印字します。
+続く値同士の間も、title の後ろの `[` の前も、規則 1 により空白 1 つです。
+Prettier が CSS の `margin: 1px    2px;` を `margin: 1px 2px;`
+と印字するためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、キーワードとその値の間と、
+文が取る値を開く `[` の前に空白 1 つを与えます。
+Prettier は `return  x` を `return x;` と印字し、
+`return  [800, 600]` を `return [800, 600];` と印字します。
+mermaid.js の文書には、
 コンマの後に空白がない例もあります（`[12,2,20,25,17,24]`）が、
 どのチャートでも形を 1 つにします。
 コンマの後の空白は、Prettier がコンマに印字する形です。
@@ -496,11 +506,11 @@ xychart
 値とその後ろのラベルは、空白 1 つで離します（`20 "peak"`）。
 接して書かれていても（`10"peak"`）同じです。
 ラベルの後ろのコンマの前に、空白は置きません。
-mermaid.js は、ラベルが値に接していても離れていても同じに読むので、
-この形は選択です。
-空白 1 つは、mermaid.js の文書が使う形（`25 "Launch"`）で、
-キーワードと文字列の区切りと、
-同じです（[角括弧とコンマ](#角括弧とコンマ)を参照）。
+mermaid.js は、ラベルが値に接していても離れていても同じに読みます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+続く値である値とラベルの間に空白 1 つを与えます。
+Prettier が CSS の `margin: 1px    2px;` を `margin: 1px 2px;`
+と印字するためです。
 
 [fixture: values-and-labels/label-touching-the-value]
 [fixture: values-and-labels/label-with-more-whitespace]
