@@ -690,15 +690,13 @@ nothing in the Db between nodes, before decorations, and at the end of the board
 one empty line, whitespace-only lines are empty lines, and empty lines at the
 start and at the end of the board are dropped, where no other rule keeps the gap
 as written (see the gap with a diagram comment below), as in the other diagram
-types: `kanban`, two empty lines, and ` S` print `kanban` and `  S`. Rule 1
-names no mark for an empty line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [gantt](./gantt.md#blank-lines),
-[journey](./journey.md#blank-lines), and [sankey](./sankey.md#blank-lines) print
-a run of empty lines as one and drop the empty lines at the start and at the end
-of the board. Whitespace after `kanban` on a header line with nothing else is
-dropped, whatever the character (a space, a tab, a U+00A0, a U+3000, a U+FEFF, a
-form feed, a vertical tab, a U+2028, a U+2029).
+types: `kanban`, two empty lines, and ` S` print `kanban` and `  S`. Prettier
+prints a run of empty lines as one and drops the empty lines at the start and at
+the end of a block, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that for the
+board. Whitespace after `kanban` on a header line with nothing else is dropped,
+whatever the character (a space, a tab, a U+00A0, a U+3000, a U+FEFF, a form
+feed, a vertical tab, a U+2028, a U+2029).
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/blank-body-end] [fixture:
 blank-lines/gram-grid-lf-header-line] [fixture:
@@ -725,16 +723,28 @@ not repair that. A gap that holds a diagram comment followed by an empty line,
 by another diagram comment, or by a U+2028 or U+2029 in the read text is kept
 whole as written: its empty lines and its comments, up to the indentation of the
 next statement, which the printer chooses (see [Indentation](#indentation)). A
-gap with only comment lines (`S`, `%% note`, an empty line, `A`) is formatted as
-usual, and the comment line is aligned (see [Comments](#comments)). A common
-comment after a directive containing a line feed, or after a native `%%`
-comment, is still removed before this decision and aligned as usual; a U+2028 or
-U+2029 inside that common comment is removed too and cannot make the gap stay as
-written.
+separator counts only where it ends the comment or stands before the last line
+feed of the gap; one after that line feed, in the indentation of the statement,
+does not make the gap a kept one (see [Comments](#comments)). A comment line
+takes the whitespace before it, a line of a separator or an empty line included,
+out of the text that mermaid.js reads, so one of those that stands before a
+comment line does not keep the gap either: the separator goes, and the gap is
+printed as any gap, with one empty line where the source holds a line of a
+separator or an empty line, and none right after the header line (see
+[Comments](#comments)). A gap with only comment lines (`S`, `%% note`, an empty
+line, `A`) is formatted as usual, and the comment line is aligned (see
+[Comments](#comments)). A common comment after a directive containing a line
+feed, or after a native `%%` comment, is still removed before this decision and
+aligned as usual; a U+2028 or U+2029 inside that common comment is removed too
+and cannot make the gap stay as written.
 
-[test: kanban: comment-line-ls-taken] [fixture:
+[test: kanban: comment-line-ls-taken] [test: kanban: ls-ends-comment-kept]
+[test: kanban: ls-own-line-after-comment-kept] [test: kanban:
+ls-indentation-after-comment] [fixture:
 blank-lines/common-comment-after-multiline-directive] [fixture:
-blank-lines/native-then-common-comment]
+blank-lines/native-then-common-comment] [test: kanban: separator line before a
+comment line is dropped, one empty line stays] [test: kanban: separator line
+before a comment line after the header leaves no empty line]
 
 A gap of this kind at the end of the board is kept whole too, with nothing after
 it to indent: `kanban`, ` S`, `%%`, and two empty lines print `  S`, `%%`, and
@@ -826,12 +836,53 @@ its authored line, with eligible data-block margins following
 [fixture: data-blocks/indented-comment-line]
 
 A diagram comment that is followed by an empty line, by another comment, or by a
-U+2028 or U+2029 stays as written with the gap after it (see
-[Blank lines](#blank-lines)).
+U+2028 or U+2029 that ends it or stands before the last line feed of the gap
+stays as written with the gap after it (see [Blank lines](#blank-lines)), unless
+a comment line follows, which removes the whitespace before it.
 
 [fixture: comments/comments-align] [fixture:
 comments/bare-brace-comments-aligned] [fixture: comments/header-leading-comment]
 [fixture: comments/comment-line-in-value]
+
+A U+2028 or U+2029 in the indentation of the line after a diagram comment that a
+line feed ends is one character of that indentation (see
+[Whitespace characters](#whitespace-characters)), so it does not keep the gap:
+`S[x]  %% c`, a line feed, a U+2028, and three spaces and `A` print `S[x] %% c`
+and `A` with the indentation of its place, and so do a comment after the header,
+after the shape of a card, after an icon, and after a data block. A separator
+that ends the comment, one on a line of its own after the comment, and an empty
+line after the comment keep the gap as written, unless a comment line follows
+the last two, which removes the whitespace before it, the line of the separator
+or the empty line included: `S[x]  %% c`, a line feed, a U+2028, a line feed,
+`%% d`, and `  A` print `S[x] %% c`, an empty line, `%% d`, and `A`, the last
+two with the indentation of their place, and a separator in the indentation of
+the comment line, or before its `%%`, is dropped. A comment line before the
+separator line takes nothing with it: `S[x]  %% c`, `%% d`, a line of a U+2028,
+and `A` stay as written.
+
+[test: kanban: ls-indentation-after-comment-after-closed-directive] [test:
+kanban: ls-indentation-after-unclosed-directive-kept] [test: kanban:
+ls-indentation-after-comment-with-ignored-semicolon] [test: kanban:
+ls-indentation-after-comment-with-two-ignored-semicolons] [test: kanban:
+ls-indentation-after-two-comment-lines] [test: kanban:
+ls-indentation-after-comment-and-whitespace-line-kept] [test: kanban:
+comment-at-end-of-text-without-line-feed] [test: kanban:
+node-named-end-after-comment-and-ls-indentation] [test: kanban:
+ls-indentation-after-comment] [test: kanban: ps-indentation-after-comment-tab]
+[test: kanban: ls-indentation-after-comment-header] [test: kanban:
+ls-indentation-after-comment-card-shape] [test: kanban:
+ls-indentation-after-comment-icon] [test: kanban:
+ls-indentation-after-comment-data-block] [test: kanban: ls-ends-comment-kept]
+[test: kanban: ls-own-line-after-comment-kept] [test: kanban:
+ls-indentation-after-comment-and-blank-line-kept] [test: kanban:
+ls-line-then-comment-line-header] [test: kanban: ls-line-then-comment-line]
+[test: kanban: ps-line-then-comment-line-card-shape] [test: kanban:
+ls-line-then-comment-line-icon] [test: kanban:
+ps-line-then-comment-line-data-block] [test: kanban:
+comment-line-then-ls-line-kept] [test: kanban:
+comment-line-then-ps-line-kept-data-block] [test: kanban:
+ls-in-comment-line-indentation] [test: kanban:
+ps-before-comment-line-mark-card-shape]
 
 A diagram comment after the header, a shape, an icon, or a data block stays on
 its line: it touches where it touches, and a run of spaces and tabs before it
@@ -1383,57 +1434,54 @@ exception is a gap that stays whole under [Blank lines](#blank-lines) at the end
 of the board: the output then ends with that gap, and the printer adds a line
 break after it only where it does not end with one: `kanban`, ` S`, a line of
 `%%`, an empty line, and a line of one space print `  S`, `%%`, the empty line,
-and the line of one space with a line break after it. Rule 1 names no mark for
-the end of a text after a diagram comment, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [c4](./c4.md#final-newline) and [ishikawa](./ishikawa.md#final-newline)
-end the text with one line break after a final comment too, which the printer
-adds where the text ends without one, also where it ends with a U+2028 or a
-U+2029. The spaces at the end of a last bare id are part of the id and stay
-(`S   ` prints with its spaces, then the line break). When a directive that is
-not closed reaches the end of the text, it takes the rest up to its last
-character that is no whitespace; U+2028, U+2029, U+0085, U+180E, and U+200B are
-no whitespace here. On a line of its own, the whitespace after that character is
-dropped: U+0009 to U+000D (the tab, the line breaks, the vertical tab, and the
-form feed), U+0020, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000,
-and U+FEFF, and with them the empty lines; one line break ends the text; nothing
-is added only where the text ends right after the character and it is no U+2028
-or U+2029. `%%{unfinished` and two spaces print `%%{unfinished` and a line
-break, and `%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line
-break. On the line of a column, the whitespace after the directive stays up to
-the first line break instead: `S[x] %%{unfinished` and two spaces print as
-written, with a line break after them, and `S[x] %%{unfinished` with nothing
-after it is not changed. On the line of a card, the spaces and tabs after the
-directive are dropped and any other whitespace character stays, and one line
-break ends the text: `A[x] %%{unfinished` and two spaces print
-`A[x] %%{unfinished` and a line break, and `A[x] %%{unfinished`, a no-break
-space, and nothing else print the no-break space after it and a line break, and
-`A[x] %%{unfinished`, U+3000, and two spaces print them as written, with a line
-break after them. After the comment of a statement or of the header line, a last
-line of whitespace that holds no U+2028 or U+2029, that has no line break after
-it and no empty line before it is left out (`S[x] %% c`, a line break, and a
-line of two spaces print `S[x] %% c` and a line break), while one that a line
-break follows stays, and so does one after an empty line, with a line break
-added after it (`S[x] %% c`, a line break, an empty line, and a line of two
-spaces print `S[x] %% c`, the empty line, and the line of two spaces with a line
-break after it). A last line that holds a U+2028 or a U+2029, alone or beside
-whitespace, stays after the comment of the header line and of a statement, a
-column or a card, with a line break added after it where none follows
-(`S[x] %% c`, a line break, and a U+2028 print the comment, the line of the
-U+2028, and a line break). After a comment line with text, every last line of
-whitespace is left out, one that holds a U+2028 or a U+2029 too (`S[x]`, a line
-break, `%% c`, a line break, and a U+2028 print `S[x]` and `%% c`, each followed
-by a line break), and after a line of `%%` only, a last line that holds a U+2028
-or a U+2029, alone or beside whitespace, stays as written with the gap before
-it, and so does a last line of whitespace that a line break follows or an empty
-line precedes (the gap stays whole, see [Blank lines](#blank-lines)), while a
-last line of whitespace with neither is left out and the `%%` is aligned
-(`S[x]`, a line of `%%`, a line break, and one space print `S[x]`, the `%%`
-aligned, and a line break). On the header line, an open directive takes the rest
-as on a line of its own: `kanban %%{unfinished` and two spaces print
-`kanban %%{unfinished` and a line break. In Markdown, the indentation of the
-code fence or of its list item is the indentation of the host, and is not part
-of the indentation of the board.
+and the line of one space with a line break after it. Prettier ends a file with
+one line break, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the line break after a final comment too, which the printer adds where the
+text ends without one, also where it ends with a U+2028 or a U+2029. The spaces
+at the end of a last bare id are part of the id and stay (`S   ` prints with its
+spaces, then the line break). When a directive that is not closed reaches the
+end of the text, it takes the rest up to its last character that is no
+whitespace; U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace here.
+On a line of its own, the whitespace after that character is dropped: U+0009 to
+U+000D (the tab, the line breaks, the vertical tab, and the form feed), U+0020,
+U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF, and with
+them the empty lines; one line break ends the text; nothing is added only where
+the text ends right after the character and it is no U+2028 or U+2029.
+`%%{unfinished` and two spaces print `%%{unfinished` and a line break, and
+`%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line break. On
+the line of a column, the whitespace after the directive stays up to the first
+line break instead: `S[x] %%{unfinished` and two spaces print as written, with a
+line break after them, and `S[x] %%{unfinished` with nothing after it is not
+changed. On the line of a card, the spaces and tabs after the directive are
+dropped and any other whitespace character stays, and one line break ends the
+text: `A[x] %%{unfinished` and two spaces print `A[x] %%{unfinished` and a line
+break, and `A[x] %%{unfinished`, a no-break space, and nothing else print the
+no-break space after it and a line break, and `A[x] %%{unfinished`, U+3000, and
+two spaces print them as written, with a line break after them. After the
+comment of a statement or of the header line, a last line of whitespace that
+holds no U+2028 or U+2029, that has no line break after it and no empty line
+before it is left out (`S[x] %% c`, a line break, and a line of two spaces print
+`S[x] %% c` and a line break), while one that a line break follows stays, and so
+does one after an empty line, with a line break added after it (`S[x] %% c`, a
+line break, an empty line, and a line of two spaces print `S[x] %% c`, the empty
+line, and the line of two spaces with a line break after it). A last line that
+holds a U+2028 or a U+2029, alone or beside whitespace, stays after the comment
+of the header line and of a statement, a column or a card, with a line break
+added after it where none follows (`S[x] %% c`, a line break, and a U+2028 print
+the comment, the line of the U+2028, and a line break). After a comment line
+with text, every last line of whitespace is left out, one that holds a U+2028 or
+a U+2029 too (`S[x]`, a line break, `%% c`, a line break, and a U+2028 print
+`S[x]` and `%% c`, each followed by a line break), and after a line of `%%`
+only, a last line that holds a U+2028 or a U+2029, alone or beside whitespace,
+stays as written with the gap before it, and so does a last line of whitespace
+that a line break follows or an empty line precedes (the gap stays whole, see
+[Blank lines](#blank-lines)), while a last line of whitespace with neither is
+left out and the `%%` is aligned (`S[x]`, a line of `%%`, a line break, and one
+space print `S[x]`, the `%%` aligned, and a line break). On the header line, an
+open directive takes the rest as on a line of its own: `kanban %%{unfinished`
+and two spaces print `kanban %%{unfinished` and a line break. In Markdown, the
+indentation of the code fence or of its list item is the indentation of the
+host, and is not part of the indentation of the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]

@@ -118,6 +118,15 @@ export interface JoiningRegion {
   readonly end: number
   /** Whether anything but whitespace follows the region, to be joined to what comes before. */
   readonly hasTextAfter: boolean
+  /**
+   * Whether the line right after the region holds text, which is no whitespace
+   * and no directive, so that the text before the region is read as one line
+   * with it. False for a line that holds nothing else, or for no line at all.
+   * The whitespace of such a line still belongs to what comes before the region
+   * where the statement before it takes it into its value (see
+   * `findAccessibilityLinesBeforeEmptyRegion`).
+   */
+  readonly joinsText: boolean
 }
 
 /**
@@ -694,6 +703,23 @@ function findCommentRegions(
     return undefined
   }
 
+  /** Whether text, which is no whitespace or directive, starts the line at `offset`. */
+  function holdsTextOnLine(offset: number): boolean {
+    let position = offset
+    while (position < text.length) {
+      const directiveEnd = directiveEndByStart.get(position)
+      if (directiveEnd !== undefined) {
+        position = directiveEnd
+        continue
+      }
+      const character = text[position]
+      if (character === "\n" || character === "\r") return false
+      if (!isWhitespace(character)) return true
+      position++
+    }
+    return false
+  }
+
   const all: Range[] = []
   const joining: JoiningRegion[] = []
   let previousEnd = -1
@@ -715,6 +741,7 @@ function findCommentRegions(
       start,
       end,
       hasTextAfter: false,
+      joinsText: holdsTextOnLine(end),
     })
   }
   // A region has text after it when the lexer reads something after it. The
@@ -739,7 +766,11 @@ function findCommentRegions(
   for (let index = joining.length - 2; index >= 0; index--) {
     const [region, next] = [joining[index], joining[index + 1]]
     if (next.start === region.end)
-      joining[index] = { ...region, hasTextAfter: next.hasTextAfter }
+      joining[index] = {
+        ...region,
+        hasTextAfter: next.hasTextAfter,
+        joinsText: next.joinsText,
+      }
   }
   return { all, joining }
 }

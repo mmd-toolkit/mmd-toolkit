@@ -59,6 +59,13 @@ export interface KeptLines {
    * - the line of every statement: treemap and treeview.
    */
   readonly ownIndentation: ReadonlySet<number>
+  /**
+   * Lines that a comment region joins to nothing, and that the printer ends at
+   * the U+2028 or U+2029 before the region: they are no joined lines, and are
+   * not printed as written for that reason (see `withJoinedLines`). Absent for
+   * a diagram that has none.
+   */
+  readonly unjoined?: ReadonlySet<number>
 }
 
 /** Grammatical punctuation and whether statement semicolons are optional. */
@@ -1312,6 +1319,26 @@ export function lineStartOf(source: Source, offset: number): number {
 }
 
 /**
+ * Where the written indentation of the statement that follows a gap starts,
+ * for the gap from `start` to `end` before the statement: the first offset from
+ * which every character up to `end` is indentation, as `isIndentation` says for
+ * the character at an offset. The block prints that indentation, so what the
+ * source has there is no part of the gap that is kept as written, and does not
+ * make the gap a kept one: the printed text has none, and a second formatting
+ * would read a gap that is not kept. Each diagram type says which characters
+ * are indentation.
+ */
+export function findIndentationStart(
+  start: number,
+  end: number,
+  isIndentation: (offset: number) => boolean,
+): number {
+  let offset = end
+  while (offset > start && isIndentation(offset - 1)) offset--
+  return offset
+}
+
+/**
  * The offset of the line feed that ends the line holding `offset`, or the
  * end of the text: the first line feed from it that no comment or directive
  * spans and that no comment region that joins lines removes (see
@@ -1471,6 +1498,7 @@ export function withJoinedLines(
         ),
     )
     .map((lineFeed) => lineStartOf(source, lineFeed))
+    .filter((line) => kept.unjoined?.has(line) !== true)
   return {
     ...kept,
     verbatim: new Set([...kept.verbatim, ...joinedLines]),
