@@ -12,10 +12,7 @@ cynefin-beta と cynefin-beta: の整形規則です。
 ### Header
 
 cynefin-beta は第 1 列に置きます。
-[packet](./packet.ja.md#header) と [architecture](./architecture.ja.md#header)
-の図も、見出しを第 1 列に置きます。
-cynefin-beta の見出しも第 1 列に置く形は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+
 見出しの語の直後のコロンは削除します。
 mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読み、
 その文書の例はコロンなしを 3 回使い、コロンありは使わないためです。
@@ -42,10 +39,7 @@ mermaid.js がディレクティブを後ろの改行ごと取り除き、
 [fixture: cynefin/header/colon-directive-before-hidden-yaml-kept]
 
 普通の最初の文は次の行へ移し、見出しを見つけやすくします。
-[packet](./packet.ja.md#header) と [architecture](./architecture.ja.md#header)
-の図も、普通の最初の文を見出しの次の行に置きます。
-最初の文を次の行へ移す形は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+
 大域的なディレクティブの接触、隠れた形の隣接、保護行は共有規則に従います。
 見出し行を保つときは、その行の領域と項目の開きも同じ行に保ちます。
 空白で離れたコロンは修復せず、拒否します。
@@ -505,13 +499,10 @@ cynefin-beta
 共有の共通行配置で普通の外端空白を除き、非空値の前を空白 1 個にして、
 内部の文字は保ちます。
 ただし、内部の空白とタブの連なりは、空白 1 個で印字します。
-[pie](./pie.ja.md#title) と [packet](./packet.ja.md#title) の図も、
-title と非空値の間に空白 1 個を置きます。
-title と非空値の間の隙間は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの形にします。
-同じ図は、内部の空白とタブの連なりも空白 1 個で印字し、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-ここにも同じ形を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+title と非空値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
+
 題の行末の空白とタブは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が除きます。
 空または空白だけの値は title だけにし、次行を値にしません。
@@ -643,8 +634,10 @@ cynefin-beta
 Prettier は空の波括弧の内側に、空白を置きません。
 空白だけの説明ブロックの `{}` は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
-波括弧を残すブロックは、境界がわかるよう、
-キーワードと開始波括弧の間に空白を 1 つ置きます。
+波括弧を残すブロックでは、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードと開始波括弧の間に空白 1 つを与えます。
+Prettier が `class A{}` を `class A {}` と印字するのと同じです。
+
 普通の開始記号前の空白は結合し、独立した閉じ記号は文の段にそろえます。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。

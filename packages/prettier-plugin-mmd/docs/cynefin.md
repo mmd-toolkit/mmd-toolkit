@@ -11,13 +11,10 @@ Formatting rules for cynefin-beta and cynefin-beta:, following the
 
 ### Header
 
-Put cynefin-beta at column one. The headers of [packet](./packet.md#header) and
-[architecture](./architecture.md#header) diagrams stand at column one;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the cynefin-beta header the same position. A colon right after the header word
-is removed: mermaid.js reads `cynefin-beta:` and `cynefin-beta` as the same
-header, and the examples in its documentation write the header without the colon
-3 times against none (see
+Put cynefin-beta at column one. A colon right after the header word is removed:
+mermaid.js reads `cynefin-beta:` and `cynefin-beta` as the same header, and the
+examples in its documentation write the header without the colon 3 times against
+none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
@@ -37,15 +34,11 @@ cynefin/header/colon-unclosed-directive-kept] [fixture:
 cynefin/header/colon-directive-before-hidden-yaml-kept]
 
 Move an ordinary first statement to the next line so the header is easy to find.
-In [packet](./packet.md#header) and [architecture](./architecture.md#header)
-diagrams, an ordinary first statement starts on the line below the header;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the first statement the same position here. Global directive contact, hidden
-neighbors and protected lines use their shared rules: a kept header line also
-keeps its domain and item openings on that line. A spaced colon is rejected
-rather than repaired: `cynefin-beta %%{x}%%:`, `cynefin-beta%%{x}%% :`, and
-`cynefin-beta :` are rejected by 11.16.1, 11.17.2, 12.0.0, and 12.3.0, and
-`cynefin-beta %%{x}%%` with no colon is not changed.
+Global directive contact, hidden neighbors and protected lines use their shared
+rules: a kept header line also keeps its domain and item openings on that line.
+A spaced colon is rejected rather than repaired: `cynefin-beta %%{x}%%:`,
+`cynefin-beta%%{x}%% :`, and `cynefin-beta :` are rejected by 11.16.1, 11.17.2,
+12.0.0, and 12.3.0, and `cynefin-beta %%{x}%%` with no colon is not changed.
 
 [fixture: cynefin/header/directive-no-colon-space-kept] [test: a space before a
 directive between the header and the colon of a cynefin diagram] [test: a space
@@ -489,17 +482,13 @@ cynefin-beta
 
 Use the shared common-line layout: trim ordinary outer common whitespace, insert
 one space before a nonempty value and retain its internal text, except that a
-run of spaces and tabs inside it is printed as one space. The titles of
-[pie](./pie.md#title) and [packet](./packet.md#title) diagrams separate the
-keyword from a nonempty value with one space;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-a nonempty title the same gap here. Those titles also print an interior run of
-spaces and tabs as one space, and
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same form here. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-removes the spaces and tabs at the end of the title line. Empty or
-whitespace-only values print as bare title and never take text from the next
-line. A title without a value ends at the keyword because
+run of spaces and tabs inside it is printed as one space.
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `title` and a nonempty value, as Prettier prints `return  x` as
+`return x;`. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes
+the spaces and tabs at the end of the title line. Empty or whitespace-only
+values print as bare title and never take text from the next line. A title
+without a value ends at the keyword because
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
 and tabs at the line end. mermaid.js reads statement-looking text on the title
 line as title text, so the following statement stays on its own line rather than
@@ -624,8 +613,9 @@ Description blocks on one line follow
 Whitespace-only interiors become `{}`. Prettier leaves no whitespace inside
 empty braces, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
 prints whitespace-only description interiors as `{}`. For blocks that keep their
-braces, separate the keyword and opening brace with one space so the block
-boundary is clear. Join plain opener whitespace and align a separate closer with
+braces, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between the keyword and the opening brace, as Prettier prints `class A{}`
+as `class A {}`. Join plain opener whitespace and align a separate closer with
 the statement. Ordinary description body and standalone comment lines align one
 level inside it, since the Db removes indentation after LF. Keep line breaks and
 interior blank lines, and the whitespace at the end of each line of text except
