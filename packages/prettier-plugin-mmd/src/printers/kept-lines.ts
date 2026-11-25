@@ -1420,6 +1420,67 @@ export function holdsJoiningRegion(
 }
 
 /**
+ * Where the text that the last region that joins lines takes ends, among the
+ * regions whose comment starts at or after `offset` on its line and before
+ * `gapEnd`, the end of the gap that is asked about, or `offset` where there is
+ * none: the end of the region, and of the removed text (a directive line, say)
+ * that follows it. A gap that ends before the comment, such as the branch
+ * prefix of a treeView line before its text, holds no region and stays with the
+ * layout of its line. `printBlock` keeps the gap up to there
+ * as written for a layout that prints its joining regions as written
+ * (`BlockRules.joiningRegionsPrintedAsWritten`): the region starts after a
+ * U+2028 or U+2029, which the gap holds, so the gap cannot be laid out again
+ * (docs/compatibility.md, A comment line after U+2028 or U+2029).
+ *
+ * `printInlineGap` keeps the other gaps of a kept line as written, those whose
+ * comment line cannot go to a line of its own, so that the formatter does not
+ * stop. The two are decisions of their own, and neither can take over the gaps
+ * of the other: without this one, the spaces between the U+2028 and a comment
+ * that ends in a `;` would be laid out again, and with those gaps added to it,
+ * the lines whose U+2028 stands between two directives would no longer be
+ * printed as they are (the tests of A comment line after U+2028 or U+2029 in
+ * docs/compatibility.md).
+ */
+export function findJoiningRegionEndInLine(
+  source: Source,
+  offset: number,
+  gapEnd: number,
+): number {
+  const lineEnd = lineEndOf(source, offset)
+  const afterDirective = holdsDirectiveBefore(
+    source,
+    lineStartOf(source, offset),
+    offset,
+  )
+  let end = offset
+  for (const region of source.joiningRegions) {
+    if (
+      offset <= region.comment.range[0] &&
+      region.comment.range[0] < Math.min(lineEnd, gapEnd) &&
+      !(afterDirective && !endsWithSemicolon(source, region.comment.range))
+    )
+      end = Math.max(end, skipRemoved(source, region.end))
+  }
+  return end
+}
+
+/** Whether a directive lies within the text from `start` to `end`. */
+function holdsDirectiveBefore(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  return source.root.directives.some(
+    (directive) => start <= directive.range[0] && directive.range[1] <= end,
+  )
+}
+
+/** Whether the text at `range`, a comment, ends with a `;`. */
+function endsWithSemicolon(source: Source, range: Range): boolean {
+  return source.text[range[1] - 1] === ";"
+}
+
+/**
  * The kept lines with the lines that hold a removed line feed added as
  * verbatim lines: a line that mermaid.js reads over several lines of the
  * source is printed as written, from its first line to its end. A layout that
