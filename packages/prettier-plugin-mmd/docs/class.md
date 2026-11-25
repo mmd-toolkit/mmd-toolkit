@@ -6,7 +6,7 @@ How prettier-plugin-mmd formats a class diagram. Each rule below keeps what
 mermaid.js reads from the diagram; where a change would alter it, the text is
 kept as written, and the rule says where. Except where an unclosed backquoted
 name continues to the end of the text, the text ends with one line break and no
-blank line. [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+blank line. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
 ending that Prettier prints. Where a rule is the same as in a flowchart, it says
 so, and the reason is in the [rules for flowcharts](./flowchart.md).
 
@@ -378,7 +378,7 @@ between a keyword and what it takes, as Prettier prints `return  x` as
 backquoted name after `class` or `namespace` are what those keywords take, so
 each keyword has one space after it. The keyword `call` stands between a click
 target and its callback, so it has one space on each side.
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both forms.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both forms.
 
 [fixture: whitespace-between-tokens/note-and-name-strings-touching-spaced]
 [fixture: whitespace-between-tokens/link-strings-touching-spaced] [fixture:
@@ -1595,7 +1595,7 @@ value may be on the next line, and after the `:` of `accTitle` and `accDescr`,
 where the text may be: so `direction`, a line break, and `LR` is printed as
 `direction LR`. The colon after `accTitle` or `accDescr` gives a key its value,
 and `direction` is a keyword before the value it takes.
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space after
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space after
 each, joining ordinary next-line values onto the keyword's line.
 
 [fixture: multi-line-statements/joined] [fixture:
