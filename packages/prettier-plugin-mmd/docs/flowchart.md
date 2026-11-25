@@ -704,7 +704,10 @@ whitespace of a gap that lies inside the stretch that the rule reads, of a gap
 that holds a U+2028 or U+2029, and of the gap right after the keyword of the
 diagram stays as written, because diagram detection reads the text before the
 `;` is removed (`cynefin-beta ;complex` is detected, `cynefin-beta; complex` is
-not). A `;` at the end of a line stands against the token before it.
+not). The stretch that the rule reads runs from the first `:` after `style` to
+the last `#` before the last `;` of the line, so the gaps around the arrow of
+`A[style]   -->   B[:#x;y]` stand outside it and are printed like any other gap.
+A `;` at the end of a line stands against the token before it.
 
 [fixture: semicolons/ignored-semicolon-before-edge-id-touching] [fixture:
 semicolons/ignored-semicolon-before-edge-id-spaced] [test: U+2028 after a `;`
@@ -1065,8 +1068,12 @@ stays as written: `classDef c fill:#f00    stroke:#333` is printed
 inside a comment that is not closed stays as written, and so does the escape
 after a backslash, since CSS reads it as part of the value: the hexadecimal
 digits (at most six) and the one space or tab that follows them, or else the
-next character. The run after the escape is a run like any other:
-`font-family:a\   b` is printed `font-family: a\  b`,
+next character. A run inside a comment that is not closed stays as written
+because the Db holds it: `fill:red/* a   b` and `fill:red/* a b` differ in the
+Db of 12.3.0, and
+[the exception for styles](./compatibility.md#styles-that-are-drawn-the-same)
+names only the runs between the words of a style. The run after the escape is a
+run like any other: `font-family:a\   b` is printed `font-family: a\  b`,
 `font-family:Arial\20   Black` is printed `font-family: Arial\20  Black`, and
 `font-family:Arial\0000201   Black`, where the escape ends after six digits, is
 printed `font-family: Arial\0000201 Black`.
@@ -1911,7 +1918,10 @@ A `;` alone does not prevent joining.
 
 Direction-text lines keep their written text, line breaks and indentation under
 [Indentation](#indentation), and other documented kept-line reasons still take
-priority.
+priority. Joining `accTitle:direction`, a comment line, and `TB` into the one
+line `accTitle: direction TB` changes the Db: the written text has the title
+`direction` and a vertex `TB`, and the joined text has the title `direction TB`;
+the figures differ too.
 
 [fixture: accessibility-lines/direction-text-kept] [fixture:
 accessibility-lines/next-line-direction-kept]
@@ -2220,7 +2230,9 @@ so the spaces and tabs at its ends carry no meaning.
 data-blocks/one-line-padded-zero-width]
 
 Only spaces and tabs are removed: other whitespace, such as U+00A0, is part of
-the text.
+the text. A U+00A0 at an edge of a one-line block is part of the text that
+mermaid.js loads: replacing it with an ordinary space changes the Db (the loaded
+label and its type) and the figure.
 
 [test: data blocks: flowchart one line with no-break spaces at the ends]
 
@@ -2606,7 +2618,12 @@ data-blocks/scalar-blank-lines-outdent]
 
 Directives, comments, blank lines, empty description blocks and a discarded
 statement `;` beside the block keep their own rules. CRLF and CR follow
-`endOfLine`; U+2028 and U+2029 inside values remain characters.
+`endOfLine`; U+2028 and U+2029 inside values remain characters. A U+2028 or
+U+2029 inside a value of a data block is a character of the loaded text, so
+replacing it with a space changes the Db (`A\u2028B` and `A B` differ). It is no
+space or tab, so
+[the exception for runs of whitespace](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+does not cover it.
 
 [fixture: data-blocks/surrounding-trivia] [test: data blocks: flowchart CRLF]
 [test: data blocks: flowchart CR] [test: data blocks: flowchart U+2028] [test:

@@ -712,6 +712,10 @@ flowchart LR
 図種のキーワードの直後の隙間は、書かれたままの空白を保ちます。
 図種の検出は、`;` を取り除く前のテキストを読むためです。
 `cynefin-beta ;complex` は検出され、`cynefin-beta; complex` は検出されません。
+行の規則が読む範囲は、`style` の後の最初の `:` から、
+行の最後の `;` の前の最後の `#` までです。
+`A[style]   -->   B[:#x;y]` の矢印の両側の隙間は、その範囲の外なので、
+ほかの隙間と同じに整えます。
 行の末尾の `;` は、直前のトークンに付けます。
 
 [fixture: semicolons/ignored-semicolon-before-edge-id-touching]
@@ -1106,6 +1110,10 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 書かれたまま残します。
 エスケープは、最大 6 桁の 16 進数字とその直後の空白かタブ 1 文字、
 または 16 進数字が続かないときの次の 1 文字です。
+閉じていないコメントの中の連続は、Db がそれを持つので、書かれたまま残します。
+12.3.0 の Db では、`fill:red/* a   b` と `fill:red/* a b` が違い、
+[スタイルの例外](./compatibility.ja.md#同じに描かれるスタイル)は、
+スタイルの語と語の間の連続だけを挙げています。
 エスケープの後ろの連続は、ほかと同じ連続です。
 `font-family:a\   b` は `font-family: a\  b` と印字します。
 `font-family:Arial\20   Black` は、`font-family: Arial\20  Black` と印字します。
@@ -1975,6 +1983,10 @@ flowchartはコロンの後のコメントを読み飛ばして後の値を読�
 
 方向の文字列がある行は[字下げ](#字下げ)に従い、原文、改行、桁位置を保ちます。
 ほかの文書化された保持行の理由も優先します。
+`accTitle:direction` とコメント行と `TB` を、
+1 行の `accTitle: direction TB` につなぐと、Db が変わります。
+書かれたテキストでは、タイトルが `direction` で、頂点が `TB` です。
+つないだテキストでは、タイトルが `direction TB` になり、図も変わります。
 
 [fixture: accessibility-lines/direction-text-kept]
 [fixture: accessibility-lines/next-line-direction-kept]
@@ -2291,6 +2303,8 @@ mermaid.js は 1 行のブロックの文字列を、前に `{` と改行、
 
 取り除くのは半角空白とタブだけで、
 U+00A0 などの空白は文字列の一部として残します。
+1 行のブロックの端にある U+00A0 は、mermaid.js が読み込むテキストの一部です。
+普通の空白に置き換えると、Db（読み込んだラベルとその種類）と図が変わります。
 
 [test: data blocks: flowchart one line with no-break spaces at the ends]
 
@@ -2702,6 +2716,11 @@ Mermaid はブロック全体の両端の空白を除いて最初の行の字下
 前後のディレクティブ、コメント、空行、空の説明ブロック、
 捨てる文区切りの `;` はそれぞれの規則に従います。
 CRLF と CR は `endOfLine` に従い、値の U+2028 と U+2029 は文字として保ちます。
+データブロックの値の中の U+2028 と U+2029 は、読み込むテキストの文字です。
+空白に置き換えると Db が変わります（`A\u2028B` と `A B` は違います）。
+空白でもタブでもないので、
+[空白の連なりの例外](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+の対象外です。
 
 [fixture: data-blocks/surrounding-trivia] [test: data blocks: flowchart CRLF]
 [test: data blocks: flowchart CR] [test: data blocks: flowchart U+2028]
