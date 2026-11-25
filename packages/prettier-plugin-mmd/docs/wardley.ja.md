@@ -14,7 +14,13 @@
 
 見出し wardley-beta は原綴のまま第 1 列に置き、
 普通の最初の文を次の行へ移します。
-図種を見つけやすくするためで、コロンは足しません。
+図種を見つけやすくするためです。
+規則 1 は、見出しと最初の文の間の隙間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[architecture](./architecture.ja.md#header)、[cynefin](./cynefin.ja.md#header)、
+[radar](./radar.ja.md#header)、[treemap](./treemap.ja.md#header)も、
+見出しを 1 行に置き、普通の最初の文を次の行へ移して印字します。
+mermaid.js 12.3.0 は見出しの後のコロンを拒否するので、コロンは足しません。
 読み飛ばす構文、保持前置部分、保護行には共有の境界規則を使います。
 空の本文には文を足しません。
 
@@ -23,6 +29,11 @@
 [fixture: wardley/header/header-inline]
 
 [fixture: wardley/header/header-empty]
+
+[fixture: radar/header/bare-inline] [fixture: cynefin/header/header-bare-inline]
+[fixture: treemap/header/stable]
+[fixture: architecture/header/header-inline-accessibility]
+[corpus fixture: wardley/header-punctuation]
 
 入力（エスケープ表記）: `"wardley-betacomponentHeader[0.3,0.6]"`
 
@@ -40,6 +51,17 @@ wardley-beta
 既定は空白 2 つ、`tabWidth` 4 は 4 つ、0 は 0 です。
 列に文法上の意味がないためです。
 `useTabs` は幅 0 でもタブを使います。
+1 段の幅は Prettier の `useTabs` と `tabWidth`
+の設定どおりです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+Prettier は、
+CSS の規則の宣言と JavaScript のブロックの文を 1 段内側に印字します。
+既定は空白 2 つ、`tabWidth` 4 は 4 つ、0 は 0 で、`useTabs` はタブで、
+幅 0 でもタブです。
+見出しの後の文は 1 段深く置きます。
+[flowchart](./flowchart.ja.md#字下げ)、[radar](./radar.ja.md#indentation)、
+[architecture](./architecture.ja.md#indentation)、
+[pie](./pie.ja.md#indentation)も、
+そう印字します（[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)）。
 保護区間の最初の行は本文の段に揃え、内部と後続行の列は保ちます。
 
 [fixture: wardley/indentation/indent-two]
@@ -51,6 +73,11 @@ wardley-beta
 [fixture: wardley/indentation/indent-tabs]
 
 [fixture: wardley/indentation/indent-zero-tabs]
+
+[fixture: flowchart/indentation/statements]
+[fixture: radar/indentation/indent-two]
+[fixture: architecture/indentation/indent-two]
+[fixture: pie/indentation/indent-default]
 
 入力（エスケープ表記）: `"wardley-beta\n component Indent [0.3,0.6]"`
 
@@ -66,6 +93,12 @@ wardley-beta
 
 pipeline Parent { と印字し、
 子文はさらに 1 段深く、} は親の文と同じ段に置きます。
+規則 1 は、ブロックの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[class](./class.ja.md#字下げ)、[er](./er.ja.md#字下げ)、
+[state](./state.ja.md#字下げ)も、`{` を名前の行に空白 1 つの後で置き、
+中の文をその行より 1 段深く置き、`}` を単独の行に、その行と同じ段に置いて、
+ブロックを印字します。
 { と各子文の後の可視 LF は、幅 0 でも文法に必要なので保ちます。
 座標や生成 ID を足さず、書かれた親子の区切りを示します。
 
@@ -74,6 +107,10 @@ pipeline Parent { と印字し、
 [fixture: wardley/pipeline/pipeline-zero]
 
 [fixture: wardley/pipeline/pipeline-tab]
+
+[fixture: class/indentation/namespaces]
+[fixture: er/indentation/attribute-blocks-in-subgraphs]
+[fixture: state/indentation/composite-states]
 
 入力（エスケープ表記）:
 `"wardley-beta\ncomponent Parent[0.4,0.5]\npipelineParent{\n component Child[0.6]label[-1,2]\n      }"`
@@ -138,6 +175,13 @@ wardley-beta
 ### 部品間の空白
 
 命令語と最初の完全な名前、数、文字列、括弧の間は空白 1 つにします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの空白を決めます。
+キーワードとその後のテキストの間は、ほかの図種でも空白 1 つです。
+pie の `title    Pets` と Gantt の `title    Plan` は、空白 1 つで印字します。
+[xychart](./xychart.ja.md#角括弧とコンマ)も、
+キーワードと後ろの `[` や文字列の間に、
+接して書かれていても空白 1 つを置きます（`line[1,2]` は `line [1, 2]` に、
+`title"T"` は `title "T"` に印字します）。
 pipeline も含め、接したキーワードにも同じ規則を使います。
 キーワードに末尾境界がなく、木が名前と区別しているためです。
 注釈と読み飛ばす部分の境界には普通の空白規則を当てません。
@@ -159,6 +203,9 @@ pipeline も含め、接したキーワードにも同じ規則を使います�
 [fixture: wardley/component-spacing/keyword-deaccelerator]
 
 [fixture: wardley/component-spacing/keyword-evolution]
+
+[fixture: xychart/brackets-and-commas/bracket-touching-the-keyword]
+[fixture: xychart/brackets-and-commas/keyword-and-string-one-space]
 
 入力（エスケープ表記）: `"wardley-beta\nanchorUser[0.8,0.3]"`
 
@@ -192,6 +239,8 @@ mermaid.js の文書の例と同じく引用符で囲んで印字します。
 を参照してください。
 矢印のない link（`"A" "B"`）の名前と、
 読み飛ばす YAML ブロックの `---` に接する名前は、引用符を残します。
+引用符がなければ、2 つの名前は 1 つの名前として読まれ、`---` は名前に結びつくからです
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
 
 [fixture: names-and-quotes/plain-names-without-quotes]
 [fixture: names-and-quotes/names-that-need-quotes]
@@ -202,15 +251,28 @@ mermaid.js の文書の例と同じく引用符で囲んで印字します。
 空と空白だけの文字列も保ちます。
 ただし、link のラベルは除き、中の空白とタブの連なりは空白 1 つにして印字します。
 （[セミコロンのラベル](#セミコロンのラベル)を参照）。
+component の名前は Db の id で、
+link や pipeline は同じ id で component を探します。
+そのため、空白の連なりが違う名前は別の名前です。
+12.3.0 は書かれたとおりの空白を持つ id を保ち、
+名前の空白がタブかスペースかで component と違う pipeline を拒否します。
+名前が空白の連なりだけ違う 2 つの component は、描かれる図も違います
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)を参照）。
 名前の文字列が `'` で囲まれていれば、`"` で囲んで印字しますが、内容に `'`、`"`、
 バックスラッシュ、改行、U+2028、U+2029、バッククォート、`&`、`#`、
 `<` が含まれる場合は書かれたままにします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。
+[規則 3](./printed-form.ja.md#3-綴り)は `"` を選びます。
+mermaid.js の文書の例は、両方の引用符を読む 10 の図種の文字列 409 個のうち、
+408 個を `"` で書いています。
 link のラベル（`+'moving'>`）は `'` で囲んだままにします。
 mermaid.js がその場所で読む引用符は、それだけだからです。
 
 [fixture: names-and-quotes/single-quote-sensitive-kept]
+
+[corpus fixture: wardley/space-name-values]
+[corpus fixture: wardley/gram-reference-same-whitespace]
 
 名前の空白を畳むことと文字列の両端の空白の除去は Db を変えます。
 エスケープの別の解釈が必要になる引用符への変更はしません。
@@ -240,6 +302,8 @@ wardley-beta
 普通の名前と後続部品の間は空白 1 つにします。
 ただし引用符のない名前がちょうど title のときは、座標、pipeline の括弧、
 evolve の数、矢印、port、@、/ との接し方を保ちます。
+空白 1 つの理由は、[部品間の空白](#部品間の空白)、[座標](#座標)、
+[pipeline](#pipeline)、[evolve](#evolve)、[link](#link) の各節にあります。
 title の後の空白でメタデータとして読まれるためです。
 引用した "title" と引用符なしの titlex は普通に空白を置きます。
 大文字の名前は名前のままです。
@@ -446,6 +510,12 @@ wardley-beta
 
 木の完全な名前、port、矢印の間は、矢印のない link も空白 1 つにします。
 port と矢印の原綴は保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が矢印の前後の空白を決めます。
+矢印は 2 つのものの間の記号で、flowchart は `A-->B` を `A --> B` と印字し、
+Prettier は `x = a+b` を `x = a + b;` と印字します。
+mermaid.js の文書の例は、
+link 31 個のすべてを両側に空白を置いて書いています（`Customer -> Service`、
+`App +> API`、`Cache +'backup'> Database`）。
 A-->B は名前 A- と矢印 -> ですが、図を持つ最初の版は、`-` を含む名前を拒否して、
 同じテキストを名前 A と矢印 --> として読みます。
 そのため、`-` で終わる名前と矢印の間は空けません。
@@ -508,6 +578,11 @@ wardley-beta
 
 +'label'>、+'label'<、+'label'<> の内側は書かれたまま保ちます。
 空ラベル、余白、バックスラッシュ、継続行の列も含みます。
+Db はラベルを書かれたまま持ちます。
+バックスラッシュはその中で普通の文字で、エスケープとしては読まれません。
+`A +'a\n\q'> B` のラベルは `a\n\q` です。
+複数行にわたるラベルは、複数行にわたるどのテキストとも同じく、書かれたまま残します
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)を参照）。
 完全な部品間の大域的なディレクティブの境界も保ちます。
 普通の空白を挿入すると複合単位が拒否されます。
 対象にする版の mermaid.js のすべてが、`Alpha+ ' F  G\n\q ' >Beta` を拒否します。
@@ -533,6 +608,8 @@ flow の優先順位で見えなくても、両 port とセミコロンラベル
 
 [fixture: wardley/flows/flow-ports-and-label]
 
+[corpus fixture: wardley/lex-link-flow-raw-escapes]
+
 入力（エスケープ表記）: `"wardley-beta\nAlpha+'moving'>Beta"`
 
 出力
@@ -547,7 +624,10 @@ wardley-beta
 
 文法上のラベル開始 ; は前の部品に付け、
 後ろは物理行末まで原文の範囲のまま印字します。
-Db が同じ形から、link に属する区切りと分かる接した形を選びます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が `;` の付け方を決めます。
+Prettier は `;` の前に空白を印字せず（`a ;` は `a;` になります）、
+railroad の `r="a" ;` も `r = "a";` と印字します。
+`;` の前に空白がある形とない形は、Db が同じです。
 余白を足したり両端の空白を除いたりしません。; の後が空白なら、
 空白だけのラベルとして受理され、
 裸の ; は対象にする版の mermaid.js のすべてで拒否されます。
@@ -586,6 +666,10 @@ wardley-beta
 ### evolve
 
 evolve Name 0.80 とし、部品間は空白 1 つにします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+キーワードの後の空白 1 つを決めます（[部品間の空白](#部品間の空白)を参照）。
+[radar](./radar.ja.md#named-entries)も、
+名前と数を空白 1 つで印字します（`North 4`）。
 書かれた参照と小数、空の引用名、未反映の対象を保ちます。
 ID が存在しなくても文を消しません。
 引用符のない名前と数を結ぶと拒否されることがあります。
@@ -611,6 +695,11 @@ wardley-beta
 note、annotations、annotation、force の部品間は空白 1 つにします。
 annotation の外側のコンマも前を詰め、後を空白 1 つにします。
 列を揃えず、座標の句読法と同じ選択にします。
+キーワード、文字列、`[` の間の空白は、
+[部品間の空白](#部品間の空白)と同じ理由によります。
+[xychart](./xychart.ja.md#角括弧とコンマ)は `bar"Costs"[1,2]` を
+`bar "Costs" [1, 2]` に印字します。
+コンマは、Prettier がコンマの横に印字する空白です（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 空文字、番号 0、整数と小数の座標、後続の検査されない box を保ちます。
 
 [fixture: wardley/notes-and-annotations/note-spacing]
@@ -622,6 +711,8 @@ annotation の外側のコンマも前を詰め、後を空白 1 つにします
 [fixture: wardley/notes-and-annotations/annotations-later]
 
 [fixture: wardley/notes-and-annotations/force-spacing]
+
+[fixture: xychart/brackets-and-commas/bracket-touching-a-string]
 
 入力（エスケープ表記）: `"wardley-beta\nnote\t\"Body\"[ 0.3 ,0.6 ]"`
 
@@ -668,6 +759,10 @@ wardley-beta
 size [800, 600] とし、座標と同じ括弧の形にします。
 2 つの整数の原文の範囲を保ち、0 も残します。
 実効的な描画寸法で文を置き換えず、数の組の表記を揃えます。
+コンマと括弧は[座標](#座標)と同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)：括弧の内側は詰め、コンマの前は詰めて後に空白 1 つ）。
+`size` の後の空白は[部品間の空白](#部品間の空白)と同じです。
+mermaid.js の文書の例も、
+3 つの size をすべてこの形で書いています（`size [800, 1000]`）。
 
 [fixture: wardley/size/size-spacing]
 
@@ -693,6 +788,14 @@ wardley-beta
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空の title は空のままで、次の行を値にしません。
 値を引用文字列として扱わず、Db が同じ端の形を簡潔にします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が `title` の後の空白
+1 つを決めます。
+pie の `title    Pets` と Gantt の `title    Plan` も、空白 1 つで印字します。
+両端の空白を除く理由は、
+[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)にあります。
+title のテキストは改行の前で終わるので、空の title は次の行から値を取りません。
+title の中の引用符は、閉じていなくてもテキストの文字です
+（[Wardley の仕様](../../spec/docs/diagrams/wardley.ja.md)の共通のメタデータの値を参照）。
 題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
 テキストの中に U+2028 も U+2029 もないとき、題の終わりのディレクティブは、
 その前と後に何があるかで、次のように印字します。
@@ -3007,8 +3110,16 @@ wardley-beta
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#ディレクティブ)、
 [flowchart](./flowchart.ja.md#ディレクティブ)、
-[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
-普通の独立行は本文の段に揃え、複数行の内部と EOF に達する未完の終端は保ちます。
+[journey](./journey.ja.md#ディレクティブ)も、
+この隙間を同じに印字します（flowchart は `A%%{init: {}}%%-->B` を
+`A %%{init: {}}%%--> B` に、
+sequence は `A->>%%{init: {}}%%B: x` を `A ->> %%{init: {}}%%B: x` に印字し、
+ここでは `component%%{wrap}%%Glued` を `component %%{wrap}%%Glued`
+に印字します）。
+普通の独立行は本文の段に揃えます。
+[flowchart](./flowchart.ja.md#ディレクティブ)も、単独の行のディレクティブを、
+周りの文と同じ段に置きます（[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)）。
+複数行の内部と EOF に達する未完の終端は保ちます。
 JSON 整形や順の入れ替えはしません。
 共通除去が両側の文字を結び、受理や値を変えることがあるためです。
 固有の読み飛ばすディレクティブは別のノードです。
@@ -3035,6 +3146,8 @@ JSON 整形や順の入れ替えはしません。
 
 [fixture: wardley/global-directives/global-unclosed]
 
+[fixture: flowchart/directives/touching-token]
+
 入力（エスケープ表記）: `"wardley-beta\ncomponent%%{wrap}%%Glued[0.3,0.6]"`
 
 出力
@@ -3048,6 +3161,11 @@ wardley-beta
 ### コメント
 
 普通の独立コメントは所属する本文の段、見出し前は第 1 列に揃えます。
+見出しの前のコメントの桁は、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#コメント)、[xychart](./xychart.ja.md#コメント)、
+[radar](./radar.ja.md#comments)、[pie](./pie.ja.md#comments)も、
+それを第 1 列に印字します。
 行内のコメントは同じ行に残し、接していれば接したまま、
 空白とタブの連なりがあれば空白 1 つにします。
 規則 1 は、コメントの前の印を挙げていないので、
@@ -3090,6 +3208,9 @@ pipeline の中の文は子文です。
 
 [fixture: wardley/comments/comment-triple-bare]
 
+[fixture: flowchart/comments/before-header]
+[fixture: xychart/comments/comment-line-before-the-header]
+
 入力（エスケープ表記）:
 `"wardley-beta\ncomponent InlineSpace[0.3,0.6] \t%% tail"`
 
@@ -3107,6 +3228,11 @@ wardley-beta
 文書と本文の端の余分な空行と、空白だけの余白は落とします。
 pipeline の端も必須の可視 LF を残して空行を除きます。
 作者のまとまりを 1 行で示す選択です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が空行を決めます。
+Prettier は、JavaScript、CSS、YAML で、空行の連なりを 1 行にし、
+ファイルとブロックの先頭と末尾の空行を落とします。
+[flowchart](./flowchart.ja.md#空行)、[pie](./pie.ja.md#blank-lines)、
+[radar](./radar.ja.md#blank-lines)も、そう印字します。
 値、読み飛ばす部分とディレクティブの内部、保持前置部分、保護区間、
 読み飛ばす構文の必須 LF には、それぞれの保持規則を使います。
 
@@ -3115,6 +3241,9 @@ pipeline の端も必須の可視 LF を残して空行を除きます。
 [fixture: wardley/blank-lines/blanks-pipeline]
 
 [fixture: wardley/blank-lines/blanks-comments]
+
+[fixture: flowchart/blank-lines/single-kept]
+[fixture: radar/blank-lines/blanks-ordinary]
 
 入力（エスケープ表記）:
 `"\n\nwardley-beta\n\n\ncomponent GroupA[0.3,0.6]\n \t\n\n\ncomponent GroupB[0.4,0.7]\n\n"`
@@ -3132,6 +3261,12 @@ wardley-beta
 ### 行末の空白
 
 見出し、完結した構造、説明の閉じ記号の外の無害な ASCII 余白は落とします。
+Prettier は JavaScript、CSS、
+YAML で行末に空白を印字せず（[規則 1](./printed-form.ja.md#1-記号の横の空白)）、
+[radar](./radar.ja.md#trailing-whitespace)、
+[pie](./pie.ja.md#trailing-whitespace)、
+[gitgraph](./gitgraph.ja.md#trailing-whitespace)も、
+見出しや文の後に空白を印字しません。
 所属先ごとに判断し、link ラベルの末尾、文字列と flow、コメント、ディレクティブ、
 読み飛ばす部分の内部、閉じ記号後の必須の余白、保護区間は保ちます。
 物理行の両端の空白を一律に除くと、Db が変わるか、
@@ -3145,6 +3280,10 @@ wardley-beta
 [fixture: wardley/trailing-whitespace/trailing-string]
 
 [fixture: wardley/trailing-whitespace/trailing-blank-label-keep]
+
+[fixture: radar/trailing-whitespace/trailing-safe]
+[fixture: pie/trailing-whitespace/trailing-exterior]
+[fixture: gitgraph/trailing-whitespace/trailing-safe]
 
 入力（エスケープ表記）:
 `"wardley-beta \t\ncomponent Tail[0.3,0.6] \t\naccDescr { End } \t"`
@@ -3286,9 +3425,29 @@ wardley-beta
 ### フロントマターの YAML
 
 安全な実フロントマターだけ、共有の保護条件付きの YAML 整形処理を使います。
+YAML は、Prettier が整形するどのファイルの YAML とも同じく、
+Prettier の YAML
+整形処理で整形します（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+`title: 'Map'` は `title: "Map"` に、
+`config: {wardley: {width: 600}}` は `config: { wardley: { width: 600 } }`
+に印字します。
 不正な YAML、字下げした囲みの区切り、区切りの余白、HTML の危険、
 整形で囲みの区切りを作る本文は書かれたまま保ちます。
+[フロントマター](./compatibility.ja.md#フロントマター)は、
+HTML の危険の理由（mermaid.js は HTML タグの中の `="..."` を、
+YAML を読む前に書き換えます）と、
+囲みの区切りを作る本文の理由（`%YAML 1.2` の後の `--- !!map` は、
+対象にする版のすべてが受理し、分けると拒否します）を述べます。
+字下げした囲みの区切りと区切りの余白は、決まるまで書かれたまま保ちます。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 YAML は幅 0 でも共有の正の最小字下げを使います。
+YAML は字下げでブロックスカラーと入れ子の値を表すので、
+幅 0 では、対象にする版のすべてがブロックスカラーを拒否し、
+入れ子でなくなった `config` の値では図が違って描かれます
+（[フロントマター](./compatibility.ja.md#フロントマター)と、
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)の行を参照）。
 `textBeforeHeader` があれば、先頭 LF、通過した注釈、2 回目の走査で読む形、
 実形と保持形の順を含め、完全な前置部分を保ちます。
 共有の `keepsPrefix` により、
@@ -3331,6 +3490,10 @@ wardley-beta
 
 共有の呼び出し側方針で CR/CRLF を LF として読み、設定の改行で印字します。
 値と読み飛ばす構文の内部も同様です。
+mermaid.js は CR と CRLF を LF と同じく読み、
+Prettier は `endOfLine` オプションの改行を印字します。
+ほかの言語でも同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)、
+[行末](./compatibility.ja.md#行末)を参照）。
 LS/PS/NBSP/BOM は字句上の役割を保ちます。
 例外は共通値の外端の空白除去と、通常の説明ブロックの開始記号の前の空白です。
 一般の余白に変えると、Db を変えるか拒否入力を修復してしまいます。
@@ -3391,6 +3554,10 @@ wardley-beta
 ### 最終改行
 
 普通の受理ファイルは設定の改行 1 個で終え、末尾の普通の空行を落とします。
+Prettier は、JavaScript、CSS、YAML で、ファイルを改行 1 個で終え、最後の文の後の空行を落とします
+（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+[radar](./radar.ja.md#final-newline)、[pie](./pie.ja.md#final-newline)、
+[gitgraph](./gitgraph.ja.md#final-newline)も、そう終えます。
 見出しだけ、コメント、閉じた読み飛ばす構文も同じ終端に揃えます。
 EOF に達する大域的な終端、保持前置部分の境界、保護テキスト、
 読み飛ばす構文の閉じ記号後の必須の余白を優先します。
@@ -3401,6 +3568,10 @@ EOF に達する大域的な終端、保持前置部分の境界、保護テキ�
 [fixture: wardley/final-newline/final-comment]
 
 [fixture: wardley/final-newline/final-hidden]
+
+[fixture: radar/final-newline/final-comment]
+[fixture: pie/final-newline/final-newline]
+[fixture: gitgraph/final-newline/final-commit]
 
 入力（エスケープ表記）: `"wardley-beta\n%% final"`
 
@@ -3453,6 +3624,8 @@ Markdown では埋め込みを断ります。
 Wardley が図のテキストを拒否します。
 単独ファイルではその余白を保ちます。
 ラベルを書き換える規則は加えず、既存の Markdown 側の制限として記録します。
+単独のテキストでその余白を除くと、
+対象にする版のすべてが拒否します（[行末の空白](#行末の空白)を参照）。
 実際の呼び出し側出力と 3 回の冪等性は、
 単独の図のテキストの Db 比較とは別に検査します。
 
