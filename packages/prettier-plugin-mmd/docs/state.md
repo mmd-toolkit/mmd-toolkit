@@ -602,11 +602,12 @@ but keeps the whitespace around the `:` in the Db; the figure is the same (see
 
 A `style` statement whose styles after the first hold no `:` keeps the
 whitespace around its commas (`style A fill:rgb(1,2,3)` and `style A fill:a,b,c`
-are printed as they are, apart from the space after the `:`): mermaid.js 10.9.8
-has no `style` statement in a state diagram and reads such a line as states and
-the description of one (`a,b,c` is the description of the state `fill`), which
-it draws as it is, so a space after a comma changes the text; it rejects a line
-with a second `:`.
+are printed as they are, apart from the space after the `:`): the oldest version
+of mermaid.js that counts has no `style` statement in a state diagram and reads
+such a line as states and the description of one (`a,b,c` is the description of
+the state `fill`), which it draws as it is, so a space after a comma changes the
+text; it rejects a line with a second `:` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/style-color-function-commas-kept] [fixture:
 whitespace-between-tokens/style-description-commas-kept]
@@ -812,8 +813,8 @@ ids otherwise. A transition from an id spelled so, or from a state whose class
 after `:::` is spelled so, keeps its arrow touching on both sides, as
 `scale-->B`: `scale -->B` would start a scale statement, which every version of
 mermaid.js that counts rejects, as it does the same form for `classDef`,
-`class`, `note`, and `stateDiagram`; `style --> B` is rejected since 11.7.0, and
-`state --> B` is drawn as another statement (see
+`class`, `note`, and `stateDiagram`; `style --> B` is rejected by the later
+versions that count, and `state --> B` is drawn as another statement (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: arrow-spacing/touching-before-keyword-kept] [fixture:
@@ -1152,8 +1153,9 @@ links enclosed in angle brackets, backslashes and whitespace other than ASCII
 spaces within content lines. Marked recognizes block syntax, including lists and
 headings. These margins can appear in rendered text when Mermaid displays a
 block's source literally. For example, increasing two spaces after a blank line
-to four changes three displayed paragraphs into a different layout: 10.9.8 draws
-another text, and 11.7.0 and later versions another structure (see
+to four changes three displayed paragraphs into a different layout: the oldest
+version that counts draws another text, and the later versions another structure
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 This does not reformat general Markdown.
 
@@ -1537,10 +1539,12 @@ colors/words-that-are-not-colors-as-written] [fixture:
 state/colors/color-directive-in-url-name-kept]
 
 A `style` statement whose styles after the first hold no `:` keeps its colors as
-written (`style A fill:#ABC` is printed `style A fill: #ABC`), because
-mermaid.js 10.9.8 draws the line as text, as a description of a state (see
-[Whitespace between tokens](#whitespace-between-tokens)); the `classDef`
-statement follows the color rule above.
+written (`style A fill:#ABC` is printed `style A fill: #ABC`), because the
+oldest version of mermaid.js that counts draws the line as text, as a
+description of a state (see
+[Whitespace between tokens](#whitespace-between-tokens) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
+the `classDef` statement follows the color rule above.
 
 [fixture: colors/style-read-as-description-kept] [fixture:
 colors/style-read-as-description-kept-v1]
@@ -2052,8 +2056,7 @@ In a state diagram, these characters bound the text in which mermaid.js looks
 for a pseudostate mark, a direction line, and a second name before a `{`:
 `state a`, U+2028, and `b <<fork>>` is the name `a` and the fork `b`, while with
 a space in place of the U+2028, it is the fork `a b`, which has another id and
-label in the Db of 12.3.0, while every version that counts draws the same
-figure.
+label in the Db, while every version that counts draws the same figure.
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 

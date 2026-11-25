@@ -37,8 +37,8 @@ Move an ordinary first statement to the next line so the header is easy to find.
 Global directive contact, hidden neighbors and protected lines use their shared
 rules: a kept header line also keeps its domain and item openings on that line.
 A spaced colon is rejected rather than repaired: `cynefin-beta %%{x}%%:`,
-`cynefin-beta%%{x}%% :`, and `cynefin-beta :` are rejected by 11.16.1, 11.17.2,
-12.0.0, and 12.3.0, and `cynefin-beta %%{x}%%` with no colon is not changed.
+`cynefin-beta%%{x}%% :`, and `cynefin-beta :` are rejected by every version that
+counts, and `cynefin-beta %%{x}%%` with no colon is not changed.
 
 [fixture: cynefin/header/directive-no-colon-space-kept] [test: a space before a
 directive between the header and the colon of a cynefin diagram] [test: a space
@@ -939,9 +939,7 @@ cynefin-beta
 ### Comments
 
 Align ordinary standalone comments with their body, item comments at item depth
-and prefix comments at column one. Standalone comments stand at the depth of
-their surrounding body: item comments follow the deeper domain body, and prefix
-comments stand at column one. Inline comments keep their line, and a run of
+and prefix comments at column one. Inline comments keep their line, and a run of
 spaces and tabs before one becomes one space.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints

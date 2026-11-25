@@ -590,8 +590,8 @@ Never take a value from the next physical line, including across comments or
 directives. A `;` after the text of a title or of an accessibility line stays.
 Where the line rule of mermaid.js does not apply to the line, as in `title T;`
 and `title T;;` alone on their lines, the text holds the `;`, and the text with
-and without it differs in the Db of 12.3.0 and in the drawn text of every
-version that counts. Where the rule applies to the line (see
+and without it differs in the Db and in the drawn text of every version that
+counts. Where the rule applies to the line (see
 [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)), it ignores a
 single `;`, which the text does not hold and which stays all the same
 (`title style:#red;`); where two `;` follow, it ignores the last, and removing
@@ -2362,11 +2362,10 @@ tooltip. Braces after a colon remain line text. A `;` after the text of a title
 or of an accessibility line stays. Where the line rule of mermaid.js does not
 apply to the line, as in `accTitle: a;` and `accTitle: a;;` alone on their
 lines, the text holds the `;`, and the text with and without it differs in the
-Db of 12.3.0 and in the drawn text of every version that counts. Where the rule
-applies to the line (see
-[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)), it ignores a
-single `;`, which the text does not hold and which stays all the same
-(`accTitle: style:#red;`); where two `;` follow, it ignores the last, and
+Db and in the drawn text of every version that counts. Where the rule applies to
+the line (see [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)),
+it ignores a single `;`, which the text does not hold and which stays all the
+same (`accTitle: style:#red;`); where two `;` follow, it ignores the last, and
 removing one makes it ignore another (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). Where a value
 has text and no directive stands before its text or inside it, and no U+2028 or

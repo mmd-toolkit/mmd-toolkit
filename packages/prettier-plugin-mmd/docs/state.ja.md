@@ -627,10 +627,14 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 コンマの前後の空白を書かれたままにします。
 `style A fill:rgb(1,2,3)` と `style A fill:a,b,c` は、`:` の後の空白を除いて、
 そのまま印字します。
-mermaid.js 10.9.8 は、state 図に `style` 文を持たず、そのような行を、状態と、
+対象にする版のうち最も古い mermaid.js は、state 図に `style` 文を持たず、
+そのような行を、状態と、
 その 1 つの説明として読みます（`a,b,c` は状態 `fill` の説明です）。
 説明はそのまま描かれるので、コンマの後の空白はテキストを変えます。
-2 つ目の `:` がある行は、10.9.8 が拒否します。
+2 つ目の `:` がある行は、
+その版が拒否します（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 
 [fixture: whitespace-between-tokens/style-color-function-commas-kept]
 [fixture: whitespace-between-tokens/style-description-commas-kept]
@@ -851,7 +855,8 @@ stateDiagram-v2
 `scale -->B` は scale 文の始まりになり、
 対象にする版の mermaid.js のすべてが拒否するからです。
 `classDef`、`class`、`note`、`stateDiagram` でも、同じ形を拒否します。
-`style --> B` は 11.7.0 以降が拒否し、`state --> B` は別の文として描かれます。
+`style --> B` は対象にする版のうち後の版が拒否し、
+`state --> B` は別の文として描かれます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -1215,7 +1220,7 @@ Mermaid がブロックの原文を文字どおりに表示する場合は、
 その余白も表示されるためです。
 たとえば空行後の空白を 2 個から 4 個に増やすと、
 表示されていた 3 つの段落が別の配置に変わります。
-10.9.8 は別のテキストを、11.7.0 以降は別の構造を描きます。
+対象にする版のうち最も古い版は別のテキストを、後の版は別の構造を描きます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -1615,8 +1620,10 @@ state 図の `style`、`classDef` 文のスタイルの色が対象です。
 最初のスタイルの後のスタイルに `:` がない `style` 文は、
 色を書かれたままにします（`style A fill:#ABC` は `style A fill: #ABC`
 と印字します）。
-mermaid.js 10.9.8 が、その行を、状態の説明として、
-テキストのまま描くからです（[トークンの間の空白](#トークンの間の空白)を参照）。
+対象にする版のうち最も古い mermaid.js が、その行を、状態の説明として、
+テキストのまま描くからです（[トークンの間の空白](#トークンの間の空白)と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 `classDef` 文は、上記の色の規則に従います。
 
 [fixture: colors/style-read-as-description-kept]
@@ -2146,7 +2153,7 @@ state 図では、mermaid.js が擬似状態の印、方向の行、
 `{` の前の 2 つ目の名前を探す範囲を、これらの文字が区切るからです。
 `state a`、U+2028、`b <<fork>>` は名前 `a` とフォーク `b` ですが、
 U+2028 の代わりに空白を置くと、フォーク `a b` になり、
-12.3.0 の Db では id とラベルも違い、対象にする版のすべてで描画は同じです。
+Db では id とラベルも違い、対象にする版のすべてで描画は同じです。
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 
