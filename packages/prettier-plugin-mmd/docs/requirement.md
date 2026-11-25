@@ -1914,7 +1914,7 @@ style; it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 A word such as `#ABCDE`, which is no color, keeps its case: the Db holds the
 text of a style as written, so `#ABCDE` and `#abcde` are two values in it, and
-the SVG of 11.7.0 and later holds the text as written (see
+the SVG of the later versions that count holds the text as written (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: colors/colors-in-lower-case] [fixture:
