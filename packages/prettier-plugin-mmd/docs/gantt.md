@@ -1295,8 +1295,8 @@ empty-description-blocks/blank-lines-inside]
 A block with a directive or a comment line keeps its contents and line breaks,
 with body indentation under
 [Accessibility statements](#accessibility-statements). Rule 1 gives no form
-here, since its table names the whitespace beside a mark and not the start of a
-line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+here, since its table does not name the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [pie](./pie.md#description-blocks) keeps comment-only blocks with
 comments one level inside and a separate closer at statement level, and
@@ -1524,12 +1524,10 @@ Db, so a comment line before the `)` must not indent it.
 
 [fixture: click-statements/callback-args-comment-line-kept]
 
-The whitespace at the end of the header's line is dropped. Rule 1 names no mark
-at the end of a line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [radar](./radar.md#trailing-whitespace) and
-[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
-the header.
+The whitespace at the end of the header's line is dropped. Prettier prints no
+whitespace at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) drops the whitespace
+after the header.
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -1569,9 +1567,8 @@ comments/single-percent-kept] [fixture: comments/bare-percent-lines]
 A comment line stands at the level of the statement after it, so a comment
 before a `section` stands at its level, and one before a task stands at the
 level of the task; at the end of the text it stands at the level of the last
-statement. Rule 1 gives no form here, since its table names the whitespace
-beside a mark and not the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+statement. Rule 1 gives no form here, since its table does not name the start of
+a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [quadrant](./quadrant.md#comments), [xychart](./xychart.md#comments), and
 [ishikawa](./ishikawa.md#comments) put a comment line on a line of its own at

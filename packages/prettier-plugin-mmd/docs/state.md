@@ -1412,8 +1412,8 @@ stateDiagram-v2
 
 A comment on a line of its own, `%%` or `#`, stands at the level of the
 statements around it, and its text is kept as written. Rule 1 gives no form
-here, since its table names the whitespace beside a mark and not the start of a
-line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+here, since its table does not name the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [flowchart](./flowchart.md#comments), [class](./class.md#comments), and
 [sequence](./sequence.md#comments) put a comment line at the level of the

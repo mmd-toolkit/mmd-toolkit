@@ -982,10 +982,8 @@ end of the diagram and of a body are dropped, as in the other diagram types. A
 line of whitespace only is an empty line after the header, in a body, between
 statements, around a comment line, and at the end of the text, whatever the
 whitespace character is, a form feed, a vertical tab, U+00A0, U+3000, U+2028,
-and U+2029 included: rule 1 names no mark for a line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [kanban](./kanban.md#blank-lines) and
-[packet](./packet.md#blank-lines) print whitespace-only lines as empty lines,
+and U+2029 included: Prettier prints a whitespace-only line as an empty line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form,
 where no other rule keeps the whitespace as written (the lines of a value or of
 a block of text, and the like).
 
@@ -1097,8 +1095,7 @@ empty-description-blocks/in-body-over-lines-joined]
 A block containing comments or directives keeps their contents and line breaks;
 standalone trivia is one level inside the block and a separate `}` aligns with
 `accDescr`, including an empty block within a requirement or element body. Rule
-1 gives no form here, since its table names the whitespace beside a mark and not
-the start of a line
+1 gives no form here, since its table does not name the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [block](./block.md#empty-description-blocks) and
@@ -1637,8 +1634,8 @@ requirementdiagram
 A comment starts with `%%`, `#`, or `%`, where a unit starts, and runs to the
 end of the line. A comment on a line of its own stands at the level of the
 statement after it, in a body at the level of the fields, and its text and its
-mark are kept as written. Rule 1 gives no form here, since its table names the
-whitespace beside a mark and not the start of a line
+mark are kept as written. Rule 1 gives no form here, since its table does not
+name the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [c4](./c4.md#comments) and [quadrant](./quadrant.md#comments) align a

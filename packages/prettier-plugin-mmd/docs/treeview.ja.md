@@ -3406,9 +3406,9 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 設定の改行 1 個で終えます。
 値の末尾は保ち、
 EOF の未完ディレクティブと保護・原文保持の終端は共有の例外に従います。
-規則 1 は、
-閉じていないディレクティブのあるテキストの終わりの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+Prettier は、行末に空白を置かずに印字するので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+閉じていないディレクティブのあるテキストの終わりの形を与えます。
 [c4](./c4.ja.md#末尾の改行) と [ishikawa](./ishikawa.ja.md#final-newline) は、
 単独の行にある閉じていないディレクティブを、
 最後の文字の後の空白文字なしで印字し、treeView もここでそうします。
