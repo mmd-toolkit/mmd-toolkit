@@ -350,10 +350,11 @@ spaces and tabs at the ends of a bare label. Bare labels covered by
 [Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)
 can lose their end spaces and tabs without changing the node that mermaid.js
 draws. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no
-padding just inside the shape, as Prettier prints none inside parentheses and
-square brackets. `A[x y]` and `A["x y"]` have the same Db, and the form is the
-one of [Quotes](#quotes). A space after the closing quote of a string
-(`S["x" ]`) is rejected, so it is never a form to print (see
+padding just inside a shape written with parentheses or square brackets (`S[x]`,
+`A(y)`, `B((z))`), as Prettier prints none inside parentheses and square
+brackets. `A[x y]` and `A["x y"]` have the same Db, and the form is the one of
+[Quotes](#quotes). A space after the closing quote of a string (`S["x" ]`) is
+rejected, so it is never a form to print (see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
 
 [fixture: labels/bare-to-quoted] [fixture: labels/space-after-string-invalid]
@@ -616,11 +617,11 @@ data-blocks/closing-after-folded-strip-text] [fixture:
 data-blocks/closing-after-folded-keep-text]
 
 Move space-only lines by the same amount, making them empty when no spaces
-remain, and leave empty lines empty. Keep trailing spaces: literal block scalars
-read both their trailing spaces and blank-line widths, so discarding them can
-change the Db. Prettier leaves no spaces or tabs on an empty line, so
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps an empty line
-outside a scalar empty when the surrounding text lines move.
+remain, and leave empty lines empty: Prettier leaves no spaces or tabs on an
+empty line, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps
+an empty line outside a scalar empty when the surrounding text lines move. Keep
+trailing spaces: literal block scalars read both their trailing spaces and
+blank-line widths, so discarding them can change the Db.
 
 [fixture: data-blocks/scalar-blank-lines] [fixture:
 data-blocks/scalar-blank-lines-outdent]
