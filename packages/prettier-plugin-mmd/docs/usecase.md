@@ -1114,7 +1114,8 @@ mermaid.js that counts draws different title text for `accTitle: first last`
 (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The description of a multiline `accDescr` block holds the spaces at the end of
-each inner line in the Db, so removing them changes the description (see
+each line of text but the last in the Db, so removing them changes the
+description (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Empty and whitespace-only lines print the colon form without a value. An empty
 accessibility line ends at its colon, so a following space would be trailing
