@@ -988,6 +988,9 @@ treeview/carried-indentation/box-redraw-run-before-ignored-semicolon-comment-kep
 treeview/carried-indentation/box-redraw-run-before-two-ignored-semicolons-comment-kept]
 [fixture:
 treeview/carried-indentation/box-redraw-run-before-directive-comment-line-at-end-kept]
+[test: treeview: a quote in box mode, U+2028, and a comment before the next line
+of the box] [test: treeview: a quote in box mode, U+2029, and a directive before
+the next line of the box]
 
 ### Tabs
 
