@@ -1746,7 +1746,10 @@ comment that touches the text (`T%% c`).
 A U+2028 or U+2029 at the end of a title with no directive, with the spaces
 before it, is left out by the Langium types and a quadrant chart and stays in
 the other types, where a statement follows the title directly or the text ends
-after it.
+after it. In Gantt, user journey, timeline, sequence, C4, and Venn diagrams, a
+terminal U+2028 or U+2029 is part of the title value. Removing the separator
+changes that value and, in Gantt, user journey, timeline, sequence, and C4
+diagrams, changes the drawing, so the separator stays.
 
 An `accTitle:` or `accDescr:` line that holds text is printed as the next table
 gives: the Langium types as in the first table, except that a directive that
@@ -3085,8 +3088,11 @@ updated, click both texts of each kind again before the exception stays.
 The text of a node of a mindmap, the text of its shape, its icon, and its class
 are printed without the spaces and tabs at their ends: `a (x)` is printed
 `a(x)`, `b[ y ]` is printed `b[y]`, `::icon( fa )` is printed `::icon(fa)`, and
-`::: big ` is printed `:::big`. The whitespace inside a text stays, since a node
-that wraps draws its runs (see
+`::: big ` is printed `:::big`. Prettier prints no padding inside brackets or
+parentheses, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+removes the spaces and tabs just inside the brackets of a mindmap shape and the
+parentheses of an icon where those margins draw the same. The whitespace inside
+a text stays, since a node that wraps draws its runs (see
 [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 A shape text that would start with a quote once its padding is gone (`a[ "x" ]`
 is a text with its quotes, `a["x"]` a string), a string, a markdown string, a
@@ -3121,11 +3127,15 @@ two nodes, drawn as before. A text that becomes a string was drawn differently.
 
 A kanban board follows the same rules for the texts of its cards, the labels of
 its columns and cards, and its icons and classes (see
-[Kanban](./kanban.md#shapes)). The id of a column is the exception: mermaid.js
-tells two columns apart by it. `todo [A]` and `todo[B]` are two columns, drawn
-apart, and with the space gone they were drawn differently. The id of a card is
-not compared, and `id1 [x]` and `id1[x]` were drawn the same, also where two
-cards got the same id by the change.
+[Kanban](./kanban.md#shapes)). Prettier prints no padding inside brackets or
+parentheses, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+removes the spaces and tabs just inside the brackets of a kanban column or card
+label and the parentheses of an icon where those margins draw the same. The id
+of a column is the exception: mermaid.js tells two columns apart by it.
+`todo [A]` and `todo[B]` are two columns, drawn apart, and with the space gone
+they were drawn differently. The id of a card is not compared, and `id1 [x]` and
+`id1[x]` were drawn the same, also where two cards got the same id by the
+change.
 
 [fixture: kanban/shapes/card-id-before-shape-dropped] [fixture:
 kanban/shapes/id-before-shape]
@@ -4018,10 +4028,13 @@ on the line goes to the next line as it does after a header without the colon.
 The colon stays where a `;`, the `---` of a hidden YAML block, or a directive
 that is not closed touches it, and where a directive that is closed stands
 between the keyword and the colon: `cynefin-beta%%{x}%%:` and
-`radar-beta%%{x}%%:` are not changed. A radar header with spaces or tabs before
-that directive, before the colon, or on both sides is printed without them:
-`radar-beta %%{x}%%:`, `radar-beta%%{x}%% :`, and `radar-beta %%{x}%% :` are
-printed `radar-beta%%{x}%%:`, and so are the same headers with a tab for the
+`radar-beta%%{x}%%:` are not changed. A bare `radar-beta` header must end before
+`%%`, specification whitespace, or the end of the text. Removing the colon
+before a touching hidden YAML block would put `---` against that bare header,
+which mermaid.js rejects, so the colon stays. A radar header with spaces or tabs
+before that directive, before the colon, or on both sides is printed without
+them: `radar-beta %%{x}%%:`, `radar-beta%%{x}%% :`, and `radar-beta %%{x}%% :`
+are printed `radar-beta%%{x}%%:`, and so are the same headers with a tab for the
 space; `radar-beta %%{x}%% %%{y}%% :` is printed `radar-beta%%{x}%%%%{y}%%:`,
 and a space or a tab between two directives goes the same way
 (`radar-beta%%{x}%% %%{y}%%:` is printed `radar-beta%%{x}%%%%{y}%%:`). A radar
@@ -4364,7 +4377,11 @@ block holds, or would not be read as the block is:
   agentflow diagram, an ER diagram, and a requirement diagram it comes after, so
   `accDescr: direction RL` is the description at the start of a line and a
   direction line when the line is indented, which the printer does for the
-  statements of a body.
+  statements of a body. Statements in an agentflow body stand one level below
+  the header, as the statements of a [class diagram](./class.md#indentation) and
+  a [Gantt chart](./gantt.md#indentation) do;
+  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+  gives this placement.
 
   [fixture: class/multi-line-values/block-direction-on-its-own-line-kept]
   [fixture: class/multi-line-values/block-brace-on-the-next-line-direction-kept]
@@ -5197,18 +5214,20 @@ same in every version that has the diagram, and a text that one of them accepted
 was accepted in the other form too. So the header of a treemap diagram is
 printed `treemap`, and that of an ishikawa diagram `ishikawa`, in lower case,
 whatever name and case it was written in; `TREEMAP-BETA`, which no version
-reads, is not formatted. The exception is a root that starts with the word
-`-beta` right after the header of an ishikawa diagram, with at most directives
-between them, which mermaid.js removes before it reads the header:
-`ishikawa-beta-beta` has the header `ishikawa-beta` and the root `-beta`, and
-the header printed `ishikawa` with `-beta` on its line would be read as the
-header `ishikawa-beta` alone. So the root goes to a line of its own; where it
-stays on the line of the header, the header stays as written. The header of a
-sankey diagram with `-beta` in another case (`sankey-BETA`) stays as written.
-10.9.8 and 11.7.0 reject it, and 11.17.2, 12.0.0, and 12.3.0 read it as
-`sankey-beta`. The examples of the documentation write the header `sankey` and
-use no `sankey-beta` in any case, so [rule 3](./printed-form.md#3-a-spelling)
-gives no other form, and keeps it as written.
+reads, is not formatted. [Rule 3](./printed-form.md#3-a-spelling) gives this
+name of a header, and the lower case is the spelling that the examples of the
+documentation use. The exception is a root that starts with the word `-beta`
+right after the header of an ishikawa diagram, with at most directives between
+them, which mermaid.js removes before it reads the header: `ishikawa-beta-beta`
+has the header `ishikawa-beta` and the root `-beta`, and the header printed
+`ishikawa` with `-beta` on its line would be read as the header `ishikawa-beta`
+alone. So the root goes to a line of its own; where it stays on the line of the
+header, the header stays as written. The header of a sankey diagram with `-beta`
+in another case (`sankey-BETA`) stays as written. 10.9.8 and 11.7.0 reject it,
+and 11.17.2, 12.0.0, and 12.3.0 read it as `sankey-beta`. The examples of the
+documentation write the header `sankey` and use no `sankey-beta` in any case, so
+[rule 3](./printed-form.md#3-a-spelling) gives no other form, and keeps it as
+written.
 
 [fixture: treemap/header/beta] [fixture: ishikawa/header/header-beta] [fixture:
 ishikawa/header/header-column] [fixture:
@@ -5464,7 +5483,9 @@ Both are accepted, so only the diagram shows the change. A line that holds a `;`
 other than one that separates statements or ends a statement therefore keeps its
 statements on it and its `;` where they are, whether the rule applies to it or
 not; the rule does not read the whitespace between other tokens, so that is
-formatted as usual. See
+formatted as usual. The semicolon line rule does not read the gaps beside a
+link, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+link one space on each side while the semicolons stay in place. See
 [Statements one per line](./flowchart.md#statements-one-per-line).
 
 [fixture: flowchart/statements-one-per-line/line-with-semicolon-kept] [fixture:
@@ -5542,7 +5563,14 @@ removes, and takes the statement after it (see
 comment line, nothing continues, and the `;` stays only where whitespace that is
 no space or tab stands between the character and the `;`, which the comment line
 would take with it. These statements keep the character too (see
-[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)). In a
+flowchart style, mermaid.js stores a U+2028 before the retained terminator in
+the last style's value. Removing the character changes that value outside the
+permitted trimming of trailing spaces and tabs, so the character stays with the
+terminator.
+
+[corpus fixture: flowchart/style-line-separator-semicolon-4e7b7434] [corpus
+fixture: flowchart/gram-style-semicolon-ends-statement]
 
 [fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
 [test: treemap style terminators kept after U+2028 and U+2029 before comments]
@@ -5713,7 +5741,11 @@ several lines is printed as a block, and the whitespace between the units of the
 line is formatted as usual (see [Attribute blocks](./er.md#attribute-blocks)):
 `"style:#x" ;`, U+2028, ` A {`, a line break, and `}` become `"style:#x"; `,
 U+2028, ` A { }`, and with an attribute between the braces the line ends with
-` A {`.
+` A {`. The semicolon and U+2028 or U+2029 stay where the line rule reads them,
+but ordinary spacing beside the other marks leaves those positions unchanged.
+Under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), no whitespace
+precedes the semicolon, and one space precedes the opening brace of the ER
+attribute block.
 
 [test: an empty attribute block over several lines after a semicolon that the
 line rule ignores and U+2028] [test: an attribute block over several lines after
@@ -6127,8 +6159,13 @@ stays, with the gap before it as under
 [Directives between tokens](#directives-between-tokens), where a run or a tab
 becomes one space; the whitespace after a directive at the end of the line is
 left out like the whitespace after the `{`, and the whitespace after a comment
-is part of the comment, so it stays. Text on the line of the `{` is spaced as
-any other token. This holds in every diagram type that has the block.
+is part of the comment, so it stays. Before reading the description, mermaid.js
+removes the directive and consumes the remaining whitespace with the opening
+brace. Spaces after an opening-line directive are therefore outside both the
+directive and the description, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them as
+trailing line whitespace. Text on the line of the `{` is spaced as any other
+token. This holds in every diagram type that has the block.
 
 [fixture: flowchart/multi-line-values/accdescr-block-opener-whitespace-dropped]
 [fixture: flowchart/multi-line-values/accdescr-block-opener-tab-dropped]
@@ -6724,6 +6761,17 @@ them as they are written. See [Names](./requirement.md#names),
   is not in the Db, and is dropped, and a run inside a value, a class, or a
   string is printed as one space (see
   [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+  A requirement field's colon has one following space under
+  [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), which also removes
+  trailing spaces and tabs from unquoted values and class lines. The ID-to-class
+  gap has one space under
+  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as
+  in [flowchart](./flowchart.md#whitespace-between-tokens) and
+  [state](./state.md#whitespace-between-tokens) diagrams. Runs between words of
+  a value or string become one space under
+  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as
+  in [sequence messages](./sequence.md#whitespace-between-tokens) and
+  [packet labels](./packet.md#label-content).
 
   [fixture: requirement/names/inner-whitespace-kept] [fixture:
   requirement/fields/value-inner-runs-collapsed] [fixture:
@@ -6806,6 +6854,10 @@ what the Db reads and does not repair what mermaid.js rejects. See
   [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.md)):
   the ones after the header are dropped, which makes the output accepted, and
   the ones after a diagram comment between nodes stay, as one, as in the input.
+  An internal run of blank lines becomes one blank line under
+  [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark). The gap after a
+  diagram comment between mindmap nodes is internal to the body, so one blank
+  line remains there.
 
   [fixture: mindmap/blank-lines/after-the-header-dropped] [fixture:
   mindmap/blank-lines/after-a-comment-between-nodes-kept]
@@ -7643,11 +7695,14 @@ text remains value text, and the spaces and tabs at the ends of a bare label, an
 icon, and a class text are dropped, and so are those after the bare id of a
 card, while those after the bare id of a column stay, and a bare label, an icon,
 or a class text of spaces and tabs only keeps one space (`A[ ]`) (see
-[Trailing whitespace](./kanban.md#trailing-whitespace)). Decorations align with
-their node; an inline-directive line keeps its directives and the gaps beside
-them, and the printer chooses the whitespace before the first one. A data block
-with invalid YAML is accepted by the parser as opaque text, although mermaid.js
-rejects it (known divergence
+[Trailing whitespace](./kanban.md#trailing-whitespace)). Brackets have no inner
+padding under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), so
+eligible spaces and tabs at the edges of a bare kanban label are dropped. The
+same rule removes trailing line whitespace, so exterior spaces and tabs after a
+bare card id are dropped. Decorations align with their node; an inline-directive
+line keeps its directives and the gaps beside them, and the printer chooses the
+whitespace before the first one. A data block with invalid YAML is accepted by
+the parser as opaque text, although mermaid.js rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 and the printer retains its opaque content with only eligible margin movement.
 See the [kanban rules](./kanban.md).
@@ -7818,10 +7873,14 @@ ls-kept-comment-whitespace-line] [test: venn: ps-kept-directive]
 Only accepted whitespace roles and the spellings of the section above normalize:
 ordinary ASCII gaps, configured implicit indentation and the title's consumed
 first separator. CR/CRLF use shared EOL handling; Unicode value characters
-remain, and invalid ordinary gaps remain rejected. The shared failure, Markdown,
-frontmatter and final newline paths apply. Specified token-boundary divergences
-still fail, while C4-detection and opaque-YAML divergences use the specified
-reading; raw rejection provides no raw Db.
+remain, and invalid ordinary gaps remain rejected. A U+00A0 inside a bare Venn
+label is part of its value in the Db. Replacing it with an ASCII space changes
+the recorded label, so the no-break space stays as written. The shared failure,
+Markdown, frontmatter and final newline paths apply. Specified token-boundary
+divergences still fail, while C4-detection and opaque-YAML divergences use the
+specified reading; raw rejection provides no raw Db.
+
+[corpus fixture: venn/db-grid-nbsp-label-bare]
 
 [fixture: venn/whitespace-characters/tab-gaps] [fixture:
 venn/title/title-next-line] [fixture: venn/header/div-c4-detector] [fixture:
@@ -7962,7 +8021,12 @@ without supplied effects use the shared null Db comparison and written-source
 check; the corpus uses recorded effects where available. The padding of a CSS
 declaration around its first colon follows
 [Styles that are drawn the same](#styles-that-are-drawn-the-same); the runs in a
-declaration are printed as one space as well.
+declaration are printed as one space as well. A run between the words of a
+usecase CSS declaration becomes one space, as the same gap in a style does in
+[flowchart](./flowchart.md#whitespace-between-tokens) and
+[state](./state.md#whitespace-between-tokens) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form.
 
 [fixture: usecase/native-metadata/metadata-inline] [fixture:
 usecase/native-metadata/metadata-blank-lines-kept] [fixture:
@@ -8118,7 +8182,11 @@ in one form (see
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same)) and
 retain escapes, value continuation columns, duplicates and source order. Common
 title/accessibility line edges compact like C4, but pie never joins a
-next-physical-line value. Empty labels and description blocks are real syntax.
+next-physical-line value. The colon of a pie accessibility key has no space
+before it and one space after it under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), which also removes
+the spaces and tabs at the end of the line. These ordinary gaps therefore print
+as in `accTitle: Access`. Empty labels and description blocks are real syntax.
 
 [fixture: pie/labels/label-quotes] [fixture: pie/numbers/number-spellings]
 [fixture: pie/title/title-next-trivia] [fixture:
@@ -8441,11 +8509,16 @@ spans that are plain decimals are printed in the shortest form, and the others
 preserve a zero at the start of the integer part, rounded precision, subnormals,
 underflow and overflow rather than printing converted double values. Option
 values remain authored: no tick cap, min/max reorder or replacement from drawing
-configuration. Label StringLiteral spans keep empty/whitespace-only text,
-escapes, HTML, entities, with a run of spaces and tabs inside a label printed as
-one space; a label between `'` is printed between `"` as under
+configuration. A radar minimum can exceed the maximum: mermaid.js accepts
+`min 10,max 1` and records `min = 10` and `max = 1` in the Db. Exchanging them
+changes the recorded options, so the bounds stay as written. Label StringLiteral
+spans keep empty/whitespace-only text, escapes, HTML, entities, with a run of
+spaces and tabs inside a label printed as one space; a label between `'` is
+printed between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same), and
 `singleQuote` is not read. Deleting an empty label changes the ID fallback.
+
+[corpus fixture: radar/db-min-above-max]
 
 [fixture: radar/source-order/declaration-order-kept] [fixture:
 radar/source-order/mixed-curve-forms] [fixture:
@@ -9257,7 +9330,14 @@ columns do not select parents. Rebuilding from the effective Db would lose
 occurrences and can change replacement or reset behavior. Strings retain escapes
 and interior columns, including empty values and native-looking text; a string
 between `'` is printed between `"` as under
-[Spellings that are drawn the same](#spellings-that-are-drawn-the-same).
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same). In a
+cynefin diagram, mermaid.js records an empty string as an item in the Db and
+hidden-looking text inside a string as part of the item's label. Removing the
+empty item or reading the string's contents as a hidden form changes the
+domain's items, so both stay as written.
+
+[corpus fixture: cynefin/db-empty-texts] [corpus fixture:
+cynefin/hidden-directive-string]
 
 [fixture: cynefin/empty-domains/empty-domain-last-reset] [fixture:
 cynefin/redeclarations/domain-repeat-order] [fixture:

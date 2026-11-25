@@ -1849,6 +1849,10 @@ Langium の型ではそれぞれの前に空白 1 つを置いて印字し、
 ディレクティブのないタイトルの末尾の U+2028 か U+2029 は、その前の空白と一緒に、
 Langium の型と quadrant では除き、ほかの型では残します。
 これは、タイトルのすぐ後に文が続くか、そこでテキストが終わるときです。
+Gantt、user journey、timeline、sequence、C4、Venn の図では、
+末尾の U+2028 や U+2029 は、タイトルの値の一部です。
+区切りを除くと、その値が変わり、Gantt、user journey、timeline、sequence、
+C4 の図では、描画も変わるので、区切りを残します。
 
 テキストのある `accTitle:` と `accDescr:` の行は、次の表のとおりに印字します。
 Langium の型は最初の表と同じ形ですが、値の先頭のディレクティブは、
@@ -3168,6 +3172,10 @@ mindmap のノードのテキスト、形のテキスト、アイコン、class 
 両端の空白とタブを除いて印字します。
 `a (x)` は `a(x)`、`b[ y ]` は `b[y]`、`::icon( fa )` は `::icon(fa)`、
 `::: big ` は `:::big` と印字します。
+Prettier は、角括弧と丸括弧の内側に余白を置きません。
+同じに描かれる余白について、mindmap の形の角括弧とアイコンの丸括弧の内側から、
+空白とタブを除き、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+この形を与えます。
 テキストの中の空白は残します。
 折り返すノードは連なりを描くからです。
 （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
@@ -3207,6 +3215,10 @@ class は要素の class の並びに入り、
 
 kanban のボードも、カードのテキスト、列とカードのラベル、アイコン、class に、
 同じ規則を適用します（[Kanban](./kanban.ja.md#形)を参照）。
+Prettier は、角括弧と丸括弧の内側に余白を置きません。
+同じに描かれる余白について、kanban の列とカードのラベルの角括弧と、
+アイコンの丸括弧の内側から空白とタブを除き、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 列の id は例外で、mermaid.js はそれで 2 つの列を区別します。
 `todo [A]` と `todo[B]` は別々に描かれる 2 つの列で、
 空白を除くと描かれ方が異なりました。
@@ -4179,6 +4191,10 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 閉じていないディレクティブが接するコロンは残します。
 閉じたディレクティブがキーワードとコロンの間にあるときも残し、
 `cynefin-beta%%{x}%%:` と `radar-beta%%{x}%%:` は変えません。
+コロンのない `radar-beta` の直後には、`%%`、仕様の空白、
+テキストの終わりのいずれかが必要です。
+接する隠れた YAML ブロックの前のコロンを除くと、`---` がそのヘッダーに接し、
+mermaid.js が拒否するので、コロンを残します。
 radar のヘッダーで、そのディレクティブの前、コロンの前、
 またはその両方に空白かタブがあるときは、それらを除いて印字します。
 `radar-beta %%{x}%%:`、`radar-beta%%{x}%% :`、
@@ -4518,6 +4534,10 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   `accDescr: direction RL` は行頭では説明で、
   行を字下げすると方向の行になります。
   印字は、本文の文を字下げします。
+  agentflow の本文の文をヘッダーより 1 段深く置く形は、
+  [class 図](./class.ja.md#字下げ) と [Gantt 図](./gantt.ja.md#インデント)
+  と同じで、[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+  この位置を与えます。
 
   [fixture: class/multi-line-values/block-direction-on-its-own-line-kept]
   [fixture: class/multi-line-values/block-brace-on-the-next-line-direction-kept]
@@ -5418,6 +5438,8 @@ U+2028 と U+2029、テキストの終わり、字下げなど）と、
 ishikawa 図のヘッダーは小文字の `ishikawa` と印字します。
 書かれた名前や大文字小文字は問いません。
 どの版も読まない `TREEMAP-BETA` は整形しません。
+[規則 3](./printed-form.ja.md#3-綴り)が、ヘッダーのこの名前を与えます。
+小文字は、ドキュメントの例が使う綴りです。
 例外は、ishikawa 図のヘッダーの直後に、`-beta` という語で始まる根が続く形です。
 間にあるのが指令だけの場合も同じで、
 mermaid.js は指令をヘッダーを読む前に取り除きます。
@@ -5698,6 +5720,9 @@ mermaid.js は、`style`、続いて空白をはさまずに `#` が後に続く
 そのため、文を区切る `;` と文の終わりの `;` 以外の `;` を含む行は、
 規則が当てはまるかどうかにかかわらず、文を行に残し、`;` をその位置に残します。
 規則はほかのトークンの間の空白を読まないので、そこは通常どおり整形します。
+セミコロンの行の規則は、リンクの両側の隙間を読まないので、
+セミコロンの位置を保ったまま、リンクの両側に空白 1 つを置き、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 [1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
 [fixture: flowchart/statements-one-per-line/line-with-semicolon-kept]
@@ -5779,6 +5804,13 @@ treemap の `classDef` を終わらせる `;` は、
 [Semicolons](./treemap.ja.md#semicolons)を参照してください。
 これらの文は、
 その文字も残します（[スタイルの末尾の空白](#スタイルの末尾の空白)を参照）。
+flowchart のスタイルでは、mermaid.js は残す終端の前の U+2028 を、
+最後のスタイルの値に格納します。
+この文字の削除は、末尾の空白とタブを除く例外の範囲を超えて値を変えるので、
+文字を終端と一緒に残します。
+
+[corpus fixture: flowchart/style-line-separator-semicolon-4e7b7434]
+[corpus fixture: flowchart/gram-style-semicolon-ends-statement]
 
 [fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
 [test: treemap style terminators kept after U+2028 and U+2029 before comments]
@@ -5938,6 +5970,10 @@ ER 図では、そのような行にある、複数行の属性ブロックを�
 `"style:#x" ;`、U+2028、` A {`、改行、`}` は、`"style:#x"; `、U+2028、
 ` A { }` になります。
 波括弧の間に属性があるときは、行は ` A {` で終わります。
+セミコロンと U+2028 や U+2029 は、行の規則が読む位置に残し、
+ほかの印の隣の通常の空白は、その位置を変えません。
+ER の属性ブロックの開始波括弧の前を空白 1 つにし、セミコロンの前の空白を除き、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [test: an empty attribute block over several lines after a semicolon that the line rule ignores and U+2028]
 [test: an attribute block over several lines after a semicolon that the line rule ignores and U+2028]
@@ -6360,6 +6396,11 @@ mermaid.js は `{` の後の空白を改行も含めて `{` と一緒に読む�
 ここでは、空白の連続やタブを空白 1 つにします。
 行末のディレクティブの後の空白は、`{` の後の空白と同じく落とします。
 コメントの後の空白はコメントの一部なので残します。
+mermaid.js は、説明を読む前にディレクティブを除き、
+残る空白を開始波括弧と一緒に読みます。
+開始行のディレクティブの後の空白は、ディレクティブにも説明にも属さないので、
+行末の空白として除き、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+この形を与えます。
 `{` の行にある本文は、ほかのトークンと同じように空白を整えます。
 これは、このブロックを持つすべての図種に適用します。
 
@@ -6980,6 +7021,19 @@ mermaid.js は、requirement 図の名前や値の一部の空白を持ち、一
   名前、値、クラスの両端の空白は Db に入らないので落とし、値、クラス、
   文字列の中の連なりは空白 1 つで印字します。
   （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+  requirement のフィールドのコロンの後を空白 1 つにし、
+  引用符のない値とクラス行の末尾の空白とタブを除き、
+  [規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
+  ID の一覧とクラスの間の空白 1 つは、
+  [flowchart](./flowchart.ja.md#トークンの間の空白) と
+  [state](./state.ja.md#トークンの間の空白) の図と同じで、
+  [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+  この形を与えます。
+  値や文字列の単語間の連なりを空白 1 つにする形は、
+  [sequence のメッセージ](./sequence.ja.md#トークンの間の空白) と
+  [packet のラベル](./packet.ja.md#label-content) と同じで、
+  [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+  この形を与えます。
 
   [fixture: requirement/names/inner-whitespace-kept]
   [fixture: requirement/fields/value-inner-runs-collapsed]
@@ -7059,6 +7113,10 @@ mindmap の Db は、ノードの字下げを level として読みます。
   [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
   ヘッダーの後のものは落とすので、出力は受理されます。
   ノードの間の図のコメントの後のものは、入力と同じく 1 つ残ります。
+  本文の途中の空行の連なりは 1 行になり、
+  [規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
+  mindmap のノードの間の図のコメントの後も、本文の途中の隙間なので、
+  空行を 1 つ残します。
 
   [fixture: mindmap/blank-lines/after-the-header-dropped]
   [fixture: mindmap/blank-lines/after-a-comment-between-nodes-kept]
@@ -7856,6 +7914,10 @@ kanban のボードの Db は字下げを持たず、
 空白とタブだけの裸のラベル、アイコン、class のテキストは、
 空白 1 つを残します（`A[ ]`）。
 詳しくは [Trailing whitespace](./kanban.ja.md#行末の空白) を参照してください。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+角括弧の内側と行末に余白を置きません。
+裸の kanban ラベルの両端の対象となる空白とタブと、
+裸のカードの id の後の外側の空白とタブは、その余白として除きます。
 装飾はノードの桁に揃え、インラインディレクティブの行は、
 ディレクティブと隣の隙間を保ち、最初のディレクティブの前の空白を印字が決めます。
 YAML として正しくないデータブロックは、パーサーが不透明なテキストとして受理し、
@@ -8040,10 +8102,15 @@ Venn の図コメントは LF か末尾まで続きます。
 通常の ASCII の隙間、設定の暗黙の字下げ、title の最初の区切りです。
 CR と CRLF は共通の改行処理を使います。
 値の Unicode 文字は保ち、不正な通常の隙間は拒否のままです。
+Venn の裸のラベルの中の U+00A0 は、Db にあるラベルの値の一部です。
+ASCII の空白に置き換えると、記録されたラベルが変わるので、
+改行しない空白を残します。
 失敗、Markdown、フロントマター、最後の改行は共通の経路に従います。
 仕様の単位境界の乖離は失敗のままで、
 C4 の検出と不透明な YAML の乖離は仕様の読み方を使います。
 生の拒否には生の Db はありません。
+
+[corpus fixture: venn/db-grid-nbsp-label-bare]
 
 [fixture: venn/whitespace-characters/tab-gaps]
 [fixture: venn/title/title-next-line] [fixture: venn/header/div-c4-detector]
@@ -8199,6 +8266,10 @@ JSON の表データは不透明で、数とエスケープの綴り、プロパ
 CSS 宣言の最初のコロンの前後の空白は、
 [同じに描かれるスタイル](#同じに描かれるスタイル)に従います。
 宣言の中の空白の連なりも、空白 1 つで印字します。
+usecase の CSS 宣言の単語間の連なりを空白 1 つにする形は、
+[flowchart](./flowchart.ja.md#トークンの間の空白) と
+[state](./state.ja.md#トークンの間の空白) の図のスタイルの同じ隙間と同じで、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 
 [fixture: usecase/native-metadata/metadata-inline]
 [fixture: usecase/native-metadata/metadata-blank-lines-kept]
@@ -8356,6 +8427,10 @@ Prettier は、行末の空白を取り除くので、値が空でも、
 [同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
 共通の title/アクセシビリティ行の両端は C4 と同様に整えますが、
 pie は次の物理行の値を結合しません。
+pie のアクセシビリティのキーのコロンは、前に空白を置かず、
+後ろに空白を 1 つ置き、行末の空白とタブを除き、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
+この通常の隙間は、`accTitle: Access` のように印字します。
 空のラベルと説明 block も実際の構文です。
 
 [fixture: pie/labels/label-quotes] [fixture: pie/numbers/number-spellings]
@@ -8721,12 +8796,18 @@ Markdown の埋め込み先は本文の最終行の余白を除きますが、
 倍精度浮動小数点の値から再出力しません。
 オプションの値は作者のままです。
 ticks の制限、min・max の並べ替え、描画設定からの置換はしません。
+radar 図では、mermaid.js は、最小値が最大値を超えても受理し、
+両方のオプションの値を Db に格納するので、`min 10,max 1` では、
+`min = 10` と `max = 1` になります。
+入れ替えると、記録されたオプションが変わるので、両方の値を残します。
 ラベルの `StringLiteral` は空・空白だけの文字列、エスケープ、HTML、
 実体参照を保ち、ラベルの中の空白とタブの連なりは空白 1 つで印字します。
 `'` で囲むラベルは、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字し、
 `singleQuote` は読みません。
 空ラベルの削除は ID を代わりに使う処理を変えます。
+
+[corpus fixture: radar/db-min-above-max]
 
 [fixture: radar/source-order/declaration-order-kept]
 [fixture: radar/source-order/mixed-curve-forms]
@@ -9579,8 +9660,15 @@ Markdown は最後のコード行の末尾空白を除きます。
 領域と項目の行は木を示すもので、列が親を選ぶわけではありません。
 有効な Db からの再構築は出現を失い、置換やリセットの読みを変え得ます。
 文字列は空の値や図固有の形に見える文字も含め、エスケープ、内部の列を保ちます。
+cynefin 図では、mermaid.js は、空の文字列も項目として Db に格納し、
+文字列の中の隠れた形に見える文字も、項目のラベルに含めます。
+空の項目を除いたり、文字列の中身を隠れた形として読んだりすると、
+領域の項目が変わるので、どちらも残します。
 `'` で囲む文字列は、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字します。
+
+[corpus fixture: cynefin/db-empty-texts]
+[corpus fixture: cynefin/hidden-directive-string]
 
 [fixture: cynefin/empty-domains/empty-domain-last-reset]
 [fixture: cynefin/redeclarations/domain-repeat-order]
