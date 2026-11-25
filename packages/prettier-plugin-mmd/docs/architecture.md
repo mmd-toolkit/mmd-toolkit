@@ -119,15 +119,11 @@ architecture-beta title t service a; junction j
 
 ### Declaration spacing
 
-Use one space between the keyword and ID. Rule 1 of
-[How the printed form is decided](./printed-form.md#1-the-whitespace-beside-a-mark)
-names no mark between a keyword and its id, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [wardley](./wardley.md#component-spacing) puts one ordinary space
-between each command keyword and its first complete name, and
-[radar](./radar.md#groups-and-commas) between a group keyword and its first
-member. Print `group g(cloud)[G]`, `service a(server)[A]` and `service a[A]`:
-touching parentheses and brackets make the attached parts read as one node.
+Use one space between the keyword and ID.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between the keyword and its ID, as Prettier prints `return  x` as `return x;`.
+Print `group g(cloud)[G]`, `service a(server)[A]` and `service a[A]`: touching
+parentheses and brackets make the attached parts read as one node.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the touching
 `(` and `[`: Prettier prints no whitespace before the `(` of a call and none
 before the `[` of an index (`f (a) [0]` is printed `f(a)[0];`).
@@ -629,19 +625,16 @@ architecture-beta
 ### Alignment
 
 Use one ordinary space between `align`, its row/column direction and each
-member. Rule 1 names no mark for a gap between the words of a statement, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: the gap between a keyword and its text is one space (`title    Pets` in
-a pie chart is printed `title Pets`, the example of rule 2), which gives the gap
-between `align` and its direction and the gap between the direction and the
-first member. No rule gives the gap between two members (`a   b` and `a`, a tab,
-and `b` are printed `a b`): [block](./block.md#rows) prints the nodes of a row
-with one space, but states that no rule gives the form of its rows, so it is no
-basis for rule 2, and the released form stays until it is decided (see
-[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
-Do not align columns, sort members, merge repeated constraints or wrap them:
-consistent gaps improve reading without changing authored order or introducing
-visible EOL.
+member. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`, which gives the gap between `align` and its direction and the gap
+between the direction and the first member.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between values that follow one another, as Prettier prints CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`: `a   b` and `a`, a tab, and `b` are
+printed `a b`. Do not align columns, sort members, merge repeated constraints or
+wrap them: consistent gaps improve reading without changing authored order or
+introducing visible EOL.
 
 [fixture: architecture/alignment/alignment-row-and-column]
 
@@ -671,22 +664,23 @@ Use shared common-line layout, except as the paragraphs below and the
 common-whitespace edges, and null or whitespace-only values print `title`. A run
 of spaces and tabs inside the value is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-This compacts equivalent outer padding. Never read the next physical line as a
-value, even across trivia. mermaid.js reads the next line as a statement of its
-own, so joining it would put that statement into the title, and what it declares
-(a node, a group, a junction, or an edge) would disappear. Keep occurrences and
-content even though the architecture summary does not publish title. Where a
-title has text and no directive stands before its text or inside it, and no
-U+2028 or U+2029 stands inside the text, the directives that end it are printed
-as follows, by what stands before them and after them, except for the undecided
-lines. A line with directives is undecided when, besides its directives, it
-holds a `;` outside a comment (also inside a directive), when it holds a `;`
-inside a comment and a U+2028 or U+2029, when a U+2028 or U+2029 stands inside
-or after its first directive, when a directive holds a line break, or when a
-line between it and the next statement holds a `;` inside a comment or a
-directive. A wide space is one of U+000B, U+000C, U+00A0, U+1680, U+2000 to
-U+200A, U+202F, U+205F, U+3000, and U+FEFF. Where item 6 splits a line, none of
-the other items applies to it:
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `title` and a nonempty value, as Prettier prints `return  x` as
+`return x;`. Never read the next physical line as a value, even across trivia.
+mermaid.js reads the next line as a statement of its own, so joining it would
+put that statement into the title, and what it declares (a node, a group, a
+junction, or an edge) would disappear. Keep occurrences and content even though
+the architecture summary does not publish title. Where a title has text and no
+directive stands before its text or inside it, and no U+2028 or U+2029 stands
+inside the text, the directives that end it are printed as follows, by what
+stands before them and after them, except for the undecided lines. A line with
+directives is undecided when, besides its directives, it holds a `;` outside a
+comment (also inside a directive), when it holds a `;` inside a comment and a
+U+2028 or U+2029, when a U+2028 or U+2029 stands inside or after its first
+directive, when a directive holds a line break, or when a line between it and
+the next statement holds a `;` inside a comment or a directive. A wide space is
+one of U+000B, U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000,
+and U+FEFF. Where item 6 splits a line, none of the other items applies to it:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them or inside one of them, no directive holds a

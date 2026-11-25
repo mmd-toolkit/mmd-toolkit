@@ -287,8 +287,10 @@ classDiagram
 
 Within a line, where no rule below gives the gap another form (a string, an
 arrow, a colon, the name before the `(` of a callback, `:::`, and the like), a
-run of spaces and tabs between two tokens becomes one space, and tokens that
-touch keep touching, as in a flowchart.
+run of spaces and tabs between two tokens becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`. Tokens that touch keep touching, as in a flowchart.
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
