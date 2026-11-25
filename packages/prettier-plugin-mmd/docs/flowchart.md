@@ -22,7 +22,7 @@ statements of a subgraph one level deeper than its `subgraph` line, with `end`
 at the level of `subgraph`. An [ER subgraph](./er.md#indentation) and a
 [class namespace](./class.md#indentation) put their statements one level below
 their opening line and their closing line at the opening level.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the same indentation for a flowchart subgraph and its `end`. A level follows
 Prettier's `useTabs` and `tabWidth` options, subject to the minimum below: two
 spaces by default, as in the other languages that Prettier formats. The
@@ -1107,11 +1107,11 @@ as one. The colon after an escaped space gives the style name its value, so
 the colon before a nonempty value. [ER](./er.md#styles-and-classes) and
 [requirement](./requirement.md#styles-and-classes) diagrams also print a run
 between style words as one space when the style starts with a colon.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 that word gap. `style A :  red   x` is printed `style A : red x`, and
 `style A fill\ :red   x` is printed `style A fill\ : red x`. In a style whose
 name ends in an escaped space, the colon gives the name its value.
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore puts one
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore puts one
 space after the colon before a nonempty value.
 
 [fixture: whitespace-between-tokens/style-colon-first-run-spaced] [fixture:
@@ -1241,7 +1241,7 @@ and calls the function with the same arguments (see
 The whitespace inside quotes stays, and so do arguments with an empty part. For
 ordinary call arguments, mermaid.js splits at commas outside quotes and trims
 each part, so changing the surrounding whitespace leaves the arguments
-unchanged. [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+unchanged. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
 those commas no whitespace before them and one space after them.
 
 [fixture: whitespace-between-tokens/callback-arguments-spaced]
@@ -1258,7 +1258,7 @@ The parentheses of a call with blank arguments touch each other:
 as the same call with no arguments. A directive between them touches both
 parentheses, as under [Directives](#directives). Before reading a call,
 mermaid.js removes directives, leaving an otherwise blank argument list empty.
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
 inside the empty parentheses, so the retained directive touches both.
 
 [fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
@@ -1867,7 +1867,7 @@ flowchart/db-acc-descr-empty-replaces]
 Mermaid reads ordinary text on the next line after the colon as the value; join
 that text onto the keyword's line. An accessibility keyword gives the diagram
 its title or description, making its colon a key colon.
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints no whitespace
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints no whitespace
 before that colon and one space before the value on the same line, including a
 value read from the next line.
 
@@ -2634,7 +2634,7 @@ lines, keeping its authored line and text. In
 [agentflow](./agentflow.md#metadata-blocks) and
 [kanban](./kanban.md#data-blocks) diagrams, all body lines of an eligible block
 move by the same amount, including embedded comment lines.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the comment line the same movement, preserving its indentation relative to the
 other body lines.
 
@@ -2685,7 +2685,7 @@ The `}` of the block stands at the level of the `accDescr` it closes. A
 description block's separate closing brace stands at its statement's level in
 [sequence](./sequence.md#multi-line-values) and
 [usecase](./usecase.md#direction-and-accessibility) diagrams.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the same alignment to the `}` that closes `accDescr`.
 
 [fixture: multi-line-values/accdescr-block-kept]
@@ -3376,7 +3376,7 @@ and the whitespace becomes one space, as it does before a name with a title,
 before a name of several words, and where a single tab stands. A name follows
 one space after `subgraph` in [ER](./er.md#subgraphs) diagrams and after `flow`
 in [agentflow](./agentflow.md#names-and-headings) diagrams.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 that gap before a subgraph name with a title, a name of several words, or a
 one-word name whose id no statement names, and where a single tab stands.
 
@@ -3783,7 +3783,7 @@ after a backslash that ends the last style stays as one character, and a style
 of whitespace only stays as written. At the end of a style, a backslash escapes
 only the first character after it, leaving any further spaces and tabs as
 unescaped line-end whitespace.
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes those
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes those
 remaining spaces and tabs, as Prettier does at line ends.
 
 [fixture: style-trailing-whitespace/removed] [fixture:
