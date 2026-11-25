@@ -937,7 +937,7 @@ timeline について対象にする版は、どちらの形も同じに描き�
 `accDescr   {alpha}    accDescr {beta}` は、
 `accDescr {alpha} accDescr {beta}` になります。
 元に空白がない所には、何も足しません（`accDescr{ alpha}`）。
-10.9.8 と 11.7.0 は、方向の後のテキストを文字として描くので、
+対象にする版のうち古い版は、方向の後のテキストを文字として描くので、
 `timeline TD accDescr{x}` と `timeline TD accDescr {x}` は別の図になります。
 空白がそのテキストの一部になるためです。
 規則 1 がブロックの `{` の前に置く空白は、ここでは足しません。
