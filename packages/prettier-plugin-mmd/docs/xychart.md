@@ -387,14 +387,10 @@ between a keyword and what it takes (`return  x` is printed `return x;`),
 including the `[` that opens the values that the statement takes
 (`return  [800, 600]` is printed `return [800, 600];`), and between values that
 follow one another, also before the `[` after a title (CSS `margin: 1px    2px;`
-is printed `margin: 1px 2px;`).
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-between a keyword and what it takes and before the `[` that opens the values
-that the statement takes, as Prettier prints `return  x` as `return x;` and
-`return  [800, 600]` as `return [800, 600];`; some examples in the documentation
-of mermaid.js have no space after a comma (`[12,2,20,25,17,24]`), and every
-chart has one form. A space after each comma is the whitespace that Prettier
-prints beside a comma.
+is printed `margin: 1px 2px;`). Some examples in the documentation of mermaid.js
+have no space after a comma (`[12,2,20,25,17,24]`), and every chart has one
+form. A space after each comma is the whitespace that Prettier prints beside a
+comma.
 
 [fixture: brackets-and-commas/spaces-inside-and-around-commas] [fixture:
 brackets-and-commas/bracket-touching-the-keyword] [fixture:
