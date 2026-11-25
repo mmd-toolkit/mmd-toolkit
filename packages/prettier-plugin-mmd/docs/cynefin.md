@@ -483,7 +483,7 @@ cynefin-beta
 Use the shared common-line layout: trim ordinary outer common whitespace, insert
 one space before a nonempty value and retain its internal text, except that a
 run of spaces and tabs inside it is printed as one space.
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `title` and a nonempty value, as Prettier prints `return  x` as
 `return x;`. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes
 the spaces and tabs at the end of the title line. Empty or whitespace-only
@@ -492,7 +492,7 @@ without a value ends at the keyword because
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
 and tabs at the line end. mermaid.js reads statement-looking text on the title
 line as title text, so the following statement stays on its own line rather than
-becoming part of an empty title. This chooses a compact Db-equal edge without
+becoming part of an empty title. This chooses a Db-equal edge without
 interpreting quotes as string delimiters. Preserve empty resets and trivia
 contact. Where only directives follow the text of a title, they are printed with
 one space before each that has spaces or tabs before it, and the spaces and tabs

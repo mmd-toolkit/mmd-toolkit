@@ -19,18 +19,38 @@ fixture の置き方と確かめ方は、
 ### 字下げ
 
 ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
+Prettier は、ブロックの本体（JavaScript の関数の本体、CSS の規則の宣言）を、
+それを開く行より 1 段深く印字します。
+規則 1 の表は行頭を挙げていないので、
+規則 1
+はここで形を与えません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+形は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+[flowchart](./flowchart.ja.md#字下げ)、[class](./class.ja.md#字下げ)、
+[state](./state.ja.md#字下げ)、[sequence](./sequence.ja.md#字下げ)が、
+ヘッダーの後の文をヘッダーより 1 段深く置くためです。
 
 [fixture: indentation/written-indentation-dropped]
 
 subgraph の文は、subgraph の行より 1 段深く置き、その `end` は、
 その行と同じ段に、行に単独で置きます。
 文の後に書かれていても同じです。
+Prettier は、ブロックを閉じる `}` を、そのブロックを開く行と同じ段に置きます。
+[flowchart](./flowchart.ja.md#字下げ)と [state](./state.ja.md#字下げ)も、
+subgraph や複合状態の文を、それを開く行より 1 段深く置き、
+`end` か `}` をその行と同じ段に置きます（規則 2。上と同じです）。
+文の後に書かれた `end` は、[1 行に 1 文](#1-行に-1-文)のとおり、
+行に単独で置きます。
 
 [fixture: indentation/nested-subgraphs]
 [fixture: subgraphs/end-on-the-line-of-a-statement]
 
 実体の属性は、実体の行より 1 段深く置き、その `}` は、その行と同じ段に置きます。
 subgraph の中でも同じです。
+規則 2 が形を与えます。
+[class](./class.ja.md#メンバーの本体)と
+[requirement](./requirement.ja.md#インデント)が、
+本体のメンバーを class や requirement の行より 1 段深く置き、
+`}` をその行と同じ段に置くためです。
 
 [fixture: indentation/attribute-blocks-in-subgraphs]
 
@@ -46,8 +66,10 @@ subgraph の中でも同じです。
 
 [fixture: indentation/written-indentation-dropped]
 
-例外は、direction を含む `accTitle` と `accDescr` の文で、
-1 桁目を保ちます（[アクセシビリティの文](#アクセシビリティの文)を参照）。
+例外は、direction を含む `accTitle` と `accDescr` の文で、1 桁目を保ちます。
+字句解析器は、1 桁目ではそれをタイトルか説明として読み、
+字下げの後では direction
+の行として読むためです（[アクセシビリティの文](#アクセシビリティの文)を参照）。
 
 入力
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -84,6 +106,18 @@ erDiagram
 属性ブロックの `{` は、空白 1 つの後に、実体の行に置きます。
 各属性は、1 段深く、行に 1 つずつ置き、`}` は、実体と同じ段に、
 行に単独で置きます。
+規則 1 は、
+ブロックの `{` の前に空白 1 つを置きます（Prettier は `function f(){}` を
+`function f() {}` と印字します）。
+行頭は規則 1 の場所ではないので、
+行の形は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+[class](./class.ja.md#メンバーの本体)、[requirement](./requirement.ja.md#本体)、
+[state](./state.ja.md#複合状態)が、本体の `{` を、
+`{` が名前に接して書かれていても、開く行に空白 1 つの後に置くためです。
+[class](./class.ja.md#メンバーの本体)、
+[requirement](./requirement.ja.md#インデント)、[state](./state.ja.md#字下げ)は、
+メンバーを 1 段深く、行に 1 つずつ置き、`}` を開く行と同じ段に、
+行に単独で置きます。
 
 [fixture: attribute-blocks/opening-brace-after-one-space]
 [fixture: attribute-blocks/split]
@@ -91,11 +125,14 @@ erDiagram
 1 行に書かれたブロックや、最初の属性が `{` の行に、
 最後の属性が `}` の行にあるブロックも、こう分けます。
 mermaid.js は属性ブロックを改行に関係なく読むので、同じ属性を読みます。
+[class](./class.ja.md#メンバーの本体)と [state](./state.ja.md#複合状態)も、
+1 行に書かれた本体を同じように分けます（規則 2）。
 
 [fixture: attribute-blocks/split] [corpus fixture: er/gram-attributes-one-line]
 [corpus fixture: er/gram-attribute-split-lines]
 
-`}` の後に同じ行で続く文は、行に単独で置きます。
+`}` の後に同じ行で続く文は、[1 行に 1 文](#1-行に-1-文)のとおり、
+行に単独で置きます。
 
 [fixture: attribute-blocks/entity-after-closing-brace]
 [corpus fixture: er/gram-block-then-name-one-line]
@@ -107,7 +144,11 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 空白しかない空のブロックは、どう書かれていても、
 実体の行に `{ }` として印字します。
 `{}` も `{   }` も、別々の行の波括弧も、属性のない実体を宣言します。
-`{ }` は他の図種と同じ形です。
+走らせた版は、実体の `{}` を、subgraph の中でも受理し、
+`{ }` にも同じ結果を返します。
+クラスのある実体 `C:::c {}` の後の `{}` を拒否する版は、
+そこの `{ }` も拒否します。
+空白を必要とする版はないので、空白に理由はありません。
 
 [fixture: attribute-blocks/empty-unified] [corpus fixture: er/gram-block-empty]
 [corpus fixture: er/gram-block-empty-space]
@@ -150,8 +191,12 @@ mermaid.js が拒否します。
 行を離したままにするとき、波括弧の間に空白とタブと改行だけがあれば、
 文は `{` までを書かれたまま印字し、改行を 1 つ置き、
 実体の字下げに `}` を置きます。
-行末の `{` の後ろの空白と、波括弧の間の空行は何も描かず、
-つないだ形の `{ }` でも落とすからです。
+行末の `{` の後ろの空白と、波括弧の間の空行は何も描かず、Prettier も、
+行をまたいで書かれた空のブロックの波括弧の横には、
+そのどちらも印字しません（CSS の規則を `a {`、空白 2 つ、空行 2 つ、
+`}` と書くと、`a {` と、次の行の `}` に印字されます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+`}` は、ブロックを開く行と同じ段に置きます（[字下げ](#字下げ)のとおりです）。
 波括弧の間に、
 空白でもタブでもない空白文字（たとえば U+00A0 や U+2028）があるときは、
 文は書かれたままにします。
@@ -221,6 +266,14 @@ mermaid.js が拒否します。
 
 [fixture: attribute-blocks/written-line-empty-block-closing-brace-on-a-line-read-by-its-place]
 [fixture: attribute-blocks/written-line-empty-block-spaces-and-empty-line-dropped-on-a-line-read-by-its-place]
+
+そのような行で書かれたまま残るもの、つまり `}` を含む行にあるブロックの属性と、
+`end` を含む行にある subgraph の形は、
+[印字する形の決め方](./printed-form.ja.md) のどの規則も与えません。
+今ある形は、決まるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 
 `;` を含み、ほかに書かれたまま残る理由がない行は整形します。
 空の description ブロックがある subgraph の見出しの行も、
@@ -408,13 +461,19 @@ erDiagram
 属性は列にそろえません。
 そろえると、属性を 1 つ変えただけでブロックの全行が変わり、
 名前の幅は文字数で数えられず、mermaid.js の文書の例もそろえていないからです。
-空白 1 つと、型に接する `?` は、その例の形です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、属性の部分を続く値として、
+その間に空白 1 つを与えます。
+Prettier が CSS の `margin: 1px    2px;` を、
+`margin: 1px 2px;` と印字するためです。
+型に接する `?` は、その例の形です。
 省略可能な型の `?` は、どう書かれていても型に接します。
 
 [fixture: attribute-spacing/optional-touching]
 
-キーは、前に空白を置かない `,` と空白 1 つで区切り、
-書かれた大文字小文字を保ちます。
+キーは、前に空白を置かない `,` と空白 1 つで区切ります。
+mermaid.js が一覧を同じに読む所では、Prettier がコンマをそう印字するからです。
+詳しくは [規則 1](./printed-form.ja.md#1-記号の横の空白) を参照してください。
+キーは、書かれた大文字小文字を保ちます。
 Db が保つからです。
 
 [fixture: attribute-spacing/keys-comma-space]
@@ -429,6 +488,7 @@ Db が保つからです。
 空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントのテキストは保ちます。
+属性の型、名前、コメントは、Db が書かれたまま持つからです。
 規則 1 は、チルダの語とバッククォートの語の内側を決めません。
 木が、それぞれを空白を内側に含む 1 つのトークンとして持つからです。
 詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
@@ -453,7 +513,8 @@ Db が保つからです。
 部分の間にコメント行かディレクティブがある属性は、改行を保ちます。
 後続の構造部分と独立した注釈類行は、subgraph の中でも、
 属性の内側に 1 段字下げします。
-型、名前、引用符付きコメントの内部は書かれたまま残します。
+型、名前、引用符付きコメントの内部は、Db が書かれたまま持つので、
+書かれたまま残します。
 規則 1 はコメント行の隣の改行に記号を挙げないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [block](./block.ja.md#複数行の文)、[sequence](./sequence.ja.md#複数行の文)、
@@ -461,13 +522,18 @@ Db が保つからです。
 文の後続部分と独立した注釈類を、文の内側に継続の 1 段字下げで置きます。
 ただし、ほかの規則が配置を書かれたまま残す所は別です（物理行を結ぶコメント領域、
 `;` を含む行です）。
+コメント行やディレクティブの隣の改行が残る理由は、
+[複数行の文](#複数行の文)に書いてあります。
 
 [fixture: attribute-spacing/comment-line-inside-kept]
 [fixture: attribute-spacing/directive-inside-kept]
 [fixture: attribute-spacing/comment-continuation-with-multiline-value]
 [fixture: attribute-spacing/directive-continuation-tabs]
 
-セミコロンがあるだけでは、継続行をそろえる妨げにはなりません。
+`;` は、その行の文をひとまとめに残し、`;` 自体も今の位置に残します。
+詳しくは [`;` を含む行](./compatibility.ja.md#-を含む行) を参照してください。
+しかし継続行の字下げは残しません。
+文字列の中に `;` がある属性の継続行も、ほかと同じにそろえます。
 
 [fixture: attribute-spacing/semicolon-continuation-aligned]
 
@@ -500,9 +566,7 @@ mermaid.js は前後の行を 1 行として読みます。
 を参照してください。
 `;` が色に接するとき（`#ABC;`、`#ABC;;`、`#ABC; ;`）と、
 垂直タブとフォームフィードのほかの幅のある空白、U+2028、
-U+2029 が色を `;` から離すときも、書かれたまま残しますが、
-[色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
-規則による修正を待っています。
+U+2029 が色を `;` から離すときも、書かれたまま残します。
 空白、タブ、垂直タブ、フォームフィードが色を `;` から離すときは、
 その行でコメント領域が色に続かなければ、[色](#色)と同じに印字します。
 スタイルの中の空白は書かれたままです（`style A fill:#F00,   stroke:#ABC`、
@@ -685,6 +749,9 @@ flowchart、sequence、class、state も 1 行に 1 つの文を印字します�
 [corpus fixture: er/gram-empty-description-block-between-names]
 
 2 つの文の間のディレクティブは、後ろの文と一緒に置きます。
+同じ行にあった単位を整形が分けるときは、ディレクティブは、
+その隙間にあった後ろの単位と一緒に動くからです。
+詳しくは [ディレクティブ](#ディレクティブ) を参照してください。
 
 [fixture: statements-one-per-line/directive-after-statement]
 
@@ -697,6 +764,12 @@ flowchart、sequence、class、state も 1 行に 1 つの文を印字します�
 `class;-A a`、`subgraph;-x`、`subgraph;é` は、
 行規則が `;` を取り除いた後の接し方を保ちます。
 subgraph の名前の前に U+2028 や U+2029 があるときも同じです。
+mermaid.js は、テキストを読む前にその `;` を取り除くので、
+キーワードと名前はそこで接しています。
+間に空白を置いたテキストは、対象にする版の一部が拒否するか、違って描きます。
+詳しくは [トークンの間の空白](#トークンの間の空白) と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: an end; on a line of its own in a subgraph of an ER diagram]
 [fixture: statements-one-per-line/closing-end-ignored-semicolon-kept]
@@ -726,6 +799,11 @@ mermaid.js は、テキストを読む前にディレクティブを取り除く
 `2.5x` のようなほかの数は、後ろの文と分けます。
 そのような実体の行は書かれたまま印字し、その行で終わる subgraph も、
 ヘッダーから `end` まで、行ごとの 1 段の字下げなしで書かれたまま印字します。
+その行と subgraph の形は、どの規則も与えません。
+今ある形は、決まるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 
 [fixture: statements-one-per-line/number-name-then-name-kept]
 [fixture: statements-one-per-line/number-name-before-uppercase]
@@ -745,7 +823,11 @@ mermaid.js は、テキストを読む前にディレクティブを取り除く
 `endé` は、固定した版ではキーワード `end` と実体 `é` ですが、
 対象にする版の一部では 1 つの名前だからです。
 `end` の行の終わりにある同じ種類の空白文字は、1 回だけ残します。
-コメントやディレクティブの前や、空行を挟んで別の文が続くときも同じです。
+コメントやディレクティブの前や、空行を挟んで別の文が続くときも同じで、
+理由も同じです。
+詳しくは
+[置かれた場所や空白で読みが決まる ER の行](./compatibility.ja.md#置かれた場所や空白で読みが決まる-er-の行)
+を参照してください。
 
 [test: er/statements-one-per-line/R63-er-ascii-after-LS-e]
 [test: er/statements-one-per-line/R44-er-after-separator-LS-e]
@@ -794,7 +876,9 @@ mermaid.js は、テキストを読む前にディレクティブを取り除く
 ほかの語（`classes`、`directionX`、名前）で始まる文、名前が 1 つの `class`、
 値だけが続く `direction` は、後ろの文と分けます。
 そうした `end` の後の引用符つきの名前は、引用符を残します。
+引用符を外すと、版によって名前の描かれ方が違うためです。
 キーワードとその後ろの間にディレクティブがあっても、変わりません。
+mermaid.js は、テキストを読む前にディレクティブを取り除くからです。
 ディレクティブが U+2028 や U+2029 の前にあっても、ASCII 外の文字に接していても、
 同じです。
 
@@ -976,6 +1060,14 @@ mermaid.js が行をどう読むかを決めないかぎり通常どおり整形
 文字に接する実体 `1`、1 行の属性ブロックにある一対の `~`、
 閉じていないディレクティブがその例です。
 その行にあるブロックは、上と同じに印字します。
+それぞれの理由は、書かれている所にあります。
+コメント行は
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+に、`;` は [`;` を含む行](./compatibility.ja.md#-を含む行) に、
+実体 `1` と一対の `~` は上に、
+閉じていないディレクティブは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+にあります。
 
 [test: an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and a statement]
 [test: an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and an attribute block on one line]
@@ -1187,6 +1279,15 @@ Db がそのまま保つ属性のキーも同じです。
 mermaid.js が、テキストを読む前にディレクティブを取り除くからです。
 `class%%{init: {}}%%-A a` はそのまま残ります。
 `classDef` と `style` は対象外で、`classDef-x` は `classDef -x` と印字します。
+`classDef-x` や `style-y` を受け入れる版は、
+どれも空白があってもなくても同じに描くからです。
+また、キーワードとそのテキストの間の隙間は空白 1 つだからです。
+詳しくは
+[置かれた場所や空白で読みが決まる ER の行](./compatibility.ja.md#置かれた場所や空白で読みが決まる-er-の行)
+を参照してください。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとそのテキストの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 行の規則が無視する `;` も、キーワードと `-` を分けません。
 
 [fixture: whitespace-between-tokens/class-then-dash-ignored-semicolon-kept]
@@ -1286,7 +1387,7 @@ mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度
 [corpus fixture: er/lex-colon-no-space]
 
 実体の最初のクラスは `:::` に接し、クラスの間の `,` は前のクラスに接して、
-後ろに空白を 1 つ置きます。
+後ろに空白を 1 つ置きます（[実体](#実体)を参照）。
 
 [fixture: relationship-spacing/names-and-classes]
 
@@ -1438,6 +1539,10 @@ erDiagram
 ### 実体
 
 実体の別名は、名前に接し、角括弧の中に何も置きません。
+Prettier が `x [ 0 ]` を `x[0]` と印字し、
+`[` の前にも内側にも空白を置かないためです。
+また、[規則 1](./printed-form.ja.md#1-記号の横の空白) の表は、
+flowchart の `A( text )` を `A(text)` としています。
 `p [ Person ]` は `p[Person]` にします。
 
 [fixture: entities/alias-tight]
@@ -1446,7 +1551,12 @@ erDiagram
 前のクラスに接して後ろに空白を 1 つ置く `,` で区切ります。
 Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 `A ::: c1 , c2` は `A:::c1, c2` にします。
-別名をこのように書く例が、mermaid.js の文書の例の多くです。
+規則 1 は `:::` を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[class](./class.ja.md#トークンの間の空白)と
+[state](./state.ja.md#トークンの間の空白)は、`:::` を、
+前の名前にも後ろのクラスにも接して印字します（`class A ::: c` は `class A:::c`
+に、state 図の `A ::: c` は `A:::c` にします）。
 
 [fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
 
@@ -1462,7 +1572,10 @@ mermaid.js の文書の例に合わせて引用符なしで印字します。
 引用符なしで 20 回使い、引用符付きでは一度も使わないので、
 `"LINE-ITEM"` は `LINE-ITEM` と印字します。
 名前は `_` で始まってもよく、`"_x"` は `_x` と印字します。
-文書の例には、`_` で始まる名前が、引用符の有無を問わず一つもありませんが、
+文書の例には、`_` で始まる名前が、引用符の有無を問わず一つもないので、
+その欄の数が決めます。
+詳しくは [テキストの引用符](./compatibility.ja.md#テキストの引用符)
+を参照してください。
 対象にする版はすべて、どちらの形も同じに読みます。
 `-` はキーワードを終わらせるので（`"end-x"` は `end` と `-x`）、
 最初の `-` より前の部分を、字句解析器が独立した単位として読む語と比較します。
@@ -1479,6 +1592,10 @@ ASCII 以外の文字を含む名前（`"Zoë"`）は、
 大文字小文字を問わず書かれたまま残します。
 字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
 引用符を外した名前は、前の行か後の行と結ばれるためです。
+`-` で始まる名前と数の引用符には理由があります。
+対象にする版のいくつかが、引用符を外した形を拒否するためです。
+走らせた版は `"a-"` と `a-`、`"a--b"` と `a--b` を同じに読むので、
+それらの名前の引用符は理由なしに残し、その行は一覧（D04）にあります。
 
 [fixture: entities/plain-names-without-quotes]
 [fixture: entities/hyphenated-names-without-quotes]
@@ -1577,10 +1694,17 @@ erDiagram
 
 ### subgraph
 
-subgraph の名前は空白 1 つの後に置き、タイトルの `[` は名前に接します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+Prettier が `return  x` を `return x;` と印字するのと同じく、
+subgraph とその名前の間に空白 1 つを与え、タイトルの `[` は名前に接します。
 `subgraph S [t]` は `subgraph S[t]` になります。
-同じ語で同じタイトルの形が逆になる理由がないので、
-[flowchart](./flowchart.ja.md#subgraph-のヘッダー)と同じ形です。
+規則 1 がこの形を与えます。
+タイトルの `[` は、添字の `[` と同じく名前に付くからです。
+Prettier は `x [ 0 ];` を `x[0];` と印字し、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)の表は、
+architecture の `service a (server) [A]` を `service a(server)[A]`
+と印字します。
+[flowchart](./flowchart.ja.md#subgraph-のヘッダー)も同じ形で印字します。
 mermaid.js は、どちらの書き方も同じ subgraph として読みます。
 角括弧の中には何も置きません。
 タイトルの名前は、接して書かれていても空白 1 つで区切ります。
@@ -1590,7 +1714,8 @@ mermaid.js が空白 1 つで結ぶからです。
 [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids]
 
-本体の文は 1 段深く置き、`end` は、subgraph と同じ段に行に単独で置き、
+本体の文は 1 段深く置き、`end` は、
+subgraph と同じ段に行に単独で置き（[字下げ](#字下げ)を参照）、
 書かれた大文字小文字のまま印字します。
 本体の `class`、`classDef`、`style` 文のキーワードは、subgraph の外と同じく、
 書かれたまま残します。
@@ -1598,15 +1723,16 @@ mermaid.js は、それを書かれたまま subgraph のノードに並べま�
 
 [fixture: subgraphs/statement-keywords-case-kept]
 
-`end` の後に同じ行で続く文は、次の行に置きます。
+`end` の後に同じ行で続く文は、[1 行に 1 文](#1-行に-1-文)のとおり、
+次の行に置きます。
 
 [fixture: subgraphs/end-on-the-line-of-a-statement]
 [fixture: subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
 
 文のない subgraph は、`end` を次の行に置いて印字します。
 見出しと `end` の間の空行は落とします。
-規則 1 は、ここの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、JavaScript と CSS で、ブロックの先頭と末尾の空行を落とします。
 [flowchart](./flowchart.ja.md#空行) は、subgraph の最初と最後の空行を落とし、
 [requirement](./requirement.ja.md#本体) は、
 フィールドのない本体の `{` と `}` の間の空行を落とします。
@@ -1620,10 +1746,6 @@ mermaid.js は、それを書かれたまま subgraph のノードに並べま�
 [fixture: subgraphs/title-beside-directive-runs]
 
 そこにある U+2028 と U+2029 は、そのまま残します。
-規則 1 は、subgraph の名前とタイトルの間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#行区切り) と [state](./state.ja.md#行区切り文字)
-も、これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 between an ER subgraph name and its title]
 [test: U+2029 between an ER subgraph name and its title]
@@ -1636,6 +1758,8 @@ mermaid.js は、それを書かれたまま subgraph のノードに並べま�
 
 subgraph の中で行に単独で置かれたコメントとディレクティブは、
 その文と同じ段に置き、`end` の前にあるディレクティブは、その行に残します。
+同じ段に置く理由は、
+[コメント](#コメント) と [ディレクティブ](#ディレクティブ) に書いてあります。
 
 [fixture: subgraphs/directive-and-comment-lines]
 
@@ -1709,11 +1833,17 @@ erDiagram
 
 方向の行は、`direction` とその値と、前後の mermaid.js が読まないテキストです。
 テキストは書かれたまま残します。
-木がそのテキストを丸ごと持つからです。
-詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+その形は [印字する形の決め方](./printed-form.ja.md) のどの規則も与えないので、
+今ある形は、決まるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
 を参照してください。
 テキストと `direction` の間（離して書かれていれば）と、
-`direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
+`direction` と値の間には空白 1 つを置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`direction` とその値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
+値は書かれた大文字小文字を保ちます。
 `lr` は `lr` のままです。
 対象にする版の一部はその行をエンティティとして読み、
 `direction tb` と `direction TB` を別に描くためです。
@@ -1729,12 +1859,16 @@ erDiagram
 [fixture: direction/case-kept] [fixture: direction/case-bt-rl-kept]
 
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
+[requirement](./requirement.ja.md#方向)、[class](./class.ja.md#複数行の文)、
+[state](./state.ja.md#複数行の文)も、
+次の行に書かれた `direction` の値を 1 行で印字します（規則 2）。
 
 [fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
 
 ディレクティブやコメント行がある方向の行は改行を残し、
 構造の続きの行を 1 段深く置きます。
+理由は[複数行の文](#複数行の文)に書いてあります。
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -1786,9 +1920,20 @@ erDiagram
 前の名前に接して後ろに空白を 1 つ置くコンマを使います。
 Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 最初のスタイルは空白 1 つの後に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+続く値の間に空白 1 つを与えます。
+Prettier が CSS の `margin: 1px    2px` を `margin: 1px 2px`
+と印字するのと同じです。
 `style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
 最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
 スタイル間は `,` とその後の空白 1 つで区切ります。
+スタイルのコロンはキーのコロンなので（スタイルの `fill: #f00`）、
+前に空白を置かず、後ろに空白を 1 つ置きます。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+を参照してください。
+コンマの前に空白を置かず、後ろに空白を 1 つ置くのは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白) の形です。
 `:` のあるスタイルでも、ないスタイルでも、語と語の間の空白かタブの連続は、
 空白 1 つで印字します。
 `stroke-dasharray:  5    5` は `stroke-dasharray: 5 5` に、
@@ -1827,6 +1972,8 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 
 キーワードや名前の後の空白が改行を取り込んで、
 複数行に書かれた `classDef` と `style` の文は、1 行に印字します。
+[state](./state.ja.md#複数行の文)も、
+複数行に書かれた `classDef` と `style` の文を 1 行で印字します（規則 2）。
 
 [fixture: styles-and-classes/over-lines-joined]
 
@@ -1861,6 +2008,7 @@ Db は同じで mermaid.js の読みも見えますが、作者が書いた空�
 [スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
 最後のスタイルとの間にディレクティブがある終端の単位は、
 その間の内容と一緒に残します。
+文はスタイルを書かれたまま残します。
 
 [fixture: styles-and-classes/ending-semicolon-rules]
 
@@ -1949,11 +2097,22 @@ erDiagram
 [fixture: accessibility-statements/block-trailing-ignored-semicolon]
 
 `accTitle` と `accDescr` の `:` は、キーワードに接し、後に空白 1 つを置きます。
+キーのコロンがそうだからです。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+を参照してください。
 テキストは両端の空白を除きます。
+Db は両端の空白を持たないからです。
+説明については [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)
+を参照してください。
 
 [fixture: accessibility-statements/title-and-description]
+[corpus fixture: er/db-acc-title-trailing-space]
+[corpus fixture: er/db-acc-title-spaces]
 
 後の行に書かれたテキストは、`:` の後に 1 行で印字します。
+[requirement](./requirement.ja.md#アクセシビリティの文)と
+[state](./state.ja.md#複数行の文)も、そう印字します（規則 2）。
 その前にコメント行があるときは、改行を残し、
 コメントとテキストを 1 段深く置きます。
 `accTitle` と `accDescr` のコロンはキーのコロンなので、
@@ -1976,8 +2135,14 @@ erDiagram
 LF 直後の ASCII 空白とタブだけを置き換えます。
 説明の設定関数がこの字下げを捨てるためです。
 改行とディレクティブの内部は保ちます。
+段と、
+字下げを置き換えても Db が変わらない理由は
+[説明ブロックの字下げ](./compatibility.ja.md#説明ブロックの字下げ)
+に書いてあります。
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
+固定した版の Db はそれを持ちます。
+`x`、空白 2 つ、改行、`y` は、`x`、改行、`y` と accDescr が違います。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
@@ -1993,6 +2158,9 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 [fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
 
 `}` は文と同じ段に置きます。
+Prettier がブロックの `}` をそう置き、
+[説明ブロックの字下げ](./compatibility.ja.md#説明ブロックの字下げ)
+もそうだからです。
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -2005,8 +2173,15 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 空のブロックは文の 1 つで、前の説明を Db に残します。
 内側は `{}` と印字し、`accDescr { }` は `accDescr {}` になります。
 空白の連続、改行、NBSP だけの内側も同じです。
+Prettier が `x = { }` を `x = {}`
+と印字するからです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 すでに空の内側は空のままです。
 キーワードと開始括弧の間には空白を 1 つ置きます。
+規則 1 は、
+ブロックを開く `{` の前に空白 1 つを置きます（`class A{}` は `class A {}`
+と印字します）。
+[gantt](./gantt.ja.md#空の説明ブロック)と
+[journey](./journey.ja.md#空の説明ブロック)も、そこに空白 1 つを印字します。
 空白で囲む本文がないので、Db が同じ形の選択は、
 [flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
 agentflow、usecase に合わせます。
@@ -2017,9 +2192,19 @@ agentflow、usecase に合わせます。
 普通の独立した注釈類はブロックの内側にそろえます。
 規則 1 は、ブロックの中の行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[xychart](./xychart.ja.md#空の説明ブロック) と
-[quadrant](./quadrant.ja.md#空の説明ブロック) も、
-ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
+[flowchart](./flowchart.ja.md#複数行の値)は、
+本文のないブロックのコメント行をそのまま残し、ブロックの内側に 1 段深く置いて、
+`}` を `accDescr` と同じ段に置きます。
+ディレクティブがあるブロックは別の場合です。
+[flowchart](./flowchart.ja.md#複数行の値)、
+[xychart](./xychart.ja.md#空の説明ブロック)、
+[quadrant](./quadrant.ja.md#空の説明ブロック)は、その内容と改行を残しますが、
+どの文書もこの形に理由を書いておらず、
+決まっていない形の一覧（D34）の問いなので、その印字は形を与えません。
+リリース済みの形は、決まるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
@@ -2183,7 +2368,7 @@ accTitle: direction BT
 テキストは書かれたまま残します。
 この図にほかのコメントはありません（diagrams/er.md、コメント）。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は行頭を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [state](./state.ja.md#コメント) と [flowchart](./flowchart.ja.md#コメント) も、
 コメント行を周りの文と同じ段に置きます。
@@ -2192,6 +2377,9 @@ accTitle: direction BT
 [fixture: comments/last-in-body] [fixture: comments/text-kept]
 
 ヘッダーより前のコメント行は 1 桁目に置きます。
+[gantt](./gantt.ja.md#コメント)、[requirement](./requirement.ja.md#コメント)、
+[block](./block.ja.md#コメント)、
+[journey](./journey.ja.md#コメント)も同じです（規則 2）。
 
 [fixture: comments/before-header]
 
@@ -2261,6 +2449,8 @@ erDiagram
 ### ディレクティブ
 
 行に単独で置かれたディレクティブは、周りの文と同じ段に置きます。
+flowchart、class 図、state 図、sequence 図も同じです（規則 2。
+[コメント](#コメント)のコメント行と同じです）。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
@@ -2525,7 +2715,10 @@ erDiagram
 ER 図の `style`、`classDef` 文のスタイルの色が対象です。
 色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
 色を短くすることはなく、色でないテキストは書かれたままにします。
-（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+ほかの何でもありえない所だけが色だからです。
+詳しくは [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)
+を参照してください。
+そこでは、小文字の例を数え、Prettier が同じに印字するテキストを挙げています。
 
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
@@ -2584,8 +2777,10 @@ erDiagram
 ### フロントマター YAML
 
 flowchart と同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整形し、`---` の行は、
-各行末の空白とタブも含めて、書かれたまま残します。
+`---` の行の間の YAML は Prettier の YAML 整形で整形するので、
+その中の印はどれも、Prettier がその横に印字する空白を持ちます。
+詳しくは [規則 1](./printed-form.ja.md#1-記号の横の空白) を参照してください。
+`---` の行は、各行末の空白とタブも含めて、書かれたまま残します。
 
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/config-formatted]
@@ -2602,7 +2797,9 @@ Prettier が読めない YAML、字下げされた `---` の行、
 [fixture: frontmatter-yaml/html-tag-kept]
 [fixture: frontmatter-yaml/less-than-before-other-formatted]
 
-フロントマターとヘッダーの間のコメント行は残します。
+フロントマターとヘッダーの間のコメント行は、
+ヘッダーより前のコメント行と同じく 1
+桁目に置いて残します（[コメント](#コメント)を参照）。
 
 [fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
 
@@ -2750,6 +2947,7 @@ erDiagram
 
 最後のスタイルとその単位の間にディレクティブがある場合は、
 その間の内容と `;` を書かれたまま残します。
+文はスタイルも書かれたまま残します。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept]
 
@@ -2928,7 +3126,8 @@ mermaid.js は style 自身の行にあるコメントを拒否し、
 
 文字に接するディレクティブは何も残しません。
 `style A fill:red`、U+2028、ディレクティブは、書かれたまま印字します。
-落とす文字の前の色は、すぐに小文字で印字します。
+落とす文字の前の色は、[色](#色)の規則により、すぐに小文字で印字します。
+色が印字するテキストの終わりに単独で立つためです。
 `fill:#F9F` と U+2028 は `fill: #f9f` と印字します。
 
 [test: ER a style that no semicolon ends is printed without the U+2028 or U+2029 that ends it, before a statement and at the end of the text]
@@ -3058,12 +3257,12 @@ U+202F、U+205F、U+3000、U+FEFF）と U+2028 は、色とともに書かれた
 色に空白の後で文字が続くときは、[色](#色)と同じく書かれたまま残します。
 `;` が色に接するとき（`#ABC;`、`#ABC;;`、`#ABC; ;`）と、
 垂直タブとフォームフィードのほかの幅のある空白、U+2028、
-U+2029 が色を `;` から離すときも、書かれたまま残しますが、
-[色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
-規則による修正を待っています。
+U+2029 が色を `;` から離すときも、書かれたまま残します。
 空白、タブ、垂直タブ、フォームフィードが色を `;` から離すときは、
 その行でコメント領域が色に続かなければ、[色](#色)と同じに印字します。
 続けば、色を書かれたまま残します。
+スタイルのテキストが色の後ろに残す U+2028 か U+2029 が、
+色をその文字が接する語にするからです（[属性の空白](#属性の空白)を参照）。
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/style-comment-continuation]

@@ -5,7 +5,12 @@ import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"
-import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
+import {
+  keptLinesOfBlock,
+  openingLine,
+  printBlock,
+  printDiagramBlock,
+} from "./blocks.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import { expectToken, findLayoutEnd } from "./layout.ts"
 import { indentationOf } from "./lines.ts"
@@ -36,12 +41,17 @@ export interface SectionedDiagram<Statement extends Node> {
    * holds after it, such as a direction.
    */
   readonly layoutHeader: (source: Source, keyword: Token) => AtomLayout
-  /** The layout of a statement, up to `end`. */
+  /**
+   * The layout of a statement, up to `end`. `stays` is the kept lines of the
+   * block as `printBlock` takes them (see `keptLinesOfBlock`): the lines that
+   * the block prints as written.
+   */
   readonly layoutStatement: (
     source: Source,
     statement: Statement,
     end: number,
     options: ParserOptions<MermaidAst>,
+    stays: KeptLines,
   ) => AtomLayout
   /**
    * Whether the comments that the diagram reads by the whitespace before them
@@ -99,6 +109,8 @@ export function printSectionedDiagram<Statement extends Node>(
   )
   const headerLayout = diagram.layoutHeader(source, keyword)
   const deeper = findStatementsAfterSection(statements, diagram.isSection)
+  const rules = statementBlockRules(diagram, source, options, deeper)
+  const stays = keptLinesOfBlock(source, rules)
   const block = printBlock(
     statements.map((statement) =>
       printStatement(
@@ -107,6 +119,7 @@ export function printSectionedDiagram<Statement extends Node>(
         options,
         statement,
         deeper.has(statement),
+        stays,
       ),
     ),
     source,
@@ -116,7 +129,7 @@ export function printSectionedDiagram<Statement extends Node>(
       end: source.text.length,
       isTopLevel: true,
     },
-    statementBlockRules(diagram, source, options, deeper),
+    rules,
   )
   const header = openingLine(
     printLine(source, options, headerLayout, 0),
@@ -151,11 +164,18 @@ function printStatement<Statement extends Node>(
   options: ParserOptions<MermaidAst>,
   statement: Statement,
   isDeeper: boolean,
+  stays: KeptLines,
 ): Doc {
   const printed = printLine(
     source,
     options,
-    diagram.layoutStatement(source, statement, statement.range[1], options),
+    diagram.layoutStatement(
+      source,
+      statement,
+      statement.range[1],
+      options,
+      stays,
+    ),
     isDeeper ? 2 : 1,
   )
   // The line breaks inside the statement stand at the level of the statement,
