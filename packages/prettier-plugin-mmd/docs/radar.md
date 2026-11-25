@@ -3543,16 +3543,12 @@ released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Ordinary description body and standalone comment lines align one level inside
 the statement: the Db removes indentation after LF. Rule 1 does not decide the
-indentation of description text, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: at the top level, [flowchart](./flowchart.md#multi-line-values),
-[class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
-align the lines of an `accDescr { ... }` body one step inside its statement.
-Keep line breaks and interior blank lines, and the whitespace at the end of each
-line of text except the last one; a line of whitespace only becomes an empty
-line. The whitespace at the end of the last line of text is dropped where the
-closer stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Align a separate opener or closer with the statement.
+indentation of description text. Keep line breaks and interior blank lines, and
+the whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. Align a separate
+opener or closer with the statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
 level where the opening `{` stands on the statement's line, as Prettier prints
 the closing line at the level of the line that opens a block. Directives and

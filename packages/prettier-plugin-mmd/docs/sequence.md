@@ -23,7 +23,9 @@ The statements after the header stand one level deeper than the header.
 of a block (`loop`, `alt`, `opt`, `par`, `par_over`, `critical`, `break`,
 `rect`) and the participants of a `box` one level deeper than the line that
 opens it and `end` at the level of that line, as Prettier prints the lines
-inside a block. `else`, `and`, and `option` stand at the level of that line.
+inside a block. `else`, `and`, and `option` close one body of a block and open
+the next, and rule 1 puts them at the level of that line too, as Prettier prints
+`} else {` at the level of `if`.
 
 [fixture: indentation/blocks] [fixture: indentation/sections] [fixture:
 indentation/other-blocks-kept]

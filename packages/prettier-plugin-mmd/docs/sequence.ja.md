@@ -25,7 +25,9 @@ fixture の置き方と確かめ方は、
 Prettier が ブロックの中の行をそう印字するためです。
 ブロックは、`loop`、`alt`、`opt`、`par`、`par_over`、`critical`、`break`、
 `rect` です。
-`else`、`and`、`option` は、その行と同じ段に置きます。
+`else`、`and`、`option` は、ブロックの 1 つの本体を閉じて次の本体を開くので、
+規則 1 により、その行と同じ段に置きます。
+Prettier が `} else {` を `if` と同じ段に印字する形です。
 
 [fixture: indentation/blocks] [fixture: indentation/sections]
 [fixture: indentation/other-blocks-kept]

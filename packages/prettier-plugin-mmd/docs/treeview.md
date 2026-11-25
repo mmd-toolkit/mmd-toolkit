@@ -2358,24 +2358,20 @@ statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
 depth when the `{` stands on the `accDescr` line: it puts the closing line at
 the level of the opening line, as Prettier prints the closing line of a block.
 The lines of the description's body text are outside the "Lines inside a block"
-row of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: in indentation mode, [flowchart](./flowchart.md#multi-line-values),
-[class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
-align the lines of an `accDescr { ... }` body one step inside its statement.
-Mermaid discards indentation after LF from the description. The body uses the
-configured indentation, including tabs and the positive minimum step at width
-zero. In box mode remove ordinary keyword/opener prefixes and place the common
-statement at column one, while keeping the body's authored columns: indenting a
-plain physical line can make box syntax reject it. Value-owned box geometry
-still keeps its complete brace span. The first effective `}` remains the closer.
-Unsafe removal follows Branch prefixes, including common-value tabs. A sole mode
-selector in the opener gap keeps just that gap, as described in Decorations. The
-whitespace before the `}` is no text. The `}` stays aligned with the statement
-in every pass, also after a comment line. A separate `}` aligns with its
-statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
-depth when the `{` stands on the `accDescr` line: it puts the closing line at
-the level of the opening line, as Prettier prints the closing line of a block.
+row of rule 1. Mermaid discards indentation after LF from the description. The
+body uses the configured indentation, including tabs and the positive minimum
+step at width zero. In box mode remove ordinary keyword/opener prefixes and
+place the common statement at column one, while keeping the body's authored
+columns: indenting a plain physical line can make box syntax reject it.
+Value-owned box geometry still keeps its complete brace span. The first
+effective `}` remains the closer. Unsafe removal follows Branch prefixes,
+including common-value tabs. A sole mode selector in the opener gap keeps just
+that gap, as described in Decorations. The whitespace before the `}` is no text.
+The `}` stays aligned with the statement in every pass, also after a comment
+line. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: treeview/description-blocks/block-comment-line-after-the-text]
 

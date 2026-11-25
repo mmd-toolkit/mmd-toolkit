@@ -782,8 +782,9 @@ uses one space: `accDescr{  }` becomes `accDescr {}`.
 Unicode and tab interiors]
 
 A block with a directive or comment line keeps its contents and line breaks,
-with standalone trivia one level inside and its closer at statement level. Rule
-1 names no mark for a line inside a block, so
+with standalone trivia one level inside and its closer at statement level. The
+lines between the `{` and the `}` of a description block are outside the "Lines
+inside a block" row of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [block](./block.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line

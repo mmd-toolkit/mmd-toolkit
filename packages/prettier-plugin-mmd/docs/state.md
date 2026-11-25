@@ -1677,7 +1677,8 @@ and usecase. A prior description stays in the Db.
 revisions: state empty-description-nbsp]
 
 Blocks with comments or directives keep their contents and line breaks, and
-unclosed blocks stay open. Rule 1 names no mark for a line inside a block, so
+unclosed blocks stay open. The lines between the `{` and the `}` of a
+description block are outside the "Lines inside a block" row of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line

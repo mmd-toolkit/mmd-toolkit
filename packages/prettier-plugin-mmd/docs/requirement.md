@@ -1248,16 +1248,12 @@ Later text lines of an `accDescr { ... }` block stand one level inside its
 statement, replacing only ASCII spaces and tabs immediately after LF. The
 description setter drops that indentation; line breaks and directive interiors
 stay written. The lines of the description's body text are outside the "Lines
-inside a block" row of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#multi-line-values),
-[class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
-align the lines of an `accDescr { ... }` body one step inside its statement.
-Keep line breaks and interior blank lines, and the whitespace at the end of each
-line of text except the last one; a line of whitespace only becomes an empty
-line. The whitespace at the end of the last line of text is dropped where the
-closer stands on a line of its own, and is printed as one space where the closer
-follows it on that line. A separate `}` aligns with its statement.
+inside a block" row of rule 1. Keep line breaks and interior blank lines, and
+the whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. A separate `}`
+aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
 the `{` stands on the `accDescr` line: it puts the closing line at the level of
 the opening line, as Prettier prints the closing line of a block.
