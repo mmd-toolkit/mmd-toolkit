@@ -1,5 +1,6 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { appendItems, findNodes, minOf, maxOf } from "./collections.ts"
+import { classifySequenceStatement } from "./sequence-statements.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
@@ -423,8 +424,8 @@ function staysIgnoredAlone(
   const lineStart = lineStartOf(source, semicolon)
   // The item that the printer puts on a line of its own with the comment: the
   // last statement or divider (a section of a block: `else`, `and`, `option`)
-  // that starts on the line before the comment, or the `end` that closes a
-  // block there.
+  // that starts on the line before the comment, or the closing of a block
+  // there.
   let holderStart = -1
   for (const node of nodesOf(source)) {
     if (
@@ -434,9 +435,9 @@ function staysIgnoredAlone(
     )
       holderStart = Math.max(holderStart, node.range[0])
   }
-  for (const token of findTokensBetween(source, lineStart, commentStart)) {
-    if (token.type === "Keyword" && token.value === "end")
-      holderStart = Math.max(holderStart, token.range[0])
+  for (const closing of findBlockClosings(source)) {
+    if (lineStart <= closing.range[0] && closing.range[1] <= commentStart)
+      holderStart = Math.max(holderStart, closing.range[0])
   }
   if (holderStart < 0) return true
   return ignoredSemicolonsIn(
@@ -1824,34 +1825,31 @@ function findMovedClosingStarts(source: Source): readonly number[] {
   return starts
 }
 
-/** The block statements of a sequence diagram, which `end` closes (ast/sequence.md). */
-const sequenceBlockTypes: ReadonlySet<string> = new Set([
-  "SequenceLoopStatement",
-  "SequenceOptStatement",
-  "SequenceBreakStatement",
-  "SequenceRectStatement",
-  "SequenceBoxStatement",
-  "SequenceAltStatement",
-  "SequenceParStatement",
-  "SequenceParOverStatement",
-  "SequenceCriticalStatement",
-])
+/** The closings of the blocks of each source, found once. */
+const blockClosingsBySource = new WeakMap<Source, readonly Token[]>()
+
+/** Whether a node is a block statement of a sequence diagram, which `end` closes. */
+function isSequenceBlock(node: Node): boolean {
+  const kind = classifySequenceStatement(node)?.kind
+  return kind === "body" || kind === "sections"
+}
 
 /**
  * The closings of the blocks of a sequence diagram, none for another diagram:
  * the last token of each block statement. A closing is judged by the node that
- * it ends, as `closesEnclosingBlock` does for the diagram types that print
- * their blocks with `printBlock`, and not by its spelling.
+ * it ends and not by its spelling, here and wherever a closing is looked for.
  */
 function findBlockClosings(source: Source): readonly Token[] {
-  if (source.root.body.type !== "SequenceDiagram") return []
+  const cached = blockClosingsBySource.get(source)
+  if (cached !== undefined) return cached
   const closings: Token[] = []
-  for (const node of findNodes(source.root.body, (candidate) =>
-    sequenceBlockTypes.has(candidate.type),
-  )) {
-    const closing = findTokenEndingBefore(source, node.range[1])
-    if (closing !== undefined) closings.push(closing)
+  if (source.root.body.type === "SequenceDiagram") {
+    for (const node of findNodes(source.root.body, isSequenceBlock)) {
+      const closing = findTokenEndingBefore(source, node.range[1])
+      if (closing !== undefined) closings.push(closing)
+    }
   }
+  blockClosingsBySource.set(source, closings)
   return closings
 }
 

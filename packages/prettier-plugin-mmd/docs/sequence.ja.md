@@ -1430,7 +1430,8 @@ mermaid.js の行の規則が読むかもしれない範囲に空白を含むと
 `;` の後ろがディレクティブのとき、`style` の `:` の後ろが空白かタブのとき、
 `style` の代わりに `classDef` のとき、
 メッセージの後の `;` の前に空白があるとき、`end` の前に文が 2 つあるとき、
-ほかのブロック（`alt`）のときも同じです。
+ほかのブロック（`opt`、`break`、`rect`、`alt`、`par`、`par_over`、`critical`、
+`box`）のどれのときも同じです。
 書かれたとおりに空白があるメッセージも、同じに印字します。
 
 [fixture: statements-one-per-line/end-comment-moves-text-before-as-usual]
@@ -1445,6 +1446,13 @@ mermaid.js の行の規則が読むかもしれない範囲に空白を含むと
 [fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-classdef-space-after-colon]
 [fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-space-before-semicolon]
 [fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-opt]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-break]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-rect]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-par]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-par-over]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-critical]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-box]
 [fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-two-statements]
 [fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-already-spaced]
 [fixture: statements-one-per-line/end-comment-in-style-rule-stretch-with-ignored-semicolon-in-comment]

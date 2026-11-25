@@ -1399,7 +1399,8 @@ else in the first formatting:
 space, no whitespace, or a tab between the `;` and the comment, with a directive
 after the `;`, with a space or a tab after the `:` of `style`, with `classDef`
 in place of `style`, with a space before the `;` after the message, with two
-statements before the `end`, and in another block (`alt`). A message that is
+statements before the `end`, and in each of the other blocks (`opt`, `break`,
+`rect`, `alt`, `par`, `par_over`, `critical`, and `box`). A message that is
 spaced as written is printed the same.
 
 [fixture: statements-one-per-line/end-comment-moves-text-before-as-usual]
@@ -1424,6 +1425,20 @@ statements-one-per-line/end-comment-moves-text-before-as-usual-classdef-space-af
 statements-one-per-line/end-comment-moves-text-before-as-usual-space-before-semicolon]
 [fixture:
 statements-one-per-line/end-comment-moves-text-before-as-usual-other-block]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-opt]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-break]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-rect]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-par]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-par-over]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-critical]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-box]
 [fixture:
 statements-one-per-line/end-comment-moves-text-before-as-usual-two-statements]
 [fixture:
