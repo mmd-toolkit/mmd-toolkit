@@ -77,11 +77,9 @@ agentflow-beta
 
 ### Indentation
 
-Reuse [Indentation](./flowchart.md#indentation) for the same reason: indentation
-is set from the AST, while authored columns do not determine membership. Use one
-configured step below the header and each flow/global, align end with its
-opener, and give connectors no body. A [flowchart](./flowchart.md#indentation)
-subgraph puts `end` at the level of `subgraph`, and a composite
+Indentation is set from the AST, while authored columns do not determine
+membership. Use one configured step below the header and each flow/global, align
+end with its opener, and give connectors no body. A composite
 [state](./state.md#indentation) puts `}` at the level of its opening line;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the same alignment to the closing `end` of a flow or global. `useTabs` uses one
@@ -1236,11 +1234,9 @@ keyword, direction value, ignored text before and after it, and authored line
 breaks. Mermaid chooses a direction by its ordered direction alternatives and
 the last matching occurrence within that alternative; formatting does not
 replace that choice with the last direction-looking word. Normalize only
-ordinary gaps. The ordinary gap between `direction` and its value is one space
-in [flowchart](./flowchart.md#direction) and
-[requirement](./requirement.md#direction) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that gap the same form.
+ordinary gaps. `direction` is a keyword before the value it takes.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space
+between them.
 
 [fixture: direction/direction-text] [corpus fixture:
 agentflow/lex-direction-value-priority] [fixture:

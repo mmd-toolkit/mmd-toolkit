@@ -84,15 +84,12 @@ agentflow-beta
 
 ### Indentation
 
-[字下げ](./flowchart.ja.md#字下げ)と同じ規則と理由です。
 字下げは木から決め、元の桁位置では所属を決めません。
-見出しとflow/globalの本文を1段深くし、endを開始語に揃えます。
-[flowchart](./flowchart.ja.md#字下げ) の subgraph は、
-`end` を `subgraph` と同じ段に置き、[state](./state.ja.md#字下げ) の複合状態は、
-`}` を開始行と同じ段に置きます。
+見出しと flow/global の本文を 1 段深くし、`end` を開始語にそろえます。
+[state](./state.ja.md#字下げ) の複合状態は、`}` を開始行と同じ段に置きます。
 flow と global を閉じる `end` の字下げも、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が同じ形を与えます。
-connectorには本文がありません。
+connector には本文がありません。
 `useTabs`では1段をタブ1つにします。
 agentflowは共有の意味を持つ字下げ幅を使い、
 `tabWidth: 0`でも本文の1段を最低1つの空白にします。
@@ -1289,10 +1286,8 @@ frontmatterには保護付きYAML整形を使え、CR/LF変換も共通のまま
 語、方向の値、前後の無視される文字と、書かれた改行を保ちます。
 Mermaidは順に試す方向の選択肢と、その選択肢内の最後の出現で方向を決めます。
 最後の方向らしい語へ選び直さず、通常の隙間だけを整えます。
-`direction` と値の間の通常の隙間は、
-[flowchart](./flowchart.ja.md#方向) と [requirement](./requirement.ja.md#方向)
-の図で、空白を 1 つにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+`direction` は値の前のキーワードです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、その間に空白 1 つを置きます。
 
 [fixture: direction/direction-text]
 [corpus fixture: agentflow/lex-direction-value-priority]
