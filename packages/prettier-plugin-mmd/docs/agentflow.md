@@ -490,8 +490,7 @@ no whitespace before it and one space after it:
 [fixture: single-space-gaps/style-colon-spaced]
 
 A run of spaces and tabs between the words of a style is printed as one space,
-and whether whitespace stands between two words stays as written, as in
-[flowchart](./flowchart.md#whitespace-between-tokens): a run inside a
+and whether whitespace stands between two words stays as written: a run inside a
 single-quoted string, inside a comment that is not closed, and the escape after
 a backslash stay: the hexadecimal digits and the one space or tab that follows
 them, or else the next character.
