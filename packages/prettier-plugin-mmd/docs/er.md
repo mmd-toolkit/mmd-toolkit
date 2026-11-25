@@ -2013,7 +2013,10 @@ diagram]
 Line-ending semicolons follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 An ending unit with a directive between it and the last style is kept with that
-gap as written.
+gap as written, and the statement keeps its styles as written, so the colon of a
+style stays without the space that rule 1 gives the colon of a key
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)): that form is
+printed against rule 1 and waits to be fixed by it.
 
 [fixture: styles-and-classes/ending-semicolon-rules]
 
@@ -2998,7 +3001,8 @@ whitespace before it.
 [fixture: semicolons-at-the-end-of-a-style-statement/unit-terminators]
 
 A directive between the last style and that unit keeps the gap and `;` as
-written.
+written, and the statement keeps its styles as written, against rule 1 as under
+[Styles and classes](#styles-and-classes), and waits to be fixed by it.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept]
 
