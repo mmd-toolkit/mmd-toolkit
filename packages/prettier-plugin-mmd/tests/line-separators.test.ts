@@ -1477,6 +1477,86 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart TD\n  subgraph S; A[x;] --> B;\n  end\n",
   ],
   [
+    "U+2028 between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end \u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2028 after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ;\u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2028 after a space after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ; \u2028end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2028 after two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end end\u2028\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2029 between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end \u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2029 after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ;\u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2029 after a space after the `;` between two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end ; \u2029end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n    ;\n  end\n",
+  ],
+  [
+    "U+2029 after two `end` of nested subgraphs on a kept line, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end end\u2029\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B;\n    end\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028C\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B; end C\n",
+  ],
+  [
+    "U+2028 after the `end` of a subgraph on a kept line, then a line break and a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2028\nC\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a line break, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then the end of the text, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029C\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B; end C\n",
+  ],
+  [
+    "U+2029 after the `end` of a subgraph on a kept line, then a line break and a statement, in a flowchart",
+    "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029\nC\n",
+    "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n  C\n",
+  ],
+  [
     "U+2028 after `end ;;` of a subgraph with an ignored `;`, in a flowchart",
     "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2028\n",
     "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2028\n",
@@ -1485,6 +1565,16 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "U+2029 after `end ;;` of a subgraph with an ignored `;`, in a flowchart",
     "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2029\n",
     "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2029\n",
+  ],
+  [
+    "U+2028 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end;\u2028 C; end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B; end; C;\n  end\n",
+  ],
+  [
+    "U+2029 after the `;` after the inner `end` of nested subgraphs, before a statement and the last `end`, in a flowchart",
+    "flowchart TD\nsubgraph F; subgraph G; A[x;] --> B; end;\u2029 C; end\n",
+    "flowchart TD\n  subgraph F; subgraph G; A[x;] --> B; end; C;\n  end\n",
   ],
 ]
 

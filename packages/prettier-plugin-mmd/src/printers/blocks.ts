@@ -1,6 +1,6 @@
 import type { Doc, ParserOptions } from "prettier"
 import { builders, utils } from "prettier/doc"
-import type { Range } from "@mmd-toolkit/ast"
+import type { Range, Token } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
 import { printAccessibilityLine } from "./accessibility-form.ts"
@@ -26,7 +26,7 @@ import {
   ignoredSemicolonNeedsItsLine,
   completeKeptLines,
 } from "./kept-lines.ts"
-import { toAsciiLowerCase } from "./layout.ts"
+import { toAsciiLowerCase, walk } from "./layout.ts"
 import type { Line } from "./lines.ts"
 import {
   breakAfter,
@@ -264,6 +264,13 @@ export interface BlockRules<Statement extends Positioned> {
    * top level, such as a `;` of its own in flowchart.
    */
   readonly isDroppedAtTopLevel: (statement: Statement) => boolean
+  /**
+   * Whether U+2028 and U+2029 at the end of a kept stretch are whitespace, as
+   * after the `end` of a subgraph, and are dropped with the whitespace at the
+   * end of a line. Otherwise a stretch whose last whitespace holds one keeps
+   * it as written (see `keepsTrailingLineSeparators`).
+   */
+  readonly dropsTrailingLineSeparators?: boolean
   /**
    * Whether a line of only whitespace after a line that ends with a comment
    * is kept, as a line of one space where it stands among the comment lines
@@ -803,16 +810,17 @@ export function printBlock<Statement extends Positioned>(
   }
 
   /**
-   * Whether the statement at `index`, which is dropped at the top level, stands
-   * after a block on the line of its closing, and the closing goes to a line of
-   * its own (see `startOfSplitClosing`) that holds no `;` of its own. The line
-   * that the source has does not stay together then: the statement is on the
-   * line of the closing, where a `;` of its own is dropped as it is on any line
-   * of its own, so a second formatting drops no more than the first.
+   * Whether the statement at `index`, a `;` of its own (see
+   * `BlockRules.isDroppedAtTopLevel`), stands after a block on the line of its
+   * closing, and the closing goes to a line of its own (see
+   * `startOfSplitClosing`) that holds no `;` of its own. The line that the
+   * source has does not stay together then: the statement is on the line of the
+   * closing, where it is printed as it is on any line of its own, dropped at the
+   * top level and on a line of its own in a block, so a second formatting
+   * changes nothing.
    */
   function followsSplitClosing(index: number): boolean {
-    if (!bounds.isTopLevel || !rules.isDroppedAtTopLevel(statements[index]))
-      return false
+    if (!rules.isDroppedAtTopLevel(statements[index])) return false
     let blockIndex = index - 1
     while (blockIndex >= 0 && rules.isDroppedAtTopLevel(statements[blockIndex]))
       blockIndex--
@@ -1052,7 +1060,8 @@ export function printBlock<Statement extends Positioned>(
         : null
     const trailing =
       textTrailing ??
-      (keepsTrailingLineSeparators(source, position, stretch.end)
+      (rules.dropsTrailingLineSeparators !== true &&
+      keepsTrailingLineSeparators(source, position, stretch.end)
         ? printAsWritten(source, position, stretch.end)
         : printInlineGap(
             source,
@@ -1140,12 +1149,15 @@ export function printBlock<Statement extends Positioned>(
     // too: the part before it holds no `;` of its own, so a second formatting
     // would not keep its statements and its `;` together (see
     // `holdsOwnSemicolonIn`).
-    // The `}` that closes a block around this one is on a line of its own
-    // after this block, unless something follows it, so it does not keep the
-    // closing of this block on the line: the second formatting would move it.
+    // The closing of a block around this one is on a line of its own after
+    // this block, unless something follows it, so it does not keep the closing
+    // of this block on the line: the second formatting would move it (see
+    // `closesEnclosingBlock`).
     const followed =
       findTokensBetween(source, closing.range[1], lineEnd).some(
-        (token) => isStructural(source, token) && token.value !== "}",
+        (token) =>
+          isStructural(source, token) &&
+          !closesEnclosingBlock(source, closing, token),
       ) ||
       [...source.ignoredSemicolons].some(
         (semicolon) =>
@@ -1642,6 +1654,37 @@ function holdsVerbatimLine(
     line = lineEndOf(source, line) + 1
   }
   return false
+}
+
+/** The start of the earliest node that ends at each offset, of each source. */
+const earliestNodeStartsBySource = new WeakMap<
+  Source,
+  ReadonlyMap<number, number>
+>()
+
+/**
+ * Whether the token closes a block around the block that `closing` closes: a
+ * node that starts before `closing` ends with the token. The token is judged
+ * by the node that it ends and not by its spelling, since a node or a state
+ * named `end` or `End` stands where a closing stands and is no closing.
+ */
+function closesEnclosingBlock(
+  source: Source,
+  closing: Token,
+  token: Token,
+): boolean {
+  let starts = earliestNodeStartsBySource.get(source)
+  if (starts === undefined) {
+    const found = new Map<number, number>()
+    walk(source.root.body, (node) => {
+      const start = found.get(node.range[1])
+      if (start === undefined || node.range[0] < start)
+        found.set(node.range[1], node.range[0])
+    })
+    starts = found
+    earliestNodeStartsBySource.set(source, starts)
+  }
+  return (starts.get(token.range[1]) ?? Infinity) < closing.range[0]
 }
 
 /** Whether the line that starts at `line` holds nothing but a `}` or an `end`. */
