@@ -28005,6 +28005,33 @@ describe("a comment after the directives that end the title or the value of an a
   )
 })
 
+/** A separator before a comment or directive keeps a quoted box line as written (docs/treeview.md, Carried indentation). */
+const treeviewBoxLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "treeview: a quote in box mode, U+2028, and a comment before the next line of the box",
+    'treeView-beta\n"a"\u2028%% c\n─\n"b"\n',
+    'treeView-beta\n"a"\u2028%% c\n─\n"b"\n',
+  ],
+  [
+    "treeview: a quote in box mode, U+2029, and a directive before the next line of the box",
+    'treeView-beta\n"a"\u2029%%{x}%%\n─\n"b"\n',
+    'treeView-beta\n"a"\u2029%%{x}%%\n─\n"b"\n',
+  ],
+]
+
+describe("a treeView box line with a separator before a comment or directive", () => {
+  it.each(treeviewBoxLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
 /** Venn separators are characters inside values and whole diagram comments. */
 const vennExamples: readonly (readonly [string, string, string])[] = [
   [

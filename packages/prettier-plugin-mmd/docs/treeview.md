@@ -917,6 +917,81 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 [fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
 
+In box mode a run that stands before a comment, or before a directive on a line
+without a branch, disappears when the next node is given a branch, and the
+comment or the directive touches what stands before it: the branch is a second
+run, which mermaid.js rejects after the first. `"a" %% c`, `─`, and `"b"` print
+`"a"%% c`, `│`, and `└── "b"`, and `├── "a" %% c`, `│`, and `"b"` print
+`├── "a"%% c`, `│`, and `└── "b"`. The same holds after a class or an icon, with
+a tab or two spaces before the comment, with a directive and a comment together,
+and where a blank line, one comment line or more, an indented comment line, or a
+directive line lies between. A comment after the `─` line leaves the line in its
+place and gives the branch to it: the `└──` stands before the `─` and not before
+`"b"`: `"a" %% c`, `─ %% n`, and `"b"` print `"a"%% c`, `└── ─ %% n`, and `"b"`.
+The space before a directive on a line with a branch stays where no comment
+follows it on the line: `├── "a" %%{x}%%`, `─`, and `"b"` print
+`├── "a" %%{x}%%`, `│`, and `└── "b"`. Where a comment follows, the spaces
+before the directives and between them go too, since mermaid.js removes the
+directives and those spaces join the run after the quote, and the form that
+keeps them is rejected: `├── "a" %%{x}%% %% c`, `─`, and `"b"` print
+`├── "a"%%{x}%%%% c`, `│`, and `└── "b"`, and two directives print
+`├── "a"%%{x}%%%%{y}%%%% c`. A node that ends the text, a node named `End`, and
+a node named `}` are given the branch in the same way. A line that holds a `;`
+that the line rule ignores, as in `"a" ## style:#x; %% c`, stays as written with
+the `─` line after it, and so does a line where a directive and a comment end
+the text with no node after them: `├── "a" %%{x}%%` and `%% c` print
+`└── "a" %%{x}%%` and `%% c`.
+
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-and-decoration]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-on-branch-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-without-decoration]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-and-decoration]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-and-comment]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-after-class]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-tab]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-blank-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-directive-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-nested-branches]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-on-branch-line-kept]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-icon]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-two-spaces]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-indented-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-decoration-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-comment-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directives-comment-on-branch-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-two-comment-lines]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-end-of-text]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-node-named-end]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-node-named-brace]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-ignored-semicolon-comment-kept]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-two-ignored-semicolons-comment-kept]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-comment-line-at-end-kept]
+[test: treeview: a quote in box mode, U+2028, and a comment before the next line
+of the box] [test: treeview: a quote in box mode, U+2029, and a directive before
+the next line of the box]
+
 ### Tabs
 
 Ordinary indentation still counts each space or tab once and uses its configured
