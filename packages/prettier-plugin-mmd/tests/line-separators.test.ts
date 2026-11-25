@@ -27673,6 +27673,11 @@ describe("a comment after the directives that end the title or the value of an a
 /** Venn separators are characters inside values and whole diagram comments. */
 const vennExamples: readonly (readonly [string, string, string])[] = [
   [
+    "a venn set with two spaces before a comment and an empty line after the comment",
+    "venn-beta\nset A  %% c\n\n  set B\n",
+    "venn-beta\n  set A %% c\n\n  set B\n",
+  ],
+  [
     "U+2028 inside the brackets of a venn label with a semicolon",
     "venn-beta\nset A[ a;b \u2028]\n",
     "venn-beta\n  set A[a;b \u2028]\n",
