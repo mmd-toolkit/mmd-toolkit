@@ -190,6 +190,9 @@ xychart
 空行は、Db に入らない書き手の選択で、
 1 つの空行がそれを最小の手間で示します（[空行](./flowchart.ja.md#空行)を参照）。
 Prettier がコードでそうするのと同じです。
+Prettier は、テキストやブロックの先頭と、テキストの最後に空行を置きません。
+ヘッダーの前と、ヘッダーと最初の文の間と、最後の文の後に空行を置かない形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: blank-lines/runs-become-one]
 [fixture: blank-lines/none-after-the-header]
@@ -225,7 +228,7 @@ xychart
 
 ヘッダーは、`xychart` と `xychart-beta` のどちらも、
 書かれた大文字小文字のまま印字します。
-mermaid.js 12.3.0 はどちらも同じ図種として読みますが、
+mermaid.js はどちらも同じ図種として読みますが、
 対象にする版に `xychart-beta` だけを検出するものがあるため、
 綴りは整形器ではなく書き手が決めます。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
@@ -260,6 +263,9 @@ mermaid.js 12.3.0 はどちらも同じ図種として読みますが、
 mermaid.js は向きを、あらゆる種類の空白の後でも、空白と改行の後でも読みます。
 改行は字句解析器にとって空白なので、向きはヘッダーの行に移し、
 誰にも見えない行末の空白を残しません（[複数行の文](#複数行の文)を参照）。
+ヘッダーと向きの間の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 向きは書かれた大文字小文字のまま印字します。
 小文字の `horizontal` だけが横向きにし、`Horizontal` は縦向きにするので、
 大文字小文字は Db に入っています。
@@ -350,7 +356,10 @@ title は `Twowords`）ので、空白の連なりは空白 1 つにします。
 [fixture: text-units/directive-between-words-on-one-side]
 [fixture: text-units/directive-inside-a-category-word]
 
-テキストの前後の空白は、Db に入らないので落とします。
+行末にあるテキストの後ろの空白とタブは落とします。
+Prettier が行末の空白とタブを除くので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が除きます。
+テキストのそれ以外の端の空白も、Db に入らないので落とします。
 
 [fixture: text-units/whitespace-at-the-ends-dropped]
 
@@ -391,27 +400,25 @@ xychart
 ### 角括弧とコンマ
 
 分類と値は、角括弧の間に置きます。
-`[` の前は、キーワードや title の後ろに空白 1 つを置きます。
-`x-axis[a]`、`line T[1]`、`bar"Costs"[1,2]` のように、
-接して書かれていても同じです。
+その空白は、Prettier がコードで印字するとおりに、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+キーワードや文が取る値を開く `[` の前は、キーワードや title の後ろでも、
+`x-axis[a]`、`line T[1]`、`bar"Costs"[1,2]` のように接して書かれていても、
+空白 1 つにします。
+キーワードの後ろでは、
+Prettier が `return  [800, 600]` を `return [800, 600];`
+と印字するのと同じです。
+title の後ろでは、続く値の間と同じで、
+Prettier が CSS の `margin: 1px    2px;` を `margin: 1px 2px;`
+と印字するのと同じです。
 `[` の後と `]` の前に空白は置きません。
 コンマの前に空白は置かず、後ろに空白 1 つを置きます（`[jan, feb, mar]`）。
-キーワードとその後ろの文字列も、
-同じに空白 1 つで離します（`title"T"` は `title "T"` と印字します）。
+Prettier が `[ 1,2 ]` を `[1, 2]` と印字するのと同じです。
+キーワードとその後ろの文字列は、
+空白 1 つで離します（`title"T"` は `title "T"` と印字します）。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 この空白はどれも Db に入らず、単位の読みも変えません。
 角括弧、コンマ、引用符は単語の文字ではないからです。
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
-キーワードとその値の間に空白 1 つを与えます。
-Prettier が `return  x` を `return x;` と印字するためです。
-文が取る値を開く `[` の前も同じです。
-Prettier は `return  [800, 600]` を `return [800, 600];` と印字します。
-続く値同士の間も、title の後ろの `[` の前も、規則 1 により空白 1 つです。
-Prettier が CSS の `margin: 1px    2px;` を `margin: 1px 2px;`
-と印字するためです。
-mermaid.js の文書には、
-コンマの後に空白がない例もあります（`[12,2,20,25,17,24]`）が、
-どのチャートでも形を 1 つにします。
-コンマの後の空白は、Prettier がコンマに印字する形です。
 
 [fixture: brackets-and-commas/spaces-inside-and-around-commas]
 [fixture: brackets-and-commas/bracket-touching-the-keyword]
@@ -501,12 +508,15 @@ xychart
 
 値とその後ろのラベルは、空白 1 つで離します（`20 "peak"`）。
 接して書かれていても（`10"peak"`）同じです。
-ラベルの後ろのコンマの前に、空白は置きません。
 mermaid.js は、ラベルが値に接していても離れていても同じに読みます。
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
-続く値である値とラベルの間に空白 1 つを与えます。
-Prettier が CSS の `margin: 1px    2px;` を `margin: 1px 2px;`
-と印字するためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+並んで続く値の間を空白 1 つにします。
+Prettier が CSS の `margin: 1px    2px;` を印字すると、
+`margin: 1px 2px;` になるためです。
+
+ラベルの後ろのコンマの前に、空白は置きません。
+Prettier はコンマの前に空白を置かず、値のラベルの後ろのコンマにも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
 
 [fixture: values-and-labels/label-touching-the-value]
 [fixture: values-and-labels/label-with-more-whitespace]
@@ -681,9 +691,12 @@ xychart
 
 `accTitle` と `accDescr` の `:` は、キーワードに接し、
 後ろに空白 1 つを置きます。
-ほかの図と同じです（[アクセシビリティの文](./journey.ja.md#アクセシビリティの文)
-を参照）。
+キーのコロンの形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます（Prettier は
+`x = {a : 1}` を `x = { a: 1 };` と印字します）。
 テキストの前後に空白は置きません。
+Prettier は行末の空白とタブを取り除き、
+規則 1 が `accTitle` と `accDescr` のテキストの末尾にも同じ除去を与えます。
 `accDescr` のテキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `accTitle` はブラウザがツールチップとして表示するので、
@@ -695,6 +708,10 @@ xychart
 改行は字句解析器にとって空白で、文のテキストは変わりません。
 テキストのない `accTitle:` と `accDescr:` が、テキストの最後にあるときは、
 キーワードとコロンだけを印字し、後ろに何も置きません。
+Prettier は行末の空白とタブを取り除きます。
+テキストの最後の空の `accTitle:` と `accDescr:` で、
+コロンの後ろに空白を置かない形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/colon-without-space-after]
@@ -809,6 +826,9 @@ xychart
 何も変えない空のブロックは、それ自身が 1 つの文です。
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
+Prettier は中身のない `{}` の内側に、空白を置きません。
+内側が空白だけの説明ブロックにも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
 すでに空の内側は空のままです。
 通常のキーワードと開き括弧の間には空白 1 つを置き、
 `accDescr{  }` は `accDescr {}` にします。
@@ -818,11 +838,6 @@ xychart
 
 指令かコメント行を持つブロックは、内容と改行を保ち、独立した注釈を 1 段内側、
 閉じ括弧を文の段に置きます。
-規則 1 は、ブロックの中の行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[block](./block.ja.md#空の説明ブロック) と
-[quadrant](./quadrant.ja.md#空の説明ブロック) も、
-ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 テキストの最後で閉じていないブロックは、
 `}` を足さずに `accDescr {` と印字します（詳しくは、

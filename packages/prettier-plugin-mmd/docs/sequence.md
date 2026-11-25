@@ -669,7 +669,7 @@ The whitespace immediately after the `(` and before the `)` of a `rect` stays
 too, since every version that counts draws another `fill` attribute for
 `rect rgb( 1,2,3)` and `rect rgb(1,2,3 )` (see the same table). In a `box` they
 stay for the same reasons, and so does the whitespace before a comma, which
-changes `boxes[0].fill` in the Db of 12.3.0 with the same drawing.
+changes `boxes[0].fill` in the Db with the same drawing.
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/rect-leading-and-comma-padding-kept] [fixture:
@@ -1601,9 +1601,9 @@ characters as escapes too (see
 
 - At the end of the text of a `box`, after the whitespace that may stand before
   them. A box whose text holds such a character has the fill `transparent` in
-  the Db of 12.3.0, and without it `box red` has the fill `red`; the fill of the
-  drawing differs in 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0. Rule 1 names
-  no mark for the end of a text of a `box`, so
+  the Db, and without it `box red` has the fill `red`; the fill of the drawing
+  differs in every version that counts. Rule 1 names no mark for the end of a
+  text of a `box`, so
   [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
   decides, as [journey](./journey.md#line-separators) at the end of a title, and
   [timeline](./timeline.md#line-separators) at the end of a title and of the
@@ -1645,8 +1645,8 @@ characters as escapes too (see
   - `accTitle` and a line of `accDescr`: the `#` and what follows are part of
     the value.
   - A `title`, and a `box` that has a text: the text holds the character. The
-    title of the Db of 12.3.0 ends with it, and the fill of a box whose text
-    holds it is `transparent` in that Db.
+    title of the Db ends with it, and the fill of a box whose text holds it is
+    `transparent` in that Db.
 
   [test: a `#` comment after U+2028, which joins no lines] [test: a `%%` comment
   line after U+2028, which joins the next line] [test: a `%%` comment line after

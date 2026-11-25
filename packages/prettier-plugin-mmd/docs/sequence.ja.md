@@ -690,8 +690,7 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 `rect rgb( 1,2,3)` と `rect rgb(1,2,3 )` に別の `fill`
 属性を描くためです（同じ表を参照）。
 `box` でも、同じ理由で残します。
-コンマの前の空白は、12.3.0 が Db の `boxes[0].fill` を変え、
-描画は変わらないためです。
+コンマの前の空白は、Db の `boxes[0].fill` を変え、描画は変わらないためです。
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/rect-leading-and-comma-padding-kept]
@@ -1606,9 +1605,9 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
 を参照）。
 
 - `box` のテキストの末尾で、その前に空白があっても、そこまで。
-  テキストにこの文字がある box は、12.3.0 の Db で塗りが `transparent` になり、
+  テキストにこの文字がある box は、Db で塗りが `transparent` になり、
   なければ `box red` の塗りは `red` です。
-  描画の塗りは、10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 のすべてで違います。
+  描画の塗りは、対象にするどの版でも違います。
   規則 1 は、テキストの末尾の印を挙げていないので、
   [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
   [journey](./journey.ja.md#行区切り文字) はタイトルの末尾で、
@@ -1655,7 +1654,7 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
     `#` とそれ以降は値の一部です。
   - `title` と、テキストのある `box`。
     テキストがこの文字を含みます。
-    12.3.0 の Db の title はこの文字で終わり、
+    Db の title はこの文字で終わり、
     この文字を含む box の fill もその Db で `transparent` です。
 
   [test: a `#` comment after U+2028, which joins no lines]

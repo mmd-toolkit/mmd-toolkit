@@ -681,7 +681,9 @@ semicolons/style-line-spaces-between-colon-and-hash-become-one]
 
 A `;` that the rule ignores at the end of the line is dropped, and the line that
 is printed has no `;` for the rule to read, so its whitespace is formatted as
-anywhere else.
+anywhere else. A link still stands between two things after the ignored final
+`;` is dropped, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives one space on each side of it.
 
 [fixture: semicolons/style-line-dropped-semicolon-formats-the-gap]
 
@@ -808,7 +810,10 @@ whitespace of a gap that lies inside the stretch that the rule reads, of a gap
 that holds a U+2028 or U+2029, and of the gap right after the keyword of the
 diagram stays as written, because diagram detection reads the text before the
 `;` is removed (`cynefin-beta ;complex` is detected, `cynefin-beta; complex` is
-not). A `;` at the end of a line stands against the token before it.
+not). The stretch that the rule reads runs from the first `:` after `style` to
+the last `#` before the last `;` of the line, so the gaps around the arrow of
+`A[style]   -->   B[:#x;y]` stand outside it and are printed like any other gap.
+A `;` at the end of a line stands against the token before it.
 
 [fixture: semicolons/ignored-semicolon-before-edge-id-touching] [fixture:
 semicolons/ignored-semicolon-before-edge-id-spaced] [test: U+2028 after a `;`
@@ -919,7 +924,10 @@ that a line has one form whoever wrote it, and tokens that touch keep touching,
 except where a rule below says otherwise (Arrow spacing): mermaid.js reads some
 tokens only when they touch, as `A%%{init: {}}%%B-->C`, which is the id `AB`,
 and a rule that wrote a space between touching tokens would need an exception
-for every such place.
+for every such place. Where whitespace already separates `&` from both vertices,
+`&` stands between two things;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space on
+each side.
 
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
@@ -945,8 +953,13 @@ subgraph-header/swimlane-title-runs-kept] [fixture:
 subgraph-header/layout-swimlane-title-runs-kept]
 
 In a `style`, `classDef`, or `linkStyle` statement, each style has no whitespace
-before its first `:` and one space after it where the value is not empty. The
-`,` between styles has no whitespace before it and one space after it:
+before its first `:` and one space after it where the value is not empty. A
+style property gives a name its value, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) treats its first
+colon as the colon of a key: no whitespace before it and one space after it when
+the value is nonempty. The `,` between styles has no whitespace before it and
+one space after it, as Prettier prints the comma of `f(a,b)` as `f(a, b);`
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)):
 `style A fill :#f00,stroke:  #333` is printed
 `style A fill: #f00, stroke: #333`.
 
@@ -957,6 +970,9 @@ whitespace-between-tokens/style-comma-before-dropped]
 A `linkStyle` with link numbers keeps whether whitespace follows the `,` before
 a style that starts with `fill`, a run of whitespace becoming one space; a style
 that starts with `fill-opacity` counts, as mermaid.js reads only the start.
+Where a numbered `linkStyle` has whitespace between a comma and a style starting
+with `fill`, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+that gap one space, the ordinary width after a comma.
 
 [fixture: whitespace-between-tokens/link-style-fill-after-comma-kept] [fixture:
 whitespace-between-tokens/link-style-fill-opacity-after-comma-kept]
@@ -993,9 +1009,14 @@ style with whitespace before it does not start so, with the gap or without it:
 `style A fill:#f00, color :red` is printed `style A fill: #f00, color: red`. A
 style that follows a `,` directly and has a gap before its `:` is printed so
 too, with whitespace before it: `style A fill:#f00,color   :red` is printed
-`style A fill: #f00, color: red`. `style A fill:#f00,color:white` is printed
-`style A fill: #f00,color: white`, and `style A fill:#f00 ,   color:white` is
-printed `style A fill: #f00, color: white` (see
+`style A fill: #f00, color: red`. In a `style` statement, mermaid.js reads no
+label style from a `color` or `text-align` style with whitespace before it, with
+or without the name-to-colon gap;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore gives its
+key colon no preceding whitespace and one following space.
+`style A fill:#f00,color:white` is printed `style A fill: #f00,color: white`,
+and `style A fill:#f00 ,   color:white` is printed
+`style A fill: #f00, color: white` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -1039,8 +1060,11 @@ whitespace-between-tokens/link-style-fill-colon-gap-swimlane-not-first-spaced]
 
 The styles of a statement that a later one replaces are printed in the one form
 too: a `linkStyle` that a later `linkStyle` replaces for every link it numbers,
-and a `linkStyle default` that a later `linkStyle default` replaces. The styles
-of a `linkStyle` that is replaced for some of its links only stay. With
+and a `linkStyle default` that a later `linkStyle default` replaces. Fully
+replaced `linkStyle` statements contribute no styles to the label. Their key
+colons therefore have no preceding whitespace and one space before a nonempty
+value under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark). The
+styles of a `linkStyle` that is replaced for some of its links only stay. With
 `linkStyle 0,1 fill :#f00` followed by `linkStyle 0 stroke:#000`, the space
 before `:` stays, since some of the versions of mermaid.js that count draw
 different styles for `linkStyle 0,1 fill:#f00` followed by the same statement
@@ -1107,11 +1131,14 @@ style whatever stands before it.
 
 A space after a backslash before the `:` stays as well, since taking it away
 would escape the `:`, and the whitespace after that space goes, as before any
-`:`: `style A fill\   :#f00` is printed `style A fill\ : #f00`. A statement
-stays as written where a comment or a directive stands inside it, before the end
-of its last style, where a style is all whitespace, or where a style holds a
-line break or its line holds a kept `;`. A comment or a directive after the last
-style is no part of the statement, which is formatted as usual (see
+`:`: `style A fill\   :#f00` is printed `style A fill\ : #f00`. The escaped
+space belongs to the style name; only the further whitespace is a gap before a
+key colon, which [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+removes. A statement stays as written where a comment or a directive stands
+inside it, before the end of its last style, where a style is all whitespace, or
+where a style holds a line break or its line holds a kept `;`. A comment or a
+directive after the last style is no part of the statement, which is formatted
+as usual (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 
 [fixture: whitespace-between-tokens/style-blank-style-kept] [fixture:
@@ -1122,10 +1149,14 @@ whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 
-A U+2028 or U+2029 stays where it is.
+A U+2028 or U+2029 stays where it is: some of the versions that count draw a
+style differently where a U+2028 or U+2029 before the `,` is taken out (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[test: U+2028 before the comma of a flowchart style statement] [test: U+2029
-after the comma of a flowchart style statement]
+[test: U+2028 between the value of a flowchart style and its comma] [test:
+U+2029 between the value of a flowchart style and its comma] [test: U+2028
+before the comma of a flowchart style statement] [test: U+2029 after the comma
+of a flowchart style statement]
 
 The text of a `direction` statement before `direction` and after the value is
 the exception, kept as written (see [Direction](#direction)).
@@ -1137,15 +1168,23 @@ In a `style`, `classDef`, or `linkStyle` statement, the whitespace before the
 first style, which the statement rule of mermaid.js reads, becomes one space,
 which stands before a directive there, as under [Directives](#directives):
 `style A %%{init: {}}%%  fill:red` is printed `style A %%{init: {}}%%fill:red`,
-and the two give the same Db. A run of spaces and tabs between the words of a
+and the two give the same Db. The first style follows one space in
+[ER](./er.md#styles-and-classes) and
+[requirement](./requirement.md#styles-and-classes) diagrams, and
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same first-style gap here. A run of spaces and tabs between the words of a
 style is printed as one space, and whether whitespace stands between two words
 stays as written: `classDef c fill:#f00    stroke:#333` is printed
 `classDef c fill: #f00 stroke:#333`. A run inside a single-quoted string and
 inside a comment that is not closed stays as written, and so does the escape
 after a backslash, since CSS reads it as part of the value: the hexadecimal
 digits (at most six) and the one space or tab that follows them, or else the
-next character. The run after the escape is a run like any other:
-`font-family:a\   b` is printed `font-family: a\  b`,
+next character. A run inside a comment that is not closed stays as written
+because the Db holds it: `fill:red/* a   b` and `fill:red/* a b` differ in the
+Db, and
+[the exception for styles](./compatibility.md#styles-that-are-drawn-the-same)
+names only the runs between the words of a style. The run after the escape is a
+run like any other: `font-family:a\   b` is printed `font-family: a\  b`,
 `font-family:Arial\20   Black` is printed `font-family: Arial\20  Black`, and
 `font-family:Arial\0000201   Black`, where the escape ends after six digits, is
 printed `font-family: Arial\0000201 Black`.
@@ -1167,8 +1206,14 @@ A style that starts with the `:`, and one whose `:` follows a backslash and a
 space, are printed as any other style: no whitespace before the `:` besides the
 space that the backslash escapes, one space after it, and the runs between their
 words as one space, as CSS drops the whitespace around the `:` and reads a run
-as one. `style A :  red   x` is printed `style A : red x`, and
-`style A fill\ :red   x` is printed `style A fill\ : red x`.
+as one. The colon after an escaped space gives the style name its value, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space after
+the colon before a nonempty value. `style A :  red   x` is printed
+`style A : red x`, and `style A fill\ :red   x` is printed
+`style A fill\ : red x`. In a style whose name ends in an escaped space, the
+colon gives the name its value.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore puts one
+space after the colon before a nonempty value.
 
 [fixture: whitespace-between-tokens/style-colon-first-run-spaced] [fixture:
 whitespace-between-tokens/style-escaped-space-run-spaced]
@@ -1310,7 +1355,11 @@ after it: `click A call f(  "x" ,y )` is printed `click A call f("x", y)`, since
 mermaid.js splits the arguments at the `,` outside quotes and trims each part,
 and calls the function with the same arguments (see
 [Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
-The whitespace inside quotes stays, and so do arguments with an empty part.
+The whitespace inside quotes stays, and so do arguments with an empty part. For
+ordinary call arguments, mermaid.js splits at commas outside quotes and trims
+each part, so changing the surrounding whitespace leaves the arguments
+unchanged. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+those commas no whitespace before them and one space after them.
 
 [fixture: whitespace-between-tokens/callback-arguments-spaced]
 
@@ -1324,7 +1373,10 @@ since a space after the `,` would change the last `;` that the rule ignores (see
 The parentheses of a call with blank arguments touch each other:
 `click A call f( )` is printed `click A call f()`, since mermaid.js reads both
 as the same call with no arguments. A directive between them touches both
-parentheses, as under [Directives](#directives).
+parentheses, as under [Directives](#directives). Before reading a call,
+mermaid.js removes directives, leaving an otherwise blank argument list empty.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
+inside the empty parentheses, so the retained directive touches both.
 
 [fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
 
@@ -1376,7 +1428,10 @@ mermaid.js writes links.
 [fixture: arrow-spacing/other-link-kinds] [fixture:
 arrow-spacing/ampersand-spacing-kept] [fixture: arrow-spacing/arrow-length-kept]
 
-Text written between two arrows has one space on each side.
+Text written between two arrows has one space on each side. Each part of an
+arrow with text between its parts is a mark between two things, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space on
+each side of each part, including beside the text.
 
 [fixture: arrow-spacing/text-between-other-link-kinds] [fixture:
 arrow-spacing/directive-in-text-between-arrows]
@@ -1387,14 +1442,10 @@ the id of the edge and not a mark between two things
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 2 gives no
 form either: [agentflow](./agentflow.md#arrows) and
 [usecase](./usecase.md#relationship-labels-and-ids) print an edge id as this
-page does, and no other diagram type has one.
-[Rule 3](./printed-form.md#3-a-spelling) gives it: the examples in the
-documentation of mermaid.js write an edge id touching its `@` and the arrow 17
-times, 13 on
-[the flowchart page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L810-L1321)
-and 4 on
-[the use case page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L297-L561),
-and never with whitespace there.
+page does, and no other diagram type has one. Rule 3 gives no form either, since
+it decides spellings and not whitespace, so no rule gives this form, and the
+released form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: arrow-spacing/pipe-label-other-link-kinds] [fixture:
 arrow-spacing/edge-id-with-labels] [fixture:
@@ -1438,10 +1489,10 @@ arrow-spacing/edge-id-arrow-like-after-ignored-semicolon] [fixture:
 arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 An edge id after a data block touches the block: `A@{ shape: circle } e1@--> B`
-is printed `A@{ shape: circle }e1@--> B`. mermaid.js 12.3.0 reads the two forms
-the same, and draws the same figure from them. Some of the versions that count
-have no rule for a space after a data block before an edge id, so they reject
-the form with the space (another has no data block, and rejects both; see
+is printed `A@{ shape: circle }e1@--> B`. mermaid.js reads the two forms the
+same, and draws the same figure from them. Some of the versions that count have
+no rule for a space after a data block before an edge id, so they reject the
+form with the space (another has no data block, and rejects both; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The touching form is the one that every version that reads a data block reads. A
 directive or an ignored `;` between the block and the edge id is removed before
@@ -1915,7 +1966,9 @@ accessibility-lines/block-runs-collapsed] [fixture:
 accessibility-lines/inline-percent-hash]
 
 An empty or whitespace-only value keeps the statement form, `accTitle:` or
-`accDescr:`, without a following space.
+`accDescr:`, without a following space, since
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
+and tabs at the end of a line.
 
 [fixture: accessibility-lines/empty-title] [fixture:
 accessibility-lines/empty-description] [corpus fixture:
@@ -1923,11 +1976,20 @@ flowchart/gram-acc-title-empty-at-end] [corpus fixture:
 flowchart/db-acc-descr-empty-replaces]
 
 Mermaid reads ordinary text on the next line after the colon as the value; join
-that text onto the keyword's line.
+that text onto the keyword's line. An accessibility keyword gives the diagram
+its title or description, making its colon a key colon.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints no whitespace
+before that colon and one space before the value on the same line, including a
+value read from the next line.
 
 [fixture: accessibility-lines/next-line-values]
 
-A real comment or directive prevents compact joining. Keep the previous
+A real comment or directive prevents compact joining. Accessibility statements
+in [class](./class.md#multi-line-statements) and
+[C4](./c4.md#accessibility-lines) diagrams keep the line breaks beside an
+intervening comment or directive;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a flowchart the same breaks. Keep the previous
 [Multi-line statements](#multi-line-statements) layout: continuation lines,
 including comment and directive lines, stand one level deeper than the keyword;
 the comment/directive text and the authored statement breaks remain. Rule 1
@@ -1966,10 +2028,16 @@ A `;` alone does not prevent joining.
 
 Direction-text lines keep their written text, line breaks and indentation under
 [Indentation](#indentation), and other documented kept-line reasons still take
-priority.
+priority. Joining `accTitle:direction`, a comment line, and `TB` into the one
+line `accTitle: direction TB` changes the Db: the written text has the title
+`direction` and a vertex `TB`, and the joined text has the title `direction TB`;
+the figures differ too: every version that counts draws another figure for the
+joined text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: accessibility-lines/direction-text-kept] [fixture:
-accessibility-lines/next-line-direction-kept]
+accessibility-lines/next-line-direction-kept] [fixture:
+accessibility-lines/direction-text-after-comment-kept]
 
 Configured indentation, including its minimum at `tabWidth: 0` and `useTabs`,
 applies to ordinary lines; those options also retain these exceptions.
@@ -1981,8 +2049,13 @@ that counts reads it indented as the direction `LR` (see
 
 CR follows the shared line-ending normalization. Accepted NBSP, U+2028 and
 U+2029 in the exterior gaps normalize under the same colon/value rules, while
-internal value characters and whitespace beside a kept `;` stay written. These
-characters use escaped inline tests.
+internal value characters and whitespace beside a kept `;` stay written. In a
+colon-form accessibility statement, mermaid.js ends the value at LF and stores
+an internal U+2028 or U+2029 as part of its text in the Db. Replacing either
+separator with LF changes that value, so internal U+2028 and U+2029 stay as
+written. These characters use escaped inline tests.
+
+[corpus fixture: flowchart/db-acc-title-line-separator]
 
 [test: graph accessibility: flowchart cr-lines] [test: graph accessibility:
 flowchart unicode-gaps] [test: graph accessibility: flowchart unicode-values]
@@ -2003,16 +2076,14 @@ accessibility-lines/empty-block-spaced] [fixture:
 accessibility-lines/empty-block-lines]
 
 Accepted NBSP, U+2028 and U+2029 inside an otherwise empty block also disappear.
+Accepted NBSP, U+2028, and U+2029 leave an otherwise empty description block
+without content, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+prints no whitespace inside its braces.
 
 [test: accessibility blocks: flowchart empty-block-unicode]
 
 Kept-line exceptions still take priority, and a block of several lines that
 holds comment lines, or a directive on a line of its own, retains its layout.
-Rule 1 names no mark for a line inside a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
-[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block that holds comment lines, or a directive on a line of its own.
 
 [fixture: accessibility-lines/empty-block-semicolon-kept] [fixture:
 accessibility-lines/empty-block-directive-line-kept] [fixture:
@@ -2032,8 +2103,7 @@ The documentation of mermaid.js has no example of a block on one line.
 
 Multiline body columns follow the top-level or subgraph rules in
 [Multi-line values](#multi-line-values), and a closing brace on its own line
-aligns with `accDescr`, whether written at column zero or indented. This is the
-same form as the sibling diagrams, with no flowchart-specific reason to differ.
+aligns with `accDescr`, whether written at column zero or indented.
 
 [fixture: accessibility-lines/block-close-column-zero] [fixture:
 accessibility-lines/block-close-indented] [fixture:
@@ -2266,7 +2336,9 @@ so the spaces and tabs at its ends carry no meaning.
 data-blocks/one-line-padded-zero-width]
 
 Only spaces and tabs are removed: other whitespace, such as U+00A0, is part of
-the text.
+the text. A U+00A0 at an edge of a one-line block is part of the text that
+mermaid.js loads: replacing it with an ordinary space changes the Db (the loaded
+label and its type) and the figure.
 
 [test: data blocks: flowchart one line with no-break spaces at the ends]
 
@@ -2652,7 +2724,12 @@ data-blocks/scalar-blank-lines-outdent]
 
 Directives, comments, blank lines, empty description blocks and a discarded
 statement `;` beside the block keep their own rules. CRLF and CR follow
-`endOfLine`; U+2028 and U+2029 inside values remain characters.
+`endOfLine`; U+2028 and U+2029 inside values remain characters. A U+2028 or
+U+2029 inside a value of a data block is a character of the loaded text, so
+replacing it with a space changes the Db (`A\u2028B` and `A B` differ). It is no
+space or tab, so
+[the exception for runs of whitespace](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+does not cover it.
 
 [fixture: data-blocks/surrounding-trivia] [test: data blocks: flowchart CRLF]
 [test: data blocks: flowchart CR] [test: data blocks: flowchart U+2028] [test:
@@ -2698,9 +2775,9 @@ A quoted string written over several lines keeps its columns.
 [fixture: multi-line-values/markdown-string-kept]
 
 At the top level, align the lines of an `accDescr { ... }` body one step inside
-its statement: Mermaid discards leading indentation after LF from the
-accessibility description. Inside a subgraph, keep the columns of a block with
-text, because its raw text is also stored among the subgraph's members.
+its statement. mermaid.js discards the indentation after a line feed from the
+description. Inside a subgraph, keep the columns of a block with text, because
+its raw text is also stored among the subgraph's members.
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 
@@ -2723,8 +2800,7 @@ Blocks on one line follow
 and empty blocks without trivia follow
 [Accessibility lines](#accessibility-lines). A block without text, whose lines
 are only comment lines, holds no value: its comment lines stand one level deeper
-than the `accDescr`, as comment lines inside a statement do (see
-[Comments](#comments)), and its `}` at the level of the `accDescr`.
+than the `accDescr`, and its `}` at the level of the `accDescr`.
 
 [fixture: multi-line-values/accdescr-block-comment-only-several-comments]
 [fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
@@ -2814,8 +2890,7 @@ flowchart LR
 
 A comment on a line of its own stands at the level of the statements around it,
 before the header too, where it starts the line. A comment belongs to no
-statement, so it takes the level of its neighbours, which is where a reader
-looks for it.
+statement and takes the level of its neighbours.
 
 [fixture: comments/only-comment-in-subgraph] [fixture: comments/after-end]
 [fixture: comments/tab-indented-and-consecutive] [fixture:
@@ -2936,7 +3011,7 @@ empty line, and a line of a semicolon]
 ### Directives
 
 A directive (`%%{ ... }%%`) on a line of its own stands at the level of the
-statements around it, for the same reason as a comment.
+statements around it.
 
 [fixture: directives/own-line-in-subgraph] [fixture:
 directives/several-on-own-line] [fixture: directives/multi-line-on-own-line]
@@ -3181,7 +3256,9 @@ In a `direction` statement mermaid.js reads the text before `direction` and
 after the value as text, which may hold labels and strings, and a `;` after the
 value belongs to that text and is no separator. The text is kept as written; the
 whitespace between it and `direction`, and between `direction` and the value,
-becomes one space, as between any tokens. A line such as `A[direction TB]` is a
+becomes one space. The spacing follows the "A keyword before what it takes" row
+of [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): `direction` is a
+keyword before the value it takes. A line such as `A[direction TB]` is a
 `direction` statement too, its vertices and links are not read, and it is
 printed so, at the indentation of its level.
 
@@ -3190,7 +3267,9 @@ printed so, at the indentation of its level.
 The direction of the header stands after one space, also where a symbol touched
 the keyword: `graph>` is printed `graph >`, and `flowchart^` is printed
 `flowchart ^`. The whitespace is not in the Db, and a letter direction such as
-`TD` already needs the space. A directive between them is placed as under
+`TD` already needs the space. The header is a keyword before the direction it
+takes; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space
+between them. A directive between them is placed as under
 [Directives](#directives), and a U+2028 or U+2029 stays where it is. Rule 1
 names no mark for a gap that holds one, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
@@ -3306,8 +3385,11 @@ where the text of the name holds no whitespace. A name of several words, as
 `subgraph S1 S2` or `subgraph "o p"`, has a generated id with or without
 whitespace after it, so the whitespace at the end of its line is left out, but
 not the whitespace that separates it from a block, a `;` that stays or a
-directive on its line. That whitespace keeps whether it is there, a run becoming
-one space (see
+directive on its line. Prettier leaves no whitespace at line ends. A subgraph
+name of several words has a generated id with or without trailing whitespace, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
+without line-end whitespace. That whitespace keeps whether it is there, a run
+becoming one space (see
 [Directives between tokens](./compatibility.md#directives-between-tokens)), also
 where whitespace after the directive makes mermaid.js read the directive as part
 of the name. It is so for a markdown string and in a swimlane diagram too, where
@@ -3341,10 +3423,10 @@ and a `;`, as in `subgraph "S"accDescr {} accDescr {}` and
 
 The blocks read no token, so that whitespace follows the name: the subgraph has
 the id `subGraph0`, and the id `S` without it, which the Db holds
-(`subgraphs[0].id` in 12.3.0), while every version that counts draws the same
-figure up to the ids. That the whitespace is there is kept; how wide it is, only
-before the first block, where it follows the name as written, and a run between
-two blocks or before a `;` becomes one space.
+(`subgraphs[0].id`), while every version that counts draws the same figure up to
+the ids. That the whitespace is there is kept; how wide it is, only before the
+first block, where it follows the name as written, and a run between two blocks
+or before a `;` becomes one space.
 
 [fixture: subgraph-header/runs-between-blocks-become-one]
 
@@ -3370,7 +3452,12 @@ there, and in `subgraph S` it is an edge from the subgraph, and a later
 on nothing in the other. Some of the versions that count that draw a swimlane
 diagram read it so there too. Where no statement names the id, nobody sees it,
 and the whitespace becomes one space, as it does before a name with a title,
-before a name of several words, and where a single tab stands.
+before a name of several words, and where a single tab stands. A name follows
+one space after `subgraph`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that gap, as
+Prettier prints `return  x` as `return x;`, before a subgraph name with a title,
+a name of several words, or a one-word name whose id no statement names, and
+where a single tab stands.
 
 [fixture: subgraph-header/name-leading-space-run-named-kept] [fixture:
 subgraph-header/name-leading-space-run-style-kept] [fixture:
@@ -3772,7 +3859,11 @@ Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
 are dropped, except where the figure depends on them, in the statements that the
 paragraphs below and the document of the diagram type name: a space or a tab
 after a backslash that ends the last style stays as one character, and a style
-of whitespace only stays as written.
+of whitespace only stays as written. At the end of a style, a backslash escapes
+only the first character after it, leaving any further spaces and tabs as
+unescaped line-end whitespace.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes those
+remaining spaces and tabs, as Prettier does at line ends.
 
 [fixture: style-trailing-whitespace/removed] [fixture:
 style-trailing-whitespace/removed-tab] [fixture:
