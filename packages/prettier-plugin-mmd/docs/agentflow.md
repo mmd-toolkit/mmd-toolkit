@@ -1051,7 +1051,18 @@ of a flow on a kept line, then a directive] [test: agentflow: U+2029 after
 `end ;` of a flow on a kept line, then a second `;`] [test: agentflow: U+2029
 after `end ;` of a flow on a kept line, then the end of the text] [test:
 agentflow: U+2029 between `end` and `;` of a flow on a kept line, then a
-comment]
+comment] [fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-closed-directive-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-unclosed-directive-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-comment-line-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-empty-line-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-at-end-of-text-kept-as-written]
+[test: agentflow: U+2028 after `end ;;` of a flow with an ignored `;`] [test:
+agentflow: U+2029 after `end ;;` of a flow with an ignored `;`]
 
 Keep a separating semicolon after a statement or name ending in `accTitle`,
 `accDescr`, `direction`, `click`, `call` or `href`, and after any id ending in

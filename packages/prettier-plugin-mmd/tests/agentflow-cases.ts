@@ -322,4 +322,14 @@ export const agentflowCases: readonly AgentflowCase[] = [
     input: "agentflow-beta TB\nflow F[x;]; A --> B; end \u2029;  %% c\n",
     output: "agentflow-beta TB\n  flow F[x;]; A --> B;\n  end %% c\n",
   },
+  {
+    name: "agentflow: U+2028 after `end ;;` of a flow with an ignored `;`",
+    input: "agentflow-beta TB\nflow F[style:#x;]; A --> B; end ;;\u2028\n",
+    output: "agentflow-beta TB\n  flow F[style:#x;]; A --> B; end ;;\u2028\n",
+  },
+  {
+    name: "agentflow: U+2029 after `end ;;` of a flow with an ignored `;`",
+    input: "agentflow-beta TB\nflow F[style:#x;]; A --> B; end ;;\u2029\n",
+    output: "agentflow-beta TB\n  flow F[style:#x;]; A --> B; end ;;\u2029\n",
+  },
 ]

@@ -579,6 +579,18 @@ then a comment, in a flowchart] [test: U+2029 after `end ;` of a subgraph on a
 kept line, then a directive, in a flowchart] [test: U+2029 after `end ;` of a
 subgraph on a kept line, then a second `;`, in a flowchart] [test: U+2029 after
 `end ;` of a subgraph on a kept line, then the end of the text, in a flowchart]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-closed-directive-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-unclosed-directive-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-comment-line-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-empty-line-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-at-end-of-text-kept-as-written]
+[test: U+2028 after `end ;;` of a subgraph with an ignored `;`, in a flowchart]
+[test: U+2029 after `end ;;` of a subgraph with an ignored `;`, in a flowchart]
 
 A `;` at the end of a statement is kept too when a directive follows it on the
 same line: without the `;`, the whitespace before the directive would be read as
