@@ -2004,6 +2004,65 @@ statement after the comment] [test: U+2028 and a comment after a value in
 quotes, with a statement after the comment] [test: U+2028 and a comment after
 the class in quotes of a class statement, with a statement after the comment]
 
+A statement that a comment line after U+2028 or U+2029 cuts is printed as
+written, to its end, and so is a statement whose last line holds such a comment
+line after a `style`, `classDef`, or `class` statement, where text follows the
+comment line: the string and the line break that follow the style stay where
+they are. Where nothing follows it, as at the end of the text, the statement and
+the comment line are printed as any are. In a statement that is cut, a name in
+quotes that ends its line, with the rest of the statement on a later line, keeps
+its quotes: without them the name would go on over the line break, and
+mermaid.js rejects the text. Any other name in quotes is printed as it is
+everywhere else: `"e" {` is printed `e {`, `"e" :::c {` is printed `e :::c {`,
+and the name that ends a relationship is printed without its quotes. A statement
+that follows the comment line, and is no part of that line, is printed as any
+statement is.
+
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the
+line of an element, with its name in quotes on a later line] [test: requirement:
+U+2028, a directive, a comment, and a directive line inside the line of an
+element, with its name in quotes on a later line] [test: requirement: U+2028, a
+directive, a comment, and an empty line after the string and the class of a
+style statement] [test: requirement: U+2028, a directive, a comment, and a
+directive line after the string and the class of a style statement] [test:
+requirement: U+2028, a directive, a comment, and an empty line after the string
+and the class of a classDef statement] [test: requirement: U+2028, a directive,
+a comment, and an empty line after a relationship that goes on a later line]
+[test: requirement: U+2028 and a comment at the end of the text after the string
+and the class of a style statement] [test: requirement: U+2028 and a comment at
+the end of the text after the string and the class of a classDef statement]
+[test: requirement: U+2028 and a comment at the end of the text after the string
+and the class of a class statement] [test: requirement: U+2029 and a comment at
+the end of the text after the string and the class of a style statement] [test:
+requirement: U+2028, a comment, and a comment line at the end of the text after
+the string and the class of a style statement] [test: requirement: U+2028, a
+comment, and a line of whitespace at the end of the text after the string and
+the class of a style statement] [test: requirement: U+2028 and a directive that
+is not closed at the end of the text after the string and the class of a style
+statement] [test: requirement: U+2028 and a comment before an ignored semicolon
+after the string of a style statement] [test: requirement: U+2028, a directive,
+a comment, and an empty line after a block, with a name in quotes after them]
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the
+line of an element, with its name in quotes and the rest of the statement on its
+line] [test: requirement: U+2028, a directive, a comment, and an empty line
+inside the line of an element, with its name in quotes and a class on its line]
+[test: requirement: U+2029, a directive, a comment, and an empty line inside the
+line of an element, with its name in quotes on a later line] [test: requirement:
+U+2028, a directive, a comment, and an empty line inside the line of a
+requirement, with its name in quotes on a later line] [test: requirement:
+U+2028, a directive, a comment, and an empty line inside the line of a
+requirement, with its name in quotes and the rest of the statement on its line]
+[test: requirement: U+2028, a directive, a comment, and an empty line inside a
+relationship, with the name in quotes that ends it] [test: requirement: U+2028,
+a comment, and an empty line inside the line of an element, with an ignored
+semicolon in its name in quotes on a later line] [test: requirement: U+2028, a
+directive that is not closed, a comment, and an empty line inside the line of an
+element, with its name in quotes on a later line] [test: requirement: U+2028,
+two comments, and an empty line inside the line of an element, with its name in
+quotes on a later line] [test: requirement: U+2028, a comment, and a line of
+whitespace inside the line of an element, with its name in quotes on a later
+line]
+
 ### Whitespace characters
 
 U+00A0 and U+FEFF are whitespace to the lexer between units, and characters of a

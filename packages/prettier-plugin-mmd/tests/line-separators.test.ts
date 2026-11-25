@@ -5104,6 +5104,131 @@ const requirementLineSeparatorExamples: readonly (readonly [
     "requirementDiagram\nrequirement\u2028%% heading\n%%{init: {}}%%\n r {\nid: 1\ntext: t\nrisk: low\nverifymethod: test\n}\n",
     "requirementDiagram\n  requirement\u2028%% heading\n%%{init: {}}%%\n r {\n    id: 1\n    text: t\n    risk: low\n    verifymethod: test\n  }\n",
   ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and a directive line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n%%{y}%%\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n%%{y}%%\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and an empty line inside the line of an element, with an ignored semicolon in its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %% c\n\n"style:#x;" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %% c\n\n"style:#x;" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive that is not closed, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %%{x: y\n%% c\n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %%{x: y\n%% c\n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, two comments, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %% c\n%% d\n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %% c\n%% d\n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and a line of whitespace inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nelement \u2028 %% c\n \t\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  element \u2028 %% c\n \t\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n\n  class r c\n  r - satisfies -> b\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and a directive line after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n%%{y}%%\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n%%{y}%%\n  class r c\n  r - satisfies -> b\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line after the string and the class of a classDef statement",
+    'requirementDiagram\nrequirement r {\nid: 1\n}\nstyle r fill:red "r"\n:::c\nclassDef c fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n\nclass r c "r"\n- satisfies -> b\nclass r c "r"\n:::d\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  style r fill: red\n  "r":::c\n  classDef c fill:red "r"\n:::c \u2028 %%{x}%%  %% c  \n\n  class r c\n  r - satisfies -> b\n  class r c\n  "r":::d\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line after a relationship that goes on a later line",
+    'requirementDiagram\nrequirement r {\nid: 1\n}\nstyle r fill:red "r"\n:::c\nclassDef c fill:red "r"\n:::c\nclass r c "r"\n- satisfies -> b \u2028 %%{x}%%  %% c  \n\nclass r c "r"\n:::d\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  style r fill: red\n  "r":::c\n  classDef c fill: red\n  "r":::c\n  class r c "r"\n- satisfies -> b \u2028 %%{x}%%  %% c  \n\n  class r c\n  "r":::d\n',
+  ],
+  [
+    "requirement: U+2028 and a comment at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028 and a comment at the end of the text after the string and the class of a classDef statement",
+    'requirementDiagram\nclassDef c fill:red "r"\n:::c\u2028 %% c',
+    'requirementDiagram\n  classDef c fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028 and a comment at the end of the text after the string and the class of a class statement",
+    'requirementDiagram\nclass r c "r"\n:::c\u2028 %% c',
+    'requirementDiagram\n  class r c\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2029 and a comment at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2029 %% c',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and a comment line at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c\n%% d\n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n  %% d\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and a line of whitespace at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c\n   \n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028 and a directive that is not closed at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %%{x',
+    'requirementDiagram\n  style r fill: red\n  "r":::c %%{x',
+  ],
+  [
+    "requirement: U+2028 and a comment before an ignored semicolon after the string of a style statement",
+    'requirementDiagram\nstyle r fill:#f00 "r";\n:::c\u2028 %% c',
+    'requirementDiagram\n  style r fill:#f00 "r";\n:::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line after a block, with a name in quotes after them",
+    'requirementDiagram\nrequirement "r" {\n}\nrequirement s {\n} \u2028 %%{x}%%  %% c  \n\n"r" - satisfies -> s\n',
+    "requirementDiagram\n  requirement r {\n  }\n  requirement s {\n} \u2028 %%{x}%%  %% c  \n\n  r - satisfies -> s\n",
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes and the rest of the statement on its line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n\n"e" {\n}\n',
+    "requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n\ne {\n  }\n",
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes and a class on its line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n\n"e" :::c {\n}\n',
+    "requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n\ne :::c {\n  }\n",
+  ],
+  [
+    "requirement: U+2029, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2029 %%{x}%%  %% c  \n\n"e" \n:::c {\n}\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2029 %%{x}%%  %% c  \n\n"e" \n:::c {\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of a requirement, with its name in quotes on a later line",
+    'requirementDiagram\nrequirement  \u2028 %%{x}%%  %% c  \n\n"q" \n:::c {\nid: 2\n}\n',
+    'requirementDiagram\n  requirement  \u2028 %%{x}%%  %% c  \n\n"q" \n:::c {\n    id: 2\n  }\n',
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside the line of a requirement, with its name in quotes and the rest of the statement on its line",
+    'requirementDiagram\nrequirement  \u2028 %%{x}%%  %% c  \n\n"q" {\nid: 2\n}\n',
+    "requirementDiagram\n  requirement  \u2028 %%{x}%%  %% c  \n\nq {\n    id: 2\n  }\n",
+  ],
+  [
+    "requirement: U+2028, a directive, a comment, and an empty line inside a relationship, with the name in quotes that ends it",
+    'requirementDiagram\nrequirement \nr {\nid: 1\n}\n"r" - satisfies ->\u2028 %%{x}%%  %% c  \n\n"r"\n',
+    'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  "r" - satisfies ->\u2028 %%{x}%%  %% c  \n\nr\n',
+  ],
 ]
 
 /**
