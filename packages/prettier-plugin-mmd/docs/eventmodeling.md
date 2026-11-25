@@ -1064,8 +1064,11 @@ the Db of the pinned version has another accDescr for
 versions that were run draw both alike, so that padding stays as a part of the
 value. The padding between the header and an `accTitle` is no part of the Db
 (the setter strips leading whitespace) and the versions that were run draw both
-forms alike, so it stays without a reason, and its row is in the list (D18). For
-the `accTitle` line with a space and a tab before `:`, that gap stays, since
+forms alike, so it stays without a reason, and its row is in the list (D18). The
+padding after the colon and at the end of an `accTitle` or `accDescr` line is
+part of the value too: the versions that were run draw other accessibility text,
+in the `<title>` or the `<desc>` of the SVG, with and without it, so it stays.
+For the `accTitle` line with a space and a tab before `:`, that gap stays, since
 every version of mermaid.js that counts draws different accessibility text when
 the gap is removed (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
