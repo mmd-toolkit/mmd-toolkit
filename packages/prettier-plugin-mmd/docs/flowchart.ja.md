@@ -1174,7 +1174,14 @@ mermaid.js はリンクのスタイルを書かれたまま `;` でつなぐの�
 [fixture: whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 
 U+2028 と U+2029 は、その場所に残します。
+対象にする版のうち、
+`,` の前の U+2028 か U+2029 を除いたスタイルを別に描くものがあるからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
+[test: U+2028 between the value of a flowchart style and its comma]
+[test: U+2029 between the value of a flowchart style and its comma]
 [test: U+2028 before the comma of a flowchart style statement]
 [test: U+2029 after the comma of a flowchart style statement]
 
@@ -1526,7 +1533,7 @@ flowchart LR
 
 データブロックの後の辺の id は、ブロックに接します。
 `A@{ shape: circle } e1@--> B` は `A@{ shape: circle }e1@--> B` と印字します。
-mermaid.js 12.3.0 は、この 2 つの形を同じに読み、同じ図を描きます。
+mermaid.js は、この 2 つの形を同じに読み、同じ図を描きます。
 対象にする版の一部には、
 データブロックの後で辺の id の前の空白を許す規則がないので、
 空白のある形を拒否します（1 つにはデータブロックがなく、両方を拒否します。
@@ -3531,7 +3538,7 @@ markdown 文字列や swimlane 図でも同じで、
 
 ブロックは何のトークンも読まれず、その空白が名前の後に続くとみなされ、
 subgraph の id は `subGraph0` になり、空白がなければ `S` になります。
-12.3.0 の Db は id を持ち（`subgraphs[0].id`）、
+Db は id を持ち（`subgraphs[0].id`）、
 描画は対象にする版のすべてで id を除いて同じです。
 空白があることは残しますが、幅は、最初のブロックの前だけ、
 名前に続くものとして書かれたまま残し、ブロックの間や `;` の前の空白の連続は、

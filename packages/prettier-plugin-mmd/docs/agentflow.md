@@ -927,11 +927,11 @@ so preserve that padding, the comment and its LF/continuation columns, including
 a closing bracket that belongs to the comment rather than closing the shape.
 Where only the closing bracket follows the line break of the comment, the label
 ends before the comment (the text of `A[x  %% c`, a line break, and `]` is `x`
-in the Db of 12.3.0, and it is also with another whitespace character of the
-specification in place of the spaces, a no-break space, U+3000, U+2003, U+2028,
-and U+2029 among them), so a run of whitespace before the comment, of one kind
-of character or of several, is printed as one space, a comment that touches
-stays touching, a bare label is printed in quotes (see
+in the Db, and it is also with another whitespace character of the specification
+in place of the spaces, a no-break space, U+3000, U+2003, U+2028, and U+2029
+among them), so a run of whitespace before the comment, of one kind of character
+or of several, is printed as one space, a comment that touches stays touching, a
+bare label is printed in quotes (see
 [Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)),
 and the closing bracket stands on a line of its own, one level deeper than the
 vertex. Where the comment holds a `;`, the label is not quoted, the characters
@@ -2272,6 +2272,13 @@ retained click prefix keep their touching gaps.
 
 [fixture: click-statements/target-required-tab] [fixture:
 click-statements/prefix-with-directive]
+
+The `href` of a click statement stays touching the `)` of a blank call, as in
+`click A call ()href click "/u"`: some of the versions that count reject the
+form with a space between them (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[fixture: click-statements/blank-call-then-href-kept]
 
 The arguments of a call have no whitespace at their ends or before a `,`, and
 one space after it, as in [flowchart](./flowchart.md#whitespace-between-tokens):

@@ -731,8 +731,8 @@ Only the first physical body line may gain a space prefix where it had none.
 Every later nonblank physical line must have at least one leading ASCII space
 both before and after the change. Otherwise keep the complete body as written: a
 margin on every line would add the first space to a later line, which can change
-the rendered label: 11.15.0 to 12.3.0 draw different text and geometry for it
-(see
+the rendered label: every version that counts draws different text and geometry
+for it (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A leading empty line does not make the next line the first physical line.
 
@@ -1463,9 +1463,10 @@ default-size-branches/size-below-planned-fits-indented-comment]
 
 This keeps indentation or the final line break from moving the text across the
 limit, where the comment lines in a value would be removed and the Db would
-change. At 50000 units, and at 49999, indenting the first line of a data body
-whose later lines, a comment line included, stand at least one space in makes
-12.3.0 draw different text, structure and geometry (see
+change. At 50000 units, and at 49999, one of the versions that count draws
+different text, structure and geometry when the first line of a data body whose
+later lines, a comment line included, stand at least one space in is indented
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The boundary itself is covered by the corpus, also with CRLF, an inline
 directive and frontmatter.
