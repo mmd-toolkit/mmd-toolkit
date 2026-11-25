@@ -935,7 +935,7 @@ cynefin-beta
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 普通の独立行は所属本文の段にし、項目間なら項目の段です。
-[pie](./pie.ja.md#indentation) と [packet](./packet.ja.md#indentation) の図も、
+[pie](./pie.ja.md#indentation) の図も、
 独立したディレクティブを所属本文の段に置きます。
 領域の項目間では 1 段深い項目の段にする配置を、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
@@ -975,7 +975,7 @@ cynefin-beta
 ### Comments
 
 普通の独立コメントは所属本文の段、項目間は項目の段、前置部分は第 1 列にします。
-[pie](./pie.ja.md#indentation) と [packet](./packet.ja.md#indentation) の図も、
+[pie](./pie.ja.md#indentation) の図も、
 独立したコメントを所属本文の段に置きます。
 項目間は領域の項目の段にし、前置部分は第 1 列にする配置を、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。

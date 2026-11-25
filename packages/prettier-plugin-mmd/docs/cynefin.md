@@ -902,9 +902,8 @@ as under [Directives](./flowchart.md#directives). When formatting splits units
 that were on the same line, a directive in their gap moves with the following
 unit: its right boundary stays touching or separated, while its left contact is
 broken. Ordinary standalone lines align with their body, including item depth
-between items. In [pie](./pie.md#indentation) and
-[packet](./packet.md#indentation) diagrams, standalone directives stand at the
-depth of their surrounding body.
+between items. In [pie](./pie.md#indentation) diagrams, standalone directives
+stand at the depth of their surrounding body.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 ordinary standalone directives the same placement here, including the additional
 body level between domain items. Multiline interiors and unfinished EOF endings
@@ -943,9 +942,8 @@ cynefin-beta
 ### Comments
 
 Align ordinary standalone comments with their body, item comments at item depth
-and prefix comments at column one. In [pie](./pie.md#indentation) and
-[packet](./packet.md#indentation) diagrams, standalone comments stand at the
-depth of their surrounding body.
+and prefix comments at column one. In [pie](./pie.md#indentation) diagrams,
+standalone comments stand at the depth of their surrounding body.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 standalone comments the same placement here: item comments follow the deeper
 domain body, and prefix comments stand at column one. Inline comments keep their
