@@ -937,6 +937,13 @@ timeline について対象にする版は、どちらの形も同じに描き�
 `accDescr   {alpha}    accDescr {beta}` は、
 `accDescr {alpha} accDescr {beta}` になります。
 元に空白がない所には、何も足しません（`accDescr{ alpha}`）。
+10.9.8 と 11.7.0 は、方向の後のテキストを文字として描くので、
+`timeline TD accDescr{x}` と `timeline TD accDescr {x}` は別の図になります。
+空白がそのテキストの一部になるためです。
+規則 1 がブロックの `{` の前に置く空白は、ここでは足しません。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 空白でもタブでもない空白文字（U+00A0、U+2003 など）は、
 ブロックの `}` の後ろでも、行のほかの場所と同じく、書かれた場所に残ります。
 複数行のブロックの `}` の後ろも同じです。

@@ -911,8 +911,12 @@ in those versions, and neither `accDescr: alpha` nor a line of its own for
 and the statements after it on the line, is printed in the form above:
 `accDescr {  alpha  }` is `accDescr { alpha }`,
 `accDescr   {alpha}    accDescr {beta}` is `accDescr {alpha} accDescr {beta}`,
-and where the source has no whitespace none is printed (`accDescr{ alpha}`). A
-whitespace character that is no space or tab (a U+00A0, a U+2003, and so on)
+and where the source has no whitespace none is printed (`accDescr{ alpha}`):
+10.9.8 and 11.7.0 draw `timeline TD accDescr{x}` and `timeline TD accDescr {x}`
+as different figures, since the space becomes a part of the text that they draw,
+so the space that rule 1 gives before the `{` of a block is not added here (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A whitespace character that is no space or tab (a U+00A0, a U+2003, and so on)
 after the `}` of a block stays where it is, as it does in every other place of
 the line, the `}` of a block over several lines included: `accDescr {alpha}`,
 U+00A0, and `Phase : done` is printed as it is.
