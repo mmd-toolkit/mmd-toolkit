@@ -70,8 +70,8 @@ usecase-beta
 
 ### Indentation
 
-Statements stand one configured step below the header, as under
-[class indentation](./class.md#indentation).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts statements one
+configured step below the header, as Prettier prints the lines inside a block.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts boundary
 declarations one configured step deeper than the boundary opener and `end` at
 the level of its opener, as Prettier prints the lines inside a block.
@@ -732,8 +732,9 @@ metadata opener stands on the line of the containing statement,
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
 property lines one level below that line and the separate closing brace at its
 level, as Prettier prints the lines inside a block. A standalone comment or
-directive between property lines of the same depth follows that level under rule
-1, as a comment line in those languages does.
+directive inside the metadata block follows that level under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), as the lines inside
+a block in those languages do.
 
 [fixture: native-metadata/metadata-comma-comment-close] [fixture:
 native-metadata/metadata-closer-directive-own-line]
@@ -1283,15 +1284,11 @@ usecase-beta
 
 ### Comments
 
-Reuse [standalone comment alignment](./class.md#comments): comments align with
-nearby statements, with declarations before boundary `end`, and at column one
-before the header, retaining all comment text and terminal HWS.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-comment line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. For the other positions,
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [block](./block.md#comments) and [er](./er.md#comments) put a comment
-line at the level of the statements around it.
+Comments align with nearby statements, with declarations before boundary `end`,
+and at column one before the header, retaining all comment text and terminal
+HWS. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a
+standalone comment line inside a block one level deeper than the line that opens
+it, as Prettier prints the lines inside a block.
 
 [fixture: system-boundaries/boundary-header-comment-empty] [test: usecase:
 terminal-comment-tab]
@@ -1341,11 +1338,9 @@ Reuse [shared directive attachment](./class.md#directives): removal supplies no
 separator. Keep directive contents, order and multiline columns; align
 standalone directives.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-directive line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. At other positions follow
-[shared directive attachment](./class.md#directives), and place a directive
-within a printed line as under
-[flowchart's Directives](./flowchart.md#directives).
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. Place a directive within a printed
+line as under [flowchart's Directives](./flowchart.md#directives).
 
 [fixture: system-boundaries/boundary-id-title-directed-gap] [fixture:
 arrows/semantic-operator-directives] [fixture:

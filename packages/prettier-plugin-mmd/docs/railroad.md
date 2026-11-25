@@ -104,8 +104,9 @@ railroad-peg-beta%%{!heading}%%
 
 ### Indentation
 
-Use the shared flat-body printer for one configured step before ordinary rules,
-metadata, standalone comments and Root directives. The default is two spaces;
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary rules,
+metadata, standalone comments and Root directives one configured step below the
+header, as Prettier prints the lines inside a block. The default is two spaces;
 tabWidth four uses four and tabWidth zero uses zero because columns have no
 grammatical meaning. useTabs uses one tab, even at width zero. Structural
 continuation lines and standalone trivia inside a rule use two steps; a separate
@@ -1395,13 +1396,15 @@ railroad-peg-beta
 
 ### Comments
 
-Standalone comments use one body step, or column one before the header. Outside
-ordinary IR calls, inline comments keep their side and their line. An inline
-comment that touches stays touching. Preserve marks, text, tails, block
-continuation columns and source order. A line comment leaves its following
-operand or terminator on the next line. For the terminator of an ABNF rule,
-every version of mermaid.js that counts rejects `r="comment"; note ;`, since the
-comment takes the terminator (see
+Standalone comments use one body step, or column one before the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone comment line inside the diagram body, as Prettier prints the lines
+inside a block. Outside ordinary IR calls, inline comments keep their side and
+their line. An inline comment that touches stays touching. Preserve marks, text,
+tails, block continuation columns and source order. A line comment leaves its
+following operand or terminator on the next line. For the terminator of an ABNF
+rule, every version of mermaid.js that counts rejects `r="comment"; note ;`,
+since the comment takes the terminator (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Every dialect has `%%`; IR also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;`
 line comments, and PEG `#` line comments. Bare ABNF `;` is punctuation; `//` is
@@ -1685,9 +1688,12 @@ this placement, as [radar](./radar.md#global-directives),
 [wardley](./wardley.md#global-directives) place a directive in the gap of units
 that formatting splits, where no other rule keeps the layout as written (a
 protected `style` or `classDef` line, and the like). Use one body step for
-ordinary standalone directives. Do not format their contents as JSON or collect
-them before the header. Uniform added spaces can change strings, repeat
-components, numeric values and predicate operands after common removal.
+ordinary standalone directives.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. Do not format their contents as JSON or collect them before the
+header. Uniform added spaces can change strings, repeat components, numeric
+values and predicate operands after common removal.
 
 Ordinary IR call gaps use the same outside spacing and structural placement as
 comments. A directive stays beside its argument and makes a quoted leaf call

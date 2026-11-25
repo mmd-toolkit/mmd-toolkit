@@ -46,19 +46,18 @@ wardley-beta
 
 ### Indentation
 
-Indent ordinary statements, metadata and standalone trivia by one configured
-step. The default is two spaces; tabWidth four uses four and tabWidth zero uses
-zero because columns have no grammatical meaning. useTabs uses a tab even at
-width zero. A level is what Prettier's `useTabs` and `tabWidth` options say:
-Prettier prints the declarations of a CSS rule and the statements of a
-JavaScript block one level in, with two spaces by default, four at `tabWidth` 4,
-none at 0, and a tab with `useTabs`, also at width 0. The statements after the
-header stand one level deeper, as [flowchart](./flowchart.md#indentation),
-[radar](./radar.md#indentation), [architecture](./architecture.md#indentation),
-and [pie](./pie.md#indentation) print theirs
-([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)).
-Protected segments align their first line with the body; their interiors and
-later lines keep written columns.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+statements, metadata and standalone trivia one configured step below the header,
+as Prettier prints the lines inside a block. The default is two spaces; tabWidth
+four uses four and tabWidth zero uses zero because columns have no grammatical
+meaning. useTabs uses a tab even at width zero. A level is what Prettier's
+`useTabs` and `tabWidth` options say: Prettier prints the declarations of a CSS
+rule and the statements of a JavaScript block one level in, with two spaces by
+default, four at `tabWidth` 4, none at 0, and a tab with `useTabs`, also at
+width 0. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the
+statements after the header one level deeper, as Prettier prints the lines
+inside a block. Protected segments align their first line with the body; their
+interiors and later lines keep written columns.
 
 [fixture: wardley/indentation/indent-two]
 
@@ -3979,14 +3978,15 @@ print such a gap in the same way (`A%%{init: {}}%%-->B` is printed
 `A ->> %%{init: {}}%%B: x` in a sequence diagram, and `component%%{wrap}%%Glued`
 is printed `component %%{wrap}%%Glued` here). Ordinary standalone directives
 align with their body.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a directive line
-between two pipeline children of the same depth at their level, as Prettier
-prints a comment line between two lines of the same depth inside a block. At
-other standalone positions,
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the form, as [flowchart](./flowchart.md#directives) stands a directive on a line
-of its own at the level of the statements around it; multiline interiors and
-EOF-reaching unfinished endings remain written. Do not format their JSON or
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts
+a directive line between two pipeline children of the same depth at their level,
+as Prettier prints a comment line between two lines of the same depth inside a
+block. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a
+standalone directive line at the start or the end of a pipeline at the level of
+its children, as Prettier prints the lines inside a block; multiline interiors
+and EOF-reaching unfinished endings remain written. Do not format their JSON or
 reorder them: common removal joins surrounding text and can change acceptance or
 values. Native hidden directives remain separate nodes.
 
@@ -4028,7 +4028,9 @@ wardley-beta
 ### Comments
 
 Align ordinary standalone comments with the containing body and prefix comments
-at column one.
+at column one. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+the depth of a standalone comment line inside the diagram body, as Prettier
+prints the lines inside a block.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the column of a comment before the header: [flowchart](./flowchart.md#comments),
 [xychart](./xychart.md#comments), [radar](./radar.md#comments), and
@@ -4040,18 +4042,16 @@ before a comment that stands after something on its line, as Prettier prints
 pipeline comments use child depth.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
 between two pipeline children of the same depth at their level, as Prettier
-prints a comment line between two lines of the same depth inside a block. At
-other standalone positions,
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#comments) and
-[timeline](./timeline.md#comments) stand a comment on a line of its own at the
-level of the statement after it, and at the end of the text at the level of the
-last statement. In a pipeline the statements are the children: a comment before
-a child stands at the level of the children, and so does one after the last
-child. A comment line between `accDescr` and its `{` is the exception: it stands
-one level inside the statement, deeper than the `{` line that follows. Enclosing
-strings, flows and link labels retain percent text. Common comment-region joins
-keep their source columns, preventing text from changing owner.
+prints a comment line between two lines of the same depth inside a block.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line at the start or the end of a pipeline at the level of its children,
+as Prettier prints the lines inside a block. In a pipeline the statements are
+the children: a comment before a child stands at the level of the children, and
+so does one after the last child. A comment line between `accDescr` and its `{`
+is the exception: it stands one level inside the statement, deeper than the `{`
+line that follows. Enclosing strings, flows and link labels retain percent text.
+Common comment-region joins keep their source columns, preventing text from
+changing owner.
 
 [test: wardley/comments/native-separators] [fixture:
 wardley/comments/comment-standalone] [fixture:

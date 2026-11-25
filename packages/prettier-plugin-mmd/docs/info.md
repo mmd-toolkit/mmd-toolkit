@@ -41,8 +41,9 @@ info
 
 ### Indentation
 
-Place ordinary body statements and standalone comments/directives one configured
-step below the header, as the other diagram types do. `tabWidth: 0` gives zero
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary body
+statements and standalone comments/directives one configured step below the
+header, as Prettier prints the lines inside a block. `tabWidth: 0` gives zero
 spaces; `useTabs` gives one tab even at width zero, because info columns have no
 grammatical meaning. Value continuation columns, hidden interiors/closers and
 retained prefixes follow their preservation rules. YAML uses the shared positive
@@ -419,13 +420,14 @@ info showInfo
 
 ### Comments
 
-Use [shared comment placement](./pie.md#comments) to keep attachment and source:
-preheader comments start at column one, ordinary standalone body comments one
-step in, and inline comments on their line. A run of spaces and tabs before an
-inline comment becomes one space.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-before a comment that stands after something on its line, as Prettier prints
-`x = 1;   // c` as `x = 1; // c`.
+Preheader comments start at column one, ordinary standalone body comments one
+step in, and inline comments on their line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone comment line inside the diagram body, as Prettier prints the lines
+inside a block. A run of spaces and tabs before an inline comment becomes one
+space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space before a comment that stands after something on its line, as Prettier
+prints `x = 1;   // c` as `x = 1; // c`.
 
 A comment that touches what precedes it stays touching. Preserve marks, contents
 and trailing spaces. Native comments end at physical LF, keeping LS/PS. A bare
@@ -470,10 +472,12 @@ Rule 1 names no mark for a directive between two units, so
 decides: [sequence](./sequence.md#directives),
 [flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
 print such a gap in the same way. Align only an ordinary standalone start one
-body step in. Keep complete component boundaries and value-internal directives,
-multiline contents, malformed init arguments and EOF-reaching endings. Do not
-gather, reformat or delete them: an init directive can change configuration even
-though info’s Db remains empty.
+body step in. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+the depth of a standalone directive line inside the diagram body, as Prettier
+prints the lines inside a block. Keep complete component boundaries and
+value-internal directives, multiline contents, malformed init arguments and
+EOF-reaching endings. Do not gather, reformat or delete them: an init directive
+can change configuration even though info’s Db remains empty.
 
 [fixture: info/global-directives/header-to-body]
 

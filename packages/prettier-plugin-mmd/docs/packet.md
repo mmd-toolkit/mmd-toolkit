@@ -36,12 +36,13 @@ packet
 
 ### Indentation
 
-Place ordinary statements and standalone comments/global directives one
-configured step below the header. The body is flat: published rows add no source
-nesting. `tabWidth: 0` gives zero spaces, and `useTabs` gives one tab even at
-width zero, because packet columns have no grammatical meaning. Other value
-continuation columns, hidden closers and retained prefixes stay written; YAML
-uses the shared positive minimum.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+statements and standalone comments/global directives one configured step below
+the header, as Prettier prints the lines inside a block. The body is flat:
+published rows add no source nesting. `tabWidth: 0` gives zero spaces, and
+`useTabs` gives one tab even at width zero, because packet columns have no
+grammatical meaning. Other value continuation columns, hidden closers and
+retained prefixes stay written; YAML uses the shared positive minimum.
 
 [fixture: packet/indentation/indent-default]
 
@@ -491,7 +492,10 @@ packet
 ### Comments
 
 Ordinary standalone comments align one body step in, or at column one before the
-header. Inline comments keep their line. A comment that touches stays touching.
+header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+depth of a standalone comment line inside the diagram body, as Prettier prints
+the lines inside a block. Inline comments keep their line. A comment that
+touches stays touching.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing padding.
@@ -531,9 +535,11 @@ directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
 contact is broken. Ordinary standalone starts align one body step in; multiline
-interiors and EOF-reaching endings stay written. Common removal supplies no
-separator, and deleting init can change row configuration. Native hidden
-DIRECTIVE stays a separate owned node.
+interiors and EOF-reaching endings stay written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. Common removal supplies no separator, and deleting init can
+change row configuration. Native hidden DIRECTIVE stays a separate owned node.
 
 [fixture: packet/global-directives/header-to-body]
 

@@ -20,12 +20,13 @@ organized and checked is described in
 
 The statements after the header stand one level deeper than the header.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
-of a block (`loop`, `alt`, `opt`, `par`, `par_over`, `critical`, `break`,
-`rect`) and the participants of a `box` one level deeper than the line that
-opens it and `end` at the level of that line, as Prettier prints the lines
-inside a block. `else`, `and`, and `option` close one body of a block and open
-the next, and rule 1 puts them at the level of that line too, as Prettier prints
-`} else {` at the level of `if`.
+after the header one level deeper than the header, the statements of a block
+(`loop`, `alt`, `opt`, `par`, `par_over`, `critical`, `break`, `rect`) and the
+participants of a `box` one level deeper than the line that opens it and `end`
+at the level of that line, as Prettier prints the lines inside a block. `else`,
+`and`, and `option` close one body of a block and open the next, and rule 1 puts
+them at the level of that line too, as Prettier prints `} else {` at the level
+of `if`.
 
 [fixture: indentation/blocks] [fixture: indentation/sections] [fixture:
 indentation/other-blocks-kept]
@@ -1152,8 +1153,8 @@ sequenceDiagram
 A comment on a line of its own, `%%`, `#`, or `%`, stands at the level of the
 statements around it, and its text is kept as written.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-comment line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block.
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/kept] [corpus fixture:
 sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
@@ -1743,9 +1744,8 @@ sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment]
 
 A directive on a line of its own stands at the level of the statements around
 it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-directive line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. At other positions it follows
-[flowchart](./flowchart.md#directives). A directive within a printed line is
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive within a printed line is
 placed as in a flowchart: the gap is printed as without the directive, and the
 directive stands after its space and touches the unit that follows it.
 

@@ -111,11 +111,12 @@ cynefin-beta
 ### Indentation
 
 Use one configured step for body statements.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts domain items one
-level deeper than their domain line, as Prettier prints the lines inside a
-block. Columns do not define parents: the authored item lists do. tabWidth zero
-adds no spaces; useTabs adds one tab per step even at width zero. Other value
-continuations and protected interiors retain their written columns.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts body statements
+one level deeper than the header and domain items one level deeper than their
+domain line, as Prettier prints the lines inside a block. Columns do not define
+parents: the authored item lists do. tabWidth zero adds no spaces; useTabs adds
+one tab per step even at width zero. Other value continuations and protected
+interiors retain their written columns.
 
 [fixture: cynefin/indentation/indent-two]
 
@@ -844,11 +845,11 @@ that were on the same line, a directive in their gap moves with the following
 unit: its right boundary stays touching or separated, while its left contact is
 broken. Ordinary standalone lines align with their body, including item depth
 between items. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a
-directive line between two items of the same depth at their level, as Prettier
-prints a comment line between two lines of the same depth inside a block.
-Multiline interiors and unfinished EOF endings remain written. Reordering
-directives or editing their JSON can change the text that common removal joins;
-native hidden directives remain separate forms.
+standalone directive line inside a block one level deeper than the line that
+opens it, as Prettier prints the lines inside a block. Multiline interiors and
+unfinished EOF endings remain written. Reordering directives or editing their
+JSON can change the text that common removal joins; native hidden directives
+remain separate forms.
 
 [fixture: cynefin/global-directives/header-to-body]
 
@@ -883,10 +884,10 @@ cynefin-beta
 
 Align ordinary standalone comments with their body, item comments at item depth
 and prefix comments at column one.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
-between two items of the same depth at their level, as Prettier prints a comment
-line between two lines of the same depth inside a block. Inline comments keep
-their line, and a run of spaces and tabs before one becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. Inline comments keep their line, and a
+run of spaces and tabs before one becomes one space.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.

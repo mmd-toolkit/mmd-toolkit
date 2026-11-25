@@ -47,7 +47,9 @@ wardley-beta
 
 ### 字下げ
 
-普通の文、メタデータ、独立した注釈は設定の 1 段だけ字下げします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、普通の文、メタデータ、
+独立した注釈は、見出しより設定の 1 段だけ深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 既定は空白 2 つ、`tabWidth` 4 は 4 つ、0 は 0 です。
 列に文法上の意味がないためです。
 `useTabs` は幅 0 でもタブを使います。
@@ -56,11 +58,9 @@ Prettier は、
 CSS の規則の宣言と JavaScript のブロックの文を 1 段内側に印字します。
 既定は空白 2 つ、`tabWidth` 4 は 4 つ、0 は 0 で、`useTabs` はタブで、
 幅 0 でもタブです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 見出しの後の文は 1 段深く置きます。
-[flowchart](./flowchart.ja.md#字下げ)、[radar](./radar.ja.md#indentation)、
-[architecture](./architecture.ja.md#indentation)、
-[pie](./pie.ja.md#indentation)も、
-そう印字します（[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)）。
+Prettier がブロックの中の行をそう印字するためです。
 保護区間の最初の行は本文の段に揃え、内部と後続行の列は保ちます。
 
 [fixture: wardley/indentation/indent-two]
@@ -3161,14 +3161,16 @@ sequence は `A->>%%{init: {}}%%B: x` を `A ->> %%{init: {}}%%B: x` に印字�
 ここでは `component%%{wrap}%%Glued` を `component %%{wrap}%%Glued`
 に印字します）。
 普通の独立行は本文の段に揃えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+図の本文の中の独立したディレクティブ行の深さを与えます。
+Prettier がブロックの中の行をそう印字するためです。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 pipeline の同じ深さの 2 つの子文の間のディレクティブ行を、
 それらの子文と同じ段に置きます。
 Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
-ほかの独立行の位置は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)の場合です。
-[flowchart](./flowchart.ja.md#ディレクティブ)も、単独の行のディレクティブを、
-周りの文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+pipeline の先頭や末尾の単独のディレクティブ行を、子文と同じ段に置きます。
+Prettier がブロックの中の行をそう印字するためです。
 複数行の内部と EOF に達する未完の終端は保ちます。
 JSON 整形や順の入れ替えはしません。
 共通除去が両側の文字を結び、受理や値を変えることがあるためです。
@@ -3212,6 +3214,9 @@ wardley-beta
 ### コメント
 
 普通の独立コメントは所属する本文の段、見出し前は第 1 列に揃えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+図の本文の中の独立したコメント行の深さを与えます。
+Prettier がブロックの中の行をそう印字するためです。
 見出しの前のコメントの桁は、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [flowchart](./flowchart.ja.md#コメント)、[xychart](./xychart.ja.md#コメント)、
@@ -3227,11 +3232,9 @@ Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 pipeline の同じ深さの 2 つの子文の間のコメント行を、
 それらの子文と同じ段に置きます。
 Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
-ほかの独立行の位置は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#コメント) と [timeline](./timeline.ja.md#コメント)
-も、自分の行にあるコメントを後ろの文の段に置き、
-テキストの終わりでは最後の文の段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+pipeline の先頭や末尾の単独のコメント行を、子文と同じ段に置きます。
+Prettier がブロックの中の行をそう印字するためです。
 pipeline の中の文は子文です。
 子文の前のコメントも、最後の子文の後のコメントも、子文の段に置きます。
 `accDescr` と `{` の間のコメント行は例外で、文の中の 1 段深い所に置き、

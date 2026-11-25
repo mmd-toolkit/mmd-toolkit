@@ -18,7 +18,9 @@ fixture の置き方と確かめ方は、
 
 ### 字下げ
 
-ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、ヘッダーの後の文は、
+ヘッダーより 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: indentation/written-indentation-dropped]
 [fixture: indentation/header-v2-kept]
@@ -1078,8 +1080,8 @@ classDiagram
 行に単独のコメントは、周りの文、本体の中ではメンバーの行と同じ段に置き、
 本文は書かれたまま残します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
-ブロックの中で同じ段の行の間にある単独のコメント行は、その行と同じ段に置きます。
-Prettier が ブロックの中のコメント行をそう印字するためです。
+ブロックの中の単独のコメント行は、ブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: comments/kept] [fixture: comments/before-header]
 [fixture: comments/in-namespace] [fixture: comments/last-in-body]
@@ -1163,10 +1165,8 @@ mermaid.js は、文の後のコメントの後の改行をコメントの一部
 
 行に単独のディレクティブは周りの文と同じ段に置きます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
-ブロックの中で同じ段の行の間にある単独のディレクティブ行は、
-その行と同じ段に置きます。
-Prettier が ブロックの中のコメント行をそう印字するためです。
-それ以外の位置では、flowchart と同じです。
+ブロックの中の単独のディレクティブ行は、ブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 文の行の中では、flowchart と同じく、隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 

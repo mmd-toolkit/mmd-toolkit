@@ -28,7 +28,9 @@ period と、そのほかのすべての文です。
 timeline の木は平らで、文のまとまりを表す block を持たないので、文の段は、
 ほかの文の中での位置で決まります。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
-section の period とそのほかのすべての文を `section` の行より 1 段深く置きます。
+ヘッダーの後の文はヘッダーより 1 段深く、
+section の period とそのほかのすべての文を、
+`section` の行より 1 段深く置きます。
 Prettier が ブロックの中の行を印字する形です。
 
 [fixture: indentation/sections-and-periods-nested]
@@ -1418,16 +1420,9 @@ timeline
 `section` の前のコメントはその段に、
 period の前のコメントは period の段に置きます。
 テキストの末尾にあるときは、最後の文の段に置きます。
-これらは journey と同じ規則です。
-section の中の同じ深さの 2 つの文の間の独立したコメント行は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
-それらの文と同じ段に置きます。
+ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
 Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
-ほかの独立行の位置は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[gantt](./gantt.ja.md#コメント)、[block](./block.ja.md#コメント)、
-[quadrant](./quadrant.ja.md#コメント)も、
-コメント行を後ろの文と同じ段に置きます。
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
@@ -1527,11 +1522,10 @@ timeline
 ### 指令
 
 単独の行にある指令は、後ろの文と同じ段に置きます。
-section の中の同じ深さの 2 つの文の間の独立したディレクティブ行は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
-それらの文と同じ段に置きます。
+ブロックの中の単独のディレクティブ行は、
+そのブロックを開く行より 1 段深く置きます。
 Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
-それ以外の独立した行では、journey と同じ理由です。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。

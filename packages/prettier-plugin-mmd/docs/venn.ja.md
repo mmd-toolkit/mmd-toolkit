@@ -116,11 +116,9 @@ venn-beta
 [fixture: venn/indentation/tab-width-0-internal-marker]
 [fixture: venn/indentation/tab-width-0-use-tabs]
 
-`set`、`union`、`style`、`title` の文は、
-ヘッダーより設定の1段だけ深く置きます（`tabWidth`、`useTabs`）。
-ほかの図の種類の文と同じで、mermaid.js の文書の例も同じです。
-文書の 8 つの例では、これらの文の 39 行がすべて字下げされ、
-1列目の行はありません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、`set`、`union`、`style`、
+`title` の文は、ヘッダーより設定の1段だけ深く置きます（`tabWidth`、`useTabs`）。
+Prettier がブロックの中の行をそう印字するためです。
 暗黙の text は、さらに1段深くします。
 mermaid.js は `set`、`union`、`style`、`title` の前の字下げを読み飛ばすので、
 字下げは読みを変えません。
@@ -131,6 +129,11 @@ mermaid.js は `set`、`union`、`style`、`title` の前の字下げを読み�
 モードが有効な間は正の字下げが暗黙の構文を選び、入れ子は表しません。
 宣言がモードを有効にし、後の通常の行頭の文が解除し、次の宣言が再び有効にします。
 文の前のコメント行とディレクティブの行は、その文と同じ位置に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、本文の文がすべて `set`、
+`union`、`style`、`title` のとき、単独のコメント行とディレクティブ行は、
+ヘッダーより 1 段深く置きます。
+最初の文の前と最後の文の後も同じです。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: venn/indentation/ordinary-statements-stand-one-step-deep]
 [fixture: venn/indentation/explicit-text-stays-at-the-header]
@@ -288,7 +291,12 @@ venn-beta
 
 ### Comments
 
-単独のコメントは次の文にそろえ、末尾では最後の文にそろえて対応を示します。
+単独のコメントは次の文にそろえ、末尾では最後の文にそろえます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、本文の文がすべて `set`、
+`union`、`style`、`title` のとき、単独のコメント行は、
+ヘッダーより 1 段深く置きます。
+最初の文の前と最後の文の後も同じです。
+Prettier がブロックの中の行をそう印字するためです。
 接する後続コメントは接したまま残します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
 同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
@@ -1026,7 +1034,12 @@ venn-beta
 
 ### Directives
 
-単独のディレクティブは近くの文にそろえて対応を示します。
+単独のディレクティブは近くの文にそろえます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、本文の文がすべて `set`、
+`union`、`style`、`title` のとき、単独のディレクティブ行は、
+ヘッダーより 1 段深く置きます。
+最初の文の前と最後の文の後も同じです。
+Prettier がブロックの中の行をそう印字するためです。
 行内のディレクティブは行、順序、内容を保ち、隙間の中では、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 先頭のディレクティブは暗黙と明示の text を分ける、

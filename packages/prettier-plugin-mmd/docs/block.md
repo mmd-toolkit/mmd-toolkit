@@ -21,16 +21,17 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
-of a composite one level deeper than its `block:` line and `end` at the level of
-`block:`, as Prettier prints the lines inside a block. A level is what
-Prettier's `useTabs` and `tabWidth` options say: two spaces by default. The
-indentation written in the input is not kept: whitespace at the start of a line
-is nothing to mermaid.js, so the printer chooses it from the structure alone,
-and every text has one form. The nesting shows where a composite starts and
-ends, which `block:` and `end` alone would not once composites nest deeply. The
-header, and a comment line before it, stand at the first column, also where
+after the header one level deeper than the header, as Prettier prints the lines
+inside a block. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts
+the statements of a composite one level deeper than its `block:` line and `end`
+at the level of `block:`, as Prettier prints the lines inside a block. A level
+is what Prettier's `useTabs` and `tabWidth` options say: two spaces by default.
+The indentation written in the input is not kept: whitespace at the start of a
+line is nothing to mermaid.js, so the printer chooses it from the structure
+alone, and every text has one form. The nesting shows where a composite starts
+and ends, which `block:` and `end` alone would not once composites nest deeply.
+The header, and a comment line before it, stand at the first column, also where
 whitespace was written before them. A gap of a kind that Prettier does not have
 takes the form that the other diagram types print for it
 ([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)), and
@@ -1285,16 +1286,11 @@ stands at the level of the statement after it, and its text and its mark are
 kept as written: a comment line after the last statement stays after it, and one
 before the header stands at the first column.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-comment line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. For the other positions,
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
-a comment line at the level of the statements around it. A comment line before
-the `end` of a composite block stands at the level of the statements inside it,
-as [class](./class.md#comments) puts a comment line at the level of the member
-lines in a body, and [state](./state.md#comments) at the level of the statements
-of a composite state. A `%%` that does not start a line is the text of an id,
-and stays where it is, with the statement that it starts (see [Rows](#rows)).
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A comment line before the `end` of a
+composite block stands at the level of the statements inside it. A `%%` that
+does not start a line is the text of an id, and stays where it is, with the
+statement that it starts (see [Rows](#rows)).
 
 [fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
 comments/comment-before-the-header] [fixture:
@@ -1363,8 +1359,8 @@ whitespace that remains is that of the two sides together. A directive on a line
 of its own stands at the level of the statement after it, and one before the
 header stands at the first column, as a comment line does.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-directive line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block.
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: directives/directive-before-the-header] [fixture:
 directives/directive-line-at-the-level-of-the-next-statement] [fixture:
@@ -1621,36 +1617,36 @@ on those lines are kept as written. What follows the comment line decides the
 rest. After `style a fill:#F00`, a U+2028, `%% c`, and a line break, block
 prints:
 
-| What follows the comment line                                                                  | The U+2028 or U+2029 and the lines                                                | The color |
-| ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------- |
-| Nothing, to the end of the text                                                                | dropped; the comment line on a line of its own, as on a plain line                | `#f00`    |
-| Comment lines, to the end of the text                                                          | dropped; each comment line on a line of its own, as on a plain line               | `#f00`    |
-| An empty line, to the end of the text                                                          | dropped; the comment line on a line of its own, as on a plain line                | `#f00`    |
-| A whitespace-only line, to the end of the text                                                 | dropped; the comment line on a line of its own, as on a plain line                | `#f00`    |
-| An empty line and a comment line, to the end of the text                                       | dropped; every line on a line of its own, as on a plain line, the empty line kept | `#f00`    |
-| A statement at once, touching (`b`) or after whitespace (` y`)                                 | kept; the statement stays on the line after the comment line, as written          | `#F00`    |
-| Two comment lines, and a statement                                                             | kept; the statement stays on the line after the comment lines, as written         | `#F00`    |
-| An empty line, and a statement                                                                 | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
-| A comment line, an empty line, and a statement                                                 | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
-| A whitespace-only line, and a statement                                                        | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
-| A directive line, to the end of the text                                                       | kept                                                                              | `#f00`    |
-| A directive line, and a statement                                                              | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
-| A directive line and a comment line, to the end of the text                                    | dropped; every line on a line of its own, as on a plain line                      | `#f00`    |
-| A comment line, a directive line, and a comment line, to the end of the text                   | dropped; every line on a line of its own, as on a plain line                      | `#f00`    |
-| An empty line, a directive line, and a comment line, to the end of the text                    | dropped; every line on a line of its own, as on a plain line, the empty line kept | `#f00`    |
-| A directive line, an empty line, and a comment line, to the end of the text                    | dropped; every line on a line of its own, as on a plain line, the empty line kept | `#f00`    |
-| Two directive lines and a comment line, to the end of the text                                 | dropped; every line on a line of its own, as on a plain line                      | `#f00`    |
-| A directive line, a comment line, and a statement                                              | kept; the statement stays on the line after the comment line, as written          | `#F00`    |
-| A directive line, a comment line, and a directive line, to the end                             | kept                                                                              | `#f00`    |
-| Two comment lines, and a directive line, to the end of the text                                | kept                                                                              | `#f00`    |
-| An empty line, and a directive line, to the end of the text                                    | kept; the directive line stands apart, at the level of the statements             | `#f00`    |
-| A directive line and an empty line, to the end of the text                                     | kept; the empty line at the end is dropped                                        | `#f00`    |
-| A directive and a comment on one line, to the end of the text (`%%{y}%%%% d`, `%%{y}%%  %% d`) | dropped; the line on a line of its own, as on a plain line                        | `#f00`    |
-| A comment line that holds a directive (`%% d%%{y}%%`), to the end of the text                  | dropped; the line on a line of its own, as on a plain line                        | `#f00`    |
-| A comment line, a directive line, and a statement                                              | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
-| An empty line, a comment line, and a statement                                                 | kept; the statement stays on the line after the comment line, as written          | `#F00`    |
-| A line that holds only a `;` (also `;b` and `%%{y}%%;`)                                        | kept; the line stays on the line after the comment line, as written               | `#F00`    |
-| An empty line, and a line that holds only a `;`                                                | kept; the line stands apart, at the level of the statements                       | `#f00`    |
+| What follows the comment line                                                                  | The U+2028 or U+2029 and the lines                                                                                                       | The color |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Nothing, to the end of the text                                                                | dropped; the comment line on a line of its own, as on a plain line                                                                       | `#f00`    |
+| Comment lines, to the end of the text                                                          | dropped; each comment line on a line of its own, as on a plain line                                                                      | `#f00`    |
+| An empty line, to the end of the text                                                          | dropped; the comment line on a line of its own, as on a plain line                                                                       | `#f00`    |
+| A whitespace-only line, to the end of the text                                                 | dropped; the comment line on a line of its own, as on a plain line                                                                       | `#f00`    |
+| An empty line and a comment line, to the end of the text                                       | dropped; every line on a line of its own, as on a plain line, the empty line kept                                                        | `#f00`    |
+| A statement at once, touching (`b`) or after whitespace (` y`)                                 | kept; the statement stays on the line after the comment line, as written                                                                 | `#F00`    |
+| Two comment lines, and a statement                                                             | kept; the statement stays on the line after the comment lines, as written                                                                | `#F00`    |
+| An empty line, and a statement                                                                 | kept; the statement stands apart, at the level of the statements                                                                         | `#f00`    |
+| A comment line, an empty line, and a statement                                                 | kept; the statement stands apart, at the level of the statements                                                                         | `#f00`    |
+| A whitespace-only line, and a statement                                                        | kept; the statement stands apart, at the level of the statements                                                                         | `#f00`    |
+| A directive line, to the end of the text                                                       | kept                                                                                                                                     | `#f00`    |
+| A directive line, and a statement                                                              | kept; the statement stands apart, at the level of the statements                                                                         | `#f00`    |
+| A directive line and a comment line, to the end of the text                                    | dropped; every line on a line of its own, as on a plain line                                                                             | `#f00`    |
+| A comment line, a directive line, and a comment line, to the end of the text                   | dropped; every line on a line of its own, as on a plain line                                                                             | `#f00`    |
+| An empty line, a directive line, and a comment line, to the end of the text                    | dropped; every line on a line of its own, as on a plain line, the empty line kept                                                        | `#f00`    |
+| A directive line, an empty line, and a comment line, to the end of the text                    | dropped; every line on a line of its own, as on a plain line, the empty line kept                                                        | `#f00`    |
+| Two directive lines and a comment line, to the end of the text                                 | dropped; every line on a line of its own, as on a plain line                                                                             | `#f00`    |
+| A directive line, a comment line, and a statement                                              | kept; the statement stays on the line after the comment line, as written                                                                 | `#F00`    |
+| A directive line, a comment line, and a directive line, to the end                             | kept                                                                                                                                     | `#f00`    |
+| Two comment lines, and a directive line, to the end of the text                                | kept                                                                                                                                     | `#f00`    |
+| An empty line, and a directive line, to the end of the text                                    | kept; the directive line stands apart; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts it at the level of the statements | `#f00`    |
+| A directive line and an empty line, to the end of the text                                     | kept; the empty line at the end is dropped                                                                                               | `#f00`    |
+| A directive and a comment on one line, to the end of the text (`%%{y}%%%% d`, `%%{y}%%  %% d`) | dropped; the line on a line of its own, as on a plain line                                                                               | `#f00`    |
+| A comment line that holds a directive (`%% d%%{y}%%`), to the end of the text                  | dropped; the line on a line of its own, as on a plain line                                                                               | `#f00`    |
+| A comment line, a directive line, and a statement                                              | kept; the statement stands apart, at the level of the statements                                                                         | `#f00`    |
+| An empty line, a comment line, and a statement                                                 | kept; the statement stays on the line after the comment line, as written                                                                 | `#F00`    |
+| A line that holds only a `;` (also `;b` and `%%{y}%%;`)                                        | kept; the line stays on the line after the comment line, as written                                                                      | `#F00`    |
+| An empty line, and a line that holds only a `;`                                                | kept; the line stands apart, at the level of the statements                                                                              | `#f00`    |
 
 The U+2028 or U+2029 is dropped where no statement follows and the last line
 that is not blank holds a comment (a comment line, also one that holds a

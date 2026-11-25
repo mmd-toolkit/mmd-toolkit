@@ -49,17 +49,14 @@ architecture-beta
 
 ### Indentation
 
-Indent ordinary declarations, edges, alignments, common statements and
-standalone trivia one configured step. The start of a line is no place of rule
-1, so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#indentation),
-[sequence](./sequence.md#indentation), [gantt](./gantt.md#indentation),
-[pie](./pie.md#indentation), and [info](./info.md#indentation) put the
-statements of the body one level below the header. The body is flat: `in` is a
-reference, not nesting. `tabWidth: 0` gives zero spaces; `useTabs` gives one tab
-even at width zero, because architecture columns have no grammatical meaning. A
-level is what Prettier's `tabWidth` and `useTabs` options say, as
-[pie](./pie.md#indentation), [packet](./packet.md#indentation),
+Ordinary declarations, edges, alignments, common statements and standalone
+trivia stand one configured step below the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts these lines one
+level deeper than the header, as Prettier prints the lines inside a block. The
+body is flat: `in` is a reference, not nesting. `tabWidth: 0` gives zero spaces;
+`useTabs` gives one tab even at width zero, because architecture columns have no
+grammatical meaning. A level is what Prettier's `tabWidth` and `useTabs` options
+say, as [pie](./pie.md#indentation), [packet](./packet.md#indentation),
 [gitgraph](./gitgraph.md#indentation), [info](./info.md#indentation),
 [radar](./radar.md#indentation), and [wardley](./wardley.md#indentation) print
 it, and as Prettier indents JavaScript: in `if (a) { b }` there are zero spaces
@@ -3996,12 +3993,10 @@ C" ["D
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. Rule 1 gives no form here, since the start of a line is no place that
-its table names ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [flowchart](./flowchart.md#comments) and [wardley](./wardley.md#comments)
-align a comment on a line of its own with the body in the same way. Inline
-comments keep their line. A comment that touches stays touching.
+header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a
+standalone comment line inside a block one level deeper than the line that opens
+it, as Prettier prints the lines inside a block. Inline comments keep their
+line. A comment that touches stays touching.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing padding
@@ -4052,11 +4047,11 @@ decides, as [gantt](./gantt.md#directives) and
 formatting splits with the following unit, keep its right-side contact or
 separation, and break its left contact, where no other rule keeps the layout as
 written. Ordinary standalone starts align one body step in; multiline interiors
-and EOF-reaching endings stay written. A directive on a line of its own stands
-at the level of the statements around it, as in
-[flowchart](./flowchart.md#directives), [sequence](./sequence.md#directives),
-and [gantt](./gantt.md#directives). Common removal joins surrounding text, so
-deleting component-boundary whitespace can reject a declaration. Preserve
+and EOF-reaching endings stay written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. Common removal joins surrounding text,
+so deleting component-boundary whitespace can reject a declaration. Preserve
 component/value-internal directives rather than treating their opaque text as
 JSON.
 

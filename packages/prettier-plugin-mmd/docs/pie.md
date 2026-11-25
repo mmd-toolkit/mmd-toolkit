@@ -38,13 +38,13 @@ pie showData
 
 ### Indentation
 
-Reuse [XY chart indentation](./xychart.md#indentation): ordinary statements and
-standalone comments/directives stand one configured step below the header, as
-the other diagram types do. A pie section is a slice and adds no nested level.
-`tabWidth: 0` gives zero body spaces; `useTabs` gives one tab, including with
-width zero, because pie columns have no grammatical meaning. Other value
-continuation columns and hidden closers retain their source columns; YAML alone
-uses the shared positive minimum.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+statements and standalone comments/directives one configured step below the
+header, as Prettier prints the lines inside a block. A pie section is a slice
+and adds no nested level. `tabWidth: 0` gives zero body spaces; `useTabs` gives
+one tab, including with width zero, because pie columns have no grammatical
+meaning. Other value continuation columns and hidden closers retain their source
+columns; YAML alone uses the shared positive minimum.
 
 [fixture: pie/indentation/indent-default] [fixture: pie/indentation/indent-four]
 [fixture: pie/indentation/indent-zero] [fixture: pie/indentation/indent-tabs]
@@ -626,10 +626,13 @@ pie
 An inline comment stays on its line. An inline comment that touches stays
 touching. Standalone comments align with body statements, or at column one
 before the header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives one space before a comment that stands after something on its line, as
-Prettier prints `x = 1;   // c` as `x = 1; // c`. The whitespace before a `%%`
-or a `%%{}%%` that follows an `accTitle` value is the exception: the oldest
-version that counts reads it as part of the title (see
+gives the depth of a standalone comment line inside the diagram body, as
+Prettier prints the lines inside a block.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. The whitespace before a `%%` or a `%%{}%%`
+that follows an `accTitle` value is the exception: the oldest version that
+counts reads it as part of the title (see
 [Accessibility lines](#accessibility-lines)). Keep bare/triple-percent marks and
 trailing comment spaces. Pie native comments end at LF, retaining LS/PS inside
 them, because pie does not treat them as separators: ending a comment at one

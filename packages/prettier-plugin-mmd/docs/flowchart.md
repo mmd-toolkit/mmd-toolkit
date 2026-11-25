@@ -22,9 +22,10 @@ The statements after the header stand one level deeper than the header.
 of a subgraph one level deeper than its `subgraph` line and `end` at the level
 of `subgraph`, as Prettier prints the lines inside a block. A level follows
 Prettier's `useTabs` and `tabWidth` options, subject to the minimum below: two
-spaces by default, as in the other languages that Prettier formats. The
-statements after the header stand one level deeper, as the documentation of
-mermaid.js writes them.
+spaces by default, as in the other languages that Prettier formats.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, as Prettier prints the lines
+inside a block.
 
 [fixture: indentation/use-tabs]
 
@@ -2831,10 +2832,8 @@ flowchart LR
 A comment on a line of its own stands at the level of the statements around it,
 before the header too, where it starts the line.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-comment line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. At other positions, a comment
-belongs to no statement, so it takes the level of its neighbours, which is where
-a reader looks for it.
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/only-comment-in-subgraph] [fixture: comments/after-end]
 [fixture: comments/tab-indented-and-consecutive] [fixture:
@@ -2956,9 +2955,8 @@ empty line, and a line of a semicolon]
 
 A directive (`%%{ ... }%%`) on a line of its own stands at the level of the
 statements around it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-puts a standalone directive line between lines of the same depth inside a block
-at their level, as Prettier prints a comment line inside a block. At other
-positions it follows the same reason as a comment.
+puts a standalone directive line inside a block one level deeper than the line
+that opens it, as Prettier prints the lines inside a block.
 
 [fixture: directives/own-line-in-subgraph] [fixture:
 directives/several-on-own-line] [fixture: directives/multi-line-on-own-line]

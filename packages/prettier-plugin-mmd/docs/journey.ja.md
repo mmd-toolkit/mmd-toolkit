@@ -25,7 +25,8 @@ fixture の置き方と確かめ方は、
 journey の木は平らで、文のブロックがないので、文の段は、
 ほかの文の中での位置で決まります。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
-section のタスクとそのほかのどの文も `section` の行より 1 段深く置きます。
+ヘッダーの後の文はヘッダーより 1 段深く、section のタスクとそのほかのどの文も、
+`section` の行より 1 段深く置きます。
 Prettier が ブロックの中の行を印字する形です。
 
 [fixture: indentation/sections-and-tasks-nested]
@@ -942,15 +943,9 @@ journey
 テキストと印は書かれたまま残します。
 `section` の前のコメントは `section` の段、タスクの前のコメントはタスクの段、
 テキストの末尾のコメントは最後の文の段です。
-section の中の同じ深さの 2 つの文の間の独立したコメント行は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
-それらの文と同じ段に置きます。
+ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
 Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
-ほかの独立行の位置は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[gantt](./gantt.ja.md#コメント)、[block](./block.ja.md#コメント)、
-[quadrant](./quadrant.ja.md#コメント)も、
-コメント行を後ろの文と同じ段に置きます。
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
@@ -1027,9 +1022,9 @@ journey # c
 ### ディレクティブ
 
 単独の行のディレクティブは、その次の文と同じ段に置きます。
-section の中の同じ深さの 2 つの文の間の独立したディレクティブ行は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
-それらの文と同じ段に置きます。
+ブロックの中の単独のディレクティブ行は、
+そのブロックを開く行より 1 段深く置きます。
 Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、

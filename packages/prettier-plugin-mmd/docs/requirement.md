@@ -22,7 +22,8 @@ The statements after the header stand one level deeper than the header. The
 fields of a requirement or an element stand one level deeper than the line of
 the statement, one on each line, and the `}` that closes the body stands on a
 line of its own, at the level of that line.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the fields of a
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, and the fields of a
 requirement or an element one level deeper than the statement's line and its
 closing `}` at that line's level, as Prettier prints the lines inside a block.
 
@@ -1678,13 +1679,8 @@ end of the line. A comment on a line of its own stands at the level of the
 statement after it, in a body at the level of the fields, and its text and its
 mark are kept as written.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-comment line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. For the other positions,
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [c4](./c4.md#comments) and [quadrant](./quadrant.md#comments) align a
-standalone comment with the following statement, or with the last statement at
-the end of the text, and put one before the header at column one, and
-[c4](./c4.md#indentation) aligns one in a body with the statements around it.
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/lines-at-statement-level] [fixture:
 comments/single-mark-lines-kept]
@@ -1811,11 +1807,10 @@ requirementDiagram
 A directive on a line of its own stands at the level of the statements around
 it, in a body at the level of the fields.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-directive line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. A directive on the line of a
-statement is placed as in a flowchart: the gap is printed as without the
-directive, and the directive stands after its space and touches the unit that
-follows it.
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive on the line of a statement
+is placed as in a flowchart: the gap is printed as without the directive, and
+the directive stands after its space and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/in-body] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]

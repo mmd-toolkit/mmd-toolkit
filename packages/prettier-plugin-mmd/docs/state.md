@@ -22,8 +22,9 @@ The statements after the header stand one level deeper than the header. The
 statements of a composite state stand one level deeper than the line that opens
 it, and its `}` stands on a line of its own at the level of that line.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
-of a composite state one level deeper than the line that opens it and its
-closing `}` at that line's level, as Prettier prints the lines inside a block.
+after the header one level deeper than the header, and the statements of a
+composite state one level deeper than the line that opens it and its closing `}`
+at that line's level, as Prettier prints the lines inside a block.
 
 [fixture: indentation/composite-states]
 
@@ -1428,12 +1429,8 @@ stateDiagram-v2
 A comment on a line of its own, `%%` or `#`, stands at the level of the
 statements around it, and its text is kept as written.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-comment line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. For the other positions,
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [flowchart](./flowchart.md#comments), [class](./class.md#comments), and
-[sequence](./sequence.md#comments) put a comment line at the level of the
-statements around it.
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/kept] [fixture: comments/text-kept] [fixture:
 comments/before-closing-brace]
@@ -1489,9 +1486,8 @@ stateDiagram-v2
 
 A directive on a line of its own stands at the level of the statements around
 it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-directive line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. At other positions it follows
-[flowchart](./flowchart.md#directives). A directive within a printed line is
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive within a printed line is
 placed as in a flowchart: the gap is printed as without the directive, and the
 directive stands after its space and touches the unit that follows it.
 

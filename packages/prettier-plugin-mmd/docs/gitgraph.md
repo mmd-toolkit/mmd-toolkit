@@ -89,12 +89,14 @@ gitGraph
 
 ### Indentation
 
-Put the header at column one and ordinary body statements, standalone comments
-and global directives one configured step below it. The flat history has no
-extra level after branch. `tabWidth: 0` gives zero spaces; `useTabs` gives one
-tab even at width zero, because gitgraph columns have no grammatical meaning.
-This does not alter other value continuation columns, hidden closers or
-protected segments.
+Put the header at column one.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary body
+statements, standalone comments and global directives one configured step below
+it, as Prettier prints the lines inside a block. The flat history has no extra
+level after branch. `tabWidth: 0` gives zero spaces; `useTabs` gives one tab
+even at width zero, because gitgraph columns have no grammatical meaning. This
+does not alter other value continuation columns, hidden closers or protected
+segments.
 
 [fixture: gitgraph/indentation/indent-two] [fixture:
 gitgraph/indentation/indent-four] [fixture: gitgraph/indentation/indent-zero]
@@ -644,14 +646,16 @@ gitGraph
 ### Comments
 
 Align ordinary standalone comments one body step down, or at column one before
-the header. Inline comments stay on the same line. A comment that touches stays
-touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
-space before a comment that stands after something on its line, as Prettier
-prints `x = 1;   // c` as `x = 1; // c`. Keep marks, content and trailing
-whitespace for author attachment. Native comments keep LS/PS as content;
-strings/blocks own percent text while line values stop before it. Common removed
-regions retain complete source spans. Retained prefixes override ordinary
-alignment.
+the header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+depth of a standalone comment line inside the diagram body, as Prettier prints
+the lines inside a block. Inline comments stay on the same line. A comment that
+touches stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Keep marks, content and trailing whitespace
+for author attachment. Native comments keep LS/PS as content; strings/blocks own
+percent text while line values stop before it. Common removed regions retain
+complete source spans. Retained prefixes override ordinary alignment.
 
 [fixture: gitgraph/comments/comment-placement] [fixture:
 gitgraph/comments/comment-bare-triple] [fixture:
@@ -682,8 +686,11 @@ place a directive as under [Directives](./flowchart.md#directives). When
 formatting splits units that were on the same line, a directive in their gap
 moves with the following unit: its right boundary stays touching or separated,
 while its left contact is broken. Ordinary standalone starting indentation
-becomes one body step. Preserve directives inside strings, word/colon boundaries
-and EOF-reaching unclosed forms. Their opaque text and independent configuration
+becomes one body step.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. Preserve directives inside strings, word/colon boundaries and
+EOF-reaching unclosed forms. Their opaque text and independent configuration
 effect must not be reconstructed. Atomic cuts remain specified failures.
 
 [fixture: gitgraph/global-directives/header-to-body]

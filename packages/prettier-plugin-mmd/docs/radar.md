@@ -124,11 +124,12 @@ radar-beta
 
 ### Indentation
 
-Use the shared flat-body printer: ordinary statements, standalone comments and
-Root directives stand one configured step in. The default is two spaces;
-tabWidth four uses four spaces, and tabWidth zero uses zero spaces because
-columns have no grammatical meaning. useTabs uses one tab, even at width zero.
-Prettier prints a nested block of JavaScript with no indentation at
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+statements, standalone comments and Root directives one configured step below
+the header, as Prettier prints the lines inside a block. The default is two
+spaces; tabWidth four uses four spaces, and tabWidth zero uses zero spaces
+because columns have no grammatical meaning. useTabs uses one tab, even at width
+zero. Prettier prints a nested block of JavaScript with no indentation at
 `--tab-width 0`, and with one tab per level at `--use-tabs`, also at
 `--tab-width 0`. Entry continuation lines use two steps; written value columns,
 hidden interiors/closers and retained prefixes keep their own rules. The start
@@ -3657,13 +3658,15 @@ radar-beta
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. A comment on a line of its own stands at the level of the statements
-around it, before the header too, where it starts the line, as under
-[Comments](./flowchart.md#comments) of a flowchart, and as Prettier prints the
-comment lines of code (a `//` line in a block is printed at the level of the
-statements around it). Inline comments keep their line. A comment that touches
-stays touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
-one space before a comment that stands after something on its line, as Prettier
+header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+depth of a standalone comment line inside the diagram body, as Prettier prints
+the lines inside a block. A comment on a line of its own stands at the level of
+the statements around it, before the header too, where it starts the line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone comment line inside the diagram body, as Prettier prints the lines
+inside a block. Inline comments keep their line. A comment that touches stays
+touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space before a comment that stands after something on its line, as Prettier
 prints `x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing
 padding. Native comments end at physical EOL and keep LS/PS as content. Earlier
 strings/descriptions own enclosed percent text; removed common regions keep
@@ -3707,10 +3710,13 @@ under [Directives](./flowchart.md#directives). When formatting splits units that
 were on the same line, a directive in their gap moves with the following unit:
 its right boundary stays touching or separated, while its left contact is
 broken. Ordinary standalone starts use one body step; multiline interiors and
-EOF-reaching unfinished endings remain written. Never format these as JSON or
-gather them elsewhere: removal joins surrounding text, so deleting a
-component-boundary space can reject an accepted keyword/value pair. Native
-RadarIgnoredText directives are separate authored nodes.
+EOF-reaching unfinished endings remain written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. Never format these as JSON or gather them elsewhere: removal
+joins surrounding text, so deleting a component-boundary space can reject an
+accepted keyword/value pair. Native RadarIgnoredText directives are separate
+authored nodes.
 
 [fixture: radar/global-directives/header-to-body]
 

@@ -18,16 +18,10 @@ fixture の置き方と確かめ方は、
 
 ### 字下げ
 
-ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、ヘッダーの後の文は、
+ヘッダーより 1 段深く置きます。
 Prettier は、ブロックの本体（JavaScript の関数の本体、CSS の規則の宣言）を、
 それを開く行より 1 段深く印字します。
-規則 1 の表は行頭を挙げていないので、
-規則 1
-はここで形を与えません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-形は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
-[flowchart](./flowchart.ja.md#字下げ)、[class](./class.ja.md#字下げ)、
-[state](./state.ja.md#字下げ)、[sequence](./sequence.ja.md#字下げ)が、
-ヘッダーの後の文をヘッダーより 1 段深く置くためです。
 
 [fixture: indentation/written-indentation-dropped]
 
@@ -1757,10 +1751,11 @@ Prettier は、JavaScript と CSS で、ブロックの先頭と末尾の空行�
 [fixture: subgraphs/header-description-blocks-kept]
 [corpus fixture: er/gram-subgraph-header-blocks]
 
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 subgraph の中で行に単独で置かれたコメントとディレクティブは、
-その文と同じ段に置き、`end` の前にあるディレクティブは、その行に残します。
-同じ段に置く理由は、
-[コメント](#コメント) と [ディレクティブ](#ディレクティブ) に書いてあります。
+`subgraph` の行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
+`end` の前にあるディレクティブは、その行に残します。
 
 [fixture: subgraphs/directive-and-comment-lines]
 
@@ -2374,12 +2369,8 @@ accTitle: direction BT
 テキストは書かれたまま残します。
 この図にほかのコメントはありません（diagrams/er.md、コメント）。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
-ブロックの中で同じ段の行の間にある単独のコメント行は、その行と同じ段に置きます。
-Prettier が ブロックの中のコメント行をそう印字するためです。
-それ以外の位置では、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[state](./state.ja.md#コメント) と [flowchart](./flowchart.ja.md#コメント) も、
-コメント行を周りの文と同じ段に置きます。
+ブロックの中の単独のコメント行は、ブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: comments/kept] [fixture: comments/in-blocks]
 [fixture: comments/last-in-body] [fixture: comments/text-kept]
@@ -2458,11 +2449,8 @@ erDiagram
 
 行に単独で置かれたディレクティブは、周りの文と同じ段に置きます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
-ブロックの中で同じ段の行の間にある単独のディレクティブ行は、
-その行と同じ段に置きます。
-Prettier が ブロックの中のコメント行をそう印字するためです。
-それ以外の位置では、flowchart、class 図、state 図、
-sequence 図も同じです（規則 2。[コメント](#コメント)のコメント行と同じです）。
+ブロックの中の単独のディレクティブ行は、ブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。

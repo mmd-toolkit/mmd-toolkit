@@ -18,7 +18,9 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, as Prettier prints the lines
+inside a block.
 
 [fixture: indentation/written-indentation-dropped] [fixture:
 indentation/header-v2-kept]
@@ -1014,8 +1016,8 @@ classDiagram
 A comment on a line of its own stands at the level of the statements around it,
 or of the member lines in a body, and its text is kept as written.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-comment line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block.
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/kept] [fixture: comments/before-header] [fixture:
 comments/in-namespace] [fixture: comments/last-in-body] [fixture:
@@ -1093,9 +1095,8 @@ comments/empty-line-after-comment-kept]
 
 A directive on a line of its own stands at the level of the statements around
 it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-directive line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. At other positions it follows
-[flowchart](./flowchart.md#directives). A directive on the line of a statement
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive on the line of a statement
 is placed as in a flowchart: the gap is printed as without the directive, and
 the directive stands after its space and touches the unit that follows it.
 

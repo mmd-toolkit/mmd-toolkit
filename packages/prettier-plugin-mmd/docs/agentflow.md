@@ -74,8 +74,9 @@ agentflow-beta
 ### Indentation
 
 Indentation is set from the AST, while authored columns do not determine
-membership. Use one configured step below the header, as under
-[Indentation](./flowchart.md#indentation).
+membership. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the
+statements after the header one configured step below the header, as Prettier
+prints the lines inside a block.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
 inside each flow/global one configured step below its opener and end at the
 level of its opener, as Prettier prints the lines inside a block. Give
@@ -1354,9 +1355,8 @@ comments/comment-looking-values] [fixture: comments/comments-align]
 
 Align standalone comments with neighbouring statements.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-comment line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. At other positions follow
-[Comments](./flowchart.md#comments). Retain the author's complete text,
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. Retain the author's complete text,
 including trailing spaces, except that the spaces and tabs at the end of a
 comment after a statement are dropped where the comment holds a `;` (`A %% c;  `
 is printed `A %% c;`) and stay where it holds none.
@@ -1406,9 +1406,8 @@ Reuse [Directives](./flowchart.md#directives) for the same reason: removal
 supplies no separator. Keep contents, order and continuation columns. Align
 standalone directives.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
-directive line between lines of the same depth inside a block at their level, as
-Prettier prints a comment line inside a block. At other positions follow
-[Directives](./flowchart.md#directives), and place a directive within a printed
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. Place a directive within a printed
 line as under [Directives](./flowchart.md#directives). A directive after a
 header separator moves into the body with its following statement, keeping
 whether they touch, just as in flowchart: the Db is the same, and no reason
