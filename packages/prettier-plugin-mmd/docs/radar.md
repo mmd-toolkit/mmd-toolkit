@@ -28,13 +28,10 @@ the header without the colon 3 times against none (see
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
 not closed touches it. For `radar-beta%%{wrap}%%:axis North`, the formatter
-prints the statement on the next line and keeps the colon. The versions of
-mermaid.js that were run accept `radar-beta%%{wrap}%%`, a line break, and
-`axis North`, and draw it as they draw the form with the colon, so the colon is
-printed against rule 3 (the examples write the header without a colon) and waits
-to be fixed by the rule. The text with the statement on the same line,
-`radar-beta%%{wrap}%%axis North`, which the formatter does not print, is
-rejected by every version of mermaid.js that counts (see
+prints the statement on the next line and keeps the colon. The text with the
+statement on the same line, `radar-beta%%{wrap}%%axis North`, which the
+formatter does not print, is rejected by every version of mermaid.js that counts
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Spaces or tabs before a closed directive that stands before the colon, before
 the colon, or on both sides are printed away: `radar-beta %%{x}%%:`,
@@ -434,14 +431,11 @@ radar-beta
 
 Keep authored optional colons. Print `A: 1` with no ordinary space before the
 colon and one after, or `A 1` with one space and no alignment. This retains
-punctuation while giving equivalent padding a consistent form. The one curve of
-named entries in the examples of the documentation of mermaid.js writes a colon
-after each of its 3 names, and none writes one without. `North 4` and `North: 4`
-give the same Db and figure in the versions that count, and the formatter adds
-and removes no colon. Rule 3 gives the colon form, so a name without a colon is
-printed against rule 3 and waits to be fixed by the rule. Adding a colon is
-unsafe for axis names `accTitle` and `accDescr`: common composite tokens would
-take priority, and every version of mermaid.js that counts rejects
+punctuation while giving equivalent padding a consistent form. `North 4` and
+`North: 4` give the same Db and figure in the versions that count, and the
+formatter adds and removes no colon. Adding a colon is unsafe for axis names
+`accTitle` and `accDescr`: common composite tokens would take priority, and
+every version of mermaid.js that counts rejects
 `curve c{accTitle: 1, accDescr 2}` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
@@ -3519,16 +3513,12 @@ surrounding space. Rule 1 gives it: Prettier prints braces that hold nothing
 without whitespace inside (`x = { }` is printed `x = {};`, in the table of
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Where the interior
 holds a directive and whitespace, as in `accDescr {%%{init: {}}%% }`, the
-released version prints whitespace inside the braces. Rule 1 prints braces that
-hold nothing without whitespace inside, and mermaid.js removes the directive
-before it reads the text (see [Directives](./flowchart.md#directives)), so this
-is printed against rule 1 and waits to be fixed by the rule. Plain opener
-whitespace joins; real trivia keeps its break. Rule 1 gives the joining: a line
-break between a keyword and the `{` that opens a block becomes one space, as
-Prettier prints `class A`, a line break, and `{}` as `class A {}`. A block on
-one line is printed in the form with the colon: the formatter, run on a
-flowchart, prints `accDescr`, an empty line, and `{ Words }` as
-`accDescr: Words`, which
+released version prints whitespace inside the braces. Plain opener whitespace
+joins; real trivia keeps its break. Rule 1 gives the joining: a line break
+between a keyword and the `{` that opens a block becomes one space, as Prettier
+prints `class A`, a line break, and `{}` as `class A {}`. A block on one line is
+printed in the form with the colon: the formatter, run on a flowchart, prints
+`accDescr`, an empty line, and `{ Words }` as `accDescr: Words`, which
 [A description block on one line](./compatibility.md#a-description-block-on-one-line)
 states for every diagram type that accepts a block, and keeps the line break
 after a directive that stands between them. Preserve comment/directive-only
@@ -3541,8 +3531,8 @@ of the `accDescr`. No rule gives the interior of a block that holds a directive:
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
 breaks, but in them this is a question of the list of undecided forms (D34) and
-a form printed against a rule, so their printing is no decided form, and the
-released form stays until it is decided (see
+of the list of forms to fix by the rule, so their printing is no decided form,
+and the released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Ordinary description body and standalone comment lines align one level inside
 the statement: the Db removes indentation after LF. The start of a line is no
