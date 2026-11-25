@@ -1133,13 +1133,7 @@ empty-description-blocks/in-body-over-lines-joined]
 
 A block containing comments or directives keeps their contents and line breaks;
 standalone trivia is one level inside the block and a separate `}` aligns with
-`accDescr`, including an empty block within a requirement or element body. Rule
-1 gives no form here, since its table does not name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [block](./block.md#empty-description-blocks) and
-[c4](./c4.md#description-blocks) put standalone trivia one level inside a
-description block and a separate `}` at the level of its statement.
+`accDescr`, including an empty block within a requirement or element body.
 
 [fixture: empty-description-blocks/in-body-with-directive-line] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
@@ -1242,23 +1236,14 @@ accessibility-statements/description-comment-line-before-colon-kept] [fixture:
 accessibility-statements/description-text-with-comment-line-kept]
 
 Later text lines of an `accDescr { ... }` block stand one level inside its
-statement, replacing only ASCII spaces and tabs immediately after LF. The
-description setter drops that indentation; line breaks and directive interiors
-stay written. Rule 1 names no mark for the indentation of a line inside a block,
-so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#multi-line-values),
-[class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
-align the lines of an `accDescr { ... }` body one step inside its statement.
-Keep line breaks and interior blank lines, and the whitespace at the end of each
-line of text except the last one; a line of whitespace only becomes an empty
-line. The whitespace at the end of the last line of text is dropped where the
-closer stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Its `}` stands at the level of its statement. A
-separate `}` of a multiline `accDescr` aligns with its statement in
-[class diagrams](./class.md#multi-line-values) and
-[state diagrams](./state.md#multi-line-values);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the closing brace the same alignment.
+statement, replacing only ASCII spaces and tabs immediately after LF. mermaid.js
+discards the indentation after a line feed from the description. Line breaks and
+directive interiors stay written. Keep line breaks and interior blank lines, and
+the whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. Its `}` stands at
+the level of its statement.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
@@ -1825,14 +1810,11 @@ A directive on a line of its own stands at the level of the statements around
 it, in a body at the level of the fields, and a directive on the line of a
 statement is placed as in a flowchart: the gap is printed as without the
 directive, and the directive stands after its space and touches the unit that
-follows it. Standalone directives align with surrounding statements in
-[flowcharts](./flowchart.md#directives) and
-[quadrant charts](./quadrant.md#directives), and with body statements in
-flowchart subgraphs and [class namespaces](./class.md#directives). Inline
-directives keep their authored gap in flowcharts and quadrant charts, with the
-ordinary gap space before the directive and the next unit touching it.
+follows it. Inline directives keep their authored gap in flowcharts and quadrant
+charts, with the ordinary gap space before the directive and the next unit
+touching it.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-these directive positions and gaps their forms.
+these inline directive positions and gaps their forms.
 
 [fixture: directives/kept] [fixture: directives/in-body] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]

@@ -1152,11 +1152,6 @@ Prettier は、
 独立した注釈をブロックの 1 段内側に置き、
 独立した `}` は `accDescr` にそろえます。
 requirement と element の本文にある空のブロックも同じです。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[block](./block.ja.md#空の説明ブロック) と [c4](./c4.ja.md#説明ブロック)も、
-独立した注釈類をブロックの 1 段内側に、独立した `}` を文の段に置きます。
 
 [fixture: empty-description-blocks/in-body-with-directive-line]
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
@@ -1262,12 +1257,7 @@ requirementDiagram
 
 `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
-説明の設定関数がこの字下げを捨てるためです。
-規則 1 は、ブロックの中の行の字下げの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#複数行の値)、[class](./class.ja.md#複数行の値)、
-[state](./state.ja.md#複数行の値)も、`accDescr { ... }` の本文の行を、
-文より 1 段内側に揃えます。
+mermaid.js は説明から行送り後の字下げを除きます。
 改行とディレクティブの内部は保ちます。
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
@@ -1275,10 +1265,6 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 `}` は文と同じ段に置きます。
-[class](./class.ja.md#複数行の値) と [state](./state.ja.md#複数行の値) の図も、
-複数行の `accDescr` を閉じる単独の `}` を、文と同じ段に置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この閉じ括弧の段を決めます。
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1842,15 +1828,10 @@ requirementDiagram
 本体の中ではフィールドと同じ段に置きます。
 文の行の中では、flowchart と同じく、隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
-単独のディレクティブは、
-[flowchart](./flowchart.ja.md#ディレクティブ) と
-[quadrant](./quadrant.ja.md#指令) の図でも、周りの文と段をそろえ、
-flowchart のサブグラフと [class](./class.ja.md#ディレクティブ) の名前空間でも、
-本体の文と段をそろえます。
 文の行の中のディレクティブも、flowchart と quadrant の図と同じく、
 書かれた隙間に残し、通常の隙間の空白の後ろに置き、後ろの単位に接します。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-このディレクティブの段と隙間を決めます。
+この文の行の中のディレクティブの位置と隙間を決めます。
 
 [fixture: directives/kept] [fixture: directives/in-body]
 [fixture: directives/before-header]
