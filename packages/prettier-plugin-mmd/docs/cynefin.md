@@ -501,10 +501,6 @@ break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-In the titles of [pie](./pie.md#title) and [packet](./packet.md#title) diagrams,
-a written gap before an ordinary trailing directive becomes one space.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same gap before a directive that remains after the title text.
 
 [corpus fixture: cynefin/gram-title-inline-domain]
 
@@ -573,11 +569,6 @@ break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-In the accessibility lines of [pie](./pie.md#accessibility-lines) and
-[packet](./packet.md#accessibility-lines) diagrams, a written gap before an
-ordinary trailing directive becomes one space.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same gap before a directive that remains after the accessibility value.
 
 [corpus fixture: cynefin/common-colon-block-priority]
 
@@ -910,15 +901,10 @@ Keep Root directive source and order. Within a printed line, place a directive
 as under [Directives](./flowchart.md#directives). When formatting splits units
 that were on the same line, a directive in their gap moves with the following
 unit: its right boundary stays touching or separated, while its left contact is
-broken. In [flowchart](./flowchart.md#directives) and
-[state](./state.md#directives) diagrams, a directive between units that split
-onto separate lines moves with the following unit, retaining its right contact
-or separation and breaking its left contact.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-a directive in a split gap the same placement. Ordinary standalone lines align
-with their body, including item depth between items. In
-[pie](./pie.md#indentation) and [packet](./packet.md#indentation) diagrams,
-standalone directives stand at the depth of their surrounding body.
+broken. Ordinary standalone lines align with their body, including item depth
+between items. In [pie](./pie.md#indentation) and
+[packet](./packet.md#indentation) diagrams, standalone directives stand at the
+depth of their surrounding body.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 ordinary standalone directives the same placement here, including the additional
 body level between domain items. Multiline interiors and unfinished EOF endings

@@ -519,10 +519,6 @@ mermaid.js は題の行にある文のようなテキストも題として読む
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[pie](./pie.ja.md#title) と [packet](./packet.ja.md#title) の図も、
-題の後に残す普通のディレクティブの前に、空白かタブがあれば空白 1 個にします。
-題の後のディレクティブの前の隙間は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの形にします。
 
 [corpus fixture: cynefin/gram-title-inline-domain]
 
@@ -592,12 +588,6 @@ mermaid.js は `accDescr: {A}` を説明 `{A}` と読み、
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[pie](./pie.ja.md#accessibility-lines) と
-[packet](./packet.ja.md#accessibility-lines) の図も、
-アクセシビリティの値の後に残す普通のディレクティブの前に、
-空白かタブがあれば空白 1 個にします。
-値の後のディレクティブの前の隙間は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの形にします。
 
 [corpus fixture: cynefin/common-colon-block-priority]
 
@@ -944,11 +934,6 @@ cynefin-beta
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-[flowchart](./flowchart.ja.md#ディレクティブ) と
-[state](./state.ja.md#ディレクティブ) の図でも、
-別の行へ分ける単位の間のディレクティブは、次の単位に付けます。
-右側の接触・分離を保ち、左側の接触を切る配置は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与える形です。
 普通の独立行は所属本文の段にし、項目間なら項目の段です。
 [pie](./pie.ja.md#indentation) と [packet](./packet.ja.md#indentation) の図も、
 独立したディレクティブを所属本文の段に置きます。
