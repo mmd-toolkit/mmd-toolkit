@@ -490,7 +490,9 @@ journey
 ### タイトルとセクション
 
 `title` は、キーワードの後に、書かれた空白によらず空白 1 つを置きます。
-区切りの形を 1 つにするためで、Gantt 図と同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードと値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 値は、先頭と末尾の空白とタブを除いて印字します。
 Db はそれらを持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -1175,6 +1177,19 @@ U+2028 と U+2029 は、journey の単位の間の空白であり、
 その後の空白はタイトル末尾のほかの空白と一緒に除き、前の空白は残します。
 
 [test: U+2028 and spaces at the end of a journey title]
+
+`#` か `%` で始まるコメント行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字します。
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
+なければ空白を置きません。
+
+[test: journey: a hash comment line, U+2028, a directive, two spaces, a comment, and a line of whitespace only after it]
+[test: journey: a hash comment line, U+2028, a directive, two spaces, and a comment]
+[test: journey: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: journey: a hash comment line, U+2028, a directive touching a comment]
+[test: journey: a percent comment line, U+2028, a directive, a tab, and a comment]
+[test: journey: a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 ### 空白の文字
 

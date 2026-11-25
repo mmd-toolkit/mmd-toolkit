@@ -477,9 +477,11 @@ journey
 
 ### Titles and sections
 
-A `title` is printed with one space after the keyword, so that the separator has
-one form, as in a Gantt chart, and the value without the spaces and tabs at its
-start or at its end, which the Db keeps and which are drawn without (see
+A `title` is printed with one space after the keyword, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives between a
+keyword and its value (Prettier prints `return  x` as `return x;`), and the
+value without the spaces and tabs at its start or at its end, which the Db keeps
+and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 `title   My trip  ` is printed `title My trip`. The name of a `section` is
 printed as written, the whitespace at its start and at its end included: two
@@ -1155,6 +1157,19 @@ spaces or tabs: the spaces after one are left out with the other whitespace at
 the end of the title, and the spaces before it stay.
 
 [test: U+2028 and spaces at the end of a journey title]
+
+A comment line that starts with `#` or `%` ends at a U+2028 or U+2029, and the
+text after the character is a line of its own. A directive and a comment on that
+line are printed as on a line after a line feed: with one space between them
+where the source has whitespace there, and none where it has none.
+
+[test: journey: a hash comment line, U+2028, a directive, two spaces, a comment,
+and a line of whitespace only after it] [test: journey: a hash comment line,
+U+2028, a directive, two spaces, and a comment] [test: journey: a percent
+comment line, U+2028, a directive, two spaces, and a comment] [test: journey: a
+hash comment line, U+2028, a directive touching a comment] [test: journey: a
+percent comment line, U+2028, a directive, a tab, and a comment] [test: journey:
+a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 ### Whitespace characters
 

@@ -405,7 +405,11 @@ xychart
 キーワードや文が取る値を開く `[` の前は、キーワードや title の後ろでも、
 `x-axis[a]`、`line T[1]`、`bar"Costs"[1,2]` のように接して書かれていても、
 空白 1 つにします。
+キーワードの後ろでは、
 Prettier が `return  [800, 600]` を `return [800, 600];`
+と印字するのと同じです。
+title の後ろでは、続く値の間と同じで、
+Prettier が CSS の `margin: 1px    2px;` を `margin: 1px 2px;`
 と印字するのと同じです。
 `[` の後と `]` の前に空白は置きません。
 コンマの前に空白は置かず、後ろに空白 1 つを置きます（`[jan, feb, mar]`）。
@@ -1254,6 +1258,18 @@ U+2028 と U+2029 は、XY チャートの単位の間の空白で、
 [test: U+2028 after the colon of accTitle]
 [test: U+2028 after a description block]
 [test: U+2028 at the end of a statement] [test: U+2028 at the end of the text]
+
+`;` だけの行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字し、
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにします。
+`;` は、単独の行と同じに削除します。
+
+[test: xychart: a line of a semicolon, U+2029, a directive, two spaces, a comment, and an empty line at the end of the text]
+[test: xychart: a line of a semicolon, U+2028, a directive, two spaces, and a comment]
+[test: xychart: a line of a semicolon, U+2028, a directive touching a comment]
+[test: xychart: a line of a semicolon, U+2028, a directive, a tab, and a comment]
+[test: xychart: a line of a semicolon, U+2029, a directive, two spaces, and a comment]
 
 ### 空白文字
 

@@ -388,14 +388,16 @@ The categories and the values stand between brackets.
 whitespace, as Prettier prints it in code. The `[` that opens the values that a
 keyword or a statement takes has one space before it, after the keyword or the
 title, also where it was written touching (`x-axis[a]`, `line T[1]`,
-`bar"Costs"[1,2]`), as Prettier prints `return  [800, 600]` as
-`return [800, 600];`. There is no space after the `[` or before the `]`, and a
-comma has no space before it and one after it (`[jan, feb, mar]`), as Prettier
-prints `[ 1,2 ]` as `[1, 2]`. A keyword and the string that follows it are
-separated by one space (`title"T"` is printed `title "T"`), as Prettier prints
-`return  x` as `return x;`. None of this whitespace is in the Db, and none of it
-changes how units are read, since a bracket, a comma, and a quote are no
-characters of a word.
+`bar"Costs"[1,2]`): after a keyword as Prettier prints `return  [800, 600]` as
+`return [800, 600];`, and after a title as between values that follow one
+another, as Prettier prints CSS `margin: 1px    2px;` as `margin: 1px 2px;`.
+There is no space after the `[` or before the `]`, and a comma has no space
+before it and one after it (`[jan, feb, mar]`), as Prettier prints `[ 1,2 ]` as
+`[1, 2]`. A keyword and the string that follows it are separated by one space
+(`title"T"` is printed `title "T"`), as Prettier prints `return  x` as
+`return x;`. None of this whitespace is in the Db, and none of it changes how
+units are read, since a bracket, a comma, and a quote are no characters of a
+word.
 
 [fixture: brackets-and-commas/spaces-inside-and-around-commas] [fixture:
 brackets-and-commas/bracket-touching-the-keyword] [fixture:
@@ -1204,6 +1206,18 @@ arrow of a range] [test: U+2028 in a string] [test: U+2028 in an accessibility
 text] [test: U+2028 after the colon of accTitle] [test: U+2028 after a
 description block] [test: U+2028 at the end of a statement] [test: U+2028 at the
 end of the text]
+
+A line of only a `;` ends at a U+2028 or U+2029, and the text after the
+character is a line of its own. A directive and a comment on that line are
+printed as on a line after a line feed, with one space between them where the
+source has whitespace there. The `;` is dropped, as on a line of its own.
+
+[test: xychart: a line of a semicolon, U+2029, a directive, two spaces, a
+comment, and an empty line at the end of the text] [test: xychart: a line of a
+semicolon, U+2028, a directive, two spaces, and a comment] [test: xychart: a
+line of a semicolon, U+2028, a directive touching a comment] [test: xychart: a
+line of a semicolon, U+2028, a directive, a tab, and a comment] [test: xychart:
+a line of a semicolon, U+2029, a directive, two spaces, and a comment]
 
 ### Whitespace characters
 

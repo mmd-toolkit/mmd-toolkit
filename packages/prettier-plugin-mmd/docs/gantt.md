@@ -901,11 +901,9 @@ follows the whitespace: `includes`, two spaces, and `%%{init: {}}%%` stay, since
 mermaid.js takes the directive out before it reads the list, and every version
 of mermaid.js that counts rejects the form with one space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Rule 1 names no mark between a keyword and its text, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that gap one space, as [pie](./pie.md#title) and [sequence](./sequence.md#title)
-print `title` followed by one space; the rejected one-space form is why these
-two spaces stay.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its text, as Prettier prints `return  x` as `return x;`;
+the rejected one-space form is why these two spaces stay.
 
 [fixture: lists/whitespace-only] [fixture: lists/whitespace-only-then-directive]
 
@@ -1918,6 +1916,18 @@ stay.
 
 [test: U+2028 and spaces at the end of a title] [test: U+2029 and spaces at the
 end of a date format]
+
+A comment line that starts with `%` ends at a U+2028 or U+2029, and the text
+after the character is a line of its own. A directive and a comment on that line
+are printed as on a line after a line feed: with one space between them where
+the source has whitespace there, and none where it has none.
+
+[test: gantt: a percent comment line, U+2028, a directive, two spaces, and a
+comment at the end of the text] [test: gantt: a percent comment line, U+2028, a
+directive, two spaces, and a comment] [test: gantt: a percent comment line,
+U+2028, a directive touching a comment] [test: gantt: a percent comment line,
+U+2028, a directive, a tab, and a comment] [test: gantt: a percent comment line,
+U+2029, a directive, two spaces, and a comment]
 
 ### Whitespace characters
 

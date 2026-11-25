@@ -172,7 +172,10 @@ usecase-beta
 
 ### Declarations
 
-ER の[実体](./er.ja.md#実体)を再利用します。
+`actor` の後の空白は、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとその値の間に与える空白 1 個です。
+Prettier が `return  x` を `return x;` と印字するためです。
+それ以外は、ER の[実体](./er.ja.md#実体)を再利用します。
 `actor` の後は空白 1 個、id と形の区切り、メタデータと class の接尾辞は詰め、
 ラベルの外側の ASCII 空白を除き、actor の項目はコンマと空白で区切ります。
 1 つの `actor` キーワードが導入する別々のアクターの出現を、見える形にします。
@@ -1009,7 +1012,10 @@ usecase-beta
 
 ### Classes and styles
 
-ER の[スタイルとクラス](./er.ja.md#スタイルとクラス)を再利用し、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、キーワードとその値の間と、
+続く値同士の間に空白 1 個を与えます。
+Prettier は `return  x` を `return x;` と印字し、
+CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 対象名と class 名の間のコンマは前の名前に接して後ろに空白 1 個を置き、
 一覧同士と最初の宣言の前は空白 1 個にします。
 CSS 宣言同士はコンマと空白で区切ります。
@@ -1085,8 +1091,12 @@ usecase-beta
 `note for <target> <label>` の各部分の間を通常の空白 1 個にします。
 対象、markdown または空のラベル、および note の順序を保ちます。
 通常のラベルは、引用符で囲んで印字します（[引用符](#quotes) を参照）。
-class の[トークンの間の空白](./class.ja.md#トークンの間の空白)と同じ、
-値の原文とキーワード間隔を保つ理由と同じです。
+値の原文を保つ理由は、
+class の[トークンの間の空白](./class.ja.md#トークンの間の空白)と同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、キーワードとその値の間と、
+続く値である対象とラベルの間に、空白 1 個を与えます。
+Prettier は `return  x` を `return x;` と印字し、
+CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 前方参照の解決で id、位置、宣言を作りません。
 行内のパーセント文字はラベルの内容のままです。
 
@@ -1371,6 +1381,18 @@ usecase-beta
   %%{}%%
   A
 ```
+
+`accTitle:` か `accDescr:` の行の文字列の後ろにある U+2028 か U+2029
+の後ろの文字列は、独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字し、
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにします。
+
+[test: usecase: an accTitle line, U+2028, a directive, two spaces, and a comment]
+[test: usecase: an accTitle line, U+2028 right after the text, a directive, two spaces, and a comment]
+[test: usecase: an accDescr line, U+2028, a directive, two spaces, and a comment]
+[test: usecase: an accTitle line, U+2028, a directive touching a comment]
+[test: usecase: an accTitle line, U+2028, a directive, a tab, and a comment]
+[test: usecase: an accTitle line, U+2029, a directive, two spaces, and a comment]
 
 ### Directives
 

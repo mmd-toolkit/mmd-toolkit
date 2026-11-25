@@ -682,9 +682,11 @@ timeline
 
 ### Titles and sections
 
-A `title` is printed with one space after the keyword, as in a user journey, and
-the value without the spaces and tabs at its start or at its end, which the Db
-keeps and which are drawn without (see
+A `title` is printed with one space after the keyword, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives between a
+keyword and what it takes (Prettier prints `return  x` as `return x;`), and the
+value without the spaces and tabs at its start or at its end, which the Db keeps
+and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 `title   History  ` is printed `title History`, and a run of spaces and tabs
 inside it is printed as one space (see
@@ -1709,6 +1711,20 @@ event after it] [test: timeline: an event that a comment after U+2028 joins to a
 directive line at the end of the text] [test: timeline: an event that a comment
 after U+2028 joins to an empty line and a directive line, with an event after
 it]
+
+A comment line that starts with `#` or `%` ends at a U+2028 or U+2029, and the
+text after the character is a line of its own. A directive and a comment on that
+line are printed as on a line after a line feed: with one space between them
+where the source has whitespace there, and none where it has none. Two comment
+lines on the next lines with no empty line between keep the line as written.
+
+[test: timeline: a hash comment line, U+2028, a directive, two spaces, a
+comment, and two comment lines after it] [test: timeline: a hash comment line,
+U+2028, a directive, two spaces, and a comment] [test: timeline: a percent
+comment line, U+2028, a directive, two spaces, and a comment] [test: timeline: a
+hash comment line, U+2028, a directive touching a comment] [test: timeline: a
+percent comment line, U+2028, a directive, a tab, and a comment] [test:
+timeline: a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 ### Whitespace characters
 
