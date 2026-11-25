@@ -788,9 +788,12 @@ U+2028 か U+2029 が続く隙間は、書かれたまま、全体を残しま�
 隙間の最後の改行より前にある区切りだけです。
 最後の改行より後の、文の字下げにある区切りは、
 隙間を書かれたまま残す理由になりません（[コメント](#コメント)を参照）。
-コメント行は、その前の空白を、区切りだけの行や空行も含めて取り除くので、
-コメント行の前にある区切りの行や空行も、
-隙間を書かれたまま残しません（[コメント](#コメント)を参照）。
+コメント行は、その前の空白を、区切りだけの行や空行も含めて、
+mermaid.js が読むテキストから取り除くので、
+コメント行の前にある区切りの行や空行も、隙間を書かれたまま残しません。
+区切りは落ち、隙間は通常の隙間として印字します。
+元に区切りだけの行か空行があるときは空行を 1 つ残し、
+ヘッダー行のすぐ後では残しません（[コメント](#コメント)を参照）。
 コメント行だけの隙間（`S`、`%% note`、空行、`A`）は通常どおり整形し、
 コメント行を揃えます（[コメント](#コメント)を参照）。
 改行を含むディレクティブの後や、図の `%%` コメントの後のコメント行も、
@@ -798,7 +801,10 @@ U+2028 か U+2029 が続く隙間は、書かれたまま、全体を残しま�
 そのコメント行の中の U+2028 と U+2029 も取り除くため、
 それらが隙間を書かれたまま残す理由にはなりません。
 
-[test: kanban: comment-line-ls-taken] [test: kanban: ls-ends-comment-kept]
+[test: kanban: comment-line-ls-taken]
+[test: kanban: separator line before a comment line is dropped, one empty line stays]
+[test: kanban: separator line before a comment line after the header leaves no empty line]
+[test: kanban: ls-ends-comment-kept]
 [test: kanban: ls-own-line-after-comment-kept]
 [test: kanban: ls-indentation-after-comment]
 [fixture: blank-lines/common-comment-after-multiline-directive]

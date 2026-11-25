@@ -728,20 +728,25 @@ next statement, which the printer chooses (see [Indentation](#indentation)). A
 separator counts only where it ends the comment or stands before the last line
 feed of the gap; one after that line feed, in the indentation of the statement,
 does not make the gap a kept one (see [Comments](#comments)). A comment line
-removes the whitespace before it, a line of a separator or an empty line
-included, so one of those that stands before a comment line does not keep the
-gap either (see [Comments](#comments)). A gap with only comment lines (`S`,
-`%% note`, an empty line, `A`) is formatted as usual, and the comment line is
-aligned (see [Comments](#comments)). A common comment after a directive
-containing a line feed, or after a native `%%` comment, is still removed before
-this decision and aligned as usual; a U+2028 or U+2029 inside that common
-comment is removed too and cannot make the gap stay as written.
+takes the whitespace before it, a line of a separator or an empty line included,
+out of the text that mermaid.js reads, so one of those that stands before a
+comment line does not keep the gap either: the separator goes, and the gap is
+printed as any gap, with one empty line where the source holds a line of a
+separator or an empty line, and none right after the header line (see
+[Comments](#comments)). A gap with only comment lines (`S`, `%% note`, an empty
+line, `A`) is formatted as usual, and the comment line is aligned (see
+[Comments](#comments)). A common comment after a directive containing a line
+feed, or after a native `%%` comment, is still removed before this decision and
+aligned as usual; a U+2028 or U+2029 inside that common comment is removed too
+and cannot make the gap stay as written.
 
 [test: kanban: comment-line-ls-taken] [test: kanban: ls-ends-comment-kept]
 [test: kanban: ls-own-line-after-comment-kept] [test: kanban:
 ls-indentation-after-comment] [fixture:
 blank-lines/common-comment-after-multiline-directive] [fixture:
-blank-lines/native-then-common-comment]
+blank-lines/native-then-common-comment] [test: kanban: separator line before a
+comment line is dropped, one empty line stays] [test: kanban: separator line
+before a comment line after the header leaves no empty line]
 
 A gap of this kind at the end of the board is kept whole too, with nothing after
 it to indent: `kanban`, ` S`, `%%`, and two empty lines print `  S`, `%%`, and

@@ -8354,6 +8354,16 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
       "kanban\n  S[x]\n  %%\n  %%\u2028   A\n",
     ],
     [
+      "kanban: separator line before a comment line is dropped, one empty line stays",
+      "kanban\nS\n\u2028\n%% note\n  A\n",
+      "kanban\n  S\n\n    %% note\n    A\n",
+    ],
+    [
+      "kanban: separator line before a comment line after the header leaves no empty line",
+      "kanban\n\u2028\n%% note\nS\n  A\n",
+      "kanban\n  %% note\n  S\n    A\n",
+    ],
+    [
       "kanban: indent-whitespace-kind",
       "kanban\n\u00a0\ufeffS\n\t\u3000\u000b\fA\n",
       "kanban\n  S\n    A\n",
@@ -18946,6 +18956,36 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
     "c4: ls-after-comment-at-end-kept",
     'C4Context\nPerson(a,"A")  %% c\n\u2028',
     'C4Context\n  Person(a, "A")  %% c\n\u2028\n',
+  ],
+  [
+    "c4: ls-indentation-before-comment-line-after-comment",
+    'C4Context\nPerson(a,"A")  %% c\n\u2028  %% d\nPerson(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n\u2028  %% d\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ps-before-percent-of-comment-line-after-comment",
+    'C4Context\nPerson(a,"A")  %% c\n  \u2029%% d\nPerson(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n  \u2029%% d\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-before-comment-line-after-comment-opener",
+    'C4Context\nBoundary(b,"B") {  %% c\n\u2028  %% d\n  Person(a,"A")\n}\n',
+    'C4Context\n  Boundary(b, "B") {  %% c\n\u2028  %% d\n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ls-indentation-before-comment-line-after-comment-closer",
+    'C4Context\nBoundary(b,"B") {\n  Person(a,"A")\n}  %% c\n\u2028  %% d\nPerson(b,"B")\n',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  }  %% c\n\u2028  %% d\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-before-comment-line-after-comment-header",
+    'C4Context  %% c\n\u2028  %% d\nPerson(a,"A")\n',
+    'C4Context  %% c\n\u2028  %% d\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-indentation-before-comment-line-after-comment-before-closer",
+    'C4Context\nBoundary(b,"B") {\n  Person(a,"A")  %% c\n\u2028  %% d\n}\n',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")  %% c\n\u2028  %% d\n  }\n',
   ],
 ]
 
