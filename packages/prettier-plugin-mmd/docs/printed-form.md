@@ -81,16 +81,19 @@ same way. The texts of Prettier are JavaScript where no language is named.
 The first two kinds of braces are the object and the array of Prettier, and the
 third is either of them with nothing in it.
 
-The end of a line is the same in JavaScript, CSS, and YAML; Markdown keeps the
-two spaces that make a line break. The end of the text and blank lines are the
-same in JavaScript, CSS, YAML, and Markdown, and a line of whitespace only is a
-blank line in all four. Where a statement stands (the start of a line) is no
-place of this rule: [rule 2](#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides it. What Prettier does by an option or by itself, and not by the kind of
-mark or place, is no rule here: the unit of one level of indentation (`useTabs`
-and `tabWidth`), the line ending (`endOfLine`), and a byte order mark. The
-formatter follows them as Prettier does, and the document of a diagram type says
-so as a fact.
+The end of a line, the end of the text, and blank lines are the same in
+JavaScript, CSS, YAML, and Markdown, and a line of whitespace only is a blank
+line in all four. In Markdown, two or more spaces before a line break are the
+mark of a hard line break, and not whitespace at the end of a line: Prettier
+prints two of them, and drops any other whitespace at the end of a line (`a `
+and a line break is printed `a` and a line break). Where a statement stands (the
+start of a line) is no place of this rule:
+[rule 2](#2-a-gap-of-a-kind-that-prettier-does-not-have) decides it. What
+Prettier does by an option or by itself, and not by the kind of mark or place,
+is no rule here: the unit of one level of indentation (`useTabs` and
+`tabWidth`), the line ending (`endOfLine`), and a byte order mark. The formatter
+follows them as Prettier does, and the document of a diagram type says so as a
+fact.
 
 Prettier prints the `=` of an attribute of HTML without spaces (`<a href="x">`).
 An argument of a C4 diagram stands in the list of the arguments of a call, where
