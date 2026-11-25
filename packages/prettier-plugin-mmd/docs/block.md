@@ -380,10 +380,10 @@ block-beta
 whitespace was written between them (a tab, a line break): mermaid.js reads any
 whitespace there, and the form is one line, as every diagram type prints the gap
 between a keyword and what follows it (see [Composites](#composites)). `space:2`
-is printed with the `:` touching:
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
-before the colon of a key (`x = {a : 1}` is printed `x = { a: 1 };`), and every
-version of mermaid.js that counts rejects `space: 2`, so no space follows it
+is printed with the `:` touching, by the rule of
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace):
+every version of mermaid.js that counts rejects `space: 2`, so no space follows
+the colon, and none stands before it either (`space :2` is printed `space:2`)
 (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A `space` statement and a `columns` statement are never moved to another place:
@@ -508,11 +508,7 @@ U+2028 or U+2029, it stays as written, a directive in it included: `(right,`,
 U+2028, and ` %%{x}%% down)` stay. Where a line break follows a directive after
 a `,`, the whitespace before it stays as written and the next line stands one
 level deeper: `(right,  %%{x}%%` and a line break stay. A run of spaces or tabs
-before the directive stays too, which rule 2 does not give:
-[flowchart](./flowchart.md#directives) prints a run before a directive at the
-end of a line as one space, and the formatter, run on Gantt and journey, prints
-it so as well. So block prints it against rule 2 and waits to be fixed by the
-rule.
+before the directive stays too.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [fixture:
@@ -903,12 +899,7 @@ member.
 When the first style is only whitespace, as in `classDef c ,fill:#f00`, the Db
 has an empty first style and the whitespace before the `,` belongs to no style,
 so the styles start at the first `,`: that whitespace becomes one space, and the
-`,` and what follows are printed as written. That is against rule 1 and waits to
-be fixed by it: in every other `classDef` the colon of a style has no whitespace
-before it and one space after it, and the `,` between styles has one space after
-it, so rule 1 gives `classDef c , fill: #f00` for `classDef c ,fill:#f00`, and
-the Db changes in the whitespace of a style only, as in
-[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same).
+`,` and what follows are printed as written.
 
 [fixture: styles/styles-with-a-leading-comma] [corpus fixture:
 block/db-class-def-leading-comma]
@@ -1120,9 +1111,7 @@ whitespace there. The first character after the color decides, whatever follows
 it (`fill:#F00`, a space, and a vertical tab print `#f00`, while `fill:#F00`, a
 vertical tab, and a space keep `#F00`). A color that a `;` that the line rule
 ignores touches stays as written (`#ABC;`), and so does a color that any
-character but a space, a tab, or a form feed separates from the `;`; for a
-vertical tab or a wide space, the [Colors](#colors) rule prints it in lower
-case, so it is printed against the rule and waits to be fixed by it, while a
+character but a space, a tab, or a form feed separates from the `;`, while a
 color that spaces, tabs, or form feeds separate from the `;` is in lower case
 (`#abc ;`). See [Rows](#rows) and
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line rule
@@ -1712,13 +1701,9 @@ in these rows is the case that the Colors rule gives
 a color is in lower case where it is a word of its own (whitespace, a `,`, or
 the `;` that ends the statement follows it), and stays as written where a
 character of the text of the style touches it, a `;` that the line rule keeps
-being such a character. Where a sentence below says that a color stays before a
-`,` or before a `;` that the line rule ignores, block prints it against the
-Colors rule and waits to be fixed by the rule. Flowchart, class, state, and ER
-keep the line as written in every row of a `style` statement where block drops
-it (ER rejects the row of a whitespace-only line), and rule 2 gives their form,
-so block prints each of those rows against rule 2 and waits to be fixed by the
-rule. For a node or an edge that a U+2028 or U+2029 and a comment line follow,
+being such a character. Flowchart, class, state, and ER keep the line as written
+in every row where block drops it (ER rejects the row of a whitespace-only
+line). For a node or an edge that a U+2028 or U+2029 and a comment line follow,
 the other diagram types do not agree: flowchart and class print the comment line
 on a line of its own, as block does, and state and ER keep the line as written
 (`b`, a U+2028, and `%% c`). No rule gives that form, and the released form,
@@ -1733,41 +1718,38 @@ is in lower case (`#F00 x`, U+2028, `%% c`, and ` y` print `#f00 x`); and a
 color that a `;` that the line rule ignores touches on a line after the comment
 line stays as written (`#F00`, and `#ABC;` after it; the `;` before the U+2028
 is stated below), also where any character but a space, a tab, or a form feed
-separates it from the `;`; for a vertical tab or a wide space, the
-[Colors](./compatibility.md#colors-that-are-drawn-the-same) rule prints it in
-lower case, so that form is printed against the rule and waits to be fixed by
-it. Where the line before the U+2028 holds a `;`, the line is kept: the U+2028
-and the comment line stay as written, whatever follows the comment line, and so
-does the whitespace of the styles (`style a fill:red;`, U+2028, and `%% c` are
-not changed, and the U+2028 and the comment line stay also after a value that is
-no color, as in `stroke-width:2px;`, and after a color that a space or a
-character separates from the `;`, as in `fill:#F00 ;` and `fill:#F00 x;`, which
-print the color in lower case, while `style a fill:red`, U+2028, and `%% c`
-print `style a fill: red`). The colors of such a line are in lower case before a
-comma and where a space, a tab, or a form feed and characters follow them. Where
-a second `;` follows the first, whatever stands between them
-(`style a fill:#F00;;`, `style a fill:#F00; ;`, `style a fill:#F00;x;`), the
-color stays as written, whatever follows and whatever stands between the second
-`;` and the U+2028 (a space, a tab, a vertical tab, or a character). Where one
-`;` follows the color, what follows the `;` on the line decides, a directive
-left out. Where a space, a tab, or a form feed follows it, the color is in lower
-case, whatever follows the comment line. Where a character or a comment follows
-it, directly or after a vertical tab, a no-break space, or another whitespace
-character but a space, a tab, and a form feed, the line rule keeps the `;`, and
-the color stays as written, whatever follows (`style a fill:#F00;x`,
-`style a fill:#F00;%% x`, `style a fill:#F00;%%{y}%%%% x`, and
-`style a fill:#F00;`, a vertical tab, and `%% x`, then U+2028 and `%% c`). Where
-nothing follows it, or only directives and whitespace characters but a space, a
-tab, and a form feed, the color stays as written only where a statement follows
-right after a comment line, as without the `;`: where no statement follows, or
-an empty line or a directive line stands right before the statement, it is in
-lower case (`style a fill:#F00;`, U+2028, and `%% c` are printed
-`style a fill:#f00;`, U+2028, and `%% c`). In a block diagram, mermaid.js reads
-the U+2028 as the end of the line and `%% c` as a comment. For
-`style a fill:#F00`, a U+2028, and `%% c` at the end of the text, the Db of
-12.3.0 holds neither of them in the style, and differs from that of the plain
-line only in the whitespace after the first `:` and in the case of the color,
-which
+separates it from the `;`. Where the line before the U+2028 holds a `;`, the
+line is kept: the U+2028 and the comment line stay as written, whatever follows
+the comment line, and so does the whitespace of the styles (`style a fill:red;`,
+U+2028, and `%% c` are not changed, and the U+2028 and the comment line stay
+also after a value that is no color, as in `stroke-width:2px;`, and after a
+color that a space or a character separates from the `;`, as in `fill:#F00 ;`
+and `fill:#F00 x;`, which print the color in lower case, while
+`style a fill:red`, U+2028, and `%% c` print `style a fill: red`). The colors of
+such a line are in lower case before a comma and where a space, a tab, or a form
+feed and characters follow them. Where a second `;` follows the first, whatever
+stands between them (`style a fill:#F00;;`, `style a fill:#F00; ;`,
+`style a fill:#F00;x;`), the color stays as written, whatever follows and
+whatever stands between the second `;` and the U+2028 (a space, a tab, a
+vertical tab, or a character). Where one `;` follows the color, what follows the
+`;` on the line decides, a directive left out. Where a space, a tab, or a form
+feed follows it, the color is in lower case, whatever follows the comment line.
+Where a character or a comment follows it, directly or after a vertical tab, a
+no-break space, or another whitespace character but a space, a tab, and a form
+feed, the line rule keeps the `;`, and the color stays as written, whatever
+follows (`style a fill:#F00;x`, `style a fill:#F00;%% x`,
+`style a fill:#F00;%%{y}%%%% x`, and `style a fill:#F00;`, a vertical tab, and
+`%% x`, then U+2028 and `%% c`). Where nothing follows it, or only directives
+and whitespace characters but a space, a tab, and a form feed, the color stays
+as written only where a statement follows right after a comment line, as without
+the `;`: where no statement follows, or an empty line or a directive line stands
+right before the statement, it is in lower case (`style a fill:#F00;`, U+2028,
+and `%% c` are printed `style a fill:#f00;`, U+2028, and `%% c`). In a block
+diagram, mermaid.js reads the U+2028 as the end of the line and `%% c` as a
+comment. For `style a fill:#F00`, a U+2028, and `%% c` at the end of the text,
+the Db of 12.3.0 holds neither of them in the style, and differs from that of
+the plain line only in the whitespace after the first `:` and in the case of the
+color, which
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
