@@ -14,16 +14,14 @@ import {
 } from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
-  commentHasIgnoredSemicolonThatNeedsItsLine,
-  followsGapsOfStyleRuleStretch,
   holdsJoiningRegion,
+  findJoiningRegionEndInLine,
   holdsKeptSemicolon,
   holdsOwnSemicolonIn,
-  isDroppedSemicolon,
+  keepsClosingOnItsLine,
   keepsTrailingLineSeparators,
   lineEndOf,
   lineStartOf,
-  ignoredSemicolonNeedsItsLine,
   completeKeptLines,
 } from "./kept-lines.ts"
 import { toAsciiLowerCase } from "./layout.ts"
@@ -46,9 +44,7 @@ import {
   findFirstIndex,
   findTokenEndingBefore,
   findTokenStartingAt,
-  findTokensBetween,
   isSpaceOrTab,
-  isStructural,
   isWhitespace,
 } from "./source.ts"
 import { writtenWithRespellings } from "./spelling.ts"
@@ -142,7 +138,9 @@ export interface BlockRules<Statement extends Positioned> {
    * complete value atom, or in a gap that `keptGapEnd` keeps: skip whole-line
    * joining and verbatim fallback for those regions, so the gaps and the
    * indentation outside them can still format. Kept-line rules otherwise
-   * apply.
+   * apply. A gap that holds a joining region and is not kept by one of those is
+   * kept as written by `printBlock` itself (`findJoiningRegionEndInLine`), so a
+   * layout needs no hook of its own for it.
    */
   readonly joiningRegionsPrintedAsWritten?: boolean
   /** The lines whose statements stay together (see `KeptLines`). */
@@ -188,8 +186,11 @@ export interface BlockRules<Statement extends Positioned> {
     beforeStatement: boolean,
   ) => number | undefined
   /**
-   * The end of text kept verbatim within a joined line. Unlike `keptGapEnd`,
-   * this preserves inline spacing without preserving a line break.
+   * The end of text kept as written within a joined line, with a U+2028 or
+   * U+2029 in it. Unlike `keptGapEnd`, this keeps the spacing of a gap within a
+   * line, and no line break. Where it keeps nothing, `printBlock` keeps the gap
+   * that holds a joining region of a layout that sets
+   * `joiningRegionsPrintedAsWritten`.
    */
   readonly keptInlineGapEnd?: (start: number) => number
   /**
@@ -264,6 +265,13 @@ export interface BlockRules<Statement extends Positioned> {
    * top level, such as a `;` of its own in flowchart.
    */
   readonly isDroppedAtTopLevel: (statement: Statement) => boolean
+  /**
+   * Whether U+2028 and U+2029 at the end of a kept stretch are whitespace, as
+   * after the `end` of a subgraph, and are dropped with the whitespace at the
+   * end of a line. Otherwise a stretch whose last whitespace holds one keeps
+   * it as written (see `keepsTrailingLineSeparators`).
+   */
+  readonly dropsTrailingLineSeparators?: boolean
   /**
    * Whether a line of only whitespace after a line that ends with a comment
    * is kept, as a line of one space where it stands among the comment lines
@@ -490,6 +498,23 @@ export function printBlock<Statement extends Positioned>(
 ): PrintedBlock {
   const { statements } = bounds
   const kept = keptLinesOfBlock(source, rules)
+
+  /**
+   * The end of the gap that is kept as written from `start` within a line: the
+   * layout's own (`BlockRules.keptInlineGapEnd`) where it keeps one, and for a
+   * layout that prints its joining regions as written, the end of the joining
+   * region that starts in the gap, so that the gap that holds the U+2028 or
+   * U+2029 before a comment line stays as written (docs/compatibility.md, A
+   * comment line after U+2028 or U+2029).
+   */
+  function keptInlineGapEnd(start: number, end: number): number {
+    const own = rules.keptInlineGapEnd?.(start)
+    if (own !== undefined && own > start) return own
+    return rules.joiningRegionsPrintedAsWritten === true
+      ? findJoiningRegionEndInLine(source, start, end)
+      : (own ?? start)
+  }
+
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
   let offset = bounds.start
@@ -656,9 +681,13 @@ export function printBlock<Statement extends Positioned>(
       pushLine({
         // A verbatim trivia line keeps spacing between its comments and
         // directives too; the block still supplies its ordinary indentation.
-        doc: kept.verbatim.has(lineStartOf(source, line.run.range[0]))
-          ? printRunAsWritten(source, line.run)
-          : line.run.doc,
+        // Text after a U+2028 or U+2029 of the line is a line of its own, not
+        // part of the verbatim line (docs/requirement.md, Line separators).
+        doc:
+          kept.verbatim.has(lineStartOf(source, line.run.range[0])) &&
+          findContentStart(source, line.run.range[0]) === line.run.range[0]
+            ? printRunAsWritten(source, line.run)
+            : line.run.doc,
         ...(triviaBreakBefore(line.run.range[0]) === undefined
           ? {}
           : { writtenBreakBefore: triviaBreakBefore(line.run.range[0]) }),
@@ -803,16 +832,17 @@ export function printBlock<Statement extends Positioned>(
   }
 
   /**
-   * Whether the statement at `index`, which is dropped at the top level, stands
-   * after a block on the line of its closing, and the closing goes to a line of
-   * its own (see `startOfSplitClosing`) that holds no `;` of its own. The line
-   * that the source has does not stay together then: the statement is on the
-   * line of the closing, where a `;` of its own is dropped as it is on any line
-   * of its own, so a second formatting drops no more than the first.
+   * Whether the statement at `index`, a `;` of its own (see
+   * `BlockRules.isDroppedAtTopLevel`), stands after a block on the line of its
+   * closing, and the closing goes to a line of its own (see
+   * `startOfSplitClosing`) that holds no `;` of its own. The line that the
+   * source has does not stay together then: the statement is on the line of the
+   * closing, where it is printed as it is on any line of its own, dropped at the
+   * top level and on a line of its own in a block, so a second formatting
+   * changes nothing.
    */
   function followsSplitClosing(index: number): boolean {
-    if (!bounds.isTopLevel || !rules.isDroppedAtTopLevel(statements[index]))
-      return false
+    if (!rules.isDroppedAtTopLevel(statements[index])) return false
     let blockIndex = index - 1
     while (blockIndex >= 0 && rules.isDroppedAtTopLevel(statements[blockIndex]))
       blockIndex--
@@ -1022,7 +1052,7 @@ export function printBlock<Statement extends Positioned>(
                       rules.keepsOpeningLine === false),
                   atLineEnd: false,
                 },
-                rules.keptInlineGapEnd,
+                keptInlineGapEnd,
                 rules.inlineGapBefore?.(statement),
                 rules.omittedRanges,
               )),
@@ -1052,7 +1082,8 @@ export function printBlock<Statement extends Positioned>(
         : null
     const trailing =
       textTrailing ??
-      (keepsTrailingLineSeparators(source, position, stretch.end)
+      (rules.dropsTrailingLineSeparators !== true &&
+      keepsTrailingLineSeparators(source, position, stretch.end)
         ? printAsWritten(source, position, stretch.end)
         : printInlineGap(
             source,
@@ -1063,7 +1094,7 @@ export function printBlock<Statement extends Positioned>(
               atLineEnd: true,
               printedLineStart: startOfSplitClosing(position, last),
             },
-            rules.keptInlineGapEnd,
+            keptInlineGapEnd,
             undefined,
             rules.omittedRanges,
             rules.relocatedWhitespace,
@@ -1125,48 +1156,7 @@ export function printBlock<Statement extends Positioned>(
     if (rules.keptClosingJoin !== undefined) return rules.keptClosingJoin
     const closing = findTokenStartingAt(source, closingStart)
     if (closing === undefined) return null
-    const lineEnd = lineEndOf(source, closingStart)
-    // A `;` that the line rule ignores stays with the text on the line that
-    // makes it ignored (`style:#x` before the closing) where a line of its own
-    // would make it read: it ends a comment as an entity (`end #a;`, see
-    // `ignoredSemicolonNeedsItsLine`), also where whitespace follows it and it
-    // has no token of its own (`commentHasIgnoredSemicolonThatNeedsItsLine`). The
-    // `#` of a comment after the closing also keeps the closing on the line
-    // where it ends a stretch of the line rule that holds whitespace of the
-    // line before the closing: a line break would end the stretch earlier (see
-    // `followsGapsOfStyleRuleStretch`).
-    // A line that stays together because of a `;` after the closing, with a
-    // `;` before the closing that only separates statements, keeps the closing
-    // too: the part before it holds no `;` of its own, so a second formatting
-    // would not keep its statements and its `;` together (see
-    // `holdsOwnSemicolonIn`).
-    // The `}` that closes a block around this one is on a line of its own
-    // after this block, unless something follows it, so it does not keep the
-    // closing of this block on the line: the second formatting would move it.
-    const followed =
-      findTokensBetween(source, closing.range[1], lineEnd).some(
-        (token) => isStructural(source, token) && token.value !== "}",
-      ) ||
-      [...source.ignoredSemicolons].some(
-        (semicolon) =>
-          closing.range[1] <= semicolon &&
-          semicolon < lineEnd &&
-          !isDroppedSemicolon(source, semicolon) &&
-          ignoredSemicolonNeedsItsLine(source, semicolon),
-      ) ||
-      source.root.comments.some(
-        (comment) =>
-          closing.range[1] <= comment.range[0] &&
-          comment.range[0] < lineEnd &&
-          commentHasIgnoredSemicolonThatNeedsItsLine(source, comment.range),
-      ) ||
-      followsGapsOfStyleRuleStretch(source, closing.range) ||
-      (findTokensBetween(source, closingLine, closingStart).some(
-        (token) => token.value === ";",
-      ) &&
-        !holdsOwnSemicolonIn(source, closingLine, closingStart) &&
-        holdsOwnSemicolonIn(source, closingStart, lineEnd))
-    return followed ? " " : null
+    return keepsClosingOnItsLine(source, closing) ? " " : null
   }
 
   if (rules.keepsOpeningLine !== false && isKept(bounds.start - 1)) {
@@ -1543,12 +1533,16 @@ export function printInlineGap(
   start: number,
   end: number,
   place: InlinePlace,
-  keptEnd?: (start: number) => number,
+  keptEnd?: (start: number, end: number) => number,
   ordinaryRule?: GapRule,
   omittedRanges: readonly Range[] = [],
   relocatedWhitespace: readonly Range[] = [],
 ): Doc {
-  if (keptEnd !== undefined && keptEnd(start) > start && end <= keptEnd(start))
+  if (
+    keptEnd !== undefined &&
+    keptEnd(start, end) > start &&
+    end <= keptEnd(start, end)
+  )
     return printAsWritten(source, start, end)
   if (start >= end)
     return ordinaryRule === "space" && !place.atLineStart && !place.atLineEnd
@@ -1568,11 +1562,12 @@ export function printInlineGap(
     omitted: omittedRanges,
     relocatedWhitespace,
   })
-  if (gap.breaksLine) {
-    throw new Error(
-      `prettier-plugin-mmd: a line break within a kept line at offset ${start}`,
-    )
-  }
+  // The comment line of a region that joins lines cannot go to a line of its
+  // own on a kept line, whose statements stay on it: the gap stays as written
+  // (docs/compatibility.md, A comment line after U+2028 or U+2029). `printBlock`
+  // keeps the other gaps of a region as written before it gets here (see
+  // `findJoiningRegionEndInLine`, which says why the two are not one decision).
+  if (gap.breaksLine) return printAsWritten(source, start, end)
   const run = gap.leading ?? gap.trailing
   if (run === null) {
     if (ordinaryRule !== undefined && !place.atLineStart && !place.atLineEnd)

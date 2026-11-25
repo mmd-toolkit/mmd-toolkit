@@ -1388,6 +1388,76 @@ statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-s
 [fixture:
 statements-one-per-line/box-end-comment-in-style-rule-stretch-trigger-in-other-statement]
 
+The `end` stays on that line for this reason only where nothing but spaces and
+tabs follow the `;` of its comment. Where a comment or a directive follows it
+(`end #;  %% c`), the `end` and its comment go to a line of their own, and the
+`#` of the comment is no more on the line of the text before the `end`. The
+stretch of the line rule then ends earlier, so that text is printed as anywhere
+else in the first formatting:
+`loop style:#x;; loop x; A->>B: body; end #;  %% c` is printed
+`loop style:#x;; loop x; A ->> B: body;` and `end #;  %% c`. This holds with one
+space, no whitespace, or a tab between the `;` and the comment, with a directive
+after the `;`, with a space or a tab after the `:` of `style`, with `classDef`
+in place of `style`, with a space before the `;` after the message, with two
+statements before the `end`, and in each of the other blocks (`opt`, `break`,
+`rect`, `alt`, `par`, `par_over`, `critical`, and `box`). A message that is
+spaced as written is printed the same.
+
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-one-space]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-touching]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-tab]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-directive]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-directive-only]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-style-space-after-colon]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-style-tab-after-colon]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-classdef]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-classdef-space-after-colon]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-space-before-semicolon]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-opt]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-break]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-rect]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-par]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-par-over]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-critical]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-box]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-two-statements]
+[fixture:
+statements-one-per-line/end-comment-moves-text-before-as-usual-already-spaced]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-with-ignored-semicolon-in-comment]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-comment-line]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-two-comment-lines]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-empty-line]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-then-whitespace-line]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-at-end-of-text]
+[fixture:
+statements-one-per-line/end-comment-in-style-rule-stretch-entity-comment]
+
 The `;` that the line rule ignores after an `end` that goes to a line of its own
 is dropped, as it is on a line of its own, whatever the lines before it hold:
 `A->>B: style:#x;; end;` is printed `A ->> B: style:#x;;` and `end`. A line that
@@ -1648,6 +1718,22 @@ closed, an ignored `;` next to another `;`, and one before a U+2028 or U+2029
 fixture: sequence/ignored-semicolon-then-separator-line-15c6520f] [fixture:
 statements-one-per-line/unclosed-directive-semicolon-kept] [fixture:
 statements-one-per-line/ignored-semicolon-next-to-semicolon-kept]
+
+A comment line that starts with `#` or `%`, and a line of only a `;`, end at a
+U+2028 or U+2029, and the text after the character is a line of its own. A
+directive and a comment on that line are printed as on a line after a line feed,
+with one space between them where the source has whitespace there. The `;` is
+dropped, as on a line of its own.
+
+[test: sequence: a line of a semicolon, U+2028, and a directive at the end of
+the text] [test: sequence: a percent comment line, U+2028, a directive, two
+spaces, and a comment] [test: sequence: a line of a semicolon, U+2028, a
+directive, two spaces, and a comment] [test: sequence: a hash comment line,
+U+2028, a directive, two spaces, and a comment] [test: sequence: a percent
+comment line, U+2028, a directive touching a comment] [test: sequence: a percent
+comment line, U+2028, a directive, a tab, and a comment] [test: sequence: a
+percent comment line, U+2029, a directive, two spaces, and a comment] [test:
+sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment]
 
 ### Directives
 

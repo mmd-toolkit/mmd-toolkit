@@ -105,6 +105,21 @@ agentflow/lex-global-nbsp-before-newline] [fixture:
 agentflow/gram-nested-statement-after-end] [fixture:
 agentflow/gram-nested-end-end-same-line]
 
+A comment after such a unit starts where the spaces and tabs that the unit takes
+end: at once after end or global, after those spaces and tabs, which stay in the
+last fragment of the name, or after a `;` that follows them. Where end is only
+the end of an id run, as in `Front-end`, no unit takes whitespace, and a comment
+that touches it is part of the id: `Front-end%% c` is the id `Front-end%% c`.
+
+[fixture: agentflow/lex-flow-name-end-keyword-space-comment] [fixture:
+agentflow/lex-flow-name-end-keyword-tab-comment] [fixture:
+agentflow/lex-flow-name-end-keyword-touching-comment] [fixture:
+agentflow/lex-flow-name-end-keyword-semicolon-comment] [fixture:
+agentflow/lex-flow-name-global-keyword-space-comment] [fixture:
+agentflow/lex-flow-name-global-keyword-touching-comment] [fixture:
+agentflow/lex-flow-name-global-keyword-tab-semicolon-comment] [fixture:
+agentflow/lex-flow-name-end-in-id-run-touching-comment]
+
 The final remaining-whitespace rule produces one space unit per character,
 rather than flowchart's maximal run. The preceding newline rule still produces
 one newline unit for a consecutive LF run. Consequently, a production requiring
