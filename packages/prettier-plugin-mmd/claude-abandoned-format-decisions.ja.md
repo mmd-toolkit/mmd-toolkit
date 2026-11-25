@@ -2134,7 +2134,7 @@ timeline、treemap、treeview、usecase、venn、wardley、xychartである。
 
 ### 版か表の行のない理由が書かれている
 
-7件の形は、図種の規則に理由の文があるが、mermaid.js の版を挙げていないか、
+6件の形は、図種の規則に理由の文があるが、mermaid.js の版を挙げていないか、
 [対象にする版の mermaid.js のために残す形][versions]の表に行がない。
 その図種の PR が足りないほう（版か行）を書くと、この節を出る。
 対象にする版で走らせて違いがなければ、「まだ決めていない形」の節へ移る。
@@ -2144,7 +2144,6 @@ timeline、treemap、treeview、usecase、venn、wardley、xychartである。
 | flowchart | [1 行の説明ブロック（compatibility.ja.md）](./docs/compatibility.ja.md#1-行の説明ブロック) 「ブロックが終わる行が文を同じ行に保つ行のとき」 | `flowchart TD\naccDescr {\nd\n} B[\"x;y\"]\n`                                                                                            |
 | railroad  | [コメント（railroad.ja.md）](./docs/railroad.ja.md#コメント) 「行コメントの後の適用先と終端は次行に残します。」                             | `railroad-abnf-beta\nr=\"comment\"; note\n;`                                                                                             |
 | packet    | [Relative plus（packet.ja.md）](./docs/packet.ja.md#relative-plus) 「`count` の数字は原綴を保ちます。」                                     | `packet\n+ \t3 :\"Plus\"\n`                                                                                                              |
-| usecase   | [Indentation（usecase.ja.md）](./docs/usecase.ja.md#indentation) 「1 段は `tabWidth` と `useTabs` に従」                                    | `---\ntitle: \|\n x\n---\nusecase-beta\nA\n`                                                                                             |
 | cynefin   | [Multiline values（cynefin.ja.md）](./docs/cynefin.ja.md#multiline-values) 「`printWidth` では折り返しません。」                            | `cynefin-beta\ncomplex-->clear:\"A deliberately long transition label that stays on its authored physical line\"`                        |
 | wardley   | [複数行の値（wardley.ja.md）](./docs/wardley.ja.md#複数行の値) 「`printWidth` では折り返しません。」                                        | `wardley-beta\ncomponent A very long component name with repeated words[0.123456789012345,0.987654321098765]label[-13,24](build)inertia` |
 | radar     | [Description blocks（radar.ja.md）](./docs/radar.ja.md#description-blocks) 「波括弧を残すブロックは、境界がわかるよう、」                   | `radar-beta\naccDescr {a%%literal}\n`                                                                                                    |

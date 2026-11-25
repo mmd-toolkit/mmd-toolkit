@@ -2125,7 +2125,7 @@ finds its unwritten reason.
 
 ### A reason is stated without a version or a table row
 
-7 forms have a reason in the rules of the diagram type that names no version of
+6 forms have a reason in the rules of the diagram type that names no version of
 mermaid.js or has no row in [Forms kept for versions of mermaid.js that
 count][versions]. A form leaves this section when the pull request of its
 diagram type writes what is missing, the version or the row, and moves to the
@@ -2137,7 +2137,6 @@ no difference.
 | flowchart | [A description block on one line (compatibility.md)](./docs/compatibility.md#a-description-block-on-one-line) "Where the line that the block" | `flowchart TD\naccDescr {\nd\n} B[\"x;y\"]\n`                                                                                            |
 | railroad  | [Comments (railroad.md)](./docs/railroad.md#comments) "A line comment leaves its following"                                                   | `railroad-abnf-beta\nr=\"comment\"; note\n;`                                                                                             |
 | packet    | [Relative plus (packet.md)](./docs/packet.md#relative-plus) "Keep the count digits as written."                                               | `packet\n+ \t3 :\"Plus\"\n`                                                                                                              |
-| usecase   | [Indentation (usecase.md)](./docs/usecase.md#indentation) "A step follows `tabWidth` and `useTabs`,"                                          | `---\ntitle: \|\n x\n---\nusecase-beta\nA\n`                                                                                             |
 | cynefin   | [Multiline values (cynefin.md)](./docs/cynefin.md#multiline-values) "Do not wrap at printWidth."                                              | `cynefin-beta\ncomplex-->clear:\"A deliberately long transition label that stays on its authored physical line\"`                        |
 | wardley   | [Multiline values (wardley.md)](./docs/wardley.md#multiline-values) "Do not wrap at printWidth."                                              | `wardley-beta\ncomponent A very long component name with repeated words[0.123456789012345,0.987654321098765]label[-13,24](build)inertia` |
 | radar     | [Description blocks (radar.md)](./docs/radar.md#description-blocks) "For blocks that keep their braces,"                                      | `radar-beta\naccDescr {a%%literal}\n`                                                                                                    |
