@@ -1686,14 +1686,16 @@ period]
 A comment line that starts with `#` or `%` ends at a U+2028 or U+2029, and the
 text after the character is a line of its own. A directive and a comment on that
 line are printed as on a line after a line feed: with one space between them
-where the source has whitespace there, and none where it has none.
+where the source has whitespace there, and none where it has none. Two comment
+lines on the next lines with no empty line between keep the line as written.
 
-[test: timeline: a hash comment line, U+2028, a directive, two spaces, and a
-comment] [test: timeline: a percent comment line, U+2028, a directive, two
-spaces, and a comment] [test: timeline: a hash comment line, U+2028, a directive
-touching a comment] [test: timeline: a percent comment line, U+2028, a
-directive, a tab, and a comment] [test: timeline: a hash comment line, U+2029, a
-directive, two spaces, and a comment]
+[test: timeline: a hash comment line, U+2028, a directive, two spaces, a
+comment, and two comment lines after it] [test: timeline: a hash comment line,
+U+2028, a directive, two spaces, and a comment] [test: timeline: a percent
+comment line, U+2028, a directive, two spaces, and a comment] [test: timeline: a
+hash comment line, U+2028, a directive touching a comment] [test: timeline: a
+percent comment line, U+2028, a directive, a tab, and a comment] [test:
+timeline: a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 ### Whitespace characters
 

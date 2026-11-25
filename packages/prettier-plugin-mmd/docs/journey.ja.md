@@ -1182,6 +1182,7 @@ U+2028 と U+2029 は、journey の単位の間の空白であり、
 ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
 なければ空白を置きません。
 
+[test: journey: a hash comment line, U+2028, a directive, two spaces, a comment, and a line of whitespace only after it]
 [test: journey: a hash comment line, U+2028, a directive, two spaces, and a comment]
 [test: journey: a percent comment line, U+2028, a directive, two spaces, and a comment]
 [test: journey: a hash comment line, U+2028, a directive touching a comment]

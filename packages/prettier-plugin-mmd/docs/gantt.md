@@ -1898,10 +1898,11 @@ are printed as on a line after a line feed: with one space between them where
 the source has whitespace there, and none where it has none.
 
 [test: gantt: a percent comment line, U+2028, a directive, two spaces, and a
-comment] [test: gantt: a percent comment line, U+2028, a directive touching a
-comment] [test: gantt: a percent comment line, U+2028, a directive, a tab, and a
-comment] [test: gantt: a percent comment line, U+2029, a directive, two spaces,
-and a comment]
+comment at the end of the text] [test: gantt: a percent comment line, U+2028, a
+directive, two spaces, and a comment] [test: gantt: a percent comment line,
+U+2028, a directive touching a comment] [test: gantt: a percent comment line,
+U+2028, a directive, a tab, and a comment] [test: gantt: a percent comment line,
+U+2029, a directive, two spaces, and a comment]
 
 ### Whitespace characters
 

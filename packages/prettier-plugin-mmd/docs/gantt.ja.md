@@ -1935,6 +1935,7 @@ U+2028 と U+2029 は空白やタブではなくテキストの文字なので�
 ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
 なければ空白を置きません。
 
+[test: gantt: a percent comment line, U+2028, a directive, two spaces, and a comment at the end of the text]
 [test: gantt: a percent comment line, U+2028, a directive, two spaces, and a comment]
 [test: gantt: a percent comment line, U+2028, a directive touching a comment]
 [test: gantt: a percent comment line, U+2028, a directive, a tab, and a comment]

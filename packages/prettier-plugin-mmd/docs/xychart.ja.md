@@ -1244,6 +1244,7 @@ U+2028 と U+2029 は、XY チャートの単位の間の空白で、
 ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにします。
 `;` は、単独の行と同じに削除します。
 
+[test: xychart: a line of a semicolon, U+2029, a directive, two spaces, a comment, and an empty line at the end of the text]
 [test: xychart: a line of a semicolon, U+2028, a directive, two spaces, and a comment]
 [test: xychart: a line of a semicolon, U+2028, a directive touching a comment]
 [test: xychart: a line of a semicolon, U+2028, a directive, a tab, and a comment]

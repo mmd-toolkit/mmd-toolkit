@@ -2071,7 +2071,11 @@ stateDiagram-v2
 なければ空白を置きません。
 `# c`、U+2028、`%%{x}%%`、空白 2 つ、`%% c` は、
 `# c` と `%%{x}%% %% c` の 2 行に印字します。
+空行を挟まずに次の行にコメント行か `End` という名前のノードがあるときは、
+行を書かれたまま残します。
 
+[test: state: a hash comment line, U+2028, a directive, two spaces, a comment, and a comment line after it]
+[test: state: a hash comment line, U+2028, a directive, two spaces, a comment, and a node named End]
 [test: state: a hash comment line, U+2028, a directive, two spaces, and a comment]
 [test: state: a hash comment line, U+2028, a directive touching a comment]
 [test: state: a hash comment line, U+2028, a directive, a tab, and a comment]

@@ -2026,7 +2026,12 @@ U+2028 と U+2029 は、requirement の図の単位の間の空白であり、�
 その行のディレクティブとコメントは、改行の後の行と同じに印字します。
 ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
 なければ空白を置きません。
+閉じていないディレクティブがあるときは、行を書かれたまま残します。
 
+[test: requirement: a hash comment line with an ignored semicolon, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line with two ignored semicolons, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line in a body, U+2028, a directive, two spaces, a comment, and the closing brace after an empty line]
+[test: requirement: a hash comment line, U+2028, and a directive that is not closed]
 [test: requirement: a hash comment line, U+2028, a directive, two spaces, and a comment]
 [test: requirement: a hash comment line, U+2028, a directive, one space, and a comment]
 [test: requirement: a hash comment line, U+2028, a directive, a tab, and a comment]

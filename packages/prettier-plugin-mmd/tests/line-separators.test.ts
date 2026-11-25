@@ -37464,6 +37464,61 @@ const directiveAfterSeparatorExamples: readonly (readonly [
     "usecase-beta\naccTitle: T \u2029 %%{x}%%  %% c\n\nactor B\n",
     "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
   ],
+  [
+    "requirement: a hash comment line with an ignored semicolon, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# style:#x;\u2028%%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # style:#x;\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line with two ignored semicolons, U+2028, a directive, two spaces, and a comment",
+    "requirementDiagram\n# style classDef:#x;;\u2028%%{x}%%  %% c\n\nrequirement r {\n}\n",
+    "requirementDiagram\n  # style classDef:#x;;\n  %%{x}%% %% c\n\n  requirement r {\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line in a body, U+2028, a directive, two spaces, a comment, and the closing brace after an empty line",
+    "requirementDiagram\nrequirement r {\n# c\u2028%%{x}%%  %% c\n\n}\n",
+    "requirementDiagram\n  requirement r {\n    # c\n    %%{x}%% %% c\n  }\n",
+  ],
+  [
+    "requirement: a hash comment line, U+2028, and a directive that is not closed",
+    "requirementDiagram\n# c\u2028%%{x",
+    "requirementDiagram\n  # c\u2028%%{x",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, a comment, and a comment line after it",
+    "stateDiagram-v2\n# c\u2028%%{x}%%  %% c\n%% d\n[*]-->A\n",
+    "stateDiagram-v2\n  # c\u2028%%{x}%%  %% c\n%% d\n[*]-->A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, a comment, and a node named End",
+    "stateDiagram-v2\n# c\u2028%%{x}%%  %% c\nEnd\n",
+    "stateDiagram-v2\n  # c\u2028%%{x}%%  %% c\nEnd\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive, two spaces, a comment, and two comment lines after it",
+    "timeline\n# c\u2028%%{x}%%  %% c\n%% d\n%% e\ntitle T\n",
+    "timeline\n  # c\u2028%%{x}%%  %% c\n%% d\n%% e\ntitle T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive, two spaces, a comment, and a line of whitespace only after it",
+    "journey\n# c\u2028%%{x}%%  %% c\n \t\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, two spaces, and a comment at the end of the text",
+    "gantt\n% c\u2028%%{x}%%  %% c",
+    "gantt\n  % c\n  %%{x}%% %% c\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2028, and a directive at the end of the text",
+    "sequenceDiagram\n;\u2028%%{x}%%",
+    "sequenceDiagram\n  %%{x}%%\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2029, a directive, two spaces, a comment, and an empty line at the end of the text",
+    "xychart\n;\u2029%%{x}%%  %% c\n\n",
+    "xychart\n  %%{x}%% %% c\n",
+  ],
 ]
 
 describe("a line kept as written that ends at a line separator, with a directive and a comment after it", () => {

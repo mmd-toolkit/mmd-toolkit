@@ -1702,6 +1702,7 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにします。
 `;` は、単独の行と同じに削除します。
 
+[test: sequence: a line of a semicolon, U+2028, and a directive at the end of the text]
 [test: sequence: a percent comment line, U+2028, a directive, two spaces, and a comment]
 [test: sequence: a line of a semicolon, U+2028, a directive, two spaces, and a comment]
 [test: sequence: a hash comment line, U+2028, a directive, two spaces, and a comment]

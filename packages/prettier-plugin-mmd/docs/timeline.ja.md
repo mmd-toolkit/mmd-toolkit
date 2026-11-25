@@ -1693,7 +1693,10 @@ period の前でも同じです（詳しくは、
 その行のディレクティブとコメントは、改行の後の行と同じに印字します。
 ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
 なければ空白を置きません。
+空行を挟まずに次の行から 2 つのコメント行が続くときは、
+行を書かれたまま残します。
 
+[test: timeline: a hash comment line, U+2028, a directive, two spaces, a comment, and two comment lines after it]
 [test: timeline: a hash comment line, U+2028, a directive, two spaces, and a comment]
 [test: timeline: a percent comment line, U+2028, a directive, two spaces, and a comment]
 [test: timeline: a hash comment line, U+2028, a directive touching a comment]
