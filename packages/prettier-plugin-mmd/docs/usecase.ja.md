@@ -80,7 +80,6 @@ usecase-beta
 ### Indentation
 
 ヘッダーの下を設定の 1 段、境界内の宣言を 2 段とし、`end` は開始文に揃えます。
-文はヘッダーより 1 段深く置きます。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 

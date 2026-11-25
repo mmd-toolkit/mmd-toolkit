@@ -73,8 +73,7 @@ usecase-beta
 ### Indentation
 
 Use structural indentation: one configured step below the header, two for
-boundary declarations, and `end` aligned with its opener. Statements stand one
-indentation level below the header.
+boundary declarations, and `end` aligned with its opener.
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
