@@ -1855,13 +1855,17 @@ semicolon from the present style text, leaving an empty style entry in the Db.
 Dropping that source semicolon leaves no style entry, so the semicolon stays. In
 `style A fill : #f00;`, mermaid.js reads the `#` and the `;` as an escaped
 character, so the style that the Db holds, and the drawing, differ from those of
-`style A fill : #f00`; the semicolon stays too.
+`style A fill : #f00`; the semicolon stays too. The same holds for
+`style A fill: #f00;`: 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 draw another
+figure without the `;`, and 12.3.0 holds another style in the Db `states` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: state/db-classdef-semicolon-in-each-part] [corpus fixture:
 state/db-classdef-comma-only] [corpus fixture:
 state/lex-classdef-without-styles]
 
-[fixture: semicolons-at-the-end-of-a-style-statement/style-text-kept]
+[fixture: semicolons-at-the-end-of-a-style-statement/style-text-kept] [fixture:
+semicolons-at-the-end-of-a-style-statement/style-hash-after-colon-kept]
 
 A statement with no style, such as `style A`, has no `;` to drop, and its
 whitespace follows the usual layout.
@@ -2086,7 +2090,10 @@ A line that holds U+2028 or U+2029 is kept as written, the second description of
 an alias included, whitespace after the character too: `state "d" as A : x`, two
 spaces, U+2028, and two spaces stays as written. Removing the separator and the
 spaces after it changes the description that the Db holds for the state, and the
-drawing of the state changes with it, so the line stays whole.
+drawing of the state changes with it, so the line stays whole. 10.9.8, 11.7.0,
+11.17.2, 12.0.0, and 12.3.0 draw the state with another description without
+them, and 12.3.0 holds another description in the Db `states` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: a second description of an alias with spaces after a U+2028]
 

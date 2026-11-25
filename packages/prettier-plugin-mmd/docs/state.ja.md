@@ -1941,12 +1941,18 @@ Db に空のスタイルを 1 つ残します。
 mermaid.js が `#` と `;` をエスケープされた文字として読むので、
 Db のスタイルも描画も、`style A fill : #f00` とは違います。
 この `;` も残します。
+`style A fill: #f00;` も同じで、10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は、
+`;` を除くと別の図を描き、12.3.0 は Db の `states` に別のスタイルを持ちます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [corpus fixture: state/db-classdef-semicolon-in-each-part]
 [corpus fixture: state/db-classdef-comma-only]
 [corpus fixture: state/lex-classdef-without-styles]
 
 [fixture: semicolons-at-the-end-of-a-style-statement/style-text-kept]
+[fixture: semicolons-at-the-end-of-a-style-statement/style-hash-after-colon-kept]
 
 `style A` のようにスタイルのない文には、削除する `;` がなく、
 空白は通常の配置に従います。
@@ -2179,6 +2185,11 @@ U+2028 か U+2029 を含む行は、書かれたまま残します。
 `state "d" as A : x`、空白 2 つ、U+2028、空白 2 つは、書かれたまま残します。
 区切り文字とその後の空白を除くと、状態の説明が Db で変わり、
 状態の描画も変わるので、行を丸ごと残します。
+10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は、それらを除くと別の説明で状態を描き、
+12.3.0 は Db の `states` に別の説明を持ちます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: a second description of an alias with spaces after a U+2028]
 
