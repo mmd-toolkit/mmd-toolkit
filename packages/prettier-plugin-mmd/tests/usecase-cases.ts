@@ -522,6 +522,13 @@ export const usecaseCases: readonly UsecaseCase[] = [
     options: {},
   },
   {
+    name: "usecase: U+2028, two comments that touch, and a line of whitespace after the text of an accTitle line",
+    id: "usecase/line-terminators/acctitle-u2028-two-comments-whitespace-line",
+    input: "usecase-beta\naccTitle  :   T  \u2028%% c\n%% d\n \nactor B\n",
+    output: "usecase-beta\n  accTitle  :   T  \u2028%% c\n%% d\n \n  actor B\n",
+    options: {},
+  },
+  {
     name: "usecase: two U+2028, a comment, and an empty line after the text of an accTitle line",
     id: "usecase/line-terminators/acctitle-two-u2028-comment-empty-line",
     input: "usecase-beta\naccTitle  :   Title   \u2028\u2028 %% c\n\nactor B\n",

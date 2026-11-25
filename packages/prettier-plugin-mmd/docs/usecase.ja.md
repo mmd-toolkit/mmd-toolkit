@@ -1497,6 +1497,7 @@ id、隙間、プロパティ、CSS の拒否位置を修復しません。
 [test: usecase: U+2029, a comment, and a directive line after the text of an accDescr line]
 [test: usecase: U+2029, a comment, and a directive line with a space before it after the text of an accDescr line]
 [test: usecase: U+2029, a comment, and a line of whitespace after the text of an accDescr line]
+[test: usecase: U+2028, two comments that touch, and a line of whitespace after the text of an accTitle line]
 
 ### Frontmatter YAML
 
