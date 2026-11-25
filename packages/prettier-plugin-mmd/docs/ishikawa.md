@@ -236,8 +236,9 @@ ishikawa/blank-lines/blank-around-trivia]
 A separating blank after a diagram comment remains one, including after an
 attached header comment, touching or spaced, also when a directive before the
 comment contains a line feed that mermaid.js removes (see
-[Comments](#comments)); the complete terminal gap after a final diagram comment
-stays written.
+[Comments](#comments)); the complete terminal gap after a final line of `%%`
+alone stays written, while after a final comment with text the empty lines are
+dropped (see [Final newline](#final-newline)).
 
 [fixture: ishikawa/blank-lines/blank-comment-accepted] [fixture:
 ishikawa/blank-lines/blank-header-comment-accepted] [fixture:
@@ -408,6 +409,45 @@ boundaries.
 
 [fixture: ishikawa/standalone-directives/directive-open-eof]
 
+A comment that follows a directive on its line with no text between them
+(`%%{x}%% %% c  d`) is a comment on a line of a directive, not a literal: the
+run inside the comment stays as written.
+
+On a line of directives with no text, and on the header line, a gap of
+whitespace between two directives, or between the last directive and a comment,
+is printed as one space, whatever the whitespace is (spaces, tabs, a no-break
+space, U+3000, U+2028, U+2029, and the other whitespace of the specification):
+`%%{x}%%  %% c  d` is printed `%%{x}%% %% c  d`, and so are `%%{x}%%`, a U+3000,
+and `%% c  d`, and `%%{x}%%  %%{y}%%` is printed `%%{x}%% %%{y}%%`. A gap of
+nothing stays nothing, so two directives, or a directive and a comment, that
+touch stay touching. The one exception is the header line: where a gap holds a
+U+2028 or a U+2029 and a comment ends the line, the whole line stays as written,
+the other gaps too (`ishikawa %%{x}%%`, three spaces, `%%{y}%%`, a U+2029, and
+`%% c` is not changed); where a directive ends the line, a gap that holds a
+U+2028 or a U+2029 is printed as one space like the others (`ishikawa %%{x}%%`,
+a U+2029, and `%%{y}%%` is printed `ishikawa %%{x}%% %%{y}%%`).
+
+mermaid.js rejects a header line and a line before the root that hold two or
+more directives and no comment, written and printed alike: this is the known
+divergence
+[`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.md),
+as the corpus fixture `ishikawa/div-header-space-directive-node` shows.
+
+[test: ishikawa: comment-line-after-a-directive-kept] [test: ishikawa:
+comment-line-after-a-directive-gap-collapsed] [test: ishikawa:
+comment-line-after-a-directive-tab-gap-collapsed] [test: ishikawa:
+comment-line-touching-a-directive-kept] [test: a whitespace character between a
+directive and the comment on a line of a directive of an ishikawa diagram]
+[test: spaces and tabs between a directive and the comment on a line of a
+directive of an ishikawa diagram, and a comment that touches the directive]
+[test: a whitespace character between two directives on a line of an ishikawa
+diagram with no text] [test: a whitespace character between two or three
+directives and the comment on a line of directives of an ishikawa diagram, in
+each place] [test: mixed gaps between the directives and the comment on the
+header line of an ishikawa diagram] [test: a whitespace character between two
+directives on the header line and on the line before the root of an ishikawa
+diagram] [corpus fixture: ishikawa/div-header-space-directive-node]
+
 Input (escaped):
 
 ```json
@@ -457,12 +497,45 @@ ishikawa
 ### Inline directives
 
 Literal-side directive gaps remain exactly written because removing directives
-joins both sides without supplying whitespace.
+joins both sides without supplying whitespace. In a literal in which text stands
+before a directive and anything but spaces, tabs, and directives follows that
+directive up to the end of the literal (text, a comment, a `;`, or a character
+such as a no-break space or U+2028), the other runs of spaces and tabs of the
+literal stay as written too, though mermaid.js draws them as one space:
+`A %%{init: {}}%% b  c`, `D  e %%{init: {}}%% f`, and
+`A  b %%{init: {}}%%  %% c` stay. Which of the two applies is decided by the
+directives that have text before them: where there is none, or where only
+spaces, tabs, and directives follow each of them, the runs are printed as one
+space, and a directive at the start does not keep them (`D A  b E  %% c`, with
+`D` and `E` for directives, keeps them, since `E` has text before it and a
+comment after it): `%%{init: {}}%% A  b  c` is printed `%%{init: {}}%% A b c`,
+`%%{init: {}}%% A  b  %% c` is printed `%%{init: {}}%% A b %% c`, and
+`A  b %%{init: {}}%%` is printed `A b %%{init: {}}%%`.
 
 [fixture: ishikawa/inline-directives/directive-gap-trim-unsafe] [fixture:
 ishikawa/inline-directives/directive-single-space-gaps] [fixture:
 ishikawa/inline-directives/directive-in-value] [fixture:
 ishikawa/inline-directives/literal-side-whitespace] [fixture:
+ishikawa/inline-directives/directive-middle-runs-kept] [fixture:
+ishikawa/inline-directives/directive-leading-runs-collapsed] [fixture:
+ishikawa/inline-directives/directive-then-comment-runs-kept] [fixture:
+ishikawa/inline-directives/directive-two-then-text-runs-kept] [fixture:
+ishikawa/inline-directives/directive-then-tab-and-comment-runs-kept] [test:
+ishikawa: directive-last-then-u3000-runs-kept] [fixture:
+ishikawa/inline-directives/directive-then-touching-comment-runs-kept] [fixture:
+ishikawa/inline-directives/directive-then-semicolon-runs-kept] [fixture:
+ishikawa/inline-directives/directive-start-and-end-runs-collapsed] [fixture:
+ishikawa/inline-directives/directive-start-and-end-then-comment-runs-kept]
+[fixture:
+ishikawa/inline-directives/directive-start-then-comment-runs-collapsed]
+[fixture: ishikawa/inline-directives/directive-two-end-runs-collapsed] [fixture:
+ishikawa/inline-directives/directive-two-end-then-comment-runs-kept] [fixture:
+ishikawa/inline-directives/directive-middle-tab-runs-kept] [test: ishikawa:
+directive-last-then-nbsp-runs-kept] [test: ishikawa:
+directive-last-then-u2028-runs-kept] [test: ishikawa:
+directive-last-then-u2029-runs-kept] [test: ishikawa:
+directive-then-nbsp-and-text-runs-kept] [test: ishikawa:
+directive-start-then-nbsp-runs-collapsed] [fixture:
 ishikawa/inline-directives/joined-line-spaces]
 
 Leading directive gaps instead count toward the node's chosen depth indentation,
@@ -512,16 +585,60 @@ trailing-unicode-kept-line]
 
 A run of spaces and tabs inside a literal is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-while joined continuation columns stay, as do comment spaces and directive
-contents. The directives that end a literal are printed with one space before
-each that has whitespace before it, and the whitespace after the last one is
-left out, with a run in the literal printed as one space, whether whitespace
-follows the last directive or not (see
+except in a literal in which text stands before a directive and anything but
+spaces, tabs, and directives follows it (see
+[Inline directives](#inline-directives)), while joined continuation columns
+stay, as do comment spaces and directive contents. The directives that end a
+literal, with nothing but spaces and tabs after the last one, are printed with
+one space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out, with a run in the literal printed as one space,
+whether spaces or tabs follow the last directive or not (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Where the runs of the literal stay under
+[Inline directives](#inline-directives), the spaces and tabs before each
+directive stay as written too, and only the spaces and tabs after the last one
+are left out: `A  b %%{x}%% c  %%{y}%%` and two spaces is printed
+`A  b %%{x}%% c  %%{y}%%`.
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 ishikawa/trailing-whitespace/trailing-directive-gap-collapsed] [fixture:
-ishikawa/trailing-whitespace/trailing-directive-continuation]
+ishikawa/trailing-whitespace/trailing-directive-continuation] [fixture:
+ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
+
+A whitespace character that is no space or tab (U+000B, U+000C, a no-break
+space, U+1680, U+2000 to U+200A, U+2028, U+2029, U+202F, U+205F, U+3000, or
+U+FEFF) beside a directive that has text before it stays, since mermaid.js draws
+other text without it, with the spaces and tabs after the last directive left
+out: `A %%{x}%%`, a U+3000, and two spaces are printed `A %%{x}%%` and the
+U+3000, and so are `A`, a no-break space, `%%{x}%%`, and two spaces (`A`, the
+no-break space, and `%%{x}%%`), and a character between two directives. A run of
+spaces and tabs inside the comment that ends a literal is printed as one space
+too, except in a literal in which a directive has text before it, where every
+run stays as written (see [Inline directives](#inline-directives)): `A %% c  d`
+is printed `A %% c d`, and so is `A %% c`, two tabs, and `d`, also before a
+no-break space (`A %% c`, two spaces, a no-break space, and `d` print `A %% c`,
+a space, the no-break space, and `d`), and so is `%%{x}%% A  b %% c  d`, whose
+only directive stands at its start, which is printed `%%{x}%% A b %% c d`. Where
+a directive has text before it, the comment stays as written:
+`A %%{x}%%  %% c  d`, `A %%{x}%% b %% c  d`, `A  b %%{x}%% %% c  d`, and
+`%%{x}%% A %%{y}%% b %% c  d` are not changed, nor is the run before a no-break
+space or a run of tabs in it.
+
+[test: U+3000 after the last directive of an ishikawa literal] [test: U+3000
+between two directives of an ishikawa literal] [test: U+3000 before the first
+directive of an ishikawa literal] [test: a no-break space after the last
+directive of an ishikawa literal] [test: a no-break space before the first
+directive of an ishikawa literal] [test: a whitespace character that is no space
+or tab beside the directives of an ishikawa literal] [test: ishikawa:
+comment-run-collapsed] [test: ishikawa: comment-run-before-nbsp-collapsed]
+[test: ishikawa: comment-tab-run-collapsed] [test: ishikawa:
+comment-run-after-directive-kept] [test: ishikawa:
+comment-run-after-text-and-directive-kept] [test: ishikawa:
+comment-run-before-nbsp-after-directive-kept] [test: ishikawa:
+comment-tab-run-after-directive-kept] [test: ishikawa:
+comment-run-after-leading-directive-collapsed] [test: ishikawa:
+comment-run-after-directive-between-words-kept] [test: ishikawa:
+comment-run-after-leading-and-between-directives-kept]
 
 Only exterior header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value.
@@ -554,7 +671,9 @@ Node text keeps its written spelling, apart from the spaces and tabs at its end
 inside it, which is printed as one space: quotes, backticks, empty-looking
 strings/brackets/calls, missing closers, numbers, punctuation, entities, HTML,
 prototype names and apparent title/accessibility/style/decoration/data syntax
-are literals.
+are literals. In a literal in which text stands before a directive and anything
+but spaces, tabs, and directives follows it, the runs of spaces and tabs stay as
+written (see [Inline directives](#inline-directives)).
 
 [fixture: ishikawa/node-text/values-opaque] [fixture:
 ishikawa/node-text/values-quote-unsafe] [fixture:
@@ -952,13 +1071,57 @@ ishikawa/header-only-blank] [corpus fixture: ishikawa/header-only-lf] [fixture:
 ishikawa/final-newline/accepted-spaces-header] [fixture:
 ishikawa/final-newline/multiple-final-lf]
 
-Rejected bare headers gain no rescuing newline. Complete terminal
-diagram-comment gaps and open directives reaching EOF keep their endings;
-terminal literal padding is left out under Trailing whitespace.
+Rejected bare headers gain no rescuing newline. A final line of `%%` alone keeps
+the gap after it as written, and one line break ends the text, which the printer
+adds where the gap does not end with one; after a final comment with text, what
+follows its text on its line stays: spaces, tabs, each whitespace character of
+the specification that is no space or tab (a no-break space, a U+3000, U+2028,
+and U+2029 among them), U+0085, U+180E, and U+200B on a line of its own, and on
+the line of a node every one of them but the spaces and tabs; the empty lines
+are dropped, and one line break ends the text. A directive that is not closed
+reaches the end of the text and takes the rest up to its last character that is
+no whitespace; U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace
+here. The whitespace after that character is dropped, on the line of a statement
+too: U+0009 to U+000D (the tab, the line breaks, the vertical tab, and the form
+feed), U+0020, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and
+U+FEFF, and with them the empty lines; one line break ends the text; nothing is
+added only where the text ends right after the character and it is no U+2028 or
+U+2029. Terminal literal padding is left out under Trailing whitespace.
 
 [fixture: ishikawa/final-newline/final-comment] [corpus fixture:
 ishikawa/directive-open-root-eof] [fixture:
-ishikawa/final-newline/final-value-spaces]
+ishikawa/final-newline/final-value-spaces] [fixture:
+ishikawa/final-newline/open-directive-trailing-blanks] [test: an open directive
+with nothing after it] [test: an open directive followed by two spaces] [test:
+an open directive followed by a tab] [test: an open directive followed by a
+no-break space] [test: an open directive followed by U+3000] [test: an open
+directive followed by U+FEFF] [test: an open directive followed by a vertical
+tab] [test: an open directive followed by a form feed] [test: an open directive
+followed by a line break] [test: an open directive followed by CR and LF] [test:
+an open directive followed by spaces and a line break] [test: an open directive
+followed by empty lines] [test: an open directive followed by a line break and
+spaces] [test: an open directive followed by U+2028] [test: an open directive
+followed by U+2029] [test: an open directive followed by a space and U+2028]
+[test: an open directive followed by U+2028 and a space] [test: an open
+directive followed by U+0085] [test: an open directive followed by U+200B]
+[test: an open directive followed by U+180E] [test: an open directive followed
+by U+2003] [test: an open directive followed by U+1680] [test: an open directive
+followed by U+2000] [test: an open directive followed by U+200A] [test: an open
+directive followed by U+202F] [test: an open directive followed by U+205F]
+[test: a final line of %% alone, two empty lines, and a space in an ishikawa
+diagram] [test: a final line of %% alone and U+2028 in an ishikawa diagram]
+[test: a final comment with text and a tab on a line of its own in an ishikawa
+diagram] [test: a final comment with text and empty lines in an ishikawa
+diagram] [test: a final comment with text and a no-break space on a line of its
+own in an ishikawa diagram] [test: a final comment with text and U+3000 on a
+line of its own in an ishikawa diagram] [test: a final comment with text and
+U+2028 on a line of its own in an ishikawa diagram] [test: a final comment with
+text and U+2029 on a line of its own in an ishikawa diagram] [test: a final
+comment with text and two spaces after a node in an ishikawa diagram] [test: a
+final comment with text and each whitespace character on a line of its own in an
+ishikawa diagram] [test: a final comment with text and each whitespace character
+after a node in an ishikawa diagram] [test: a final comment with text and a
+no-break space after a node in an ishikawa diagram]
 
 Input (escaped):
 
