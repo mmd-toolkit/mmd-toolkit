@@ -2,8 +2,8 @@
 "prettier-plugin-mmd": patch
 ---
 
-Align the colons of a `gantt` section on their own where a task that a comment
-line after a U+2028 or U+2029 joins to the next line keeps its colon in another
-column, so that formatting again changes nothing:
-`Task B long               :a2` becomes `Task B long : a2` next to a task
-`Task A                    :a1, 2014-01-01, 3d\u2028%% c` that stays as written.
+Align the colons of a `gantt` chart as formatting it again would, where a task
+that a U+2028 and a comment line follow stays as written in a column of its own.
+`Other                     :a3, after a2, 1d` in the section after it was
+printed `Other       : a3, after a2, 1d` and then `Other : a3, after a2, 1d`,
+and is now printed `Other : a3, after a2, 1d` at once.

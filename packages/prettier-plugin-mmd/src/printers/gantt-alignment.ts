@@ -4,7 +4,6 @@ import { util } from "prettier"
 import type { MermaidAst } from "../parser.ts"
 import { maxOf } from "./collections.ts"
 import type { KeptLines } from "./kept-lines.ts"
-import { keptLinesOfBlock } from "./blocks.ts"
 import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -79,10 +78,9 @@ const alignmentBySource = new WeakMap<Source, Alignment>()
  * its section too, but the printer prints its line as written, so its colon
  * stays where it is; the colons of a section that holds one in another column
  * than the others get are lined up apart from the sections of that column (see
- * `holdsColonApartFrom`). A section
- * where a name holds a tab is left as it is: a tab reaches the next tab stop of
- * the editor, so no width that Prettier counts lines the colons up. The width
- * of a name, and of the rest of the task up to the next statement on its line,
+ * `holdsColonApartFrom`). A section where a name holds a tab is left as it is:
+ * a tab reaches the next tab stop of the editor, so no width that Prettier
+ * counts lines the colons up. The width of a name, and of the rest of the task up to the next statement on its line,
  * is the width as written, so a directive in the name counts, as the colons are
  * lined up in the text.
  *
@@ -97,6 +95,7 @@ export function findColonColumns(
   source: Source,
   statements: readonly GanttStatement[],
   kept: KeptLines,
+  stays: KeptLines,
   options: ParserOptions<MermaidAst>,
 ): ReadonlyMap<GanttTaskStatement, number> {
   const cached = alignmentBySource.get(source)
@@ -135,7 +134,7 @@ export function findColonColumns(
       for (const row of section) columns.set(row.task, column)
   }
 
-  const taskSections = findSections(source, statements, kept)
+  const taskSections = findSections(source, statements, kept, stays)
   // The tasks before the first section stand one level less deep.
   const [before, ...after] = withoutUnalignableSections(taskSections)
   if (isPadded(before)) align([before], longestName(before) + 1, 1)
@@ -231,8 +230,8 @@ function findSections(
   source: Source,
   statements: readonly GanttStatement[],
   kept: KeptLines,
+  stays: KeptLines,
 ): TaskRow[][] {
-  const stays = keptLinesOfBlock(source, { kept })
   const sections: TaskRow[][] = [[]]
   for (const statement of statements) {
     if (statement.type === "GanttSectionStatement") sections.push([])
