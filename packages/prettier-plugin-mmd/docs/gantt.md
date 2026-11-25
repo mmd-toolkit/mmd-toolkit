@@ -1259,8 +1259,14 @@ accessibility-statements/keyword-and-colon-over-lines-joined]
 
 A block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
+A single `%` after its `}` stays after the block: `accDescr {d}%c` is printed
+`accDescr { d }%c`, since the form with the colon, `accDescr: d%c`, holds the
+`%c` in the description, and every version of mermaid.js that counts puts
+another description text in the SVG (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[fixture: accessibility-statements/block-text-on-opening-line]
+[fixture: accessibility-statements/block-text-on-opening-line] [fixture:
+accessibility-statements/block-then-percent-kept]
 
 In a block with a text over several lines, indent the body one level inside the
 statement and align a separate `}` with the statement: mermaid.js discards
@@ -1513,11 +1519,16 @@ T
 The arguments and the name of a call and the string of a link are kept as
 written, with the line breaks and the whitespace inside, since they are part of
 the value. Description-body lines instead align one step inside their statement
-under [Accessibility statements](#accessibility-statements).
+under [Accessibility statements](#accessibility-statements). The spaces at the
+end of an inner line of the description stay, since the Db holds them and every
+version of mermaid.js that counts puts another description text in the SVG
+without them (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: multi-line-values/call-arguments-kept] [fixture:
 multi-line-values/call-name-kept] [fixture: multi-line-values/href-string-kept]
-[fixture: multi-line-values/description-block-lines-kept]
+[fixture: multi-line-values/description-block-lines-kept] [fixture:
+multi-line-values/description-line-trailing-spaces-kept]
 
 A comment line inside such a string is part of the string.
 

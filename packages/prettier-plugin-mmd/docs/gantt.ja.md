@@ -1298,8 +1298,16 @@ gantt
 
 1 行のブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+`}` の後ろの単独の `%` はブロックの後ろに残します。
+`accDescr {d}%c` は `accDescr { d }%c` と印字します。
+コロンの形の `accDescr: d%c` は、`%c` を説明の中に持ち、
+数える版はどれも SVG に別の説明のテキストを書くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: accessibility-statements/block-text-on-opening-line]
+[fixture: accessibility-statements/block-then-percent-kept]
 
 本文が複数行のブロックでは、本文を文より 1 段深くし、
 独立した `}` は文と同じ段に置きます。
@@ -1555,11 +1563,17 @@ T
 中の改行と空白も含めて書かれたまま残します。
 説明本文の行は、
 [アクセシビリティの文](#アクセシビリティの文)に従って文より 1 段深くそろえます。
+説明の内側の行の末尾の空白は、Db が持ち、数える版はどれも、
+それを除くと SVG に別の説明のテキストを書くので、残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: multi-line-values/call-arguments-kept]
 [fixture: multi-line-values/call-name-kept]
 [fixture: multi-line-values/href-string-kept]
 [fixture: multi-line-values/description-block-lines-kept]
+[fixture: multi-line-values/description-line-trailing-spaces-kept]
 
 そのような文字列の中のコメント行は、文字列の一部です。
 
