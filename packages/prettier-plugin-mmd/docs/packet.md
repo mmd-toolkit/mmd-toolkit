@@ -10,9 +10,8 @@ escaped fixed tests.
 
 ### Header
 
-Keep the authored `packet` or `packet-beta` keyword at column one. The headers
-of [pie](./pie.md#header) and [info](./info.md#header) diagrams also start at
-column one.
+Keep the authored `packet` or `packet-beta` keyword at column one. The header of
+an [info](./info.md#header) diagram also starts at column one.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the packet header the same placement. Move an ordinary first statement below it,
 as in the other diagram types. Only `packet` requires a following boundary;
@@ -341,13 +340,8 @@ while keeping interior text, quotes and escapes, apart from a run of spaces and
 tabs inside the value, which is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Quotes and backslashes are literal title text in the mermaid.js Db, so they
-remain as written. Removing quotes or decoding an escape changes the title.
-Titles in [info](./info.md#title) and [architecture](./architecture.md#title)
-diagrams also use one space after `title` and trim the value's outer common
-whitespace.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same title-line form. With no title text, spaces and tabs after `title`
-stand at the end of the line, where
+remain as written. Removing quotes or decoding an escape changes the title. With
+no title text, spaces and tabs after `title` stand at the end of the line, where
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them. Never
 take a value from the next physical line, even across blank/comment/directive
 gaps. Keep empty final assignments and frontmatter fallback; protected
@@ -444,17 +438,18 @@ packet
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-For blocks that keep their braces, separate the keyword and opening brace with
-one space so the block boundary is clear. Plain opener whitespace can join
-across physical or Unicode lines; real opener trivia keeps its break. Moving a
-removed comment region beside `accDescr` makes it a native comment that
-mermaid.js cannot read between the keyword and `{`, so the opening gap keeps the
-comment region on its own line. Whitespace-only interiors become `{}` because no
-text needs surrounding whitespace. Prettier prints empty objects and arrays with
-no interior whitespace, so
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives `{}` for a
-description body containing only whitespace. Comment/directive-only interiors
-keep their trivia. A bare `%%` line inside a description block is
+For blocks that keep their braces,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between the keyword and the opening brace, as Prettier prints `class A{}` as
+`class A {}`. Plain opener whitespace can join across physical or Unicode lines;
+real opener trivia keeps its break. Moving a removed comment region beside
+`accDescr` makes it a native comment that mermaid.js cannot read between the
+keyword and `{`, so the opening gap keeps the comment region on its own line.
+Whitespace-only interiors become `{}` because no text needs surrounding
+whitespace. Prettier prints empty objects and arrays with no interior
+whitespace, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+`{}` for a description body containing only whitespace. Comment/directive-only
+interiors keep their trivia. A bare `%%` line inside a description block is
 accessible-description text in the mermaid.js Db, so the block retains it:
 removing it changes the description. Ordinary description body and standalone
 comment lines align one level inside the statement, since the Db removes
