@@ -140,13 +140,11 @@ The name, the alias, and the classes before the `{` are formatted as in
 
 An empty block, with nothing but whitespace between its braces, is printed as
 `{ }` on the line of the entity, however it is written: `{}`, `{   }`, and
-braces on different lines all declare the entity without attributes. Rule 1
-gives `{}` for braces that hold nothing, as Prettier prints `x = { }` as
-`x = {}` ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), so `{ }`
-is printed against rule 1 and waits to be fixed by it. The versions that were
-run accept `{}` for an entity, also in a subgraph, and give `{ }` the same
-result: the one that rejects `{}` after an entity with a class, `C:::c {}`,
-rejects `{ }` there as well. No version needs the space, so it has no reason.
+braces on different lines all declare the entity without attributes. The
+versions that were run accept `{}` for an entity, also in a subgraph, and give
+`{ }` the same result: the one that rejects `{}` after an entity with a class,
+`C:::c {}`, rejects `{ }` there as well. No version needs the space, so it has
+no reason.
 
 [fixture: attribute-blocks/empty-unified] [corpus fixture: er/gram-block-empty]
 [corpus fixture: er/gram-block-empty-space] [corpus fixture:
@@ -165,10 +163,10 @@ to the `{` stays as written, see
 [Multi-line statements](#multi-line-statements)), what follows the `{` on its
 line stays as written in a nonempty block, and the attributes after it and the
 `}` stand as those of any entity. An empty block over several lines ends the
-line with ` { }` (printed against rule 1, as above), whatever stands after the
-`{` (spaces, a tab, a U+2028) or between the braces, but not where the `}` and
-the rest of the closing line would join the line of the `{` and be read
-otherwise, so that its lines stay apart. The line rule of mermaid.js (see
+line with ` { }`, whatever stands after the `{` (spaces, a tab, a U+2028) or
+between the braces, but not where the `}` and the rest of the closing line would
+join the line of the `{` and be read otherwise, so that its lines stay apart.
+The line rule of mermaid.js (see
 [Semicolons](#semicolons-at-the-end-of-a-style-statement)) ignores the last `;`
 of a line that matches it, so in the joined line it can ignore another `;` than
 in the two lines: in `"style:#x"; B {`, a line break, and `} A["x;y"]`, it
@@ -577,12 +575,11 @@ word that the character touches (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 A color that a `;` that the line rule ignores touches, or that a wide space
 other than the vertical tab and the form feed, a U+2028, or a U+2029 separates
-from it, stays as written, which the Colors rule prints in lower case: that form
-is printed against the rule and waits to be fixed by it; a color that a space, a
-tab, a vertical tab, or a form feed separates from the `;` is printed as under
-Colors where no comment region follows it on its line. The whitespace inside the
-styles stays as written (`style A fill:#F00,   stroke:#ABC`, U+2028, and `%% c`
-keep the run after the comma).
+from it, stays as written; a color that a space, a tab, a vertical tab, or a
+form feed separates from the `;` is printed as under Colors where no comment
+region follows it on its line. The whitespace inside the styles stays as written
+(`style A fill:#F00,   stroke:#ABC`, U+2028, and `%% c` keep the run after the
+comma).
 
 [test: er/attribute-spacing/comment-region-continuation-kept] [test: ER the
 quotes of the names of a relationship on a line that a comment line after U+2028
@@ -1773,9 +1770,7 @@ A directive between the name and the `[` is placed as under
 [fixture: subgraphs/title-beside-directive] [fixture:
 subgraphs/title-beside-directive-runs]
 
-A U+2028 or U+2029 there stays as written. Rule 1 gives no whitespace before the
-`[` of the title, so that form is printed against rule 1 and waits to be fixed
-by the rule.
+A U+2028 or U+2029 there stays as written.
 
 [test: U+2028 between an ER subgraph name and its title] [test: U+2029 between
 an ER subgraph name and its title]
@@ -2025,10 +2020,7 @@ diagram]
 Line-ending semicolons follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 An ending unit with a directive between it and the last style is kept with that
-gap as written, and the statement keeps its styles as written, so the colon of a
-style stays without the space that rule 1 gives the colon of a key
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)): that form is
-printed against rule 1 and waits to be fixed by it.
+gap as written, and the statement keeps its styles as written.
 
 [fixture: styles-and-classes/ending-semicolon-rules]
 
@@ -2204,8 +2196,8 @@ case: [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
 breaks, but in them this is a question of the list of undecided forms (D34) and
-a form printed against a rule, so their printing gives no form, and the released
-form stays until it is decided (see
+of the list of forms to fix by the rule, so their printing gives no form, and
+the released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: accessibility-statements/empty-blocks] [fixture:
@@ -3019,8 +3011,7 @@ whitespace before it.
 [fixture: semicolons-at-the-end-of-a-style-statement/unit-terminators]
 
 A directive between the last style and that unit keeps the gap and `;` as
-written, and the statement keeps its styles as written, against rule 1 as under
-[Styles and classes](#styles-and-classes), and waits to be fixed by it.
+written, and the statement keeps its styles as written.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept]
 
@@ -3354,22 +3345,17 @@ after a comma are printed as one space too, and so are a vertical tab and a form
 feed before it. The statement keeps a run at the end of a line, a run around the
 colon of a style, a run inside the text of a style, and a wide space (a no-break
 space, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, or U+FEFF) or a U+2028
-before a comma as written, with its color. The space that such a statement keeps
-before a comma, and the runs that it keeps around the colon of a style, are
-printed against rule 1 (the comma and the colon of a key, see
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)) and wait to be fixed
-by it. Its colors are printed as under [Colors](#colors) where a comma follows
-the color, also after whitespace and a line break, and for the last color of the
-statement where no `;` follows it on its line. A color that characters follow
-after whitespace stays as written, as under Colors, and so does a color that a
-`;` touches (`#ABC;`, `#ABC;;`, and `#ABC; ;`) and a color that a wide space
-other than the vertical tab and the form feed, a U+2028, or a U+2029 separates
-from the `;`, which the Colors rule prints in lower case: that form is printed
-against the rule and waits to be fixed by it. A color that a space, a tab, a
-vertical tab, or a form feed separates from the `;` is printed as under Colors
-where no comment region follows it on its line: where one does, the color stays
-as written, since the U+2028 or U+2029 that the text of the style keeps after
-the color makes it a word that the character touches (see
+before a comma as written, with its color. Its colors are printed as under
+[Colors](#colors) where a comma follows the color, also after whitespace and a
+line break, and for the last color of the statement where no `;` follows it on
+its line. A color that characters follow after whitespace stays as written, as
+under Colors, and so does a color that a `;` touches (`#ABC;`, `#ABC;;`, and
+`#ABC; ;`) and a color that a wide space other than the vertical tab and the
+form feed, a U+2028, or a U+2029 separates from the `;`. A color that a space, a
+tab, a vertical tab, or a form feed separates from the `;` is printed as under
+Colors where no comment region follows it on its line: where one does, the color
+stays as written, since the U+2028 or U+2029 that the text of the style keeps
+after the color makes it a word that the character touches (see
 [Attribute spacing](#attribute-spacing)).
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
