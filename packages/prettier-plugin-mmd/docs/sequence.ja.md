@@ -1940,8 +1940,11 @@ sequenceDiagram
 独立した `}` は文と同じ段に置きます。
 [flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
 Mermaid が説明からこの字下げを除くためです。
-説明の途中の行末にある空白は、mermaid.js が説明の一部として Db に記録するため、
-書かれたまま残します。
+説明の途中の行末にある空白は、mermaid.js が説明の一部として Db に記録し、
+除くとどの対象の版も別の説明の文字を SVG に入れるため、書かれたまま残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [corpus fixture: sequence/db-acc-descr-block-blank-lines]
 

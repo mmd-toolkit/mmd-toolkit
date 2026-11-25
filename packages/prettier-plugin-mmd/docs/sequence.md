@@ -342,7 +342,9 @@ after `wrap:` and `nowrap:`. The text after the keyword of a block or a section
 (`loop`, `alt`, `else`, `opt`, `par`, `and`, `critical`, `option`, `break`,
 `rect`, `box`) stands after one space too: `loop$$x$$` is printed `loop $$x$$`,
 and `par-:<>,;# comment` is printed `par -:<>,;# comment`. The whitespace is not
-in the Db. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space between a block or section keyword and its text, as Prettier prints `return  x` as `return x;`.
+in the Db. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between a block or section keyword and its text, as Prettier prints
+`return  x` as `return x;`.
 
 [fixture: whitespace-between-tokens/wrap-text-spaced] [fixture:
 whitespace-between-tokens/block-text-touching-spaced]
@@ -1884,8 +1886,10 @@ Align the lines of an `accDescr { ... }` body one step inside its statement,
 with a separate `}` at the statement's level, as in
 [flowchart's top-level descriptions](./flowchart.md#multi-line-values). Mermaid
 discards this indentation from the description. Mermaid.js records spaces at the
-end of an internal description line as part of the description in the Db, so
-those spaces stay as written.
+end of an internal description line as part of the description in the Db, and
+every version of mermaid.js that counts puts another description text in the SVG
+without them, so those spaces stay as written (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: sequence/db-acc-descr-block-blank-lines]
 
