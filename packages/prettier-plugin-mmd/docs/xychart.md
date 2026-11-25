@@ -186,7 +186,11 @@ A run of empty lines becomes one empty line, and there is none between the
 header and the first statement, and none at the end of the text. A blank line is
 a choice of the author that the Db does not hold, and one empty line shows it at
 the least cost, as Prettier does in code (see
-[Blank lines](./flowchart.md#blank-lines)).
+[Blank lines](./flowchart.md#blank-lines)). Prettier leaves no blank line at the
+start of a text or a block, or at the end of a text;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore leaves none
+before the header, between the header and the first statement, or after the last
+statement.
 
 [fixture: blank-lines/runs-become-one] [fixture:
 blank-lines/none-after-the-header] [fixture: blank-lines/none-at-the-end]
@@ -251,10 +255,12 @@ The orientation stands on the line of its header, after one space. mermaid.js
 reads it after whitespace of any kind and also after whitespace and a line
 break; the line break is whitespace to the lexer, so the orientation goes to the
 header's line, and no whitespace is left at the end of a line that nobody sees
-(see [Multi-line statements](#multi-line-statements)). The orientation is
-printed as written, in the case written: only `horizontal`, in lower case, makes
-the chart horizontal, and `Horizontal` makes it vertical, so the case is in the
-Db.
+(see [Multi-line statements](#multi-line-statements)).
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between the header and its orientation, as between a keyword and what it takes
+(Prettier prints `return  x` as `return x;`). The orientation is printed as
+written, in the case written: only `horizontal`, in lower case, makes the chart
+horizontal, and `Horizontal` makes it vertical, so the case is in the Db.
 
 [fixture: header-and-orientation/orientation-after-one-space] [fixture:
 header-and-orientation/orientation-after-a-tab] [fixture:
@@ -378,14 +384,18 @@ The categories and the values stand between brackets. The `[` has one space
 before it, after the keyword or the title, also where it was written touching
 (`x-axis[a]`, `line T[1]`, `bar"Costs"[1,2]`); there is no space after the `[`
 or before the `]`; a comma has no space before it and one after it
-(`[jan, feb, mar]`). A keyword and the string that follows it are separated by
-one space in the same way (`title"T"` is printed `title "T"`). None of this
-whitespace is in the Db, and none of it changes how units are read, since a
-bracket, a comma, and a quote are no characters of a word, so the form is a
-choice. It is the form that most examples in the documentation of mermaid.js use
-(`[jan, feb, mar]`, `[5000, 6000, 7500]`); some examples there have no space
-after a comma (`[12,2,20,25,17,24]`), and every chart has one form. A space
-after each comma is the whitespace that Prettier prints beside a comma.
+(`[jan, feb, mar]`). Prettier leaves no whitespace just inside square brackets
+and gives a comma no space before it and one after;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+spacing inside brackets and around commas. A keyword and the string that follows
+it are separated by one space in the same way (`title"T"` is printed
+`title "T"`). None of this whitespace is in the Db, and none of it changes how
+units are read, since a bracket, a comma, and a quote are no characters of a
+word, so the form is a choice. It is the form that most examples in the
+documentation of mermaid.js use (`[jan, feb, mar]`, `[5000, 6000, 7500]`); some
+examples there have no space after a comma (`[12,2,20,25,17,24]`), and every
+chart has one form. A space after each comma is the whitespace that Prettier
+prints beside a comma.
 
 [fixture: brackets-and-commas/spaces-inside-and-around-commas] [fixture:
 brackets-and-commas/bracket-touching-the-keyword] [fixture:
@@ -475,7 +485,9 @@ where they were written touching (`10"peak"`), and a comma follows the label
 with no space before it. mermaid.js reads the label whether it touches the value
 or not, so the form is a choice: one space is the form that its documentation
 uses (`25 "Launch"`) and the same separator as between a keyword and a string
-(see [Brackets and commas](#brackets-and-commas)).
+(see [Brackets and commas](#brackets-and-commas)). Prettier prints a comma with
+no space before it; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the comma after a value label the same form.
 
 [fixture: values-and-labels/label-touching-the-value] [fixture:
 values-and-labels/label-with-more-whitespace] [fixture:
@@ -644,8 +656,11 @@ directive stays as written.
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it, as in the other diagrams (see
 [Accessibility statements](./journey.md#accessibility-statements)). The text has
-no whitespace at its ends. A run of spaces and tabs inside the text of an
-`accDescr` is printed as one space (see
+no whitespace at its ends. Prettier prints one space after the colon of a key
+and removes spaces and tabs at the end of a line;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the text of
+`accTitle` and `accDescr` these margins. A run of spaces and tabs inside the
+text of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip, which the Db keeps (`accTitle: a  b` has the title `a  b` and is
@@ -653,7 +668,10 @@ printed `accTitle: a  b`). A text written on a later line, a colon written on a
 later line than the keyword, and whitespace before the colon are printed on one
 line: the line breaks are whitespace to the lexer, and the text of the statement
 is the same. An `accTitle:` or `accDescr:` without text, at the end of the text,
-is printed as the keyword and the colon with nothing after them.
+is printed as the keyword and the colon with nothing after them. Prettier
+removes spaces and tabs at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) leaves no space after
+the colon of an empty final `accTitle:` or `accDescr:`.
 
 [fixture: accessibility-statements/colon-touches-keyword] [fixture:
 accessibility-statements/colon-without-space-after] [fixture:
@@ -767,8 +785,11 @@ xychart
 An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. The ordinary keyword/opener gap
-uses one space: `accDescr{  }` becomes `accDescr {}`.
+surround. Prettier prints braces that hold nothing as `{}`, with no interior
+whitespace; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+same form to a description block whose interior contains only whitespace. An
+already empty interior stays empty. The ordinary keyword/opener gap uses one
+space: `accDescr{  }` becomes `accDescr {}`.
 
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test: xychart
 Unicode and tab interiors]
