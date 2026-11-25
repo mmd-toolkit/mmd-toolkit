@@ -3858,22 +3858,25 @@ architecture/description-blocks/keyword-u2028-directive-touching-brace-on-line]
 architecture/description-blocks/keyword-u2028-directive-then-spaces-and-brace-on-line]
 
 Keep comment/directive-only interiors. Rule 1 names no mark for a line inside a
-block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
+block, and no rule gives these interiors:
+[xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block with a directive or comment line. Ordinary description body
-and standalone comment lines align one level inside the statement, since the Db
-removes indentation after LF. Keep line breaks and interior blank lines, and the
-whitespace at the end of each line of text except the last one; a line of
-whitespace only becomes an empty line. The whitespace at the end of the last
-line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. Rule 2 gives the
-level of the lines and the place of a separate closer: the formatter, run on a
-block of each of flowchart, sequence, state, gantt, journey, timeline, pie, and
-radar, puts the text lines and the comment lines of the block one level inside
-the statement and a separate closer at the level of the statement, and the
-sections of [flowchart](./flowchart.md#multi-line-values),
+breaks of a block with a directive or comment line, but in them this is a
+question of the list of undecided forms (D34) and a form printed against a rule,
+so their printing is no decided form, and the released form stays until it is
+decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Ordinary description body and standalone comment lines align one level inside
+the statement, since the Db removes indentation after LF. Keep line breaks and
+interior blank lines, and the whitespace at the end of each line of text except
+the last one; a line of whitespace only becomes an empty line. The whitespace at
+the end of the last line of text is dropped where the closer stands on a line of
+its own, and is printed as one space where the closer follows it on that line.
+Rule 2 gives the level of the lines and the place of a separate closer: the
+formatter, run on a block of each of flowchart, sequence, state, gantt, journey,
+timeline, pie, and radar, puts the text lines and the comment lines of the block
+one level inside the statement and a separate closer at the level of the
+statement, and the sections of [flowchart](./flowchart.md#multi-line-values),
 [sequence](./sequence.md#multi-line-values),
 [state](./state.md#multi-line-values),
 [gantt](./gantt.md#accessibility-statements), and
