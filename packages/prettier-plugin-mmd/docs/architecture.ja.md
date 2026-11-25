@@ -59,7 +59,8 @@ architecture-beta
 本文は平坦で、`in` は参照なので入れ子の段を増やしません。
 architecture の列には文法上の意味がないため、`tabWidth: 0` は空白0個、
 `useTabs` は幅0でもタブ1個です。
-段の幅は Prettier の `tabWidth` と `useTabs` の設定が決めます。
+段の種類（空白かタブか）と数は、
+Prettier の `tabWidth` と `useTabs` の設定が決めます。
 [pie](./pie.ja.md#indentation)、[packet](./packet.ja.md#indentation)、
 [gitgraph](./gitgraph.ja.md#indentation)、[info](./info.ja.md#indentation)、
 [radar](./radar.ja.md#indentation)、
@@ -543,7 +544,8 @@ architecture-beta
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が両側の空白を与えます。
 印を付けた線は、flowchart の `-->` と同じく 2 つのものの間の印で、Prettier は、
 2 つのものの間の印の前後に空白を 1 個ずつ置きます。
-規則 1 の表の、flowchart の `A-->B` は `A --> B` と印字されます。
+規則 1 の表の「2 つのものの間に置く、ほかの記号」の行では、
+flowchart の `A-->B` が `A --> B` と印字されます。
 `A<-->B` と `A---B` も、`A <--> B` と `A --- B` と印字されます。
 `>--<` を含め、実際の印の文字を保ちます。
 有無の真偽値から文字は決められません。
