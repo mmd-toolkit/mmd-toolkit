@@ -5195,6 +5195,66 @@ const requirementLineSeparatorExamples: readonly (readonly [
     "requirementDiagram\n  requirement\u2028%% heading\n%%{init: {}}%%\n r {\n    id: 1\n    text: t\n    risk: low\n    verifymethod: test\n  }\n",
   ],
   [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-region-ps",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2029 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2029 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-comment-semicolon-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c;',
+    'requirementDiagram\n  style r fill:red "r"\n:::c\u2028 %% c;\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-comment-semicolon-region-ps",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2029 %% c;',
+    'requirementDiagram\n  style r fill:red "r"\n:::c\u2029 %% c;\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-classdef-semicolon-comment-region-ls",
+    'requirementDiagram\nclassDef c fill:red "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  classDef c fill:red "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-class-semicolon-comment-region-ls",
+    'requirementDiagram\nclass r c "r"\n:::c;\u2028 %% c',
+    'requirementDiagram\n  class r c "r"\n:::c;\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-relationship-semicolon-comment-region-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n- satisfies -> a;b\u2028 %% c',
+    'requirementDiagram\n  style r fill:red "r"\n- satisfies -> a;b\u2028 %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-with-directive-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %%{x}%%  %% c',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %%{x}%%  %% c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-comment-line-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n%% d\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n  %% d\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-empty-line-and-statement-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n\n  class r c\n  r - satisfies -> b\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;  %% c\n \t\nclass r c\n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c; %% c\n\n  class r c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n \t\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n \t\n  class r c\n  r - satisfies -> b\n',
+  ],
+  [
     "requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line",
     'requirementDiagram\nrequirement \nr {\nid: 1\n}\nelement  \u2028 %%{x}%%  %% c  \n\n"e" \n:::c {\n}\n',
     'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  element  \u2028 %%{x}%%  %% c  \n\n"e" \n:::c {\n  }\n',

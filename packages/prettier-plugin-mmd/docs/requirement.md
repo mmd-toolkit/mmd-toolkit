@@ -888,6 +888,39 @@ statements-one-per-line/continued-with-directive-kept] [fixture:
 statements-one-per-line/continued-on-semicolon-line-kept] [fixture:
 statements-one-per-line/continued-on-ignored-semicolon-line-kept]
 
+A statement of that kind that ends on a line that holds a kept `;`, such as the
+`;` of the class `c;` in `:::c;` or the last character of a comment, is printed
+on a line of its own with its parts on one line, as it is without the `;`. Where
+a comment line starts after a U+2028 or U+2029 on that line, the line is printed
+as written, from the statement before it to the end of the comment line: on a
+line of its own, the string would stand alone, which mermaid.js rejects.
+
+[fixture: statements-one-per-line/string-continued-on-semicolon-line-joined]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-comment-region-ps]
+[test:
+requirement/statements-one-per-line/continued-comment-semicolon-region-ls]
+[test:
+requirement/statements-one-per-line/continued-comment-semicolon-region-ps]
+[test:
+requirement/statements-one-per-line/continued-classdef-semicolon-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-class-semicolon-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-relationship-semicolon-comment-region-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-with-directive-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-then-comment-line-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-then-empty-line-and-statement-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls]
+
 A line that holds a kept `;` keeps its statements together: the line rule of
 mermaid.js removes the last `;` of a line that holds `style`, a `:` after it,
 and a `#` after that, and moving a statement to a line of its own makes the rule
