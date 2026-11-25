@@ -286,7 +286,7 @@ Gantt 図のコメント行の周りにも、同じ空行の上限を与えま�
 
 [fixture: blank-lines/around-comment-lines]
 
-`section` の周りの空行は、1 つにして、隣の行と同じ段で残します。
+`section` の周りの空行は、1 つにして残し、空白は入れません。
 
 [fixture: blank-lines/around-sections]
 

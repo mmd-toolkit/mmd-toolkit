@@ -283,8 +283,7 @@ around Gantt comment lines the same limit.
 
 [fixture: blank-lines/around-comment-lines]
 
-Empty lines around a `section` are kept, as one, at the level of the lines next
-to them.
+Empty lines around a `section` are kept, as one, and have no whitespace in them.
 
 [fixture: blank-lines/around-sections]
 
