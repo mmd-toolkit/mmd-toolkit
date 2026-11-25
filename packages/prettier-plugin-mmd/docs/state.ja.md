@@ -1293,6 +1293,9 @@ mermaid.js は仕様のとおり、本文の両端の空白だけを除くので
 ノート内部の改行の前の空白 1 個は、Db の本文に含まれます。
 末尾のこの空白を除くと、許可された段落の行頭変更の範囲外で、
 Db の本文が変わるので残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: notes/prose-trailing-spaces] [fixture: notes/prose-one-trailing-space]
 

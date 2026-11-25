@@ -1227,7 +1227,8 @@ written when the body margin is aligned. A single trailing space before an
 internal note line break belongs to the note text in the Db: mermaid.js removes
 only the text's outer whitespace, as the specification records. Removing that
 space changes stored text outside the permitted changes to the starts of
-paragraph lines, so it stays.
+paragraph lines, so it stays (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: notes/prose-trailing-spaces] [fixture: notes/prose-one-trailing-space]
 
