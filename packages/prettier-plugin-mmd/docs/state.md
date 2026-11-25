@@ -1856,7 +1856,10 @@ stays, since a version that counts reads it as a state of its own (see
 Keep `classDef c fill:red;;`, `classDef c ;` and `style A fill : #f00;`; they do
 not meet these conditions. In `classDef c ;`, mermaid.js removes the first
 semicolon from the present style text, leaving an empty style entry in the Db.
-Dropping that source semicolon leaves no style entry, so the semicolon stays.
+Dropping that source semicolon leaves no style entry, so the semicolon stays. In
+`style A fill : #f00;`, mermaid.js reads the `#` and the `;` as an escaped
+character, so the style that the Db holds, and the drawing, differ from those of
+`style A fill : #f00`; the semicolon stays too.
 
 [corpus fixture: state/db-classdef-semicolon-in-each-part] [corpus fixture:
 state/db-classdef-comma-only] [corpus fixture:
@@ -2085,7 +2088,9 @@ keeps its written indentation.
 
 A line that holds U+2028 or U+2029 is kept as written, the second description of
 an alias included, whitespace after the character too: `state "d" as A : x`, two
-spaces, U+2028, and two spaces stays as written.
+spaces, U+2028, and two spaces stays as written. Removing the separator and the
+spaces after it changes the description that the Db holds for the state, and the
+drawing of the state changes with it, so the line stays whole.
 
 [test: a second description of an alias with spaces after a U+2028]
 
