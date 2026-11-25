@@ -483,17 +483,22 @@ a line, they are printed as they are after the text of a title (see
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped] [fixture:
 gitgraph/title-and-common-values/acc-title-empty-directive-gap-kept] [fixture:
+gitgraph/title-and-common-values/acc-title-unclosed-empty-directive-gap-kept]
+[fixture:
+gitgraph/title-and-common-values/acc-title-empty-directive-no-final-newline-gap-kept]
+[fixture:
 gitgraph/title-and-common-values/acc-descr-empty-directive-gap-printed] [test: a
 whitespace character that is no space or tab before an empty directive after the
 accTitle line of a gitGraph] [test: a whitespace character that is no space or
 tab before an empty directive after the accDescr line of a gitGraph]
 
 A whitespace character that is no space or tab before a `%%`, or before a `%%{`
-that no word character follows, that follows an `accDescr` value stays where it
-is, with the spaces and tabs beside it printed as one space each, as in a pie
-chart (see [Accessibility lines](./pie.md#accessibility-lines)). The `title` of
-a gitGraph is printed as in the other diagrams, whatever stands before a `%%`
-after it: the oldest version that counts rejects it (see
+that no word character follows after its whitespace, that follows an `accDescr`
+value stays where it is, with the spaces and tabs beside it printed as one space
+each, as in a pie chart (see
+[Accessibility lines](./pie.md#accessibility-lines)). The `title` of a gitGraph
+is printed as in the other diagrams, whatever stands before a `%%` after it: the
+oldest version that counts rejects it (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
 
 [test: a no-break space before a comment after the accDescr line of a gitGraph]

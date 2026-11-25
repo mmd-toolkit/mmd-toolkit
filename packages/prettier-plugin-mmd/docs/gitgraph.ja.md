@@ -514,12 +514,14 @@ U+2029 があるときを除きます。
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
 [fixture: gitgraph/title-and-common-values/acc-title-empty-directive-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-unclosed-empty-directive-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-empty-directive-no-final-newline-gap-kept]
 [fixture: gitgraph/title-and-common-values/acc-descr-empty-directive-gap-printed]
 [test: a whitespace character that is no space or tab before an empty directive after the accTitle line of a gitGraph]
 [test: a whitespace character that is no space or tab before an empty directive after the accDescr line of a gitGraph]
 
-gitGraph の `accDescr` の値の後の `%%` か、
-`%%{` の後ろに語の文字が続かないもの（`%%{}%%` など）の前の、
+gitGraph の `accDescr` の値の後の `%%` か、`%%{` の後ろに、
+空白を除いて語の文字が続かないもの（`%%{}%%` など）の前の、
 空白でもタブでもない空白文字は、pie 図と同じに、その場に残し、
 その両側の空白とタブは、それぞれ空白 1 つにして印字します。
 詳しくは [Accessibility lines](./pie.ja.md#accessibility-lines)

@@ -203,10 +203,10 @@ where the later versions trim it (see
 `title T`, a no-break space, and `%% c` is not changed, `title T`, two spaces,
 and `%% c` print `title T %% c`, and a directive that touches the comment does
 not change that (`title T`, a no-break space, `%%{x}%%`, and `%% c` is not
-changed). A `%%{` that no word character follows, such as `%%{}%%`, is read as
-text by that version, as a `%%` is, so the same holds before it: `title T`, a
-no-break space, and `%%{}%%` is not changed, and `title T`, two spaces, and
-`%%{}%%` print `title T %%{}%%` (see
+changed). A `%%{` that no word character follows after its whitespace, such as
+`%%{}%%`, is read as text by that version, as a `%%` is, so the same holds
+before it: `title T`, a no-break space, and `%%{}%%` is not changed, and
+`title T`, two spaces, and `%%{}%%` print `title T %%{}%%` (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
 Where whitespace follows a directive that follows the text, the title is printed
 as in the other diagrams: `title    T`, a no-break space, `%%{x}%%`, two spaces,
@@ -276,7 +276,7 @@ and directives that mermaid.js removes first, as the value. That statement stays
 as written (`"A":1` is not printed `"A": 1`), as does the whitespace before a
 `%%` that follows an `accTitle` value, which that version reads as part of the
 title (`accTitle: Value   %% note`), and before a `%%{` that no word character
-follows, such as `%%{}%%`, which it reads as text too
+follows after its whitespace, such as `%%{}%%`, which it reads as text too
 (`accTitle: Value   %%{}%%`), and so does a whitespace character that is no
 space or tab, one of those named in [Title](#title), before a `%%` or such a
 `%%{` that follows an `accDescr` value, which that version draws as a part of
@@ -317,6 +317,10 @@ pie/accessibility-lines/acc-title-punctuation-directive-gap-kept] [fixture:
 pie/accessibility-lines/acc-title-empty-directive-then-comment-gap-kept]
 [fixture:
 pie/accessibility-lines/acc-title-directive-then-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-unclosed-empty-directive-gap-kept]
+[fixture:
+pie/accessibility-lines/acc-title-empty-directive-no-final-newline-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-spaced-word-directive-gap-printed]
 [fixture: pie/accessibility-lines/acc-descr-empty-directive-gap-printed] [test:
 a whitespace character that is no space or tab before an empty directive after
 the accTitle line of a pie chart] [test: a whitespace character that is no space
