@@ -291,17 +291,10 @@ coordinates, a pipeline brace, an evolve target, arrows, ports, @ and /. The one
 space is the gap of [Component spacing](#component-spacing) after a keyword, of
 [Pipeline](#pipeline) before a `{`, and of [Links](#links) around an arrow. The
 space before the number of an `evolve` is the one that [Evolves](#evolves) says
-no rule gives. Before the `[` of a coordinate pair it is not one of these gaps:
-rule 1 gives none before a `[` that follows a name or a string, as for the `[`
-of an index (Prettier prints `Foo [0.3, 0.6];` as `Foo[(0.3, 0.6)];`, and the
-table of [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints
-`service a (server) [A]` of an architecture diagram as `service a(server)[A]`).
-The released version prints one space there, so that form is printed against
-rule 1 and waits to be fixed by the rule. The examples in the documentation of
-mermaid.js write the `[` of all 66 coordinates after a space (see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
-Whitespace after title makes it metadata instead of a name. Quoted "title" and
-bare titlex follow ordinary spacing; uppercase names stay names.
+no rule gives. The released version prints one space before the `[` of a
+coordinate pair. Whitespace after title makes it metadata instead of a name.
+Quoted "title" and bare titlex follow ordinary spacing; uppercase names stay
+names.
 
 [fixture: wardley/name-boundaries/component-title-contact]
 
@@ -426,11 +419,7 @@ decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep bare inertia and (inertia) distinct, along with build, buy, outsource and
 market. The inertia forms can share a Db, but converting them loses an authored
-node form; do not supply defaults. The versions that were run accept both forms
-and draw them alike, and the examples write `(inertia)` 2 times and the bare
-form never (see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)),
-so the bare form is printed against rule 3 and waits to be fixed by the rule.
+node form; do not supply defaults.
 
 [fixture: wardley/decorations/decorations-all] [fixture:
 wardley/decorations/decorations-spaced] [fixture:
@@ -499,15 +488,11 @@ Separate complete AST names, ports and arrows by one ordinary space, including
 arrowless links. Preserve every port and arrow spelling.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
 around an arrow, a mark between two things: a flowchart prints `A-->B` as
-`A --> B`, and Prettier prints `x = a+b` as `x = a + b;`. The examples in the
-documentation of mermaid.js write all 31 of their links with a space on each
-side (see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram))
-(`Customer -> Service`, `App +> API`, `Cache +'backup'> Database`). A-->B is the
-name A- and arrow ->, but the first version with the diagram rejects a name with
-a `-` in it and reads the same text as the name A and the arrow -->, so an arrow
-is not separated from a name that ends with `-`: A-->B prints A--> B, which
-every version draws as it draws A-->B, not A- -> B (see
+`A --> B`, and Prettier prints `x = a+b` as `x = a + b;`. A-->B is the name A-
+and arrow ->, but the first version with the diagram rejects a name with a `-`
+in it and reads the same text as the name A and the arrow -->, so an arrow is
+not separated from a name that ends with `-`: A-->B prints A--> B, which every
+version draws as it draws A-->B, not A- -> B (see
 [Wardley authored text and required line breaks](./compatibility.md#wardley-authored-text-and-required-line-breaks)).
 A directive between the name and the arrow does not part them, as mermaid.js
 takes the directive away before it reads the text: A-%%{init: {}}%%->B prints
@@ -515,12 +500,8 @@ A-%%{init: {}}%%-> B.
 
 [fixture: wardley/links/link-glued-directive-between]
 
-Do not search the source for arrow-shaped text. A -->B instead keeps -->. The
-versions that were run accept `-->` and `->` and draw them alike, and the
-examples write 28 of the 31 links with `->` and none with `-->` (see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)),
-so keeping `-->` is printed against rule 3 and waits to be fixed by the rule.
-This spacing follows the components already read by the parser.
+Do not search the source for arrow-shaped text. A -->B instead keeps -->. This
+spacing follows the components already read by the parser.
 
 [fixture: wardley/links/link-short]
 
@@ -655,12 +636,11 @@ wardley-beta
 Print evolve Name 0.80 with one ordinary space between components, preserving
 the authored reference and decimal.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the one space after the keyword (see [Component spacing](#component-spacing)),
+the one space after the keyword (see [Component spacing](#component-spacing)).
 No rule gives the space between the name and its number:
 [radar](./radar.md#named-entries) prints a name and its number with one space as
-well (`North 4`), but its document says that form is printed against rule 3 and
-waits to be fixed by the rule, so it is no basis for rule 2, and the released
-form stays until it is decided (see
+well (`North 4`), but gives that form no reason, so it is no basis for rule 2,
+and the released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep empty quoted names and unpublished targets. A missing ID does not justify
 deleting the statement, and joining a bare name to its number can reject it.
@@ -754,10 +734,7 @@ pairs consistent. The comma and the brackets are those of
 [Coordinates](#coordinates)
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): none inside a
 bracket, none before a comma and one after it), the space between `size` and the
-`[` is the one of [Component spacing](#component-spacing), which no rule gives,
-and the examples in the documentation of mermaid.js write their one size so
-(`size [1100, 800]`; see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
+`[` is the one of [Component spacing](#component-spacing), which no rule gives.
 
 [fixture: wardley/size/size-spacing]
 
@@ -3784,8 +3761,8 @@ with its `}` at the level of the `accDescr`. No rule gives the interior of a
 block that holds a directive: [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
-breaks, but in them this is a question of the list of undecided forms (D34) and
-a form printed against a rule, so their printing is no decided form, and the
+breaks, but their documents give that form no reason, and it is a question of
+the list of undecided forms (D34), so their printing is no decided form, and the
 released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
@@ -4300,14 +4277,11 @@ reads the YAML) and for a body that would create a fence (`--- !!map` after
 `%YAML 1.2`, which every version that counts accepts and rejects once it is
 split); the indented fences stay as written until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
-Prettier prints the delimiter of a front matter without the whitespace after
-`---`, and the versions that were run read a delimiter with it like one without
-it (the same Db and the same drawing), so the padding of a delimiter is printed
-against rule 1 and waits to be fixed by the rule. YAML uses the shared positive
-indentation minimum at tabWidth zero. Its indentation carries block scalars and
-nested values: at zero width every version that counts rejects a block scalar
-and draws a diagram differently where a nested `config` value is no longer
-nested (see [Frontmatter](./compatibility.md#frontmatter) and the rows of
+YAML uses the shared positive indentation minimum at tabWidth zero. Its
+indentation carries block scalars and nested values: at zero width every version
+that counts rejects a block scalar and draws a diagram differently where a
+nested `config` value is no longer nested (see
+[Frontmatter](./compatibility.md#frontmatter) and the rows of
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 If textBeforeHeader is present, keep the complete prefix, including leading LF,
 passed trivia, second-scan forms and real/retained order. The shared keepsPrefix
