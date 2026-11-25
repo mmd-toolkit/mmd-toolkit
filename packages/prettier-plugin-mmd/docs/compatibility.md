@@ -3475,10 +3475,7 @@ journey has two colons, and both are counted.
 ## The examples that decide the whitespace in a Wardley diagram
 
 The examples in the documentation of the pinned mermaid.js decide the whitespace
-around the arrow of a link, and show the whitespace before the `[` of a
-coordinate and of a size, which they do not decide (see
-[Name boundaries](./wardley.md#name-boundaries) and
-[Component spacing](./wardley.md#component-spacing)). They are counted as under
+around the arrow of a link. They are counted as under
 [The examples that decide the whitespace before a colon](#the-examples-that-decide-the-whitespace-before-a-colon):
 the page is `packages/mermaid/src/docs/syntax/wardley.md` of the pinned commit,
 the blocks are its 16 fenced `mermaid-example` blocks, and the frontmatter of a
@@ -3486,19 +3483,7 @@ block, the comment lines, and the directive lines are left out, which leaves 152
 lines that are not empty. The 19 examples of mermaid.js 12.0.0 that the corpus
 holds (`docs-syntax-wardley-*`) are not these blocks, and their counts differ.
 
-A `[` is counted when it opens a pair of two numbers, `[0.40, 0.85]`, and it is
-counted by whether a space stands before it. A `[` that opens one number (the
-children of a pipeline, `component "SQL DB" [0.50]`, 4) and the `[` of the
-offset after `label` (`label [-50, 10]`, 2) are no coordinates. A link is a line
-that holds a name, an arrow, and a name.
-
-| Mark                                                                                                             | Page         | Space before | No space before | Not counted |
-| ---------------------------------------------------------------------------------------------------------------- | ------------ | ------------ | --------------- | ----------- |
-| The `[` of the coordinates of a component, an anchor, a note, an accelerator, a deaccelerator, and `annotations` | `wardley.md` | 66           | 0               | 6           |
-| The `[` of a size                                                                                                | `wardley.md` | 1            | 0               | 0           |
-
-The 6 not counted are the coordinates after the comma of an annotation
-(`annotation 1,[0.60, 0.65] "Critical component"`).
+A link is a line that holds a name, an arrow, and a name.
 
 | Mark                | Page         | Space on each side | An arrow that touches | Not counted |
 | ------------------- | ------------ | ------------------ | --------------------- | ----------- |

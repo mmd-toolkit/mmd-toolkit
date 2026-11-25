@@ -292,11 +292,9 @@ space is the gap of [Component spacing](#component-spacing) after a keyword, of
 [Pipeline](#pipeline) before a `{`, and of [Links](#links) around an arrow. The
 space before the number of an `evolve` is the one that [Evolves](#evolves) says
 no rule gives. The released version prints one space before the `[` of a
-coordinate pair. The examples in the documentation of mermaid.js write the `[`
-of all 66 coordinates after a space (see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
-Whitespace after title makes it metadata instead of a name. Quoted "title" and
-bare titlex follow ordinary spacing; uppercase names stay names.
+coordinate pair. Whitespace after title makes it metadata instead of a name.
+Quoted "title" and bare titlex follow ordinary spacing; uppercase names stay
+names.
 
 [fixture: wardley/name-boundaries/component-title-contact]
 
@@ -741,10 +739,7 @@ pairs consistent. The comma and the brackets are those of
 [Coordinates](#coordinates)
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): none inside a
 bracket, none before a comma and one after it), the space between `size` and the
-`[` is the one of [Component spacing](#component-spacing), which no rule gives,
-and the examples in the documentation of mermaid.js write their one size so
-(`size [1100, 800]`; see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
+`[` is the one of [Component spacing](#component-spacing), which no rule gives.
 
 [fixture: wardley/size/size-spacing]
 
