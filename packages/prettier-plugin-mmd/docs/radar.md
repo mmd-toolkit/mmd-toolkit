@@ -3505,7 +3505,7 @@ surrounding space. Rule 1 gives it: Prettier prints braces that hold nothing
 without whitespace inside (`x = { }` is printed `x = {};`, in the table of
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Where the interior
 holds a directive and whitespace, as in `accDescr {%%{init: {}}%% }`, the
-released version prints `accDescr { %%{init: {}}%%}`. Rule 1 prints braces that
+released version prints whitespace inside the braces. Rule 1 prints braces that
 hold nothing without whitespace inside, and mermaid.js removes the directive
 before it reads the text (see [Directives](./flowchart.md#directives)), so this
 is printed against rule 1 and waits to be fixed by the rule. Plain opener
