@@ -558,25 +558,49 @@ export function trimmedTextEnd(
 
 /**
  * Whether the text in `range` ends with directives: its content, then
- * directives with spaces and tabs between them and after the last, and nothing
- * else, no `;`, line break, or line separator. The last directive may start at
- * the end of the range, where the directives of a line that end with a
- * directive, with no whitespace after it, stand. A text printed so leaves out
- * the whitespace at its end, and prints the whitespace around the directives
- * as the end of a line (see `trimTextAfterKeyword`).
+ * directives with blanks between them and after the last, and nothing else, no
+ * `;` or line break. `isBlank` says which characters are the blanks: spaces and
+ * tabs by default, so that a U+2028 or U+2029 anywhere in the text, and any
+ * other whitespace between the directives or after the last, ends the text
+ * for this function; a predicate that takes a U+2028 or U+2029 for a blank
+ * lets one stand in the blanks around the directives, and nowhere else. The
+ * last directive may start at the end of the range, where the directives of a
+ * line that end with a directive, with no whitespace after it, stand. A text
+ * printed so leaves out the whitespace at its end, and prints the whitespace
+ * around the directives as the end of a line (see `trimTextAfterKeyword`).
  */
-export function endsWithDirectives(source: Source, [from, to]: Range): boolean {
+export function endsWithDirectives(
+  source: Source,
+  [from, to]: Range,
+  isBlank: (character: string) => boolean = isSpaceOrTab,
+): boolean {
   const text = source.text.slice(from, to)
-  if ([";", "\n", "\r", "\u2028", "\u2029"].some((c) => text.includes(c))) {
+  if ([";", "\n", "\r"].some((c) => text.includes(c))) return false
+  if (hasTriviaBesidesTrailingDirectives(source, from, to, isBlank))
     return false
-  }
-  if (hasTriviaBesidesTrailingDirectives(source, from, to)) return false
-  const first = findTriviaBetween(source, from, to)[0]
+  const trivia = findTriviaBetween(source, from, to)
+  const first = trivia[0]
   const follows = findTriviaBetween(source, to, to + 1).some(
     (item) => item.type === "Directive" && item.range[0] === to,
   )
   if (first === undefined && !follows) return false
-  return source.text.slice(from, first?.range[0] ?? to).trim() !== ""
+  // A U+2028 or U+2029 ends the text for mermaid.js where it stands in the
+  // text or in a directive; it is no such end in the blanks around the
+  // directives where `isBlank` takes it for a blank.
+  const contentEnd = first?.range[0] ?? to
+  let blanksStart = contentEnd
+  while (blanksStart > from && isBlank(source.text[blanksStart - 1]))
+    blanksStart--
+  if (
+    [...source.text.slice(from, blanksStart)].some(isLineSeparator) ||
+    trivia.some((item) =>
+      [...source.text.slice(item.range[0], item.range[1])].some(
+        isLineSeparator,
+      ),
+    )
+  )
+    return false
+  return source.text.slice(from, contentEnd).trim() !== ""
 }
 
 /**
@@ -683,10 +707,10 @@ export function collectLineEndEdits(
   const text: Range = [start, to]
   if (
     !skipsDirective &&
-    (endsWithDirectives(source, text) ||
+    (endsWithDirectives(source, text, isBlank) ||
       endsWithBreakingDirectives(source, text, isBlank))
   )
-    return collectTextEndEdits(source, start, editsEnd, runs)
+    return collectTextEndEdits(source, start, editsEnd, runs, false, isBlank)
   if (
     gapBeforePlace !== undefined &&
     endsWithPlaceAfterText(source, text, isBlank, gapBeforePlace)
@@ -875,13 +899,14 @@ export function keptWithDirectiveEnd(
  * both are the forms of the released versions, and both stay
  * (docs/compatibility.md, Texts after a keyword that are drawn the same).
  * `runs` tells which of the runs of spaces and tabs inside the text are printed
- * as one space (see `TextRuns`).
+ * as one space (see `TextRuns`). `isBlank` is the one of `collectTextEndEdits`.
  */
 export function trimTextAfterKeyword(
   source: Source,
   atoms: Atom[],
   text: Range | null,
   runs: TextRuns,
+  isBlank: (character: string) => boolean = isSpaceOrTab,
 ): void {
   if (text === null) return
   const [, to] = text
@@ -891,7 +916,7 @@ export function trimTextAfterKeyword(
   const edits: TextEdit[] = blanks.map((range) => ({ range, replacement: "" }))
   appendItems(
     edits,
-    collectTextEndEdits(source, start, to, runs, skipsDirective),
+    collectTextEndEdits(source, start, to, runs, skipsDirective, isBlank),
   )
   replaceInAtoms(source, atoms, edits)
 }
@@ -948,6 +973,15 @@ function findTextStart(
  * read as part of the text only where whitespace follows it; where it does not,
  * it starts at the end of the text, and its gap is that of a directive at the
  * end of a line, the same as in the other case (docs/flowchart.md, Directives).
+ *
+ * `isBlank` says which characters are blanks after the last directive and in
+ * the run before it, where that directive ends its line: spaces and tabs, or,
+ * for a text that mermaid.js draws the same whatever whitespace ends it,
+ * `isInlineWhitespace`, or `isWhitespace` where a U+2028 or U+2029 is a blank
+ * too, so that the run before the last directive is one space whatever it
+ * holds, and the line is printed the same whether or not blanks follow it. The
+ * runs before the directives that come earlier hold spaces and tabs only
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
  */
 export function collectTextEndEdits(
   source: Source,
@@ -955,6 +989,7 @@ export function collectTextEndEdits(
   end: number,
   runs: TextRuns,
   skipsDirective = false,
+  isBlank: (character: string) => boolean = isSpaceOrTab,
 ): TextEdit[] {
   const collapsesRuns = collapsesBeforeEnd(runs, skipsDirective)
   const collapsesWholeText = runs === "collapsed" && skipsDirective
@@ -986,9 +1021,19 @@ export function collectTextEndEdits(
     source.root.comments.some((comment) => comment.range[0] === to)
   let position = to
   let headEnd = to
+  const endsLine = holdsOnlyBlanksToLineEnd(source, to, isBlank)
+  // The runs are read from the end of the text. The first is the one after
+  // the last directive. The directives that touch each other and end the
+  // line are one place for the text without blanks after it, so the run
+  // before the first of them is the run before the last place, and the runs
+  // before the directives before that are runs of spaces and tabs.
+  let afterLastDirective = true
+  let inLastPlace = endsLine
   for (;;) {
+    const isRunBlank =
+      afterLastDirective || inLastPlace ? isBlank : isSpaceOrTab
     let blanks = position
-    while (blanks > offset && isSpaceOrTab(source.text[blanks - 1])) blanks--
+    while (blanks > offset && isRunBlank(source.text[blanks - 1])) blanks--
     headEnd = blanks
     if (blanks < position) {
       // The blanks before a directive that ends the text are the run that the
@@ -997,10 +1042,12 @@ export function collectTextEndEdits(
         range: [blanks, position],
         replacement: position !== to || commentFollows ? " " : "",
       })
+      if (!afterLastDirective) inLastPlace = false
     }
     const directive = findDirectiveEndingAt(source, blanks)
     if (directive === undefined || directive.range[0] <= offset) break
     position = directive.range[0]
+    afterLastDirective = false
   }
   // A text that directives end holds them, so the collapse of the runs in the
   // texts does not reach it; the runs before them are the same as when the

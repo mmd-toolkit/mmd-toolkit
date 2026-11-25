@@ -444,8 +444,10 @@ cynefin-beta
 Use the shared common-line layout: trim ordinary outer common whitespace, insert
 one space before a nonempty value and retain its internal text. Empty or
 whitespace-only values print as bare title and never take text from the next
-line. This chooses a compact Db-equal edge without interpreting quotes as string
-delimiters. Preserve empty resets and trivia contact. Where only directives
+line. This chooses a Db-equal edge without interpreting quotes as string
+delimiters; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between `title` and a nonempty value, as Prettier prints `return  x` as
+`return x;`. Preserve empty resets and trivia contact. Where only directives
 follow the text of a title, they are printed with one space before each that has
 spaces or tabs before it, and the spaces and tabs after the last one are left
 out, unless a directive of the line holds a line break, a `;`, a U+2028, or a

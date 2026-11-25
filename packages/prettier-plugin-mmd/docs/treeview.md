@@ -290,6 +290,37 @@ the prefix is drawn like any other.
 
 [fixture: treeview/branch-prefixes/branch-semicolon-name]
 
+A U+2028 or U+2029 before a comment region carries the name onto the next row:
+the comment region removes the rest of its line, the line break included, that
+of an LF and that of a CRLF, and the name goes on with that row, past the
+comment lines that stand between
+([Comments and boundaries](../../spec/docs/diagrams/treeview.md#comments-and-boundaries)).
+A directive between the character and the comment does not stop it. A prefix on
+that row is text of the name, not a branch, so the row holds no node of its own.
+The node of the name takes `└── ` when no sibling follows it, also where it was
+written with `├── `, and `├── ` when one does, as the first, a middle or the
+last of its siblings and at any depth: `├── a`, the character, `%% c` and
+`└── z` print as `└── a`, the character, `%% c` and `└── z`, which is one node,
+while with a `├── b` row between the comment and `└── z` the node keeps `├── `,
+since `└── z` follows it. A directive without a comment, a blank row after the
+comment and the end of the text do not carry the name, so the nodes keep the
+branches that their siblings give them.
+
+[test: treeview/branch-prefixes/continued-name-line-separator-comment] [test:
+treeview/branch-prefixes/continued-name-paragraph-separator-comment] [test:
+treeview/branch-prefixes/continued-name-semicolon-line-separator-comment] [test:
+treeview/branch-prefixes/continued-name-nested-line-separator-comment] [test:
+treeview/branch-prefixes/continued-name-middle-line-separator-comment] [test:
+treeview/branch-prefixes/continued-name-line-separator-comment-sibling-follows]
+[test:
+treeview/branch-prefixes/continued-name-line-separator-directive-without-comment]
+[test: treeview/branch-prefixes/continued-name-line-separator-comment-blank-row]
+[test: treeview/branch-prefixes/continued-name-line-separator-comment-at-end]
+[test: treeview/branch-prefixes/continued-name-line-separator-directive-comment]
+[test: treeview/branch-prefixes/continued-name-line-separator-comment-crlf]
+[test:
+treeview/branch-prefixes/continued-name-line-separator-comment-line-follows]
+
 Choose body retention once before drawing. Keep the complete body as written if
 an outer prefix or its separator crosses arbitrary text, a directive, selected
 semicolon or comment region, or a decoration line crosses shared trivia. Also
@@ -2074,11 +2105,13 @@ nothing or a mark that touches it after it] [test: treeview: the whitespace
 around a last directive that holds a line break or a semicolon, with spaces or a
 tab after it, or a mark after a space]
 
-This chooses consistent Db-equivalent outer spacing without taking a next-line
-value. Follow AST boundaries for `titlex` and `title"node"`; title still stays
-written when the summary omits it. A `;` that the line rule ignores before the
-first character of the value is a gap item whether one whitespace character or
-more comes before it: `title  ;T` and `title ;T` are printed alike.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `title` and a nonempty value, as Prettier prints `return  x` as
+`return x;`. This gives consistent Db-equivalent outer spacing without taking a
+next-line value. Follow AST boundaries for `titlex` and `title"node"`; title
+still stays written when the summary omits it. A `;` that the line rule ignores
+before the first character of the value is a gap item whether one whitespace
+character or more comes before it: `title  ;T` and `title ;T` are printed alike.
 
 [fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
 

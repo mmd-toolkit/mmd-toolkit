@@ -9,11 +9,9 @@ import {
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findFirstIndex } from "./source.ts"
-import type { SequenceSimpleStatement } from "./sequence-layout.ts"
-import {
-  classifySequenceStatement,
-  readsItsColonWhitespace,
-} from "./sequence-layout.ts"
+import type { SequenceSimpleStatement } from "./sequence-statements.ts"
+import { classifySequenceStatement } from "./sequence-statements.ts"
+import { readsItsColonWhitespace } from "./sequence-layout.ts"
 
 /** The kept lines of each source, found once per source. */
 const keptLinesBySource = new WeakMap<Source, KeptLines>()

@@ -289,6 +289,36 @@ treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
 
 [fixture: treeview/branch-prefixes/branch-semicolon-name]
 
+U+2028 か U+2029 の後ろにコメント領域があると、
+コメント領域がその行の残りを LF でも CRLF でも改行ごと取り除くので、
+名前は間にあるコメント行を越えて次の行へ続きます
+([コメントと部品の境目](../../spec/docs/diagrams/treeview.ja.md#コメントと部品の境目))。
+その文字とコメントの間にディレクティブがあっても、続きます。
+その行の前置部分は枝ではなく名前の文字なので、その行に自分のノードはありません。
+この名前のノードは、後ろに兄弟がなければ `├── ` で書かれていても `└── `、
+兄弟があれば `├── ` を取ります。
+兄弟の先頭、途中、最後のどれでも、どの深さでも同じです。
+`├── a`、その文字、`%% c`、`└── z` は、1 つのノードのまま `└── a`、その文字、
+`%% c`、`└── z` と印字します。
+コメントと `└── z` の間に `├── b` の行があれば、`└── z` が後ろにあるので、
+そのノードは `├── ` のままです。
+コメントのないディレクティブ、コメントの後ろの空行、
+テキストの終わりは名前を次の行へ続けないので、
+ノードは兄弟が与える枝をそのまま保ちます。
+
+[test: treeview/branch-prefixes/continued-name-line-separator-comment]
+[test: treeview/branch-prefixes/continued-name-paragraph-separator-comment]
+[test: treeview/branch-prefixes/continued-name-semicolon-line-separator-comment]
+[test: treeview/branch-prefixes/continued-name-nested-line-separator-comment]
+[test: treeview/branch-prefixes/continued-name-middle-line-separator-comment]
+[test: treeview/branch-prefixes/continued-name-line-separator-comment-sibling-follows]
+[test: treeview/branch-prefixes/continued-name-line-separator-directive-without-comment]
+[test: treeview/branch-prefixes/continued-name-line-separator-comment-blank-row]
+[test: treeview/branch-prefixes/continued-name-line-separator-comment-at-end]
+[test: treeview/branch-prefixes/continued-name-line-separator-directive-comment]
+[test: treeview/branch-prefixes/continued-name-line-separator-comment-crlf]
+[test: treeview/branch-prefixes/continued-name-line-separator-comment-line-follows]
+
 描く前に、本文を保つかを一度に判断します。
 外側の前置部分と区切りが任意文字、ディレクティブ、選ばれるセミコロン、
 コメント領域と交わる図や、
@@ -2060,7 +2090,10 @@ U+2028 の後を空白 1 つにして印字します）。
 [test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with nothing or a mark that touches it after it]
 [test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces or a tab after it, or a mark after a space]
 
-次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
+次の行から値を取らず、Db の等しい一定の外側の配置で印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`title` と空でない値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 `titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。
 値の最初の文字より前にある、行の規則が無視する `;` は、
 その前の空白が 1 文字でもそれ以上でも、隙間の項目です。

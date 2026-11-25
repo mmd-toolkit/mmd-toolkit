@@ -249,14 +249,13 @@ quadrantChart %% c
 `x-axisL --> R` は `x-axis L --> R` に、`quadrant-3C` は `quadrant-3 C` に、
 `title-x` は `title -x` に、`title"T"` は `title "T"` と印字します。
 その間の空白は Db に入りません。
-そのため、形は選べます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードとテキストの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 `x-axisL --> R` と `x-axis L --> R` は同じ軸で、
 `quadrant-10 A` は象限 1 とテキスト `0 A` なので、`quadrant-1 0 A` と同じです。
 印字する空白は、その読み方を示します。
 空白はテキストの始まりを示し、キーワードがテキストに接しているとそれが隠れます。
-mermaid.js の文書では、
-すべてのキーワードをテキストから離して書いています
-([`title`、`x-axis`、`y-axis`、`quadrant-1` から `quadrant-4`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L13-L19))。
 
 [fixture: keywords-and-texts/title-spaces]
 [fixture: keywords-and-texts/title-tab]

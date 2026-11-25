@@ -230,12 +230,16 @@ entity Shop.Beta
 
 Separate the frame keyword, digit-string name, entity-type word and qualified
 name by one ordinary space, including where native whitespace originally crossed
-lines. This distinguishes complete components such as `01 evt`. A run of
-whitespace or a line break between two components is one space for the reason
-given under [Declarations and notes](#declarations-and-notes). A required
-identifier exactly `title` keeps its successful boundary: an ordinary LF remains
-a continuation, while padding after a hidden form's consumed LF stays exact.
-Introducing padded `title` there can turn the required name into EM_TITLE.
+lines. This distinguishes complete components such as `01 evt`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`, and between values that follow one another, as Prettier prints CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`; a line break between two components
+is one space for the reason given under
+[Declarations and notes](#declarations-and-notes). A required identifier exactly
+`title` keeps its successful boundary: an ordinary LF remains a continuation,
+while padding after a hidden form's consumed LF stays exact. Introducing padded
+`title` there can turn the required name into EM_TITLE.
 
 [fixture: eventmodeling/frame-components/time-parts-glued-number-type]
 
@@ -579,12 +583,12 @@ Put `gwt 99` at column one, each clause keyword one step deeper and every item
 another step deeper, for the reason under [Indentation](#indentation). This
 shows the authored clause/item relationship without inventing closing
 punctuation. Keep required given/then, optional when, item order, repetition and
-type words. Ordinary item components use one space, as rule 2 prints the gap
-between a keyword and its text: `title    Pets` in a pie chart is printed
-`title Pets`, as `title    Plan` in a Gantt chart is printed `title Plan`.
-Required `title` boundaries, hidden forms, trivia and protected opening edges
-take precedence. `eventmodeling gwt 01 given evt`, a line break and
-`title then cmd accTitle tf 02 evt Alpha` stay, since every version of
+type words. Ordinary item components use one space, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes (Prettier prints `return  x` as
+`return x;`). Required `title` boundaries, hidden forms, trivia and protected
+opening edges take precedence. `eventmodeling gwt 01 given evt`, a line break
+and `title then cmd accTitle tf 02 evt Alpha` stay, since every version of
 mermaid.js that counts rejects the same text with a space in place of the line
 break (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -1549,13 +1553,11 @@ ignores. The rule reads a segment from the first `:` after `style` or `classDef`
 to the last `#` before its last kept `;`, with no whitespace between the `:` and
 the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
 padding inside that stretch keep whether they hold whitespace, a run becoming
-one space, as rule 2 prints the gap between a keyword and its text
-(`title    Pets` in a pie chart is printed `title Pets`), and the rest of the
-segment follows the ordinary rules of this diagram. Text that no part of the
-layout holds stays as written. A statement over several lines whose lines,
-joined with one space or with nothing, could change which `;` the line rule
-ignores keeps the text of each segment, up to its last kept `;`, as written,
-since the form that rule 2 gives, one line (see
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written, since the form that rule 2 gives, one line (see
 [Declarations and notes](#declarations-and-notes)), would change what the line
 rule ignores; any other statement over several lines is formatted like one on a
 single line. A `;` that the line rule ignores is removed by mermaid.js, so the

@@ -216,19 +216,15 @@ radar-beta
 
 ### Groups and commas
 
-Put one ordinary space between a group keyword and its first member. Rule 1
-names no mark between a keyword and its first member, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [er](./er.md#whitespace-between-tokens),
-[class](./class.md#whitespace-between-tokens), and
-[state](./state.md#whitespace-between-tokens) print a run of spaces and tabs
-between a keyword and its name as one space (`class    A,B  c` is printed
-`class A, B c` in an ER diagram). A comma has no space before it and one after
-it, in axis, curve, options and entry lists. This makes lists consistent with
-xychart and quadrant. Do not insert visible newlines into axis/curve/options
-groups: those grammars reject them. A gap that holds a global directive is
-printed as under [Global directives](#global-directives), and a gap that holds a
-hidden form keeps its written contact (see [Hidden forms](#hidden-forms)).
+Put one ordinary space between a group keyword and its first member.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one ordinary
+space between a group keyword and its first member, as Prettier prints
+`return  x` as `return x;`. A comma has no space before it and one after it, in
+axis, curve, options and entry lists. This makes lists consistent with xychart
+and quadrant. Do not insert visible newlines into axis/curve/options groups:
+those grammars reject them. A gap that holds a global directive is printed as
+under [Global directives](#global-directives), and a gap that holds a hidden
+form keeps its written contact (see [Hidden forms](#hidden-forms)).
 
 [fixture: radar/groups-and-commas/axis-comma]
 
@@ -292,16 +288,12 @@ Print the braces of a curve of values only tight, `c{1, 2}`, and the braces of a
 curve of named entries with one space inside each end, `c["C"]{ A: 1, B: 2 }`;
 the gap before the opening brace is empty in both. A list of named entries is
 the kind of braces that Prettier prints as an object, `{ a: 1, b: 2 }`, and a
-list of values is the kind it prints as an array, `[1, 2, 3]`. The examples in
-the documentation of mermaid.js write the 14 curves of values only with none
-inside, and the one curve of named entries with one space inside each end. A
-named entry without a colon (`{ A 1, B 2 }`) is a named entry too. The colon of
-a named entry is the colon of a key: the entry gives its axis one value, so none
-stands before it and one follows (step 2 of
-[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). Attached
-components and the list's tight inner edges follow the architecture and xychart
-choices. These are entry braces; description-block spacing uses the shared
-description rule.
+list of values is the kind it prints as an array, `[1, 2, 3]`. A named entry
+without a colon (`{ A 1, B 2 }`) is a named entry too. The colon of a named
+entry is the colon of a key: the entry gives its axis one value, so none stands
+before it and one follows (step 2 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). These are
+entry braces; description-block spacing uses the shared description rule.
 
 [fixture: radar/curve-braces/brace-tight]
 
@@ -430,13 +422,15 @@ radar-beta
 ### Named entries
 
 Keep authored optional colons. Print `A: 1` with no ordinary space before the
-colon and one after, or `A 1` with one space and no alignment. This retains
-punctuation while giving equivalent padding a consistent form. `North 4` and
-`North: 4` give the same Db and figure in the versions that count, and the
-formatter adds and removes no colon. Adding a colon is unsafe for axis names
-`accTitle` and `accDescr`: common composite tokens would take priority, and
-every version of mermaid.js that counts rejects
-`curve c{accTitle: 1, accDescr 2}` (see
+colon and one after, or `A 1` with one space and no alignment. The "Values that
+follow one another" row of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between the name and value in `A 1`, as Prettier prints CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`. `North 4` and `North: 4` give the
+same Db and figure in the versions that count, and the formatter adds and
+removes no colon. Adding a colon is unsafe for axis names `accTitle` and
+`accDescr`: common composite tokens would take priority, and every version of
+mermaid.js that counts rejects `curve c{accTitle: 1, accDescr 2}` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/named-entries/named-colon-gap]
@@ -499,11 +493,11 @@ radar-beta
 
 ### Options
 
-Use one ordinary space between an option keyword and its value, as between a
-group keyword and its first member (see
-[Groups and commas](#groups-and-commas)). Keep fixed lowercase boolean/graticule
-words, numeric spellings, comma groups and every repeated assignment in source
-order: the numbers are under [Numbers](#numbers), the commas under
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one ordinary
+space between an option keyword and its value, as Prettier prints `return  x` as
+`return x;`. Keep fixed lowercase boolean/graticule words, numeric spellings,
+comma groups and every repeated assignment in source order: the numbers are
+under [Numbers](#numbers), the commas under
 [Groups and commas](#groups-and-commas), and the order and the repeated
 assignments under [Source order](#source-order). Do not substitute effective
 defaults, cap ticks at 32 or reorder min/max: publication is not authored
@@ -584,10 +578,10 @@ radar-beta
 Use the shared common-line layout, except as the paragraphs below and the
 [Semicolons](#semicolons) section state: trim common-whitespace edges and put
 one space before a nonempty value; null/whitespace-only values print `title`.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the gap between a keyword and its text as one space, and Prettier ends no line
-with whitespace: `title    Pets` is printed `title Pets` in a pie chart, as
-`title    Plan` is printed `title Plan` in a Gantt chart. The rule gives it for
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its text, as Prettier prints `return  x` as `return x;`,
+and Prettier ends no line with whitespace. The one-space form that
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives applies to
 spaces and tabs. This removes equivalent exterior padding while retaining
 internal spelling, quotes and apparent keywords, apart from a run of spaces and
 tabs inside the value, which is printed as one space (see
