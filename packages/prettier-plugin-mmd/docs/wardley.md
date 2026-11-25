@@ -291,7 +291,7 @@ space is the gap of [Component spacing](#component-spacing) after a keyword, of
 of [Links](#links) around an arrow. Before the `[` of a coordinate pair it is
 the gap that [xychart](./xychart.md#brackets-and-commas) prints before the `[`
 after a string (`bar"Costs"[1,2]` is printed `bar "Costs" [1, 2]`), and the
-examples in the documentation of mermaid.js write the `[` of all 68 coordinates
+examples in the documentation of mermaid.js write the `[` of all 66 coordinates
 that follow a name, a string, or `annotations` after a space (see
 [The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
 Whitespace after title makes it metadata instead of a name. Quoted "title" and

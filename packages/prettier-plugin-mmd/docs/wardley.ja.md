@@ -313,7 +313,7 @@ evolve の数、矢印、port、@、/ との接し方を保ちます。
 の前に置く隙間と同じです（`bar"Costs"[1,2]` は `bar "Costs" [1, 2]`
 に印字します）。
 mermaid.js の文書の例も、名前、文字列、
-`annotations` の後の座標 68 個のすべての `[` を、空白の後に書いています。
+`annotations` の後の座標 66 個のすべての `[` を、空白の後に書いています。
 詳しくは
 [Wardley 図の空白を決める例](./compatibility.ja.md#wardley-図の空白を決める例)
 を参照してください。
