@@ -20,7 +20,13 @@ organized and checked is described in
 
 The statements after the header stand one level deeper than the header. The
 statements of a composite state stand one level deeper than the line that opens
-it, and its `}` stands on a line of its own at the level of that line.
+it, and its `}` stands on a line of its own at the level of that line. In
+[class](./class.md#indentation) and [sequence](./sequence.md#indentation)
+diagrams, statements stand one level below the header, block contents one level
+below their opening line, and closers at that line's level.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+state statements, the contents of composite states, and their closing braces the
+same levels.
 
 [fixture: indentation/composite-states]
 
@@ -68,7 +74,12 @@ stateDiagram-v2
 
 When a header continues across trivia, align the physical line containing its
 opening brace with the initial keyword, so the body remains one level deeper. Do
-not change a value spanning that line or protected source boundaries.
+not change a value spanning that line or protected source boundaries. A quoted
+alias description includes its internal line breaks and margins in the Db.
+Changing them changes the stored description, so they stay as written when a
+header continues across trivia.
+
+[corpus fixture: state/lex-string-line-separator-then-comment-line]
 
 [fixture: composite-states/header-completion-after-comment] [fixture:
 composite-states/multiline-alias-label-kept]
@@ -103,7 +114,12 @@ multi-line-statements/brace-after-directive-kept]
 
 A body written on one line, as in `state A { B --> C }`, is split into lines,
 and a divider `--` stands on a line of its own, at the level of the statements
-around it.
+around it. A nonempty namespace in [class](./class.md#indentation) and a
+nonempty body in [requirement](./requirement.md#bodies) place their contents and
+closing brace on separate lines.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a nonempty body of a composite state the same layout, including one written on
+one line.
 
 [fixture: composite-states/split] [fixture:
 composite-states/split-several-statements] [fixture:
@@ -200,7 +216,11 @@ one line the id is `A state`.
 state/gram-ignored-state-before-alias-body-next-line]
 
 A `state` with no name, which mermaid.js accepts and reads as nothing, is a
-statement of its own, printed at the level of the statements around it.
+statement of its own, printed at the level of the statements around it. In
+[class](./class.md#indentation) and [sequence](./sequence.md#indentation)
+diagrams, statements after the header stand one level deeper than it.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+therefore places a nameless `state` at the level of the surrounding statements.
 
 [fixture: composite-states/state-keyword-alone] [corpus fixture:
 state/lex-state-keyword-alone]
@@ -608,6 +628,9 @@ whitespace-between-tokens/style-description-commas-kept]
 A backslash does not escape a `,` here: `fill:a\,b ,stroke:c` is printed
 `fill: a\, b, stroke: c`. A space after a backslash before the `:` stays, since
 taking it away would escape the `:`, and the whitespace after that space goes.
+An escaped space at the end of a style name belongs to the name, so it stays.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes any further
+whitespace before the key colon.
 
 [fixture: whitespace-between-tokens/style-backslash-before-comma]
 
@@ -660,8 +683,15 @@ keyword-case/accessibility-alias-direction-one-form]
 
 A style that starts with the `:`, and one whose `:` follows a backslash and a
 space, are printed as any other style: one space after the `:`, and the runs
-between their words as one space. `style A :  red   x` is printed
-`style A : red x`.
+between their words as one space. In
+[flowchart](./flowchart.md#whitespace-between-tokens) and
+[class](./class.md#whitespace-between-tokens) diagrams, a style beginning with
+`:` has one space after it and collapses each run between words to one space;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same form here. After a nonempty name ending in an escaped space, `:` is a
+key colon, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+it one following space when the value is nonempty. `style A :  red   x` is
+printed `style A : red x`.
 
 [fixture: whitespace-between-tokens/style-colon-first-run-spaced] [fixture:
 whitespace-between-tokens/style-escaped-space-run-spaced]
@@ -693,7 +723,11 @@ whitespace-between-tokens/comma-kept]
 
 A line break after the `,` is joined, so `class A,` and `B c` on the next line
 are printed `class A, B c`, and a directive before the `,` does not change that:
-the id after the `,` stands after one space.
+the id after the `,` stands after one space. A line break after a list comma
+occupies the comma's following gap, which
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints as one space.
+A directive before the comma stays in its written order, so it does not change
+that gap.
 
 [fixture: whitespace-between-tokens/class-ids-line-break-and-directive]
 
@@ -708,7 +742,11 @@ mermaid.js that count draw different structure and style for
 whitespace-between-tokens/class-ids-beside-directive-runs] [fixture:
 whitespace-between-tokens/class-ids-with-ignored-semicolon]
 
-A U+2028 or U+2029 after the `,` stays where it is.
+A U+2028 or U+2029 after the `,` stays where it is. The gap after a list comma
+keeps U+2028 or U+2029 as written in [journey](./journey.md#line-separators)
+lists of people and [block](./block.md#shapes) lists of arrow directions;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same form here.
 
 [test: U+2028 after the comma of a state class statement] [test: U+2029 after
 the comma of a state class statement]
@@ -776,7 +814,9 @@ stateDiagram-v2
 ### Arrow spacing
 
 A transition has one space before and after its arrow: `A-->B` becomes
-`A --> B`.
+`A --> B`. Prettier prints an operator between two operands with one space on
+each side; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+transition arrow between its two ends the same spacing.
 
 [fixture: arrow-spacing/spaced] [fixture: arrow-spacing/tabs-around-arrow]
 
@@ -845,7 +885,10 @@ after it: `accTitle  :  t` becomes `accTitle: t`, and a run of spaces and tabs
 in the text of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 while that of an `accTitle` stays as written, since the browser shows it as a
-tooltip.
+tooltip. An accessibility line gives the diagram its one title or description,
+so its colon is a key colon.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that colon no
+preceding whitespace and one following space.
 
 [fixture: descriptions-and-labels/acc-text-runs-collapsed] [fixture:
 descriptions-and-labels/acc-block-runs-collapsed]
@@ -977,13 +1020,23 @@ comment or a directive, or with a character other than an ASCII one.
 
 In `note left of A:h` the `:` and the `h` are the two characters that mermaid.js
 drops, so the note has no text, and the whitespace after the `h` is dropped.
+After mermaid.js discards `:` and `h` in `note left of A:h`, the note has no
+text, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the
+trailing spaces and tabs outside its value.
 
 [fixture: notes/one-character-text-kept] [corpus fixture:
 state/lex-note-colon-then-one-character]
 
 The whitespace before the id becomes one space. A text that mermaid.js does not
 read right after the position, as in `note left of%%x A`, keeps touching the
-position.
+position. A note id follows its position with one space under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark). With `%%x` touching
+the position, mermaid.js ignores it and reads the following id; whitespace
+before `%%x` makes the id empty and causes rejection of this note on one line.
+The ignored text therefore stays touching the position.
+
+[corpus fixture: state/lex-note-id-ignored-percent-after-position] [corpus
+fixture: state/lex-note-id-percent-after-space]
 
 [fixture: notes/kept]
 
@@ -1005,13 +1058,19 @@ notes/markdown-unordered-list-kept]
 
 For a note whose body starts after a single-line header, with `end note`
 starting its own line, align every content line of a single paragraph one level
-inside the note. Replace leading ASCII spaces with the body indentation; the
-first content line may also have leading tabs, which Mermaid trims. Later lines
-with a tab in their margin fall outside this paragraph rule. Preserve the
-remaining text, line breaks and trailing spaces. Empty and whitespace-only rows
-before or after the paragraph stay exactly as written. Use ASCII spaces even
-with `useTabs`, and no leading spaces at `tabWidth: 0`. Nesting and `tabWidth`
-determine the body level.
+inside the note. The lines of a description body in
+[flowchart](./flowchart.md#multi-line-values) and
+[sequence](./sequence.md#multi-line-values) stand one level inside their
+statement.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+eligible lines in note paragraphs the same depth; the drawing checks below
+establish where changing these margins preserves the note. Replace leading ASCII
+spaces with the body indentation; the first content line may also have leading
+tabs, which Mermaid trims. Later lines with a tab in their margin fall outside
+this paragraph rule. Preserve the remaining text, line breaks and trailing
+spaces. Empty and whitespace-only rows before or after the paragraph stay
+exactly as written. Use ASCII spaces even with `useTabs`, and no leading spaces
+at `tabWidth: 0`. Nesting and `tabWidth` determine the body level.
 
 [fixture: notes/payment-prose] [fixture: notes/prose-nested-four] [fixture:
 notes/prose-use-tabs] [fixture: notes/prose-zero-width] [fixture:
@@ -1046,7 +1105,12 @@ notes/marker-at-paragraph-boundary-kept] [fixture:
 notes/literal-setext-zero-width]
 
 For bodies outside this paragraph rule, align only the first physical body line
-when it is nonempty and starts with only ASCII-space/tab padding. Use the
+when it is nonempty and starts with only ASCII-space/tab padding. The lines of a
+description body in [flowchart](./flowchart.md#multi-line-values) and
+[sequence](./sequence.md#multi-line-values) stand one level inside their
+statement. The eligible first row of other note bodies takes that level under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have);
+Mermaid trims that margin, while later margins can affect the drawing. Use the
 configured body indentation, as for eligible paragraphs. Do not infer a
 different indentation from protected later lines: their authored margins are
 part of the body text and may affect rendering. This rule applies with or
@@ -1167,7 +1231,11 @@ A line ending in two or more ASCII spaces before another content line is a
 Markdown hard break: keep its trailing spaces and subsequent body lines as
 written, aligning only the trimmed first-row margin when eligible. One trailing
 space on an earlier line, and trailing spaces on the last body line, stay
-written when the body margin is aligned.
+written when the body margin is aligned. A single trailing space before an
+internal note line break belongs to the note text in the Db: mermaid.js removes
+only the text's outer whitespace, as the specification records. Removing that
+space changes stored text outside the permitted changes to the starts of
+paragraph lines, so it stays.
 
 [fixture: notes/prose-trailing-spaces] [fixture: notes/prose-one-trailing-space]
 
@@ -1194,7 +1262,13 @@ A note over lines with no text, as in `note right of A` followed by a line
 When the text of a note over lines starts on the line of its id, as in
 `note right of A text`, the first row of the text is on that line, and Mermaid
 trims only the margin of that row: the margins of the later rows are part of the
-text and stay as written, and `end note` stands at the level of the note.
+text and stay as written, and `end note` stands at the level of the note. The
+separate closing braces of description blocks in
+[flowchart](./flowchart.md#multi-line-values) and
+[sequence](./sequence.md#multi-line-values) stand at the level of their
+statement.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the separate `end note` the same level as the note it closes.
 
 [fixture: notes/over-lines-text-on-id-line-kept]
 
@@ -1224,7 +1298,10 @@ The `as` of a floating note stands after one space, and so does the id after it,
 also where they touched: `note "t"as N` and `note "t" asN` are printed
 `note "t" as N`. mermaid.js reads the three spellings the same, and the `as` and
 the id of an alias definition are printed in the same way (see
-[Aliases](#aliases)). A directive in the gap is placed as under
+[Aliases](#aliases)). A floating note uses `as` between its quoted text and its
+id, like a keyword between two things in Prettier;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that keyword
+one space on each side. A directive in the gap is placed as under
 [Directives](#directives), and a U+2028 or U+2029 stays where it is. Rule 1
 names no mark for a gap that holds one, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
@@ -1310,7 +1387,10 @@ stateDiagram-v2
 The string, the `as`, and the id of an alias definition have one space between
 them, also where they were written touching: mermaid.js reads `"d"as A` as it
 reads `"d" as A`, so the Db is the same, and the words of the statement stand
-apart in one form (`asA` is no `as`).
+apart in one form (`asA` is no `as`). Prettier separates a keyword between two
+things with one space on each side;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the alias `as`
+the same spacing.
 
 [fixture: aliases/second-description-kept] [fixture: aliases/tabs-between-parts]
 [fixture: aliases/id-kept]
@@ -1331,10 +1411,17 @@ spaces or tabs before it, and the spaces and tabs after the last one are left
 out, unless a directive of the line holds a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)):
 `state "d" as A : x   %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`. A
-description of spaces and tabs only, and one that holds a `;`, stay as written.
-A second description of three spaces after `state "d" as A :` stays, since some
-of the versions of mermaid.js that count draw a different figure structure when
-those spaces are removed (see
+trailing directive follows one space where spaces or tabs were written after a
+title in [pie](./pie.md#title) and after an event in
+[timeline](./timeline.md#periods-and-events);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the second description of an alias the same gap.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
+and tabs after the last directive at the end of the line. A description of
+spaces and tabs only, and one that holds a `;`, stay as written. A second
+description of three spaces after `state "d" as A :` stays, since some of the
+versions of mermaid.js that count draw a different figure structure when those
+spaces are removed (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: state/db-alias-colon-spaces-second] [fixture:
@@ -1417,13 +1504,22 @@ here, since its table does not name the start of a line
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [flowchart](./flowchart.md#comments), [class](./class.md#comments), and
 [sequence](./sequence.md#comments) put a comment line at the level of the
-statements around it.
+statements around it. The leading and internal gaps in standalone comment text
+stay as written in [class](./class.md#comments) and
+[sequence](./sequence.md#comments) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+state comments the same form.
 
 [fixture: comments/kept] [fixture: comments/text-kept] [fixture:
 comments/before-closing-brace]
 
 A comment after a statement stays on its line, and whether whitespace is written
-before its mark is kept.
+before its mark is kept. A trailing comment in
+[requirement](./requirement.md#comments) and [C4](./c4.md#comments) stays on its
+statement's line, with one space where a horizontal gap was written and none
+where its mark touches.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same trailing-comment form here.
 
 [fixture: comments/kept] [fixture: comments/hash-after-statement-kept] [fixture:
 comments/after-brace-kept] [fixture: statements-one-per-line/split-then-comment]
@@ -1646,7 +1742,9 @@ A closed block with no text prints `{}` internally: `accDescr { }` becomes
 empty, and the keyword and opening brace have one space between them. There is
 no text for interior whitespace to surround, so the Db-equal choice follows
 [flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
-and usecase. A prior description stays in the Db.
+and usecase. An `accDescr` opening brace starts a block after its keyword, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that brace one
+space before it. A prior description stays in the Db.
 
 [fixture: multi-line-values/empty-description-interiors] [test: accessibility
 revisions: state empty-description-nbsp]
@@ -1670,7 +1768,11 @@ Block note paragraphs follow the restricted [Notes](#notes) rule.
 
 [fixture: notes/payment-prose]
 
-The text of a floating note written over several lines stays as written.
+The text of a floating note written over several lines stays as written. As the
+specification records, mermaid.js stores a floating note's internal line breaks
+and margins in its text in the Db. Joining or reindenting those lines changes
+that stored text, and the exception for paragraph margins in block notes does
+not cover quoted floating notes, so they stay as written.
 
 [fixture: multi-line-values/kept] [fixture:
 multi-line-values/floating-note-empty-line-kept]
@@ -1723,7 +1825,9 @@ terminator leaves the Db unchanged, also with several styles.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
-Whitespace immediately before a dropped `;` is dropped with it.
+Whitespace immediately before a dropped `;` is dropped with it. Dropping the
+style terminator leaves the spaces and tabs before it at the end of the line,
+where [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
 
@@ -1750,7 +1854,13 @@ stays, since a version that counts reads it as a state of its own (see
 [fixture: semicolons-at-the-end-of-a-style-statement/style-text-terminators]
 
 Keep `classDef c fill:red;;`, `classDef c ;` and `style A fill : #f00;`; they do
-not meet these conditions.
+not meet these conditions. In `classDef c ;`, mermaid.js removes the first
+semicolon from the present style text, leaving an empty style entry in the Db.
+Dropping that source semicolon leaves no style entry, so the semicolon stays.
+
+[corpus fixture: state/db-classdef-semicolon-in-each-part] [corpus fixture:
+state/db-classdef-comma-only] [corpus fixture:
+state/lex-classdef-without-styles]
 
 [fixture: semicolons-at-the-end-of-a-style-statement/style-text-kept]
 
@@ -1989,9 +2099,14 @@ comment stays written]
 
 A composite statement whose opening line holds one keeps it, and its body is
 printed as any other body: `state a b`, U+2028, and `{` keeps the character and
-indents the statements of the body. So does one on the closing line, as in
+indents the statements of the body. Replacing the separator in `state a b`,
+U+2028, and `{` with a space makes mermaid.js read two words before the brace
+and reject the state name. The separator therefore stays, while the body follows
+the ordinary indentation rule. So does one on the closing line, as in
 `state A {`, a body line `B`, and `}` followed by U+2028: the whitespace after
 the `}` stays as written, with the character, and the body is indented.
+
+[corpus fixture: state/lex-state-two-names-body]
 
 [test: U+2028 before the brace of a composite statement] [test: U+2028 on the
 closing line of a composite statement] [test: U+2029 and whitespace before it on
