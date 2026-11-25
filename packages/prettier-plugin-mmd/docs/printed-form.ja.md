@@ -115,7 +115,7 @@ architecture 図の `service a (server) [A]` は `service a(server)[A]`
 コメントは接したままにし、その事実をその図種の文書が述べる。
 XY チャートでは、mermaid.js は、
 1 文字の単位に接する `%%` をその文字と一緒に読むので、
-`title A B%% c` の title は `A` で、`title A B %% c` の title は `A B` になる。
+`title A B%% c` の title は `A` で、`title A B %% c` の title は `AB` になる。
 
 行の終わり、テキストの終わり、空行は、JavaScript、CSS、YAML、Markdown で同じで、
 空白だけの行は、4 つとも空行にする。

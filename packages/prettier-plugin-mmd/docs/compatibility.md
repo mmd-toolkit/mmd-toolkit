@@ -2953,10 +2953,13 @@ These stay as written:
 
 The table gives how runs inside a text are printed and, where `%%` starts a
 comment, how the gap before it is printed (`A  b  %% c` then means the text
-`A  b` and the comment `%% c`). In the node rows of a
+`A  b` and the comment `%% c`). Where `%%` is a character of the text,
+`A  b  %% c` is all text, and the runs before the `%%` are runs inside it: this
+is so, for example, in the title of a [Gantt chart](./gantt.md#comments), in the
+unquoted fields of a [requirement diagram](./requirement.md#comments), in the
+literal of an [ishikawa diagram](./ishikawa.md#comments), in the node rows of a
 [mindmap](./mindmap.md#comments) and a [treeView](./treeview.md#comments), and
-the card row of a [kanban](./kanban.md#comments), `%% c` belongs to the text:
-the runs before it are inside that text.
+in the card row of a [kanban](./kanban.md#comments).
 
 | Text                                                                                                       | Diagram types                                                                                                                                                                                                                                                                                                                                                                         | Written                                                                 | Printed                                                           |
 | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |

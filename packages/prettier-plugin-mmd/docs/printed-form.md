@@ -108,7 +108,7 @@ between them, whatever whitespace was written (`x = 1;// c` is printed
 the comment stays touching, and the document of the diagram type gives that
 fact: in an XY chart, mermaid.js reads a `%%` that touches a unit of one
 character together with that character, so `title A B%% c` has the title `A` and
-`title A B %% c` has the title `A B`.
+`title A B %% c` has the title `AB`.
 
 The end of a line, the end of the text, and blank lines are the same in
 JavaScript, CSS, YAML, and Markdown, and a line of whitespace only is a blank
