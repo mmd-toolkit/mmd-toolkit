@@ -745,6 +745,42 @@ So does a closing pipe that was written apart from the closing quote:
 [fixture: edge-labels/pipe-string-closing-touches] [test: agentflow: U+2028
 between the closing quote and the `|` of an edge label]
 
+Where the label of an edge between pipes ends at a comment, and only the closing
+pipe follows the line break of the comment (`A -->|x  %% c`, a line break, and
+`| B`), the label ends before the comment: a run of whitespace before the
+comment, spaces, tabs, and the other whitespace of the specification (a no-break
+space, U+3000, U+2003, U+2028, and U+2029 among it), alone or mixed, is printed
+as one space, a comment that touches stays touching, and the closing pipe stands
+on a line of its own, one level deeper than the arrow (`A -->|x %% c` and
+`    | B`). Where the comment holds a `;`, the characters before it are printed
+as one space in the same way, and the spaces and tabs after the `;` stay as
+well: `A -->|x  %% c;` and two spaces, a line break, and `| B` print
+`A -->|x %% c;`, the two spaces, and `| B` one level deeper. Where the label
+goes on after the line break of the comment, the spaces and tabs before the
+comment stay.
+
+[fixture: edge-labels/label-comment-ends-label] [fixture:
+edge-labels/label-comment-semicolon-ends-label] [fixture:
+edge-labels/label-comment-label-goes-on] [test: agentflow: a no-break space
+before a comment that ends the label of an edge] [test: agentflow: U+3000 before
+a comment that ends the label of an edge] [test: agentflow: U+2003 before a
+comment that ends the label of an edge] [test: agentflow: U+2028 before a
+comment that ends the label of an edge] [test: agentflow: U+2029 before a
+comment that ends the label of an edge] [test: agentflow: a tab before a comment
+that ends the label of an edge] [test: agentflow: a no-break space before a
+comment with a semicolon that ends the label of an edge] [test: agentflow:
+U+3000 before a comment with a semicolon that ends the label of an edge] [test:
+agentflow: U+2003 before a comment with a semicolon that ends the label of an
+edge] [test: agentflow: U+2028 before a comment with a semicolon that ends the
+label of an edge] [test: agentflow: U+2029 before a comment with a semicolon
+that ends the label of an edge] [test: agentflow: a tab before a comment with a
+semicolon that ends the label of an edge] [test: agentflow: every whitespace
+character of the specification before a comment that ends the label of an edge]
+[test: agentflow: every whitespace character of the specification before a
+comment with a semicolon that ends the label of an edge] [test: agentflow: a run
+of different whitespace characters before a comment that ends the label of a
+vertex or of an edge]
+
 Input (escaped): `"agentflow-beta TB\nA --> |x| B"`.
 
 [fixture: edge-labels/pipe-label-gap]
@@ -768,11 +804,27 @@ before slanted ?]/=] closers. For a slash label, `A[ /x/ ]` keeps its spaces,
 since every version of mermaid.js that counts reads `A[/x/]` as a slanted vertex
 labelled `x` instead of a square vertex labelled `/x/` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Agentflow label comments are different: their preceding spaces/tabs are label
-content, so preserve that padding, the comment and its LF/continuation columns,
-including a closing bracket that belongs to the comment rather than closing the
-shape. Tildes remain content. Shape spellings, entities and HTML remain
-authored. The text of a label is a text that the tree holds whole (see
+Agentflow label comments are different where the label goes on after the line
+break of the comment: the spaces and tabs before the comment are label content
+(the text of `A[before  %% c`, a line break, and `after]` is `before  \nafter`),
+so preserve that padding, the comment and its LF/continuation columns, including
+a closing bracket that belongs to the comment rather than closing the shape.
+Where only the closing bracket follows the line break of the comment, the label
+ends before the comment (the text of `A[x  %% c`, a line break, and `]` is `x`
+in the Db of 12.3.0, and it is also with another whitespace character of the
+specification in place of the spaces, a no-break space, U+3000, U+2003, U+2028,
+and U+2029 among them), so a run of whitespace before the comment, of one kind
+of character or of several, is printed as one space, a comment that touches
+stays touching, a bare label is printed in quotes (see
+[Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)),
+and the closing bracket stands on a line of its own, one level deeper than the
+vertex. Where the comment holds a `;`, the label is not quoted, the characters
+before the comment are printed as one space in the same way, and the spaces and
+tabs after the `;` stay: `A[x  %% c;` and two spaces, a line break, and `]`
+print `A[x %% c;`, the two spaces, and `]` one level deeper. Where the label
+goes on after the line break of such a comment, both spaces before it stay.
+Tildes remain content. Shape spellings, entities and HTML remain authored. The
+text of a label is a text that the tree holds whole (see
 [A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
 and the Db keeps it, so an entity stays as written: `&amp;` is not printed `&`,
 a change of the text that no rule of this document defines.
@@ -780,7 +832,29 @@ a change of the text that no rule of this document defines.
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
-[fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
+[fixture: labels/slash-label-padding-kept] [fixture:
+labels/label-comment-ends-label] [fixture:
+labels/label-comment-ends-label-spaces-and-comment-lines] [fixture:
+labels/label-comment-semicolon-ends-label] [fixture:
+labels/label-comment-semicolon-label-goes-on] [test: agentflow: a no-break space
+before a comment that ends the label of a vertex] [test: agentflow: U+3000
+before a comment that ends the label of a vertex] [test: agentflow: U+2003
+before a comment that ends the label of a vertex] [test: agentflow: U+2028
+before a comment that ends the label of a vertex] [test: agentflow: U+2029
+before a comment that ends the label of a vertex] [test: agentflow: a tab before
+a comment that ends the label of a vertex] [test: agentflow: a no-break space
+before a comment with a semicolon that ends the label of a vertex] [test:
+agentflow: U+3000 before a comment with a semicolon that ends the label of a
+vertex] [test: agentflow: U+2003 before a comment with a semicolon that ends the
+label of a vertex] [test: agentflow: U+2028 before a comment with a semicolon
+that ends the label of a vertex] [test: agentflow: U+2029 before a comment with
+a semicolon that ends the label of a vertex] [test: agentflow: a tab before a
+comment with a semicolon that ends the label of a vertex] [test: agentflow:
+every whitespace character of the specification before a comment that ends the
+label of a vertex] [test: agentflow: every whitespace character of the
+specification before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: a run of different whitespace characters before a comment that
+ends the label of a vertex or of an edge] [fixture: labels/entity-kept]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace
@@ -1055,11 +1129,16 @@ comments/comment-looking-values] [fixture: comments/comments-align]
 
 Reuse [Comments](./flowchart.md#comments) for the same reason: align standalone
 comments with neighbouring statements and retain the author's complete text,
-including trailing spaces.
+including trailing spaces, except that the spaces and tabs at the end of a
+comment after a statement are dropped where the comment holds a `;` (`A %% c;  `
+is printed `A %% c;`) and stay where it holds none.
 
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
 [fixture:
 comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
+[fixture: comments/trailing-comment-semicolon-trailing-whitespace] [fixture:
+comments/trailing-comment-semicolon-trailing-whitespace-statements] [fixture:
+comments/trailing-comment-semicolon-trailing-whitespace-header-and-lines]
 
 A harmless trailing-comment gap becomes one space. Agentflow recognizes real
 comments after semicolons and description closers; ordinary separator semicolons
@@ -1110,9 +1189,9 @@ directives/header-touching-kept-line] [fixture: directives/directive-gap]
 [fixture: directives/directives-align]
 
 Keep unclosed EOF endings and semicolons that stop a directive. Name text,
-first-style whitespace and label-comment padding override generic gap collapse.
-Token-internal directives remain specified failures; formatting never repairs
-accepted text or data placements.
+first-style whitespace and the padding before a label comment that the label
+goes on after override generic gap collapse. Token-internal directives remain
+specified failures; formatting never repairs accepted text or data placements.
 
 [fixture: directives/directive-eof]
 
@@ -1517,13 +1596,13 @@ style still needs a written whitespace character. Remove harmless exterior and
 trailing style padding; keep all-whitespace styles, including the last style
 after commas (including escaped classDef commas), directives, ignored semicolons
 and split empty-description groups. Extra first-style whitespace is leading
-value text and stays. Name endings follow Names and headings. Label-comment
-padding, strings, data, comments, directives and later value columns stay.
-Forbidden class/callback/title padding remains rejected; the size guard
-overrides trimming. For the quoted vertex label with `before`, a comment-looking
-line, and `after` at the 50000-unit boundary, `A` stays at column zero: every
-version of mermaid.js that counts drops the comment-looking line from the label
-when two spaces precede `A` (see
+value text and stays. Name endings follow Names and headings. The padding before
+a label comment that the label goes on after, strings, data, comments,
+directives and later value columns stay. Forbidden class/callback/title padding
+remains rejected; the size guard overrides trimming. For the quoted vertex label
+with `before`, a comment-looking line, and `after` at the 50000-unit boundary,
+`A` stays at column zero: every version of mermaid.js that counts drops the
+comment-looking line from the label when two spaces precede `A` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: trailing-whitespace/trailing-comment] [fixture:

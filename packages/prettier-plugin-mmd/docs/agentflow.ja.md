@@ -761,6 +761,40 @@ Markdown ラベルは矢印の間には印字できず、
 [fixture: edge-labels/pipe-string-closing-touches]
 [test: agentflow: U+2028 between the closing quote and the `|` of an edge label]
 
+パイプの間の辺のラベルがコメントで終わり、
+コメントの改行の後に閉じパイプだけがある場合（`A -->|x  %% c`、改行、`| B`）、
+ラベルはコメントの前で終わります。
+コメントの前の空白文字の連なりは、空白、タブ、
+仕様が空白と定めるほかの文字（改行しない空白、U+3000、U+2003、U+2028、
+U+2029 を含みます）が 1 種類でも混ざっていても、空白 1 つにし、
+接するコメントは接したまま残します。
+閉じパイプは自分の行に、
+矢印より 1 段深く置きます（`A -->|x %% c` と `    | B`）。
+コメントに `;` があるときは、その前の文字も同じに空白 1 つにして印字し、
+`;` の後の空白とタブは残ります。
+`A -->|x  %% c;` と空白 2 つ、改行、`| B` は、`A -->|x %% c;`、その空白 2 つ、
+1 段深い `| B` と印字します。
+コメントの改行の後もラベルが続く場合は、コメントの前の空白とタブが残ります。
+
+[fixture: edge-labels/label-comment-ends-label]
+[fixture: edge-labels/label-comment-semicolon-ends-label]
+[fixture: edge-labels/label-comment-label-goes-on]
+[test: agentflow: a no-break space before a comment that ends the label of an edge]
+[test: agentflow: U+3000 before a comment that ends the label of an edge]
+[test: agentflow: U+2003 before a comment that ends the label of an edge]
+[test: agentflow: U+2028 before a comment that ends the label of an edge]
+[test: agentflow: U+2029 before a comment that ends the label of an edge]
+[test: agentflow: a tab before a comment that ends the label of an edge]
+[test: agentflow: a no-break space before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: U+3000 before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: U+2003 before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: U+2028 before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: U+2029 before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: a tab before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: every whitespace character of the specification before a comment that ends the label of an edge]
+[test: agentflow: every whitespace character of the specification before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: a run of different whitespace characters before a comment that ends the label of a vertex or of an edge]
+
 入力（エスケープ表記）: `"agentflow-beta TB\nA --> |x| B"`。
 
 [fixture: edge-labels/pipe-label-gap]
@@ -788,8 +822,27 @@ Mermaidが捨てる通常の裸のラベルの外側空白を取り除きます�
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-agentflowのラベルコメントの直前の空白とタブは値の文字なので保ちます。
+agentflow のラベルコメントは、コメントの改行の後もラベルが続く場合、
+直前の空白とタブがラベルの中身です（`A[before  %% c`、改行、
+`after]` のテキストは `before  \nafter` です）。
+そのため、この空白とタブも保ちます。
 コメント、LF、後続行の桁位置も保ちます。
+コメントの改行の後に閉じ括弧だけがある場合は、
+ラベルはコメントの前で終わります（`A[x  %% c`、改行、`]` のテキストは、
+12.3.0 の Db で `x` です。空白の代わりに仕様が空白と定めるほかの文字、
+改行しない空白、U+3000、U+2003、U+2028、U+2029 などがあっても同じです）。
+そのため、コメントの前の空白文字の連なりは、1 種類の文字でも複数の文字でも、
+空白 1 つにします。
+接するコメントは接したまま残し、裸のラベルは引用符で囲んで印字します。
+閉じ括弧は自分の行に、頂点より 1 段深く置きます。
+コメントに `;` があるときは、ラベルを引用符で囲まず、
+コメントの前の文字も同じに空白 1 つにして印字し、
+`;` の後の空白とタブは残ります。
+`A[x  %% c;` と空白 2 つ、改行、`]` は、`A[x %% c;`、その空白 2 つ、
+1 段深い `]` と印字します。
+そのようなコメントの改行の後もラベルが続くときは、直前の空白 2 つが残ります。
+詳しくは [同じに描かれるラベル](./compatibility.ja.md#同じに描かれるラベル)
+を参照してください。
 コメント内の閉じ括弧は形を閉じないので、コメントの文字のままです。
 チルダは文字です。
 形、実体参照とHTMLの綴りも保ちます。
@@ -803,6 +856,25 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
 [fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
+[fixture: labels/label-comment-ends-label]
+[fixture: labels/label-comment-ends-label-spaces-and-comment-lines]
+[fixture: labels/label-comment-semicolon-ends-label]
+[fixture: labels/label-comment-semicolon-label-goes-on]
+[test: agentflow: a no-break space before a comment that ends the label of a vertex]
+[test: agentflow: U+3000 before a comment that ends the label of a vertex]
+[test: agentflow: U+2003 before a comment that ends the label of a vertex]
+[test: agentflow: U+2028 before a comment that ends the label of a vertex]
+[test: agentflow: U+2029 before a comment that ends the label of a vertex]
+[test: agentflow: a tab before a comment that ends the label of a vertex]
+[test: agentflow: a no-break space before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: U+3000 before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: U+2003 before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: U+2028 before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: U+2029 before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: a tab before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: every whitespace character of the specification before a comment that ends the label of a vertex]
+[test: agentflow: every whitespace character of the specification before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: a run of different whitespace characters before a comment that ends the label of a vertex or of an edge]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
@@ -1097,9 +1169,15 @@ agentflow-beta TB
 
 [コメント](./flowchart.ja.md#コメント)と同じ理由で、
 独立したコメントを近隣の文に揃え、著者の全文と末尾空白を保ちます。
+ただし、文の後ろのコメントは、
+`;` を含む場合にだけ末尾の空白とタブを落とします（`A %% c;  ` は `A %% c;`
+と印字します）。
 
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
 [fixture: comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
+[fixture: comments/trailing-comment-semicolon-trailing-whitespace]
+[fixture: comments/trailing-comment-semicolon-trailing-whitespace-statements]
+[fixture: comments/trailing-comment-semicolon-trailing-whitespace-header-and-lines]
 
 害のない末尾コメント前の隙間は空白1つにします。
 agentflowではセミコロンや説明の閉じ記号の後も実コメントです。
@@ -1151,7 +1229,8 @@ Dbは同じで、agentflowだけ見出しに付ける理由がないためです
 [fixture: directives/directive-value] [fixture: directives/directives-align]
 
 EOFまで未閉鎖の末尾と、ディレクティブを止めるセミコロンを保ちます。
-名前の文字、最初のstyleの空白、ラベルコメント脇の空白が一般規則に優先します。
+名前の文字、最初のstyleの空白、
+ラベルが続くラベルコメントの前の空白が一般規則に優先します。
 トークン内のディレクティブは仕様の拒否のままで、
 受理する文字やデータを修復しません。
 
@@ -1564,8 +1643,8 @@ agentflow-beta TB
 空の説明で分かれた空白だけのstyleを保ちます。
 最初のstyleの追加空白は先頭の値なので保ちます。
 名前の末尾は名前と見出しに従います。
-ラベルコメント脇、文字列、データ、コメント、ディレクティブ、
-値の後続行の空白も保ちます。
+ラベルが続くときのラベルコメントの前の空白、文字列、データ、コメント、
+ディレクティブ、値の後続行の空白も保ちます。
 禁止されるclass/コールバック/titleの空白は拒否のままで、
 サイズ保護が削除に優先します。
 引用符付きの頂点ラベルに `before`、コメントに見える行、`after` がある、
