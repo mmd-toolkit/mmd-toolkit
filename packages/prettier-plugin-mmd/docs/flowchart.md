@@ -1317,14 +1317,10 @@ the id of the edge and not a mark between two things
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 2 gives no
 form either: [agentflow](./agentflow.md#arrows) and
 [usecase](./usecase.md#relationship-labels-and-ids) print an edge id as this
-page does, and no other diagram type has one.
-[Rule 3](./printed-form.md#3-a-spelling) gives it: the examples in the
-documentation of mermaid.js write an edge id touching its `@` and the arrow 17
-times, 13 on
-[the flowchart page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L810-L1321)
-and 4 on
-[the use case page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L297-L561),
-and never with whitespace there.
+page does, and no other diagram type has one. Rule 3 gives no form either, since
+it decides spellings and not whitespace, so no rule gives this form, and the
+released form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: arrow-spacing/pipe-label-other-link-kinds] [fixture:
 arrow-spacing/edge-id-with-labels] [fixture:
@@ -1845,11 +1841,9 @@ accessibility-lines/block-runs-collapsed] [fixture:
 accessibility-lines/inline-percent-hash]
 
 An empty or whitespace-only value keeps the statement form, `accTitle:` or
-`accDescr:`, without a following space. Empty accessibility statements end at
-the colon in [info](./info.md#accessibility-lines) and
-[Cynefin](./cynefin.md#accessibility-lines) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-`accTitle:` and `accDescr:` the same form when no value follows.
+`accDescr:`, without a following space, since
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
+and tabs at the end of a line.
 
 [fixture: accessibility-lines/empty-title] [fixture:
 accessibility-lines/empty-description] [corpus fixture:
@@ -2669,12 +2663,7 @@ text, because its raw text is also stored among the subgraph's members.
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 
-The `}` of the block stands at the level of the `accDescr` it closes. A
-description block's separate closing brace stands at its statement's level in
-[sequence](./sequence.md#multi-line-values) and
-[usecase](./usecase.md#direction-and-accessibility) diagrams.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same alignment to the `}` that closes `accDescr`.
+The `}` of the block stands at the level of the `accDescr` it closes.
 
 [fixture: multi-line-values/accdescr-block-kept]
 

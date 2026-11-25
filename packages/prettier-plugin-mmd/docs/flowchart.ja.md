@@ -1367,14 +1367,12 @@ flowchart LR
 [agentflow](./agentflow.ja.md#arrows) と
 [usecase](./usecase.ja.md#relationship-labels-and-ids) は辺の id
 をこのページと同じに印字し、ほかの図種に辺の id はないからです。
-[規則 3](./printed-form.ja.md#3-綴り)が形を与えます。
-mermaid.js のドキュメントの例は、辺の id をその `@` と矢印に接して 17 回書き、
-そこに空白を置いた例は 1 つもありません。
-内訳は、
-[flowchart のページ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L810-L1321)
-が 13 回、
-[use case のページ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L297-L561)
-が 4 回です。
+規則 3 も形を与えません。
+規則 3 は綴りを決め、空白は決めないからです。
+そのため、この形を与える規則はなく、決まるまでリリース済みの形を残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 
 [fixture: arrow-spacing/pipe-label-other-link-kinds]
 [fixture: arrow-spacing/edge-id-with-labels]
@@ -1910,11 +1908,8 @@ flowchartの通常のアクセシビリティ行に固有の理由はないの�
 
 値が空または空白だけでも文の形を保ち、`accTitle:`または`accDescr:`とし、
 後ろに空白を足しません。
-値が空のアクセシビリティの文は、
-[info](./info.ja.md#accessibility-lines) と
-[Cynefin](./cynefin.ja.md#accessibility-lines) の図でも、コロンで終わります。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-値のない文に同じ形を与えます。
+行末の空白とタブは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が除くからです。
 
 [fixture: accessibility-lines/empty-title]
 [fixture: accessibility-lines/empty-description]
@@ -2768,12 +2763,6 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 
 ブロックの `}` は、それが閉じる `accDescr` と同じ段に置きます。
-説明ブロックの単独行の `}` は、
-[sequence](./sequence.ja.md#複数行の値) と
-[usecase](./usecase.ja.md#direction-and-accessibility) の図でも、
-`accDescr` の文と同じ段に置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この閉じ波括弧の形を与えます。
 
 [fixture: multi-line-values/accdescr-block-kept]
 
