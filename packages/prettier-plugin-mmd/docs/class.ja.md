@@ -6,6 +6,10 @@ prettier-plugin-mmd が class 図をどう整形するかを説明します。
 以下の各規則は、mermaid.js が図から読むものを保ちます。
 整形によって図の解釈が変わる箇所は、入力をそのまま残します。
 各項目でその条件を説明します。
+閉じていないバッククォートの名前が、テキストの終わりまで続く場合を除き、
+末尾には改行を 1 つ置き、空行は置きません。
+Prettier が印字する末尾と同じで、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 flowchart と同じ規則はそう書き、
 理由は [flowchart の整形規則](./flowchart.ja.md) にあります。
 
@@ -389,12 +393,19 @@ U+2028 と U+2029 は、そのまま残します。
 `cssClass"A,B"c` は `cssClass "A,B" c` に、
 `click C call f()"t"` は `click C call f() "t"` に、
 `click C~T~call f()` は `click C~T~ call f()` と印字します。
-mermaid.js はどの書き方も同じ文として読むので、形を強いるものはありません。
-その文書では、
-各文字列の前に空白を書いています
-([`note "…"` と `note for MyClass "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L639-L640)、
-[`link Shape "…" "…"` と `click Shape2 href "…" "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L650-L652)、
-[`cssClass "nodeId1,nodeId2" className`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L773))。
+mermaid.js はどの書き方も同じ文として読みます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードとそれが取るものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
+続く値の間にも空白 1 つを与えます。
+Prettier が CSS の `margin: 1px    2px;` を `margin: 1px 2px;`
+と印字するためです。
+`note` の後の文字列と、`class` や `namespace` の後の、
+バッククォートで囲んだ名前は、キーワードが取る値なので、
+間に空白を 1 つ置きます。
+`call` キーワードは、対象とコールバックの間に立つので、
+両側に空白を 1 つずつ置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、これらの形を与えます。
 
 [fixture: whitespace-between-tokens/note-and-name-strings-touching-spaced]
 [fixture: whitespace-between-tokens/link-strings-touching-spaced]
@@ -518,6 +529,9 @@ mermaid.js がクラスのスタイルを書かれたまま `;` でつなぎ、
 直前の `,` に接し、名前と `:` の間に空白があるスタイルも同じです。
 その前に空白を置き、`style A fill:#f00,color :red` は、
 `style A fill: #f00, color: red` と印字します。
+スタイルの最初の `:` は、プロパティに値を与えるので、キーのコロンとして、
+前に空白を置かず、後ろに空白を 1 つ置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 `style A fill:#f00,color:white` は `style A fill: #f00,color: white`
 と印字します。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
@@ -845,6 +859,8 @@ mermaid.js はどの書き方も同じラベルとして読みます。
 その文書では `[` を名前に接して書いており、
 flowchart の subgraph や agentflow の見出しも同じ形で印字します
 ([`namespace Auth["Authentication Service"]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L404))。
+ラベルの文字列の外の余白は、角括弧の内側の空白なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、余白を除く形を与えます。
 
 [fixture: labels/bracket-touches-name]
 
@@ -1283,6 +1299,11 @@ class 図の `style` 文のスタイルの色が対象で、
 色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
 色を短くすることはなく、色でないテキストは書かれたままにします。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+16 進数の色についての例外は、大小文字の変更だけを認めます。
+桁を短くしたり、色でないテキストを変えたりすると、その例外の範囲を超えて、
+Db のスタイルのテキストが変わるので、桁とほかの文字は、書かれたまま残します。
+
+[corpus fixture: class/db-style-spaces]
 
 [fixture: colors/colors-in-lower-case]
 [fixture: class/colors/color-directive-after-digits-kept]
@@ -1507,8 +1528,18 @@ classDiagram
 `accDescr { ... }` の本文行は文より 1 段深くそろえ、
 独立した `}` は文と同じ段に置きます。
 Mermaid が説明からこの字下げを除くためです。
+説明本文の途中の改行前では、テキストに続く空白とタブも、
+mermaid.js が Db の説明に含めるので、書かれたまま残します。
 複数行に書かれた文字列、バッククォートの名前、ジェネリック型も、
 書かれたまま残します。
+`note` の文字列や、バッククォートで囲んだクラス名では、
+改行と字下げも Db に含まれます。
+行をつないだり字下げを変えたりすると、ノートのテキストやクラス名が変わるので、
+書かれたまま残します。
+
+[corpus fixture: class/lex-string-multi-line]
+
+[corpus fixture: class/db-acc-descr-block-collapse]
 
 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/block-text-on-opening-line-spaced]
@@ -1640,6 +1671,10 @@ class 図では、改行は文を終えます。
 ただし、`direction` の後では値が次の行にあってよく、
 `accTitle` と `accDescr` の `:` の後ではテキストが次の行にあってよいので、
 `direction`、改行、`LR` は `direction LR` と印字します。
+`accTitle` と `accDescr` の `:` は、キーに値を与えるコロンで、`direction` は、
+値の前のキーワードなので、どちらも値の前に空白を 1 つ置き、
+通常の次行の値を同じ行につなげます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/acc-descr-joined]
@@ -1659,6 +1694,10 @@ class 図では、改行は文を終えます。
 class では文の区切りに `;` を使えず、
 そのような文の最初の行にはキーワードしかないので、行をつないでも、
 行の規則が無視する `;` は変わりません。
+`accTitle` と `accDescr` の `:` は、キーに値を与えるコロンなので、
+通常の次行の値を同じ行につなげ、`:` の後に空白を 1 つ置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
+値の中の `;` は、値の文字として残ります。
 
 [fixture: multi-line-statements/semicolon-value-joined]
 [fixture: multi-line-statements/comment-inside-kept]
