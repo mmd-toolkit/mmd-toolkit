@@ -1704,6 +1704,11 @@ period の前でも同じです（詳しくは、
 [test: timeline: an event that a comment after U+2029 joins to a directive line, with an event after it]
 [test: timeline: an event that a comment after U+2028 joins to a comment line and a directive line, with an event after it]
 [test: timeline: an event that a comment after U+2029 joins to a comment line and a directive line, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to a directive that is not closed, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to a line of whitespace and a directive line, with an event after it]
+[test: timeline: an event with an ignored semicolon that a comment after U+2028 joins to a directive line, with an event after it]
+[test: timeline: an event that a comment after U+2028 joins to a directive line at the end of the text]
+[test: timeline: an event that a comment after U+2028 joins to an empty line and a directive line, with an event after it]
 
 ### 空白文字
 
