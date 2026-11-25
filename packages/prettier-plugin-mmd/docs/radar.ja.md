@@ -3179,8 +3179,7 @@ radar-beta
 文書・本文の端と見出し直後の普通の空行は除きます。
 空白だけの行は空行にそろえます。
 余分な空間を増やさず、まとまりを保つためです。
-規則 1 は、空行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 [gantt](./gantt.ja.md#空行)、[journey](./journey.ja.md#空行)、
 [pie](./pie.ja.md#blank-lines)、[sankey](./sankey.ja.md#空行)は、
 空行の連なりを 1 行にし、本文の先頭と末尾の空行を落とします。
@@ -3346,8 +3345,7 @@ LS・PS・NBSP・BOM は字句上の役割を保ち、一般的な間隙には�
 空の本文と共通行、完了した説明、コメント、閉じた隠れた形も同じです。
 普通の末尾空行を除き、ファイル末尾をそろえます。
 Prettier はファイルを 1 つの改行で終え、その前に空行を置きません。
-規則 1 は、テキストの終わりの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 [pie](./pie.ja.md#final-newline)、[packet](./packet.ja.md#final-newline)、
 [kanban](./kanban.ja.md#末尾の改行)は、テキストを 1 つの改行で終え、
 その前の空行を落とします。

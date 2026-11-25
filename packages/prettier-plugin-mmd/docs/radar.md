@@ -3995,14 +3995,14 @@ radar-beta
 
 Keep at most one ordinary ASCII blank line between statements or trivia, and
 remove ordinary document/body/header-edge blanks. Whitespace-only lines become
-empty. This retains grouping without excess space. Rule 1 names no mark for an
-empty line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [gantt](./gantt.md#blank-lines),
-[journey](./journey.md#blank-lines), [pie](./pie.md#blank-lines), and
-[sankey](./sankey.md#blank-lines) print a run of empty lines as one and drop the
-empty lines at the start and at the end of a body, as Prettier does for code,
-and a line of whitespace only is printed empty, since Prettier leaves no
+empty. This retains grouping without excess space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the empty
+lines: Prettier prints a run of empty lines as one and drops the empty lines at
+the start and at the end of a file or of a block in code, and
+[gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines),
+[pie](./pie.md#blank-lines), and [sankey](./sankey.md#blank-lines) print a run
+of empty lines as one and drop the empty lines at the start and at the end of a
+body. A line of whitespace only is printed empty, since Prettier leaves no
 whitespace at the end of a line. Required hidden LFs follow shared boundary
 rules first; values, descriptions, directive/hidden interiors, common-region
 joins and retained prefixes remain written.
@@ -4155,14 +4155,13 @@ Output (escaped): `"radar-beta\n  axis North\n  curve trial{4}\n"`.
 
 Ordinary accepted inputs end with one configured newline, including empty
 bodies/common lines, completed descriptions, comments and closed hidden forms.
-Drop ordinary terminal blank lines for a consistent file ending. Prettier ends a
-file with one newline and no empty line before it, and rule 1 names no mark at
-the end of the text, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [pie](./pie.md#final-newline), [packet](./packet.md#final-newline),
-and [kanban](./kanban.md#final-newline) end the text with one line break and
-drop the empty lines before it. Preserve EOF-reaching global-directive endings
-and required hidden/prefix boundaries instead of appending text inside them.
+Drop ordinary terminal blank lines for a consistent file ending.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+ends a file with one newline and no empty line before it, and
+[pie](./pie.md#final-newline), [packet](./packet.md#final-newline), and
+[kanban](./kanban.md#final-newline) end the text with one line break and drop
+the empty lines before it. Preserve EOF-reaching global-directive endings and
+required hidden/prefix boundaries instead of appending text inside them.
 
 [fixture: radar/final-newline/final-comment]
 
