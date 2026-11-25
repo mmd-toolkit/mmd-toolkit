@@ -723,16 +723,28 @@ not repair that. A gap that holds a diagram comment followed by an empty line,
 by another diagram comment, or by a U+2028 or U+2029 in the read text is kept
 whole as written: its empty lines and its comments, up to the indentation of the
 next statement, which the printer chooses (see [Indentation](#indentation)). A
-gap with only comment lines (`S`, `%% note`, an empty line, `A`) is formatted as
-usual, and the comment line is aligned (see [Comments](#comments)). A common
-comment after a directive containing a line feed, or after a native `%%`
-comment, is still removed before this decision and aligned as usual; a U+2028 or
-U+2029 inside that common comment is removed too and cannot make the gap stay as
-written.
+separator counts only where it ends the comment or stands before the last line
+feed of the gap; one after that line feed, in the indentation of the statement,
+does not make the gap a kept one (see [Comments](#comments)). A comment line
+takes the whitespace before it, a line of a separator or an empty line included,
+out of the text that mermaid.js reads, so one of those that stands before a
+comment line does not keep the gap either: the separator goes, and the gap is
+printed as any gap, with one empty line where the source holds a line of a
+separator or an empty line, and none right after the header line (see
+[Comments](#comments)). A gap with only comment lines (`S`, `%% note`, an empty
+line, `A`) is formatted as usual, and the comment line is aligned (see
+[Comments](#comments)). A common comment after a directive containing a line
+feed, or after a native `%%` comment, is still removed before this decision and
+aligned as usual; a U+2028 or U+2029 inside that common comment is removed too
+and cannot make the gap stay as written.
 
-[test: kanban: comment-line-ls-taken] [fixture:
+[test: kanban: comment-line-ls-taken] [test: kanban: ls-ends-comment-kept]
+[test: kanban: ls-own-line-after-comment-kept] [test: kanban:
+ls-indentation-after-comment] [fixture:
 blank-lines/common-comment-after-multiline-directive] [fixture:
-blank-lines/native-then-common-comment]
+blank-lines/native-then-common-comment] [test: kanban: separator line before a
+comment line is dropped, one empty line stays] [test: kanban: separator line
+before a comment line after the header leaves no empty line]
 
 A gap of this kind at the end of the board is kept whole too, with nothing after
 it to indent: `kanban`, ` S`, `%%`, and two empty lines print `  S`, `%%`, and
@@ -824,12 +836,53 @@ its authored line, with eligible data-block margins following
 [fixture: data-blocks/indented-comment-line]
 
 A diagram comment that is followed by an empty line, by another comment, or by a
-U+2028 or U+2029 stays as written with the gap after it (see
-[Blank lines](#blank-lines)).
+U+2028 or U+2029 that ends it or stands before the last line feed of the gap
+stays as written with the gap after it (see [Blank lines](#blank-lines)), unless
+a comment line follows, which removes the whitespace before it.
 
 [fixture: comments/comments-align] [fixture:
 comments/bare-brace-comments-aligned] [fixture: comments/header-leading-comment]
 [fixture: comments/comment-line-in-value]
+
+A U+2028 or U+2029 in the indentation of the line after a diagram comment that a
+line feed ends is one character of that indentation (see
+[Whitespace characters](#whitespace-characters)), so it does not keep the gap:
+`S[x]  %% c`, a line feed, a U+2028, and three spaces and `A` print `S[x] %% c`
+and `A` with the indentation of its place, and so do a comment after the header,
+after the shape of a card, after an icon, and after a data block. A separator
+that ends the comment, one on a line of its own after the comment, and an empty
+line after the comment keep the gap as written, unless a comment line follows
+the last two, which removes the whitespace before it, the line of the separator
+or the empty line included: `S[x]  %% c`, a line feed, a U+2028, a line feed,
+`%% d`, and `  A` print `S[x] %% c`, an empty line, `%% d`, and `A`, the last
+two with the indentation of their place, and a separator in the indentation of
+the comment line, or before its `%%`, is dropped. A comment line before the
+separator line takes nothing with it: `S[x]  %% c`, `%% d`, a line of a U+2028,
+and `A` stay as written.
+
+[test: kanban: ls-indentation-after-comment-after-closed-directive] [test:
+kanban: ls-indentation-after-unclosed-directive-kept] [test: kanban:
+ls-indentation-after-comment-with-ignored-semicolon] [test: kanban:
+ls-indentation-after-comment-with-two-ignored-semicolons] [test: kanban:
+ls-indentation-after-two-comment-lines] [test: kanban:
+ls-indentation-after-comment-and-whitespace-line-kept] [test: kanban:
+comment-at-end-of-text-without-line-feed] [test: kanban:
+node-named-end-after-comment-and-ls-indentation] [test: kanban:
+ls-indentation-after-comment] [test: kanban: ps-indentation-after-comment-tab]
+[test: kanban: ls-indentation-after-comment-header] [test: kanban:
+ls-indentation-after-comment-card-shape] [test: kanban:
+ls-indentation-after-comment-icon] [test: kanban:
+ls-indentation-after-comment-data-block] [test: kanban: ls-ends-comment-kept]
+[test: kanban: ls-own-line-after-comment-kept] [test: kanban:
+ls-indentation-after-comment-and-blank-line-kept] [test: kanban:
+ls-line-then-comment-line-header] [test: kanban: ls-line-then-comment-line]
+[test: kanban: ps-line-then-comment-line-card-shape] [test: kanban:
+ls-line-then-comment-line-icon] [test: kanban:
+ps-line-then-comment-line-data-block] [test: kanban:
+comment-line-then-ls-line-kept] [test: kanban:
+comment-line-then-ps-line-kept-data-block] [test: kanban:
+ls-in-comment-line-indentation] [test: kanban:
+ps-before-comment-line-mark-card-shape]
 
 A diagram comment after the header, a shape, an icon, or a data block stays on
 its line: it touches where it touches, and a run of spaces and tabs before it

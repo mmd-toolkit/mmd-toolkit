@@ -1,6 +1,7 @@
 import type { C4Statement } from "@mmd-toolkit/ast"
 import type { KeptLines } from "./kept-lines.ts"
 import {
+  findIndentationStart,
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   lineEndOf,
@@ -82,7 +83,9 @@ export function findC4KeptLines(source: Source): KeptLines {
 /**
  * Keeps the complete gap after a diagram comment, including recovery lines
  * and terminal gaps. Common standalone comment lines use ordinary alignment
- * (diagrams/c4.md, Comments; docs/c4.md, Blank lines and Comments).
+ * (diagrams/c4.md, Comments; docs/c4.md, Blank lines and Comments). Before a
+ * statement, or the closing brace of a boundary, the gap stops where the
+ * indentation of that line starts (see `findIndentationStart`).
  */
 export function c4KeptGapEnd(
   source: Source,
@@ -90,6 +93,14 @@ export function c4KeptGapEnd(
   end: number,
   beforeStatement: boolean,
 ): number | undefined {
+  const keptEnd = beforeStatement
+    ? findIndentationStart(
+        start,
+        end,
+        (offset) =>
+          source.text[offset] !== "\n" && isWhitespace(source.text[offset]),
+      )
+    : end
   const takesBreak = source.root.comments.some((comment) => {
     if (comment.range[1] > end) return false
     if (
@@ -98,7 +109,7 @@ export function c4KeptGapEnd(
         source.text.slice(comment.range[1], start).includes("\n"))
     )
       return false
-    const following = source.text.slice(comment.range[1], end)
+    const following = source.text.slice(comment.range[1], keptEnd)
     const firstBreak = following.indexOf("\n")
     if (firstBreak === -1) return false
     if (
@@ -114,15 +125,5 @@ export function c4KeptGapEnd(
     )
     return !standalone || !isCommentLine(source.text, source.root, comment)
   })
-  if (!takesBreak) return undefined
-  if (!beforeStatement) return end
-  let stop = end
-  while (
-    stop > start &&
-    source.text[stop - 1] !== "\n" &&
-    isWhitespace(source.text[stop - 1])
-  ) {
-    stop--
-  }
-  return stop
+  return takesBreak ? keptEnd : undefined
 }

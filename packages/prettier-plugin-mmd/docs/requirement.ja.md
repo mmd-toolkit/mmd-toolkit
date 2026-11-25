@@ -892,6 +892,27 @@ mermaid.js は同じ行に続く文を読みます。
 [fixture: statements-one-per-line/continued-on-semicolon-line-kept]
 [fixture: statements-one-per-line/continued-on-ignored-semicolon-line-kept]
 
+このような文が、保持する `;` を含む行で終わるとき、
+たとえば `:::c;` のクラス `c;` の `;` や、コメントの最後の文字があるときは、
+`;` がないときと同じく、各部を 1 行にして、自分の行に置きます。
+その行で U+2028 か U+2029 の後にコメント行が始まるときは、
+前の文からコメント行の終わりまでの行を、書かれたまま印字します。
+自分の行に置くと文字列が単独になり、mermaid.js が拒否するからです。
+
+[fixture: statements-one-per-line/string-continued-on-semicolon-line-joined]
+[test: requirement/statements-one-per-line/continued-semicolon-class-comment-region-ls]
+[test: requirement/statements-one-per-line/continued-semicolon-class-comment-region-ps]
+[test: requirement/statements-one-per-line/continued-comment-semicolon-region-ls]
+[test: requirement/statements-one-per-line/continued-comment-semicolon-region-ps]
+[test: requirement/statements-one-per-line/continued-classdef-semicolon-comment-region-ls]
+[test: requirement/statements-one-per-line/continued-class-semicolon-comment-region-ls]
+[test: requirement/statements-one-per-line/continued-relationship-semicolon-comment-region-ls]
+[test: requirement/statements-one-per-line/continued-semicolon-class-region-with-directive-ls]
+[test: requirement/statements-one-per-line/continued-semicolon-class-region-then-comment-line-ls]
+[test: requirement/statements-one-per-line/continued-semicolon-class-region-then-empty-line-and-statement-ls]
+[test: requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line]
+[test: requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls]
+
 保持する `;` を含む行は、その行の文をそのまま一緒に残します。
 mermaid.js の行の規則は、`style`、その後の `:`、
 その後の `#` を含む行の最後の `;` を取り除くので、文を別の行に移すと、
@@ -2017,6 +2038,66 @@ U+2028 と U+2029 は、requirement の図の単位の間の空白であり、�
 [test: U+2028 and a comment after the target in quotes of a relationship, with a statement after the comment]
 [test: U+2028 and a comment after a value in quotes, with a statement after the comment]
 [test: U+2028 and a comment after the class in quotes of a class statement, with a statement after the comment]
+
+U+2028 か U+2029 の後のコメント行が途中で切る文は、
+終わりまで書かれたまま印字します。
+`style`、`classDef`、`class` の文の後で最後の行にそのコメント行があり、
+その後にテキストが続く文も同じで、スタイルに続く文字列と改行はその場に残ります。
+コメント行の後に何も続かないとき（テキストの終わりなど）は、
+文とコメント行をほかと同じに印字します。
+切られた文の中で、行を終え、文の残りが後の行にある、引用符つきの名前は、
+引用符を残します。
+引用符がないと名前が改行を越えて続き、
+mermaid.js がそのテキストを拒否するからです。
+それ以外の引用符つきの名前は、ほかの場所と同じに印字します。
+`"e" {` は `e {` と、`"e" :::c {` は `e :::c {` と印字し、
+関係の終わりの名前は引用符を付けずに印字します。
+コメント行の後にあり、その行に含まれない文は、ほかの文と同じに印字します。
+
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line]
+[test: requirement: U+2028, a directive, a comment, and a directive line inside the line of an element, with its name in quotes on a later line]
+[test: requirement: U+2028, a directive, a comment, and an empty line after the string and the class of a style statement]
+[test: requirement: U+2028, a directive, a comment, and a directive line after the string and the class of a style statement]
+[test: requirement: U+2028, a directive, a comment, and an empty line after the string and the class of a classDef statement]
+[test: requirement: U+2028, a directive, a comment, and an empty line after a relationship that goes on a later line]
+[test: requirement: U+2028 and a comment at the end of the text after the string and the class of a style statement]
+[test: requirement: U+2028 and a comment at the end of the text after the string and the class of a classDef statement]
+[test: requirement: U+2028 and a comment at the end of the text after the string and the class of a class statement]
+[test: requirement: U+2029 and a comment at the end of the text after the string and the class of a style statement]
+[test: requirement: U+2028, a comment, and a comment line at the end of the text after the string and the class of a style statement]
+[test: requirement: U+2028, a comment, and a line of whitespace at the end of the text after the string and the class of a style statement]
+[test: requirement: U+2028 and a directive that is not closed at the end of the text after the string and the class of a style statement]
+[test: requirement: U+2028 and a comment before an ignored semicolon after the string of a style statement]
+[test: requirement: U+2028, a directive, a comment, and an empty line after a block, with a name in quotes after them]
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes and the rest of the statement on its line]
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes and a class on its line]
+[test: requirement: U+2029, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line]
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the line of a requirement, with its name in quotes on a later line]
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the line of a requirement, with its name in quotes and the rest of the statement on its line]
+[test: requirement: U+2028, a directive, a comment, and an empty line inside a relationship, with the name in quotes that ends it]
+[test: requirement: U+2028, a comment, and an empty line inside the line of an element, with an ignored semicolon in its name in quotes on a later line]
+[test: requirement: U+2028, a directive that is not closed, a comment, and an empty line inside the line of an element, with its name in quotes on a later line]
+[test: requirement: U+2028, two comments, and an empty line inside the line of an element, with its name in quotes on a later line]
+[test: requirement: U+2028, a comment, and a line of whitespace inside the line of an element, with its name in quotes on a later line]
+
+`#` か `%` で始まるコメント行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字します。
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
+なければ空白を置きません。
+閉じていないディレクティブがあるときは、行を書かれたまま残します。
+
+[test: requirement: a hash comment line with an ignored semicolon, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line with two ignored semicolons, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line in a body, U+2028, a directive, two spaces, a comment, and the closing brace after an empty line]
+[test: requirement: a hash comment line, U+2028, and a directive that is not closed]
+[test: requirement: a hash comment line, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line, U+2028, a directive, one space, and a comment]
+[test: requirement: a hash comment line, U+2028, a directive, a tab, and a comment]
+[test: requirement: a hash comment line, U+2028, a directive touching a comment]
+[test: requirement: a hash comment line, U+2029, a directive, two spaces, and a comment]
+[test: requirement: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line, U+2028, two directives, and a comment]
 
 ### 空白の文字
 

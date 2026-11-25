@@ -42,8 +42,7 @@ import {
   addNameListRules,
   addWordGapEdits,
   classStatementRules,
-  collectTextEndEdits,
-  endsWithDirectives,
+  collectLineEndEdits,
   trimmedTextEnd,
   styleUnitsCanCompact,
 } from "./statement-rules.ts"
@@ -483,19 +482,18 @@ function layoutUsecaseAccessibility(
     joinedBefore.add(valueRange[0])
     // The directives that end the value are printed as those that end a title
     // (docs/compatibility.md, Texts after a keyword that are drawn the same).
-    // The runs inside an `accTitle` stay.
-    if (endsWithDirectives(source, valueRange)) {
-      replaceInAtoms(
-        source,
-        atoms,
-        collectTextEndEdits(
-          source,
-          valueRange[0],
-          valueRange[1],
-          statement.type === "UsecaseAccDescrStatement",
-        ),
-      )
-    }
+    // The runs inside an `accTitle` stay. The value is trimmed of every
+    // whitespace character (see `trimmedLiteralRange`), so any of them after
+    // its last directive is a blank, as a space or a tab is.
+    const lineEnd = collectLineEndEdits(source, valueRange, {
+      isBlank: isWhitespace,
+      runs:
+        statement.type === "UsecaseAccDescrStatement"
+          ? "collapsedWithoutLeadingDirectives"
+          : "kept",
+      gapBeforePlace: "oneSpace",
+    })
+    if (lineEnd !== null) replaceInAtoms(source, atoms, lineEnd)
   }
   return {
     atoms: protectSemicolonPrefixes(source, start, end, atoms),
