@@ -2660,8 +2660,8 @@ radar-beta
 を参照してください。
 波括弧を残すブロックは、境界がわかるよう、
 キーワードと開始波括弧の間に空白を 1 つ置きます。
-Prettier はキーワードとブロックの `{` の間に空白を 1 つ置き（`try{}` は `try {}`
-と印字します）、
+Prettier はキーワードとブロックの `{` の間に空白を 1 つ置き（`class A{}` は
+`class A {}` と印字します）、
 [説明ブロックの字下げ](./compatibility.ja.md#説明ブロックの字下げ)もそう述べ、
 [flowchart](./flowchart.ja.md#複数行の値)、[class](./class.ja.md#複数行の値)、
 [state](./state.ja.md#複数行の値)は `accDescr {` と印字します。

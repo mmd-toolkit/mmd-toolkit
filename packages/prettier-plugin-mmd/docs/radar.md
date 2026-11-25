@@ -3496,7 +3496,7 @@ as `a` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 For blocks that keep their braces, separate the keyword and opening brace with
 one space so the block boundary is clear. Prettier prints one space between a
-keyword and the `{` of a block (`try{}` is printed `try {}`), as
+keyword and the `{` of a block (`class A{}` is printed `class A {}`), as
 [Description block indentation](./compatibility.md#description-block-indentation)
 says, and [flowchart](./flowchart.md#multi-line-values),
 [class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
