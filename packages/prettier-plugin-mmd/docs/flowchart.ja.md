@@ -535,6 +535,62 @@ mermaid.js はそれを subgraph のメンバーに入れます。
 [fixture: semicolons/compat-ignored-semicolon-in-label]
 [fixture: semicolons/compat-ignored-semicolon-in-string]
 
+そのような行で、
+後ろに `;` と空白とディレクティブしか続かない subgraph の `end` は、
+自分の行に移ります。
+その `end` の後ろの、最上位でそれだけで置かれた `;` は、ほかの場所と同じく、
+そこで落とします。
+ただし、ディレクティブの前の `;` は残します（次の段落を参照）。
+`subgraph S; A[x;] --> B; end ;` は、`end` を自分の行に置き、
+その後ろに `;` を付けずに印字します。
+移した `end` の後ろに `;` を残すと、2 回目の整形がそれを落とします。
+`end` の行には、行が残すべき `;` がないからです。
+`;` の後ろに文があるときは、`end` を行に残し、`;` も一緒に残します。
+`subgraph S; A[x;] --> B; end ; C` は、そのままです。
+同じ行で `;` の後ろにある `%%` は、
+行を書かれたまま残します（[1 行に 1 文](#1-行に-1-文)を参照）。
+行の規則が無視する `;` が別の `;`
+に接するとき（`subgraph S[style:#x;]; A --> B; end ;;`）も、`end` は行に残り、
+行は書かれたまま残ります（下を参照）。
+
+[fixture: semicolons/closing-semicolon-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-after-style-space-kept-line-dropped]
+[fixture: semicolons/closing-semicolons-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-tab-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-statement-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-empty-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-comment-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-directive-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-semicolon-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-directive-after-kept-line-kept]
+[fixture: semicolons/closing-semicolon-before-statement-after-kept-line-kept]
+[fixture: semicolons/closing-semicolon-without-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-without-space-after-kept-line-dropped]
+[fixture: semicolons/closing-two-semicolons-adjacent-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-at-end-of-text-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-next-to-ignored-semicolon-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-before-closed-directive-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-before-unclosed-directive-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-before-comment-line-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-before-empty-line-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-at-end-of-text-kept-as-written]
+[test: U+2028 after `end ;;` of a subgraph with an ignored `;`, in a flowchart]
+[test: U+2029 after `end ;;` of a subgraph with an ignored `;`, in a flowchart]
+[fixture: semicolons/closing-semicolon-before-unclosed-directive-after-kept-line]
+[test: U+2028 after `end ;` of a subgraph on a kept line, then a statement, in a flowchart]
+[test: U+2028 after `end ;` of a subgraph on a kept line, then a line break, in a flowchart]
+[test: U+2028 after `end ;` of a subgraph on a kept line, then a comment, in a flowchart]
+[test: U+2028 after `end ;` of a subgraph on a kept line, then a directive, in a flowchart]
+[test: U+2028 after `end ;` of a subgraph on a kept line, then a second `;`, in a flowchart]
+[test: U+2028 after `end ;` of a subgraph on a kept line, then the end of the text, in a flowchart]
+[test: U+2029 after `end ;` of a subgraph on a kept line, then a statement, in a flowchart]
+[test: U+2029 after `end ;` of a subgraph on a kept line, then a line break, in a flowchart]
+[test: U+2029 after `end ;` of a subgraph on a kept line, then a comment, in a flowchart]
+[test: U+2029 after `end ;` of a subgraph on a kept line, then a directive, in a flowchart]
+[test: U+2029 after `end ;` of a subgraph on a kept line, then a second `;`, in a flowchart]
+[test: U+2029 after `end ;` of a subgraph on a kept line, then the end of the text, in a flowchart]
+
 文の終わりの `;` も、同じ行でその後にディレクティブが続くときは残します。
 `;` がないと、ディレクティブの前の空白が文の一部として読まれるからです。
 

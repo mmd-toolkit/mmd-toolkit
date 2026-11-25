@@ -281,7 +281,8 @@ space is added to rescue it. Comment contents, including trailing spaces and
 U+2028/U+2029 through LF or EOF, stay whole; percent pairs inside values remain
 value text. Protected gaps retain comment and mode boundaries.
 
-[fixture: venn/comments/bare-percent-tail] [fixture:
+[test: a venn set with two spaces before a comment and an empty line after the
+comment] [fixture: venn/comments/bare-percent-tail] [fixture:
 venn/comments/comment-directives] [fixture: venn/comments/comment-mark-value]
 [fixture: venn/comments/comment-spaced] [fixture: venn/comments/comment-touch]
 [fixture: venn/comments/comments-align] [fixture:

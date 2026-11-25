@@ -1454,6 +1454,51 @@ id、隙間、プロパティ、CSS の拒否位置を修復しません。
 [test: usecase: crlf-metadata-blank-lines] [test: usecase: nbsp-css-string]
 [test: usecase: unicode-boundary-title] [test: usecase: crlf-output-values]
 
+コメント行が続く U+2028 か U+2029 でテキストが終わる、
+1 行の `accTitle:` と `accDescr:` の文は、コメント行の次の行が空か、
+互いに接するディレクティブだけを含むか、行がないとき、
+その文字がない文と同じに印字します。
+コメントは独立した行になり、テキストがあるときはコロンの後ろは空白 1 つで、
+値が空か空白だけのときは空白を置かず、テキストの末尾の空白は削除します。
+1 回目の整形が、2 回目の整形が前に印字した形を印字するので、
+2 回整形しても変わりません。
+続くコメント行は 1 つのコメント行と数え、最後のコメント行の次の行で決めます。
+コメント行の次の行に文か `;` があるときは、ディレクティブが前にあっても、
+文は書かれたままにします。
+その行に空白があるときも同じです。
+ディレクティブの前、後、ディレクティブの間の空白と、空白だけの行の空白は、
+文のテキストに含まれるからです。
+
+[test: usecase: U+2028, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, a directive, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and an empty line after the text of an accDescr line with a tab before it]
+[test: usecase: U+2028, a comment, and an empty line after an accTitle line without text]
+[test: usecase: U+2029, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and an empty line after the text of an accDescr line with a tab inside]
+[test: usecase: U+2028, a comment, and a statement on the next line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a line of whitespace after the text of an accTitle line]
+[test: usecase: U+2028 and a comment at the end of the text after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a line of two touching directives after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive line with a space before it after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive line with a space after it after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a line of two directives with a space between them after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive line with a semicolon after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a directive and a statement on the next line after the text of an accTitle line]
+[test: usecase: U+2028, two comments that touch, and an empty line after the text of an accTitle line]
+[test: usecase: U+2028, two comments that touch, and a statement on the next line after the text of an accTitle line]
+[test: usecase: U+2028 and two comments that touch at the end of the text after the text of an accTitle line]
+[test: usecase: U+2028 and a directive that is not closed after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and an empty line after an accTitle line whose text holds an ignored semicolon]
+[test: usecase: U+2028, a comment, and a directive that is not closed after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and an empty line after an accTitle line of whitespace]
+[test: usecase: U+2028, a comment that ends in a semicolon, and an empty line after an accDescr line whose text holds an ignored semicolon]
+[test: usecase: two U+2028, a comment, and an empty line after the text of an accTitle line]
+[test: usecase: U+2029, a comment, and a directive line after the text of an accDescr line]
+[test: usecase: U+2029, a comment, and a directive line with a space before it after the text of an accDescr line]
+[test: usecase: U+2029, a comment, and a line of whitespace after the text of an accDescr line]
+[test: usecase: U+2028, two comments that touch, and a line of whitespace after the text of an accTitle line]
+
 ### Frontmatter YAML
 
 [フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を再利用します。

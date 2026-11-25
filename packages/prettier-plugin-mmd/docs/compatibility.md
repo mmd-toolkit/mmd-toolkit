@@ -3474,6 +3474,27 @@ are the lines that start with that word or that have that shape, with the colon
 that follows the word, the range, the name, or the arrow. A task of a user
 journey has two colons, and both are counted.
 
+## The examples that decide the spelling in a Wardley diagram
+
+The examples in the documentation of the pinned mermaid.js decide the spelling
+of the arrow of a link and of the inertia of a component. They are counted as
+under
+[The examples that decide the whitespace before a colon](#the-examples-that-decide-the-whitespace-before-a-colon):
+the page is `packages/mermaid/src/docs/syntax/wardley.md` of the pinned commit,
+the blocks are its 16 fenced `mermaid-example` blocks, and the frontmatter of a
+block, the comment lines, and the directive lines are left out, which leaves 152
+lines that are not empty. The 19 examples of mermaid.js 12.0.0 that the corpus
+holds (`docs-syntax-wardley-*`) are not these blocks, and their counts differ.
+
+A link is a line that holds a name, an arrow, and a name.
+
+| Spelling                   | Page         | Written       | Not written      |
+| -------------------------- | ------------ | ------------- | ---------------- |
+| The arrow of a link        | `wardley.md` | `->` 28 of 31 | `-->` 0          |
+| The inertia of a component | `wardley.md` | `(inertia)` 2 | bare `inertia` 0 |
+
+The other 3 arrows are `+>`, `+<>`, and `+'backup'>`, once each.
+
 ## Lists separated by commas
 
 Prettier prints one space after a comma, and none before it. The formatter
