@@ -388,6 +388,7 @@ function layoutEvents(
     outdented: new Set(),
     lineBreaks: "kept",
     joinedBefore,
+    keepsJoinedLinesFlush: true,
   }
 }
 

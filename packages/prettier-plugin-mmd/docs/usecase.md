@@ -1173,8 +1173,8 @@ usecase-beta
 Reuse [standalone comment alignment](./class.md#comments): comments align with
 nearby statements, with declarations before boundary `end`, and at column one
 before the header, retaining all comment text and terminal HWS. Rule 1 gives no
-form here, since its table names the whitespace beside a mark and not the start
-of a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+form here, since its table does not name the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [block](./block.md#comments) and [er](./er.md#comments) put a comment
 line at the level of the statements around it.
