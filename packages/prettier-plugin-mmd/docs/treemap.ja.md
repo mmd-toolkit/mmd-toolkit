@@ -15,10 +15,6 @@
 
 見出しを第 1 列に置き、普通の最初の文を次行に移します。
 見出しを見つけやすくするためです。
-[kanban](./kanban.ja.md#ヘッダー) と [pie](./pie.ja.md#header) の図も、
-見出しを第 1 列に置き、普通の最初の文をその下へ移します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-ここでも見出しと文の間に同じ隙間を与えます。
 キーワードは `treemap-beta` と書かれていても `treemap` と印字します。
 この図を持つ対象の版は、どれも両方の名前を読み、同じに描くからです。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
@@ -409,12 +405,6 @@ treemap
 `classDef` と作者の class 名の間を、普通の ASCII の空白 1 個にします。
 この区切りの普通の改行や Unicode 空白も詰めます。
 複合規則は空白を要求しますが、幅は保持しないためです。
-`classDef` と名前の間の普通の改行は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)により空白 1
-つにします。
-[ER](./er.ja.md#複数行の文) の class 定義と
-[requirement](./requirement.ja.md#複数行の文) の宣言も、
-字句解析で空白と読まれるキーワードと名前の間の改行を詰めます。
 `title` で始まる名前を読み替えません。
 selector と違い、class 名は 2 文字以上必要です。
 
@@ -833,10 +823,10 @@ treemap
 共通の行の配置を使います。
 普通の共通空白の外端を除き、非空値の前を空白 1 個にします。
 `null` と空白だけの値は `title` だけにします。
-空白だけの値を持つ title は、
-[pie](./pie.ja.md#title) と [radar](./radar.ja.md#title) と同じく、
-`title` だけにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`title` と値の間に空白 1 つを与え（Prettier は `return  x` を `return x;`
+と印字する）、行末の空白とタブを除きます。
+そのため、空白とタブだけの値を持つ title は `title` だけになります。
 Db の等しい外側の空白から 1 つを選び、引用符に見える文字を保ち、
 内側の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
@@ -902,14 +892,6 @@ U+2029 があるときを除きます。
 その下の行は 1 段深いままにします。
 行頭から始まる title はそのまま行頭に置き、
 ヘッダーと同じ行に続く title（`treemaptitle T`）は次の行の行頭に移します。
-title は入れ子を 1 段増やさないので、その下の根は設定の字下げ 1 段に置きます。
-[kanban](./kanban.ja.md#インデント) と [ishikawa](./ishikawa.ja.md#indentation)
-の図が、見出しの下の根に与える段と同じです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この段を与えます。
-見出しと同じ行の title は、
-[pie](./pie.ja.md#header) と [packet](./packet.ja.md#header) の図と同じく、
-次の行へ移します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 treemap を持つ最初の版は、字下げされた title、`accTitle`、
 `accDescr` を拒否します。
 それ以降の版は、行頭の同じ文も 1 段深い同じ文も受け付け、同じに描きます。
@@ -921,10 +903,6 @@ treemap を持つ最初の版は、字下げされた title、`accTitle`、
 その title の前のコメント行は title にそろえます。
 書かれた時点で字下げされた title は、最初の版が書かれたままでも拒否するので、
 ほかの文と同じく 1 段深く印字します。
-[pie](./pie.ja.md#indentation) と [packet](./packet.ja.md#indentation) の図は、
-title を見出しより設定の 1 段深く置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-書かれた時点で字下げされた title にも同じ段幅を与えます。
 
 [fixture: treemap/header/common]
 [fixture: treemap/title/after-header-spaced-line-start]
@@ -988,10 +966,6 @@ U+2029 があるときを除きます。
 `accTitle` と `accDescr` の文は title と同じ位置に置きます。
 字下げして書かれていなければ行頭に置いて印字し、
 字下げして書かれていれば 1 段深く印字します。
-書かれた時点で字下げされたアクセシビリティの文は、
-[pie](./pie.ja.md#indentation) と [packet](./packet.ja.md#indentation)
-のアクセシビリティの文と同じく、設定の本文の字下げ 1 段で印字します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 詳しくは [タイトル](#title) を参照してください。
 
 [fixture: treemap/accessibility-lines/title-padding]
@@ -1041,11 +1015,6 @@ accTitle: Access  words
 コメントやディレクティブの中身と境界、内部の空行は保ちます。
 本文行は文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
-[flowchart](./flowchart.ja.md#複数行の値) と
-[pie](./pie.ja.md#description-blocks) の図の複数行の説明ブロックも、
-本文行を文より 1 段深く置き、内部の空行を保ちます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-ここでも同じ相対的な配置を与えます。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 別行の開始記号と閉じ記号は文の列にそろえます。
 説明ブロックの別行の閉じ記号は、

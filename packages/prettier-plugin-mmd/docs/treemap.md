@@ -13,13 +13,9 @@ from mermaid.js.
 ### Header
 
 Put the header at column one and an ordinary first statement on the next line,
-making the heading easy to find. [Kanban](./kanban.md#header) and
-[pie](./pie.md#header) diagrams place the header at column one and move an
-ordinary first statement below it, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same header-to-statement gap here. The keyword is printed `treemap`, also
-where it was written `treemap-beta`: every version of mermaid.js that counts and
-has the diagram reads both names and draws them the same (see
+making the heading easy to find. The keyword is printed `treemap`, also where it
+was written `treemap-beta`: every version of mermaid.js that counts and has the
+diagram reads both names and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Add no
 colon: [rule 3](./printed-form.md#3-a-spelling) gives the header without one, as
 the examples in the documentation of mermaid.js write all 8 headers of the
@@ -389,14 +385,9 @@ treemap
 
 Use one ordinary ASCII space between `classDef` and its authored class name.
 Join plain separating newlines and Unicode whitespace there because the
-composite rule requires whitespace but does not retain its width. A plain
-newline between `classDef` and its name becomes one space under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have):
-[ER class definitions](./er.md#multi-line-statements) and
-[requirement declarations](./requirement.md#multi-line-statements) also join a
-keyword/name line break that the lexer reads as whitespace. Do not reinterpret
-names beginning with `title`; class names require at least two characters,
-unlike selectors.
+composite rule requires whitespace but does not retain its width. Do not
+reinterpret names beginning with `title`; class names require at least two
+characters, unlike selectors.
 
 [fixture: treemap/class-definitions/keyword-space]
 
@@ -788,12 +779,12 @@ treemap
 
 Use shared common-line placement: trim ordinary common-whitespace edges and
 print one space before a nonempty value, or bare `title` for
-null/whitespace-only text. A title with only whitespace as its value prints bare
-`title` under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as in
-[pie](./pie.md#title) and [radar](./radar.md#title) charts. This selects one
-Db-equivalent outer spacing and prints a run of spaces and tabs inside the text
-as one space (see
+null/whitespace-only text.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+between `title` and what it takes, as Prettier prints `return  x` as
+`return x;`, and drops the spaces and tabs at the end of a line, so a title of
+spaces and tabs only prints bare `title`. This selects one Db-equivalent outer
+spacing and prints a run of spaces and tabs inside the text as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 without rewriting quote-looking text. Quotes in title text are characters of the
 title: mermaid.js reads the content after `title` as line text, so removing them
@@ -849,28 +840,17 @@ becoming the title's value.
 A title that was not written indented is printed at the start of its line, and
 the rows below it stay one step in: one that starts its line stays there, and
 one that follows the header on its line (`treemaptitle T`) goes to the start of
-the next line. A title adds no nesting level, so the roots below it stand one
-configured step in, the step that [kanban](./kanban.md#indentation) and
-[ishikawa](./ishikawa.md#indentation) diagrams give their roots under the
-header;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that step. A title on the header’s line moves to the next line under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as in
-[pie](./pie.md#header) and [packet](./packet.md#header) diagrams. The first
-version with the diagram rejects a title, an `accTitle`, and an `accDescr` that
-is indented, while the later versions read the same statement at the start of
-its line and one step in and draw both the same, so printing it one step in
-would give a text that the first version rejects (see
+the next line. The first version with the diagram rejects a title, an
+`accTitle`, and an `accDescr` that is indented, while the later versions read
+the same statement at the start of its line and one step in and draw both the
+same, so printing it one step in would give a text that the first version
+rejects (see
 [Treemap parentage and authored values](./compatibility.md#treemap-parentage-and-authored-values)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A comment line before such a title aligns with it. A title that is indented in
 the source is printed one step in, like the other statements, since the first
-version rejects it as written too. Titles in [pie](./pie.md#indentation) and
-[packet](./packet.md#indentation) diagrams stand one configured step below the
-header, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that same body step to an already-indented title.
+version rejects it as written too.
 
 [fixture: treemap/header/common] [fixture:
 treemap/title/after-header-spaced-line-start] [fixture: treemap/title/padding]
@@ -929,11 +909,7 @@ and
 
 An `accTitle` or `accDescr` statement is placed like a title: it is printed at
 the start of its line unless it was written indented, in which case it is
-printed one step in (see [Title](#title)). An accessibility statement already
-written indented uses one configured body step under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as
-accessibility statements do in [pie](./pie.md#indentation) and
-[packet](./packet.md#indentation) diagrams.
+printed one step in (see [Title](#title)).
 
 [fixture: treemap/accessibility-lines/title-padding]
 
@@ -979,15 +955,10 @@ Whitespace-only interiors become `{}` because no text needs surrounding padding.
 Join plain opener whitespace, keep comment/directive contents and their
 boundaries, and align body lines one step inside the statement while retaining
 internal blank lines. Mermaid discards indentation after LF from the
-description. Multiline description blocks in
-[flowchart](./flowchart.md#multi-line-values) and
-[pie](./pie.md#description-blocks) diagrams put body lines one step inside the
-statement and retain internal blank lines;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that same relative spacing here. The body uses the configured indentation,
-including tabs and the positive minimum step at width zero. Align a separate
-opener or closer with its statement. A description block’s separate closing
-brace stands at the statement’s indentation under
+description. The body uses the configured indentation, including tabs and the
+positive minimum step at width zero. Align a separate opener or closer with its
+statement. A description block’s separate closing brace stands at the
+statement’s indentation under
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as in
 the description blocks of [flowchart](./flowchart.md#multi-line-values) and
 [pie](./pie.md#description-blocks) diagrams. The first `}` still closes the
