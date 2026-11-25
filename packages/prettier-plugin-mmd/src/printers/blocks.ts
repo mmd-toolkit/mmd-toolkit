@@ -1,6 +1,6 @@
 import type { Doc, ParserOptions } from "prettier"
 import { builders, utils } from "prettier/doc"
-import type { Range, Token } from "@mmd-toolkit/ast"
+import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
 import { printAccessibilityLine } from "./accessibility-form.ts"
@@ -14,20 +14,17 @@ import {
 } from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
-  commentHasIgnoredSemicolonThatNeedsItsLine,
-  followsGapsOfStyleRuleStretch,
   holdsJoiningRegion,
   findJoiningRegionEndInLine,
   holdsKeptSemicolon,
   holdsOwnSemicolonIn,
-  isDroppedSemicolon,
+  keepsClosingOnItsLine,
   keepsTrailingLineSeparators,
   lineEndOf,
   lineStartOf,
-  ignoredSemicolonNeedsItsLine,
   completeKeptLines,
 } from "./kept-lines.ts"
-import { toAsciiLowerCase, walk } from "./layout.ts"
+import { toAsciiLowerCase } from "./layout.ts"
 import type { Line } from "./lines.ts"
 import {
   breakAfter,
@@ -47,9 +44,7 @@ import {
   findFirstIndex,
   findTokenEndingBefore,
   findTokenStartingAt,
-  findTokensBetween,
   isSpaceOrTab,
-  isStructural,
   isWhitespace,
 } from "./source.ts"
 import { writtenWithRespellings } from "./spelling.ts"
@@ -1161,51 +1156,7 @@ export function printBlock<Statement extends Positioned>(
     if (rules.keptClosingJoin !== undefined) return rules.keptClosingJoin
     const closing = findTokenStartingAt(source, closingStart)
     if (closing === undefined) return null
-    const lineEnd = lineEndOf(source, closingStart)
-    // A `;` that the line rule ignores stays with the text on the line that
-    // makes it ignored (`style:#x` before the closing) where a line of its own
-    // would make it read: it ends a comment as an entity (`end #a;`, see
-    // `ignoredSemicolonNeedsItsLine`), also where whitespace follows it and it
-    // has no token of its own (`commentHasIgnoredSemicolonThatNeedsItsLine`). The
-    // `#` of a comment after the closing also keeps the closing on the line
-    // where it ends a stretch of the line rule that holds whitespace of the
-    // line before the closing: a line break would end the stretch earlier (see
-    // `followsGapsOfStyleRuleStretch`).
-    // A line that stays together because of a `;` after the closing, with a
-    // `;` before the closing that only separates statements, keeps the closing
-    // too: the part before it holds no `;` of its own, so a second formatting
-    // would not keep its statements and its `;` together (see
-    // `holdsOwnSemicolonIn`).
-    // The closing of a block around this one is on a line of its own after
-    // this block, unless something follows it, so it does not keep the closing
-    // of this block on the line: the second formatting would move it (see
-    // `closesEnclosingBlock`).
-    const followed =
-      findTokensBetween(source, closing.range[1], lineEnd).some(
-        (token) =>
-          isStructural(source, token) &&
-          !closesEnclosingBlock(source, closing, token),
-      ) ||
-      [...source.ignoredSemicolons].some(
-        (semicolon) =>
-          closing.range[1] <= semicolon &&
-          semicolon < lineEnd &&
-          !isDroppedSemicolon(source, semicolon) &&
-          ignoredSemicolonNeedsItsLine(source, semicolon),
-      ) ||
-      source.root.comments.some(
-        (comment) =>
-          closing.range[1] <= comment.range[0] &&
-          comment.range[0] < lineEnd &&
-          commentHasIgnoredSemicolonThatNeedsItsLine(source, comment.range),
-      ) ||
-      followsGapsOfStyleRuleStretch(source, closing.range) ||
-      (findTokensBetween(source, closingLine, closingStart).some(
-        (token) => token.value === ";",
-      ) &&
-        !holdsOwnSemicolonIn(source, closingLine, closingStart) &&
-        holdsOwnSemicolonIn(source, closingStart, lineEnd))
-    return followed ? " " : null
+    return keepsClosingOnItsLine(source, closing) ? " " : null
   }
 
   if (rules.keepsOpeningLine !== false && isKept(bounds.start - 1)) {
@@ -1686,37 +1637,6 @@ function holdsVerbatimLine(
     line = lineEndOf(source, line) + 1
   }
   return false
-}
-
-/** The start of the earliest node that ends at each offset, of each source. */
-const earliestNodeStartsBySource = new WeakMap<
-  Source,
-  ReadonlyMap<number, number>
->()
-
-/**
- * Whether the token closes a block around the block that `closing` closes: a
- * node that starts before `closing` ends with the token. The token is judged
- * by the node that it ends and not by its spelling, since a node or a state
- * named `end` or `End` stands where a closing stands and is no closing.
- */
-function closesEnclosingBlock(
-  source: Source,
-  closing: Token,
-  token: Token,
-): boolean {
-  let starts = earliestNodeStartsBySource.get(source)
-  if (starts === undefined) {
-    const found = new Map<number, number>()
-    walk(source.root.body, (node) => {
-      const start = found.get(node.range[1])
-      if (start === undefined || node.range[0] < start)
-        found.set(node.range[1], node.range[0])
-    })
-    starts = found
-    earliestNodeStartsBySource.set(source, starts)
-  }
-  return (starts.get(token.range[1]) ?? Infinity) < closing.range[0]
 }
 
 /** Whether the line that starts at `line` holds nothing but a `}` or an `end`. */
