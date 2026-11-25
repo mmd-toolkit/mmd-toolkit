@@ -2188,11 +2188,12 @@ Blocks with comments or directives keep their line breaks and complete contents,
 while ordinary standalone trivia aligns inside the block. Rule 1 names no mark
 for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks),
-[quadrant](./quadrant.md#empty-description-blocks), and
-[flowchart](./flowchart.md#multi-line-values) keep the contents and line breaks
-of a block with a directive or comment line and put such a line one level inside
-the block.
+decides, as [flowchart](./flowchart.md#multi-line-values) keeps the contents and
+line breaks of a block with a directive or comment line and puts such a line one
+level inside the block. [xychart](./xychart.md#empty-description-blocks) and
+[quadrant](./quadrant.md#empty-description-blocks) do so too, but in them this
+is a question of the list of undecided forms (D34) and a form printed against a
+rule, so their printing gives no form.
 
 [fixture: accessibility-statements/empty-blocks] [fixture:
 accessibility-statements/empty-block-with-directive-or-comment-line] [corpus

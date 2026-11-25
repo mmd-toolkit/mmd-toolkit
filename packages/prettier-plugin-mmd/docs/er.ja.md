@@ -2181,11 +2181,13 @@ agentflow、usecase に合わせます。
 普通の独立した注釈類はブロックの内側にそろえます。
 規則 1 は、ブロックの中の行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[xychart](./xychart.ja.md#空の説明ブロック)、
-[quadrant](./quadrant.ja.md#空の説明ブロック)、
-[flowchart](./flowchart.ja.md#複数行の値)も、
+[flowchart](./flowchart.ja.md#複数行の値)は、
 ディレクティブかコメント行があるブロックの内容と改行を、そのまま残し、
 その行をブロックの内側に 1 段深く置きます。
+[xychart](./xychart.ja.md#空の説明ブロック) と
+[quadrant](./quadrant.ja.md#空の説明ブロック) も同じですが、どちらでもこの形は、
+決まっていない形の一覧（D34）の問いと、決まりに反して印字している形なので、
+その印字は形を与えません。
 
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
