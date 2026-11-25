@@ -648,11 +648,8 @@ YAML ブロックの `PacketIgnoredText` を、`textBeforeHeader`、`body`、
 ブロック構成要素間の可視 LF となり、mermaid.js が拒否するため、
 その位置で改行しません。
 通常の本文の開始記号は字下げできますが、内部と閉じの列は保ちます。
-通常の隠れた YAML の開始記号は、
-[pie](./pie.ja.md#hidden-yaml) と [info](./info.ja.md#hidden-yaml)
-の図も本文の1段の字下げを使うため、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
+通常の隠れた YAML の開始記号は、本文の 1 段の字下げを使います。
+
 字下げした囲み記号は、mermaid.js が隠れた YAML の終わりと認めないため、
 閉じは第1列に残します。
 空の一致範囲と囲み記号3つの一致範囲、複数の形、後ろで有効になる閉じ、

@@ -616,13 +616,10 @@ format its opaque body as YAML or add LF before it. A line break before hidden
 YAML between `+` and its count adds a visible LF between block components, which
 mermaid.js rejects, so that hidden form keeps its inline position. Ordinary body
 openers may indent; internal and closing columns stay. An ordinary hidden YAML
-opener uses one level of body indentation in [pie](./pie.md#hidden-yaml) and
-[info](./info.md#hidden-yaml) diagrams, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this placement. Mermaid.js does not recognize an indented fence as the end of
-hidden YAML, so the closing fence stays at column one. Preserve
-empty/three-fence matches, multiple forms, later qualifying closers and global
-cuts. Earlier values retain lexical priority.
+opener uses one level of body indentation. Mermaid.js does not recognize an
+indented fence as the end of hidden YAML, so the closing fence stays at column
+one. Preserve empty/three-fence matches, multiple forms, later qualifying
+closers and global cuts. Earlier values retain lexical priority.
 
 [corpus fixture: packet/hidden-yaml-indent-close]
 
