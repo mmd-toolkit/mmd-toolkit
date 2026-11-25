@@ -58,8 +58,9 @@ agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 [fixture: header/header-next-line-direction] [fixture: header/header-symbol]
 [fixture: header/header-direction-spelling-after-directive]
 
-記号の方向は、
-[flowchart](./flowchart.ja.md#方向)と同じく空白 1 つの後に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+見出しのキーワードと記号の方向の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 `agentflow-beta<` は `agentflow-beta <` と印字します。
 
 [fixture: header/header-symbol-touching-spaced]
@@ -282,6 +283,87 @@ mermaid.js が名前を trim するので Db は同じであり、
 [fixture: names-and-headings/heading-with-comment-and-directive-touching-directives-ignored-semicolon-after-whitespace-dropped]
 [fixture: names-and-headings/heading-with-comment-and-directive-directive-before-ignored-semicolon-after-whitespace-dropped]
 [fixture: names-and-headings/heading-with-comment-and-directive-connector-ignored-semicolon-after-whitespace-dropped]
+
+`end` か `global` のキーワードで終わる名前は、その後の空白を、
+コメントの前でも取り込みます。
+`flow Front end %% c` は `flow Front end%% c` と印字します。
+そのような名前の後でプリンタが落とす `;` と、その周りの空白は、
+どんな文字でも同じに扱うので、`flow Front end ;  %% c` は、
+`;` のないテキストと同じく、すぐに `flow Front end%% c` と印字し、
+2 回目の整形は何も変えません。
+プリンタが落とす `;` の連なり、
+たとえば `connector Front end ; ;  %% c` も同じです。
+プリンタが残す `;` は名前に付けたまま残します。
+残すのは、コメントの末尾にある、行の規則が無視する `;` が後ろに続く場合と、
+ディレクティブが後ろに続く場合です。
+`connector Front end ; %% style:#x;` は `connector Front end; %% style:#x;`、
+`connector Front end ; %%{x}%%` は `connector Front end; %%{x}%%` と印字し、
+ディレクティブが閉じていなくても同じです。
+テキストの終わりにある `;` は、その前の空白と一緒に落とします。
+キーワードがキーワードになるのは、名前の単位が始まる所です。
+agentflow が flowchart から再利用する字句の規則で決めます。
+規則は flowchart の規則 10〜12、16、17、20、21 で、
+名前の組み立ては
+[flow、global、connector と名前](../../spec/docs/diagrams/agentflow.ja.md#flowglobalconnector-と名前)
+を参照してください。
+名前の先頭、空白、`:`、`^`、`#`、`&`、`*`、数、
+id の連なりの ASCII 文字でない文字の後にあるものです（`flow Front:end`、
+`flow Front 9end` など）。
+id の連なりの中（`Front-end`、`Front9end`、
+`Front#end`）にあるものはキーワードではなく、
+別の語で終わる名前はコメントの前に空白 1 つを保ちます。
+`flow Front fin ;  %% c` は `flow Front fin %% c` と印字し、
+`flow Front-end ;  %% c` も `flow Front-end %% c` と印字します。
+`global`、connector、flow の中の flow も同じです。
+ディレクティブやコメントを含む名前は、これで変わりません。
+`flow Front end %%{init: {}}%% ;  %% c` は `flow Front end %%{init: {}}%%  %% c`
+と印字します。
+キーワードの後に U+2028 か U+2029 がある名前は、`;` を残します。
+どちらの形も Db は同じです。
+
+[fixture: names-and-headings/heading-end-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-end-keyword-semicolon-touching-comment]
+[fixture: names-and-headings/heading-end-keyword-semicolon-touching-name]
+[fixture: names-and-headings/heading-global-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-colon-end-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-only-end-keyword-semicolon-comment]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-nested-end-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-end-keyword-comment-touches]
+[fixture: names-and-headings/heading-word-semicolon-comment-one-space]
+[fixture: names-and-headings/heading-id-run-end-semicolon-comment-one-space]
+[fixture: names-and-headings/heading-end-keyword-directive-semicolon-comment-kept]
+[fixture: names-and-headings/heading-end-keyword-after-number-semicolon-comment]
+[fixture: names-and-headings/heading-global-keyword-after-number-semicolon-comment]
+[fixture: names-and-headings/heading-end-keyword-after-hash-semicolon-comment]
+[fixture: names-and-headings/heading-id-run-digit-end-semicolon-comment-one-space]
+[fixture: names-and-headings/heading-id-run-hash-end-semicolon-comment-one-space]
+[fixture: names-and-headings/heading-end-keyword-after-caret-semicolon-comment]
+[fixture: names-and-headings/heading-end-keyword-after-non-ascii-letter-semicolon-comment]
+[fixture: names-and-headings/connector-global-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-upper-end-semicolon-comment-one-space]
+[fixture: names-and-headings/heading-ending-word-semicolon-comment-one-space]
+[fixture: names-and-headings/connector-end-keyword-semicolon-closed-directive]
+[fixture: names-and-headings/connector-end-keyword-semicolon-open-directive]
+[fixture: names-and-headings/connector-end-keyword-two-semicolons-comment]
+[fixture: names-and-headings/connector-end-keyword-spaced-semicolons-comment]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment-ignored-semicolon-kept]
+[fixture: names-and-headings/connector-end-keyword-semicolon-two-comment-lines]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment-empty-line]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment-whitespace-line]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment-end-of-text]
+[fixture: names-and-headings/connector-end-keyword-semicolon-end-of-text]
+[test: agentflow: U+2028 after the keyword at the end of a flow name before a semicolon and a comment]
+[test: agentflow: vertical tab after the semicolon after the keyword at the end of a flow name before a comment]
+[test: agentflow: form feed after the semicolon after the keyword at the end of a flow name before a comment]
+[test: agentflow: U+3000 after the semicolon after the keyword at the end of a flow name before a comment]
+[test: agentflow: no-break space after the semicolon after the keyword at the end of a flow name before a comment]
+[test: agentflow: U+2028 after the semicolon after the keyword at the end of a flow name before a comment]
+[test: agentflow: U+2029 after the semicolon after the keyword at the end of a flow name before a comment]
+[test: agentflow: U+3000 after the semicolon after the keyword at the end of a connector name before a comment]
+[test: agentflow: a tab before the keyword at the end of a flow name before a semicolon and a comment]
+[test: agentflow: a no-break space before the keyword at the end of a flow name before a semicolon and a comment]
+[test: agentflow: U+2029 after the keyword at the end of a flow name before a semicolon and a comment]
 
 書かれたまま残す行の `;` の前では、空白を除くとエンティティになる場合、
 名前の末尾の空白を保ちます。

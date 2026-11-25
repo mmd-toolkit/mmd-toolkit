@@ -304,7 +304,10 @@ sequenceDiagram
 
 ### トークンの間の空白
 
-行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにし、
+行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードとそれが取るものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 接しているトークンは接したまま残します。
 flowchart と同じです。
 ただし、接頭辞やブロックのキーワードの後のテキストは、空白 1 つの後に置きます。
@@ -321,11 +324,10 @@ flowchart と同じです。
 空白 1 つの後に置きます。
 `loop$$x$$` は `loop $$x$$` に、
 `par-:<>,;# comment` は `par -:<>,;# comment` と印字します。
-この空白は Db に入らないので形は選べます。
-mermaid.js の文書では、
-すべてのブロックのキーワードの後に空白を書いています
-([`loop Loop text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L472)、
-[`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492))。
+この空白は Db に入りません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+ブロックや節のキーワードとそのテキストの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 
 [fixture: whitespace-between-tokens/wrap-text-spaced]
 [fixture: whitespace-between-tokens/block-text-touching-spaced]
@@ -1416,6 +1418,52 @@ mermaid.js の行の規則が読むかもしれない範囲に空白を含むと
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-tab]
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-body-line]
 [fixture: statements-one-per-line/box-end-comment-in-style-rule-stretch-trigger-in-other-statement]
+
+`end` がこの理由で行に残るのは、
+コメントの `;` の後ろが空白とタブだけのときに限ります。
+`;` の後ろにコメントかディレクティブが続くとき（`end #;  %% c`）は、
+`end` とそのコメントを別の行にします。
+コメントの `#` は、`end` の前のテキストの行にはもうありません。
+行の規則が読む範囲はそこより前で終わるので、そのテキストは、1 回目の整形で、
+ほかの場所と同じに印字します。
+`loop style:#x;; loop x; A->>B: body; end #;  %% c` は、
+`loop style:#x;; loop x; A ->> B: body;` と `end #;  %% c` に印字します。
+これは、`;` とコメントのあいだが空白 1 つ、空白なし、タブのとき、
+`;` の後ろがディレクティブのとき、`style` の `:` の後ろが空白かタブのとき、
+`style` の代わりに `classDef` のとき、
+メッセージの後の `;` の前に空白があるとき、`end` の前に文が 2 つあるとき、
+ほかのブロック（`opt`、`break`、`rect`、`alt`、`par`、`par_over`、`critical`、
+`box`）のどれのときも同じです。
+書かれたとおりに空白があるメッセージも、同じに印字します。
+
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-one-space]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-touching]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-tab]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-directive]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-directive-only]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-style-space-after-colon]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-style-tab-after-colon]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-classdef]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-classdef-space-after-colon]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-space-before-semicolon]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-opt]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-break]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-rect]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-par]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-par-over]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-critical]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-other-block-box]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-two-statements]
+[fixture: statements-one-per-line/end-comment-moves-text-before-as-usual-already-spaced]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-with-ignored-semicolon-in-comment]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-then-comment-line]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-then-two-comment-lines]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-then-empty-line]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-then-whitespace-line]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-at-end-of-text]
+[fixture: statements-one-per-line/end-comment-in-style-rule-stretch-entity-comment]
 
 `end` が別の行になるとき、その後ろの行の規則が無視する `;` は、
 `end` が自分の行にあるときと同じに、前の行に何があっても落とします。
