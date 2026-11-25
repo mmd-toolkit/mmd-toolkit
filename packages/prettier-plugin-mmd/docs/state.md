@@ -2091,8 +2091,9 @@ an alias included, whitespace after the character too: `state "d" as A : x`, two
 spaces, U+2028, and two spaces stays as written. Removing the separator and the
 spaces after it changes the description that the Db holds for the state, and the
 drawing of the state changes with it, so the line stays whole. 10.9.8, 11.7.0,
-11.17.2, 12.0.0, and 12.3.0 draw the state with another description without
-them, and 12.3.0 holds another description in the Db `states` (see
+11.17.2, 12.0.0, and 12.3.0 draw the state with another description without the
+separator and the spaces around it, and 12.3.0 holds another description in the
+Db `states` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: a second description of an alias with spaces after a U+2028]
