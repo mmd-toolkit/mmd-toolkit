@@ -438,6 +438,15 @@ treemap/style-gaps/class-definition-line-separator-directive-comment-class-follo
 [test:
 treemap/style-gaps/class-definition-line-separator-directive-comment-class-at-first-column]
 [test:
+treemap/style-gaps/class-definition-line-separator-comment-then-unclosed-directive]
+[test: treemap/style-gaps/class-definition-line-separator-two-comment-lines]
+[test:
+treemap/style-gaps/class-definition-line-separator-comment-then-whitespace-line]
+[test:
+treemap/style-gaps/class-definition-ignored-semicolon-line-separator-comment]
+[test:
+treemap/style-gaps/class-definition-line-separator-comment-at-end-of-text]
+[test:
 treemap/style-gaps/class-definition-line-feed-directive-comment-class-on-next-line]
 [test:
 treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-on-next-line]

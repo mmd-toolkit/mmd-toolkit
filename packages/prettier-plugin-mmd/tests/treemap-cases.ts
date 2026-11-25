@@ -263,4 +263,34 @@ export const treemapCases: readonly TreemapCase[] = [
       "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
     options: {},
   },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-comment-then-unclosed-directive",
+    input: 'treemap\nclassDef zz \u2028 %%{x: y\n%% c\n\n"A": 1\n',
+    output: 'treemap\n  classDef zz\n    %%{x: y\n%% c\n\n    "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-two-comment-lines",
+    input: 'treemap\nclassDef zz \u2028 %% c\n%% d\n\n"A": 1\n',
+    output: 'treemap\n  classDef zz\n    %% c\n    %% d\n\n    "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-comment-then-whitespace-line",
+    input: 'treemap\nclassDef zz \u2028 %% c\n \t\n"A": 1\n',
+    output: 'treemap\n  classDef zz\n    %% c\n\n    "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-ignored-semicolon-line-separator-comment",
+    input: 'treemap\nclassDef zz style:#x;\u2028 %% c\n\n"A": 1\n',
+    output: 'treemap\n  classDef zz style:#x;\u2028%% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-line-separator-comment-at-end-of-text",
+    input: "treemap\nclassDef zz \u2028 %% c",
+    output: "treemap\n  classDef zz \u2028 %% c\n",
+    options: {},
+  },
 ]
