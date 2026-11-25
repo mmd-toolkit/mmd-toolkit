@@ -1019,7 +1019,7 @@ sequenceDiagram
 ### Title
 
 `title` and `title:` are followed by one space, and the rest of the line is kept
-as written, except for the whitespace at its start and at its end:
+as written, except for the spaces and tabs at its start and at its end:
 `title   My diagram  ` is printed `title My diagram`, and a run of spaces and
 tabs inside the text is printed as one space too. The `accDescr` follows, and
 the `accTitle` stays as written, since the browser shows it as a tooltip (see
@@ -1038,15 +1038,15 @@ mermaid.js that counts rejects a line of `title` alone (see
 A directive between the keyword and the one whitespace character after it stays
 against the keyword: `title%%{init: {}}%% U` and `title:%%{init: {}}%% V` are
 not changed. A directive after that character is part of the text, and the
-whitespace at the start of the text, around the directive too, is left out:
-`title %%{init: {}}%% T` is printed `title %%{init: {}}%%T`.
+spaces and tabs at the start of the text, around the directive too, are left
+out: `title %%{init: {}}%% T` is printed `title %%{init: {}}%%T`.
 
 [fixture: title/directive-after-keyword-kept]
 
 mermaid.js reads one whitespace character after the keyword, which may be a line
 break, and keeps everything after it in the title, the whitespace at its start
-and at its end included, and draws the title without the whitespace at its start
-and at its end (see
+and at its end included, and draws the title without the spaces and tabs at its
+start and at its end (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 So `title`, a line break, and `A->>B: x` is printed as `title A->>B: x`, which
 shows that the next line is the title: mermaid.js reads it so.
@@ -1055,10 +1055,10 @@ shows that the next line is the title: mermaid.js reads it so.
 [corpus fixture: sequence/db-title-next-line-indented] [fixture:
 title/tab-and-colon-line-break] [fixture: title/line-break-indented]
 
-The whitespace at the end of a title is left out, also where a `;` follows it. A
-`;` that the line rule ignores, because a trigger stands in another statement of
-the line, is no text of the title either, with the whitespace after it:
-`accDescr {style:#x} title x;` followed by two spaces is printed
+The spaces and tabs at the end of a title are left out, also where a `;` follows
+it. A `;` that the line rule ignores, because a trigger stands in another
+statement of the line, is no text of the title either, with the whitespace after
+it: `accDescr {style:#x} title x;` followed by two spaces is printed
 `accDescr: style:#x` and `title x`, as it is without the whitespace. It stays
 where the line holds another `;` of its own, such as the one of an entity
 (`#35;`) or one before it: the statements stay on their line, and without this
@@ -1594,8 +1594,8 @@ characters as escapes too (see
   [test: U+2029 as the whitespace character after `title`]
 
 - At the end of a title, where they are characters of the text and no spaces or
-  tabs: the spaces after one are left out with the other whitespace at the end
-  of the title, and the spaces before it stay.
+  tabs: the spaces after one are left out with the other spaces and tabs at the
+  end of the title, and the spaces before it stay.
 
   [test: U+2028 and spaces at the end of a title]
 
