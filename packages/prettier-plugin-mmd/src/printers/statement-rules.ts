@@ -1021,11 +1021,7 @@ export function collectTextEndEdits(
     source.root.comments.some((comment) => comment.range[0] === to)
   let position = to
   let headEnd = to
-  const lineEnd = lineEndOf(source, to, true)
-  let afterBlanks = to
-  while (afterBlanks < lineEnd && isBlank(source.text[afterBlanks]))
-    afterBlanks++
-  const endsLine = afterBlanks >= lineEnd
+  const endsLine = holdsOnlyBlanksToLineEnd(source, to, isBlank)
   // The runs are read from the end of the text. The first is the one after
   // the last directive. The directives that touch each other and end the
   // line are one place for the text without blanks after it, so the run
