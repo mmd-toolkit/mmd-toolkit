@@ -165,23 +165,23 @@ block-beta
 
 Most diagrams stand each statement on a line of its own. A block diagram does
 not, because the line is what the author lays the blocks out by: a run of nodes
-and `space` blocks on one line is a row of the grid that `columns` sets, and the
-documentation of mermaid.js writes them so (`a b c`, `a["A label"] b:2 c:2 d`,
-`Start(("Start")) space:2`). Putting each node on a line of its own would hide
-the rows, and the number of columns would have to be counted again from the
-`columns` statement.
+and `space` blocks on one line is a row of the grid that a `columns` statement
+sets, and the documentation of mermaid.js writes them so (`a b c`,
+`a["A label"] b:2 c:2 d`, `Start(("Start")) space:2`). Putting each node on a
+line of its own would hide the rows, and the number of columns would have to be
+counted again from the `columns` statement.
 
 [fixture: rows/documentation-row-with-widths] [fixture: rows/space-in-a-row]
 
 So a run of node statements, with their widths, shapes, and links, and `space`
 statements on a line stays on that line, with one space between two statements,
 and the line break between two of them in the source stays where it is; empty
-lines become one. Every other statement stands on a line of its own: `columns`,
-the head of a composite, `end`, `classDef`, `class`, `style`, and an empty
-description block, so that a statement after `columns 3` on its line goes to the
-next line (`columns 3 a b c` is printed as `columns 3` and a row `a b c`). The
-printer adds no line break between two statements of a row and removes none, so
-formatting again finds the same rows.
+lines become one. Every other statement stands on a line of its own: a `columns`
+statement, the head of a composite, `end`, `classDef`, `class`, `style`, and an
+empty description block, so that a statement after `columns 3` on its line goes
+to the next line (`columns 3 a b c` is printed as `columns 3` and a row
+`a b c`). The printer adds no line break between two statements of a row and
+removes none, so formatting again finds the same rows.
 
 [fixture: rows/rows-kept] [fixture: rows/line-break-between-statements-kept]
 [fixture: rows/edges-in-a-row] [fixture: rows/touching-statements-apart]
@@ -359,9 +359,9 @@ whitespace there, and the form is one line. `space:2` is printed with the `:`
 touching, as every version of mermaid.js that counts rejects `space :2` and
 `space: 2` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-A `space` and a `columns` are never moved to another place: the last `columns`
-of a block is its columns, wherever it stands, and the order of the blocks is
-the order of the text.
+A `space` statement and a `columns` statement are never moved to another place:
+the last `columns` statement of a block is its columns, wherever it stands, and
+the order of the blocks is the order of the text.
 
 [fixture: columns-and-space/one-space-after-columns] [fixture:
 columns-and-space/tab-after-columns] [fixture:
@@ -453,13 +453,63 @@ printed with the space.
 [fixture: shapes/block-arrow-comma-on-kept-line]
 
 A comment line or a directive there keeps its line, and a U+2028 or U+2029 stays
-where it is.
+where it is. Rule 1 names no mark for a line break next to a comment or a
+directive, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep such a line break, where no
+other rule keeps the layout as written (a comment region that joins physical
+lines, a line that holds a `;`). Before the first direction, before a `,`, and
+before the `)`, a comment line or a directive line stays where it is written, at
+column one or indented, and the next line is not indented, since the whitespace
+there is in the Db (see above); after a `,`, where the whitespace is in no
+direction, the comment line or the directive line and the next line stand one
+level deeper, as [flowchart](./flowchart.md#multi-line-statements) and
+[xychart](./xychart.md#multi-line-statements) put the continuations of a
+statement one level deeper. A directive on the line of the direction stays
+touching or separated as written after the `(`, before a `,`, and before the
+`)`, since the whitespace there is in the Db (`(right %%{x}%%, down)` and
+`(right%%{x}%%, down)` stay). After a `,` the gap is printed as without the
+directive, and the directive stands after its space and touches the unit that
+follows it, as under [Directives](#directives): `(right,  %%{x}%%  down)` and
+`(right,%%{x}%%down)` are printed `(right, %%{x}%%down)`. Where the gap holds a
+U+2028 or U+2029, it stays as written, a directive in it included: `(right,`,
+U+2028, and ` %%{x}%% down)` stay. Where a line break follows a directive after
+a `,`, the whitespace before it stays as written and the next line stands one
+level deeper: `(right,  %%{x}%%` and a line break stay.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
-shapes/block-arrow-comma-comment-line] [test: U+2028 after the comma between the
-directions of a block arrow] [test: U+2029 after the comma between the
-directions of a block arrow] [test: U+2028 before the comma between the
-directions of a block arrow] [test: U+2029 before the comma between the
+shapes/block-arrow-comma-comment-line] [fixture:
+shapes/block-arrow-first-direction-comment-line] [fixture:
+shapes/block-arrow-comma-comment-line-indented] [fixture:
+shapes/block-arrow-closing-comment-line] [fixture:
+shapes/block-arrow-comma-directive-line] [fixture:
+shapes/block-arrow-comma-directive-line-indented] [fixture:
+shapes/block-arrow-directive-before-comma] [fixture:
+shapes/block-arrow-directive-touching-before-comma] [fixture:
+shapes/block-arrow-first-direction-comment-line-indented] [fixture:
+shapes/block-arrow-first-direction-directive-line] [fixture:
+shapes/block-arrow-first-direction-directive-line-indented] [fixture:
+shapes/block-arrow-closing-comment-line-indented] [fixture:
+shapes/block-arrow-closing-directive-line] [fixture:
+shapes/block-arrow-closing-directive-line-indented] [fixture:
+shapes/block-arrow-directive-after-open-parenthesis] [fixture:
+shapes/block-arrow-directive-before-closing-parenthesis] [fixture:
+shapes/block-arrow-directive-after-comma] [fixture:
+shapes/block-arrow-directive-after-comma-at-the-end-of-the-line] [test: U+2028
+and a directive after the comma between the directions of a block arrow, a space
+after the U+2028 and after the directive] [test: U+2028 and a directive after
+the comma between the directions of a block arrow, nothing around the directive]
+[test: U+2029 and a directive after the comma between the directions of a block
+arrow, a space after the U+2029 and after the directive] [test: U+2029 and a
+directive after the comma between the directions of a block arrow, nothing
+around the directive] [test: a space, U+2028, and a directive after the comma
+between the directions of a block arrow] [test: a directive, spaces, and U+2028
+after the comma between the directions of a block arrow] [test: U+2028 after the
+comma between the directions of a block arrow] [test: U+2029 after the comma
+between the directions of a block arrow] [test: U+2028 before the comma between
+the directions of a block arrow] [test: U+2029 before the comma between the
 directions of a block arrow] [fixture: shapes/block-arrow-touches-the-id]
 [fixture: shapes/block-arrow-parenthesis-touches-the-closing] [fixture:
 shapes/block-arrow-directions-as-written] [fixture:
@@ -691,13 +741,42 @@ arrow takes it as it is (see
 `style K fill:#ff0,color:red` is printed `style K fill: #ff0,color: red`, and
 `style K color :red` is printed `style K color : red`.
 
-[fixture: styles/style-label-styles-kept]
+[fixture: styles/style-label-styles-kept] [test: block:
+a-color-before-a-semicolon-that-the-line-rule-ignores-stays-in-a-style-that-holds-two-semicolons]
+[test: a color before a semicolon, a space, and a semicolon in a style statement
+of one line stays as written] [test: a color before two semicolons in a class
+definition of one line stays as written] [test: a color before a semicolon that
+the line rule ignores, a directive after it, in a style statement of one line]
+[test: a color before a semicolon that the line rule ignores, a directive after
+it, in a class definition of one line] [test: a color before a semicolon that
+the line rule ignores, a comment after it, in a style statement of one line]
+[test: a color before a semicolon that the line rule ignores, a directive after
+it, in a class definition that a line break joins] [test: a color before a
+semicolon that the line rule ignores, in a style statement that a comment line
+after U+2028 cuts] [test: a color before a semicolon after whitespace in a class
+definition that a line break joins] [test: a color that a space and a character
+follow in a class definition that a line break joins] [test: a color that a
+no-break space and a character follow in a class definition that a line break
+joins stays as written]
 
-A statement stays as written where a comment or a directive stands inside it,
-before the end of its last style, where a style is all whitespace, or where a
-style holds a line break or its line holds a kept `;`. A comment or a directive
-after the last style is no part of the statement, which is formatted as usual
-(see
+A statement keeps its whitespace as written, and its colors are printed as under
+[Colors](#colors), where a comment or a directive stands inside it, before the
+end of its last style, where a style is all whitespace, or where a style holds a
+line break or its line holds a kept `;`, except that, in a statement that holds
+a line break, a color that a `;` that the line rule ignores touches stays as
+written (see [Multi-line statements](#multi-line-statements)); a statement of
+one line prints it in lower case, unless a second `;` follows it
+(`style a fill:#F00,  stroke:#ABC;  %%{x}%%` is printed
+`fill:#f00,  stroke:#abc; %%{x}%%`, while `#ABC;;` and `#ABC; ;` stay). Where
+the line rule keeps the `;`, because whitespace stands between the `:` and the
+`#`, the `;` is part of the text, and a color that touches it stays as written,
+in a statement of one line as well (`classDef c fill: #F00;`, and
+`style a fill: #F00,stroke: #ABC;` is printed
+`style a fill: #f00,stroke: #ABC;`); a color that a space, a tab, or a form feed
+separates from it is in lower case (`#f00 ;`), and one that any other character
+separates from it stays; the first character after the color decides. A comment
+or a directive after the last style is no part of the statement, which is
+formatted as usual (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 The whitespace at the end of the statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
@@ -709,7 +788,32 @@ styles/style-commas-spaced] [fixture: styles/class-definition-commas-spaced]
 [fixture: styles/class-definition-comma-spaced] [fixture:
 styles/class-definition-comma-beside-directive-kept] [fixture:
 styles/style-statement-commas-spaced] [test: U+2029 before the comma of a block
-classDef statement] [fixture: styles/class-ids-as-written]
+classDef statement] [test: block:
+a-directive-between-two-styles-keeps-the-whitespace-and-lowers-the-colors]
+[test: block: a-directive-inside-a-style-lowers-the-colors] [test: block:
+a-color-that-a-directive-and-a-character-follow-stays] [test: block:
+a-style-that-is-all-whitespace-keeps-the-whitespace-and-lowers-the-colors]
+[test: block:
+a-color-before-a-semicolon-that-the-line-rule-ignores-stays-in-a-style-that-holds-two-semicolons]
+[fixture: styles/class-ids-as-written] [test: a color that a semicolon that the
+line rule keeps touches in a class definition of one line stays as written]
+[test: a color that a semicolon that the line rule keeps touches in a style
+statement of one line stays as written, and the color before a comma is printed
+in lower case] [test: a color that a semicolon that the line rule keeps touches
+in a style statement of one line stays as written, with a directive after it]
+[test: a color that a semicolon that the line rule keeps touches in a class
+definition that a line break joins stays as written] [test: a space between a
+color and the semicolon that the line rule keeps in a class definition of one
+line, the color is printed in lower case] [test: a tab between a color and the
+semicolon that the line rule keeps in a class definition of one line, the color
+is printed in lower case] [test: a form feed between a color and the semicolon
+that the line rule keeps in a class definition of one line, the color is printed
+in lower case] [test: a vertical tab between a color and the semicolon that the
+line rule keeps in a class definition of one line, the color stays as written]
+[test: a no-break space between a color and the semicolon that the line rule
+keeps in a class definition of one line, the color stays as written] [test:
+U+2003 between a color and the semicolon that the line rule keeps in a class
+definition of one line, the color stays as written]
 
 The class name of a `class` statement is read as words: a run of spaces and tabs
 inside it is printed as one space, so `class A c   d` is printed `class A c d`.
@@ -891,37 +995,78 @@ block
 ### Multi-line statements
 
 A statement that mermaid.js reads over several lines is printed on one line: the
-line break is whitespace to the lexer, and so are the line breaks in `columns`,
-an edge, a width, a shape, and the head of a composite. The line break is
-replaced by one space; this is how the other diagrams join the lines of a
-statement (see [Multi-line statements](./xychart.md#multi-line-statements)).
+line break is whitespace to the lexer, and so are the line breaks in a `columns`
+statement, an edge, a width, a shape, and the head of a composite. The line
+break is replaced by one space; this is how the other diagrams join the lines of
+a statement (see [Multi-line statements](./xychart.md#multi-line-statements)).
 Keep trivia line breaks in structural gaps, including node/shape/width and edge
-parts, `columns`, class/style heads and composite heads. Place later parts and
-standalone trivia one continuation level inside the statement, also within rows
-and composites. Preserve first gap-line tails, complete directive interiors and
-whole value ranges; block-arrow directions remain as written, except for the
-whitespace after a `,`.
+parts, `columns` statements, class/style heads and composite heads. Place later
+parts and standalone trivia one continuation level inside the statement, also
+within rows and composites. Preserve first gap-line tails, complete directive
+interiors and whole value ranges; block-arrow directions remain as written,
+except for the whitespace after a `,`.
 
-[fixture: multi-line-statements/structural-trivia-continuations]
+[fixture: multi-line-statements/structural-trivia-continuations] [test: block:
+a-run-of-spaces-after-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays]
+[test: block:
+a-space-before-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays]
+[test: block:
+a-run-of-spaces-around-the-colon-in-a-classdef-that-whitespace-and-a-line-break-join-stays]
+[test: block:
+a-tab-after-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays]
+[test: block:
+a-color-that-characters-follow-after-whitespace-in-a-classdef-that-whitespace-and-a-line-break-join-is-lower-case]
 
-Joining comment regions retain their original layout.
+Joining comment regions retain their original layout. A comment region after
+U+2028 or U+2029 makes mermaid.js read the lines around it as one. How the
+formatter prints such a line, and the cases that it prints otherwise, are in
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029).
+A composite head is one more case: where a name stands on the line of the colon,
+the gap between them is printed as on a plain head, `block:G`, U+2028, and
+`%% c` as `block: G`, U+2028, and `%% c`, and `block:   G` as `block: G`; where
+the comment region follows the colon at once, the head stays as written, also
+with spaces after the colon, as `block:`, U+2028, `%% keep`, a line break, and
+`group:2`, or `block:` with three spaces before the U+2028; and a space after
+the name stays (`block:G`, a space, U+2028, and `%% c`).
 
 [test: block: ls-comment-in-composite-head] [test: block:
-ps-comment-in-composite-head]
+ps-comment-in-composite-head] [test: block:
+ls-comment-after-composite-head-name] [test: block:
+ps-comment-after-composite-head-name] [test: block:
+composite-head-name-after-the-comment-line-stays-as-written] [test: block:
+composite-head-spaces-after-the-colon-before-a-ls-comment-line-stay] [test:
+block: composite-head-space-after-the-name-before-a-ls-comment-line-stays]
+[test: block:
+composite-head-spaces-before-the-name-before-a-ls-comment-line-are-one-space]
 
 A line break stays where joining it, with one space or with nothing, could
 change which `;` the line rule ignores, and where a `;` ends the last line; any
 other line break is joined as usual, also in a statement that holds a `;`. A
-statement that keeps a line break keeps its styles as written. See [Rows](#rows)
-and [A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line
-rule of mermaid.js removes the last `;` of a line that holds `style` or
-`classDef`, a later `:`, a `#` after that with no whitespace between them, and a
-later `;` (the first such `#` decides, so `B[":#a;#b"]` matches); moving a
-statement away from such a line changes which `;` is the last (in
-`A["style:#a"] B;C D;` the `;` of `D;` is the one removed and the id is `B;C`;
-on a line without `D;`, the `;` of `B;C` would be removed), so the statements of
-such a line stay on it and its kept `;` stays. The exception for a style
-terminator is described in
+statement that keeps a line break keeps the whitespace of its styles as written,
+runs and tabs included. Its colors are in lower case where a comma follows them,
+and where characters follow them after a space, a tab, or a form feed
+(`fill:#F00 x;` prints `fill:#f00 x;`). A color that any other character follows
+stays as written, before a comma as well (`fill:#F00`, a no-break space, and
+`x;` keeps `#F00`): a vertical tab, the wide spaces (a no-break space, U+1680,
+U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF), U+2028, U+2029, U+0085,
+U+180E, U+200B, and the control characters but a tab and a form feed are no
+whitespace there. The first character after the color decides, whatever follows
+it (`fill:#F00`, a space, and a vertical tab print `#f00`, while `fill:#F00`, a
+vertical tab, and a space keep `#F00`). A color that a `;` that the line rule
+ignores touches stays as written (`#ABC;`), and so does a color that any
+character but a space, a tab, or a form feed separates from the `;`; for a
+vertical tab or a wide space, the [Colors](#colors) rule prints it in lower
+case, so it is printed against the rule and waits to be fixed by it, while a
+color that spaces, tabs, or form feeds separate from the `;` is in lower case
+(`#abc ;`). See [Rows](#rows) and
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line rule
+of mermaid.js removes the last `;` of a line that holds `style` or `classDef`, a
+later `:`, a `#` after that with no whitespace between them, and a later `;`
+(the first such `#` decides, so `B[":#a;#b"]` matches); moving a statement away
+from such a line changes which `;` is the last (in `A["style:#a"] B;C D;` the
+`;` of `D;` is the one removed and the id is `B;C`; on a line without `D;`, the
+`;` of `B;C` would be removed), so the statements of such a line stay on it and
+its kept `;` stays. The exception for a style terminator is described in
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 The whitespace between the `:` and the `#` stays as well, since it decides
 whether the rule applies: `A["style:"]-->B["#z"];` keeps its arrow touching, and
@@ -935,7 +1080,130 @@ multi-line-statements/shape-over-lines-joined] [fixture:
 multi-line-statements/class-definition-line-break-in-the-head] [fixture:
 multi-line-statements/continuation-line-joined-in-a-row] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept]
+multi-line-statements/directive-inside-kept] [test: a space before a comma in a
+class definition that a line break joins, the color is printed in lower case]
+[test: a space and a character after a color in a class definition that a line
+break joins, the color is printed in lower case] [test: a space between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color is printed in lower case] [test: a tab before a comma in
+a class definition that a line break joins, the color is printed in lower case]
+[test: a tab and a character after a color in a class definition that a line
+break joins, the color is printed in lower case] [test: a tab between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color is printed in lower case] [test: a vertical tab before a
+comma in a class definition that a line break joins, the color stays as written]
+[test: a vertical tab and a character after a color in a class definition that a
+line break joins, the color stays as written] [test: a vertical tab between a
+color and the semicolon that the line rule ignores in a class definition that a
+line break joins, the color stays as written] [test: a form feed before a comma
+in a class definition that a line break joins, the color is printed in lower
+case] [test: a form feed and a character after a color in a class definition
+that a line break joins, the color is printed in lower case] [test: a form feed
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color is printed in lower case] [test: a
+no-break space before a comma in a class definition that a line break joins, the
+color stays as written] [test: a no-break space and a character after a color in
+a class definition that a line break joins, the color stays as written] [test: a
+no-break space between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+1680 before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+1680 and a character after a color in a class
+definition that a line break joins, the color stays as written] [test: U+1680
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color stays as written] [test: U+2000
+before a comma in a class definition that a line break joins, the color stays as
+written] [test: U+2000 and a character after a color in a class definition that
+a line break joins, the color stays as written] [test: U+2000 between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color stays as written] [test: U+2001 before a comma in a class
+definition that a line break joins, the color stays as written] [test: U+2001
+and a character after a color in a class definition that a line break joins, the
+color stays as written] [test: U+2001 between a color and the semicolon that the
+line rule ignores in a class definition that a line break joins, the color stays
+as written] [test: U+2002 before a comma in a class definition that a line break
+joins, the color stays as written] [test: U+2002 and a character after a color
+in a class definition that a line break joins, the color stays as written]
+[test: U+2002 between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+2003 before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+2003 and a character after a color in a class
+definition that a line break joins, the color stays as written] [test: U+2003
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color stays as written] [test: U+2004
+before a comma in a class definition that a line break joins, the color stays as
+written] [test: U+2004 and a character after a color in a class definition that
+a line break joins, the color stays as written] [test: U+2004 between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color stays as written] [test: U+2005 before a comma in a class
+definition that a line break joins, the color stays as written] [test: U+2005
+and a character after a color in a class definition that a line break joins, the
+color stays as written] [test: U+2005 between a color and the semicolon that the
+line rule ignores in a class definition that a line break joins, the color stays
+as written] [test: U+2006 before a comma in a class definition that a line break
+joins, the color stays as written] [test: U+2006 and a character after a color
+in a class definition that a line break joins, the color stays as written]
+[test: U+2006 between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+2007 before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+2007 and a character after a color in a class
+definition that a line break joins, the color stays as written] [test: U+2007
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color stays as written] [test: U+2008
+before a comma in a class definition that a line break joins, the color stays as
+written] [test: U+2008 and a character after a color in a class definition that
+a line break joins, the color stays as written] [test: U+2008 between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color stays as written] [test: U+2009 before a comma in a class
+definition that a line break joins, the color stays as written] [test: U+2009
+and a character after a color in a class definition that a line break joins, the
+color stays as written] [test: U+2009 between a color and the semicolon that the
+line rule ignores in a class definition that a line break joins, the color stays
+as written] [test: U+200A before a comma in a class definition that a line break
+joins, the color stays as written] [test: U+200A and a character after a color
+in a class definition that a line break joins, the color stays as written]
+[test: U+200A between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+202F before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+202F and a character after a color in a class
+definition that a line break joins, the color stays as written] [test: U+202F
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color stays as written] [test: U+205F
+before a comma in a class definition that a line break joins, the color stays as
+written] [test: U+205F and a character after a color in a class definition that
+a line break joins, the color stays as written] [test: U+205F between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color stays as written] [test: U+3000 before a comma in a class
+definition that a line break joins, the color stays as written] [test: U+3000
+and a character after a color in a class definition that a line break joins, the
+color stays as written] [test: U+3000 between a color and the semicolon that the
+line rule ignores in a class definition that a line break joins, the color stays
+as written] [test: U+FEFF before a comma in a class definition that a line break
+joins, the color stays as written] [test: U+FEFF and a character after a color
+in a class definition that a line break joins, the color stays as written]
+[test: U+FEFF between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+2028 before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+2029 before a comma in a class definition that a line
+break joins, the color stays as written] [test: U+0085 before a comma in a class
+definition that a line break joins, the color stays as written] [test: U+0085
+and a character after a color in a class definition that a line break joins, the
+color stays as written] [test: U+0085 between a color and the semicolon that the
+line rule ignores in a class definition that a line break joins, the color stays
+as written] [test: U+180E before a comma in a class definition that a line break
+joins, the color stays as written] [test: U+180E and a character after a color
+in a class definition that a line break joins, the color stays as written]
+[test: U+180E between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+200B before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+200B and a character after a color in a class
+definition that a line break joins, the color stays as written] [test: U+200B
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color stays as written] [test: U+0001
+before a comma in a class definition that a line break joins, the color stays as
+written] [test: U+0001 and a character after a color in a class definition that
+a line break joins, the color stays as written] [test: U+0001 between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color stays as written]
 
 A `;` alone does not prevent joining.
 
@@ -1053,9 +1321,18 @@ directives/directive-after-columns] [fixture: directives/directive-after-end]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
-break its left contact.
+break its left contact. Rule 1 names no mark for a directive between two units,
+so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [flowchart](./flowchart.md#directives),
+[gantt](./gantt.md#directives), and [journey](./journey.md#directives) move a
+directive in the gap of units that formatting splits with the following unit,
+keep its right-side contact or separation, and break its left contact, where no
+other rule keeps the layout as written (a directive that is not closed after a
+statement).
 
-[fixture: block/directives/directive-after-columns]
+[fixture: block/directives/directive-after-columns] [fixture:
+block/directives/directive-after-columns-right-touching] [fixture:
+block/directives/directive-after-columns-left-touching]
 
 Input
 ([directives/directive-between-statements-of-a-row-input.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-input.mmd)):
@@ -1108,7 +1385,14 @@ keyword from its body: `accDescr{  }` becomes `accDescr {}`.
 Unicode and tab interiors]
 
 A block with a directive or comment line keeps its contents and line breaks,
-with standalone trivia one level inside and its closer at statement level.
+with standalone trivia one level inside and its closer at statement level. Rule
+1 names no mark for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [pie](./pie.md#description-blocks),
+[sequence](./sequence.md#multi-line-values), and
+[info](./info.md#description-blocks) stand a comment or directive line of a
+block on a line of its own one level inside and its closer at the level of its
+statement.
 
 [fixture: empty-description-blocks/trivia-continuations]
 
@@ -1265,16 +1549,562 @@ instead of the gap, or the gap ends a line, they are dropped with it. A comment
 line after one of them joins the lines of the source that mermaid.js reads as
 one (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
-and the statements on those lines are printed as written. In a label they are
-characters and stay.
+where text follows it, and the whitespace and the line breaks of the statements
+on those lines are kept as written. What follows the comment line decides the
+rest. After `style a fill:#F00`, a U+2028, `%% c`, and a line break, block
+prints:
+
+| What follows the comment line                                                                  | The U+2028 or U+2029 and the lines                                                | The color |
+| ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------- |
+| Nothing, to the end of the text                                                                | dropped; the comment line on a line of its own, as on a plain line                | `#f00`    |
+| Comment lines, to the end of the text                                                          | dropped; each comment line on a line of its own, as on a plain line               | `#f00`    |
+| An empty line, to the end of the text                                                          | dropped; the comment line on a line of its own, as on a plain line                | `#f00`    |
+| A whitespace-only line, to the end of the text                                                 | dropped; the comment line on a line of its own, as on a plain line                | `#f00`    |
+| An empty line and a comment line, to the end of the text                                       | dropped; every line on a line of its own, as on a plain line, the empty line kept | `#f00`    |
+| A statement at once, touching (`b`) or after whitespace (` y`)                                 | kept; the statement stays on the line after the comment line, as written          | `#F00`    |
+| Two comment lines, and a statement                                                             | kept; the statement stays on the line after the comment lines, as written         | `#F00`    |
+| An empty line, and a statement                                                                 | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
+| A comment line, an empty line, and a statement                                                 | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
+| A whitespace-only line, and a statement                                                        | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
+| A directive line, to the end of the text                                                       | kept                                                                              | `#f00`    |
+| A directive line, and a statement                                                              | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
+| A directive line and a comment line, to the end of the text                                    | dropped; every line on a line of its own, as on a plain line                      | `#f00`    |
+| A comment line, a directive line, and a comment line, to the end of the text                   | dropped; every line on a line of its own, as on a plain line                      | `#f00`    |
+| An empty line, a directive line, and a comment line, to the end of the text                    | dropped; every line on a line of its own, as on a plain line, the empty line kept | `#f00`    |
+| A directive line, an empty line, and a comment line, to the end of the text                    | dropped; every line on a line of its own, as on a plain line, the empty line kept | `#f00`    |
+| Two directive lines and a comment line, to the end of the text                                 | dropped; every line on a line of its own, as on a plain line                      | `#f00`    |
+| A directive line, a comment line, and a statement                                              | kept; the statement stays on the line after the comment line, as written          | `#F00`    |
+| A directive line, a comment line, and a directive line, to the end                             | kept                                                                              | `#f00`    |
+| Two comment lines, and a directive line, to the end of the text                                | kept                                                                              | `#f00`    |
+| An empty line, and a directive line, to the end of the text                                    | kept; the directive line stands apart, at the level of the statements             | `#f00`    |
+| A directive line and an empty line, to the end of the text                                     | kept; the empty line at the end is dropped                                        | `#f00`    |
+| A directive and a comment on one line, to the end of the text (`%%{y}%%%% d`, `%%{y}%%  %% d`) | dropped; the line on a line of its own, as on a plain line                        | `#f00`    |
+| A comment line that holds a directive (`%% d%%{y}%%`), to the end of the text                  | dropped; the line on a line of its own, as on a plain line                        | `#f00`    |
+| A comment line, a directive line, and a statement                                              | kept; the statement stands apart, at the level of the statements                  | `#f00`    |
+| An empty line, a comment line, and a statement                                                 | kept; the statement stays on the line after the comment line, as written          | `#F00`    |
+| A line that holds only a `;` (also `;b` and `%%{y}%%;`)                                        | kept; the line stays on the line after the comment line, as written               | `#F00`    |
+| An empty line, and a line that holds only a `;`                                                | kept; the line stands apart, at the level of the statements                       | `#f00`    |
+
+The U+2028 or U+2029 is dropped where no statement follows and the last line
+that is not blank holds a comment (a comment line, also one that holds a
+directive, or a directive and a comment on one line), and the line before it
+holds no `;`, and it stays where a `;` stands in the line before it, a statement
+follows, or the last line that is not blank holds directives only. A `;` alone
+on a line, a `;` and a character, and a directive and a `;` are statements here.
+This holds for every statement of a block diagram, not only for `style` and
+`classDef`: `b`, `b["x"]`, `b-->c`, and `columns 2` lose the U+2028 or U+2029
+before a comment line at the end of the text, and `b;`, `b["x;y"]`, `b-->c;`,
+and `columns 2;` keep it. A `;` counts wherever it stands in the line, also
+inside a label, a directive, or a comment (`style a fill:#F00 %%{x;y}%%`, and
+`style a fill:#F00 %% x;`, U+2028, and `%% c` keep the U+2028 and print `#f00`).
+A `style`, a `classDef`, and a `class` statement lose the U+2028 or U+2029
+whatever stands between the statement and it: nothing, a comment, a directive,
+or both (`style a fill:#F00 %% x`, `classDef k fill:#F00%% x`,
+`class a k %%{x}%% %% x`), unless a `;` stands in the line. Every other
+statement loses it where nothing, or only a directive, stands between (`b`,
+`b-->c %%{x}%%`, `b-->c%%{x}%%`), and keeps it where a comment follows after
+whitespace, a space, a run of spaces, or one of the
+[whitespace characters](#whitespace-characters) (`b %% x`, `columns 2 %% x`,
+`b:2 %% x`, and `b`, a tab, and `%% x`), also after a directive, which the
+comment may touch (`b %%{x}%% %% x`, `b %%{x}%%%% x`). Where the comment touches
+the statement, the last unit of the statement decides: a node id that nothing
+follows loses it (`b%% x`, `b-->c%% x`, `b:2-->c%% x`, `b["x"]-->c%% x`,
+`b -- "x" --> c%% x`, `b e%% x`, `columns%% x`), and a label or a shape, a
+width, a `columns` statement, a `space` statement, a block arrow, and `end` keep
+it (`b["x"]%% x`, `b("x")%% x`, `b:2%% x`, `b-->c["x"]%% x`, `b:2-->c["x"]%% x`,
+`columns 2%% x`, `space%% x`). The end of a composite block is a statement like
+the others: where it keeps the U+2028 (`end;`, `end%% x`, `end %% x`, or a
+statement after the comment line), the whole composite stays as written, its
+head and its body unindented (`block:G`, `  b`, `end;`, U+2028, and `%% c`), and
+where it loses it (`end`, `end %%{x}%%`) the composite is formatted as usual.
+The head of a composite block always has a statement after it (`end` at least),
+so it keeps the U+2028 or U+2029 also with a comment before it, whether the
+comment touches the head or follows it after whitespace, and is formatted as
+usual (`block:G%% x`, U+2028, and `%% c` print `block: G%% x`, U+2028, and
+`%% c`, and `block:G %% x` prints `block: G %% x`). A second U+2028 or U+2029 on
+the comment line (`b`, U+2028, `%% c`, U+2028, and `%% d`) is part of the
+comment, which runs to the next line feed, so it stays as written, whatever
+follows it on the line: nothing, a comment, or the text of a statement. The
+first one is dropped or stays as the rules above say, and where it is dropped
+the comment line stands on a line of its own (`b`, a line break, `%% c`, U+2028,
+and `%% d`; `b %% c`, U+2028, `%% d`, U+2028, and `%% d` are not changed). Two
+of them in a row before the comment (`b`, U+2028, U+2028, and `%% c`) follow the
+rules above, as one does, and so do two U+2029: they are both dropped where the
+first would be dropped, and one line break remains, and both stay where it stays
+(`b %% x`, `b;`, and `b` with a statement after the comment line). Where a
+statement follows, the color stays as written if the statement is on the line
+right after a comment line, and is in lower case if an empty line, a line of
+whitespace, or a directive line stands right before it. Flowchart, class, state,
+and ER keep the line as written in every row where block drops it (ER rejects
+the row of a whitespace-only line), and rule 2 gives their form, so block prints
+each of those rows against rule 2 and waits to be fixed by the rule. On such a
+line, a color before a comma on its line, also after a space, a tab, or a form
+feed, and the last color of the last line, where no `;` that the line rule
+ignores follows it, are in lower case; a color before a comma at the start of
+the line after the comment line stays as written (`#F00`, and `#abc` after it);
+a color that spaces, tabs, or form feeds and characters follow on its line is in
+lower case (`#F00 x`, U+2028, `%% c`, and ` y` print `#f00 x`); and a color that
+a `;` that the line rule ignores touches on a line after the comment line stays
+as written (`#F00`, and `#ABC;` after it; the `;` before the U+2028 is stated
+below), also where any character but a space, a tab, or a form feed separates it
+from the `;`; for a vertical tab or a wide space, the
+[Colors](./compatibility.md#colors-that-are-drawn-the-same) rule prints it in
+lower case, so that form is printed against the rule and waits to be fixed by
+it. Where the line before the U+2028 holds a `;`, the line is kept: the U+2028
+and the comment line stay as written, whatever follows the comment line, and so
+does the whitespace of the styles (`style a fill:red;`, U+2028, and `%% c` are
+not changed, and the U+2028 and the comment line stay also after a value that is
+no color, as in `stroke-width:2px;`, and after a color that a space or a
+character separates from the `;`, as in `fill:#F00 ;` and `fill:#F00 x;`, which
+print the color in lower case, while `style a fill:red`, U+2028, and `%% c`
+print `style a fill: red`). The colors of such a line are in lower case before a
+comma and where a space, a tab, or a form feed and characters follow them. Where
+a second `;` follows the first, whatever stands between them
+(`style a fill:#F00;;`, `style a fill:#F00; ;`, `style a fill:#F00;x;`), the
+color stays as written, whatever follows and whatever stands between the second
+`;` and the U+2028 (a space, a tab, a vertical tab, or a character). Where one
+`;` follows the color, what follows the `;` on the line decides, a directive
+left out. Where a space, a tab, or a form feed follows it, the color is in lower
+case, whatever follows the comment line. Where a character or a comment follows
+it, directly or after a vertical tab, a no-break space, or another whitespace
+character but a space, a tab, and a form feed, the line rule keeps the `;`, and
+the color stays as written, whatever follows (`style a fill:#F00;x`,
+`style a fill:#F00;%% x`, `style a fill:#F00;%%{y}%%%% x`, and
+`style a fill:#F00;`, a vertical tab, and `%% x`, then U+2028 and `%% c`). Where
+nothing follows it, or only directives and whitespace characters but a space, a
+tab, and a form feed, the color stays as written only where a statement follows
+right after a comment line, as without the `;`: where no statement follows, or
+an empty line or a directive line stands right before the statement, it is in
+lower case (`style a fill:#F00;`, U+2028, and `%% c` are printed
+`style a fill:#f00;`, U+2028, and `%% c`). In a block diagram, mermaid.js reads
+the U+2028 as the end of the line and `%% c` as a comment. For
+`style a fill:#F00`, a U+2028, and `%% c` at the end of the text, the Db of
+12.3.0 holds neither of them in the style, and differs from that of the plain
+line only in the whitespace after the first `:` and in the case of the color,
+which
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
+and
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
+define, and the drawings of 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 are the
+same; so are the drawings of the other rows of the table that drop the U+2028
+after a style statement, and the record holds the row where nothing follows and
+twelve inputs of the others (one row holds two). In a label they are characters
+and stay.
 
 [test: U+2028 between two statements of a row] [test: U+2029 between two
 statements of a row] [test: U+2028 around the arrow of an edge] [test: U+2028
 between an id and its shape] [test: U+2028 before the colon of a width] [test:
 U+2028 after columns] [test: U+2028 in a label] [test: U+2028 at the end of a
 statement of a row] [test: U+2028 before a comment line that joins lines] [test:
-U+2029 before comment lines that join lines] [test: U+2028 between a composite
-head and its body]
+U+2029 before comment lines that join lines] [test: block:
+style-ls-before-a-comment-at-the-end-of-the-text-is-dropped] [test: block:
+style-ls-and-ps-before-a-comment-at-the-end-of-the-text-are-dropped] [test:
+block: classDef-ls-before-a-comment-at-the-end-of-the-text-is-dropped] [test:
+block: style-ls-touching-a-directive-is-dropped] [test: block:
+color-before-comma-in-style-on-a-line-that-a-ls-comment-line-joins] [test:
+block: color-before-comma-in-classdef-on-a-line-that-a-ps-comment-line-joins]
+[test: block:
+last-color-in-style-that-the-line-after-a-ls-comment-line-goes-on-with] [test:
+block:
+color-before-comma-after-whitespace-in-style-on-a-line-that-a-ls-comment-line-joins]
+[test: block:
+color-before-a-comma-on-the-next-line-of-a-style-that-a-ls-comment-line-joins]
+[test: block: color-before-a-ls-comment-line-that-a-statement-follows] [test:
+block:
+color-before-a-semicolon-that-the-line-rule-ignores-in-a-classdef-that-whitespace-and-a-line-break-join]
+[test: block:
+color-before-a-semicolon-on-the-line-after-a-ls-comment-line-in-a-classdef]
+[test: block:
+style-ls-before-a-comment-and-a-directive-line-keeps-the-ls-and-lowers-the-color]
+[test: block:
+style-ps-before-a-comment-and-a-directive-line-keeps-the-ps-and-lowers-the-color]
+[test: block:
+classdef-ls-before-a-comment-and-a-directive-line-keeps-the-ls-and-lowers-the-color]
+[test: block:
+style-ls-before-two-comment-lines-at-the-end-of-the-text-is-dropped] [test:
+block:
+style-ls-before-a-comment-line-an-empty-line-and-a-statement-keeps-the-ls-and-lowers-the-color]
+[test: block:
+style-ls-before-a-comment-line-a-directive-line-and-a-statement-keeps-the-ls-and-lowers-the-color]
+[test: block:
+style-ls-before-a-comment-line-a-directive-line-and-a-comment-line-at-the-end-is-dropped]
+[test: block:
+style-ls-before-a-comment-line-a-directive-line-a-comment-line-and-a-statement-keeps-the-lines]
+[test: block:
+style-ls-before-a-comment-line-a-directive-line-a-comment-line-and-a-directive-line-keeps-the-ls]
+[test: block: style-ls-before-two-comment-lines-and-a-statement-keeps-the-lines]
+[test: block:
+style-ls-before-a-comment-line-an-empty-line-after-it-and-a-statement-keeps-the-ls-and-lowers-the-color]
+[test: block:
+style-ls-before-a-comment-line-a-whitespace-only-line-and-a-statement-keeps-the-ls-and-lowers-the-color]
+[test: block:
+style-ls-before-a-comment-line-and-an-empty-line-at-the-end-is-dropped] [test:
+block:
+style-ls-before-a-comment-line-an-empty-line-and-a-comment-line-at-the-end-is-dropped]
+[test: block:
+style-ls-before-a-comment-line-and-a-whitespace-only-line-at-the-end-is-dropped]
+[test: block:
+last-color-before-a-semicolon-that-the-line-rule-ignores-on-the-line-after-a-ls-comment-line-in-a-style-stays]
+[test: block:
+last-color-before-a-semicolon-that-the-line-rule-ignores-on-the-line-after-a-ls-comment-line-in-a-classdef-stays]
+[test: block:
+a-color-before-a-space-and-a-comment-line-in-a-style-that-a-ls-comment-line-joins-is-lower-case]
+[test: a color that a semicolon touches before a U+2028 and a comment line in a
+style statement, nothing after the comment line] [test: a color that a semicolon
+touches before a U+2028 and a comment line in a style statement, a second
+comment line after the comment line] [test: a color that a semicolon touches
+before a U+2028 and a comment line in a style statement, an empty line after the
+comment line] [test: a color that a semicolon touches before a U+2028 and a
+comment line in a style statement, a whitespace-only line after the comment
+line] [test: a color that a semicolon touches before a U+2028 and a comment line
+in a style statement, a directive line after the comment line] [test: a color
+that a semicolon touches before a U+2028 and a comment line in a style
+statement, a statement after the comment line] [test: a color that a semicolon
+touches before a U+2028 and a comment line in a style statement, a second
+comment line and a statement after the comment line] [test: a color that a
+semicolon touches before a U+2028 and a comment line in a style statement, a
+second comment line and a directive line after the comment line] [test: a color
+that a semicolon touches before a U+2028 and a comment line in a class
+definition, nothing after the comment line] [test: a color that a semicolon
+touches before a U+2028 and a comment line in a class definition, a statement
+after the comment line] [test: a color that a semicolon touches before a U+2029
+and a comment line in a style statement, nothing after the comment line] [test:
+a color that a semicolon touches before a U+2028 and a comment line in a style
+statement, and a second style statement after the comment line] [test: a
+directive line after two comment lines, to the end of the text, after a style
+statement and a U+2028] [test: a directive line after an empty line, to the end
+of the text, after a style statement and a U+2028] [test: a directive line and
+an empty line, to the end of the text, after a style statement and a U+2028]
+[test: a no-break space between a color and the semicolon in a class definition
+that a line break joins stays as written] [test: U+3000 between a color and the
+semicolon in a class definition that a line break joins stays as written] [test:
+U+3000 and a character after a color in a class definition that a line break
+joins stays as written] [test: a space between a color and the semicolon in a
+class definition that a line break joins is lower case] [test: a color that a
+no-break space and a character follow in a class definition that a line break
+joins stays as written] [test: block:
+whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins]
+[test: U+2028 between a composite head and its body] [test: a comment line, a
+directive line, and a comment line, to the end of the text, after a style
+statement and a U+2028: the U+2028 is dropped] [test: a comment line, a
+directive line, and a comment line, to the end of the text, after a class
+definition and a U+2029: the U+2029 is dropped] [test: a comment line, a
+directive line, and a comment line, to the end of the text, after a style
+statement whose color a semicolon touches and a U+2028: the U+2028 stays and the
+color is in lower case] [test: an empty line, a directive line, and a comment
+line, to the end of the text, after a style statement and a U+2028: the U+2028
+is dropped] [test: an empty line, a directive line, and a comment line, to the
+end of the text, after a class definition and a U+2029: the U+2029 is dropped]
+[test: an empty line, a directive line, and a comment line, to the end of the
+text, after a style statement whose color a semicolon touches and a U+2028: the
+U+2028 stays and the color is in lower case] [test: a directive line, an empty
+line, and a comment line, to the end of the text, after a style statement and a
+U+2028: the U+2028 is dropped] [test: a directive line, an empty line, and a
+comment line, to the end of the text, after a class definition and a U+2029: the
+U+2029 is dropped] [test: a directive line, an empty line, and a comment line,
+to the end of the text, after a style statement whose color a semicolon touches
+and a U+2028: the U+2028 stays and the color is in lower case] [test: two
+directive lines and a comment line, to the end of the text, after a style
+statement and a U+2028: the U+2028 is dropped] [test: two directive lines and a
+comment line, to the end of the text, after a class definition and a U+2029: the
+U+2029 is dropped] [test: two directive lines and a comment line, to the end of
+the text, after a style statement whose color a semicolon touches and a U+2028:
+the U+2028 stays and the color is in lower case] [test: a directive and a
+comment that touches it on a line, to the end of the text, after a style
+statement and a U+2028: the U+2028 is dropped] [test: a directive and a comment
+that touches it on a line, to the end of the text, after a class definition and
+a U+2029: the U+2029 is dropped] [test: a directive and a comment that touches
+it on a line, to the end of the text, after a style statement whose color a
+semicolon touches and a U+2028: the U+2028 stays and the color is in lower case]
+[test: a directive and a comment after spaces on a line, to the end of the text,
+after a style statement and a U+2028: the U+2028 is dropped] [test: a directive
+and a comment after spaces on a line, to the end of the text, after a class
+definition and a U+2029: the U+2029 is dropped] [test: a directive and a comment
+after spaces on a line, to the end of the text, after a style statement whose
+color a semicolon touches and a U+2028: the U+2028 stays and the color is in
+lower case] [test: a comment line that holds a directive, to the end of the
+text, after a style statement and a U+2028: the U+2028 is dropped] [test: a
+comment line that holds a directive, to the end of the text, after a class
+definition and a U+2029: the U+2029 is dropped] [test: a comment line that holds
+a directive, to the end of the text, after a style statement whose color a
+semicolon touches and a U+2028: the U+2028 stays and the color is in lower case]
+[test: a comment line, a directive line, and a statement, after a style
+statement and a U+2028: the U+2028 stays and the color is in lower case] [test:
+an empty line, a comment line, and a statement, after a style statement and a
+U+2028: the U+2028 stays and the color stays as written] [test: two semicolons
+after a color and a U+2028, to the end of the text, the color stays as written]
+[test: two semicolons after a color and a U+2028, a statement follows, the color
+stays as written] [test: two semicolons that a space separates after a color and
+a U+2028, to the end of the text, the color stays as written] [test: two
+semicolons that a space separates after a color and a U+2028, a statement
+follows, the color stays as written] [test: two semicolons after a color and a
+U+2029 in a class definition, to the end of the text, the color stays as
+written] [test: a space between the semicolon and the U+2028, to the end of the
+text, the U+2028 stays and the color is in lower case] [test: a space between
+the semicolon and the U+2028, a statement follows, the U+2028 stays and the
+color is in lower case] [test: a tab between the semicolon and the U+2028, a
+statement follows, the U+2028 stays and the color is in lower case] [test: a
+form feed between the semicolon and the U+2028, a statement follows, the U+2028
+stays and the color is in lower case] [test: a vertical tab between the
+semicolon and the U+2028, to the end of the text, the U+2028 stays and the color
+is in lower case] [test: a vertical tab between the semicolon and the U+2028, a
+statement follows, the U+2028 stays and the color is as written] [test: a
+no-break space between the semicolon and the U+2028, to the end of the text, the
+U+2028 stays and the color is in lower case] [test: a no-break space between the
+semicolon and the U+2028, a statement follows, the U+2028 stays and the color is
+as written] [test: a semicolon touching the color, a directive line, and a
+statement after the comment line: the color is in lower case] [test: a semicolon
+touching the color, an empty line, and a statement after the comment line: the
+color is in lower case] [test: a semicolon touching the color, a directive line,
+a comment line, and a statement after the comment line: the color is as written]
+[test: a semicolon touching the color, a comment line, a directive line, and a
+statement after the comment line: the color is in lower case] [test: a semicolon
+touching the color, an empty line, a comment line, and a statement after the
+comment line: the color is as written] [test: a space and a vertical tab before
+a comma in a class definition that a line break joins, the first decides: the
+color is in lower case] [test: a vertical tab and a space before a comma in a
+class definition that a line break joins, the first decides: the color is as
+written] [test: a no-break space and a space before a comma in a class
+definition that a line break joins, the first decides: the color is as written]
+[test: a space and a no-break space before a comma in a class definition that a
+line break joins, the first decides: the color is in lower case] [test: a tab
+and a no-break space before a comma in a class definition that a line break
+joins, the first decides: the color is in lower case] [test: a form feed and a
+no-break space before a comma in a class definition that a line break joins, the
+first decides: the color is in lower case] [test: a no-break space and a form
+feed before a comma in a class definition that a line break joins, the first
+decides: the color is as written] [test: a space and a vertical tab between a
+color and the semicolon in a class definition that a line break joins, the first
+decides: the color is in lower case] [test: a vertical tab and a space between a
+color and the semicolon in a class definition that a line break joins, the first
+decides: the color is as written] [test: a semicolon after a value that is no
+color, to the end of the text, after a style statement and a U+2028: the U+2028
+and the line stay as written] [test: a semicolon after a width, to the end of
+the text, after a style statement and a U+2028: the U+2028 and the line stay as
+written] [test: a semicolon that a space separates from the color, to the end of
+the text, after a style statement and a U+2028: the U+2028 and the line stay as
+written] [test: a semicolon after a color and a character, to the end of the
+text, after a style statement and a U+2028: the U+2028 and the line stay as
+written] [test: a semicolon and a character after a value that is no color, to
+the end of the text, after a style statement and a U+2028: the U+2028 and the
+line stay as written] [test: a semicolon after a value that is no color, to the
+end of the text, after a class definition and a U+2029: the U+2029 and the line
+stay as written] [test: a semicolon after a value that is no color, a statement
+follows, after a style statement and a U+2028: the U+2028 and the line stay as
+written] [test: no semicolon after a value that is no color, to the end of the
+text, after a style statement and a U+2028: the U+2028 is dropped and the colon
+gets a space] [test: a vertical tab between two semicolons after a color and a
+U+2028, to the end of the text, the color stays as written] [test: a no-break
+space between two semicolons after a color and a U+2028, to the end of the text,
+the color stays as written] [test: a form feed between two semicolons after a
+color and a U+2028, to the end of the text, the color stays as written] [test: a
+character between two semicolons after a color and a U+2028, to the end of the
+text, the color stays as written] [test: a comma between two semicolons after a
+color and a U+2028, to the end of the text, the color stays as written] [test: a
+character and spaces between two semicolons after a color and a U+2028, to the
+end of the text, the color stays as written] [test: three semicolons after a
+color and a U+2028, to the end of the text, the color stays as written] [test: a
+line that holds only a semicolon after the comment line, after a style statement
+and a U+2028: the U+2028 stays and the color is as written] [test: a line that
+holds a semicolon and a character after the comment line, after a style
+statement and a U+2028: the U+2028 stays and the color is as written] [test: a
+directive and a semicolon on a line after the comment line, after a style
+statement and a U+2028: the U+2028 stays and the color is as written] [test: an
+empty line and a line that holds only a semicolon after the comment line, after
+a style statement and a U+2028: the U+2028 stays and the color is in lower case]
+[test: a directive line and a line that holds only a semicolon after the comment
+line, after a style statement and a U+2028: the U+2028 stays and the color is in
+lower case] [test: a comment line and a line that holds only a semicolon after
+the comment line, after a style statement and a U+2028: the U+2028 stays and the
+color is as written] [test: a node and no semicolon, to the end of the text,
+after a U+2028: the U+2028 is dropped] [test: a node with a label and no
+semicolon, to the end of the text, after a U+2028: the U+2028 is dropped] [test:
+an edge and no semicolon, to the end of the text, after a U+2028: the U+2028 is
+dropped] [test: a width and no semicolon, to the end of the text, after a
+U+2028: the U+2028 is dropped] [test: a node and a semicolon, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a node with a semicolon in its
+label, to the end of the text, after a U+2028: the U+2028 stays] [test: an edge
+and a semicolon, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a semicolon, to the end of the text, after a U+2028: the
+U+2028 stays] [test: a node and a semicolon, to the end of the text, after a
+U+2029: the U+2029 stays] [test: a semicolon inside a directive after a style,
+to the end of the text, after a U+2028: the U+2028 stays] [test: a semicolon
+inside a comment after a style, to the end of the text, after a U+2028: the
+U+2028 stays] [test: a semicolon inside a comment after a directive after a
+style, to the end of the text, after a U+2028: the U+2028 stays] [test: a
+semicolon inside a directive after a node, to the end of the text, after a
+U+2028: the U+2028 stays] [test: two semicolons, then a space before the U+2028,
+to the end of the text, the color stays as written] [test: two semicolons that a
+space separates, then a space before the U+2028, to the end of the text, the
+color stays as written] [test: two semicolons, then a tab before the U+2028, to
+the end of the text, the color stays as written] [test: two semicolons that a
+space separates, then a tab before the U+2028, to the end of the text, the color
+stays as written] [test: two semicolons, then a vertical tab and a space before
+the U+2028, to the end of the text, the color stays as written] [test: two
+semicolons that a space separates, then a vertical tab and a space before the
+U+2028, to the end of the text, the color stays as written] [test: two
+semicolons, then a character before the U+2028, to the end of the text, the
+color stays as written] [test: two semicolons that a space separates, then a
+character before the U+2028, to the end of the text, the color stays as written]
+[test: two semicolons, then a space before the U+2028, a statement follows, the
+color stays as written] [test: a semicolon that a character touches the line
+rule keeps, to the end of the text, after a style statement and a U+2028: the
+color stays as written] [test: a semicolon that a comment touches the line rule
+keeps, to the end of the text, after a style statement and a U+2028: the color
+stays as written] [test: a semicolon that a directive and a comment touches the
+line rule keeps, to the end of the text, after a style statement and a U+2028:
+the color stays as written] [test: a semicolon that a vertical tab and a
+character touches the line rule keeps, to the end of the text, after a style
+statement and a U+2028: the color stays as written] [test: a semicolon that a
+no-break space and a character touches the line rule keeps, to the end of the
+text, after a style statement and a U+2028: the color stays as written] [test: a
+semicolon that a character touches, a statement follows with an empty line
+before it, the color stays as written] [test: a semicolon that a character
+touches, in a class definition, after a U+2029, the color stays as written]
+[test: a semicolon that only a directive touches, to the end of the text, the
+color is in lower case] [test: a semicolon that only a directive touches, a
+statement follows right after the comment line, the color stays as written]
+[test: a form feed and a character after a semicolon, a statement follows, the
+color is in lower case] [test: spaces and a directive after a semicolon, a
+statement follows, the color is in lower case] [test: a directive and spaces
+after a semicolon, a statement follows, the color is in lower case] [test: a
+semicolon after a color and a comment after spaces, to the end of the text, the
+color is in lower case] [test: the end of a composite block and a semicolon, to
+the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a semicolon, to the end of the text,
+after a U+2029: the whole composite stays as written] [test: the end of a
+composite block, a statement follows the comment line, after a U+2028: the whole
+composite stays as written] [test: the end of a composite block and no
+semicolon, to the end of the text, after a U+2028: the U+2028 is dropped and the
+composite is formatted] [test: a node and no semicolon, to the end of the text,
+after a U+2029: the U+2029 is dropped] [test: a node and no semicolon, a
+statement follows the comment line, after a U+2028: the U+2028 stays] [test: a
+node and a semicolon, a statement follows the comment line, after a U+2029: the
+U+2029 stays] [test: a node and a semicolon in a comment, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a node and a comment that a space
+separates from it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a comment that a space separates from it, a statement follows
+the comment line, after a U+2029: the U+2029 stays] [test: a node and a comment
+that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: the end of a composite block and a comment that touches it, to the end of
+the text, after a U+2028: the whole composite stays as written] [test: the end
+of a composite block and a comment after a space, to the end of the text, after
+a U+2028: the whole composite stays as written] [test: the end of a composite
+block and a directive and a comment after a space, to the end of the text, after
+a U+2028: the whole composite stays as written] [test: the end of a composite
+block and a directive that touches it, to the end of the text, after a U+2028:
+the U+2028 is dropped and the composite is formatted] [test: the end of a
+composite block and a directive after a space, to the end of the text, after a
+U+2028: the U+2028 is dropped and the composite is formatted] [test: a width and
+a comment after a space, to the end of the text, after a U+2028: the U+2028
+stays] [test: a width and a comment that touches it, to the end of the text,
+after a U+2028: the U+2028 stays] [test: a width and a directive, to the end of
+the text, after a U+2028: the U+2028 is dropped] [test: an empty block and a
+comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an empty block and a comment that touches it, to the end of the text,
+after a U+2028: the U+2028 stays] [test: a block arrow and a comment after a
+space, to the end of the text, after a U+2028: the U+2028 stays] [test: a block
+arrow and a comment that touches it, to the end of the text, after a U+2028: the
+U+2028 stays] [test: a node with a label and a comment that touches it, to the
+end of the text, after a U+2028: the U+2028 stays] [test: an edge and a comment
+that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a directive after a space, to the end of the text, after a
+U+2028: the U+2028 is dropped] [test: an edge and a directive after a space, to
+the end of the text, after a U+2028: the U+2028 is dropped] [test: a node, a
+directive, and a comment after a space, to the end of the text, after a U+2028:
+the U+2028 stays] [test: a style statement and a comment after a space, to the
+end of the text, after a U+2028: the U+2028 is dropped] [test: a style statement
+and a comment that touches the color, to the end of the text, after a U+2028:
+the U+2028 is dropped] [test: a class definition and a comment after a space, to
+the end of the text, after a U+2028: the U+2028 is dropped] [test: a class
+statement and a comment after a space, to the end of the text, after a U+2028:
+the U+2028 is dropped] [test: a style statement, a directive, and a comment, to
+the end of the text, after a U+2028: the U+2028 is dropped] [test: a semicolon,
+a directive, and a semicolon after a color, to the end of the text, after a
+U+2028: the U+2028 stays and the color stays as written] [test: a semicolon, a
+vertical tab, and a comment after a color, to the end of the text, after a
+U+2028: the U+2028 stays and the color stays as written] [test: the head of a
+composite block and a comment that touches it, a statement follows the comment
+line, after a U+2028: the U+2028 stays and the head is formatted] [test: the
+head of a composite block and a comment after a space, a statement follows the
+comment line, after a U+2028: the U+2028 stays and the head is formatted] [test:
+a class definition and nothing, to the end of the text, after a U+2028: the
+U+2028 is dropped] [test: a class definition and a comment that touches it, to
+the end of the text, after a U+2028: the U+2028 is dropped] [test: a class
+definition and a directive after a space, to the end of the text, after a
+U+2028: the U+2028 is dropped] [test: a class definition and a directive and a
+comment after a space, to the end of the text, after a U+2028: the U+2028 is
+dropped] [test: a class statement and nothing, to the end of the text, after a
+U+2028: the U+2028 is dropped] [test: a class statement and a comment that
+touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class statement and a directive after a space, to the end of the text,
+after a U+2028: the U+2028 is dropped] [test: a class statement and a directive
+and a comment after a space, to the end of the text, after a U+2028: the U+2028
+is dropped] [test: a node, a directive after a space and a comment that touches
+the directive, to the end of the text, after a U+2028: the U+2028 stays] [test:
+an edge, a directive after a space and a comment that touches the directive, to
+the end of the text, after a U+2028: the U+2028 stays] [test: an edge and a
+directive that touches it, to the end of the text, after a U+2028: the U+2028 is
+dropped] [test: a node with a width and a comment after a space, to the end of
+the text, after a U+2028: the U+2028 stays] [test: a node with a width and a
+comment that touches it, to the end of the text, after a U+2028: the U+2028
+stays] [test: a node with a width and a directive that touches it, to the end of
+the text, after a U+2028: the U+2028 is dropped] [test: an edge with a width and
+a comment that touches it, to the end of the text, after a U+2028: the U+2028 is
+dropped] [test: a node and a tab before the comment, to the end of the text,
+after a U+2028: the U+2028 stays] [test: a node and a run of spaces before the
+comment, to the end of the text, after a U+2028: the U+2028 stays] [test: a node
+and a no-break space before the comment, to the end of the text, after a U+2028:
+the U+2028 stays] [test: a node and U+3000 before the comment, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a node and a vertical tab before
+the comment, to the end of the text, after a U+2028: the U+2028 stays] [test: a
+node and a form feed before the comment, to the end of the text, after a U+2028:
+the U+2028 stays] [test: a node and U+FEFF before the comment, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a node, a comment line, and a
+second U+2028 and a comment, to the end of the text: the first U+2028 or U+2029
+is dropped and the second stays] [test: a node, a comment line, and a second
+U+2028 and nothing, to the end of the text: the first U+2028 or U+2029 is
+dropped and the second stays] [test: a node, a comment line, and a second U+2028
+and the text of a statement, to the end of the text: the first U+2028 or U+2029
+is dropped and the second stays] [test: a node, a comment line, and a U+2029
+inside it, to the end of the text: the first U+2028 or U+2029 is dropped and the
+second stays] [test: a node, a U+2029, a comment line, and a U+2028 inside it,
+to the end of the text: the first U+2028 or U+2029 is dropped and the second
+stays] [test: a node and a comment line that holds two more U+2028, to the end
+of the text: the first U+2028 or U+2029 is dropped and the second stays] [test:
+a style statement, a comment line, and a second U+2028 and a comment, to the end
+of the text: the first U+2028 or U+2029 is dropped and the second stays] [test:
+a node and a comment that touches it, a comment line that holds a U+2028, to the
+end of the text: the first U+2028 or U+2029 is dropped and the second stays]
+[test: a node and a comment after a space, a comment line that holds a U+2028,
+to the end of the text: the first U+2028 stays] [test: a node and a semicolon, a
+comment line, and a second U+2028 and a comment, to the end of the text: the
+first U+2028 stays] [test: a node and two U+2028 before a comment line, to the
+end of the text: both are dropped] [test: a style statement and two U+2028
+before a comment line, to the end of the text: both are dropped] [test: an edge
+to a node with a label and a comment that touches it, to the end of the text,
+after a U+2028: the U+2028 stays] [test: an edge with a width to a node with a
+label and a comment that touches it, to the end of the text, after a U+2028: the
+U+2028 stays] [test: a node with a round label and a comment that touches it, to
+the end of the text, after a U+2028: the U+2028 stays] [test: an edge with a
+label to a node with a label and a comment that touches it, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a chain of edges to a node with a
+label and a comment that touches it, to the end of the text, after a U+2028: the
+U+2028 stays] [test: an edge from a node with a label to a node and a comment
+that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge with a label to a node and a comment that touches it, to the end
+of the text, after a U+2028: the U+2028 is dropped] [test: two nodes in a row
+and a comment that touches the last, to the end of the text, after a U+2028: the
+U+2028 is dropped] [test: a node and a comment after a space, two U+2028 before
+a comment line, to the end of the text: both stay] [test: a node and a
+semicolon, two U+2028 before a comment line, to the end of the text: both stay]
+[test: a node, two U+2028 before a comment line, a statement follows: both stay]
+[test: a node and two U+2029 before a comment line, to the end of the text: both
+are dropped] [test: a node and a comment after a space, two U+2029 before a
+comment line, to the end of the text: both stay] [test: a node and a comment
+that touches it, two U+2028 before a comment line, to the end of the text: both
+are dropped] [test: a node whose id is columns and a comment that touches it, to
+the end of the text, after a U+2028: the U+2028 is dropped]
 
 ### Whitespace characters
 

@@ -465,20 +465,39 @@ gitGraph
 Print `title` plus one space and a nonempty value trimmed only at its outer
 ends, with a run of spaces and tabs inside it printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same));
-empty/whitespace-only titles print bare `title`. The directives that end a title
-are printed with one space before each that has whitespace before it, and the
-whitespace after the last one is left out, whatever the whitespace at the end of
-the line (see
+empty/whitespace-only titles print bare `title`. Where only directives follow
+the text of a title, they are printed with one space before each that has spaces
+or tabs before it, and the spaces and tabs after the last one are left out,
+unless a directive of the line holds a line break, a `;`, a U+2028, or a U+2029
+(see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title-and-common-values/title-directives-end-blanks-dropped]
 
 Shared accessibility layout prints `accTitle: value` / `accDescr: value` and
-empty blocks as `{}`. The directives that end the value of such a line are
-printed as those that end a title (see
+empty blocks as `{}`. Where only directives follow the text of the value of such
+a line, they are printed as they are after the text of a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
+
+A whitespace character that is no space or tab before a `%%` that follows an
+`accDescr` value stays where it is, with the spaces and tabs beside it printed
+as one space each, as in a pie chart (see
+[Accessibility lines](./pie.md#accessibility-lines)). The `title` of a gitGraph
+is printed as in the other diagrams, whatever stands before a `%%` after it: the
+oldest version that counts rejects it (see
+[Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
+
+[test: a no-break space before a comment after the accDescr line of a gitGraph]
+[test: U+3000 before a comment after the accDescr line of a gitGraph] [test:
+U+2003 before a comment after the accDescr line of a gitGraph] [test: a
+whitespace character that is no space or tab before a comment after the accDescr
+line of a gitGraph] [test: a no-break space before a directive and two spaces
+before a comment after the accDescr line of a gitGraph] [test: a no-break space
+before a comment after the title of a gitGraph]
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).

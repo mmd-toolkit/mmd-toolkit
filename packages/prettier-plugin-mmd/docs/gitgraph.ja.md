@@ -496,19 +496,42 @@ gitGraph
 値の中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空や空白のみなら裸の `title` です。
-題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+題のテキストの後にディレクティブだけが続くときは、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブを除いて印字します。
+ただし、行のディレクティブのどれかに改行、`;`、U+2028、
+U+2029 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title-and-common-values/title-directives-end-blanks-dropped]
 
 共通のアクセシビリティ配置で `accTitle: value`・`accDescr: value`、
 空ブロックは `{}` と印字します。
-これらの行の値の終わりのディレクティブは、
-題の終わりのディレクティブと同じように印字します。
+これらの行の値のテキストの後にディレクティブだけが続くときは、
+題の場合と同じように印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
+
+gitGraph の `accDescr` の値の後の `%%` の前の、空白でもタブでもない空白文字は、
+pie 図と同じに、その場に残し、その両側の空白とタブは、
+それぞれ空白 1 つにして印字します。
+詳しくは [Accessibility lines](./pie.ja.md#accessibility-lines)
+を参照してください。
+gitGraph の `title` は、後ろの `%%` の前に何があっても、
+ほかの図と同じに印字します。
+対象にする版のうち最も古い版が、それを拒否するからです。
+詳しくは
+[最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
+を参照してください。
+
+[test: a no-break space before a comment after the accDescr line of a gitGraph]
+[test: U+3000 before a comment after the accDescr line of a gitGraph]
+[test: U+2003 before a comment after the accDescr line of a gitGraph]
+[test: a whitespace character that is no space or tab before a comment after the accDescr line of a gitGraph]
+[test: a no-break space before a directive and two spaces before a comment after the accDescr line of a gitGraph]
+[test: a no-break space before a comment after the title of a gitGraph]
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
