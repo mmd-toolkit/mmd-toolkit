@@ -76,8 +76,10 @@ function diagramOf(source: Source): RequirementDiagram {
  * one line, but one that cannot be joined, such as one with a comment line or
  * a directive in it, has to stay on the line of the statement before it, and
  * so has one on a line that holds a `;`, whose statements stay together, and
- * one that ends on such a line with a comment region that joins lines after
- * it (see `endsInStretchPrintedAsWritten`): the line is printed as written
+ * one whose last line a comment region that joins lines starts in, where the
+ * region joins text (see `holdsRegionJoiningText`), and one that ends on such
+ * a line with a comment region that joins lines after it (see
+ * `endsInStretchPrintedAsWritten`): the line is printed as written
  * (docs/requirement.md, Statements one per line).
  */
 function findLinesOfContinuedStatements(
@@ -100,7 +102,12 @@ function findLinesOfContinuedStatements(
         statement.range[1],
       ) ||
         semicolonLines.has(line) ||
-        endsInStretchPrintedAsWritten(source, semicolonLines, statement))
+        endsInStretchPrintedAsWritten(source, semicolonLines, statement) ||
+        holdsRegionJoiningText(
+          source,
+          statement.range[0],
+          lineEndOf(source, statement.range[1] - 1),
+        ))
     ) {
       lines.push(line)
     }
@@ -132,6 +139,25 @@ function endsInStretchPrintedAsWritten(
       statement.range[0],
       lineEndOf(source, statement.range[1] - 1),
     )
+  )
+}
+
+/**
+ * Whether a comment line of a region that joins the line to the text after it
+ * starts in the range: where nothing follows the region, the printer puts the
+ * comment on a line of its own and the parts of the statement on one line, as
+ * it does without the region (docs/requirement.md, Statements one per line).
+ */
+function holdsRegionJoiningText(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  return source.joiningRegions.some(
+    (region) =>
+      region.hasTextAfter &&
+      start <= region.comment.range[0] &&
+      region.comment.range[0] < end,
   )
 }
 
