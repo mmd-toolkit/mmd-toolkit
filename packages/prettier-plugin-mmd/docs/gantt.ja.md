@@ -21,11 +21,6 @@ fixture の置き方と確かめ方は、
 ヘッダーの後の文は、ヘッダーより 1 段深く置き、`section` の後の文は、
 次の `section` まで、さらに 1 段深く置きます。
 タスク、click 文、設定など、どの文も同じです。
-[journey](./journey.ja.md#インデント) と [timeline](./timeline.ja.md#インデント)
-も、本体の文と section を、ヘッダーより 1 段深く置き、section の中の文を、
-さらに 1 段深く置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、Gantt 図の文にも、
-この段を与えます。
 `section` 自体は最初の段です。
 Gantt 図の木は平らで、文のブロックがないので、文の段は、
 ほかの文の中での位置で決まります。
@@ -163,11 +158,6 @@ click 文の後ろには、同じ行に次の文を続けられます。
 [fixture: statements-one-per-line/description-block-after-click]
 
 同じ行の 2 つの文の間のディレクティブは、後ろの文と一緒に置きます。
-文を別の行に分けるときは、
-[radar](./radar.ja.md#global-directives) と [xychart](./xychart.ja.md#指令) も、
-間のディレクティブを、後ろの文と一緒に移します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-文の間のディレクティブに、この配置を与えます。
 
 [fixture: statements-one-per-line/directive-after-statement]
 
@@ -272,8 +262,13 @@ Prettier は、文の間の空行を多くても 1 つにし、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 本体の空行にも同じ形を与えます。
 他の図種と同じ規則です。
+ヘッダーの前の空行も落とします。
+Prettier は、テキストの先頭に空行を残さず、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+Gantt 図のテキストの先頭にも同じ形を与えます。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
+[fixture: blank-lines/before-the-header-dropped]
 
 文の間の空行は、1 つにして残します。
 
@@ -1124,11 +1119,12 @@ gantt
 
 click 文は、`click`、ID、部分の間に空白 1 つを置いて 1 行に印字します。
 空白が多く書かれていたり、タブや改行で書かれていたりしても同じです。
-[class](./class.ja.md#トークンの間の空白) の図と
-[flowchart](./flowchart.ja.md#トークンの間の空白) も、
-click 文の構造部分を区切る空白を、1 つにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-click 文の部分の間にも、この空白を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードの横の隙間を与えます。
+`click` とその ID の間は、キーワードとそれが取るものの間として、
+空白 1 つです（Prettier は `return  x` を `return x;` と印字します）。
+`href` と `call` の両側は、2 つのものの間のキーワードとして、
+空白 1 つずつです（Prettier は `a  in   b` を `a in b` と印字します）。
 
 [fixture: click-statements/one-space-between-parts]
 [fixture: click-statements/parts-over-lines-joined]
@@ -1402,16 +1398,6 @@ Prettier は、
 本文の字下げは [アクセシビリティの文](#アクセシビリティの文)に従います。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表は、行頭の空白を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[pie](./pie.ja.md#description-blocks) は、コメントだけのブロックを、
-コメントを 1 段内側に、独立した閉じ括弧を文の段に置き、
-[class](./class.ja.md#空の説明ブロック) は、
-コメントやディレクティブのあるブロックの内容と改行を保ちます。
-[class](./class.ja.md#空の説明ブロック) と
-[sequence](./sequence.ja.md#複数行の値) の図も、
-コメントやディレクティブのある説明ブロックで、内容と改行を保ちます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-そのようなブロックの内容と改行にも、この形を与えます。
 
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 
@@ -1626,13 +1612,12 @@ gantt
 上の規則が当てはまらない所では、文のトークンの間の空白の連続は空白 1 つにし、
 接しているトークンは接したままにします。
 説明ブロックの括弧が該当します。
-[class](./class.ja.md#トークンの間の空白) の図と
-[flowchart](./flowchart.ja.md#トークンの間の空白) も、通常のトークンの隙間は、
-空白があれば 1 つにし、接していればそのままにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-文のトークンの間にも、この形を与えます。
-引数が空白だけの呼び出しの括弧は互いに接し、`f(    )` は `f()` になります。
-mermaid.js はどちらも同じ呼び出しとして読むからです。
+引数が空白だけの呼び出しの括弧は互いに接します。
+括弧の内側に空白を置かない形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます（Prettier は `f( )` を
+`f();` と印字します）。
+そのため `f(    )` は `f()` になります。
+mermaid.js はどちらも同じ呼び出しとして読みます。
 括弧の間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおり、
 両側の括弧に接します。
 括弧の間に改行があっても同じで、そこにあるコメント行は 1 行のまま残ります。

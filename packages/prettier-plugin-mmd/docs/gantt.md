@@ -20,16 +20,11 @@ organized and checked is described in
 
 The statements after the header stand one level deeper than the header, and the
 statements after a `section`, up to the next `section`, one level deeper still:
-the tasks, click statements, settings, and every other statement.
-[User journeys](./journey.md#indentation) and
-[timelines](./timeline.md#indentation) place body statements and sections one
-level below the header, and section contents one level below the section;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt statements the same levels. The `section` itself stands at the first
-level. The tree of a Gantt chart is flat, with no block of statements, so the
-level of a statement is decided by its place among the others. The tasks of a
-section stand inside it, as the documentation of mermaid.js writes them in a
-Gantt chart and in a user journey.
+the tasks, click statements, settings, and every other statement. The `section`
+itself stands at the first level. The tree of a Gantt chart is flat, with no
+block of statements, so the level of a statement is decided by its place among
+the others. The tasks of a section stand inside it, as the documentation of
+mermaid.js writes them in a Gantt chart and in a user journey.
 
 [fixture: indentation/sections-and-tasks-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
@@ -163,11 +158,6 @@ statements-one-per-line/description-block-between-statements] [fixture:
 statements-one-per-line/description-block-after-click]
 
 A directive between two statements on a line moves with the statement after it.
-[Radar](./radar.md#global-directives) and [XY](./xychart.md#directives) charts
-move a directive between statements to the line of the following statement when
-they split the statements across lines;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt directives the same placement.
 
 [fixture: statements-one-per-line/directive-after-statement]
 
@@ -268,9 +258,13 @@ Runs of empty lines become one empty line, and empty lines at the start and the
 end of the body are dropped, as in the other diagram types. Prettier prints at
 most one blank line between statements and none at the start or end of a block;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the Gantt body
-the same blank-line form.
+the same blank-line form. Empty lines before the header are dropped too:
+Prettier prints no blank line at the start of a text, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the Gantt text
+the same start.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
+[fixture: blank-lines/before-the-header-dropped]
 
 An empty line between statements is kept, as one.
 
@@ -1089,11 +1083,11 @@ gantt
 
 A click statement is printed on one line with one space between `click`, its
 ids, and its parts, where it was written with more whitespace, a tab, or a line
-break. [Class diagrams](./class.md#whitespace-between-tokens) and
-[flowcharts](./flowchart.md#whitespace-between-tokens) print one space between
-the structural parts of a click statement where whitespace separates them;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt click statements the same gaps.
+break. [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the gaps
+beside the keywords: one space between `click` and its ids, as between a keyword
+and what it takes (Prettier prints `return  x` as `return x;`), and one space on
+each side of `href` or `call`, as beside a keyword between two things (Prettier
+prints `a  in   b` as `a in b`).
 
 [fixture: click-statements/one-space-between-parts] [fixture:
 click-statements/parts-over-lines-joined]
@@ -1358,17 +1352,7 @@ A block with a directive or a comment line keeps its contents and line breaks,
 with body indentation under
 [Accessibility statements](#accessibility-statements). Rule 1 gives no form
 here, since its table does not name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [pie](./pie.md#description-blocks) keeps comment-only blocks with
-comments one level inside and a separate closer at statement level, and
-[class](./class.md#empty-description-blocks) keeps the contents and line breaks
-of a block with comments or directives.
-[Class](./class.md#empty-description-blocks) and
-[sequence](./sequence.md#multi-line-values) diagrams keep the contents and line
-breaks of description blocks with comments or directives;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt blocks the same preservation.
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)).
 
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 
@@ -1580,16 +1564,13 @@ gantt
 
 Where no rule above applies, a run of whitespace between two tokens of a
 statement becomes one space, and tokens that touch keep touching, as the braces
-of a description block. [Class diagrams](./class.md#whitespace-between-tokens)
-and [flowcharts](./flowchart.md#whitespace-between-tokens) print an ordinary
-token gap as one space where whitespace was written and retain contact
-otherwise;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt statements the same token gaps. The parentheses of a call with blank
-arguments touch each other: `f(    )` is printed `f()`, since mermaid.js reads
-it as the same call. A directive between them touches both parentheses, as under
-[Directives](#directives). The same holds for the parentheses with a line break
-between them, while a comment line there stays on its own line.
+of a description block. The parentheses of a call with blank arguments touch
+each other: [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no
+whitespace inside parentheses, as Prettier prints `f( )` as `f();`, so `f(    )`
+is printed `f()`, and mermaid.js reads it as the same call. A directive between
+them touches both parentheses, as under [Directives](#directives). The same
+holds for the parentheses with a line break between them, while a comment line
+there stays on its own line.
 
 [fixture: whitespace-between-tokens/blank-arguments] [fixture:
 click-statements/callback-blank-parentheses-touch] [fixture:
