@@ -422,13 +422,15 @@ radar-beta
 ### Named entries
 
 Keep authored optional colons. Print `A: 1` with no ordinary space before the
-colon and one after, or `A 1` with one space and no alignment. This retains
-punctuation while giving equivalent padding a consistent form. `North 4` and
-`North: 4` give the same Db and figure in the versions that count, and the
-formatter adds and removes no colon. Adding a colon is unsafe for axis names
-`accTitle` and `accDescr`: common composite tokens would take priority, and
-every version of mermaid.js that counts rejects
-`curve c{accTitle: 1, accDescr 2}` (see
+colon and one after, or `A 1` with one space and no alignment. The "Values that
+follow one another" row of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between the name and value in `A 1`, as Prettier prints CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`. `North 4` and `North: 4` give the
+same Db and figure in the versions that count, and the formatter adds and
+removes no colon. Adding a colon is unsafe for axis names `accTitle` and
+`accDescr`: common composite tokens would take priority, and every version of
+mermaid.js that counts rejects `curve c{accTitle: 1, accDescr 2}` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/named-entries/named-colon-gap]
