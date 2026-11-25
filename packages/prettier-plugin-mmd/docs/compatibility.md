@@ -5494,6 +5494,15 @@ examples use `-v2` 17 times and the other 5 times.
 
 [fixture: state/header/spellings-kept]
 
+`classDiagram` and `classDiagram-v2` stay as written too. One of the versions
+that count writes another `aria-roledescription` and other marker ids for the
+one than for the other (see the row of the class diagram in
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+The examples use `classDiagram` 40 times against none of `classDiagram-v2`, so
+[rule 3](./printed-form.md#3-a-spelling) would print `classDiagram`.
+
+[fixture: class/indentation/header-v2-kept]
+
 ### What else stays as written
 
 A longer link of a flowchart (`--->` for `-->`) stays as written. The

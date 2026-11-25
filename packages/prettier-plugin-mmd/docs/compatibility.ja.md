@@ -5671,6 +5671,18 @@ railroad 図の 4 つのヘッダー `railroad-beta`、`railroad-ebnf-beta`、
 
 [fixture: state/header/spellings-kept]
 
+`classDiagram` と `classDiagram-v2` も、書かれたまま残します。
+対象にする版の 1 つが、
+一方と他方で別の `aria-roledescription` と別のマーカーの id を書きます。
+class の行は
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+にあります。
+例は `classDiagram` を 40 回使い、`classDiagram-v2` は使いません。
+そのため、
+[規則 3](./printed-form.ja.md#3-綴り)が印字する形は `classDiagram` です。
+
+[fixture: class/indentation/header-v2-kept]
+
 ### ほかに書かれたまま残すもの
 
 flowchart の長いリンク（`-->` に対する `--->`）は、書かれたまま残します。
