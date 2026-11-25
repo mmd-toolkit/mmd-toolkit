@@ -74,10 +74,7 @@ usecase-beta
 
 Use structural indentation: one configured step below the header, two for
 boundary declarations, and `end` aligned with its opener. Statements stand one
-indentation level below the header, as in [ER](./er.md#indentation) and
-[class](./class.md#indentation) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this depth.
+indentation level below the header.
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 

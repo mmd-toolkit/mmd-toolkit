@@ -80,10 +80,7 @@ usecase-beta
 ### Indentation
 
 ヘッダーの下を設定の 1 段、境界内の宣言を 2 段とし、`end` は開始文に揃えます。
-文をヘッダーより 1 段深く置く形は、
-[ER](./er.ja.md#字下げ) と [class](./class.ja.md#字下げ) の図と同じです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この字下げを与えます。
+文はヘッダーより 1 段深く置きます。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
