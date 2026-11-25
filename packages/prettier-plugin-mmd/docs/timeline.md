@@ -700,13 +700,15 @@ timeline
 
 ### Titles and sections
 
-A `title` is printed with one space after the keyword, as in a user journey, and
-the value without the spaces and tabs at its start or at its end, which the Db
-keeps and which are drawn without (see
+A `title` is printed with one space after the keyword, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives between a
+keyword and what it takes (Prettier prints `return  x` as `return x;`), and the
+value without the spaces and tabs at its start or at its end, which the Db keeps
+and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-Prettier prints `return  x` as `return x;` and removes spaces and tabs at a
-line's end. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
-space after `title` and no spaces or tabs at the end of its value;
+The spaces and tabs at the end of the value stand at the end of the line, where
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives none, as
+Prettier removes spaces and tabs at the end of a line;
 [the title-margin exception](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
 permits the resulting Db changes. `title   History  ` is printed
 `title History`, and a run of spaces and tabs inside it is printed as one space

@@ -714,13 +714,15 @@ timeline
 ### title と section
 
 `title` は、キーワードの後ろに空白 1 つを置いて印字します。
-この形は journey と同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとその値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 値の先頭と末尾の空白とタブは除きます。
 Db はそれらを持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-Prettier は、`return  x` を `return x;` と印字し、行末の空白とタブを落とします。
-`title` の後ろを空白 1 つにし、値の末尾の空白とタブを落とす形は、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+値の末尾の空白とタブは行末にあり、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+Prettier が行末の空白とタブを落とすのと同じく、そこに何も置きません。
 [タイトルの両端の空白の例外](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
 が、これによる Db の変更を認めます。
 `title   History  ` は `title History` と印字します。
