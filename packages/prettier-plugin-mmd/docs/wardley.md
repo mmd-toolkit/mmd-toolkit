@@ -13,8 +13,8 @@ records preserved text and differences from mermaid.js.
 ### Header
 
 Print the authored wardley-beta header at column one and move an ordinary first
-statement below it. This makes the diagram type easy to find; add no colon. Rule
-1 names no mark for the gap between the header and the first statement, so
+statement below it. This makes the diagram type easy to find; add no colon.
+Where a statement stands is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [architecture](./architecture.md#header),
 [cynefin](./cynefin.md#header), [radar](./radar.md#header), and
@@ -87,16 +87,16 @@ wardley-beta
 ### Pipeline
 
 Print pipeline Parent { with children one step deeper and } aligned with the
-parent statement. Rule 1 names no mark for a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [class](./class.md#indentation), [er](./er.md#attribute-blocks), and
-[state](./state.md#composite-states) print the `{` of a block after one space on
-the line of its name, and [class](./class.md#indentation),
-[er](./er.md#indentation), and [state](./state.md#indentation) print the
-statements of the block one level deeper than that line and the `}` on a line of
-its own at the level of that line. Keep the visible LF after { and each child,
-including at tabWidth zero: the grammar requires them. These delimiters show the
-authored parent and children without adding coordinates or generated IDs.
+parent statement. Rule 1 gives one space before the `{` that opens a block
+(`class A{}` is printed `class A {}`). The start of a line is no place of rule
+1, so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides where the statements and the `}` stand, as
+[class](./class.md#indentation), [er](./er.md#indentation), and
+[state](./state.md#indentation) print the statements of the block one level
+deeper than that line and the `}` on a line of its own at the level of that
+line. Keep the visible LF after { and each child, including at tabWidth zero:
+the grammar requires them. These delimiters show the authored parent and
+children without adding coordinates or generated IDs.
 
 [fixture: wardley/pipeline/pipeline-depth]
 
@@ -167,12 +167,11 @@ wardley-beta
 Put one ordinary space between each command keyword and its first complete name,
 number, string or bracket.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the space: the gap between a keyword and its text is one space in the other
-diagram types, as `title    Pets` in a pie chart and `title    Plan` in a Gantt
-chart are printed with one, and [xychart](./xychart.md#brackets-and-commas)
-prints one space between a keyword and the `[` or the string that follows it,
-also where they were written touching (`line[1,2]` is printed `line [1, 2]`, and
-`title"T"` is printed `title "T"`). The same rule formats glued keywords,
+the space before a name, a number, or a string: the gap between a keyword and
+its text is one space in the other diagram types, as `title    Pets` in a pie
+chart and `title    Plan` in a Gantt chart are printed with one. Rule 1 gives no
+space before a bracket (see [Name boundaries](#name-boundaries)), and the
+released version prints one against it. The same rule formats glued keywords,
 including the pipeline keyword: keyword terminals have no trailing boundary, and
 the AST already separates them from the name. Keep trivia and hidden boundaries
 instead of applying ordinary gap rules through them.
@@ -194,9 +193,6 @@ instead of applying ordinary gap rules through them.
 [fixture: wardley/component-spacing/keyword-deaccelerator]
 
 [fixture: wardley/component-spacing/keyword-evolution]
-
-[fixture: xychart/brackets-and-commas/bracket-touching-the-keyword] [fixture:
-xychart/brackets-and-commas/keyword-and-string-one-space]
 
 Input (escaped): `"wardley-beta\nanchorUser[0.8,0.3]"`.
 
@@ -287,12 +283,17 @@ Separate ordinary names from following components by one space, except that a
 bare name exactly title keeps its authored contact or separation before
 coordinates, a pipeline brace, an evolve target, arrows, ports, @ and /. The one
 space is the gap of [Component spacing](#component-spacing) after a keyword, of
-[Pipeline](#pipeline) before a `{`, of [Evolves](#evolves) before a number, and
-of [Links](#links) around an arrow. Before the `[` of a coordinate pair it is
-the gap that [xychart](./xychart.md#brackets-and-commas) prints before the `[`
-after a string (`bar"Costs"[1,2]` is printed `bar "Costs" [1, 2]`), and the
-examples in the documentation of mermaid.js write the `[` of all 66 coordinates
-that follow a name, a string, or `annotations` after a space (see
+[Pipeline](#pipeline) before a `{`, and of [Links](#links) around an arrow. The
+space before the number of an `evolve` is the one that [Evolves](#evolves) says
+no rule gives. Before the `[` of a coordinate pair it is not one of these gaps:
+rule 1 gives none before a `[` that follows a name, as for the `[` of an index
+(Prettier prints `Foo [0.3, 0.6];` as `Foo[(0.3, 0.6)];`, and the table of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints
+`service a (server) [A]` of an architecture diagram as `service a(server)[A]`).
+The released version prints one space there, so that form is printed against
+rule 1 and waits to be fixed by the rule. The examples in the documentation of
+mermaid.js write the `[` of all 66 coordinates that follow a name, a string, or
+`annotations` after a space (see
 [The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
 Whitespace after title makes it metadata instead of a name. Quoted "title" and
 bare titlex follow ordinary spacing; uppercase names stay names.
@@ -318,8 +319,6 @@ bare titlex follow ordinary spacing; uppercase names stay names.
 [fixture: wardley/name-boundaries/title-stage-slash]
 
 [fixture: wardley/name-boundaries/title-evolve-hidden]
-
-[fixture: xychart/brackets-and-commas/bracket-touching-a-string]
 
 Input (escaped): `"wardley-beta\ncomponent title[0.3,0.6]"`.
 
@@ -394,23 +393,23 @@ wardley-beta
 Keep every authored label offset, strategy and inertia decoration in grammar
 order. Separate decorations by one space and compact parenthesized interiors.
 Prettier prints no space inside parentheses
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 1 names no
-mark for the gap before a decoration, so
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 1 gives none
+before the `[` of a label offset, as before any `[` that follows a name (see
+[Name boundaries](#name-boundaries)), and the released version prints one space
+there. Rule 1 names no mark for the other gaps before a decoration, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides where another diagram type has a gap of that kind. Three gaps have one:
-[xychart](./xychart.md#brackets-and-commas) prints one space before a `[` that
-follows a keyword or a title, written touching or not, as wardley prints one
-before the `[` of a label offset; [quadrant](./quadrant.md#styles) prints one
-space between the `]` of a point and its first style, written touching or not
-(`]radius:9`), as wardley prints one between a `]` and the word `label` or the
-bare `inertia` that follows it; and [class](./class.md#member-lines) prints one
-space between the `)` of a method and its return type, where no other rule keeps
-the method as written (class keeps a method with a directive inside it as
-written), as wardley prints one between the `)` of a strategy in parentheses and
-the bare `inertia` that follows it. Those descriptions are of a gap in which no
-directive stands. A directive in the gap is printed after one space and touches
-the unit that follows it, in xychart as in wardley (`line %%{init: {}}%% [1]` is
-printed `line %%{init: {}}%%[1]`, and `label [1, 2] %%{x}%% (build)` is printed
+decides where another diagram type has a gap of that kind. Two gaps have one:
+[quadrant](./quadrant.md#styles) prints one space between the `]` of a point and
+its first style, written touching or not (`]radius:9`), as wardley prints one
+between a `]` and the word `label` or the bare `inertia` that follows it; and
+[class](./class.md#member-lines) prints one space between the `)` of a method
+and its return type, where no other rule keeps the method as written (class
+keeps a method with a directive inside it as written), as wardley prints one
+between the `)` of a strategy in parentheses and the bare `inertia` that follows
+it. Those descriptions are of a gap in which no directive stands. A directive in
+the gap is printed after one space and touches the unit that follows it, in
+xychart as in wardley (`line %%{init: {}}%% [1]` is printed
+`line %%{init: {}}%%[1]`, and `label [1, 2] %%{x}%% (build)` is printed
 `label [1, 2] %%{x}%%(build)`). The gap before a `(` that follows a `]` or a
 `)`, which holds a strategy or `(inertia)` in parentheses, has none: the
 documents of the other printers name no such gap, no printed fixture of another
@@ -604,13 +603,18 @@ wardley-beta
 ### Semicolon labels
 
 Attach the grammatical label-opening ; to its preceding component and print
-everything after it through the physical line end as its source span.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the attachment:
-Prettier prints no whitespace before a `;` (`a ;` is printed `a;`), as `r="a" ;`
-of a railroad diagram is printed `r = "a";`, and the forms with and without
-whitespace before the `;` have the same Db. Do not add padding or trim it: ;
-followed by space is accepted with a whitespace-only label, whereas bare ;
-rejects in every version of mermaid.js that counts (see
+everything after it through the physical line end as its source span. No rule
+gives the attachment. The row of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) for a `;` is for the
+`;` that ends a statement (`a ;` is printed `a;`), and this `;` opens the label
+of the link, which runs to the end of the line, so it is no statement end. The
+forms with and without whitespace before the `;` have the same Db, and the
+released version prints it touching what precedes it (`Alpha ->Beta ;label` is
+printed `Alpha -> Beta;label`), which stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Do not add padding or trim it: ; followed by space is accepted with a
+whitespace-only label, whereas bare ; rejects in every version of mermaid.js
+that counts (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Further semicolons use shared prefix protection; native-looking forms and
 percent text remain label text. A run of spaces and tabs inside the label of a
@@ -647,10 +651,14 @@ Print evolve Name 0.80 with one ordinary space between components, preserving
 the authored reference and decimal.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the one space after the keyword (see [Component spacing](#component-spacing)),
-and [radar](./radar.md#named-entries) prints a name and its number with one
-space as well (`North 4`). Keep empty quoted names and unpublished targets. A
-missing ID does not justify deleting the statement, and joining a bare name to
-its number can reject it.
+No rule gives the space between the name and its number:
+[radar](./radar.md#named-entries) prints a name and its number with one space as
+well (`North 4`), but its document says that form is printed against rule 3 and
+waits to be fixed by the rule, so it is no basis for rule 2, and the released
+form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Keep empty quoted names and unpublished targets. A missing ID does not justify
+deleting the statement, and joining a bare name to its number can reject it.
 
 [fixture: wardley/evolves/evolve-numeric-gap]
 
@@ -673,12 +681,12 @@ wardley-beta
 Separate note, annotations, annotation and force components with one space; the
 outer annotation comma has no preceding space and one following space too. This
 follows coordinate punctuation without aligning columns. The space between a
-keyword, a string, and a `[` is that of [Component spacing](#component-spacing),
-as [xychart](./xychart.md#brackets-and-commas) prints `bar"Costs"[1,2]` as
-`bar "Costs" [1, 2]`, and the comma is the whitespace that Prettier prints
-beside a comma ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)).
-Keep empty strings, annotation zero, integer/decimal coordinate forms and later
-unchecked annotations boxes.
+keyword and a string is that of [Component spacing](#component-spacing), the
+space before a `[` is the one of [Name boundaries](#name-boundaries), where rule
+1 gives none, and the comma is the whitespace that Prettier prints beside a
+comma ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Keep empty
+strings, annotation zero, integer/decimal coordinate forms and later unchecked
+annotations boxes.
 
 [fixture: wardley/notes-and-annotations/note-spacing]
 
@@ -689,8 +697,6 @@ unchecked annotations boxes.
 [fixture: wardley/notes-and-annotations/annotations-later]
 
 [fixture: wardley/notes-and-annotations/force-spacing]
-
-[fixture: xychart/brackets-and-commas/bracket-touching-a-string]
 
 Input (escaped): `"wardley-beta\nnote\t\"Body\"[ 0.3 ,0.6 ]"`.
 
@@ -740,9 +746,10 @@ replaces the written statement. The common bracket form makes these numeric
 pairs consistent. The comma and the brackets are those of
 [Coordinates](#coordinates)
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): none inside a
-bracket, none before a comma and one after it), the space after `size` is that
-of [Component spacing](#component-spacing), and the examples in the
-documentation of mermaid.js write their one size so (`size [1100, 800]`; see
+bracket, none before a comma and one after it), the space between `size` and the
+`[` is the one of [Name boundaries](#name-boundaries), printed against rule 1,
+and the examples in the documentation of mermaid.js write their one size so
+(`size [1100, 800]`; see
 [The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
 
 [fixture: wardley/size/size-spacing]
@@ -4035,8 +4042,7 @@ whitespace as written; each of them names those cases in its own sections or in
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
 (whitespace that the Db holds, as after a `section` or a period, and whitespace
 that changes what mermaid.js reads). Preserve marks, text and trailing padding;
-pipeline comments use child depth. Rule 1 names no mark for the indentation of a
-comment line, so
+pipeline comments use child depth. The start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#comments) and
 [timeline](./timeline.md#comments) stand a comment on a line of its own at the

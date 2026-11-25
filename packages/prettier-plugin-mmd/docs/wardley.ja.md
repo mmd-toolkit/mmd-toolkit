@@ -15,7 +15,7 @@
 見出し wardley-beta は原綴のまま第 1 列に置き、
 普通の最初の文を次の行へ移します。
 図種を見つけやすくするためです。
-規則 1 は、見出しと最初の文の間の隙間の印を挙げていないので、
+文が置かれる位置（行頭）は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [architecture](./architecture.ja.md#header)、[cynefin](./cynefin.ja.md#header)、
 [radar](./radar.ja.md#header)、[treemap](./treemap.ja.md#header)も、
@@ -92,10 +92,11 @@ wardley-beta
 
 pipeline Parent { と印字し、
 子文はさらに 1 段深く、} は親の文と同じ段に置きます。
-規則 1 は、ブロックの印を挙げていないので、
+規則 1 は、
+ブロックを開く `{` の前に空白 1 つを置きます（`class A{}` は `class A {}`
+と印字します）。
+行頭は規則 1 の場所ではないので、中の文と `}` の置き場所は、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[class](./class.ja.md#字下げ)、[er](./er.ja.md#属性ブロック)、
-[state](./state.ja.md#複合状態)は、`{` を名前の行に空白 1 つの後で置きます。
 [class](./class.ja.md#字下げ)、[er](./er.ja.md#字下げ)、
 [state](./state.ja.md#字下げ)は、中の文をその行より 1 段深く置き、
 `}` を単独の行に、その行と同じ段に置きます。
@@ -175,13 +176,13 @@ wardley-beta
 ### 部品間の空白
 
 命令語と最初の完全な名前、数、文字列、括弧の間は空白 1 つにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの空白を決めます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、名前、数、
+文字列の前の空白を決めます。
 キーワードとその後のテキストの間は、ほかの図種でも空白 1 つです。
 pie の `title    Pets` と Gantt の `title    Plan` は、空白 1 つで印字します。
-[xychart](./xychart.ja.md#角括弧とコンマ)も、
-キーワードと後ろの `[` や文字列の間に、
-接して書かれていても空白 1 つを置きます（`line[1,2]` は `line [1, 2]` に、
-`title"T"` は `title "T"` に印字します）。
+規則 1
+は括弧の前に空白を置かないので（[名前の境界](#名前の境界)を参照してください）、
+リリース済みの版が印字する空白 1 つは、その規則に反します。
 pipeline も含め、接したキーワードにも同じ規則を使います。
 キーワードに末尾境界がなく、木が名前と区別しているためです。
 注釈と読み飛ばす部分の境界には普通の空白規則を当てません。
@@ -203,9 +204,6 @@ pipeline も含め、接したキーワードにも同じ規則を使います�
 [fixture: wardley/component-spacing/keyword-deaccelerator]
 
 [fixture: wardley/component-spacing/keyword-evolution]
-
-[fixture: xychart/brackets-and-commas/bracket-touching-the-keyword]
-[fixture: xychart/brackets-and-commas/keyword-and-string-one-space]
 
 入力（エスケープ表記）: `"wardley-beta\nanchorUser[0.8,0.3]"`
 
@@ -306,13 +304,19 @@ wardley-beta
 ただし引用符のない名前がちょうど title のときは、座標、pipeline の括弧、
 evolve の数、矢印、port、@、/ との接し方を保ちます。
 この空白 1 つは、キーワードの後なら[部品間の空白](#部品間の空白)、
-`{` の前なら[pipeline](#pipeline)、数の前なら[evolve](#evolve)、
+`{` の前なら[pipeline](#pipeline)、
 矢印の前後なら[link](#link) の各節と同じ隙間です。
-座標の組の `[` の前は、
-[xychart](./xychart.ja.md#角括弧とコンマ)が文字列の後の `[`
-の前に置く隙間と同じです（`bar"Costs"[1,2]` は `bar "Costs" [1, 2]`
-に印字します）。
-mermaid.js の文書の例も、名前、文字列、
+evolve の数の前の空白は、どの規則も与えないと[evolve](#evolve)が述べる隙間です。
+座標の組の `[` の前は、この隙間ではありません。
+規則 1 は、名前の後の `[` の前に、
+添字の `[` と同じく空白を置きません（Prettier は `Foo [0.3, 0.6];` を
+`Foo[(0.3, 0.6)];` と印字し、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)の表は、
+architecture の `service a (server) [A]` を `service a(server)[A]`
+と印字します）。
+リリース済みの版はそこに空白 1 つを印字するので、この形は規則 1 に反しており、
+規則による修正を待っています。
+mermaid.js の文書の例は、名前、文字列、
 `annotations` の後の座標 66 個のすべての `[` を、空白の後に書いています。
 詳しくは
 [Wardley 図の空白を決める例](./compatibility.ja.md#wardley-図の空白を決める例)
@@ -342,8 +346,6 @@ title の後に空白があると、名前でなくメタデータとして読�
 [fixture: wardley/name-boundaries/title-stage-slash]
 
 [fixture: wardley/name-boundaries/title-evolve-hidden]
-
-[fixture: xychart/brackets-and-commas/bracket-touching-a-string]
 
 入力（エスケープ表記）: `"wardley-beta\ncomponent title[0.3,0.6]"`
 
@@ -420,14 +422,14 @@ wardley-beta
 装飾の外側は空白 1 つ、括弧の内側は詰めます。
 括弧の内側に空白を置かないのは、
 Prettier と同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 は、装飾の前の隙間の印を挙げていないので、
+規則 1 は、ラベルの位置のずれの `[` の前に、
+名前の後のほかの `[`
+と同じく空白を置かず（[名前の境界](#名前の境界)を参照してください）、
+リリース済みの版はそこに空白 1 つを印字します。
+規則 1 は、装飾の前のほかの隙間の印を挙げていないので、
 同じ種類の隙間がほかの図種にあれば、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-それがある隙間は 3 つあります。
-[xychart](./xychart.ja.md#角括弧とコンマ) は、
-キーワードやタイトルの後の `[` の前に、
-書かれたとおりに接していても空白 1 つを置き、
-wardley もラベルの位置のずれの `[` の前に空白 1 つを置きます。
+それがある隙間は 2 つあります。
 [quadrant](./quadrant.ja.md#スタイル) は、点の `]` と最初のスタイルの間に、
 接していても（`]radius:9`）空白 1 つを置き、wardley も `]` と、
 その後ろの `label` や括弧なしの `inertia` の間に空白 1 つを置きます。
@@ -659,10 +661,17 @@ wardley-beta
 
 文法上のラベル開始 ; は前の部品に付け、
 後ろは物理行末まで原文の範囲のまま印字します。
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が `;` の付け方を決めます。
-Prettier は `;` の前に空白を印字せず（`a ;` は `a;` になります）、
-railroad の `r="a" ;` も `r = "a";` と印字します。
+どの規則も、この付け方を与えません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)の `;` の行は、
+文を終える `;` のもので（`a ;` は `a;` になります）、
+この `;` はリンクのラベルを開き、ラベルは行末まで続くので、
+文の終わりではないためです。
 `;` の前に空白がある形とない形は、Db が同じです。
+リリース済みの版は `;` を前の文字に接して印字し（`Alpha ->Beta ;label` は
+`Alpha -> Beta;label` になります）、決まるまでその形を残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 余白を足したり両端の空白を除いたりしません。; の後が空白なら、
 空白だけのラベルとして受理され、
 裸の ; は対象にする版の mermaid.js のすべてで拒否されます。
@@ -703,8 +712,14 @@ wardley-beta
 evolve Name 0.80 とし、部品間は空白 1 つにします。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
 キーワードの後の空白 1 つを決めます（[部品間の空白](#部品間の空白)を参照）。
-[radar](./radar.ja.md#named-entries)も、
-名前と数を空白 1 つで印字します（`North 4`）。
+名前と数の間の空白は、どの規則も与えません。
+[radar](./radar.ja.md#named-entries)も名前と数を空白 1
+つで印字しますが（`North 4`）、その文書はこの形を規則 3 に反して印字していて、
+規則による修正を待つと述べるので、規則 2 の基準になりません。
+リリース済みの形は、決まるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 書かれた参照と小数、空の引用名、未反映の対象を保ちます。
 ID が存在しなくても文を消しません。
 引用符のない名前と数を結ぶと拒否されることがあります。
@@ -730,10 +745,9 @@ wardley-beta
 note、annotations、annotation、force の部品間は空白 1 つにします。
 annotation の外側のコンマも前を詰め、後を空白 1 つにします。
 列を揃えず、座標の句読法と同じ選択にします。
-キーワード、文字列、`[` の間の空白は、
-[部品間の空白](#部品間の空白)の空白と同じです。
-[xychart](./xychart.ja.md#角括弧とコンマ)は `bar"Costs"[1,2]` を
-`bar "Costs" [1, 2]` に印字します。
+キーワードと文字列の間の空白は、[部品間の空白](#部品間の空白)の空白と同じです。
+`[` の前の空白は、[名前の境界](#名前の境界)の隙間で、
+規則 1 はそこに空白を置きません。
 コンマは、Prettier がコンマの横に印字する空白です。
 詳しくは [規則 1](./printed-form.ja.md#1-記号の横の空白) を参照してください。
 空文字、番号 0、整数と小数の座標、後続の検査されない box を保ちます。
@@ -747,8 +761,6 @@ annotation の外側のコンマも前を詰め、後を空白 1 つにします
 [fixture: wardley/notes-and-annotations/annotations-later]
 
 [fixture: wardley/notes-and-annotations/force-spacing]
-
-[fixture: xychart/brackets-and-commas/bracket-touching-a-string]
 
 入力（エスケープ表記）: `"wardley-beta\nnote\t\"Body\"[ 0.3 ,0.6 ]"`
 
@@ -798,7 +810,8 @@ size [800, 600] とし、座標と同じ括弧の形にします。
 コンマと括弧は[座標](#座標)と同じです。
 括弧の内側は詰め、コンマの前は詰めて後に空白 1 つにします。
 詳しくは [規則 1](./printed-form.ja.md#1-記号の横の空白) を参照してください。
-`size` の後の空白は[部品間の空白](#部品間の空白)と同じです。
+`size` と `[` の間の空白は、[名前の境界](#名前の境界)の隙間で、
+規則 1 に反して印字しています。
 mermaid.js の文書の例も、size を 1 つだけ、
 この形で書いています（`size [1100, 800]`）。
 詳しくは
@@ -3230,7 +3243,7 @@ wardley-beta
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。
 印、本文、末尾余白を保ち、pipeline 内では子文の段にします。
-規則 1 は、コメント行の字下げの印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [journey](./journey.ja.md#コメント) と [timeline](./timeline.ja.md#コメント)
 も、自分の行にあるコメントを後ろの文の段に置き、
