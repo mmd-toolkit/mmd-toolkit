@@ -237,11 +237,11 @@ Keep WardleyIdentifier and StringLiteral source spans otherwise, including
 internal spaces/tabs, hyphens, parentheses, ampersands, escapes, empty strings
 and whitespace-only strings, except for the label of a link, which prints a run
 of spaces and tabs as one space (see [Semicolon labels](#semicolon-labels)). The
-name of a component is its id in the Db, and a link or a pipeline finds its
-component by the exact id, so a name with another run of whitespace is another
-name: 12.3.0 holds the id with the whitespace as written, and rejects a pipeline
-whose name differs from its component's by a tab for a space. The figures differ
-too for two components whose names differ by a run (see
+name of a component is its id in the Db, and a pipeline finds its component by
+the exact id, so a name with another run of whitespace is another name: 12.3.0
+holds the id with the whitespace as written, and rejects a pipeline whose name
+differs from its component's by a tab for a space. The figures differ too for
+two components whose names differ by a run (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 A string of a name between `'` is printed between `"` unless its text holds a
 `'`, a `"`, a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or

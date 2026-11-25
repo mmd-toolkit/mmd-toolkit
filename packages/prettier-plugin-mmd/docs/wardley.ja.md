@@ -253,8 +253,7 @@ mermaid.js の文書の例と同じく引用符で囲んで印字します。
 空と空白だけの文字列も保ちます。
 ただし、link のラベルは除き、中の空白とタブの連なりは空白 1 つにして印字します。
 （[セミコロンのラベル](#セミコロンのラベル)を参照）。
-component の名前は Db の id で、
-link や pipeline は同じ id で component を探します。
+component の名前は Db の id で、pipeline は同じ id で component を探します。
 そのため、空白の連なりが違う名前は別の名前です。
 12.3.0 は書かれたとおりの空白を持つ id を保ち、
 名前の空白がタブかスペースかで component と違う pipeline を拒否します。
