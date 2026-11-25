@@ -195,10 +195,9 @@ when authored components touch. Prettier puts one space after a keyword before
 what it takes, as in `return x;`, and between successive values in a CSS
 declaration. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
 the same one-space gaps after an operation keyword and between ordinary
-reference and option components. Do not align columns. The components get a
-consistent form; bare names retain their required boundaries. Gaps containing
-comments, global directives or hidden forms retain their attachment and physical
-boundaries.
+reference and option components. Do not align columns. Bare names retain their
+required boundaries. Gaps containing comments, global directives or hidden forms
+retain their attachment and physical boundaries.
 
 [corpus fixture: gitgraph/gram-commit-glued-options] [fixture:
 gitgraph/operation-spacing/gap-branch-quoted] [fixture:
