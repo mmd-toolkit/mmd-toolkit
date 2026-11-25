@@ -530,7 +530,10 @@ whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted
 [fixture: whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-colon-and-comma-spaced]
 
-A U+2028 or U+2029 among the styles keeps the statement as written.
+A U+2028 or U+2029 among the styles keeps the statement as written: mermaid.js
+keeps the character in the style, CSS does not read it as whitespace, and every
+version that counts draws another figure when it is left out (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: U+2028 before the comma of a class style statement]
 

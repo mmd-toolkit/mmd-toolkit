@@ -578,6 +578,11 @@ mermaid.js はスタイルをクラスのスタイルへ書かれたまま足し
 [fixture: whitespace-between-tokens/style-colon-and-comma-spaced]
 
 スタイルの間に U+2028 や U+2029 があれば、文を書かれたままにします。
+mermaid.js がその文字をスタイルに残し、CSS は空白として読まないので、
+除くとどの対象の版も別の図を描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: U+2028 before the comma of a class style statement]
 
