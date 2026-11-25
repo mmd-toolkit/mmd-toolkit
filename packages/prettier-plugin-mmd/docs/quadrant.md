@@ -114,7 +114,10 @@ written (see [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)).
 When such a line is the line of the header, the statements stay on the header's
 line. A `;` that the rule ignores at the end of the line is dropped, and the
 line that is printed has no `;` for the rule to read, so its whitespace is
-formatted as anywhere else.
+formatted as anywhere else. After the ignored final `;` is dropped, the colon in
+`classDef c color: #f00` is the colon of a key.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that colon no
+space before and one space after.
 
 [fixture:
 statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
@@ -181,7 +184,10 @@ A run of empty lines becomes one empty line, and there is none between the
 header and the first statement, and none at the end of the text. A blank line is
 a choice of the author that the Db does not hold, and one empty line shows it at
 the least cost, as Prettier does in code (see
-[Blank lines](./flowchart.md#blank-lines)).
+[Blank lines](./flowchart.md#blank-lines)). Prettier leaves no blank lines at
+the start of a text or a block, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes blank lines
+before the header and between the header and the first statement.
 
 [fixture: blank-lines/runs-become-one] [fixture:
 blank-lines/none-after-the-header] [fixture: blank-lines/none-at-the-end]
@@ -215,7 +221,10 @@ quadrantChart
 The header `quadrantChart` is printed as written; mermaid.js detects it in
 exactly this case, so the printer has nothing to choose. The whitespace before
 it and after it is dropped, and a statement after it on its line goes to a line
-of its own (see [Statements one per line](#statements-one-per-line)).
+of its own (see [Statements one per line](#statements-one-per-line)). Prettier
+drops spaces and tabs at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them when
+they end the header line.
 
 [fixture: header/header-only] [fixture: header/trailing-whitespace-dropped]
 [fixture: header/comment-after-the-header] [fixture:
@@ -240,16 +249,19 @@ quadrantChart %% c
 
 ### Keywords and texts
 
-The keyword of a statement and its text are separated by one space. A run of
-whitespace becomes one space, and a keyword that touches its text or string gets
-one: `x-axisL --> R` is printed `x-axis L --> R`, `quadrant-3C` is printed
-`quadrant-3 C`, `title-x` is printed `title -x`, and `title"T"` is printed
-`title "T"`. Whitespace between them is not in the Db, so the form is a choice:
-`x-axisL --> R` and `x-axis L --> R` are the same axis, and `quadrant-10 A` is
-the quadrant 1 with the text `0 A`, the same as `quadrant-1 0 A`, which the
-printed space shows. A space marks where the text starts, which a keyword glued
-to its text hides, and the documentation of mermaid.js writes every keyword
-apart from its text
+The keyword of a statement and its text are separated by one space. Prettier
+prints one space between a keyword and what it takes, turning `return  x;` into
+`return x;`. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives a
+statement's keyword and text the same gap, including when they were written
+touching. A run of whitespace becomes one space, and a keyword that touches its
+text or string gets one: `x-axisL --> R` is printed `x-axis L --> R`,
+`quadrant-3C` is printed `quadrant-3 C`, `title-x` is printed `title -x`, and
+`title"T"` is printed `title "T"`. Whitespace between them is not in the Db, so
+the form is a choice: `x-axisL --> R` and `x-axis L --> R` are the same axis,
+and `quadrant-10 A` is the quadrant 1 with the text `0 A`, the same as
+`quadrant-1 0 A`, which the printed space shows. A space marks where the text
+starts, which a keyword glued to its text hides, and the documentation of
+mermaid.js writes every keyword apart from its text
 ([`title`, `x-axis`, `y-axis`, and `quadrant-1` to `quadrant-4`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L13-L19)).
 
 [fixture: keywords-and-texts/title-spaces] [fixture:
@@ -277,8 +289,11 @@ The whitespace inside a text is in the Db, and a run of spaces and tabs in it is
 printed as one space: `quadrant-1 a    b` has the text `a    b` and is printed
 `quadrant-1 a b`, and a tab between two words is a space; a form feed is no
 space or tab, and stays. The whitespace at the ends of a text is dropped, since
-the Db drops it. A string and the words after it keep the whitespace between
-them, as `"a" b` is the text `a b` and `"a"b` the text `ab`.
+the Db drops it. The Db drops the spaces and tabs at the end of a text,
+permitting their removal. Where they stand at the end of a line,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them, as
+Prettier does. A string and the words after it keep the whitespace between them,
+as `"a" b` is the text `a b` and `"a"b` the text `ab`.
 
 [fixture: keywords-and-texts/inner-runs-collapsed] [fixture:
 keywords-and-texts/whitespace-at-the-ends-dropped] [fixture:
@@ -657,8 +672,11 @@ quadrantChart
 A `title` is printed as the keyword and its text, after one space, whatever
 whitespace separates them (a tab too). The text is the rest of the line without
 the whitespace at its ends, and a run of spaces and tabs inside it is printed as
-one space. A `title` with no text is printed as the keyword alone. `;`, `#`,
-`%%`, quotes, and keywords in a title are characters of it.
+one space. A `title` with no text is printed as the keyword alone. With no text
+after `title`, the spaces and tabs after the keyword stand at the end of the
+line. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them,
+leaving the keyword alone. `;`, `#`, `%%`, quotes, and keywords in a title are
+characters of it.
 
 [fixture: titles-and-accessibility-statements/title-text] [fixture:
 titles-and-accessibility-statements/title-without-text] [fixture:
@@ -899,7 +917,12 @@ inside the name of a class]
 Strings keep their authored line breaks and whitespace, which are part of their
 values. Description-body lines align one step inside their statement; Mermaid
 discards their indentation after LF. Keep the remaining text and line breaks.
+The spaces at the end of an inner line of an `accDescr` block stay: the Db holds
+them, and every version that counts puts another description text in the SVG
+without them (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
+[fixture: multi-line-values/description-block-inner-line-trailing-spaces-kept]
 [fixture: multi-line-values/string-with-line-breaks-kept] [fixture:
 multi-line-values/description-block-lines-kept] [fixture:
 multi-line-values/comment-line-inside-a-block-kept]
@@ -1181,7 +1204,11 @@ ends after it). A gap that holds one is printed as written, and so is the text
 that holds one. Rule 1 names no mark for a gap that holds one, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+[timeline](./timeline.md#line-separators) print such a gap as written. The Db
+keeps the whitespace inside a text. A text containing U+2028 or U+2029 is
+outside the exception in
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same),
+so its internal spaces and tabs stay as written.
 
 [test: U+2028 between the words of a text] [test: U+2029 between the words of a
 text] [test: U+2028 at the end of a text] [test: U+2028 between a statement and
@@ -1217,8 +1244,14 @@ rejected). The whitespace that is printed is the one that [Points](#points)
 gives for the `:`, the brackets, and the comma of a point, and that
 [Titles and accessibility statements](#titles-and-accessibility-statements) and
 [Empty description blocks](#empty-description-blocks) give for the colon and the
-brace of an accessibility statement. After the `]` of a point they are not
-accepted (see [Line separators](#line-separators)).
+brace of an accessibility statement. An accessibility statement gives the
+diagram its one title or description, so its colon is the colon of a key.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
+inside a point's brackets or before its comma, one space after the comma, and no
+whitespace before an accessibility colon and one space after it. The same rule
+gives one space before the brace that opens a description block and none inside
+its empty braces. After the `]` of a point they are not accepted (see
+[Line separators](#line-separators)).
 
 [test: U+00A0 between the words of a text] [test: U+3000 between the words of a
 text] [test: U+FEFF between the words of a text] [test: a form feed between the
