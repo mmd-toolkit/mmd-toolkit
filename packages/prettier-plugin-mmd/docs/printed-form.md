@@ -90,10 +90,13 @@ between the line that opens the block and its closing line (`subgraph S` and
 `end`, `loop` and `end`, a `{` and its `}`). Prettier prints them so in
 JavaScript (`if (a) {`), CSS (a rule), YAML (a nested mapping), and HTML (an
 element); a comment line (`// c`, `/* c */`, `# c`, `<!-- c -->`) stands at the
-level of the lines around it. The text inside a template literal of JavaScript
-stays as written: the lines of a text that spreads over several lines, such as
-the body of a description block, are the text of a value and not lines inside a
-block, so they are no part of this row.
+level of the lines around it. Every line inside a block stands at that level,
+whatever it holds: a statement, a comment line, or, in these diagrams, a
+directive line (`%%{x}%%` on a line of its own), which mermaid.js removes before
+it reads the text, as it removes a comment. The text inside a template literal
+of JavaScript stays as written: the lines of a text that spreads over several
+lines, such as the body of a description block, are the text of a value and not
+lines inside a block, so they are no part of this row.
 
 A keyword stands between two things (`a in b`) or before what it takes
 (`return x`, `typeof y`, `throw e`, and in CSS `@media screen` and
