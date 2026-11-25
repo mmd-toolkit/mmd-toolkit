@@ -122,8 +122,8 @@ columns have no grammatical meaning. useTabs uses one tab, even at width zero.
 Prettier prints a nested block of JavaScript with no indentation at
 `--tab-width 0`, and with one tab per level at `--use-tabs`, also at
 `--tab-width 0`. Entry continuation lines use two steps; written value columns,
-hidden interiors/closers and retained prefixes keep their own rules. Rule 1
-names no mark for the indentation of a continuation line, so
+hidden interiors/closers and retained prefixes keep their own rules. The start
+of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#multi-line-statements) and
 [quadrant](./quadrant.md#multi-line-statements) put the continuation lines of a
@@ -326,8 +326,8 @@ Never add a newline before a comma or inside a named entry, where mermaid.js
 rejects one. Keep newlines holding comments or Root directives; ordinary
 continuation lines and comments use two indentation steps, while a separate `}`
 aligns with its statement. A comment takes the rest of its line, so joining the
-next entry onto it would put the entry into the comment. Rule 1 names no mark
-for the level of a line next to a comment or a directive, so
+next entry onto it would put the entry into the comment. The start of a line is
+no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#multi-line-statements) puts the continuation
 lines one level inside the statement, and the separate `}` stands at the level
