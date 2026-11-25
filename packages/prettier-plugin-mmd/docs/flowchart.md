@@ -19,15 +19,10 @@ organized and checked is described in
 
 The statements after the header stand one level deeper than the header, and the
 statements of a subgraph one level deeper than its `subgraph` line, with `end`
-at the level of `subgraph`. An [ER subgraph](./er.md#indentation) and a
-[class namespace](./class.md#indentation) put their statements one level below
-their opening line and their closing line at the opening level.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same indentation for a flowchart subgraph and its `end`. A level follows
-Prettier's `useTabs` and `tabWidth` options, subject to the minimum below: two
-spaces by default, as in the other languages that Prettier formats. The
-statements after the header stand one level deeper, as the documentation of
-mermaid.js writes them.
+at the level of `subgraph`. A level follows Prettier's `useTabs` and `tabWidth`
+options, subject to the minimum below: two spaces by default, as in the other
+languages that Prettier formats. The statements after the header stand one level
+deeper, as the documentation of mermaid.js writes them.
 
 [fixture: indentation/use-tabs]
 
@@ -2667,8 +2662,7 @@ The `}` of the block stands at the level of the `accDescr` it closes.
 
 Comment contents inside such a block are kept, with their columns following the
 same top-level or subgraph rule. Comment lines in description blocks use the
-body's indentation in [C4](./c4.md#description-blocks) diagrams and
-[XY charts](./xychart.md#multi-line-values);
+body's indentation in [C4](./c4.md#description-blocks) diagrams;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the same indentation at the top level of a flowchart.
 
@@ -3142,11 +3136,9 @@ In a `direction` statement mermaid.js reads the text before `direction` and
 after the value as text, which may hold labels and strings, and a `;` after the
 value belongs to that text and is no separator. The text is kept as written; the
 whitespace between it and `direction`, and between `direction` and the value,
-becomes one space, as between any tokens. The gaps before `direction` and its
-value have one space in [ER](./er.md#direction) and
-[state](./state.md#whitespace-between-tokens) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-a flowchart the same one-space gaps. A line such as `A[direction TB]` is a
+becomes one space. The spacing follows the "A keyword before what it takes" row
+of [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): `direction` is a
+keyword before the value it takes. A line such as `A[direction TB]` is a
 `direction` statement too, its vertices and links are not read, and it is
 printed so, at the indentation of its level.
 
@@ -3155,11 +3147,9 @@ printed so, at the indentation of its level.
 The direction of the header stands after one space, also where a symbol touched
 the keyword: `graph>` is printed `graph >`, and `flowchart^` is printed
 `flowchart ^`. The whitespace is not in the Db, and a letter direction such as
-`TD` already needs the space. The gap between the header and its direction has
-one space in [agentflow](./agentflow.md#header) and
-[timeline](./timeline.md#header-and-direction) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-a flowchart the same gap. A directive between them is placed as under
+`TD` already needs the space. The header is a keyword before the direction it
+takes; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space
+between them. A directive between them is placed as under
 [Directives](#directives), and a U+2028 or U+2029 stays where it is. Rule 1
 names no mark for a gap that holds one, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
