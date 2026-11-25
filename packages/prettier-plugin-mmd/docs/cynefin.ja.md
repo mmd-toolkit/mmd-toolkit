@@ -41,6 +41,14 @@ mermaid.js がディレクティブを後ろの改行ごと取り除き、
 大域的なディレクティブの接触、隠れた形の隣接、保護行は共有規則に従います。
 見出し行を保つときは、その行の領域と項目の開きも同じ行に保ちます。
 空白で離れたコロンは修復せず、拒否します。
+`cynefin-beta %%{x}%%:`、`cynefin-beta%%{x}%% :`、`cynefin-beta :` は、11.16.1、
+11.17.2、12.0.0、12.3.0 のどれにも拒否されます。
+コロンのない `cynefin-beta %%{x}%%` は変えません。
+
+[fixture: cynefin/header/directive-no-colon-space-kept]
+[test: a space before a directive between the header and the colon of a cynefin diagram]
+[test: a space before the colon after a directive of a cynefin diagram]
+[test: a space before the colon of a cynefin diagram]
 
 [fixture: cynefin/hidden-boundaries/meeting-inline-directive-directive]
 
@@ -448,8 +456,12 @@ cynefin-beta
 空または空白だけの値は title だけにし、次行を値にしません。
 引用符を文字列の区切りと解釈せず、Db が等しい簡潔な外端を選びます。
 空の代入によるリセットと注釈類の接触を残します。
-題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+題のテキストの後にディレクティブだけが続くときは、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブを除いて印字します。
+ただし、行のディレクティブのどれかに改行、`;`、U+2028、
+U+2029 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title/title-directives-end-blanks-dropped]
@@ -502,8 +514,12 @@ cynefin-beta
 普通の外端空白だけを除き、内部と注釈類の接触を保ち、
 コロン後のかっこは行の値として残します。
 共通の簡潔な形で、値を解釈し直さないためです。
-値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-最後のディレクティブの後の空白を除いて印字します。
+値のテキストの後にディレクティブだけが続くときは、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブを除いて印字します。
+ただし、行のディレクティブのどれかに改行、`;`、U+2028、
+U+2029 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]

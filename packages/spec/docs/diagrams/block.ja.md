@@ -398,6 +398,24 @@ mermaid.js は部分をつなぎます。
 [fixture: block/db-tail-composite-end-directive]
 [fixture: block/db-tail-composite-end-keyword-directive]
 
+ディレクティブのすぐ後の `%%` も、行の始めにないほかの `%%` と同じく、
+id の文字です（[単位と文脈](#単位と文脈) のコメントを参照）。
+`b%%{init: {}}%%%% x` は、ディレクティブが id `b%%` の中にあるので拒否されます。
+mermaid.js はブロック `b%%` と `x` を読みます。
+`b-->c%%{init: {}}%%%% x` も、辺の終わりの id `c%%` の中にあるので拒否されます。
+ディレクティブのどちらかの側に空白があれば、`%%` はそれだけで 1 つの id です。
+`b %%{init: {}}%%%% x` と `b%%{init: {}}%% %% x` は、ブロック `b`、`%%`、
+`x` です。
+行の上で空白とディレクティブだけが前にある `%%`
+はコメント行を始めます（[コメント行](../common.ja.md#コメント行) を参照）。
+そのため、行 `%%{init: {}}%%%% x` は何も変えません。
+
+[fixture: block/div-directive-in-id-before-percent-pair]
+[fixture: block/div-directive-in-edge-end-before-percent-pair]
+[fixture: block/db-directive-then-percent-pair-id]
+[fixture: block/db-directive-then-space-percent-pair-id]
+[fixture: block/db-directive-then-percent-pair-at-line-start]
+
 ### 文の文脈
 
 文の文脈の規則を、試す順に挙げます。

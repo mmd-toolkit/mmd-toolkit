@@ -18,6 +18,11 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 
 `eventmodeling` は第 1 列に置き、普通の最初の文を次の行へ移して、
 見出しを見つけやすくします。
+規則 1 は、見出しの後の文の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[wardley](./wardley.ja.md#見出し)、[cynefin](./cynefin.ja.md#header)、
+[architecture](./architecture.ja.md#header)、[packet](./packet.ja.md#header)も、
+見出しを第 1 列に置き、普通の最初の文を次の行に置きます。
 隠れた形、保持する前置部分、保護行は共有の規則に従い、
 見出しの行が保つ行なら最初の文もその行に残します。
 同じ項目を図種の間で同じように扱うためです。
@@ -305,6 +310,26 @@ tf 01 evt Alpha [[D]]
 タグの有無と全 8 種の型語は原文どおり残します。
 タグは本文を JSON などとして解釈する指示ではありません。
 隠れた形と大域的な注釈類の境界は保ちます。
+タグの中のコメントと、タグの直後のコメントは、接していれば接したまま残し、
+その前の空白とタブの連なりは、開始のバッククォートの直後でも、
+空白 1 つにします。
+タグの中のコメントの後の空白とタブの連なりも空白 1 つにします。
+タグの部分の間の隙間は、空白、タブ、ノーブレークスペース、U+3000、U+2028、
+U+2029 のどれを含んでいても詰めたままです。
+タグの中のコメントの前、開始のバッククォートの直後、タグの中のコメントの後、
+タグの後のコメントの前と後の、幅のある空白、U+2028、
+U+2029 （[Comments](#comments) を参照）も空白 1 つにします。
+それらの場所のそれぞれに、ノーブレークスペース、U+3000、U+2028、
+U+2029 の行があります。
+それらの場所での、[Comments](#comments) の集合のほかの文字については、
+何も述べません。
+その形を与える規則はありません。
+型タグを持つほかの図はなく、[Comments](#comments) が挙げる印字器は、
+コメントの前のこれらの文字を別々に印字するからです。
+公開済みの版が印字する形を、決めるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -313,6 +338,40 @@ tf 01 evt Alpha [[D]]
 [fixture: eventmodeling/type-tags/all-inline-tags-retained]
 
 [fixture: eventmodeling/type-tags/tag-comments-retained]
+[fixture: eventmodeling/type-tags/tag-comments-spaced]
+[fixture: eventmodeling/type-tags/tag-comments-spaced-after]
+[fixture: eventmodeling/type-tags/tag-comments-tab-before]
+[fixture: eventmodeling/type-tags/tag-comments-tab-after]
+[fixture: eventmodeling/type-tags/tag-comments-before-closing-backtick-and-body]
+[fixture: eventmodeling/type-tags/tag-comments-after-opening-backtick]
+[test: a no-break space before a comment inside a type tag of an eventmodeling diagram]
+[test: U+3000 before a comment inside a type tag of an eventmodeling diagram]
+[test: U+2028 before a comment inside a type tag of an eventmodeling diagram]
+[test: U+2029 before a comment inside a type tag of an eventmodeling diagram]
+[test: a no-break space after a comment inside a type tag, before its next part, of an eventmodeling diagram]
+[test: a no-break space after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram]
+[test: a no-break space before a comment after a type tag of an eventmodeling diagram]
+[test: a no-break space after a comment after a type tag of an eventmodeling diagram]
+[test: a no-break space between the parts of a type tag of an eventmodeling diagram]
+[test: U+3000 after a comment inside a type tag, before its next part, of an eventmodeling diagram]
+[test: U+2028 after a comment inside a type tag, before its next part, of an eventmodeling diagram]
+[test: U+2029 after a comment inside a type tag, before its next part, of an eventmodeling diagram]
+[test: U+3000 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram]
+[test: U+2028 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram]
+[test: U+2029 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram]
+[test: U+3000 before a comment after a type tag of an eventmodeling diagram]
+[test: U+2028 before a comment after a type tag of an eventmodeling diagram]
+[test: U+2029 before a comment after a type tag of an eventmodeling diagram]
+[test: U+3000 after a comment after a type tag of an eventmodeling diagram]
+[test: U+2028 after a comment after a type tag of an eventmodeling diagram]
+[test: U+2029 after a comment after a type tag of an eventmodeling diagram]
+[test: U+3000 between the parts of a type tag of an eventmodeling diagram]
+[test: U+2028 between the parts of a type tag of an eventmodeling diagram]
+[test: U+2029 between the parts of a type tag of an eventmodeling diagram]
+[test: a no-break space after the opening backtick of a type tag, before a comment, of an eventmodeling diagram]
+[test: U+3000 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram]
+[test: U+2028 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram]
+[test: U+2029 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -430,6 +489,17 @@ note
 
 宣言と note の部品は `entity Shop.Buy`、`data D`、`note 01` と、
 普通の空白 1 個で分けます。
+規則 1 は、文の部品の間の改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[gantt](./gantt.ja.md#複数行の文)、[journey](./journey.ja.md#複数行の文)、
+[quadrant](./quadrant.ja.md#複数行の文)も、
+mermaid.js が複数行にわたって読む文を、部品の間に空白 1 個を置いて、
+1 行に印字します。
+修飾名のドットの両側には空白を置きません。
+詳しくは [Qualified names](#qualified-names) を参照してください。
+ほかの規則がレイアウトを書かれたまま残す所は別です。
+部品の間のコメント（上の段落が扱います）、改行をまたぐスラッシュのコメント、
+無視される `;` を含む行です。
 ブロック開始記号は見出し行の空白 1 個後に置きます。
 値と閉じの境界は data の規則に従います。
 必須の名前の `title` はフレームと同じく安全な前方境界を保ちます。
@@ -441,6 +511,9 @@ note
 を参照してください。
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary]
+[fixture: eventmodeling/declarations-and-notes/entity-break-after-whitespace-and-empty-line]
+[fixture: eventmodeling/declarations-and-notes/entity-slash-comment-over-lines]
+[fixture: eventmodeling/semicolons/ignored-semicolon-touches-next-atom]
 [fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
 
 [fixture: eventmodeling/declarations-and-notes/entity-title-lf-protected]
@@ -827,6 +900,69 @@ title の前置空白、1 個の区切り、本文、末尾テキストを原文
 
 [fixture: eventmodeling/title/title-exact-padding-and-quotes]
 
+ヘッダー行とフレーム文の行では、`title`、`accTitle:`、`accDescr:` のテキストは、
+最初の `%%` の前で終わり、
+`%%` はコメントを始めます（`title T  %% c` の値は `T  ` です）。
+テキストの後の `//` と `/* */` はテキストの一部です（`title T  // c` の値は
+`T  // c` です）。
+そのため、印の前にある空白かタブの連なりは値に属し、
+そこにある幅のある空白（[Comments](#comments) を参照）、U+2028、
+U+2029 も値に属するので、書かれたまま残します。
+
+`accTitle:` では、`%%`、`//`、`/* */` のどれが続くときも、
+連なりを書かれたまま残します。
+つなぐと、対象にするどの版でも、
+Db と mermaid.js が描くテキストが変わるからです。
+`title` と `accDescr:` では、連なりをつないでも描くものは同じです。
+title の Db は同じで、説明の Db は連なりか末尾だけが違い、
+mermaid.js は説明を空白をつめた HTML として描きます。
+規則 2 は空白 1 つを与えます。
+journey、timeline、sequence は `title T  %% c` を `title T %% c` と印字し、
+title や説明の中の連なり（`title T  // c`）にも、
+同じに描かれるテキスト中の空白の連なりが空白 1 つを与えます。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+リリース済みの版は、`title T  %% c`、`title T  // c`、`title T  /* c */`、
+`accDescr: T  %% c`、`accDescr: T  // c`、`accDescr: T  /* c */` を、
+書かれたまま残すので、その形は規則 2 に反して印字しており、
+規則による修正を待っています。
+
+[fixture: eventmodeling/title/header-line-title-run-before-percent-comment-kept]
+[fixture: eventmodeling/title/header-line-acctitle-run-before-percent-comment-kept]
+[fixture: eventmodeling/title/header-line-accdescr-run-before-percent-comment-kept]
+[fixture: eventmodeling/title/frame-line-titles-run-before-percent-comment-kept]
+[fixture: eventmodeling/title/header-line-title-slash-comment-mark-is-text]
+[fixture: eventmodeling/title/header-line-accdescr-block-comment-mark-is-text]
+[fixture: eventmodeling/title/frame-line-titles-slash-comment-marks-are-text]
+[test: a no-break space before a comment mark after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+3000 before a comment mark after the text of the accTitle of the header line of an eventmodeling diagram stays as written]
+[test: U+2028 before a comment mark after the text of the accDescr of the header line of an eventmodeling diagram stays as written]
+[test: U+2003 before a comment mark after the text of the title of a frame statement of an eventmodeling diagram stays as written]
+[test: a no-break space before a comment mark after the text of the accTitle of a frame statement of an eventmodeling diagram stays as written]
+[test: U+3000 before a comment mark after the text of the accDescr of a frame statement of an eventmodeling diagram stays as written]
+[test: a no-break space before a `//` comment mark after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: a no-break space before a `/* */` comment mark after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+000B before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+000C before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: a no-break space before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+1680 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2000 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2001 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2002 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2003 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2004 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2005 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2006 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2007 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2008 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2009 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+200A before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+202F before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+205F before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+3000 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+FEFF before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2028 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2029 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+
 [fixture: eventmodeling/title/title-normalized-invisible-to-comparison-db]
 
 [fixture: eventmodeling/title/title-empty-remains]
@@ -1002,16 +1138,45 @@ tf 02 evt Beta
 普通の独立コメントは所属本文の段に揃え、GWT 項目間では項目の段にします。
 同じ印字行では、接するコメントは接したまま残し、
 前の空白とタブの連なりは空白 1 つにします。
+ただし、ヘッダー行とフレーム文の行の title、accTitle、accDescr では、
+コメントの印の前の連なりが値に属するので、
+そのままです（[Title](#title) を参照）。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
-[timeline](./timeline.ja.md#コメント)も、
-文の後ろのコメントを同じように印字します。
+[sequence](./sequence.ja.md#コメント)は、
+メッセージの後ろのコメントを同じように印字します。
+[journey](./journey.ja.md#コメント)も、
+見出しの後ろのコメントを同じように印字します。
+[timeline](./timeline.ja.md#コメント)も、見出しの後ろは同じです。
 ほかの規則が空白を書かれたまま残す所は別です。
 どの図の文書も、その所を、
 自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。
+コメントの前にある幅のある空白、U+2028、U+2029 は、空白 1 つにします。
+ただし、ヘッダー行とフレーム文の行の title、accTitle、accDescr では、
+値に属するので、書かれたまま残します（[Title](#title) を参照）。
+幅のある空白は、U+000B、U+000C、U+00A0、U+1680、U+2000 から U+200A、U+202F、
+U+205F、U+3000、U+FEFF のどれかです。
+そのすべてが、フレーム文の後ろでテキストが終わるときの行を持ち、ほかの場所には、
+ノーブレークスペース、U+3000、U+2028、U+2029 の行があります。
+ほかの場所は、コメントに文が続くとき、ヘッダー行、GWT のヘッダー、GWT の項目、
+節のキーワード、data の宣言、note の宣言、entity の宣言、data の参照、
+行内の本体、ソースの参照、ブロックの閉じ括弧の後ろです。
+mermaid.js は、フレーム文の後ろでテキストが終わるときのコメントの前の U+0085、
+U+180E、U+200B を字句解析のエラーで拒否するので、そこではパーサーも拒否します。
+前に挙げた図は、これらの文字をそう印字しません。
+sequence は、
+メッセージの後ろのノーブレークスペースと U+3000 を書かれたまま残します。
+journey と timeline は、見出しの後ろのこの 2 つを空白 1 つで印字します。
+U+2028 と U+2029 の前では、sequence、journey、timeline は、
+コメントに文が続くとき行を書かれたまま残し、
+テキストが終わるときはコメントを自分の行に置きます。
+そのため、これらの文字の形を与える規則はなく、
+公開済みの版が印字する空白 1 つを、決めるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 単位を行に分けるとき、
 間の行内のコメントはディレクティブと同じく次の単位へ付けます。
 同じコメントを図種の間で同じように扱うため、共有の置き方を使います。
@@ -1022,9 +1187,105 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 列は [データブロック](#data-blocks) の本文の余白の変更を除いて保ちます。
 メタデータや必須の `title` の境界を優先します。
 検出が拒否するため、スラッシュのコメントを見出し前へ移しません。
+見出しの前のコメント行は第 1 列に置きます。
+規則 1 は、見出しの前の行の字下げの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#コメント)、[timeline](./timeline.ja.md#コメント)、
+[c4](./c4.ja.md#コメント)も、見出しの前のコメント行をそう印字します。
 
 [fixture: eventmodeling/comments/inline-gap-run-and-touching]
+[test: an em space before a `//` comment after a statement of an eventmodeling diagram]
+[test: a sequence diagram keeps U+2029 before a comment that a statement follows as written]
+[test: a sequence diagram puts a comment after U+2028 at the end of the text on a line of its own]
+[test: a timeline keeps U+2029 before a comment after its header that a statement follows as written]
+[test: a timeline puts a comment after its header and U+2028 at the end of the text on a line of its own]
+[test: a user journey keeps U+2029 before a comment after its header that a statement follows as written]
+[test: a user journey puts a comment after its header and U+2028 at the end of the text on a line of its own]
+[test: a user journey prints a no-break space before a comment after its header as one space]
+[test: a timeline prints U+3000 before a comment after its header as one space]
+[test: a user journey prints a run before a comment after its title as one space]
+[test: a timeline prints a run before a comment after its title as one space]
+[test: a sequence diagram prints a run before a comment after its title as one space]
 [fixture: eventmodeling/comments/standalone-native-comments]
+[test: a no-break space before a `%%` comment after a statement of an eventmodeling diagram]
+[test: U+3000 before a `//` comment after a statement of an eventmodeling diagram]
+[test: U+2028 before a slash comment after a statement of an eventmodeling diagram]
+[test: U+2029 before a `%%` comment after a statement of an eventmodeling diagram]
+[test: a no-break space before a comment that a statement follows, after a statement of an eventmodeling diagram]
+[test: U+2028 before a comment that a statement follows, after a statement of an eventmodeling diagram]
+[test: U+2029 before a comment that a statement follows, after a statement of an eventmodeling diagram]
+[test: U+3000 before a comment that a statement follows, after a statement of an eventmodeling diagram]
+[test: U+000B before a comment after a statement of an eventmodeling diagram]
+[test: U+000C before a comment after a statement of an eventmodeling diagram]
+[test: U+1680 before a comment after a statement of an eventmodeling diagram]
+[test: U+2000 before a comment after a statement of an eventmodeling diagram]
+[test: U+2001 before a comment after a statement of an eventmodeling diagram]
+[test: U+2002 before a comment after a statement of an eventmodeling diagram]
+[test: U+2003 before a comment after a statement of an eventmodeling diagram]
+[test: U+2004 before a comment after a statement of an eventmodeling diagram]
+[test: U+2005 before a comment after a statement of an eventmodeling diagram]
+[test: U+2006 before a comment after a statement of an eventmodeling diagram]
+[test: U+2007 before a comment after a statement of an eventmodeling diagram]
+[test: U+2008 before a comment after a statement of an eventmodeling diagram]
+[test: U+2009 before a comment after a statement of an eventmodeling diagram]
+[test: U+200A before a comment after a statement of an eventmodeling diagram]
+[test: U+202F before a comment after a statement of an eventmodeling diagram]
+[test: U+205F before a comment after a statement of an eventmodeling diagram]
+[test: U+FEFF before a comment after a statement of an eventmodeling diagram]
+[test: a no-break space before a comment after an entity declaration of an eventmodeling diagram]
+[test: U+3000 before a comment after an entity declaration of an eventmodeling diagram]
+[test: U+2028 before a comment after an entity declaration of an eventmodeling diagram]
+[test: U+2029 before a comment after an entity declaration of an eventmodeling diagram]
+[test: a no-break space before a comment after a clause keyword of an eventmodeling diagram]
+[test: U+3000 before a comment after a clause keyword of an eventmodeling diagram]
+[test: U+2028 before a comment after a clause keyword of an eventmodeling diagram]
+[test: U+2029 before a comment after a clause keyword of an eventmodeling diagram]
+[test: a no-break space before a comment after the closing brace of a block of an eventmodeling diagram]
+[test: U+3000 before a comment after the closing brace of a block of an eventmodeling diagram]
+[test: U+2028 before a comment after the closing brace of a block of an eventmodeling diagram]
+[test: U+2029 before a comment after the closing brace of a block of an eventmodeling diagram]
+[test: a no-break space before a comment after the header of an eventmodeling diagram]
+[test: U+3000 before a comment after the header of an eventmodeling diagram]
+[test: U+2028 before a comment after the header of an eventmodeling diagram]
+[test: U+2029 before a comment after the header of an eventmodeling diagram]
+[test: a no-break space before a comment after a GWT header of an eventmodeling diagram]
+[test: U+3000 before a comment after a GWT header of an eventmodeling diagram]
+[test: U+2028 before a comment after a GWT header of an eventmodeling diagram]
+[test: U+2029 before a comment after a GWT header of an eventmodeling diagram]
+[test: a no-break space before a comment after a GWT item of an eventmodeling diagram]
+[test: U+3000 before a comment after a GWT item of an eventmodeling diagram]
+[test: U+2028 before a comment after a GWT item of an eventmodeling diagram]
+[test: U+2029 before a comment after a GWT item of an eventmodeling diagram]
+[test: a no-break space before a comment after a data declaration of an eventmodeling diagram]
+[test: U+3000 before a comment after a data declaration of an eventmodeling diagram]
+[test: U+2028 before a comment after a data declaration of an eventmodeling diagram]
+[test: U+2029 before a comment after a data declaration of an eventmodeling diagram]
+[test: a no-break space before a comment after a note declaration of an eventmodeling diagram]
+[test: U+3000 before a comment after a note declaration of an eventmodeling diagram]
+[test: U+2028 before a comment after a note declaration of an eventmodeling diagram]
+[test: U+2029 before a comment after a note declaration of an eventmodeling diagram]
+[test: a no-break space before a comment after a data reference of an eventmodeling diagram]
+[test: U+3000 before a comment after a data reference of an eventmodeling diagram]
+[test: U+2028 before a comment after a data reference of an eventmodeling diagram]
+[test: U+2029 before a comment after a data reference of an eventmodeling diagram]
+[test: a no-break space before a comment after an inline body of an eventmodeling diagram]
+[test: U+3000 before a comment after an inline body of an eventmodeling diagram]
+[test: U+2028 before a comment after an inline body of an eventmodeling diagram]
+[test: U+2029 before a comment after an inline body of an eventmodeling diagram]
+[test: a no-break space before a comment after a source reference of an eventmodeling diagram]
+[test: U+3000 before a comment after a source reference of an eventmodeling diagram]
+[test: U+2028 before a comment after a source reference of an eventmodeling diagram]
+[test: U+2029 before a comment after a source reference of an eventmodeling diagram]
+[test: a no-break space before a comment after a message of a sequence diagram]
+[test: U+3000 before a comment after a message of a sequence diagram]
+[test: U+2028 before a comment that a statement follows, after a message of a sequence diagram]
+[test: U+2029 before a comment at the end of the text, after a message of a sequence diagram]
+[test: a no-break space before a comment after the header of a timeline]
+[test: U+2028 before a comment that a statement follows, after the header of a timeline]
+[test: U+2029 before a comment at the end of the text, after the header of a timeline]
+[test: U+3000 before a comment after the header of a user journey]
+[test: U+2028 before a comment that a statement follows, after the header of a user journey]
+[test: U+2029 before a comment at the end of the text, after the header of a user journey]
 
 [fixture: eventmodeling/comments/inline-comments-keep-contact]
 
@@ -1035,6 +1296,11 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 [fixture: eventmodeling/comments/slash-comment-before-title-identifier]
 
 [fixture: eventmodeling/comments/do-not-move-slash-comment-before-header]
+
+[fixture: eventmodeling/comments/comment-line-before-header-indented]
+[fixture: eventmodeling/comments/comment-line-before-header-tab]
+[fixture: eventmodeling/comments/comment-lines-before-header-several]
+[fixture: eventmodeling/comments/comment-line-before-header-after-frontmatter]
 
 [test: eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
 
@@ -1341,12 +1607,32 @@ entity Shop.Buy
 `printWidth` では折り返しません。
 普通の空白だけの部品間改行は空白規則に従い、
 注釈類の継続行は構造上の段を保ちます。
+規則 1 は、コメントやディレクティブの隣の改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
+[journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+物理行を結ぶコメント領域と、`;` を含む行がそれです。
+規則 1 は、後続の行の字下げの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#複数行の文)、
+[sequence](./sequence.ja.md#複数行の文)、
+[xychart](./xychart.ja.md#複数行の文)も、文の後続の行と、
+その間のコメントやディレクティブの行を、文より 1 段深く置きます。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+物理行を結ぶコメント領域と、`;` を含む行がそれです。
+`{` が後の行にあるブロックを閉じる `}` は、文の段に置きます。
+[ER](./er.ja.md#属性ブロック)も、実体のブロックの `}` を同じに置きます。
 構造上の分割を加えるのは決定済みの GWT 節・項目配置です。
 値、隠れた形、メタデータ、保護境界の内容は、
 [データブロック](#data-blocks) の限定的な本文の余白の変更を除いて保ちます。
 幅に依存する選択を避けて字句境界を明示し、行内の data に禁止 LF を足しません。
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap]
+[fixture: eventmodeling/long-lines/break-next-to-comment]
+[fixture: eventmodeling/long-lines/break-next-to-directive]
+[fixture: eventmodeling/long-lines/break-next-to-percent-comment]
+[fixture: eventmodeling/comments/block-opener-on-a-later-line-after-a-comment-line]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 
@@ -1408,6 +1694,11 @@ data D {
 壊れた YAML、字下げ・空白付き囲み、HTML 引用符の危険、
 囲みを作る本文は既存保護条件により原文を保ちます。
 YAML の入れ子は幅 0 でも正の最小字下げを使います。
+`tabWidth` が 0 のとき、対象にする版の mermaid.js のすべてが、
+字下げのないブロックスカラーを拒否し、
+入れ子の `config` の値が入れ子でなくなると、図を別に描きます。
+詳しくは [フロントマター](./compatibility.ja.md#フロントマター)
+を参照してください。
 `textBeforeHeader` があれば見出しまでの前置部分全体を保ちます。
 図固有の YAML や `DIRECTIVE` を本物のフロントマター・設定へ昇格させると、
 受理が変わる場合があるためです。

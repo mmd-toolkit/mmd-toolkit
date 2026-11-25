@@ -179,6 +179,9 @@ direction 行はそれより前へは届きません。
 先頭の桁に残します。
 字下げすると、mermaid.js が空の説明を読むからです。
 その行で方向の値より後ろにあるテキストは文ではなく、書かれたまま残します。
+その行の最後の `;` を除くと、その前の `;` が無視される `;` になります。
+詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)
+を参照してください。
 
 [fixture: indentation/verbatim-direction-description]
 [fixture: indentation/verbatim-direction-description-in-subgraph]
@@ -2386,9 +2389,24 @@ flowchart LR
 入れ子の YAML を含む行どうしの字下げの差を保ち、内側にも外側にも動かします。
 単独行の `}` は文の段に揃え、
 本文の後の `}` はその行に残して行と一緒に動かします。
+リテラルスカラーや折りたたみスカラー（`|`、`|-`、`|+`、`>`、`>-`、
+`>+`）のテキストの後の `}` は、その行に残します。
+独立した行に置くと、Db のスカラーのテキストの末尾が変わり、
+整形は Db を変えないからです。
+図は同じですが、この隙間を覆う種類の例外は、
+[整形の形の決め方](./printed-form.ja.md#確かめ方とdb-を変える整形)
+に定められていません。
+整形はスカラーの種類を見ないので、
+普通のスカラーのテキストの後の `}` も残ります。
 
 [fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
 [fixture: data-blocks/closing-after-text]
+[fixture: data-blocks/closing-after-literal-text]
+[fixture: data-blocks/closing-after-folded-text]
+[fixture: data-blocks/closing-after-folded-strip-text]
+[fixture: data-blocks/closing-after-folded-keep-text]
+[fixture: data-blocks/closing-after-strip-text]
+[fixture: data-blocks/closing-after-keep-text]
 
 次の条件をすべて満たす場合だけ動かし、満たさなければ書かれた桁を保ちます。
 
@@ -2830,6 +2848,48 @@ flowchart LR
   end
 ```
 
+flowchart、agentflow 図、sequence 図、quadrant 図、XY 図では、
+`;` が文を区切るので、テキストの末尾の `;` はどの文も表さず、印字しません。
+U+2028 か U+2029 の後のコメント行が次の行をその行につなぐのは、
+字句解析器がコメント行の後にそれらの `;` 以外のものを読むときです。
+文かディレクティブがあるとき、
+またはコメント行のすぐ後の行に `;` があるときです。
+後者の `;` は、コメント行がつなぐ行に残り、書かれたまま印字します。
+`B --> C`、U+2028、`%% c`、改行、`;` は、そのまま印字します。
+`;` と空白とコメント行だけが続き、コメント行のすぐ後の行に `;` がないときは、
+その `;` とその後のコメント行はテキストではありません。
+コメント行の前にあるものは、それらがないものとして印字し、
+2 回目の整形も同じ結果になります。
+そのほかの図の種類では、`;` はテキストか、それだけで 1 つの文で、
+コメント行の後のどこにあってもテキストとして数えます。
+文、U+2028、`%% c`、空行、`;` の行は、state 図、block 図、treeView で、
+そのまま印字します。
+
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon]
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon, in a header without a semicolon]
+[test: flowchart: a statement with one semicolon, U+2028, a directive, a comment, an empty line, and a line of a semicolon]
+[test: flowchart: a statement, U+2028, a directive, a comment, an empty line, and a line of a semicolon]
+[test: flowchart: a statement with two semicolons, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a semicolon at the first column]
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a statement]
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, and an empty line at the end of the text]
+[test: flowchart: a statement, U+2028, a comment, and a line of a semicolon right after it]
+[test: flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, and a comment line]
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, a line of a semicolon, and a comment line]
+[test: flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, an empty line, and a comment line]
+[test: flowchart: a statement, U+2028, a comment, an empty line, and two lines of semicolons]
+[test: flowchart: a statement, U+2029, a comment, an empty line, and a line of a semicolon]
+[test: flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, and a statement]
+[test: agentflow: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: sequence: a statement, U+2028, a comment, and a line of a semicolon right after it]
+[test: sequence: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: sequence: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon]
+[test: quadrant: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: xychart: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: state: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: block: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: treeview: a title, U+2028, a comment, an empty line, and a line of a semicolon]
+
 ### ディレクティブ
 
 1 行に置かれたディレクティブ（`%%{ ... }%%`）は、周りの文と同じ段に置きます。
@@ -3165,6 +3225,9 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 `subgraph style:[ #x; ]` は `subgraph style:[ #x;]` になり、
 `subgraph a: [ #x; ]` は、
 `:` の前に `style` がないので `subgraph a:[#x;]` になります。
+`:` と後ろの `#` の間に空白があるかどうかで、
+行の規則が `;` を無視するかどうかが決まります。
+詳しくは [セミコロン](#セミコロン) を参照してください。
 
 [fixture: subgraph-header/title-padding-on-line-rule-line]
 

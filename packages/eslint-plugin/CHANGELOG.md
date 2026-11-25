@@ -1,5 +1,13 @@
 # @mmd-toolkit/eslint-plugin
 
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies:
+  - [@mmd-toolkit/parser@0.4.1](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fparser%400.4.1)
+  - [@mmd-toolkit/ast@0.4.1](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fast%400.4.1)
+
 ## 0.5.0
 
 ### Minor Changes

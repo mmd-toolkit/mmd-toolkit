@@ -67,6 +67,41 @@ describe("a class diagram the parser rejects", () => {
   )
 })
 
+// ER diagrams that mermaid.js and the parser reject: an `end;` on a line of its
+// own, and a vertical tab or a form feed before a U+2028 in the gap of a
+// relationship (diagrams/er.md). The error is on the line of the statement.
+const rejectedErForms: readonly (readonly [string, string, number])[] = [
+  [
+    "an end; on a line of its own in a subgraph of an ER diagram",
+    "erDiagram\nsubgraph S\nA\nend;\n",
+    4,
+  ],
+  [
+    "a vertical tab before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u000b\u2028%%{x}%%  ||--o{ B : y\n",
+    2,
+  ],
+  [
+    "a form feed before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\f\u2028%%{x}%%  ||--o{ B : y\n",
+    2,
+  ],
+]
+
+describe("an ER diagram the parser rejects", () => {
+  it.each(rejectedErForms)(
+    "is reported as a syntax error in a standalone file: %s",
+    async (_name, input, line) => {
+      const error: unknown = await formatMermaid(input).catch((e: unknown) => e)
+      expect(error).toBeInstanceOf(SyntaxError)
+      expect((error as Error).cause).toMatchObject({ name: "ParseError" })
+      expect((error as { loc?: unknown }).loc).toMatchObject({
+        start: { line },
+      })
+    },
+  )
+})
+
 // Prettier's code frame ends a line at U+2028 and U+2029 too, which Mermaid
 // does not, so the position of an error is counted again from its offsets,
 // and an error that ends at the start of a line has a start only. With the
