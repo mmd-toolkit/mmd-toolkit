@@ -1929,6 +1929,13 @@ retained click prefix keep their touching gaps.
 [fixture: click-statements/target-required-tab] [fixture:
 click-statements/prefix-with-directive]
 
+The `href` of a click statement stays touching the `)` of a blank call, as in
+`click A call ()href click "/u"`: 12.3.0 rejects the form with a space between
+them (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[fixture: click-statements/blank-call-then-href-kept]
+
 The arguments of a call have no whitespace at their ends or before a `,`, and
 one space after it, as in [flowchart](./flowchart.md#whitespace-between-tokens):
 `click A call f(  "x" ,y )` is printed `click A call f("x", y)` (see

@@ -1995,6 +1995,13 @@ tooltip/target前に必須の空白1文字を保ち、末尾の空の説明は�
 [fixture: click-statements/target-required-tab]
 [fixture: click-statements/prefix-with-directive]
 
+click 文の `href` は、`click A call ()href click "/u"` のように、
+空の呼び出しの `)` に接したまま残します。
+12.3.0 は、間に空白を置いた形を拒否するからです
+（[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)を参照）。
+
+[fixture: click-statements/blank-call-then-href-kept]
+
 呼び出しの引数は、[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
 両端と `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
 `click A call f(  "x" ,y )` は `click A call f("x", y)` と印字します。
