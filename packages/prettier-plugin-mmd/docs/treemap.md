@@ -783,8 +783,11 @@ null/whitespace-only text.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
 between `title` and what it takes, as Prettier prints `return  x` as
 `return x;`, and drops the spaces and tabs at the end of a line, so a title of
-spaces and tabs only prints bare `title`. This selects one Db-equivalent outer
-spacing and prints a run of spaces and tabs inside the text as one space (see
+spaces and tabs only prints bare `title`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a nonempty title value, as Prettier prints `return  x` as `return x;`,
+and the formatter prints a run of spaces and tabs inside the text as one space
+(see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 without rewriting quote-looking text. Quotes in title text are characters of the
 title: mermaid.js reads the content after `title` as line text, so removing them
