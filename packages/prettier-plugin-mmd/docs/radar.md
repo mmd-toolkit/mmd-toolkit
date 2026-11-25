@@ -12,7 +12,15 @@ preserved text and differences from mermaid.js.
 ### Header
 
 Print `radar-beta` at column one and put an ordinary first statement on the next
-line so the heading is easy to find. A colon right after the header word is
+line so the heading is easy to find. Rule 1 names no mark for the line break
+after a header, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [pie](./pie.md#header), [packet](./packet.md#header),
+[architecture](./architecture.md#header), [treemap](./treemap.md#header),
+[cynefin](./cynefin.md#header), and [gitgraph](./gitgraph.md#header) print the
+header at column one and an ordinary first statement on the next line, where no
+other rule keeps the boundary as written, as the hidden forms, global trivia and
+protected semicolon segments below do. A colon right after the header word is
 removed, together with the whitespace before it: mermaid.js reads `radar-beta:`
 and `radar-beta` as the same header, and the examples in its documentation write
 the header without the colon 3 times against none (see
@@ -30,11 +38,22 @@ the colon, or on both sides are printed away: `radar-beta %%{x}%%:`,
 `radar-beta %%{x}%% %%{y}%% :` is printed `radar-beta%%{x}%%%%{y}%%:`. A space
 or a tab between two directives goes the same way: `radar-beta%%{x}%% %%{y}%%:`
 is printed `radar-beta%%{x}%%%%{y}%%:`. With no colon the spaces stay:
-`radar-beta %%{x}%%` and `radar-beta%%{x}%% %%{y}%%` are not changed. The colon
-stays before an unclosed directive too: `radar-beta:%%{x y`, a line break, and
-`axis North` stay as written, since mermaid.js takes the directive out with the
-line break after it and would read the header and `axis` as one word, and every
-version of mermaid.js that counts rejects that text (see
+`radar-beta %%{x}%%` and `radar-beta%%{x}%% %%{y}%%` are not changed. The gaps
+are printed as under [Directives](./flowchart.md#directives): mermaid.js removes
+a directive before it reads the text, so a gap is printed as its ordinary rule
+prints it without the directive, and the directive stands after the space of
+that rule. Without a directive, nothing stands between the header word and its
+colon, since Prettier prints no space before the colon of a label or of
+`default` (`label :` and `default :` are printed `label:` and `default:`), so
+the directive touches the colon, and two directives in one gap touch each other.
+At the end of a line no unit stands on the other side of the directive, and the
+gap keeps whether it holds whitespace, as a flowchart keeps `A %%{x}%% %%{y}%%`
+as written. [gitgraph](./gitgraph.md#header) prints `gitGraph %%{x}%%:` as
+`gitGraph%%{x}%%:`. The colon stays before an unclosed directive too:
+`radar-beta:%%{x y`, a line break, and `axis North` stay as written, since
+mermaid.js takes the directive out with the line break after it and would read
+the header and `axis` as one word, and every version of mermaid.js that counts
+rejects that text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Hidden forms, global trivia and protected semicolon segments keep their source
 boundaries instead. Empty bodies remain empty.
@@ -100,8 +119,16 @@ Use the shared flat-body printer: ordinary statements, standalone comments and
 Root directives stand one configured step in. The default is two spaces;
 tabWidth four uses four spaces, and tabWidth zero uses zero spaces because
 columns have no grammatical meaning. useTabs uses one tab, even at width zero.
-Entry continuation lines use two steps; written value columns, hidden
-interiors/closers and retained prefixes keep their own rules.
+Prettier prints a nested block of JavaScript with no indentation at
+`--tab-width 0`, and with one tab per level at `--use-tabs`, also at
+`--tab-width 0`. Entry continuation lines use two steps; written value columns,
+hidden interiors/closers and retained prefixes keep their own rules. Rule 1
+names no mark for the indentation of a continuation line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#multi-line-statements) and
+[quadrant](./quadrant.md#multi-line-statements) put the continuation lines of a
+statement one level inside it, which is two steps here, since the statement
+stands one step in.
 
 [fixture: radar/indentation/indent-two]
 
@@ -136,12 +163,17 @@ decides, as [er](./er.md#statements-one-per-line),
 [gantt](./gantt.md#statements-one-per-line), and
 [journey](./journey.md#statements-one-per-line) print each statement on a line
 of its own, where no other rule keeps it as written (a line that holds a `;`
-that the line rule ignores keeps its statements together; see
+that the line rule ignores keeps its statements together, since moving a
+statement to a line of its own can make the rule ignore another `;`; see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-) and
 [Semicolons](#semicolons)). A keyword's comma group remains one statement; never
-duplicate its keyword. Adjacent options without a comma are separate statements,
-including `ticks 7max 8`. A common line owns apparent keywords through physical
-EOL. Empty descriptions remain statements; protected header/body groups take
-precedence.
+duplicate its keyword. Rule 1 prints the comma of a list with no space before it
+and one after it (`class A,B c` is printed `class A, B c` in an ER diagram, one
+statement on one line), so a group stays on one line, and splitting it would
+replace each comma by a line break and a repeated keyword. Adjacent options
+without a comma are separate statements, including `ticks 7max 8`. A common line
+owns apparent keywords through physical EOL. Empty descriptions remain
+statements; protected header/body groups take precedence.
 
 [fixture: radar/statements-one-per-line/all-inline-kinds] [fixture:
 radar/statements-one-per-line/line-rule-semicolon-keeps-statements-together]
@@ -175,11 +207,18 @@ radar-beta
 
 ### Groups and commas
 
-Put one ordinary space between a group keyword and its first member. A comma has
-no space before it and one after it, in axis, curve, options and entry lists.
-This makes lists consistent with xychart and quadrant. Do not insert visible
-newlines into axis/curve/options groups: those grammars reject them.
-Trivia-bearing gaps retain their written contact.
+Put one ordinary space between a group keyword and its first member. Rule 1
+names no mark between a keyword and its first member, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [er](./er.md#whitespace-between-tokens),
+[class](./class.md#whitespace-between-tokens), and
+[state](./state.md#whitespace-between-tokens) print a run of spaces and tabs
+between a keyword and its name as one space (`class    A,B  c` is printed
+`class A, B c` in an ER diagram). A comma has no space before it and one after
+it, in axis, curve, options and entry lists. This makes lists consistent with
+xychart and quadrant. Do not insert visible newlines into axis/curve/options
+groups: those grammars reject them. Trivia-bearing gaps retain their written
+contact.
 
 [fixture: radar/groups-and-commas/axis-comma]
 
@@ -210,9 +249,17 @@ radar-beta
 ### Labels
 
 Print attached labels as `axis A["label"]` and `curve c['label']`: ordinary gaps
-before `[`, after `[` and before `]` are empty. This makes the label read with
-its name. Keep absent labels distinct from empty quoted labels. Quote interiors
-are values, not component spacing, and hidden/global boundaries take precedence.
+before `[`, after `[` and before `]` are empty. Rule 1 gives none inside the
+brackets (`f( a )` is printed `f(a)` in its table) and names no mark for the gap
+before `[`, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [architecture](./architecture.md#declaration-spacing) and
+[er](./er.md#entities) print the brackets of a label touching their name
+(`service a  [ A ]` is printed `service a[A]`, and `A  [ "x" ]` is printed
+`A["x"]`). This makes the label read with its name. Keep absent labels distinct
+from empty quoted labels: removing an empty label changes the ID fallback (see
+[Quotes](#quotes)). Quote interiors are values, not component spacing, and
+hidden/global boundaries take precedence.
 
 [fixture: radar/labels/axis-double-brackets]
 
@@ -274,17 +321,28 @@ radar-beta
 In a statement without comments or directives, join entry newlines where the
 grammar reads them as whitespace: after `{`, after a comma and before `}`.
 Positional and named lists then fit on one line, as in xychart and quadrant.
-Never add a newline before a comma or inside a named entry. Keep newlines
-holding comments or Root directives; ordinary continuation lines and comments
-use two indentation steps, while a separate `}` aligns with its statement.
+Never add a newline before a comma or inside a named entry, where mermaid.js
+rejects one. Keep newlines holding comments or Root directives; ordinary
+continuation lines and comments use two indentation steps, while a separate `}`
+aligns with its statement. A comment takes the rest of its line, so joining the
+next entry onto it would put the entry into the comment. Rule 1 names no mark
+for a line break next to a comment or a directive, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#multi-line-statements) keeps the line breaks
+that hold a comment or a directive and puts the continuation lines one level
+inside the statement, and the separate `}` stands at the level of its statement,
+as the `}` of an attribute block does in [er](./er.md#attribute-blocks) and the
+`}` of a description block in [flowchart](./flowchart.md#multi-line-values).
 Preserve other authored entry newlines in such a statement too, keeping the
-commented list as a block as written. Hidden boundaries, value lines and
-protected semicolon segments remain written, including their continuation
-columns. No continuation indentation is added inside a protected segment;
-ordinary spacing still applies after it. Shared joining checks also keep a
-terminal line containing another statement's semicolon: joining a preceding
-style-like label could change that statement's Db, and every version of
-mermaid.js that counts draws different title text (see
+commented list as a block as written.
+[xychart](./xychart.md#multi-line-statements) joins the other line breaks of
+such a list, so this is printed against rule 2 and waits to be fixed by the
+rule. Hidden boundaries, value lines and protected semicolon segments remain
+written, including their continuation columns. No continuation indentation is
+added inside a protected segment; ordinary spacing still applies after it.
+Shared joining checks also keep a terminal line containing another statement's
+semicolon: joining a preceding style-like label could change that statement's
+Db, and every version of mermaid.js that counts draws different title text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
@@ -338,6 +396,12 @@ radar/multi-line-statements/protected-semicolon-semicolon-with-hidden-gap]
 
 [fixture:
 radar/multi-line-statements/protected-semicolon-later-semicolon-blank-lines]
+
+[corpus fixture: radar/gram-entry-newline-before-comma]
+
+[corpus fixture: radar/gram-named-entry-line-before-comma]
+
+[corpus fixture: radar/gram-detailed-line-after-colon]
 
 Input (escaped): `"radar-beta\ncurve trial{4,\n%% entry note\n5\n}\n"`.
 
@@ -427,11 +491,15 @@ radar-beta
 
 ### Options
 
-Use one ordinary space between an option keyword and its value. Keep fixed
-lowercase boolean/graticule words, numeric spellings, comma groups and every
-repeated assignment in source order. Do not substitute effective defaults, cap
-ticks at 32 or reorder min/max: publication is not authored syntax. Radar
-drawing configuration does not supply these statement values.
+Use one ordinary space between an option keyword and its value, as between a
+group keyword and its first member (see
+[Groups and commas](#groups-and-commas)). Keep fixed lowercase boolean/graticule
+words, numeric spellings, comma groups and every repeated assignment in source
+order: the numbers are under [Numbers](#numbers), the commas under
+[Groups and commas](#groups-and-commas), and the order and the repeated
+assignments under [Source order](#source-order). Do not substitute effective
+defaults, cap ticks at 32 or reorder min/max: publication is not authored
+syntax. Radar drawing configuration does not supply these statement values.
 
 [fixture: radar/options/option-gaps]
 
@@ -470,7 +538,11 @@ printed as one space, so a text of spaces and tabs only becomes one space:
 A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-and `singleQuote` is not read. Removing an empty label changes the ID fallback.
+and `singleQuote` is not read. [Rule 3](./printed-form.md#3-a-spelling) gives
+`"`, and not the option: the examples in the documentation of mermaid.js write
+408 of the 409 strings of the diagram types that read a string between `'`
+between `"` (see [Strings between `"`](./compatibility.md#strings-between-)).
+Removing an empty label changes the ID fallback.
 
 [fixture: radar/quotes/single-quote-sensitive-kept] [fixture:
 radar/quotes/quotes-and-empty]
@@ -504,9 +576,13 @@ radar-beta
 Use the shared common-line layout, except as the paragraphs below and the
 [Semicolons](#semicolons) section state: trim common-whitespace edges and put
 one space before a nonempty value; null/whitespace-only values print `title`.
-This removes equivalent exterior padding while retaining internal spelling,
-quotes and apparent keywords, apart from a run of spaces and tabs inside the
-value, which is printed as one space (see
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the gap between a keyword and its text as one space, and Prettier ends no line
+with whitespace: `title    Pets` is printed `title Pets` in a pie chart, as
+`title    Plan` is printed `title Plan` in a Gantt chart. The rule gives it for
+spaces and tabs. This removes equivalent exterior padding while retaining
+internal spelling, quotes and apparent keywords, apart from a run of spaces and
+tabs inside the value, which is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Never take a value from the next physical line, including across comments or
 directives. A `;` after the text of a title or of an accessibility line stays.
@@ -2266,7 +2342,11 @@ radar-beta
 Reuse shared `accTitle: value` and `accDescr: value`, except as the paragraphs
 below state, as the [paragraph on a directive before the text](#title) states,
 and as the [Semicolons](#semicolons) section states: the colon touches its
-keyword, and one space precedes a trimmed nonempty value. Empty values end at
+keyword, and one space precedes a trimmed nonempty value. The colon is the colon
+of a key: the line gives the diagram its one title or description, so none
+stands before it and one follows (step 2 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is), and the row of
+its table for the title and the description of a diagram). Empty values end at
 the colon; never join a next-line value. Consistent outer spacing does not
 rewrite internal text, except that a run of spaces and tabs inside the value of
 an `accDescr` is printed as one space (see
@@ -3415,10 +3495,27 @@ counts reads `accDescr {a%%literal}` as `a%%literal` and `accDescr: a%%literal`
 as `a` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 For blocks that keep their braces, separate the keyword and opening brace with
-one space so the block boundary is clear. Whitespace-only interiors become `{}`
-because no text needs surrounding space. Plain opener whitespace joins; real
-trivia keeps its break. Preserve comment/directive-only interiors. Rule 1 names
-no mark for a line inside a block, so
+one space so the block boundary is clear. Prettier prints one space between a
+keyword and the `{` of a block (`try{}` is printed `try {}`), as
+[Description block indentation](./compatibility.md#description-block-indentation)
+says, and [flowchart](./flowchart.md#multi-line-values),
+[class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
+print `accDescr {`. Whitespace-only interiors become `{}` because no text needs
+surrounding space. Rule 1 gives it: Prettier prints braces that hold nothing
+without whitespace inside (`x = { }` is printed `x = {};`, in the table of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Where the interior
+holds a directive and whitespace, as in `accDescr {%%{init: {}}%% }`, the
+released version prints `accDescr { %%{init: {}}%%}`. Rule 1 prints braces that
+hold nothing without whitespace inside, and mermaid.js removes the directive
+before it reads the text (see [Directives](./flowchart.md#directives)), so this
+is printed against rule 1 and waits to be fixed by the rule. Plain opener
+whitespace joins; real trivia keeps its break. Rule 1 names no mark for a line
+break between a keyword and its opening brace, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [flowchart](./flowchart.md#multi-line-values) prints `accDescr`, an
+empty line, and `{ Words }` as `accDescr: Words`, and keeps the line break after
+a directive that stands between them. Preserve comment/directive-only interiors.
+Rule 1 names no mark for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
@@ -3540,9 +3637,13 @@ radar-beta
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. Inline comments keep their line, touching where they touch, and a run of
-spaces and tabs before one becomes one space. Rule 1 names no mark before a
-comment, so
+header. A comment on a line of its own stands at the level of the statements
+around it, before the header too, where it starts the line, as under
+[Comments](./flowchart.md#comments) of a flowchart, and as Prettier prints the
+comment lines of code (a `//` line in a block is printed at the level of the
+statements around it). Inline comments keep their line, touching where they
+touch, and a run of spaces and tabs before one becomes one space. Rule 1 names
+no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
@@ -3891,9 +3992,17 @@ radar-beta
 
 Keep at most one ordinary ASCII blank line between statements or trivia, and
 remove ordinary document/body/header-edge blanks. Whitespace-only lines become
-empty. This retains grouping without excess space. Required hidden LFs follow
-shared boundary rules first; values, descriptions, directive/hidden interiors,
-common-region joins and retained prefixes remain written.
+empty. This retains grouping without excess space. Rule 1 names no mark for an
+empty line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [gantt](./gantt.md#blank-lines),
+[journey](./journey.md#blank-lines), [pie](./pie.md#blank-lines), and
+[sankey](./sankey.md#blank-lines) print a run of empty lines as one and drop the
+empty lines at the start and at the end of a body, as Prettier does for code,
+and a line of whitespace only is printed empty, since Prettier leaves no
+whitespace at the end of a line. Required hidden LFs follow shared boundary
+rules first; values, descriptions, directive/hidden interiors, common-region
+joins and retained prefixes remain written.
 
 [fixture: radar/blank-lines/blanks-ordinary]
 
@@ -3920,7 +4029,8 @@ radar-beta
 ### Trailing whitespace
 
 Remove harmless exterior ASCII padding after the header, completed
-axis/curve/options statements and description closers. Shared common-line
+axis/curve/options statements and description closers, since Prettier prints no
+whitespace at the end of a line in JavaScript, CSS, or YAML. Shared common-line
 trimming handles value edges. Keep comment tails, physical value continuations,
 directive/hidden interiors, protected segments and retained prefixes. Hidden
 closer padding remains even at EOF because it can decide acceptance.
@@ -3952,10 +4062,14 @@ radar-beta
 Use the shared guarded YAML formatter only for safe real frontmatter. Keep
 delimiter padding, malformed YAML, indented fences, HTML hazards and bodies
 whose formatting would create a fence. At tabWidth zero YAML nesting/block
-scalars use the shared positive minimum indentation. Hidden YAML and retained
-prefixes stay opaque. This keeps effective data separate from ignored text; do
-not move drawing settings into statement options or remove empty body titles
-that restore the frontmatter fallback.
+scalars use the shared positive minimum indentation. Prettier cannot read
+malformed YAML, and the reasons for the indented fences, the fence that
+formatting would create, the HTML hazards, and the minimum are under
+[Frontmatter](./compatibility.md#frontmatter) and
+[HTML tags that start in the frontmatter](./compatibility.md#html-tags-that-start-in-the-frontmatter).
+Hidden YAML and retained prefixes stay opaque. This keeps effective data
+separate from ignored text; do not move drawing settings into statement options
+or remove empty body titles that restore the frontmatter fallback.
 
 [fixture: radar/frontmatter-yaml/frontmatter-safe]
 
@@ -4038,9 +4152,14 @@ Output (escaped): `"radar-beta\n  axis North\n  curve trial{4}\n"`.
 
 Ordinary accepted inputs end with one configured newline, including empty
 bodies/common lines, completed descriptions, comments and closed hidden forms.
-Drop ordinary terminal blank lines for a consistent file ending. Preserve
-EOF-reaching global-directive endings and required hidden/prefix boundaries
-instead of appending text inside them.
+Drop ordinary terminal blank lines for a consistent file ending. Prettier ends a
+file with one newline and no empty line before it, and rule 1 names no mark at
+the end of the text, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [pie](./pie.md#final-newline), [packet](./packet.md#final-newline),
+and [kanban](./kanban.md#final-newline) end the text with one line break and
+drop the empty lines before it. Preserve EOF-reaching global-directive endings
+and required hidden/prefix boundaries instead of appending text inside them.
 
 [fixture: radar/final-newline/final-comment]
 
