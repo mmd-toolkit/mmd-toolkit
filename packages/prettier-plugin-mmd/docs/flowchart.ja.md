@@ -1976,9 +1976,15 @@ flowchartはコロンの後のコメントを読み飛ばして後の値を読�
 1 行の `accTitle: direction TB` につなぐと、Db が変わります。
 書かれたテキストでは、タイトルが `direction` で、頂点が `TB` です。
 つないだテキストでは、タイトルが `direction TB` になり、図も変わります。
+10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は、つないだテキストで別の図を描き、
+12.3.0 は Db の `accTitle` と `vertices` も変えます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: accessibility-lines/direction-text-kept]
 [fixture: accessibility-lines/next-line-direction-kept]
+[fixture: accessibility-lines/direction-text-after-comment-kept]
 
 通常の行には`tabWidth: 0`での最小幅と`useTabs`を含む設定の字下げを使い、
 これらの設定でも保持の例外を保ちます。

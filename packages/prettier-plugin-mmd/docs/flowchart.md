@@ -1912,10 +1912,14 @@ Direction-text lines keep their written text, line breaks and indentation under
 priority. Joining `accTitle:direction`, a comment line, and `TB` into the one
 line `accTitle: direction TB` changes the Db: the written text has the title
 `direction` and a vertex `TB`, and the joined text has the title `direction TB`;
-the figures differ too.
+the figures differ too: 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 draw another
+figure for the joined text, and 12.3.0 holds another `accTitle` and other
+`vertices` in the Db (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: accessibility-lines/direction-text-kept] [fixture:
-accessibility-lines/next-line-direction-kept]
+accessibility-lines/next-line-direction-kept] [fixture:
+accessibility-lines/direction-text-after-comment-kept]
 
 Configured indentation, including its minimum at `tabWidth: 0` and `useTabs`,
 applies to ordinary lines; those options also retain these exceptions.
