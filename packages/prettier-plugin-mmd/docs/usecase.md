@@ -1025,12 +1025,10 @@ whitespace stands before the colon, a run becoming one space. The text of a
 declaration from its name's start through its last value component otherwise
 stays as written: directives in the dash gap, quoted or escaped commas, empty
 string components, functions, order and repetition, except that a run of spaces
-and tabs between its words is printed as one space, as in the other diagram
-types (see
-[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
-`style A --  color:red` is printed `style A -- color: red`, and
-`translate(1  2)` is printed `translate(1 2)`. A run inside a string, a comment,
-or the parentheses of `url(`, and the escape after a backslash, stay as written.
+and tabs between its words is printed as one space: `style A --  color:red` is
+printed `style A -- color: red`, and `translate(1  2)` is printed
+`translate(1 2)`. A run inside a string, a comment, or the parentheses of
+`url(`, and the escape after a backslash, stay as written.
 
 [fixture: classes-and-styles/css-name-multiline-directive]
 
