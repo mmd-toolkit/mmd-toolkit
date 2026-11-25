@@ -7,6 +7,7 @@ import {
   isInsideStyleRuleStretch,
   ignoredSemicolonAtCommentEnd,
   keepsStyleTerminator,
+  printedIgnoredSemicolonsOf,
 } from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
@@ -499,8 +500,16 @@ export function readGapElement(
   }
   const token = findTokenStartingAt(source, offset)
   if (token?.value === ";") {
-    return source.ignoredSemicolons.has(offset)
-      ? { element: { kind: "item", item: token }, end: token.range[1] }
+    return printedIgnoredSemicolonsOf(source).has(offset)
+      ? {
+          element: {
+            kind: "item",
+            item: source.ignoredSemicolons.has(offset)
+              ? token
+              : { ...token, type: "IgnoredSemicolon" },
+          },
+          end: token.range[1],
+        }
       : { element: { kind: "separator", token }, end: token.range[1] }
   }
   return { element: { kind: "text" }, end: offset + 1 }

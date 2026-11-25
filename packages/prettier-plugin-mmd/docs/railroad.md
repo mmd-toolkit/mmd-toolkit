@@ -1659,6 +1659,17 @@ railroad/comments/abnf-semicolon-unclosed-directive-before-separator-ps] [test:
 railroad/comments/abnf-semicolon-after-ignored-semicolon-ls] [test:
 railroad/comments/abnf-semicolon-after-ignored-semicolon-ps]
 
+A comment line that starts with `;` ends at a U+2028 or U+2029, and the text
+after the character is a line of its own. A directive and a comment on that line
+are printed as on a line after a line feed, with one space between them where
+the source has whitespace there.
+
+[test: railroad: a comment line of a semicolon, U+2028, a directive, two spaces,
+and a comment] [test: railroad: a comment line of a semicolon, U+2028, a
+directive touching a comment] [test: railroad: a comment line of a semicolon,
+U+2028, a directive, a tab, and a comment] [test: railroad: a comment line of a
+semicolon, U+2029, a directive, two spaces, and a comment]
+
 ### Global directives
 
 Print every Root directive from its source span once at its owner position.
