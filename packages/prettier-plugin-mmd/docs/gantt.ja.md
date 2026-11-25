@@ -1955,6 +1955,18 @@ U+2028 と U+2029 は空白やタブではなくテキストの文字なので�
 [test: U+2028 and spaces at the end of a title]
 [test: U+2029 and spaces at the end of a date format]
 
+`%` で始まるコメント行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字します。
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
+なければ空白を置きません。
+
+[test: gantt: a percent comment line, U+2028, a directive, two spaces, and a comment at the end of the text]
+[test: gantt: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: gantt: a percent comment line, U+2028, a directive touching a comment]
+[test: gantt: a percent comment line, U+2028, a directive, a tab, and a comment]
+[test: gantt: a percent comment line, U+2029, a directive, two spaces, and a comment]
+
 ### 空白の文字
 
 U+00A0 と U+FEFF は、字句解析器にとって単位の間の空白であり、

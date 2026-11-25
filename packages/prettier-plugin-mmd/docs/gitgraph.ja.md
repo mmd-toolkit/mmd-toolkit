@@ -513,10 +513,17 @@ U+2029 があるときを除きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
+[fixture: gitgraph/title-and-common-values/acc-title-empty-directive-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-unclosed-empty-directive-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-empty-directive-no-final-newline-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-descr-empty-directive-gap-printed]
+[test: a whitespace character that is no space or tab before an empty directive after the accTitle line of a gitGraph]
+[test: a whitespace character that is no space or tab before an empty directive after the accDescr line of a gitGraph]
 
-gitGraph の `accDescr` の値の後の `%%` の前の、空白でもタブでもない空白文字は、
-pie 図と同じに、その場に残し、その両側の空白とタブは、
-それぞれ空白 1 つにして印字します。
+gitGraph の `accDescr` の値の後の `%%` か、`%%{` の後ろに、
+空白を除いて語の文字が続かないもの（`%%{}%%` など）の前の、
+空白でもタブでもない空白文字は、pie 図と同じに、その場に残し、
+その両側の空白とタブは、それぞれ空白 1 つにして印字します。
 詳しくは [Accessibility lines](./pie.ja.md#accessibility-lines)
 を参照してください。
 gitGraph の `title` は、後ろの `%%` の前に何があっても、
@@ -566,7 +573,7 @@ Db で LF 後の字下げが取り除かれるためです。
 行形式は次の物理行を取り込みません。
 対象にする版のうち最も古い版は、
 空の `accTitle:` または `accDescr:` の後の文を値として読みます。
-そのため、その文と、`accTitle` の値の後の `%%` の前の空白は、
+そのため、その文と、`accTitle` の値の後の `%%` か `%%{}%%` の前の空白は、
 書かれたまま残します。
 詳しくは
 [最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
@@ -592,6 +599,36 @@ Db で LF 後の字下げが取り除かれるためです。
 [fixture: gitgraph/title-and-common-values/block-opener-trivia]
 [corpus fixture: gitgraph/common-title-only-whitespace]
 [test: gitgraph/title-and-common-values/block-opener-join-fixed]
+
+`accTitle:` か `accDescr:` の行で、値が U+2028 か U+2029 で終わり、
+コメントの領域が続き、その後に `%%` だけの行があるものは、
+その `%%` まで書かれたまま印字します。
+mermaid.js はコメントの領域を、それを終える改行と一緒に取り除くので、
+その後の行は値の行に続き、数える版のうち最も古い版は、`%%` の行を、
+描画に出る値に取り込みます。
+固定した文法はそれをコメントと読みます。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+これまでどおり、その行と領域を独立した行に移します。
+gitGraph の title はそう読まれません。
+数える版のうち最も古い版が拒否するからです。
+
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-at-end-moved]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/acctitle-ps-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-at-end-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-two-percent-lines-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-crlf-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-blank-line-moved]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-unclosed-directive-line-moved]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/accdescr-ps-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-at-end-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-two-percent-lines-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-crlf-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-blank-line-moved]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-unclosed-directive-line-moved]
 
 入力（エスケープ表記）: `"gitGraph\ntitle\t  A  B\t C  \n"`
 
