@@ -244,13 +244,9 @@ in the Db and is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 The field colon is a key colon, and Prettier removes trailing spaces and tabs;
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore removes the
-padding outside an unquoted value. Message text in
-[sequence diagrams](./sequence.md#whitespace-between-tokens) and fields in
-[class diagrams](./class.md#member-lines) print internal runs of spaces and tabs
-as one space;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that form inside quoted and unquoted single-line values, subject to the cited
-exclusions.
+padding outside an unquoted value. Internal runs of spaces and tabs inside
+quoted and unquoted single-line values are printed as one space, subject to the
+cited exclusions.
 
 [fixture: fields/value-outer-whitespace-dropped] [fixture:
 fields/value-inner-runs-collapsed] [fixture:
@@ -631,10 +627,7 @@ change. For example, `fill   : navy, stroke  : black` becomes
 `fill: navy, stroke: black`. A style that starts with the `:` has no whitespace
 before it and one space after it, as any other: `style r :  red   x` is printed
 `style r : red x`. The gaps between words of a style that starts with `:` become
-one space in [flowcharts](./flowchart.md#whitespace-between-tokens) and
-[block diagrams](./block.md#styles);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-those word gaps the same form.
+one space.
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 

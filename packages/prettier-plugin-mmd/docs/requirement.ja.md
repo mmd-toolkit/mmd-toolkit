@@ -243,9 +243,8 @@ Prettier の行末の空白とタブの扱いと、キーのコロンの間隔�
 [sequence](./sequence.ja.md#トークンの間の空白) のメッセージのテキストと、
 [class](./class.ja.md#メンバーの行) のフィールドも、内部の空白とタブの連なりを、
 空白 1 つにして印字します。
-参照先の除外条件に従い、1 行の値の内部の連なりを、
-引用符の有無によらず同じ形にするのは、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
+参照先の除外条件に従い、1 行の値の内部の空白とタブの連なりは、
+引用符の有無によらず空白 1 つで印字します。
 
 [fixture: fields/value-outer-whitespace-dropped]
 [fixture: fields/value-inner-runs-collapsed]
@@ -640,8 +639,7 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 [flowchart](./flowchart.ja.md#トークンの間の空白) と
 [block](./block.ja.md#スタイル) の図も、`:` で始まるスタイルの語の間を、
 空白 1 つにして印字します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この語の間の隙間を決めます。
+`:` で始まるスタイルの語の間は、空白 1 つにして印字します。
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 
@@ -1940,8 +1938,10 @@ requirement 図の `style`、`classDef` 文のスタイルの色が対象です�
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
 `#ABCDE` のように色でない語は、大文字小文字も残します。
 Db はスタイルのテキストを書かれたまま持つので、`#ABCDE` と `#abcde` は別の値で、
-11.7.0 以降の SVG もそのテキストを書かれたまま持つからです
-（[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)を参照）。
+11.7.0 以降の SVG もそのテキストを書かれたまま持つからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
