@@ -362,10 +362,10 @@ respectively (see
 Ordinary later-line text and standalone comment lines align one level inside the
 statement, as the other diagram types do. Keep line breaks and interior blank
 lines, and the whitespace at the end of each line of text except the last one; a
-line of whitespace only becomes an empty line. 10.9.8 draws the whitespace at
-the end of a line of text before the last one in the description of the figure
-(`<desc>x  </desc>` for `x` and two spaces), and the later versions do not, so
-that whitespace stays (see
+line of whitespace only becomes an empty line. The oldest version that counts
+draws the whitespace at the end of a line of text before the last one in the
+description of the figure (`<desc>x  </desc>` for `x` and two spaces), so that
+whitespace stays (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The whitespace at the end of the last line of text is dropped where the closer
 stands on a line of its own, and is printed as one space where the closer
