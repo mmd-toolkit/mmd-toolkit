@@ -441,6 +441,10 @@ on the same line of a `style` is printed as one space, unless the line stays as
 written for another reason; the `classDef` keeps a form feed there (see
 [Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
 
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
+
 [test: prints a form feed before a comment as one space] [test: keeps a form
 feed before a comment where a version that counts reads the text as words]
 
@@ -1008,8 +1012,11 @@ or of the member lines in a body, and its text is kept as written.
 comments/in-namespace] [fixture: comments/last-in-body] [fixture:
 comments/text-kept] [fixture: member-bodies/comment-only-over-lines-kept]
 
-A comment after a statement stays on its line, and whether whitespace is written
-before its `%%` is kept, as in a sequence diagram.
+A comment after a statement stays on its line. A comment that touches a
+statement stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 [fixture: comments/kept] [fixture: comments/whitespace-run-before-collapsed]
 [fixture: comments/after-header-touching-kept] [fixture:
@@ -1883,15 +1890,10 @@ because changing it would change the diagram or the input would be rejected:
 
   [fixture: indentation/header-v2-kept]
 
-Some text is kept as written by choice, because the Db is the same either way:
-whether whitespace is written before the mark of a comment after a statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
 
-[fixture: comments/mark-run-one-space]
+A comment that touches a statement stays touching.
 
-It is kept because mermaid.js reads a comment by what touches it in the places
-of the known divergences (`comment-takes-character`,
-`percent-brace-after-unit`), and one rule is simpler than a list of those
-places.
+[fixture: comments/mark-run-one-space]

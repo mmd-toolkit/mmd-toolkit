@@ -1667,8 +1667,12 @@ requirementdiagram
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
 ヘッダーの後ろ、本体の `{` と `}` の後ろ、キーワードか文字列の値の後ろ、
-文字列の名前かクラスの後ろのコメントは、その行に書かれたまま残します。
-空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
+文字列の名前かクラスの後ろのコメントは、その行に残します。
+空白が書かれていれば空白 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前を、空白 1 つにします。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+前のテキストに接するコメントは接したままです。
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-opening-brace] [fixture: comments/after-closing-brace]

@@ -850,7 +850,9 @@ U+2029 があるときを除きます。
 キーワードの後の 1 文字の空白は、mermaid.js にとってキーワードの一部なので、
 テキストのない title はキーワードで終わります。
 その 1 文字は、テキストのある title の後の空白と同じく、行の隙間です。
-2 回目の整形は、1 回目と同じ形になります。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 
 [fixture: title/bare-title-directive-one-space]
 [fixture: title/bare-title-directive-spaces]

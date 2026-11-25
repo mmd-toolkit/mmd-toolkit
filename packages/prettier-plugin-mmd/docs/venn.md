@@ -271,15 +271,17 @@ venn-beta
 ### Comments
 
 Standalone comments align with the next statement, or the last statement at EOF,
-to show their association. Trailing comments retain touching versus spaced
-attachment, reducing an ordinary spaced gap to one space; a swallowed
-`VennIgnoredText` fragment remains touching its comment because detaching it can
-reject the input. The lexer swallows a preceding fragment by position, so adding
-or removing the gap before a comment can change which fragment is swallowed. A
-required one-character name that a comment already swallows is rejected, and no
-space is added to rescue it. Comment contents, including trailing spaces and
-U+2028/U+2029 through LF or EOF, stay whole; percent pairs inside values remain
-value text. Protected gaps retain comment and mode boundaries.
+to show their association. A trailing comment that touches stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. A swallowed `VennIgnoredText` fragment remains
+touching its comment because detaching it can reject the input. The lexer
+swallows a preceding fragment by position, so adding or removing the gap before
+a comment can change which fragment is swallowed. A required one-character name
+that a comment already swallows is rejected, and no space is added to rescue it.
+Comment contents, including trailing spaces and U+2028/U+2029 through LF or EOF,
+stay whole; percent pairs inside values remain value text. Protected gaps retain
+comment and mode boundaries.
 
 [test: a venn set with two spaces before a comment and an empty line after the
 comment] [fixture: venn/comments/bare-percent-tail] [fixture:
@@ -918,10 +920,13 @@ U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)).
 After the text, spaces and tabs before a comment are printed as one space, and
 the spaces and tabs after the comment are left out: `title T  %% c  ` is printed
-`title T %% c`. A comment that follows a directive, a no-break space, U+3000,
-U+2003, U+2028, U+2029, or text after the last directive, spaces after a
-directive that starts the title, and a title of directives only stay as written
-(`title T %%{x}%% U` and two spaces is not changed).
+`title T %% c`. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+one space before a comment that stands after something on its line, as Prettier
+prints `x = 1;   // c` as `x = 1; // c`. A comment that follows a directive, a
+no-break space, U+3000, U+2003, U+2028, U+2029, or text after the last
+directive, spaces after a directive that starts the title, and a title of
+directives only stay as written (`title T %%{x}%% U` and two spaces is not
+changed).
 
 [test: runs and spaces around a comment after the text of a title] [test: text
 after a directive and spaces at the end of a title] [test: a no-break space

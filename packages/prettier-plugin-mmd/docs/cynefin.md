@@ -872,20 +872,16 @@ cynefin-beta
 ### Comments
 
 Align ordinary standalone comments with their body, item comments at item depth
-and prefix comments at column one. Inline comments keep their line, touching
-where they touch, and a run of spaces and tabs before one becomes one space.
+and prefix comments at column one. Inline comments keep their line, and a run of
+spaces and tabs before one becomes one space.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
-`x = 1;   // c` as `x = 1; // c`, where no other rule keeps the whitespace as
-written. As for [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments), each
-of them names those cases in its own sections or in
-[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
-(whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). Keep marks, contents and trailing padding.
-Native comments end at CR/LF, with LS/PS as content. Shared comment-region joins
-retain interior columns, aligning only the first printed line; moving them can
-change ownership.
+`x = 1;   // c` as `x = 1; // c`.
+
+A comment that touches what precedes it stays touching. Keep marks, contents and
+trailing padding. Native comments end at CR/LF, with LS/PS as content. Shared
+comment-region joins retain interior columns, aligning only the first printed
+line; moving them can change ownership.
 
 [fixture: cynefin/comments/comment-prefix]
 

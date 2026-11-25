@@ -1653,8 +1653,11 @@ of a body or of the text stays on a line of its own.
 
 A comment after the header, after the `{` or the `}` of a body, after a field
 whose value is a keyword or a string, and after a name or a class that is a
-string stays on the line, as written: one space stands before it where
-whitespace was written, and none where it touches.
+string stays on the line. Where whitespace was written, it becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. A comment that touches the preceding text
+stays touching.
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-opening-brace] [fixture: comments/after-closing-brace]

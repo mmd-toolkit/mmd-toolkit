@@ -821,8 +821,11 @@ the next line (`title`, two spaces, the character, and `%% c`, with a row after
 it) keeps the line as written, as the comment starts after the character. The
 one whitespace character after the keyword is part of the keyword to mermaid.js,
 so a title with no text ends at its keyword, and that character is a gap of the
-line like the whitespace after a title with text; the second formatting finds
-the form of the first.
+line like the whitespace after a title with text.
+
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 [fixture: title/bare-title-directive-one-space] [fixture:
 title/bare-title-directive-spaces] [fixture: title/bare-title-directive-tab]

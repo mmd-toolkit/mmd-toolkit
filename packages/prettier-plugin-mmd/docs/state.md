@@ -587,6 +587,10 @@ on the same line of a `classDef` is printed as one space, unless the line stays
 as written for another reason; the `style` keeps a form feed there (see
 [Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
 
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
+
 [test: prints a form feed before a comment as one space] [test: keeps a form
 feed before a comment where a version that counts reads the text as words]
 
@@ -1424,8 +1428,11 @@ statements around it.
 [fixture: comments/kept] [fixture: comments/text-kept] [fixture:
 comments/before-closing-brace]
 
-A comment after a statement stays on its line, and whether whitespace is written
-before its mark is kept.
+A comment after a statement stays on its line. A comment that touches a
+statement stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 [fixture: comments/kept] [fixture: comments/hash-after-statement-kept] [fixture:
 comments/after-brace-kept] [fixture: statements-one-per-line/split-then-comment]
@@ -2115,14 +2122,12 @@ diagram or the input would be rejected:
 Some text is kept as written by choice, because the Db is the same either way:
 the case of the keywords that the table under
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
-does not list, and whether whitespace is written before the mark of a comment
-after a statement; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives one space before a comment that stands after something on its line, as
-Prettier prints `x = 1;   // c` as `x = 1; // c`.
+does not list.
+
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
+
+A comment that touches a statement stays touching.
 
 [fixture: comments/mark-run-one-space]
-
-The second is kept because mermaid.js reads a comment by what touches it in the
-places of the known divergences (`comment-takes-character`,
-`percent-brace-after-unit`), and one rule is simpler than a list of those
-places.

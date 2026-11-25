@@ -1806,8 +1806,12 @@ U+2029 があるときを除きます。
 `title T  %%{x}%%  ` は `title T %%{x}%%` と、
 `title T  %%{x}%%  %%{y}%%  ` は `title T %%{x}%% %%{y}%%` と印字します。
 最後のディレクティブの後のコメントは、
-間に空白かタブがあれば空白 1 つの後に置き、接していれば接したままにします。
-`title T  %%{x}%%  %% c` は `title T %%{x}%% %% c` と、
+間に空白かタブがあれば空白 1 つの後に置きます。
+`title T  %%{x}%%  %% c` は `title T %%{x}%% %% c` と印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+最後のディレクティブに接するコメントは接したまま残します。
 `title T  %%{x}%%%% c` は `title T %%{x}%%%% c` と印字します。
 間にある空白は、
 後の 2 番目の表のとおりに印字します（改行しない空白があるときは、
@@ -2033,6 +2037,9 @@ U+2028 の後を空白 1 つにして印字します）。
 最初の文字の後に U+0085 があれば、連なりは書かれたまま残します。
 行の後に空行、コメント行、空白だけの行、
 ディレクティブの行があるときは示しません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 
 [test: treeview: the whitespace before the last directive, with nothing after it]
 [test: treeview: the whitespace before the last directive, with spaces after it]
@@ -2087,7 +2094,9 @@ Prettier が `return  x` を `return x;` と印字するためです。
 キーワードの後の 1 文字の空白は、mermaid.js にとってキーワードの一部なので、
 テキストのない title はキーワードで終わります。
 その 1 文字は、テキストのある title の後の空白と同じく、行の隙間です。
-2 回目の整形は、1 回目と同じ形になります。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 
 [fixture: title/bare-title-directive-one-space]
 [fixture: title/bare-title-directive-spaces]
@@ -2171,9 +2180,12 @@ U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `accTitle: T  %%{x}%%  ` は `accTitle: T %%{x}%%` と、
-`accDescr: T  %%{x}%%  %% c` は `accDescr: T %%{x}%% %% c` と印字し、
-ディレクティブに接するコメントは接したままにします（`accDescr: T  %%{x}%%%% c`
-は `accDescr: T %%{x}%%%% c` と印字します）。
+`accDescr: T  %%{x}%%  %% c` は `accDescr: T %%{x}%% %% c` と印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+最後のディレクティブに接するコメントは接したまま残します。
+`accDescr: T  %%{x}%%%% c` は `accDescr: T %%{x}%%%% c` と印字します。
 これらの行のほかの形は、[Title](#title)の表にあります。
 title と同じに印字しますが、ディレクティブで始まり、その後にテキストが続く値は、
 書かれたまま残ります（`accTitle: %%{x}%%  T  ` は変えません）。

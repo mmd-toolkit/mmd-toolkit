@@ -826,6 +826,10 @@ the text and the comment, the line is not undecided, and neither of items 7 and
 is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
+
 Rule 1 names no mark for a gap beside a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: the other diagram types of
@@ -2640,6 +2644,10 @@ the text and the comment, the line is not undecided, and neither of items 5 and
 is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
+
 Rule 1 names no mark for a gap beside a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: the other diagram types of
@@ -4013,16 +4021,10 @@ at column one.
 the column of a comment before the header: [flowchart](./flowchart.md#comments),
 [xychart](./xychart.md#comments), [radar](./radar.md#comments), and
 [pie](./pie.md#comments) print it at column one. Inline comments keep their
-line, touching where they touch, and a run of spaces and tabs before one becomes
-one space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
-space before a comment that stands after something on its line, as Prettier
-prints `x = 1;   // c` as `x = 1; // c`, where no other rule keeps the
-whitespace as written. As for [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments), each
-of them names those cases in its own sections or in
-[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
-(whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). Preserve marks, text and trailing padding;
+line. A comment that touches stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Preserve marks, text and trailing padding;
 pipeline comments use child depth. The start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#comments) and

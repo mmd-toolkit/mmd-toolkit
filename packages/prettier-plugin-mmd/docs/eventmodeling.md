@@ -1224,38 +1224,34 @@ statements around it, and [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), [block](./block.md#comments),
 [quadrant](./quadrant.md#comments), and [gantt](./gantt.md#comments) at the
 level of the statement after it, which is the same level in the flat body of an
-eventmodeling diagram. Within a printed line, a comment that touches stays
-touching, and a run of spaces and tabs before it becomes one space, except in
-the title, the accTitle, and the accDescr of the header line and of a frame
-statement, where the run before a comment mark after the text belongs to the
-value (see [Title](#title)).
+eventmodeling diagram. Within a printed line, a run of spaces and tabs before a
+comment becomes one space, except in the title, the accTitle, and the accDescr
+of the header line and of a frame statement, where the run before a comment mark
+after the text belongs to the value (see [Title](#title)).
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
-`x = 1;   // c` as `x = 1; // c`, where no other rule keeps the whitespace as
-written. As for [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments), each
-of them names those cases in its own sections or in
-[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
-(whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). A wide space, a U+2028, or a U+2029 before
-a comment becomes one space, except in the title, the accTitle, and the accDescr
-of the header line and of a frame statement, where it belongs to the value and
-stays as written (see [Title](#title)). A wide space is one of U+000B, U+000C,
-U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF; each of
-them has a row after a frame statement at the end of the text, and a no-break
-space, U+3000, U+2028, and U+2029 have a row at each of the other places: where
-a statement follows the comment, and after the header line, a GWT header, a GWT
-item, a clause keyword, a data declaration, a note declaration, an entity
-declaration, a data reference, an inline body, a source reference, and the
-closing brace of a block. mermaid.js rejects U+0085, U+180E, and U+200B before a
-comment after a frame statement at the end of the text with a lexer error, so
-the parser rejects them there too. The printers above print these characters
-otherwise: sequence keeps a no-break space or U+3000 after a message as written,
-and journey and timeline print them after their header as one space; before
-U+2028 or U+2029, sequence, journey, and timeline keep the line as written where
-a statement follows the comment and put the comment on a line of its own where
-the text ends. So no rule gives the form of these characters, and the form that
-the released version prints, one space, stays until it is decided (see
+`x = 1;   // c` as `x = 1; // c`.
+
+A comment that touches what precedes it stays touching. A wide space, a U+2028,
+or a U+2029 before a comment becomes one space, except in the title, the
+accTitle, and the accDescr of the header line and of a frame statement, where it
+belongs to the value and stays as written (see [Title](#title)). A wide space is
+one of U+000B, U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000,
+and U+FEFF; each of them has a row after a frame statement at the end of the
+text, and a no-break space, U+3000, U+2028, and U+2029 have a row at each of the
+other places: where a statement follows the comment, and after the header line,
+a GWT header, a GWT item, a clause keyword, a data declaration, a note
+declaration, an entity declaration, a data reference, an inline body, a source
+reference, and the closing brace of a block. mermaid.js rejects U+0085, U+180E,
+and U+200B before a comment after a frame statement at the end of the text with
+a lexer error, so the parser rejects them there too. The printers above print
+these characters otherwise: sequence keeps a no-break space or U+3000 after a
+message as written, and journey and timeline print them after their header as
+one space; before U+2028 or U+2029, sequence, journey, and timeline keep the
+line as written where a statement follows the comment and put the comment on a
+line of its own where the text ends. So no rule gives the form of these
+characters, and the form that the released version prints, one space, stays
+until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 When units split into separate lines, attach intervening inline comments to the
 following unit, in the same direction as directives. Use this shared placement

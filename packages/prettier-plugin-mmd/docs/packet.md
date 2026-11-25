@@ -487,12 +487,15 @@ packet
 
 ### Comments
 
-Use shared attachment: ordinary standalone comments align one body step in, or
-column one before the header; inline comments keep their line and touching side,
-or one separating space. Preserve marks, content and trailing padding. Native
-comments end at physical LF/CR, keeping LS/PS as content. Earlier strings/blocks
-own percent text; common lines stop at it. Common removed regions keep complete
-source and joined columns, because moving them can change ownership.
+Ordinary standalone comments align one body step in, or at column one before the
+header. Inline comments keep their line. A comment that touches stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing padding.
+Native comments end at physical LF/CR, keeping LS/PS as content. Earlier
+strings/blocks own percent text; common lines stop at it. Common removed regions
+keep complete source and joined columns, because moving them can change
+ownership.
 
 [fixture: packet/comments/comments-placement]
 

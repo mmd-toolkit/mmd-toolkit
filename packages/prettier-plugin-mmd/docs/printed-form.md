@@ -70,7 +70,7 @@ same way. The texts of Prettier are JavaScript where no language is named.
 | The dot of a member access               | `x = a . b;` is printed `x = a.b;`                                                       | none on either side                                                                | `tf 01 evt Shop . Buy` in an event modeling diagram        | `tf 01 evt Shop.Buy`          |
 | Parentheses and square brackets          | `f( a )` is printed `f(a);`                                                              | none inside                                                                        | `A( text )` in a flowchart                                 | `A(text)`                     |
 | A `;` that ends a statement              | `a ;` is printed `a;`                                                                    | none before                                                                        | `r="a" ;` in a railroad diagram                            | `r = "a";`                    |
-| A comment after something on its line    | `x = 1;   // c` is printed `x = 1; // c`, and `a: 1   # c` in YAML is printed `a: 1 # c` | one space before                                                                   | `A --> B   %% c` in a flowchart                            | `A --> B %% c`                |
+| A comment after something on its line    | `x = 1;   // c` is printed `x = 1; // c`, and `a: 1   # c` in YAML is printed `a: 1 # c` | one space before                                                                   | `title A B   %% c` in an XY chart                          | `title A B %% c`              |
 | The `(` of a call                        | `f (a)` is printed `f(a);`                                                               | none before                                                                        | `terminal ("x")` in a railroad diagram                     | `terminal("x")`               |
 | The `[` of an index                      | `x [ 0 ];` is printed `x[0];`                                                            | none before                                                                        | `service a (server) [A]` in an architecture diagram        | `service a(server)[A]`        |
 | The `{` that opens a block               | `class A{}` is printed `class A {}`                                                      | one space before                                                                   | `A   {` in an ER diagram                                   | `A {`                         |
@@ -104,11 +104,11 @@ diagram. A `(` that opens a call and a `{` that opens a block keep their rows.
 
 A comment stands after the last thing of its line, and Prettier prints one space
 between them, whatever whitespace was written (`x = 1;// c` is printed
-`x = 1; // c`). The formatter prints that space where whitespace was written.
-Where the comment touches what stands before it, the document of the diagram
-type says why a space may not be added: in an XY chart, mermaid.js reads a `%%`
-that touches a unit of one character together with that character, so
-`title A B%% c` has the title `A` and `title A B %% c` has the title `A B`.
+`x = 1; // c`). Where adding the space changes how mermaid.js reads the text,
+the comment stays touching, and the document of the diagram type gives that
+fact: in an XY chart, mermaid.js reads a `%%` that touches a unit of one
+character together with that character, so `title A B%% c` has the title `A` and
+`title A B %% c` has the title `A B`.
 
 The end of a line, the end of the text, and blank lines are the same in
 JavaScript, CSS, YAML, and Markdown, and a line of whitespace only is a blank

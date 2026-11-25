@@ -518,6 +518,9 @@ titles-and-sections/value-ends-at-hash]
 The whitespace before that `#` is part of the value. For a `title` it is left
 out like the other spaces and tabs at the end of a title, and one space stands
 before the `#`; for a `section` it stays.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 [fixture: titles-and-sections/title-hash-gap-one-space-section-kept]
 
@@ -929,13 +932,15 @@ of the text stays on a line of its own, with the line break added.
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
-A comment after a statement, or after the header, stays on the line, as written:
-one space stands before it where whitespace was written, and none where it
-touches. Moving it to a line of its own would change the Db after a `section`,
-where the whitespace before the comment is part of the value; after a `title`
-that whitespace is left out like the other spaces and tabs at the end of a title
-(see [Titles and sections](#titles-and-sections)). One rule keeps the comment on
-its line in both, as in a Gantt chart.
+A comment after a statement, or after the header, stays on the line. A comment
+that touches stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Moving it to a line of its own would change
+the Db after a `section`, where the whitespace before the comment is part of the
+value; after a `title` that whitespace is left out like the other spaces and
+tabs at the end of a title (see [Titles and sections](#titles-and-sections)).
+One rule keeps the comment on its line in both, as in a Gantt chart.
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-header-percent] [fixture: comments/after-statement]

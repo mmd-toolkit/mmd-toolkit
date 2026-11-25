@@ -74,7 +74,7 @@ Prettier の例は、言語を書いていないものは JavaScript である�
 | メンバーアクセスのドット         | `x = a . b;` を `x = a.b;` と印字する                                                    | 両側とも詰める                                      | event modeling 図の `tf 01 evt Shop . Buy`     | `tf 01 evt Shop.Buy`          |
 | 丸括弧と角括弧                   | `f( a )` を `f(a);` と印字する                                                           | 内側は詰める                                        | flowchart の `A( text )`                       | `A(text)`                     |
 | 文を終える `;`                   | `a ;` を `a;` と印字する                                                                 | 前は詰める                                          | railroad 図の `r="a" ;`                        | `r = "a";`                    |
-| 行の中で、何かの後にあるコメント | `x = 1;   // c` を `x = 1; // c` と印字し、YAML の `a: 1   # c` を `a: 1 # c` と印字する | 前に空白 1 つ                                       | flowchart の `A --> B   %% c`                  | `A --> B %% c`                |
+| 行の中で、何かの後にあるコメント | `x = 1;   // c` を `x = 1; // c` と印字し、YAML の `a: 1   # c` を `a: 1 # c` と印字する | 前に空白 1 つ                                       | XY チャートの `title A B   %% c`               | `title A B %% c`              |
 | 呼び出しの `(`                   | `f (a)` を `f(a);` と印字する                                                            | 前は詰める                                          | railroad 図の `terminal ("x")`                 | `terminal("x")`               |
 | 添字の `[`                       | `x [ 0 ];` を `x[0];` と印字する                                                         | 前は詰める                                          | architecture 図の `service a (server) [A]`     | `service a(server)[A]`        |
 | ブロックを開く `{`               | `class A{}` を `class A {}` と印字する                                                   | 前に空白 1 つ                                       | ER 図の `A   {`                                | `A {`                         |
@@ -111,9 +111,8 @@ architecture 図の `service a (server) [A]` は `service a(server)[A]`
 
 コメントは行の最後のものの後に立ち、Prettier は、書かれた空白によらず、
 その間に空白 1 つを印字する（`x = 1;// c` は `x = 1; // c` と印字される）。
-整形ツールは、空白が書かれているときに、その空白を印字する。
-コメントがその前のものに接して書かれているときは、空白を足せない理由を、
-その図種の文書が述べる。
+空白を足すと mermaid.js のテキストの読み方が変わるときは、
+コメントは接したままにし、その事実をその図種の文書が述べる。
 XY チャートでは、mermaid.js は、
 1 文字の単位に接する `%%` をその文字と一緒に読むので、
 `title A B%% c` の title は `A` で、`title A B %% c` の title は `A B` になる。

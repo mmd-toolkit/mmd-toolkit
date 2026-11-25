@@ -2813,9 +2813,12 @@ These stay as written:
   [fixture: pie/labels/label-quotes] [fixture:
   requirement/names/inner-whitespace-kept] [fixture: state/aliases/id-kept]
 
-A comment that ends the text of one of these texts leaves the runs inside the
-text and before the comment as the table gives (`A  b  %% c` is the text `A  b`
-and the comment `%% c`):
+The table gives how runs inside a text are printed and, where `%%` starts a
+comment, how the gap before it is printed (`A  b  %% c` then means the text
+`A  b` and the comment `%% c`). In the node rows of a
+[mindmap](./mindmap.md#comments) and a [treeView](./treeview.md#comments), and
+the card row of a [kanban](./kanban.md#comments), `%% c` belongs to the text:
+the runs before it are inside that text.
 
 | Text                                                                                                       | Diagram types                                                                                                                                                                                                                                                                                                                                                                         | Written                                                                 | Printed                                                           |
 | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |

@@ -206,9 +206,12 @@ where the later versions trim it (see
 `title T`, a no-break space, and `%% c` is not changed, `title T`, two spaces,
 and `%% c` print `title T %% c`, and a directive that touches the comment does
 not change that (`title T`, a no-break space, `%%{x}%%`, and `%% c` is not
-changed). Where whitespace follows a directive that follows the text, the title
-is printed as in the other diagrams: `title    T`, a no-break space, `%%{x}%%`,
-two spaces, and `%% c` print `title T`, the no-break space, and `%%{x}%% %% c`.
+changed). Where whitespace follows a directive that follows the text, one space
+stands before the comment.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. `title    T`, a no-break space, `%%{x}%%`, two
+spaces, and `%% c` print `title T`, the no-break space, and `%%{x}%% %% c`.
 Where only directives follow the text of a title, they are printed with one
 space before each that has spaces or tabs before it, and the spaces and tabs
 after the last one are left out, unless a directive of the line holds a line
@@ -526,29 +529,21 @@ pie
 
 ### Comments
 
-Reuse [shared comment placement](./flowchart.md#comments) to keep author
-attachment and text: an inline comment that touches stays touching, and a run of
-spaces and tabs before it becomes one space; standalone comments align with body
-statements, or column one before the header.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-before a comment that stands after something on its line, as Prettier prints
-`x = 1;   // c` as `x = 1; // c`, where no other rule keeps the whitespace as
-written. As for [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments), each
-of them names those cases in its own sections or in
-[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
-(whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). The whitespace before a `%%` that follows
-an `accTitle` value is the exception: the oldest version that counts reads it as
-part of the title (see [Accessibility lines](#accessibility-lines)). Keep
-bare/triple-percent marks and trailing comment spaces. Pie native comments end
-at LF, retaining LS/PS inside them, because pie does not treat them as
-separators: ending a comment at one would expose the rest of the line as a
-statement and change the Db; strings and block interiors keep percent content,
-while line common values stop at it. Common removed regions keep their complete
-swallowed source and joined continuation columns, because re-indenting a
-continuation adds spaces to the joined label. A protected preheader prefix
-overrides ordinary alignment.
+An inline comment stays on its line. An inline comment that touches stays
+touching. Standalone comments align with body statements, or at column one
+before the header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives one space before a comment that stands after something on its line, as
+Prettier prints `x = 1;   // c` as `x = 1; // c`. The whitespace before a `%%`
+that follows an `accTitle` value is the exception: the oldest version that
+counts reads it as part of the title (see
+[Accessibility lines](#accessibility-lines)). Keep bare/triple-percent marks and
+trailing comment spaces. Pie native comments end at LF, retaining LS/PS inside
+them, because pie does not treat them as separators: ending a comment at one
+would expose the rest of the line as a statement and change the Db; strings and
+block interiors keep percent content, while line common values stop at it.
+Common removed regions keep their complete swallowed source and joined
+continuation columns, because re-indenting a continuation adds spaces to the
+joined label. A protected preheader prefix overrides ordinary alignment.
 
 [fixture: pie/comments/comments-align] [fixture:
 pie/comments/inline-gap-run-before-comment] [fixture: pie/comments/comment-bare]
