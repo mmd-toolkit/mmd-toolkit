@@ -243,12 +243,7 @@ ishikawa
 普通の空行の連続は 1 つにして、余分な連続を除き、まとまりを残します。
 本文の端の普通の空行は除きます。
 先頭の共通コメントやディレクティブだけの行の後も同じです。
-
-[fixture: ishikawa/blank-lines/blank-runs]
-[fixture: ishikawa/blank-lines/blank-around-trivia]
-
-空行は Ishikawa の節点も親も変えないため、連続を 1 つにし、
-本文の端の普通の空行を除いても Db は同じです。
+空行は Ishikawa の節点も親も変えないためです。
 Prettier はテキストの先頭に空行を置かず、項目間の空行は最大 1 つにします。
 先頭の空行を除き、途中の普通の空行の連続を 1 つにする形は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
@@ -258,6 +253,10 @@ Prettier はテキストの先頭に空行を置かず、項目間の空行は�
 本文の途中の空行です。
 Prettier が項目間に空行を 1 つ残すのと同じ形を、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+
+[fixture: ishikawa/blank-lines/blank-runs]
+[fixture: ishikawa/blank-lines/blank-around-trivia]
+
 見出しに付く図のコメントの後も同じで、見出しに接していても、
 空白で離れていても変わりません（[コメント](#comments) を参照）。
 コメントの前のディレクティブに mermaid.js が取り除く改行があっても同じです。
