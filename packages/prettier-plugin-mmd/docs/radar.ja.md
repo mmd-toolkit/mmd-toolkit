@@ -544,9 +544,9 @@ radar-beta
 
 ### Options
 
-オプションのキーワードと値の間は、群のキーワードと最初の構成要素の間と同じく、
-普通の空白 1
-個にします（[Groups and commas](#groups-and-commas)を参照してください）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+オプションのキーワードと値の間を普通の空白 1 個にします。
+Prettier が `return  x` を `return x;` と印字するためです。
 真偽値・`graticule` の固定小文字、数の綴り、カンマ群、反復と順序を保ちます。
 数は [Numbers](#numbers)、カンマは [Groups and commas](#groups-and-commas)、
 順序と反復した代入は [Source order](#source-order) にあります。

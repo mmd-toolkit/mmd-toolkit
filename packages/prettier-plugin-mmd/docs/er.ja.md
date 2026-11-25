@@ -1577,7 +1577,9 @@ erDiagram
 
 ### subgraph
 
-subgraph の名前は空白 1 つの後に置き、タイトルの `[` は名前に接します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+Prettier が `return  x` を `return x;` と印字するのと同じく、
+subgraph とその名前の間に空白 1 つを与え、タイトルの `[` は名前に接します。
 `subgraph S [t]` は `subgraph S[t]` になります。
 同じ語で同じタイトルの形が逆になる理由がないので、
 [flowchart](./flowchart.ja.md#subgraph-のヘッダー)と同じ形です。

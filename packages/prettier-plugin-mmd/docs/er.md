@@ -1635,13 +1635,14 @@ erDiagram
 
 ### Subgraphs
 
-The name of a subgraph stands after one space, and the `[` of its title touches
-the name: `subgraph S [t]` is printed `subgraph S[t]`, as in
-[a flowchart](./flowchart.md#subgraph-header), since the same word with the same
-title has no reason for the opposite form. mermaid.js reads both spellings as
-the same subgraph. Nothing stands inside the brackets, and the names of the
-title are separated by one space, also where they were written touching:
-mermaid.js joins them with one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `subgraph` and its name, as Prettier prints `return  x` as `return x;`,
+and the `[` of its title touches the name: `subgraph S [t]` is printed
+`subgraph S[t]`, as in [a flowchart](./flowchart.md#subgraph-header), since the
+same word with the same title has no reason for the opposite form. mermaid.js
+reads both spellings as the same subgraph. Nothing stands inside the brackets,
+and the names of the title are separated by one space, also where they were
+written touching: mermaid.js joins them with one space.
 
 [fixture: subgraphs/header-spacing] [fixture: subgraphs/title-touches-name]
 [fixture: subgraphs/title-names-spaced] [fixture:

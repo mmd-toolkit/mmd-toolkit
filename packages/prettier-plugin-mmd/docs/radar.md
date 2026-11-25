@@ -501,11 +501,11 @@ radar-beta
 
 ### Options
 
-Use one ordinary space between an option keyword and its value, as between a
-group keyword and its first member (see
-[Groups and commas](#groups-and-commas)). Keep fixed lowercase boolean/graticule
-words, numeric spellings, comma groups and every repeated assignment in source
-order: the numbers are under [Numbers](#numbers), the commas under
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one ordinary
+space between an option keyword and its value, as Prettier prints `return  x` as
+`return x;`. Keep fixed lowercase boolean/graticule words, numeric spellings,
+comma groups and every repeated assignment in source order: the numbers are
+under [Numbers](#numbers), the commas under
 [Groups and commas](#groups-and-commas), and the order and the repeated
 assignments under [Source order](#source-order). Do not substitute effective
 defaults, cap ticks at 32 or reorder min/max: publication is not authored

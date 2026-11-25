@@ -283,16 +283,16 @@ bare name exactly title keeps its authored contact or separation before
 coordinates, a pipeline brace, an evolve target, arrows, ports, @ and /. The one
 space is the gap of [Component spacing](#component-spacing) after a keyword, of
 [Pipeline](#pipeline) before a `{`, and of [Links](#links) around an arrow. The
-space before the number of an `evolve` is the one that [Evolves](#evolves) says
-no rule gives. Before the `[` of a coordinate pair the space is the one that
+space before the number of an `evolve` is the one that
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives between values
+that follow one another, as Prettier prints CSS `margin: 1px    2px;` as
+`margin: 1px 2px;` (see [Evolves](#evolves)). Before the `[` of a coordinate
+pair the space is the one that
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives before the `[`
 that opens the values of a statement, also after a name or a string, since the
-coordinates are what the statement takes and no label of the name. The examples
-in the documentation of mermaid.js write the `[` of all 66 coordinates after a
-space (see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
-Whitespace after title makes it metadata instead of a name. Quoted "title" and
-bare titlex follow ordinary spacing; uppercase names stay names.
+coordinates are what the statement takes and no label of the name. Whitespace
+after title makes it metadata instead of a name. Quoted "title" and bare titlex
+follow ordinary spacing; uppercase names stay names.
 
 [fixture: wardley/name-boundaries/component-title-contact]
 
@@ -646,16 +646,13 @@ wardley-beta
 
 Print evolve Name 0.80 with one ordinary space between components, preserving
 the authored reference and decimal.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the one space after the keyword (see [Component spacing](#component-spacing)),
-No rule gives the space between the name and its number:
-[radar](./radar.md#named-entries) prints a name and its number with one space as
-well (`North 4`), but its document says that form is printed against rule 3 and
-waits to be fixed by the rule, so it is no basis for rule 2, and the released
-form stays until it is decided (see
-[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
-Keep empty quoted names and unpublished targets. A missing ID does not justify
-deleting the statement, and joining a bare name to its number can reject it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between the keyword and its name, as Prettier prints `return  x` as `return x;`
+(see [Component spacing](#component-spacing)), and one space between the name
+and its number as values that follow one another, as Prettier prints CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`. Keep empty quoted names and
+unpublished targets. A missing ID does not justify deleting the statement, and
+joining a bare name to its number can reject it.
 
 [fixture: wardley/evolves/evolve-numeric-gap]
 
@@ -775,11 +772,12 @@ ordinary outer common whitespace and retain internal text, including unmatched
 quotes, apart from a run of spaces and tabs inside the value, which is printed
 as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-Empty titles stay empty and never take a value from the next line. This chooses
-a compact Db-equal edge without treating the common value as a quoted string.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the one space after `title`, as `title    Pets` in a pie chart and
-`title    Plan` in a Gantt chart are printed with one, and
+Empty titles stay empty and never take a value from the next line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `title` and a nonempty value, as Prettier prints `return  x` as
+`return x;`. This chooses a Db-equal edge without treating the common value as a
+quoted string.
+
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
 gives the reason of the trim. The text of a title stops before the line break,
 so an empty title takes no value from the next line, and a quote in a title is a
