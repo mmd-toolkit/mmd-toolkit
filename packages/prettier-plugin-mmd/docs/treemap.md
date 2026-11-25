@@ -1305,11 +1305,13 @@ treemap
 ### Blank lines
 
 Keep at most one ordinary blank line and remove ordinary blanks at document/body
-edges, choosing a bounded separation between statements. First move any
-meaningful whitespace-only indentation run to its row. Preserve blank lines
-inside names, descriptions, directives and common comment regions as owned text.
-Blank lines inside a quoted name stay because removing one removes a line feed
-from the name in the Db, and
+edges, choosing a bounded separation between statements. Prettier prints a run
+of blank lines as one and none at the start or the end of a block or of the
+file, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these
+blank-line gaps. First move any meaningful whitespace-only indentation run to
+its row. Preserve blank lines inside names, descriptions, directives and common
+comment regions as owned text. Blank lines inside a quoted name stay because
+removing one removes a line feed from the name in the Db, and
 [the exception for runs of whitespace](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
 excludes multiline text.
 
@@ -1481,7 +1483,9 @@ title
 
 End ordinary accepted text with one configured newline, including empty bodies,
 rows, common statements, closed blocks and comments. This follows the shared
-file boundary choice. Value tails remain owned text; an unfinished Root
+file boundary choice. Prettier ends a file with one line break and no blank line
+before it, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+that final line break. Value tails remain owned text; an unfinished Root
 directive reaching EOF and a protected body ending keep their source ending. A
 rejected unused indentation run is never repaired.
 
