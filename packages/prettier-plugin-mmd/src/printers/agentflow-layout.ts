@@ -368,78 +368,79 @@ export function findNamePrintedEnd(
 export const agentflowDropsSeparatorsBeforeComments = true
 
 /**
- * The keywords of the pieces of a name, which a unit of the name starts with
- * where a word character does not follow them (diagrams/agentflow.md, Flows,
- * globals, connectors, and names; flowchart.md, rules 10 to 12 and 20, which
- * agentflow reuses). The longer of two with the same start comes first.
- */
-const nameKeywords = [
-  "agentflow-beta",
-  "connector",
-  "classDef",
-  "linkStyle",
-  "global",
-  "class",
-  "style",
-  "flow",
-  "end",
-  "v",
-]
-
-/**
- * Whether the character at `offset` of the text of a name belongs to an id
- * run: an ASCII letter or digit, one of `!"#$%&'*+./?\_` and the backquote,
- * or a `-` followed by a character other than `>`, `-`, and `.`
- * (flowchart.md, rule 21, which agentflow reuses).
- */
-function isIdRunCharacter(text: string, offset: number): boolean {
-  const character = text[offset]
-  if (character === "-") return !">-.".includes(text[offset + 1] ?? ">")
-  return isWordCharacter(character) || "!\"#$%&'*+./?\\`".includes(character)
-}
-
-/**
- * The length of the unit that starts at `offset` of the text of a name, by the
- * order of the lexical rules that agentflow reuses from flowchart: a keyword
- * that no word character follows (rules 10 to 12 and 20), the digits of a
- * number (rule 16), one of `#`, `:`, `&`, `,`, `*` (rule 17, in which `:::` is
- * three of them for the boundaries that this finds), an id run as long as it
- * goes (rule 21), and any other single character: a `-`, a letter, a `^`, or
- * one whitespace character (agentflow reads one space unit for each).
- */
-function nameUnitLength(text: string, offset: number): number {
-  const keyword = nameKeywords.find(
-    (word) =>
-      text.startsWith(word, offset) &&
-      !isWordCharacter(text[offset + word.length]),
-  )
-  if (keyword !== undefined) return keyword.length
-  let end = offset + 1
-  const character = text[offset]
-  if (character >= "0" && character <= "9") {
-    while (text[end] >= "0" && text[end] <= "9") end++
-  } else if (!"#:&,*".includes(character) && isIdRunCharacter(text, offset)) {
-    while (end < text.length && isIdRunCharacter(text, end)) end++
-  }
-  return end - offset
-}
-
-/**
  * Whether the text of a name ends with the keyword `end` or `global` as a unit
- * of its own: those two keywords take the whitespace after them, so that the
- * whitespace belongs to the name when a comment follows. In `Front end`,
+ * of its own: those two keywords take the spaces and tabs after them, so that
+ * the whitespace belongs to the name when a comment follows (diagrams/
+ * agentflow.md, Shared units and ordered contexts). In `Front end`,
  * `Front 9end`, `Front:end`, and `Front #end` the keyword is a unit, and in
  * `Front-end`, `Front9end`, and `Front#end` it is inside an id run. The tree
  * cannot say it: the text of a name before a `;` ends with its whitespace
- * whatever its last unit is (diagrams/agentflow.md, Flows, globals,
- * connectors, and names).
+ * whatever its last unit is.
+ *
+ * The text is cut into units from its start, by the lexical rules of the
+ * statement context that agentflow reuses from flowchart, in the order of that
+ * context and restarting at every position (the same section; flowchart.md,
+ * rules 10 to 12, 16, 17, 20, and 21): a keyword that no word character
+ * follows, the digits of a number, one of `#`, `:`, `&`, `,`, `*` (`:::` is
+ * three of them for the boundaries that this finds), an id run as long as it
+ * goes, and any other single character: a `-`, a letter, a `^`, or one
+ * whitespace character (agentflow reads one space unit for each). The text ends
+ * with the keyword as a unit when the units before it end where it starts.
  */
 function endsWithSpaceTakingKeyword(text: string): boolean {
-  const keyword = ["end", "global"].find((word) => text.endsWith(word))
-  if (keyword === undefined) return false
-  const target = text.length - keyword.length
+  const spaceTakingKeyword = ["end", "global"].find((word) =>
+    text.endsWith(word),
+  )
+  if (spaceTakingKeyword === undefined) return false
+  const target = text.length - spaceTakingKeyword.length
+  // The keywords of the pieces of a name; the longer of two with the same
+  // start comes first.
+  const keywords = [
+    "agentflow-beta",
+    "connector",
+    "classDef",
+    "linkStyle",
+    "global",
+    "class",
+    "style",
+    "flow",
+    "end",
+    "v",
+  ]
+
+  /**
+   * Whether the character at `position` belongs to an id run: an ASCII letter
+   * or digit, one of `!"#$%&'*+./?\_` and the backquote, or a `-` followed by
+   * a character other than `>`, `-`, and `.` (rule 21).
+   */
+  function isIdRunCharacter(position: number): boolean {
+    const character = text[position]
+    if (character === "-") return !">-.".includes(text[position + 1] ?? ">")
+    return isWordCharacter(character) || "!\"#$%&'*+./?\\`".includes(character)
+  }
+
   let offset = 0
-  while (offset < target) offset += nameUnitLength(text, offset)
+  while (offset < target) {
+    let end = offset + 1
+    const character = text[offset]
+    let keyword: string | undefined
+    for (const word of keywords) {
+      if (
+        text.startsWith(word, offset) &&
+        !isWordCharacter(text[offset + word.length])
+      ) {
+        keyword = word
+        break
+      }
+    }
+    if (keyword !== undefined) end = offset + keyword.length
+    else if (character >= "0" && character <= "9") {
+      while (text[end] >= "0" && text[end] <= "9") end++
+    } else if (!"#:&,*".includes(character) && isIdRunCharacter(offset)) {
+      while (end < text.length && isIdRunCharacter(end)) end++
+    }
+    offset = end
+  }
   return offset === target
 }
 
