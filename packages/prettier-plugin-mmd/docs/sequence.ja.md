@@ -23,11 +23,6 @@ fixture の置き方と確かめ方は、
 ブロックは、`loop`、`alt`、`opt`、`par`、`par_over`、`critical`、`break`、
 `rect` です。
 `else`、`and`、`option`、`end` は、その行と同じ段に置きます。
-ヘッダーやブロックの内側に、文を 1 段深く置き、閉じる行を開く行にそろえる形は、
-[flowchart](./flowchart.ja.md#字下げ) と [class](./class.ja.md#字下げ)
-の図と同じです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この字下げを与えます。
 
 [fixture: indentation/blocks] [fixture: indentation/sections]
 [fixture: indentation/other-blocks-kept]
@@ -218,11 +213,8 @@ sequenceDiagram
 [flowchart](./flowchart.ja.md#1-行に-1-文) と
 [XY チャート](./xychart.ja.md#1-行-1-文) の図と同じで、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
-ブロックの `end` を別の行に置く形は、
-[flowchart](./flowchart.ja.md#字下げ) と [class](./class.ja.md#字下げ)
-の図の閉じる行と同じで、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
-ディレクティブと必要な `;` は、元の文と一緒に残します。
+ブロックの `end` は別の行に置き、ディレクティブと必要な `;` は、
+元の文と一緒に残します。
 
 [fixture: statements-one-per-line/autonumber-directive-semicolon-then-statements-split]
 
@@ -1924,11 +1916,6 @@ sequenceDiagram
 [test: sequence Unicode and tab interiors]
 
 コメントやディレクティブがあるブロックの内容と改行は保ちます。
-複数行の説明ブロックは、コメント行やディレクティブ行があると、
-内容と改行を保ちます。
-[XY チャート](./xychart.ja.md#空の説明ブロック) と
-[象限チャート](./quadrant.ja.md#空の説明ブロック) も同じで、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 1 行のブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 
@@ -1956,8 +1943,7 @@ Mermaid が説明からこの字下げを除くためです。
 `}` は `accDescr` と同じ段に置きます。
 コメント行だけの説明ブロックでは、単独行の `}` を、
 `accDescr` と同じ段に置きます。
-[flowchart](./flowchart.ja.md#複数行の値) と
-[XY チャート](./xychart.ja.md#空の説明ブロック) の図も同じで、
+[flowchart](./flowchart.ja.md#複数行の値) も同じで、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 
 [fixture: multi-line-values/accdescr-block-comment-only]

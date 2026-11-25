@@ -22,11 +22,7 @@ The statements after the header stand one level deeper than the header. The
 statements of a block (`loop`, `alt`, `opt`, `par`, `par_over`, `critical`,
 `break`, `rect`) and the participants of a `box` stand one level deeper than the
 line that opens it; `else`, `and`, `option`, and `end` stand at the level of
-that line. Statements stand one level inside their header or block, with closing
-lines aligned with the opener, as in [flowchart](./flowchart.md#indentation) and
-[class](./class.md#indentation) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that nesting and alignment.
+that line.
 
 [fixture: indentation/blocks] [fixture: indentation/sections] [fixture:
 indentation/other-blocks-kept]
@@ -216,12 +212,8 @@ that follow the kept `;` stand on their own lines, as in
 [flowchart](./flowchart.md#statements-one-per-line) and
 [XY chart](./xychart.md#statements-one-per-line) diagrams;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this separation. A block's `end` takes its own line, as closing lines do in
-[flowchart](./flowchart.md#indentation) and [class](./class.md#indentation)
-diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that placement while the directive and its required `;` stay with their
-statement.
+this separation. A block's `end` takes its own line, and the directive and its
+required `;` stay with their statement.
 
 [fixture:
 statements-one-per-line/autonumber-directive-semicolon-then-statements-split]
@@ -1870,11 +1862,6 @@ have one space between them: `accDescr{  }` becomes `accDescr {}`.
 and tab interiors]
 
 Blocks with comments or directives keep their contents and line breaks.
-Multiline description blocks with comment or directive lines keep their contents
-and line breaks in [XY charts](./xychart.md#empty-description-blocks) and
-[quadrant charts](./quadrant.md#empty-description-blocks), so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same form here.
 
 Blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
@@ -1901,8 +1888,7 @@ A block without text, whose lines are only comment lines, holds no value: its
 comment lines stand one level deeper than the `accDescr`, as comment lines
 inside a statement do, and its `}` at the level of the `accDescr`. The separate
 `}` of a comment-only description block aligns with `accDescr` in
-[flowcharts](./flowchart.md#multi-line-values) and
-[XY charts](./xychart.md#empty-description-blocks), so
+[flowcharts](./flowchart.md#multi-line-values), so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the same alignment here.
 
