@@ -63,8 +63,9 @@ agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 [fixture: header/header-next-line-direction] [fixture: header/header-symbol]
 [fixture: header/header-direction-spelling-after-directive]
 
-記号の方向は、
-[flowchart](./flowchart.ja.md#方向)と同じく空白 1 つの後に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+見出しのキーワードと記号の方向の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 `agentflow-beta<` は `agentflow-beta <` と印字します。
 
 [fixture: header/header-symbol-touching-spaced]
