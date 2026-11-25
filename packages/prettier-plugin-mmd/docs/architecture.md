@@ -345,18 +345,23 @@ quote, backslash, or line break, and has no space at its ends: a label without
 quotes runs to the next `]`, and one that starts and ends with a quote is read
 as a label in quotes, so `"a-b"`, `"A.B"`, and `"日本語"` are printed without
 quotes, while `"a[b"`, the empty label, and a label with padding inside the
-quotes (`[" padded "]`) keep theirs. So do a backslash and a quote: mermaid.js
-takes one pair of outer quotes, `"` or `'`, off the title that it reads, and
-turns `\"` and `\'` into `"` and `'` only in a title that had them, so `"a\"b"`
-printed `a\"b`, and `"'x'"` printed `'x'`, would be read as other titles. A
-label without quotes is never put in quotes. A run of spaces and tabs in a label
-is printed as one space, except where it makes a word of its own: mermaid.js
-draws a label word by word, split at single spaces, so a run of tabs alone, and
-a tab between two spaces, stay (`"A<tab>B"` is printed `A<tab>B`). The words are
-what mermaid.js keeps of the title: it takes the brackets off, trims, takes one
-pair of outer quotes off, and trims again. A quote inside the words, or beside a
-bracket inside them, is a character of a word like any other, so a tab beside it
-stays too (`["A'<tab>B"]` and `["A[<tab>B"]` are printed as written).
+quotes (`[" padded "]`) keep theirs. The versions that were run reject
+`service s[]` and accept `service s[""]`, which is the reason for the empty
+label. The padding inside the quotes has none: they read `[" padded "]` and
+`[padded]` alike, so that label is printed against rule 3 (the examples write 36
+of 36 labels without quotes) and waits to be fixed by the rule. A backslash and
+a quote keep theirs too: mermaid.js takes one pair of outer quotes, `"` or `'`,
+off the title that it reads, and turns `\"` and `\'` into `"` and `'` only in a
+title that had them, so `"a\"b"` printed `a\"b`, and `"'x'"` printed `'x'`,
+would be read as other titles. A label without quotes is never put in quotes. A
+run of spaces and tabs in a label is printed as one space, except where it makes
+a word of its own: mermaid.js draws a label word by word, split at single
+spaces, so a run of tabs alone, and a tab between two spaces, stay (`"A<tab>B"`
+is printed `A<tab>B`). The words are what mermaid.js keeps of the title: it
+takes the brackets off, trims, takes one pair of outer quotes off, and trims
+again. A quote inside the words, or beside a bracket inside them, is a character
+of a word like any other, so a tab beside it stays too (`["A'<tab>B"]` and
+`["A[<tab>B"]` are printed as written).
 
 [fixture: quotes/labels-without-quotes] [fixture:
 quotes/labels-with-punctuation-without-quotes] [fixture:
@@ -521,8 +526,10 @@ the `-->` of a flowchart is, and Prettier prints a mark between two things with
 one space on each side (the row of rule 1 for another mark between two things:
 `A-->B` in a flowchart is printed `A --> B`, and `A<-->B` and `A---B` are
 printed `A <--> B` and `A --- B`). Keep both actual marker characters, including
-`>--<`; their presence flags do not specify their glyphs. No-marker lines use
-the same spaces.
+`>--<`; their presence flags do not specify their glyphs. The Db of the pinned
+version gives `>--<` and `<-->` the same flags, and the versions that were run
+read and draw both alike, so no reason keeps the reversed glyph, and its row is
+in the list (D02). No-marker lines use the same spaces.
 
 [fixture: architecture/arrow-lines/arrow-both-markers]
 
