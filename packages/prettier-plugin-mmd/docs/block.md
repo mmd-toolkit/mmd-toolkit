@@ -1453,8 +1453,8 @@ keyword from its body: `accDescr{  }` becomes `accDescr {}`.
 Unicode and tab interiors]
 
 A block with a directive or comment line keeps its contents and line breaks,
-with standalone trivia one level inside and its closer at statement level. Rule
-1 names no mark for a line inside a block, so
+with standalone trivia one level inside and its closer at statement level. The
+start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [pie](./pie.md#description-blocks),
 [sequence](./sequence.md#multi-line-values), and

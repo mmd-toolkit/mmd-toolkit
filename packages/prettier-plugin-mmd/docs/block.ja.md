@@ -1483,7 +1483,7 @@ block-beta
 
 指令かコメント行を持つブロックは、内容と改行を保ち、独立した注釈類を 1 段内側、
 閉じ括弧を文の段に置きます。
-規則 1 は、ブロックの中の行の印を挙げていないので、
+行頭は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [pie](./pie.ja.md#description-blocks)、[sequence](./sequence.ja.md#複数行の値)、
 [info](./info.ja.md#description-blocks)も、ブロックの、
