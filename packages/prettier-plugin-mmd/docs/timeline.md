@@ -1674,14 +1674,16 @@ spaces before it stay.
 [test: U+2029 and spaces at the end of a timeline title] [test: U+2028 and
 spaces at the end of the last event of a line]
 
-A comment line after U+2028 or U+2029 joins the next line to its line, and the
-line stays as written to its end, also after the `}` of a description block that
-starts on the line of the header, and before a period (see
+A comment line after U+2028 or U+2029 joins the next line to its line, and where
+a statement stands on the next line, the line stays as written to its end, also
+after the `}` of a description block that starts on the line of the header, and
+before a period (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [test: a line separator and a comment line after the closing brace of a
 description block that starts on the line of the timeline header, before a
-period]
+period] [test: timeline: an event that a comment after U+2028 joins to the next
+event line stays as written]
 
 A directive after a comment line that follows a U+2028 or U+2029 inside a period
 is on the line of the event, since the comment line joins the next line to its

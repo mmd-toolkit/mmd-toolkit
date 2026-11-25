@@ -1680,13 +1680,14 @@ U+2028 と U+2029 は空白やタブではなくテキストの文字なので�
 [test: U+2028 and spaces at the end of the last event of a line]
 
 U+2028 か U+2029 の後のコメント行は、次の行をその行につなぎ、
-その行は最後まで書かれたまま残ります。
+次の行に文があるときは、その行は最後まで書かれたまま残ります。
 ヘッダーと同じ行で始まる description block の `}` の後と、
 period の前でも同じです（詳しくは、
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照）。
 
 [test: a line separator and a comment line after the closing brace of a description block that starts on the line of the timeline header, before a period]
+[test: timeline: an event that a comment after U+2028 joins to the next event line stays as written]
 
 ピリオドの中で、U+2028 か U+2029 に続くコメント行の後のディレクティブは、
 コメント行が次の行をその行につなぐので、イベントの行にあります。
