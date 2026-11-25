@@ -1,6 +1,6 @@
 import type { Doc, ParserOptions } from "prettier"
 import { builders, utils } from "prettier/doc"
-import type { Range } from "@mmd-toolkit/ast"
+import type { Range, Token } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
 import { printAccessibilityLine } from "./accessibility-form.ts"
@@ -26,7 +26,7 @@ import {
   ignoredSemicolonNeedsItsLine,
   completeKeptLines,
 } from "./kept-lines.ts"
-import { toAsciiLowerCase } from "./layout.ts"
+import { toAsciiLowerCase, walk } from "./layout.ts"
 import type { Line } from "./lines.ts"
 import {
   breakAfter,
@@ -434,6 +434,12 @@ interface Stretch {
   readonly first: number
   /** The position after its last statement in the block. */
   readonly after: number
+  /**
+   * The position after the statements that follow a block of the stretch whose
+   * closing goes to a line of its own, on its line, which the stretch leaves
+   * out (see `followsSplitClosing`); undefined where it leaves none out.
+   */
+  readonly leftOutEnd?: number
 }
 
 /**
@@ -482,12 +488,6 @@ export function printBlock<Statement extends Positioned>(
   let stretchEndsWithComment = false
   let endsAfterBareMarker = false
   let endsAfterTakingComment = false
-  /**
-   * The positions of the statements that follow a block whose closing goes to
-   * a line of its own, and that the stretch of that block leaves out (see
-   * `followsSplitClosing`).
-   */
-  const afterSplitClosing = new Set<number>()
   /**
    * The indentation beyond the block's for the lines being added (see
    * `BlockRules.extraIndentationOf`).
@@ -775,9 +775,13 @@ export function printBlock<Statement extends Positioned>(
           after: uncutAfter,
         }
         if (!printsAsWritten(uncut, statements.slice(first, uncutAfter))) {
-          for (let dropped = after; dropped < uncutAfter; dropped++)
-            afterSplitClosing.add(dropped)
-          return { start, end: stretchEnd, first, after }
+          return {
+            start,
+            end: stretchEnd,
+            first,
+            after,
+            leftOutEnd: uncutAfter,
+          }
         }
       }
       stretchEnd = Math.max(stretchEnd, rules.printedEnd(following))
@@ -827,6 +831,18 @@ export function printBlock<Statement extends Positioned>(
       (rules.joiningRegionsPrintedAsWritten !== true &&
         holdsJoiningRegion(source, stretch.start, stretch.end))
     )
+  }
+
+  /**
+   * The position of the statement that the block prints after a stretch: the
+   * statements that follow a split closing on its line, `;` of their own, are
+   * dropped at the top level, as they are on any line of their own; in a block
+   * they are statements like the others, printed on lines of their own.
+   */
+  function nextAfter(stretch: Stretch): number {
+    return bounds.isTopLevel && stretch.leftOutEnd !== undefined
+      ? stretch.leftOutEnd
+      : stretch.after
   }
 
   /**
@@ -1114,16 +1130,15 @@ export function printBlock<Statement extends Positioned>(
     // too: the part before it holds no `;` of its own, so a second formatting
     // would not keep its statements and its `;` together (see
     // `holdsOwnSemicolonIn`).
-    // The `}` or the `end` that closes a block around this one is on a line of
-    // its own after this block, unless something follows it, so it does not
-    // keep the closing of this block on the line: the second formatting would
-    // move it.
+    // The closing of a block around this one is on a line of its own after
+    // this block, unless something follows it, so it does not keep the closing
+    // of this block on the line: the second formatting would move it (see
+    // `closesEnclosingBlock`).
     const followed =
       findTokensBetween(source, closing.range[1], lineEnd).some(
         (token) =>
           isStructural(source, token) &&
-          token.value !== "}" &&
-          toAsciiLowerCase(token.value) !== "end",
+          !closesEnclosingBlock(source, closing, token),
       ) ||
       [...source.ignoredSemicolons].some(
         (semicolon) =>
@@ -1153,7 +1168,7 @@ export function printBlock<Statement extends Positioned>(
       pushLine(printStretch(stretch))
       stretchEndsWithComment = endsWithComment(stretch.end)
       continuesOpeningLine = true
-      next = stretch.after
+      next = nextAfter(stretch)
       offset = stretch.end
     }
   }
@@ -1191,15 +1206,15 @@ export function printBlock<Statement extends Positioned>(
         offset = end
       } else {
         stretchEndsWithComment = endsWithComment(stretch.end)
-        next = stretch.after
+        next = nextAfter(stretch)
         offset = stretch.end
       }
       continue
     }
     if (
+      !startsStretch &&
       bounds.isTopLevel &&
-      rules.isDroppedAtTopLevel(statement) &&
-      (!startsStretch || afterSplitClosing.has(index))
+      rules.isDroppedAtTopLevel(statement)
     ) {
       next++
       continue
@@ -1287,7 +1302,7 @@ export function printBlock<Statement extends Positioned>(
         : {}),
     })
     stretchEndsWithComment = endsWithComment(stretch.end)
-    next = stretch.after
+    next = nextAfter(stretch)
     offset = stretch.end
   }
   // The top-level block is the body of the diagram, which ends at the end of
@@ -1620,6 +1635,37 @@ function holdsVerbatimLine(
     line = lineEndOf(source, line) + 1
   }
   return false
+}
+
+/** The start of the earliest node that ends at each offset, of each source. */
+const earliestNodeStartsBySource = new WeakMap<
+  Source,
+  ReadonlyMap<number, number>
+>()
+
+/**
+ * Whether the token closes a block around the block that `closing` closes: a
+ * node that starts before `closing` ends with the token. The token is judged
+ * by the node that it ends and not by its spelling, since a node or a state
+ * named `end` or `End` stands where a closing stands and is no closing.
+ */
+function closesEnclosingBlock(
+  source: Source,
+  closing: Token,
+  token: Token,
+): boolean {
+  let starts = earliestNodeStartsBySource.get(source)
+  if (starts === undefined) {
+    const found = new Map<number, number>()
+    walk(source.root.body, (node) => {
+      const start = found.get(node.range[1])
+      if (start === undefined || node.range[0] < start)
+        found.set(node.range[1], node.range[0])
+    })
+    starts = found
+    earliestNodeStartsBySource.set(source, starts)
+  }
+  return (starts.get(token.range[1]) ?? Infinity) < closing.range[0]
 }
 
 /** Whether the line that starts at `line` holds nothing but a `}` or an `end`. */

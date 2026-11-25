@@ -538,7 +538,9 @@ that has moved would be dropped by a second formatting, since the line of the
 keeps the `end` on the line, and the `;` with it:
 `subgraph S; A[x;] --> B; end ; C` stays as it is. A `%%` after the `;` on the
 line keeps the line as written (see
-[Statements one per line](#statements-one-per-line)).
+[Statements one per line](#statements-one-per-line)), and so does a `;` that the
+line rule ignores next to another `;`, as in
+`subgraph S[style:#x;]; A --> B; end ;;`: the `end` stays on the line, as below.
 
 [fixture: semicolons/closing-semicolon-after-kept-line-dropped] [fixture:
 semicolons/closing-semicolon-after-style-space-kept-line-dropped] [fixture:
@@ -555,12 +557,19 @@ semicolons/closing-semicolon-before-directive-line-after-kept-line-dropped]
 semicolons/closing-semicolon-before-semicolon-line-after-kept-line-dropped]
 [fixture: semicolons/closing-semicolon-before-directive-after-kept-line-kept]
 [fixture: semicolons/closing-semicolon-before-statement-after-kept-line-kept]
-[fixture: semicolons/closing-semicolon-without-kept-line-dropped] [test: U+2028
-after `end ;` of a subgraph on a kept line, then a statement, in a flowchart]
-[test: U+2028 after `end ;` of a subgraph on a kept line, then a line break, in
-a flowchart] [test: U+2028 after `end ;` of a subgraph on a kept line, then a
-comment, in a flowchart] [test: U+2028 after `end ;` of a subgraph on a kept
-line, then a directive, in a flowchart] [test: U+2028 after `end ;` of a
+[fixture: semicolons/closing-semicolon-without-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-without-space-after-kept-line-dropped] [fixture:
+semicolons/closing-two-semicolons-adjacent-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-at-end-of-text-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-next-to-ignored-semicolon-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-kept-as-written]
+[fixture:
+semicolons/closing-semicolon-before-unclosed-directive-after-kept-line] [test:
+U+2028 after `end ;` of a subgraph on a kept line, then a statement, in a
+flowchart] [test: U+2028 after `end ;` of a subgraph on a kept line, then a line
+break, in a flowchart] [test: U+2028 after `end ;` of a subgraph on a kept line,
+then a comment, in a flowchart] [test: U+2028 after `end ;` of a subgraph on a
+kept line, then a directive, in a flowchart] [test: U+2028 after `end ;` of a
 subgraph on a kept line, then a second `;`, in a flowchart] [test: U+2028 after
 `end ;` of a subgraph on a kept line, then the end of the text, in a flowchart]
 [test: U+2029 after `end ;` of a subgraph on a kept line, then a statement, in a
@@ -578,9 +587,11 @@ printed with each `end` on a line of its own, one level apart, and so are three
 subgraphs. A `;` that stands alone between them is a statement of the subgraph
 around it, so it is printed on a line of its own after the inner `end`, as on
 any line: `end ; end` is printed as `end`, `;`, and `end` on three lines. An
-`end` that a statement follows on its line stays with that statement and with
-the `end` after it. U+2028 and U+2029 between or after the `end` are whitespace
-as after any `end`.
+`end` that a statement follows on its line stays with that statement, and with
+the `end` after the statement where there is one: `end end ; C` stays as it is,
+and in `subgraph F; subgraph G; A[x;] --> B; end; C; end` only the last `end`
+goes to a line of its own. U+2028 and U+2029 between or after the `end` are
+whitespace as after any `end`.
 
 [fixture: semicolons/nested-closings-after-kept-line] [fixture:
 semicolons/nested-closings-style-space-after-kept-line] [fixture:
@@ -589,17 +600,18 @@ semicolons/nested-closings-semicolon-between-after-kept-line] [fixture:
 semicolons/nested-closings-semicolon-after-outer-after-kept-line] [fixture:
 semicolons/nested-closings-statement-after-kept-line-kept] [fixture:
 semicolons/nested-closings-line-break-between-after-kept-line] [fixture:
-semicolons/nested-closings-without-kept-line] [test: U+2028 between two `end` of
-nested subgraphs on a kept line, in a flowchart] [test: U+2028 after the `;`
+semicolons/nested-closings-without-kept-line] [fixture:
+semicolons/nested-closings-statement-between-closings] [test: U+2028 between two
+`end` of nested subgraphs on a kept line, in a flowchart] [test: U+2028 after
+the `;` between two `end` of nested subgraphs on a kept line, in a flowchart]
+[test: U+2028 after a space after the `;` between two `end` of nested subgraphs
+on a kept line, in a flowchart] [test: U+2028 after two `end` of nested
+subgraphs on a kept line, in a flowchart] [test: U+2029 between two `end` of
+nested subgraphs on a kept line, in a flowchart] [test: U+2029 after the `;`
 between two `end` of nested subgraphs on a kept line, in a flowchart] [test:
-U+2028 after a space after the `;` between two `end` of nested subgraphs on a
-kept line, in a flowchart] [test: U+2028 after two `end` of nested subgraphs on
-a kept line, in a flowchart] [test: U+2029 between two `end` of nested subgraphs
-on a kept line, in a flowchart] [test: U+2029 after the `;` between two `end` of
-nested subgraphs on a kept line, in a flowchart] [test: U+2029 after a space
-after the `;` between two `end` of nested subgraphs on a kept line, in a
-flowchart] [test: U+2029 after two `end` of nested subgraphs on a kept line, in
-a flowchart]
+U+2029 after a space after the `;` between two `end` of nested subgraphs on a
+kept line, in a flowchart] [test: U+2029 after two `end` of nested subgraphs on
+a kept line, in a flowchart]
 
 A `;` at the end of a statement is kept too when a directive follows it on the
 same line: without the `;`, the whitespace before the directive would be read as

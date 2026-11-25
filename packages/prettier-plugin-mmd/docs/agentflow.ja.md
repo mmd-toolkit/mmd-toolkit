@@ -1051,6 +1051,9 @@ agentflow-beta TB
 自分の `;` を持つコメントの前の `;` も残します。
 その `end` の行に、行が残す `;` があるからです。
 `;` の後ろに文があるときは、`end` を行に残し、`;` も一緒に残します。
+行の規則が無視する `;` が別の `;`
+に接するとき（`flow F[style:#x;]; A --> B; end ;;`）は、
+行を書かれたまま残します（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
 
 [fixture: semicolons/closing-semicolon-after-kept-line-dropped]
 [fixture: semicolons/closing-semicolon-after-style-space-kept-line-dropped]
@@ -1069,6 +1072,12 @@ agentflow-beta TB
 [fixture: semicolons/closing-semicolon-before-statement-after-kept-line-kept]
 [fixture: semicolons/closing-semicolon-before-comment-with-semicolon-kept]
 [fixture: semicolons/closing-semicolon-without-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-without-space-after-kept-line-dropped]
+[fixture: semicolons/closing-two-semicolons-adjacent-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-at-end-of-text-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-next-to-ignored-semicolon-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-kept-as-written]
+[fixture: semicolons/closing-semicolon-before-unclosed-directive-after-kept-line]
 [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a statement]
 [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a line break]
 [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a comment]
@@ -1093,7 +1102,11 @@ agentflow-beta TB
 その間にそれだけで置かれた `;` は、外側の `flow` の文なので、
 内側の `end` の後ろの自分の行に、ほかの行と同じように印字します。
 `end ; end` は、`end`、`;`、`end` を 3 行に印字します。
-同じ行で文が続く `end` は、その文と、その後ろの `end` と一緒に残ります。
+同じ行で文が続く `end` は、その文と一緒に残り、文の後ろに `end` があるときは、
+その `end` も残ります。
+`end end ; C` は、そのままです。
+`flow F; flow G; A[x;] --> B; end; C; end` では、
+最後の `end` だけが自分の行に移ります。
 `end` の間か後ろにある U+2028 と U+2029 は、空白です。
 Agentflow の `end` は、スペースとタブだけを取り、改行は取りません。
 残す行でも、ほかの行と同じように落とします。
@@ -1105,6 +1118,7 @@ Agentflow の `end` は、スペースとタブだけを取り、改行は取り
 [fixture: semicolons/nested-closings-semicolon-between-after-kept-line]
 [fixture: semicolons/nested-closings-semicolons-after-kept-line]
 [fixture: semicolons/nested-closings-semicolon-after-outer-after-kept-line]
+[fixture: semicolons/nested-closings-statement-between-closings]
 [fixture: semicolons/nested-closings-statement-after-kept-line-kept]
 [fixture: semicolons/nested-closings-line-break-between-after-kept-line]
 [fixture: semicolons/nested-closings-without-kept-line]
