@@ -510,15 +510,16 @@ whatever whitespace characters it holds but a line break. So the gap before the
 block, the block, and that gap before the comment stay as written, and the block
 is not padded: `participant A   @{ x }` and `actor B@{x}` stay, and so does the
 whitespace before the `%%` in `participant C@{ y }   %% c`. The reason of the
-versions holds for a `participant`: with one space before the `%%`, 10.9.8 and
-11.7.0 draw another name. The same holds for an `actor` and for a participant
-that `create` makes: with one space before the `%%`, the SVG of 10.9.8 and
-11.7.0 holds another name, in the `name` attribute and in the label, though the
-pixels are the same, so the whitespace before their `%%` stays as written too.
-After the block, a `#` comment is a comment like any other, and one space stands
-before it. A written run of spaces and tabs before a `#` comment after a
-participant data block becomes one space, as the gap before an inline comment
-does in [pie charts](./pie.md#comments) and [XY charts](./xychart.md#comments);
+versions holds for a `participant`: with one space before the `%%`, the older
+versions that count draw another name. The same holds for an `actor` and for a
+participant that `create` makes: with one space before the `%%`, the SVG of
+those versions holds another name, in the `name` attribute and in the label,
+though the pixels are the same, so the whitespace before their `%%` stays as
+written too. After the block, a `#` comment is a comment like any other, and one
+space stands before it. A written run of spaces and tabs before a `#` comment
+after a participant data block becomes one space, as the gap before an inline
+comment does in [pie charts](./pie.md#comments) and
+[XY charts](./xychart.md#comments);
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 this gap. mermaid.js removes the directives before it reads the name, so the
 name runs over a directive in that whitespace, one that is not closed included,
@@ -1059,8 +1060,7 @@ as written, except for the spaces and tabs at its start and at its end:
 `title   My diagram  ` is printed `title My diagram`, and a run of spaces and
 tabs inside the text is printed as one space too. The `accDescr` follows, and
 the `accTitle` stays as written: the browser shows it as a tooltip, and a run of
-spaces in it is part of the `accTitle` in the Db of 12.3.0 and of the SVG of
-10.9.8, 11.7.0, 11.17.2, and 12.3.0 (see
+spaces in it is part of the `accTitle` in the Db and in the SVG (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 
 [fixture: title/accessibility-runs-collapsed] [fixture:
@@ -1642,8 +1642,7 @@ characters as escapes too (see
 - At the end of a title, where they are characters of the text and no spaces or
   tabs: the spaces after one are left out with the other spaces and tabs at the
   end of the title, and the spaces before it stay, since fewer of them make
-  another title in the Db of 12.3.0 and another SVG in 10.9.8, 11.7.0, 11.17.2,
-  and 12.3.0.
+  another title in the Db and another SVG.
 
   [test: U+2028 and spaces at the end of a title]
 
@@ -1968,8 +1967,8 @@ multi-line-values/data-zero-width-kept]
 Comments, directives, blank lines and empty description blocks around the data
 keep their own rules. CRLF and CR follow `endOfLine`; Unicode separators inside
 values remain characters: with a line feed in the place of the U+2028 in
-`participant A@{ "type":`, U+2028, `"queue" }`, 11.17.2 and 12.3.0 reject the
-block.
+`participant A@{ "type":`, U+2028, `"queue" }`, some of the versions that count
+reject the block.
 
 [fixture: multi-line-values/data-surrounding-trivia] [test: data blocks:
 sequence U+2028] [test: data blocks: sequence CR]
