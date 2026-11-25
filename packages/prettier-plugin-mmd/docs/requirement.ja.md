@@ -2059,6 +2059,25 @@ mermaid.js がそのテキストを拒否するからです。
 [test: requirement: U+2028, two comments, and an empty line inside the line of an element, with its name in quotes on a later line]
 [test: requirement: U+2028, a comment, and a line of whitespace inside the line of an element, with its name in quotes on a later line]
 
+`#` か `%` で始まるコメント行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字します。
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
+なければ空白を置きません。
+閉じていないディレクティブがあるときは、行を書かれたまま残します。
+
+[test: requirement: a hash comment line with an ignored semicolon, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line with two ignored semicolons, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line in a body, U+2028, a directive, two spaces, a comment, and the closing brace after an empty line]
+[test: requirement: a hash comment line, U+2028, and a directive that is not closed]
+[test: requirement: a hash comment line, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line, U+2028, a directive, one space, and a comment]
+[test: requirement: a hash comment line, U+2028, a directive, a tab, and a comment]
+[test: requirement: a hash comment line, U+2028, a directive touching a comment]
+[test: requirement: a hash comment line, U+2029, a directive, two spaces, and a comment]
+[test: requirement: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: requirement: a hash comment line, U+2028, two directives, and a comment]
+
 ### 空白の文字
 
 U+00A0 と U+FEFF は、字句解析器にとって単位の間の空白であり、

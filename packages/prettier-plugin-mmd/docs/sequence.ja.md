@@ -1696,6 +1696,21 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 [fixture: statements-one-per-line/unclosed-directive-semicolon-kept]
 [fixture: statements-one-per-line/ignored-semicolon-next-to-semicolon-kept]
 
+`#` か `%` で始まるコメント行と、`;` だけの行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字し、
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにします。
+`;` は、単独の行と同じに削除します。
+
+[test: sequence: a line of a semicolon, U+2028, and a directive at the end of the text]
+[test: sequence: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: sequence: a line of a semicolon, U+2028, a directive, two spaces, and a comment]
+[test: sequence: a hash comment line, U+2028, a directive, two spaces, and a comment]
+[test: sequence: a percent comment line, U+2028, a directive touching a comment]
+[test: sequence: a percent comment line, U+2028, a directive, a tab, and a comment]
+[test: sequence: a percent comment line, U+2029, a directive, two spaces, and a comment]
+[test: sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment]
+
 ### ディレクティブ
 
 flowchart と同じです。
