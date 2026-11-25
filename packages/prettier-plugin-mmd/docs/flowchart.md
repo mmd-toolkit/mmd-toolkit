@@ -1149,10 +1149,14 @@ whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 
-A U+2028 or U+2029 stays where it is.
+A U+2028 or U+2029 stays where it is: some of the versions that count draw a
+style differently where a U+2028 or U+2029 before the `,` is taken out (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[test: U+2028 before the comma of a flowchart style statement] [test: U+2029
-after the comma of a flowchart style statement]
+[test: U+2028 between the value of a flowchart style and its comma] [test:
+U+2029 between the value of a flowchart style and its comma] [test: U+2028
+before the comma of a flowchart style statement] [test: U+2029 after the comma
+of a flowchart style statement]
 
 The text of a `direction` statement before `direction` and after the value is
 the exception, kept as written (see [Direction](#direction)).
