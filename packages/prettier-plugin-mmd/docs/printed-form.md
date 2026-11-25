@@ -66,14 +66,15 @@ same way. The texts of Prettier are JavaScript where no language is named.
 | Another mark between two things          | `x = a+b` is printed `x = a + b;`                                    | one space on each side                                                             | `A-->B` in a flowchart                                     | `A --> B`                     |
 | A keyword between two things             | `x = a  in   b;` is printed `x = a in b;`                            | one space on each side                                                             | `service a(server)[A]in   g` in an architecture diagram    | `service a(server)[A] in g`   |
 | A keyword before what it takes           | `return  x;` is printed `return x;`                                  | one space between                                                                  | `title    Pets` in a pie chart                             | `title Pets`                  |
+| Values that follow one another           | `margin: 1px    2px;` in CSS is printed `margin: 1px 2px;`           | one space between                                                                  | `anchor Coord   [0.3, 0.6]` in a Wardley map               | `anchor Coord [0.3, 0.6]`     |
 | The dot of a member access               | `x = a . b;` is printed `x = a.b;`                                   | none on either side                                                                | `tf 01 evt Shop . Buy` in an event modeling diagram        | `tf 01 evt Shop.Buy`          |
 | Parentheses and square brackets          | `f( a )` is printed `f(a);`                                          | none inside                                                                        | `A( text )` in a flowchart                                 | `A(text)`                     |
 | A `;` that ends a statement              | `a ;` is printed `a;`                                                | none before                                                                        | `r="a" ;` in a railroad diagram                            | `r = "a";`                    |
 | The `(` of a call                        | `f (a)` is printed `f(a);`                                           | none before                                                                        | `terminal ("x")` in a railroad diagram                     | `terminal("x")`               |
 | The `[` of an index                      | `x [ 0 ];` is printed `x[0];`                                        | none before                                                                        | `service a (server) [A]` in an architecture diagram        | `service a(server)[A]`        |
 | The `{` that opens a block               | `class A{}` is printed `class A {}`                                  | one space before                                                                   | `A   {` in an ER diagram                                   | `A {`                         |
-| Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                               | one space inside                                                                   | `curve c{m: 60, s: 70}` in a radar chart                   | `curve c{ m: 60, s: 70 }`     |
-| Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                              | none inside                                                                        | `curve d{ 85, 90 }` in a radar chart                       | `curve d{85, 90}`             |
+| Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                               | one space inside                                                                   | `A@{shape:rect}` in a flowchart                            | `A@{ shape:rect }`            |
+| Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                              | none inside                                                                        | `x-axis [ jan, feb ]` in an XY chart                       | `x-axis [jan, feb]`           |
 | Braces that hold nothing                 | `x = { }` is printed `x = {};`                                       | none inside                                                                        | `accDescr { }` in a Gantt chart                            | `accDescr {}`                 |
 | The end of a line                        | `a = 1;` and three spaces is printed `a = 1;`                        | none                                                                               | `radar-beta` and three spaces in a radar chart             | `radar-beta`                  |
 | The end of the text                      | `a = 1;` and two blank lines is printed `a = 1;` and one line break  | one line break, no blank line                                                      | `A --> B` and two blank lines at the end of a flowchart    | `A --> B` and one line break  |
@@ -88,9 +89,15 @@ A keyword stands between two things (`a in b`) or before what it takes
 kind. What a keyword takes can open with a bracket: `return  [800, 600]` is
 printed `return [800, 600];`, so the `[` that opens the list of values of
 `size [800, 600]` in a Wardley map and of `x-axis [jan, feb]` in an XY chart has
-one space before it. It is no `[` of an index, which follows what it indexes and
-has no space before it. A `(` that opens a call and a `{` that opens a block
-keep their rows.
+one space before it. Values that follow one another, as the values of a CSS
+declaration do, have one space between them, so the `[` that opens the values
+that a statement takes also stands one space after a name or a title that comes
+before it: `anchor Coord   [0.3, 0.6]` is printed `anchor Coord [0.3, 0.6]`. A
+bracket that opens the title or the label of a name touches the name, as the `[`
+of an index touches what it indexes and has no space before it: `subgraph S [t]`
+is printed `subgraph S[t]` in a flowchart, and `service a (server) [A]` is
+printed `service a(server)[A]` in an architecture diagram. A `(` that opens a
+call and a `{` that opens a block keep their rows.
 
 The end of a line, the end of the text, and blank lines are the same in
 JavaScript, CSS, YAML, and Markdown, and a line of whitespace only is a blank
@@ -242,11 +249,7 @@ text is defined in the document of its diagram type.
 ## 2. A gap of a kind that Prettier does not have
 
 A gap of a kind that Prettier does not have takes the form that the other
-diagram types print for the same kind of gap. The indentation of a line that
-continues a statement is one: in a requirement diagram the continuation of a
-field, and a comment line between its parts, stand one level deeper than the
-field, as they do in a sequence diagram, a flowchart, and an XY chart (see
-[Structural continuations around comments and directives](./compatibility.md#structural-continuations-around-comments-and-directives)).
+diagram types print for the same kind of gap.
 
 ## 3. A spelling
 

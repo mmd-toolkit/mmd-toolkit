@@ -1561,9 +1561,7 @@ ignores. The rule reads a segment from the first `:` after `style` or `classDef`
 to the last `#` before its last kept `;`, with no whitespace between the `:` and
 the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
 padding inside that stretch keep whether they hold whitespace, a run becoming
-one space, as [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
-one space between a keyword and what it takes (Prettier prints `return  x` as
-`return x;`), and the rest of the segment follows the ordinary rules of this
+one space, and the rest of the segment follows the ordinary rules of this
 diagram. Text that no part of the layout holds stays as written. A statement
 over several lines whose lines, joined with one space or with nothing, could
 change which `;` the line rule ignores keeps the text of each segment, up to its
