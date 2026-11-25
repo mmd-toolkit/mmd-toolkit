@@ -270,6 +270,7 @@ The table also names the pinned version where it needs the kept form.
 | [gitGraph](./gitgraph.md#hidden-directives)                                                                                                     | `commit%%{}%% ` before a following `commit` on the next line                                                                                                                 | `commit%%{}%%` before the same following line                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.7.0, 11.17.2, 12.0.0 and 12.3.0 reject the line without its final space                                                        | [fixture: gitgraph/hidden-directives/commit-closing-padding]                                                                                                |
 | [pie, gitGraph](./pie.md#accessibility-lines)                                                                                                   | `accTitle:` or `accDescr:` with no value, and a statement on a later line (`"A":1`)                                                                                          | the statement printed by its rules (`"A": 1`)                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the next statement, after blank lines, comments, and directives, as the value                                        | [fixture: pie/accessibility-lines/a11y-next-join-kept]                                                                                                      |
 | [pie, gitGraph](./pie.md#accessibility-lines)                                                                                                   | `accTitle: Value   %% note`, whitespace before a `%%` after the value                                                                                                        | `accTitle: Value %% note`                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the `%%` and what follows as part of the title                                                                       | [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]                                                                                               |
+| [pie, gitGraph](./pie.md#accessibility-lines)                                                                                                   | `accTitle: Value   %%{}%%`, whitespace before a `%%{` that no word character follows, after the value                                                                        | `accTitle: Value %%{}%%`                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the `%%{}%%` as part of the title                                                                                    | [fixture: pie/accessibility-lines/acc-title-empty-directive-gap-kept]                                                                                       |
 | [pie](./pie.md#title)                                                                                                                           | `title T`, a no-break space, and `%% c` (likewise another whitespace character that is no space or tab)                                                                      | `title T %% c`                                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws different text                                                                                                       | [test: a no-break space before a comment after the title of a pie chart]                                                                                    |
 | [pie, gitGraph](./pie.md#accessibility-lines)                                                                                                   | `accDescr: Value`, a no-break space, and `%% note` (likewise another whitespace character that is no space or tab)                                                           | `accDescr: Value %% note`                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws different text                                                                                                       | [test: a no-break space before a comment after the accDescr line of a pie chart]                                                                            |
 | [pie, gitGraph](./pie.md#accessibility-lines)                                                                                                   | `accDescr {a} %% c`, a comment after the `}` of a block                                                                                                                      | `accDescr: a %% c`                                                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the `%% c` as part of the description of the form with the colon                                                     | [fixture: pie/description-blocks/block-then-comment]                                                                                                        |
@@ -6091,6 +6092,17 @@ counts reads both with a lexer built with jison, whose rule takes `accTitle`,
   is removed with it (`accTitle: Value   %%{x: w  %% note`), and a comment after
   the `}` of a block keeps the block: the form with the colon,
   `accDescr: a %% c`, has the description `a %% c`, where the block has `a`.
+- A `%%{` that no word character follows after its whitespace (`%%{}%%`,
+  `%%{ }%%`, `%%{-}%%`) is no directive to that version, which removes a
+  directive only where a word character follows, while the pinned grammar and
+  the later versions hide it as a directive of its own. It reads such a `%%{}%%`
+  after the value as text, as it does a `%%`: `accTitle: Value   %%{}%%` has the
+  title `Value   %%{}%%` there, so the whitespace before it stays in an
+  `accTitle`, also when a directive that it removes stands before it
+  (`accTitle: Value   %%{x}%%   %%{}%%`) or a comment after it. Spaces and tabs
+  before it are drawn the same in an `accDescr:` line and in the title of a pie
+  chart, and a whitespace character that is no space or tab stays, as before a
+  `%%` (the next item).
 - A whitespace character that is no space or tab before the `%%` after the value
   is drawn as a part of the text of an `accDescr:` line and of the title of a
   pie chart, where the later versions trim it, and spaces and tabs there are
@@ -6112,12 +6124,31 @@ gitgraph/title-and-common-values/acc-title-percent-gap-kept] [fixture:
 pie/accessibility-lines/acc-title-unclosed-directive-then-comment-kept]
 [fixture:
 gitgraph/title-and-common-values/acc-title-unclosed-directive-then-comment-kept]
-[fixture: gitgraph/title-and-common-values/block-then-comment-kept] [test: a
-whitespace character that is no space or tab before a comment after the title of
-a pie chart] [test: a whitespace character that is no space or tab before a
-comment after the accDescr line of a pie chart] [test: a whitespace character
-that is no space or tab before a comment after the accDescr line of a gitGraph]
-[test: a no-break space before a comment after the title of a gitGraph]
+[fixture: gitgraph/title-and-common-values/block-then-comment-kept] [fixture:
+pie/accessibility-lines/acc-title-empty-directive-gap-kept] [fixture:
+pie/accessibility-lines/acc-title-empty-directive-tab-kept] [fixture:
+pie/accessibility-lines/acc-title-spaced-directive-gap-kept] [fixture:
+pie/accessibility-lines/acc-title-punctuation-directive-gap-kept] [fixture:
+pie/accessibility-lines/acc-title-empty-directive-then-comment-gap-kept]
+[fixture:
+pie/accessibility-lines/acc-title-directive-then-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-descr-empty-directive-gap-printed]
+[fixture: pie/title/title-empty-directive-gap-printed] [fixture:
+gitgraph/title-and-common-values/acc-title-empty-directive-gap-kept] [fixture:
+gitgraph/title-and-common-values/acc-descr-empty-directive-gap-printed] [test: a
+whitespace character that is no space or tab before an empty directive after the
+title of a pie chart] [test: a whitespace character that is no space or tab
+before an empty directive after the accTitle line of a pie chart] [test: a
+whitespace character that is no space or tab before an empty directive after the
+accDescr line of a pie chart] [test: a whitespace character that is no space or
+tab before an empty directive after the accTitle line of a gitGraph] [test: a
+whitespace character that is no space or tab before an empty directive after the
+accDescr line of a gitGraph] [test: a whitespace character that is no space or
+tab before a comment after the title of a pie chart] [test: a whitespace
+character that is no space or tab before a comment after the accDescr line of a
+pie chart] [test: a whitespace character that is no space or tab before a
+comment after the accDescr line of a gitGraph] [test: a no-break space before a
+comment after the title of a gitGraph]
 
 ## Lines that hold a direction text
 
