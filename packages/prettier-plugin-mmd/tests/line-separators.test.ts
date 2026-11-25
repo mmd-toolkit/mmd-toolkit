@@ -1556,6 +1556,16 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart TD\nsubgraph F; A[x;] --> B; end \u2029\nC\n",
     "flowchart TD\n  subgraph F; A[x;] --> B;\n  end\n  C\n",
   ],
+  [
+    "U+2028 after `end ;;` of a subgraph with an ignored `;`, in a flowchart",
+    "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2028\n",
+    "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2028\n",
+  ],
+  [
+    "U+2029 after `end ;;` of a subgraph with an ignored `;`, in a flowchart",
+    "flowchart TD\nsubgraph S[style:#x;]; A --> B; end ;;\u2029\n",
+    "flowchart TD\n  subgraph S[style:#x;]; A --> B; end ;;\u2029\n",
+  ],
 ]
 
 /**
