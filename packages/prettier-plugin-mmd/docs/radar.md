@@ -217,8 +217,9 @@ between a keyword and its name as one space (`class    A,B  c` is printed
 `class A, B c` in an ER diagram). A comma has no space before it and one after
 it, in axis, curve, options and entry lists. This makes lists consistent with
 xychart and quadrant. Do not insert visible newlines into axis/curve/options
-groups: those grammars reject them. Trivia-bearing gaps retain their written
-contact.
+groups: those grammars reject them. A gap that holds a global directive is
+printed as under [Global directives](#global-directives), and a gap that holds a
+hidden form keeps its written contact (see [Hidden forms](#hidden-forms)).
 
 [fixture: radar/groups-and-commas/axis-comma]
 
@@ -3513,9 +3514,11 @@ whitespace joins; real trivia keeps its break. Rule 1 names no mark for a line
 break between a keyword and its opening brace, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [flowchart](./flowchart.md#multi-line-values) prints `accDescr`, an
-empty line, and `{ Words }` as `accDescr: Words`, and keeps the line break after
-a directive that stands between them. Preserve comment/directive-only interiors.
-Rule 1 names no mark for a line inside a block, so
+empty line, and `{ Words }` as `accDescr: Words` (see
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)),
+and keeps the line break after a directive that stands between them. Preserve
+comment/directive-only interiors. Rule 1 names no mark for a line inside a
+block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
