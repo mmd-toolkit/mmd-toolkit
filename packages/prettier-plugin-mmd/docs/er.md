@@ -143,7 +143,10 @@ An empty block, with nothing but whitespace between its braces, is printed as
 braces on different lines all declare the entity without attributes. Rule 1
 gives `{}` for braces that hold nothing, as Prettier prints `x = { }` as
 `x = {}` ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), so `{ }`
-is printed against rule 1 and waits to be fixed by it.
+is printed against rule 1 and waits to be fixed by it. The versions that were
+run accept `{}` for an entity, also in a subgraph, so the space has a reason
+only after an entity with a class, `C:::c { }`, where some of the versions that
+count reject `{}`.
 
 [fixture: attribute-blocks/empty-unified] [corpus fixture: er/gram-block-empty]
 [corpus fixture: er/gram-block-empty-space] [corpus fixture:
@@ -911,10 +914,11 @@ the statements before `direction` too, and so are `direction LR B` and
 which stays on the line of the value. A statement that starts so with another
 word (`classes`, `directionX`, a name), `class` with one name, and `direction`
 with its value alone are split from the statement after them. A name in quotes
-that follows such an `end` keeps its quotes. Directives between the keyword and
-what follows it change none of this, since mermaid.js removes the directives
-before it reads the text, whether they stand before the U+2028 or U+2029 or
-touch the character outside ASCII.
+that follows such an `end` keeps its quotes, since a version that counts draws
+the name without its quotes differently. Directives between the keyword and what
+follows it change none of this, since mermaid.js removes the directives before
+it reads the text, whether they stand before the U+2028 or U+2029 or touch the
+character outside ASCII.
 
 [fixture: statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/subgraph-then-name-outside-ascii-kept] [fixture:
@@ -1622,7 +1626,11 @@ a name with a `-` at its start or its end or two together, and a name that ends
 with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the
 lexer reads `direction`, white space (a line break too), and the name of a
 direction as one line, which a name without quotes would join with the line
-before or after it.
+before or after it. The quotes of a name that starts with `-` and of a number
+have a reason: some of the versions that count reject them without the quotes.
+The versions that were run read `"a-"` and `a-`, and `"a--b"` and `a--b`, alike,
+so the quotes of those names are kept without a reason and their row is in the
+list (D04).
 
 [fixture: entities/plain-names-without-quotes] [fixture:
 entities/hyphenated-names-without-quotes] [fixture:
@@ -2140,14 +2148,15 @@ stay written (see
 [Description block indentation](./compatibility.md#description-block-indentation),
 which states the level and why replacing the indentation keeps the Db). Keep
 line breaks and interior blank lines, and the whitespace at the end of each line
-of text except the last one; a line of whitespace only becomes an empty line.
-The whitespace at the end of the last line of text is dropped where the closer
-stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Inside a subgraph, keep the original body columns
-because the raw description also participates in its membership reading; there a
-line of whitespace only stays as written, and the whitespace at the end of the
-last line of text is dropped, or printed as one space before a closer on that
-line, as above.
+of text except the last one (the Db of the pinned version holds it: `x`, two
+spaces, a line break, and `y` give another accDescr than `x`, a line break, and
+`y`); a line of whitespace only becomes an empty line. The whitespace at the end
+of the last line of text is dropped where the closer stands on a line of its
+own, and is printed as one space where the closer follows it on that line.
+Inside a subgraph, keep the original body columns because the raw description
+also participates in its membership reading; there a line of whitespace only
+stays as written, and the whitespace at the end of the last line of text is
+dropped, or printed as one space before a closer on that line, as above.
 
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
