@@ -10,6 +10,7 @@ import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   findSemicolonLines,
+  holdsJoiningRegion,
   lineEndOf,
   lineStartOf,
   spansKeptBreaks,
@@ -74,8 +75,12 @@ function diagramOf(source: Source): RequirementDiagram {
  * statement that is joined stands on a line of its own with its parts on
  * one line, but one that cannot be joined, such as one with a comment line or
  * a directive in it, has to stay on the line of the statement before it, and
- * so has one on a line that holds a `;`, whose statements stay together: the
- * line is printed as written (docs/requirement.md, Statements one per line).
+ * so has one on a line that holds a `;`, whose statements stay together, and
+ * one whose last line a comment region that joins lines starts in, where the
+ * region joins text (see `holdsRegionJoiningText`), and one that ends on such
+ * a line with a comment region that joins lines after it (see
+ * `endsInStretchPrintedAsWritten`): the line is printed as written
+ * (docs/requirement.md, Statements one per line).
  */
 function findLinesOfContinuedStatements(
   source: Source,
@@ -96,12 +101,64 @@ function findLinesOfContinuedStatements(
         statement.range[0],
         statement.range[1],
       ) ||
-        semicolonLines.has(line))
+        semicolonLines.has(line) ||
+        endsInStretchPrintedAsWritten(source, semicolonLines, statement) ||
+        holdsRegionJoiningText(
+          source,
+          statement.range[0],
+          lineEndOf(source, statement.range[1] - 1),
+        ))
     ) {
       lines.push(line)
     }
   }
   return lines
+}
+
+/**
+ * Whether the statement ends on a line that holds a `;` (see
+ * `findSemicolonLines`), with a comment region that joins lines between the
+ * statement and the end of the line (see `holdsJoiningRegion`). The line keeps
+ * its statements together, so the statement and what follows it on the line
+ * are one stretch, and the region makes the printer print the stretch as
+ * written from the start of the statement: on a line of its own, the string
+ * that starts the statement would stand alone. Without the region the stretch
+ * is printed as formatted, with the statement on a line of its own. A `;` that
+ * decides where the line ends makes the statement keep its line break instead
+ * (see `findKeptBreaks`).
+ */
+function endsInStretchPrintedAsWritten(
+  source: Source,
+  semicolonLines: ReadonlySet<number>,
+  statement: RequirementStatement,
+): boolean {
+  return (
+    semicolonLines.has(lineStartOf(source, statement.range[1] - 1)) &&
+    holdsJoiningRegion(
+      source,
+      statement.range[0],
+      lineEndOf(source, statement.range[1] - 1),
+    )
+  )
+}
+
+/**
+ * Whether a comment line of a region that joins the line to the text after it
+ * starts in the range: where nothing follows the region, the printer puts the
+ * comment on a line of its own and the parts of the statement on one line, as
+ * it does without the region (docs/requirement.md, Statements one per line).
+ */
+function holdsRegionJoiningText(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  return source.joiningRegions.some(
+    (region) =>
+      region.hasTextAfter &&
+      start <= region.comment.range[0] &&
+      region.comment.range[0] < end,
+  )
 }
 
 /** Whether the lexer is in the style context after a statement, on its last line. */
