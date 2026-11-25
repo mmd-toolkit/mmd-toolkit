@@ -51,7 +51,8 @@ wardley-beta
 既定は空白 2 つ、`tabWidth` 4 は 4 つ、0 は 0 です。
 列に文法上の意味がないためです。
 `useTabs` は幅 0 でもタブを使います。
-1 段の幅は Prettier の `useTabs` と `tabWidth`
+1 段の幅は、
+Prettier の `useTabs` と `tabWidth`
 の設定どおりです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 Prettier は、
 CSS の規則の宣言と JavaScript のブロックの文を 1 段内側に印字します。
@@ -788,8 +789,8 @@ wardley-beta
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空の title は空のままで、次の行を値にしません。
 値を引用文字列として扱わず、Db が同じ端の形を簡潔にします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が `title` の後の空白
-1 つを決めます。
+`title` の後の空白 1 つは、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 pie の `title    Pets` と Gantt の `title    Plan` も、空白 1 つで印字します。
 両端の空白を除く理由は、
 [同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)にあります。
@@ -3425,9 +3426,9 @@ wardley-beta
 ### フロントマターの YAML
 
 安全な実フロントマターだけ、共有の保護条件付きの YAML 整形処理を使います。
-YAML は、Prettier が整形するどのファイルの YAML とも同じく、
-Prettier の YAML
-整形処理で整形します（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+YAML は、Prettier の YAML 整形処理で整形します。
+Prettier が整形するどのファイルの YAML
+も同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 `title: 'Map'` は `title: "Map"` に、
 `config: {wardley: {width: 600}}` は `config: { wardley: { width: 600 } }`
 に印字します。
