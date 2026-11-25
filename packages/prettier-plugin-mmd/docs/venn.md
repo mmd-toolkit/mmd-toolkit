@@ -622,16 +622,16 @@ sizes-and-numbers/colon-of-a-size-directive]
 A size that is a plain decimal is printed in the shortest form (`+5` is `5`,
 `-.5` is `-0.5`; see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-A zero at the start of the integer part, signed zero and overflow retain their
-spelling; numeric text ids also retain their spelling because rewriting them
-changes the Db, and so do the numbers of a `text` or `style` statement
-(`text A 1.50`, `opacity:0.50`), which mermaid.js reads as text. An overflowing
-decimal size has the numeric value `Infinity` in the Db, but mermaid.js rejects
-`Infinity` written as a size. The overflowing size therefore keeps its decimal
-spelling. Absent size and written zero remain distinct written forms. A set
-without a size has Db size 10 in mermaid.js, while a set with `: 0` has size 0.
-The omitted size and written zero stay distinct because replacing one with the
-other changes the Db.
+A zero at the start of the integer part and signed zero retain their spelling.
+An overflowing decimal size has the numeric value `Infinity` in the Db, but
+mermaid.js rejects `Infinity` written as a size. The overflowing size therefore
+keeps its decimal spelling. Numeric text ids also retain their spelling because
+rewriting them changes the Db, and so do the numbers of a `text` or `style`
+statement (`text A 1.50`, `opacity:0.50`), which mermaid.js reads as text.
+Absent size and written zero remain distinct written forms. A set without a size
+has Db size 10 in mermaid.js, while a set with `: 0` has size 0. The omitted
+size and written zero stay distinct because replacing one with the other changes
+the Db.
 
 [corpus fixture: venn/db-form-set] [corpus fixture: venn/db-size-zero]
 
