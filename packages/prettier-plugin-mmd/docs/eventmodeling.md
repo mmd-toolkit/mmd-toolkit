@@ -107,18 +107,16 @@ one step deeper than their statement, as under [Long lines](#long-lines). A
 safely indented block body uses one further step inside that continued header
 line (see [Data blocks](#data-blocks)). Columns do not define parents, so
 `tabWidth: 0` adds no spaces; `useTabs` adds one tab per step even at width
-zero. Rule 1 names no mark for the width of an indentation step, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [flowchart](./flowchart.md#indentation),
+zero. The width of one level is what Prettier's `tabWidth` and `useTabs` options
+say: [flowchart](./flowchart.md#indentation),
 [sequence](./sequence.md#indentation), [state](./state.md#indentation),
 [class](./class.md#indentation), and [er](./er.md#indentation) take a level from
-the `tabWidth` and `useTabs` options of Prettier, and
-[wardley](./wardley.md#indentation) and [radar](./radar.md#indentation), where
-columns mean nothing either, print no space at `tabWidth: 0` and one tab per
-level with `useTabs`, as Prettier does for JavaScript. Value continuations,
-metadata padding and hidden consumed-LF boundaries retain their authored
-columns, apart from the block-body margin adjustment in
-[Data blocks](#data-blocks). A `title` after
+them, and [wardley](./wardley.md#indentation) and
+[radar](./radar.md#indentation), where columns mean nothing either, print no
+space at `tabWidth: 0` and one tab per level with `useTabs`, as Prettier does
+for JavaScript. Value continuations, metadata padding and hidden consumed-LF
+boundaries retain their authored columns, apart from the block-body margin
+adjustment in [Data blocks](#data-blocks). A `title` after
 `eventmodeling tf 01 evt Alpha.%%{{native}}%%` and a line break stays at column
 one, since every version of mermaid.js that counts rejects it indented by two
 spaces (see
@@ -672,8 +670,8 @@ tf 01 evt Alpha { 	 x  }
 
 For ordinary data and note blocks written as `{` immediately followed by LF and
 closed by LF followed by `}`, align every nonblank body line to `tabWidth` ASCII
-spaces (U+0020) where the conditions below permit it. Rule 1 names no mark for
-the margin of a body line, and no rule gives it:
+spaces (U+0020) where the conditions below permit it. The start of a line is no
+place of rule 1, and rule 2 gives no margin of a body line:
 [pie](./pie.md#description-blocks), [radar](./radar.md#description-blocks), and
 [cynefin](./cynefin.md#description-blocks) stand the lines of a description
 block one level inside their statement, `tabWidth` spaces and none at

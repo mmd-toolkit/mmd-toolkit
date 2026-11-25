@@ -119,8 +119,7 @@ subgraph の中の subgraph を同じように置きます。
 を参照）。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段にタブを 1 個使います。
-規則 1 は、字下げの 1 段の幅の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+1 段の幅は、Prettier の `tabWidth` と `useTabs` のとおりです。
 [flowchart](./flowchart.ja.md#字下げ)、[sequence](./sequence.ja.md#字下げ)、
 [state](./state.ja.md#字下げ)、[class](./class.ja.md#字下げ)、
 [er](./er.ja.md#字下げ)は、
@@ -709,7 +708,7 @@ tf 01 evt Alpha { 	 x  }
 `{` の直後が LF で、LF の直後の `}` で閉じる通常の data と note は、
 次の条件を満たす場合、
 空でない本文行をすべて `tabWidth` 個の ASCII 空白（U+0020）で字下げします。
-規則 1 は本文の行の余白の印を挙げておらず、どの規則もこの余白を与えません。
+行頭は規則 1 の場所ではなく、規則 2 も本文の行の余白を与えません。
 [pie](./pie.ja.md#description-blocks)、
 [radar](./radar.ja.md#description-blocks)、
 [cynefin](./cynefin.ja.md#description-blocks) は、説明ブロックの行を、
