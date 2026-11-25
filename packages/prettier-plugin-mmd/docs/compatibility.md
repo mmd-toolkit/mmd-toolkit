@@ -1481,7 +1481,15 @@ except that a task whose description holds a directive stays as written (see
 [Task data](./journey.md#task-data)), and for the second description of a state
 alias. The runs of spaces and tabs inside a date format, an axis format, or the
 value of an `accTitle:` line stay as written before the directives as they do
-without them.
+without them. A whitespace character that is no space or tab, such as U+00A0 or
+U+3000, that stands before the last directive that ends the text is printed as
+one space in the title of a pie chart, a radar chart, a packet diagram, an
+architecture diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map, a
+treeView, an info diagram, and a railroad diagram, and in the `accTitle:` and
+`accDescr:` lines of a usecase diagram, where a U+2028 or a U+2029 is printed so
+too: `title T`, U+00A0, `%%{x}%%`, and a space are printed `title T %%{x}%%`. In
+the title of a Gantt chart, a user journey, a timeline, a sequence diagram, a
+Venn diagram, and a C4 diagram the character stays as written.
 
 A no-break space, U+3000, U+2003, U+2028, and U+2029 are no spaces or tabs, and
 a title that holds a directive or a comment is not printed alike by every
@@ -2230,6 +2238,131 @@ a U+2029 in its text and a directive at its end, two spaces after the directive]
 [test: C4 accDescription with a U+2029 in its text and a directive at its end,
 no blanks after the directive] [test: C4 accDescription with a U+2029 in its
 text and a directive at its end, two spaces after the directive]
+
+In the `title`, `accTitle:`, and `accDescr:` lines of a pie chart, a radar
+chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram,
+a treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram,
+and in the `accTitle:` and `accDescr:` lines of a usecase diagram, the run of
+whitespace before the last directive of the line is printed as one space
+whatever whitespace it holds, such as U+00A0, U+3000, or a form feed, with or
+without spaces and tabs after that directive: `title T`, U+00A0, and `%%{x}%%`
+is printed `title T %%{x}%%`, and so is the same line with two spaces after the
+directive. This holds where only spaces and tabs stand between the directives
+and after the last of them, and in a usecase diagram where only whitespace
+stands there, a U+2028 or U+2029 included: `accTitle: T`, U+2028, and `%%{x}%%`
+is printed `accTitle: T %%{x}%%`. In the diagram types named here other than
+usecase, whitespace other than a space or a tab between two directives or after
+the last directive stays as written, with the spaces and tabs after it:
+`title T`, a space, `%%{x}%%`, U+00A0, `%%{y}%%`, and a space is printed as it
+is, and so is `title T`, a space, `%%{x}%%`, U+00A0, and a space. Directives
+that touch each other count as one directive: `title T`, U+00A0, `%%{x}%%`, and
+`%%{y}%%` is printed `title T %%{x}%%%%{y}%%`, with or without spaces and tabs
+after the last. The run before a directive that another directive follows after
+a space or a tab keeps whitespace other than spaces and tabs as written, and so
+does U+0085, which is no whitespace to mermaid.js: `title T`, U+00A0, `%%{x}%%`,
+a space, and `%%{y}%%` is printed as it is.
+
+The diagram types named here are those that this paragraph changes. mermaid.js
+draws the text of their lines the same with whitespace at its end as without it,
+whatever the whitespace. The written text and the printed text of each of these
+lines were drawn with the versions that count for the diagram type (see
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), with
+U+00A0, U+3000, U+2003, a form feed, U+000B, U+FEFF, U+1680, and U+202F before
+the directive in each type, and with U+2000 to U+200A, U+205F, U+0085, a space
+and a U+00A0 in one run, and a tab and a U+00A0 in one run in a pie chart, a
+radar chart, a treemap, and a usecase diagram; with U+2028 and U+2029 in a
+usecase diagram; with a U+00A0 between two directives in a usecase diagram; and
+with two and three directives that touch each other, after a U+00A0, a U+3000, a
+tab and a U+00A0, or a U+2028 (a usecase diagram only), in a pie chart, a radar
+chart, an info diagram, a treemap, and a usecase diagram. The Db and the SVG
+were the same, in all versions that accept the text; 10.9.8 rejects both texts
+of an info diagram and of the title of a gitGraph. A U+00A0 inside a title is
+drawn: the same texts differ there, in a pie chart and a radar chart.
+
+[test: radar title: U+00A0 before the directive] [test: architecture title:
+U+00A0 before the directive] [test: wardley title: U+00A0 before the directive]
+[test: pie title: U+00A0 before the directive] [test: info title: U+00A0 before
+the directive] [test: packet title: U+00A0 before the directive] [test: gitGraph
+title: U+00A0 before the directive] [test: treemap title: U+00A0 before the
+directive] [test: treeView title: U+00A0 before the directive] [test: cynefin
+title: U+00A0 before the directive] [test: railroad title: U+00A0 before the
+directive] [test: pie accTitle: U+00A0 before the directive] [test: pie
+accDescr: U+00A0 before the directive] [test: pie title: U+3000 before the
+directive] [test: pie title: U+2003 before the directive] [test: pie title:
+U+000C before the directive] [test: pie title: U+FEFF before the directive]
+[test: pie title: U+000B before the directive] [test: pie title: U+1680 before
+the directive] [test: pie title: U+202F before the directive] [test: pie title:
+a space and U+00A0 before the directive] [test: pie title: U+00A0 and a space
+before the directive] [test: pie title: a tab and U+00A0 before the directive]
+[test: pie title: U+00A0 before the first of two directives, a space between
+them] [test: pie title: U+0085 before the directive is no whitespace] [test:
+usecase accTitle: U+00A0 before the directive] [test: usecase accDescr: U+00A0
+before the directive] [test: usecase accTitle: U+00A0 between two directives]
+[test: usecase accTitle: U+00A0 before, between and after two directives] [test:
+usecase accTitle: U+00A0 before the first of two directives, a space between
+them] [test: radar accTitle: U+00A0 before the directive] [test: radar accDescr:
+U+00A0 before the directive] [test: architecture accTitle: U+00A0 before the
+directive] [test: architecture accDescr: U+00A0 before the directive] [test:
+wardley accTitle: U+00A0 before the directive] [test: wardley accDescr: U+00A0
+before the directive] [test: info accTitle: U+00A0 before the directive] [test:
+info accDescr: U+00A0 before the directive] [test: packet accTitle: U+00A0
+before the directive] [test: packet accDescr: U+00A0 before the directive]
+[test: gitGraph accTitle: U+00A0 before the directive] [test: gitGraph accDescr:
+U+00A0 before the directive] [test: treemap accTitle: U+00A0 before the
+directive] [test: treemap accDescr: U+00A0 before the directive] [test: treeView
+accTitle: U+00A0 before the directive] [test: treeView accDescr: U+00A0 before
+the directive] [test: cynefin accTitle: U+00A0 before the directive] [test:
+cynefin accDescr: U+00A0 before the directive] [test: railroad accTitle: U+00A0
+before the directive] [test: railroad accDescr: U+00A0 before the directive]
+[test: usecase accTitle: U+2028 before the directive] [test: usecase accTitle:
+U+2029 before the directive] [test: usecase accDescr: U+2028 before the
+directive] [test: usecase accTitle: U+00A0 and U+2028 before the directive]
+[test: usecase accTitle: a space, U+2028, and a space before the directive]
+[test: usecase accTitle: U+2028 between two directives] [test: usecase accTitle:
+U+2028 before, between and after two directives] [test: radar title: U+00A0
+between two directives, and a space after the last] [test: radar title: U+00A0
+and a space after the last directive] [test: architecture title: U+00A0 between
+two directives, and a space after the last] [test: architecture title: U+00A0
+and a space after the last directive] [test: wardley title: U+00A0 between two
+directives, and a space after the last] [test: wardley title: U+00A0 and a space
+after the last directive] [test: pie title: U+00A0 between two directives, and a
+space after the last] [test: pie title: U+00A0 and a space after the last
+directive] [test: info title: U+00A0 between two directives, and a space after
+the last] [test: info title: U+00A0 and a space after the last directive] [test:
+packet title: U+00A0 between two directives, and a space after the last] [test:
+packet title: U+00A0 and a space after the last directive] [test: gitGraph
+title: U+00A0 between two directives, and a space after the last] [test:
+gitGraph title: U+00A0 and a space after the last directive] [test: treemap
+title: U+00A0 between two directives, and a space after the last] [test: treemap
+title: U+00A0 and a space after the last directive] [test: treeView title:
+U+00A0 between two directives, and a space after the last] [test: treeView
+title: U+00A0 and a space after the last directive] [test: cynefin title: U+00A0
+between two directives, and a space after the last] [test: cynefin title: U+00A0
+and a space after the last directive] [test: railroad title: U+00A0 between two
+directives, and a space after the last] [test: railroad title: U+00A0 and a
+space after the last directive] [test: radar title: U+00A0 before two directives
+that touch each other] [test: architecture title: U+00A0 before two directives
+that touch each other] [test: wardley title: U+00A0 before two directives that
+touch each other] [test: pie title: U+00A0 before two directives that touch each
+other] [test: info title: U+00A0 before two directives that touch each other]
+[test: packet title: U+00A0 before two directives that touch each other] [test:
+gitGraph title: U+00A0 before two directives that touch each other] [test:
+treemap title: U+00A0 before two directives that touch each other] [test:
+treeView title: U+00A0 before two directives that touch each other] [test:
+cynefin title: U+00A0 before two directives that touch each other] [test:
+railroad title: U+00A0 before two directives that touch each other] [test: pie
+title: U+00A0 before three directives that touch each other] [test: pie title:
+U+3000 before two directives that touch each other] [test: pie title: a tab and
+U+00A0 before two directives that touch each other] [test: pie accTitle: U+00A0
+before two directives that touch each other] [test: pie accDescr: U+00A0 before
+two directives that touch each other] [test: pie title: U+00A0 before a
+directive, a space, and two directives that touch each other] [test: pie title:
+U+00A0 before two directives that touch each other, a space, and a third] [test:
+usecase accTitle: U+00A0 before two directives that touch each other] [test:
+usecase accTitle: U+2028 before two directives that touch each other] [test:
+usecase accDescr: U+00A0 before three directives that touch each other] [test:
+usecase accTitle: a space, a directive, U+00A0, and two directives that touch
+each other]
 
 mermaid.js reads one whitespace character after the keyword and keeps the rest
 in the Db, so the Db of the printed text differs from the Db of the written

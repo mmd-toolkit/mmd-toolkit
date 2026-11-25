@@ -151,6 +151,24 @@ export function isSpaceOrTab(character: string): boolean {
   return character === " " || character === "\t"
 }
 
+/**
+ * Whether a character is whitespace that does not end its line: `isWhitespace`
+ * without LF, CR, U+2028, and U+2029. A gap that holds one of those is written
+ * as it is where this decides whether a gap is replaced (docs/c4.md, Argument
+ * spacing), and a title of a diagram type that draws the whitespace at the end
+ * of a text the same takes it for the blanks before its last directive (see
+ * `collectTextEndEdits`).
+ */
+export function isInlineWhitespace(character: string | undefined): boolean {
+  return (
+    character !== undefined &&
+    isWhitespace(character) &&
+    character !== "\n" &&
+    character !== "\r" &&
+    !isLineSeparator(character)
+  )
+}
+
 /** Whether a character is whitespace in CSS, other than a line break: a space, a tab, or a form feed. */
 export function isCssWhitespace(character: string): boolean {
   return isSpaceOrTab(character) || character === "\u000c"
@@ -1053,12 +1071,13 @@ export function findTriviaBetween(
  * the directives at its end: directives that follow each other with spaces and
  * tabs only between them, the last of them followed by spaces and tabs only up
  * to `end`. That is the end of a title read to the end of its line, whose last
- * things are directives.
+ * things are directives. `isBlank` says which characters are the blanks.
  */
 export function hasTriviaBesidesTrailingDirectives(
   source: Source,
   start: number,
   end: number,
+  isBlank: (character: string) => boolean = isSpaceOrTab,
 ): boolean {
   let position = end
   const trivia = findTriviaBetween(source, start, end)
@@ -1066,7 +1085,7 @@ export function hasTriviaBesidesTrailingDirectives(
     const item = trivia[index]
     if (
       item.type !== "Directive" ||
-      ![...source.text.slice(item.range[1], position)].every(isSpaceOrTab)
+      ![...source.text.slice(item.range[1], position)].every(isBlank)
     )
       return true
     position = item.range[0]

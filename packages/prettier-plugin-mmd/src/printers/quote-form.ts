@@ -31,6 +31,7 @@ import {
   findTokensBetween,
   findTriviaAt,
   isBracketPadding,
+  isInlineWhitespace,
   isStructural,
   isSpaceOrTab,
   isWordCharacter,
@@ -1133,19 +1134,6 @@ function c4NameIsNotBeforeComma(_before: string, after: string): boolean {
 }
 
 /**
- * Whether a character is whitespace that the printer replaces in a C4 call: any
- * but a line terminator. A gap with a line break or with a U+2028 or U+2029 is
- * written as it is (docs/c4.md, Argument spacing).
- */
-function isReplacedGapSpace(character: string | undefined): boolean {
-  return (
-    character !== undefined &&
-    isWhitespace(character) &&
-    !"\n\r\u2028\u2029".includes(character)
-  )
-}
-
-/**
  * Whether a text without quotes of a C4 call does not stand right after a `,`
  * or a `(` and right before a `,` on its line, once the whitespace that the
  * printer replaces is taken away. mermaid.js reads a string only after ASCII
@@ -1157,10 +1145,10 @@ function isReplacedGapSpace(character: string | undefined): boolean {
  */
 function c4TextIsNotBetweenCommas(before: string, after: string): boolean {
   let gap = before.length
-  while (gap > 0 && isReplacedGapSpace(before[gap - 1])) gap--
+  while (gap > 0 && isInlineWhitespace(before[gap - 1])) gap--
   const previous = before[gap - 1]
   let next = 0
-  while (next < after.length && isReplacedGapSpace(after[next])) next++
+  while (next < after.length && isInlineWhitespace(after[next])) next++
   return (
     after[next] !== "," ||
     previous === undefined ||
