@@ -917,6 +917,81 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 [fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
 
+In box mode a run that stands before a comment, or before a directive on a line
+without a branch, disappears when the next node is given a branch, and the
+comment or the directive touches what stands before it: the branch is a second
+run, which mermaid.js rejects after the first. `"a" %% c`, `─`, and `"b"` print
+`"a"%% c`, `│`, and `└── "b"`, and `├── "a" %% c`, `│`, and `"b"` print
+`├── "a"%% c`, `│`, and `└── "b"`. The same holds after a class or an icon, with
+a tab or two spaces before the comment, with a directive and a comment together,
+and where a blank line, one comment line or more, an indented comment line, or a
+directive line lies between. A comment after the `─` line leaves the line in its
+place and gives the branch to it: the `└──` stands before the `─` and not before
+`"b"`: `"a" %% c`, `─ %% n`, and `"b"` print `"a"%% c`, `└── ─ %% n`, and `"b"`.
+The space before a directive on a line with a branch stays where no comment
+follows it on the line: `├── "a" %%{x}%%`, `─`, and `"b"` print
+`├── "a" %%{x}%%`, `│`, and `└── "b"`. Where a comment follows, the spaces
+before the directives and between them go too, since mermaid.js removes the
+directives and those spaces join the run after the quote, and the form that
+keeps them is rejected: `├── "a" %%{x}%% %% c`, `─`, and `"b"` print
+`├── "a"%%{x}%%%% c`, `│`, and `└── "b"`, and two directives print
+`├── "a"%%{x}%%%%{y}%%%% c`. A node that ends the text, a node named `End`, and
+a node named `}` are given the branch in the same way. A line that holds a `;`
+that the line rule ignores, as in `"a" ## style:#x; %% c`, stays as written with
+the `─` line after it, and so does a line where a directive and a comment end
+the text with no node after them: `├── "a" %%{x}%%` and `%% c` print
+`└── "a" %%{x}%%` and `%% c`.
+
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-and-decoration]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-on-branch-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-without-decoration]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-and-decoration]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-and-comment]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-after-class]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-tab]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-blank-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-directive-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-nested-branches]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-on-branch-line-kept]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-icon]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-two-spaces]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-indented-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-decoration-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-comment-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directives-comment-on-branch-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-two-comment-lines]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-end-of-text]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-node-named-end]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-node-named-brace]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-ignored-semicolon-comment-kept]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-two-ignored-semicolons-comment-kept]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-comment-line-at-end-kept]
+[test: treeview: a quote in box mode, U+2028, and a comment before the next line
+of the box] [test: treeview: a quote in box mode, U+2029, and a directive before
+the next line of the box]
+
 ### Tabs
 
 Ordinary indentation still counts each space or tab once and uses its configured
@@ -2946,6 +3021,44 @@ the end of a title (see
 
 [fixture: trailing-whitespace/directives-end-blanks-dropped]
 
+A directive that holds a line break or a `;` ends a name or a description like
+any other: it may stand last, or touch the directives after it, with spaces and
+tabs after the last of them. `R  %%{init: {a;b}}%%` with a space and a tab after
+it is printed `R %%{init: {a;b}}%%`, as it is without them, since mermaid.js
+removes a directive before it reads the value, and the form with branch
+characters prints the same. A space or a tab that separates such a directive
+from a directive after it makes it part of the name or the description, whose
+spaces and tabs stay as written: `R  %%{init: {`, a line break, `}}%%`, a space,
+and `%%{x}%%` is printed with its two spaces, without the spaces and tabs after
+the last directive. A no-break space or a line separator after such a directive
+is a character of the text and stays as written, and a directive that holds a
+U+2028 or U+2029 holds no line break: the line stays as written, apart from the
+spaces and tabs at its end.
+
+[fixture: trailing-whitespace/directive-semicolon-end-blanks-dropped] [fixture:
+trailing-whitespace/directive-unclosed-end-runs-collapsed] [fixture:
+trailing-whitespace/directive-lines-end-comment-at-end-of-text-kept] [fixture:
+trailing-whitespace/directive-lines-end-comment-line-at-end-of-text] [fixture:
+trailing-whitespace/node-named-end-directive-lines-end-blanks-dropped] [fixture:
+trailing-whitespace/directive-lines-end-blanks-dropped] [fixture:
+trailing-whitespace/directive-lines-semicolon-end-blanks-dropped] [fixture:
+trailing-whitespace/directive-lines-nested-end-blanks-dropped] [fixture:
+trailing-whitespace/description-directive-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/description-directive-lines-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-touching-end-blanks-dropped]
+[fixture: trailing-whitespace/directives-lines-touching-end-blanks-dropped]
+[fixture:
+trailing-whitespace/directive-then-directive-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-before-directive-runs-kept]
+[fixture: trailing-whitespace/box-directive-lines-end-blanks-dropped] [test:
+treeview: spaces and tabs after a directive over lines with a CRLF] [test:
+treeview: U+00A0 after a directive over lines stays] [test: treeview: U+00A0
+after a directive with a `;` stays] [test: treeview: U+00A0 after a directive
+over lines stays after a description] [test: treeview: U+2028 after a directive
+over lines stays] [test: treeview: a directive that holds U+2028 is no directive
+over lines] [test: treeview: a directive that holds U+2029 is no directive over
+lines]
+
 At the end of a name or a description, U+2028 and U+2029 are characters of the
 text and no spaces or tabs: the spaces after one are left out, and the spaces
 before it stay.
@@ -3394,29 +3507,28 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 End ordinary accepted input with one configured newline, including empty bodies,
 nodes, common forms, closed blocks and comments. Preserve value tails.
 Unfinished EOF directives and protected/source-kept endings follow shared
-exceptions. Rule 1 names no mark for the end of a text that has an open
-directive, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [c4](./c4.md#final-newline) and [ishikawa](./ishikawa.md#final-newline)
-print an open directive on a line of its own without the whitespace after its
-last character, as treeView does here (kanban, which drops only spaces and tabs
-after the open directive on the line of a card, is no precedent for the other
-whitespace), so treeView reads an open directive up to its last character that
-is no whitespace on a line of its own, on the line after a brace description
-block, and on the line of a node (a quoted name or a bare name), of a
-description (`## d`), of an icon, of a title, of an `accTitle:` or `accDescr:`
-line, of a class after `:::`, and of a node in box mode. After a quoted name or
-after a class the directive has to touch it: written after a space it is
-rejected. U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace here. The
-whitespace after that character is dropped: U+0009 to U+000D (the tab, LF, the
-vertical tab, the form feed, and CR), U+0020, U+00A0, U+1680, U+2000 to U+200A,
-U+202F, U+205F, U+3000, and U+FEFF, and with them the empty lines. One line
-break ends the text; nothing is added only where the text ends right after the
-character and it is no U+2028 or U+2029. `%%{unfinished` and two spaces print
-`%%{unfinished` and a line break, `%%{unfinished` and U+2028 print
-`%%{unfinished`, U+2028, and a line break, and `"R"%%{unfinished` and two spaces
-print `"R"%%{unfinished` and a line break. Rejected unused indentation runs are
-not trimmed into accepted input.
+exceptions. Prettier prints no whitespace at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form for
+the end of a text that has an open directive: [c4](./c4.md#final-newline) and
+[ishikawa](./ishikawa.md#final-newline) print an open directive on a line of its
+own without the whitespace after its last character, as treeView does here
+(kanban, which drops only spaces and tabs after the open directive on the line
+of a card, is no precedent for the other whitespace), so treeView reads an open
+directive up to its last character that is no whitespace on a line of its own,
+on the line after a brace description block, and on the line of a node (a quoted
+name or a bare name), of a description (`## d`), of an icon, of a title, of an
+`accTitle:` or `accDescr:` line, of a class after `:::`, and of a node in box
+mode. After a quoted name or after a class the directive has to touch it:
+written after a space it is rejected. U+2028, U+2029, U+0085, U+180E, and U+200B
+are no whitespace here. The whitespace after that character is dropped: U+0009
+to U+000D (the tab, LF, the vertical tab, the form feed, and CR), U+0020,
+U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF, and with
+them the empty lines. One line break ends the text; nothing is added only where
+the text ends right after the character and it is no U+2028 or U+2029.
+`%%{unfinished` and two spaces print `%%{unfinished` and a line break,
+`%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line break, and
+`"R"%%{unfinished` and two spaces print `"R"%%{unfinished` and a line break.
+Rejected unused indentation runs are not trimmed into accepted input.
 
 [fixture: treeview/final-newline/eof-node] [fixture:
 treeview/final-newline/eof-open-directive] [fixture:

@@ -892,9 +892,9 @@ journey
 [fixture: whitespace-between-tokens/description-block-braces]
 
 ヘッダーの行末の空白は落とします。
-規則 1 は、行末の空白を決めません。
-規則 1 の表が挙げるのは印の横の空白だからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+Prettier は、行末に空白を置かずに印字するので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+この空白を落とす形を与えます。
 [radar](./radar.ja.md#trailing-whitespace) と
 [architecture](./architecture.ja.md#trailing-whitespace)も、
 ヘッダーの後ろの空白を落とします。
@@ -932,7 +932,7 @@ journey
 `section` の前のコメントは `section` の段、タスクの前のコメントはタスクの段、
 テキストの末尾のコメントは最後の文の段です。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [gantt](./gantt.ja.md#コメント)、[block](./block.ja.md#コメント)、
 [quadrant](./quadrant.ja.md#コメント)も、
@@ -1175,6 +1175,19 @@ U+2028 と U+2029 は、journey の単位の間の空白であり、
 その後の空白はタイトル末尾のほかの空白と一緒に除き、前の空白は残します。
 
 [test: U+2028 and spaces at the end of a journey title]
+
+`#` か `%` で始まるコメント行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字します。
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
+なければ空白を置きません。
+
+[test: journey: a hash comment line, U+2028, a directive, two spaces, a comment, and a line of whitespace only after it]
+[test: journey: a hash comment line, U+2028, a directive, two spaces, and a comment]
+[test: journey: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: journey: a hash comment line, U+2028, a directive touching a comment]
+[test: journey: a percent comment line, U+2028, a directive, a tab, and a comment]
+[test: journey: a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 ### 空白の文字
 

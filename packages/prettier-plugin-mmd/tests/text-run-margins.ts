@@ -179,9 +179,17 @@ export function textRunDbForFormattingComparison(
   return restoreStrings(before, after, (written, printed, path) => {
     if (!paths.has(withoutRepeats(path))) return printed
     if (withoutRuns(written) === printed) return written
-    // A text that also lost the whitespace at its ends gets its runs back; the
-    // ends are another exception (keyword-text-margins.ts).
+    // A text that also lost the whitespace at its ends, or kept one space at an
+    // end where it had a run, gets its runs back: mermaid.js draws a text
+    // without the whitespace at its ends and without the runs in it. The ends
+    // are another exception (keyword-text-margins.ts), which accepts or rejects
+    // the restored text against the written one.
     const core = withoutBlanks(written)
-    return core !== written && withoutRuns(core) === printed ? core : printed
+    return printed !== written &&
+      core !== written &&
+      core !== "" &&
+      withoutRuns(core) === withoutBlanks(printed)
+      ? core
+      : printed
   }) as DbSummary
 }

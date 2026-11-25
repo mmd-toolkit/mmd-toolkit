@@ -61,6 +61,13 @@ export interface KeptLines {
    * - the line of every statement: treemap and treeview.
    */
   readonly ownIndentation: ReadonlySet<number>
+  /**
+   * Lines that a comment region joins to nothing, and that the printer ends at
+   * the U+2028 or U+2029 before the region: they are no joined lines, and are
+   * not printed as written for that reason (see `withJoinedLines`). Absent for
+   * a diagram that has none.
+   */
+  readonly unjoined?: ReadonlySet<number>
 }
 
 /** Grammatical punctuation and whether statement semicolons are optional. */
@@ -1335,6 +1342,26 @@ export function lineStartOf(source: Source, offset: number): number {
 }
 
 /**
+ * Where the written indentation of the statement that follows a gap starts,
+ * for the gap from `start` to `end` before the statement: the first offset from
+ * which every character up to `end` is indentation, as `isIndentation` says for
+ * the character at an offset. The block prints that indentation, so what the
+ * source has there is no part of the gap that is kept as written, and does not
+ * make the gap a kept one: the printed text has none, and a second formatting
+ * would read a gap that is not kept. Each diagram type says which characters
+ * are indentation.
+ */
+export function findIndentationStart(
+  start: number,
+  end: number,
+  isIndentation: (offset: number) => boolean,
+): number {
+  let offset = end
+  while (offset > start && isIndentation(offset - 1)) offset--
+  return offset
+}
+
+/**
  * The offset of the line feed that ends the line holding `offset`, or the
  * end of the text: the first line feed from it that no comment or directive
  * spans and that no comment region that joins lines removes (see
@@ -1437,6 +1464,7 @@ export function withJoinedLines(
         ),
     )
     .map((lineFeed) => lineStartOf(source, lineFeed))
+    .filter((line) => kept.unjoined?.has(line) !== true)
   return {
     ...kept,
     verbatim: new Set([...kept.verbatim, ...joinedLines]),
@@ -1908,6 +1936,42 @@ function withoutOffsets(
   }
 }
 
+/** The start of the earliest node that ends at each offset, of each source. */
+const earliestNodeStartsBySource = new WeakMap<
+  Source,
+  ReadonlyMap<number, number>
+>()
+
+/**
+ * Whether the token closes a block around the block that `closing` closes: a
+ * node that starts before `closing` ends with the token. The token is judged
+ * by the node that it ends and not by its spelling, since a node or a state
+ * named `end` or `End` stands where a closing stands and is no closing.
+ */
+export function closesEnclosingBlock(
+  source: Source,
+  closing: Token,
+  token: Token,
+): boolean {
+  let starts = earliestNodeStartsBySource.get(source)
+  if (starts === undefined) {
+    const found = new Map<number, number>()
+    // The body of the diagram is no block that a closing closes: it ends with
+    // its last token, whatever that is.
+    for (const node of findNodes(
+      source.root.body,
+      (candidate) => candidate !== source.root.body,
+    )) {
+      const start = found.get(node.range[1])
+      if (start === undefined || node.range[0] < start)
+        found.set(node.range[1], node.range[0])
+    }
+    starts = found
+    earliestNodeStartsBySource.set(source, starts)
+  }
+  return (starts.get(token.range[1]) ?? Infinity) < closing.range[0]
+}
+
 /**
  * Whether the closing keeps the line before it, which the block of the closing
  * ends on, as the line of the closing: something follows the closing on its
@@ -1923,10 +1987,11 @@ function withoutOffsets(
  * that stays together because of a `;` after the closing, with a `;` before the
  * closing that only separates statements, keeps the closing too: the part
  * before it holds no `;` of its own, so a second formatting would not keep its
- * statements and its `;` together (see `holdsOwnSemicolonIn`). The `}` that
- * closes a block around this one is on a line of its own after this block,
- * unless something follows it, so it does not keep the closing of this block on
- * the line: the second formatting would move it. The decision reads the `;`
+ * statements and its `;` together (see `holdsOwnSemicolonIn`). The closing of
+ * a block around this one is on a line of its own after this block, unless
+ * something follows it, so it does not keep the closing of this block on the
+ * line: the second formatting would move it (see `closesEnclosingBlock`). The
+ * decision reads the `;`
  * that the line rule ignores in the source as written, not in the lines that
  * the printer prints, which the decisions of all closings make (see
  * `printedIgnoredSemicolonsOf`).
@@ -1937,7 +2002,9 @@ export function keepsClosingOnItsLine(source: Source, closing: Token): boolean {
   const lineEnd = lineEndOf(source, closingStart)
   return (
     findTokensBetween(source, closing.range[1], lineEnd).some(
-      (token) => isStructural(source, token) && token.value !== "}",
+      (token) =>
+        isStructural(source, token) &&
+        !closesEnclosingBlock(source, closing, token),
     ) ||
     [...source.ignoredSemicolons].some(
       (semicolon) =>

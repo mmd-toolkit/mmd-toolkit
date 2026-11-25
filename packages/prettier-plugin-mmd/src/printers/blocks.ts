@@ -16,6 +16,7 @@ import type { KeptLines } from "./kept-lines.ts"
 import {
   holdsJoiningRegion,
   holdsKeptSemicolon,
+  holdsOwnSemicolonIn,
   keepsClosingOnItsLine,
   keepsTrailingLineSeparators,
   lineEndOf,
@@ -31,6 +32,7 @@ import {
   joinLines,
   lineBreakBetween,
   printAsWritten,
+  printRunAsWritten,
   printTextGap,
   withLeading,
   withTrailing,
@@ -258,6 +260,13 @@ export interface BlockRules<Statement extends Positioned> {
    */
   readonly isDroppedAtTopLevel: (statement: Statement) => boolean
   /**
+   * Whether U+2028 and U+2029 at the end of a kept stretch are whitespace, as
+   * after the `end` of a subgraph, and are dropped with the whitespace at the
+   * end of a line. Otherwise a stretch whose last whitespace holds one keeps
+   * it as written (see `keepsTrailingLineSeparators`).
+   */
+  readonly dropsTrailingLineSeparators?: boolean
+  /**
    * Whether a line of only whitespace after a line that ends with a comment
    * is kept, as a line of one space where it stands among the comment lines
    * and directive lines after that line, also at the start of a block.
@@ -421,6 +430,12 @@ interface Stretch {
   readonly first: number
   /** The position after its last statement in the block. */
   readonly after: number
+  /**
+   * The position after the statements that follow a block of the stretch whose
+   * closing goes to a line of its own, on its line, which the stretch leaves
+   * out (see `followsSplitClosing`); undefined where it leaves none out.
+   */
+  readonly leftOutEnd?: number
 }
 
 /**
@@ -431,6 +446,28 @@ interface Stretch {
  */
 function percentBraceIndentation(gaps: number, one: string): string {
   return gaps === 0 ? one : ""
+}
+
+/**
+ * The kept lines of a block as `printBlock` takes them: the lines of the rules
+ * of the diagram type, completed (see `completeKeptLines`), where a comment
+ * region joins lines unless the diagram prints such lines as written
+ * (`BlockRules.joiningRegionsPrintedAsWritten`). A printer that asks which
+ * lines a block prints as written asks here, so that the answer is the one of
+ * the block.
+ */
+export function keptLinesOfBlock(
+  source: Source,
+  rules: Pick<
+    BlockRules<Positioned>,
+    "kept" | "joiningRegionsPrintedAsWritten"
+  >,
+): KeptLines {
+  return completeKeptLines(
+    source,
+    rules.kept,
+    rules.joiningRegionsPrintedAsWritten !== true,
+  )
 }
 
 /**
@@ -454,11 +491,7 @@ export function printBlock<Statement extends Positioned>(
   rules: BlockRules<Statement>,
 ): PrintedBlock {
   const { statements } = bounds
-  const kept = completeKeptLines(
-    source,
-    rules.kept,
-    rules.joiningRegionsPrintedAsWritten !== true,
-  )
+  const kept = keptLinesOfBlock(source, rules)
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
   let offset = bounds.start
@@ -625,9 +658,13 @@ export function printBlock<Statement extends Positioned>(
       pushLine({
         // A verbatim trivia line keeps spacing between its comments and
         // directives too; the block still supplies its ordinary indentation.
-        doc: kept.verbatim.has(lineStartOf(source, line.run.range[0]))
-          ? printAsWritten(source, line.run.range[0], line.run.range[1])
-          : line.run.doc,
+        // Text after a U+2028 or U+2029 of the line is a line of its own, not
+        // part of the verbatim line (docs/requirement.md, Line separators).
+        doc:
+          kept.verbatim.has(lineStartOf(source, line.run.range[0])) &&
+          findContentStart(source, line.run.range[0]) === line.run.range[0]
+            ? printRunAsWritten(source, line.run)
+            : line.run.doc,
         ...(triviaBreakBefore(line.run.range[0]) === undefined
           ? {}
           : { writtenBreakBefore: triviaBreakBefore(line.run.range[0]) }),
@@ -739,10 +776,91 @@ export function printBlock<Statement extends Positioned>(
       ) {
         return { start, end: stretchEnd, first, after }
       }
+      // The stretch ends before a statement that follows a closing that goes
+      // to a line of its own, unless the stretch is printed as written (see
+      // `followsSplitClosing`).
+      if (followsSplitClosing(after)) {
+        let uncutAfter = after
+        while (
+          statements[uncutAfter] !== undefined &&
+          printedStartOf(statements[uncutAfter]) < lineEnd
+        )
+          uncutAfter++
+        const uncut = {
+          start,
+          end: Math.max(stretchEnd, lineEnd),
+          first,
+          after: uncutAfter,
+        }
+        if (!printsAsWritten(uncut, statements.slice(first, uncutAfter))) {
+          return {
+            start,
+            end: stretchEnd,
+            first,
+            after,
+            leftOutEnd: uncutAfter,
+          }
+        }
+      }
       stretchEnd = Math.max(stretchEnd, rules.printedEnd(following))
       after++
     }
     return { start, end: stretchEnd, first, after }
+  }
+
+  /**
+   * Whether the statement at `index`, a `;` of its own (see
+   * `BlockRules.isDroppedAtTopLevel`), stands after a block on the line of its
+   * closing, and the closing goes to a line of its own (see
+   * `startOfSplitClosing`) that holds no `;` of its own. The line that the
+   * source has does not stay together then: the statement is on the line of the
+   * closing, where it is printed as it is on any line of its own, dropped at the
+   * top level and on a line of its own in a block, so a second formatting
+   * changes nothing.
+   */
+  function followsSplitClosing(index: number): boolean {
+    if (!rules.isDroppedAtTopLevel(statements[index])) return false
+    let blockIndex = index - 1
+    while (blockIndex >= 0 && rules.isDroppedAtTopLevel(statements[blockIndex]))
+      blockIndex--
+    const block = statements[blockIndex]
+    if (block === undefined) return false
+    const closing = startOfSplitClosing(rules.printedEnd(block), block)
+    if (closing === undefined) return false
+    const lineEnd = lineEndOf(source, closing)
+    return (
+      printedStartOf(statements[index]) < lineEnd &&
+      !holdsOwnSemicolonIn(source, closing, lineEnd)
+    )
+  }
+
+  /**
+   * Whether a stretch is printed as written, with the spellings that are
+   * printed in one form (see `printStretch`): one of its lines is verbatim, or
+   * it holds a joining region.
+   */
+  function printsAsWritten(
+    stretch: Stretch,
+    covered: readonly Statement[],
+  ): boolean {
+    return (
+      (holdsVerbatimLine(source, kept, stretch.start, stretch.end) &&
+        !isEdgeLinesOfBlock(stretch, covered)) ||
+      (rules.joiningRegionsPrintedAsWritten !== true &&
+        holdsJoiningRegion(source, stretch.start, stretch.end))
+    )
+  }
+
+  /**
+   * The position of the statement that the block prints after a stretch: the
+   * statements that follow a split closing on its line, `;` of their own, are
+   * dropped at the top level, as they are on any line of their own; in a block
+   * they are statements like the others, printed on lines of their own.
+   */
+  function nextAfter(stretch: Stretch): number {
+    return bounds.isTopLevel && stretch.leftOutEnd !== undefined
+      ? stretch.leftOutEnd
+      : stretch.after
   }
 
   /**
@@ -842,12 +960,7 @@ export function printBlock<Statement extends Positioned>(
    */
   function printStretch(stretch: Stretch): Line {
     const covered = statements.slice(stretch.first, stretch.after)
-    if (
-      (holdsVerbatimLine(source, kept, stretch.start, stretch.end) &&
-        !isEdgeLinesOfBlock(stretch, covered)) ||
-      (rules.joiningRegionsPrintedAsWritten !== true &&
-        holdsJoiningRegion(source, stretch.start, stretch.end))
-    ) {
+    if (printsAsWritten(stretch, covered)) {
       // What stands after the last statement is a gap: the whitespace that
       // the planned indentation of the next statement supplies is not printed.
       const last = covered.at(-1)
@@ -946,7 +1059,8 @@ export function printBlock<Statement extends Positioned>(
         : null
     const trailing =
       textTrailing ??
-      (keepsTrailingLineSeparators(source, position, stretch.end)
+      (rules.dropsTrailingLineSeparators !== true &&
+      keepsTrailingLineSeparators(source, position, stretch.end)
         ? printAsWritten(source, position, stretch.end)
         : printInlineGap(
             source,
@@ -1028,7 +1142,7 @@ export function printBlock<Statement extends Positioned>(
       pushLine(printStretch(stretch))
       stretchEndsWithComment = endsWithComment(stretch.end)
       continuesOpeningLine = true
-      next = stretch.after
+      next = nextAfter(stretch)
       offset = stretch.end
     }
   }
@@ -1066,7 +1180,7 @@ export function printBlock<Statement extends Positioned>(
         offset = end
       } else {
         stretchEndsWithComment = endsWithComment(stretch.end)
-        next = stretch.after
+        next = nextAfter(stretch)
         offset = stretch.end
       }
       continue
@@ -1162,7 +1276,7 @@ export function printBlock<Statement extends Positioned>(
         : {}),
     })
     stretchEndsWithComment = endsWithComment(stretch.end)
-    next = stretch.after
+    next = nextAfter(stretch)
     offset = stretch.end
   }
   // The top-level block is the body of the diagram, which ends at the end of

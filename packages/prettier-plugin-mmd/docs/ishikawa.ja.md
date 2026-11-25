@@ -654,6 +654,80 @@ U+205F、U+3000、U+FEFF）は、
 [test: ishikawa: comment-run-after-directive-between-words-kept]
 [test: ishikawa: comment-run-after-leading-and-between-directives-kept]
 
+行をまたぐディレクティブと `;` を含むディレクティブも、
+ほかのディレクティブと同じに、テキストを終えます。
+最後に置いても、後ろのディレクティブと接していても、
+最後のディレクティブの後に空白とタブが続いても同じです。
+`A  b %%{init: {`、改行、`}}%%`、空白とタブは、`A b %%{init: {`、改行、
+`}}%%` と印字します。
+空白とタブが続かない同じテキストと同じ形です。
+mermaid.js が行を読む前にディレクティブを除くためです。
+空白かタブでそのディレクティブから隔てた後ろのディレクティブがあるときは、
+そのディレクティブはテキストの一部になり、
+テキストの連なりを書かれたままにします。
+`A  b %%{init: {`、改行、`}}%%`、空白、`%%{x}%%` は、
+最後のディレクティブの後の空白とタブを除くだけで、そのまま印字します。
+そのようなディレクティブの後のノーブレークスペースは、
+どのテキストの末尾とも同じに、書かれたままにします。
+
+[fixture: trailing-whitespace/directive-unclosed-end-runs-collapsed]
+[fixture: trailing-whitespace/directive-lines-end-of-text-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-end-empty-line-blanks-dropped]
+[fixture: trailing-whitespace/literal-brace-directive-lines-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-root-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-touching-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-gap-run-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-then-directive-lines-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directives-lines-touching-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-semicolon-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-semicolon-end-blanks-dropped]
+[test: ishikawa: U+00A0 after a directive over lines stays]
+[fixture: ishikawa/trailing-whitespace/directive-lines-before-directive-runs-kept]
+
+末尾のディレクティブの前のリテラルが `;` を含んでも、何も変わりません。
+`A;b  %%{z}%%  ` は `A;b %%{z}%%` と印字し、
+リテラルの連なりも空白 1 つにします。
+`A;  b  %%{z}%%  ` は `A; b %%{z}%%` です。
+単語の間にディレクティブがあるリテラルと、U+2028 か U+2029 を含むリテラルは、
+最後のディレクティブの後の空白とタブを除くだけで、書かれたままにします。
+最後のディレクティブが、
+空白かタブで前のディレクティブから隔てられているリテラルも同じです。
+`A;b  %%{x}%%  %%{z}%%  ` は `A;b  %%{x}%%  %%{z}%%` と印字します。
+`;` を含むリテラルが書かれたままになるとき、
+つまり HTML タグが空白を保つかもしれない `<` も含むときと、
+図が `white-space` を含むときは、
+最後のディレクティブの前の空白とタブも書かれたままにします。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+ディレクティブの後に空白とタブがない同じ行と同じ形です。
+`A;  <b  %%{z}%%  ` は `A;  <b  %%{z}%%` と印字します。
+
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-run-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-after-inner-directive-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directives-after-semicolon-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-angle-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-white-space-text-gap-kept]
+[test: ishikawa: U+2028 in the literal before the last directive]
+[test: ishikawa: U+2029 in the literal before the last directive]
+
+`;` を含まず書かれたままになるリテラル、つまり `<` を含むか、
+図が `white-space` を含むリテラルは、
+最後のディレクティブの後に空白が続かないとき、その前の隙間を書かれたままにし、
+空白が続くとき、その前の隙間を空白 1 つにします。
+`A  <b  %%{z}%%` はそのままで、
+`A  <b  %%{z}%%  ` は `A  <b %%{z}%%` と印字します。
+リテラルの前にディレクティブがあるときも同じです。
+`%%{x}%% A  <b  %%{z}%%` はそのままで、
+`%%{x}%% A  <b  %%{z}%%  ` は `%%{x}%% A  <b %%{z}%%` と印字します。
+
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-after-white-space-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-white-space-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-before-angle-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-before-angle-text-blanks-gap-one-space]
+
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。
 
