@@ -343,21 +343,18 @@ as a label in quotes, so `"a-b"`, `"A.B"`, and `"日本語"` are printed without
 quotes, while `"a[b"`, the empty label, and a label with padding inside the
 quotes (`[" padded "]`) keep theirs. The versions that were run reject
 `service s[]` and accept `service s[""]`, which is the reason for the empty
-label. The padding inside the quotes has none: they read `[" padded "]` and
-`[padded]` alike, so that label is printed against rule 3 (the examples write 36
-of 36 labels without quotes) and waits to be fixed by the rule. A backslash and
-a quote keep theirs too: mermaid.js takes one pair of outer quotes, `"` or `'`,
-off the title that it reads, and turns `\"` and `\'` into `"` and `'` only in a
-title that had them, so `"a\"b"` printed `a\"b`, and `"'x'"` printed `'x'`,
-would be read as other titles. A label without quotes is never put in quotes. A
-run of spaces and tabs in a label is printed as one space, except where it makes
-a word of its own: mermaid.js draws a label word by word, split at single
-spaces, so a run of tabs alone, and a tab between two spaces, stay (`"A<tab>B"`
-is printed `A<tab>B`). The words are what mermaid.js keeps of the title: it
-takes the brackets off, trims, takes one pair of outer quotes off, and trims
-again. A quote inside the words, or beside a bracket inside them, is a character
-of a word like any other, so a tab beside it stays too (`["A'<tab>B"]` and
-`["A[<tab>B"]` are printed as written).
+label. A backslash and a quote keep theirs too: mermaid.js takes one pair of
+outer quotes, `"` or `'`, off the title that it reads, and turns `\"` and `\'`
+into `"` and `'` only in a title that had them, so `"a\"b"` printed `a\"b`, and
+`"'x'"` printed `'x'`, would be read as other titles. A label without quotes is
+never put in quotes. A run of spaces and tabs in a label is printed as one
+space, except where it makes a word of its own: mermaid.js draws a label word by
+word, split at single spaces, so a run of tabs alone, and a tab between two
+spaces, stay (`"A<tab>B"` is printed `A<tab>B`). The words are what mermaid.js
+keeps of the title: it takes the brackets off, trims, takes one pair of outer
+quotes off, and trims again. A quote inside the words, or beside a bracket
+inside them, is a character of a word like any other, so a tab beside it stays
+too (`["A'<tab>B"]` and `["A[<tab>B"]` are printed as written).
 
 [fixture: quotes/labels-without-quotes] [fixture:
 quotes/labels-with-punctuation-without-quotes] [fixture:
@@ -3870,8 +3867,8 @@ of the `accDescr`. No rule gives the interior of a block that holds a directive:
 [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
-breaks, but in them this is a question of the list of undecided forms (D34) and
-a form printed against a rule, so their printing is no decided form, and the
+breaks, but their documents give that form no reason, and it is a question of
+the list of undecided forms (D34), so their printing is no decided form, and the
 released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Ordinary description body and standalone comment lines align one level inside

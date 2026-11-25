@@ -76,15 +76,9 @@ eventmodeling tf 01 evt A %%{{x}}%%
 ### Indentation
 
 Start ordinary top-level statements at column one: frames, model entities,
-`data`, `note` and `gwt`. The start of a line is no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, and it gives the statements after the header one level deeper, as
-[flowchart](./flowchart.md#indentation), [class](./class.md#indentation),
-[er](./er.md#indentation), and [state](./state.md#indentation) stand them. The
-frames, the model entities, the `gwt` statements, and the headers of `data` and
-`note` at column one are therefore printed against rule 2 and wait to be fixed
-by the rule; a `title` after a line break and the `}` of a block could not stand
-deeper in this one, since every version that counts rejects them indented (see
+`data`, `note` and `gwt`. A `title` after a line break and the `}` of a block
+stand at column one too, since every version that counts rejects them indented
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 The pinned Mermaid requires `data` and `note` block closers at column one; the
@@ -966,16 +960,9 @@ written.
 
 The run stays as written in an `accTitle:`, with a `%%`, a `//`, or a `/* */`
 after it: collapsing it changes the Db and the text that mermaid.js draws in
-every version that counts. In a `title` and in an `accDescr:`, collapsing the
-run draws the same: the Db of a title is the same, and the Db of a description
-differs only in the run or at its end, which mermaid.js draws as HTML with the
-whitespace collapsed. Rule 2 gives one space for them: journey, timeline, and
-sequence print `title T  %% c` as `title T %% c`, and
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
-gives one space for a run inside a title or a description (`title T  // c`). The
-released version keeps `title T  %% c`, `title T  // c`, `title T  /* c */`,
-`accDescr: T  %% c`, `accDescr: T  // c`, and `accDescr: T  /* c */` as written,
-so that form is printed against rule 2 and waits to be fixed by it.
+every version that counts. The released version keeps `title T  %% c`,
+`title T  // c`, `title T  /* c */`, `accDescr: T  %% c`, `accDescr: T  // c`,
+and `accDescr: T  /* c */` as written.
 
 [fixture: eventmodeling/title/header-line-title-run-before-percent-comment-kept]
 [fixture:

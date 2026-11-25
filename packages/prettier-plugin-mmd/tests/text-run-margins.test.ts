@@ -23,6 +23,22 @@ const restored: readonly DbPair[] = [
   },
 ]
 
+/**
+ * A text that lost its runs and has blanks at an end that differ from the
+ * written ones is restored to the written text without its ends; the check of
+ * the ends (keyword-text-margins.ts) accepts or rejects those.
+ */
+const restoredWithoutEnds: readonly (DbPair & {
+  readonly restored: DbSummary
+})[] = [
+  {
+    name: "a run in a title whose ends of blanks became one space",
+    before: { title: "  A  b    " },
+    after: { title: "A b " },
+    restored: { title: "A  b" },
+  },
+]
+
 const kept: readonly DbPair[] = [
   {
     name: "a changed word",
@@ -64,6 +80,15 @@ describe("the runs of whitespace in a text that the formatter prints as one spac
       expect(
         textRunDbForFormattingComparison(before, after, diagramType),
       ).toEqual(before)
+    },
+  )
+
+  it.each(restoredWithoutEnds)(
+    "restores $name to the written text without its ends",
+    ({ before, after, restored: expected, diagramType = "pie" }) => {
+      expect(
+        textRunDbForFormattingComparison(before, after, diagramType),
+      ).toEqual(expected)
     },
   )
 

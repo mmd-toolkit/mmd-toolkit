@@ -320,6 +320,72 @@ Where removing the whitespace forms no entity, the usual trimming still applies:
 [fixture:
 names-and-headings/heading-nonentity-gap-before-directive-and-kept-semicolons]
 
+The same holds before a `;` that the printer keeps because an item follows it on
+its line that is not a comment: a directive, or the `;` that the line rule
+ignores at the end of a comment. `flow Front#fin ;  %%{x}%%` is printed
+`flow Front#fin ; %%{x}%%`, and `flow Front#fin ;  %% style:#x;` is printed
+`flow Front#fin ; %% style:#x;`, since `flow Front#fin; %%{x}%%` has the entity
+`#fin;` in its name, which mermaid.js rejects. The end of a name that is a `#`
+and one or more word characters forms the entity wherever the `#` stands
+(`Fr#ont`, `F#r#ont`, `Front #fin`, `Front#38`), in a connector heading, and in
+a flow in a flow. The whitespace before the `;` is printed as written, a tab
+included. Where a comment follows the `;`, or nothing does, the printer drops
+the `;` and the whitespace before it, as it does after any name:
+`flow Front#fin ;  %% c` is printed `flow Front#fin %% c`. A `#` that no word
+character follows forms no entity: `flow Front# ;  %%{x}%%` is printed
+`flow Front#; %%{x}%%`.
+
+[fixture:
+names-and-headings/heading-entity-name-end-semicolon-directive-space-kept]
+[fixture:
+names-and-headings/heading-entity-name-middle-hash-semicolon-directive-space-kept]
+[fixture:
+names-and-headings/heading-entity-name-two-hashes-semicolon-directive-space-kept]
+[fixture:
+names-and-headings/heading-entity-name-number-semicolon-directive-space-kept]
+[fixture:
+names-and-headings/heading-entity-name-after-space-semicolon-directive-space-kept]
+[fixture:
+names-and-headings/connector-entity-name-end-semicolon-directive-space-kept]
+[fixture:
+names-and-headings/heading-nested-entity-name-end-semicolon-directive-space-kept]
+[fixture:
+names-and-headings/heading-entity-name-end-two-directives-semicolon-space-kept]
+[fixture: names-and-headings/heading-entity-name-end-semicolon-comment-dropped]
+[fixture: names-and-headings/heading-entity-name-end-directive-only] [fixture:
+names-and-headings/heading-entity-name-end-semicolon-alone-dropped] [fixture:
+names-and-headings/heading-hash-name-end-semicolon-directive-space-dropped]
+[fixture:
+names-and-headings/heading-plain-name-end-semicolon-directive-space-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-open-directive-kept]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-directive-ignored-semicolon-kept]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-comment-ignored-semicolon-kept]
+[fixture:
+names-and-headings/connector-entity-name-two-semicolons-directive-kept]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-comment-line-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-two-comment-lines-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-empty-line-directive-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-whitespace-line-directive-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-directive-end-of-text-kept]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-comment-end-of-text-dropped]
+[fixture:
+names-and-headings/connector-entity-name-semicolon-end-of-text-dropped] [test:
+agentflow: U+2028 between a semicolon that a directive follows and an
+entity-shaped name end] [test: agentflow: U+2029 between a semicolon that a
+directive follows and an entity-shaped name end] [test: agentflow: a tab between
+an entity-shaped name end and a semicolon that a directive follows] [test:
+agentflow: no-break space between an entity-shaped name end and a semicolon that
+a directive follows]
+
 The whitespace after the word `flow`, `connector`, or `global` is one space,
 however many spaces or tabs were written: the word takes one whitespace
 character, and mermaid.js trims the rest from the name. `flow   F["T"]` is
@@ -998,6 +1064,73 @@ sole terminal ignored semicolon can drop when no other candidate remains.
 [fixture: kept-lines/line-rule-kept] [fixture: kept-lines/line-rule-colon-space]
 [fixture: kept-lines/line-rule-safe-terminal] [fixture:
 kept-lines/line-rule-shift-unsafe] [fixture: kept-lines/line-rule-two-passes]
+
+Where the `end` of a `flow`, or of `global`, stands on such a line and only `;`,
+whitespace, comments, and directives follow it, the `end` goes to a line of its
+own, and a `;` that stands alone at the top level after it is dropped there, as
+in [Semicolons](./flowchart.md#semicolons): `flow F[x;]; A --> B; end ;  %% c`
+is printed `flow F[x;]; A --> B;` and `end %% c`. A `;` before a directive
+stays, and so does one before a comment that holds a `;` of its own, since the
+line of the `end` then holds a `;` that the line keeps. A statement after the
+`;` keeps the `end` on the line, and the `;` with it. A `;` that the line rule
+ignores next to another `;`, as in `flow F[style:#x;]; A --> B; end ;;`, keeps
+the line as written (see [Semicolons](./flowchart.md#semicolons)).
+
+[fixture: semicolons/closing-semicolon-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-after-style-space-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-after-body-label-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-alone-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-tight-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-tab-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolons-after-kept-line-dropped] [fixture:
+semicolons/global-closing-semicolon-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-before-statement-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-empty-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-comment-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-directive-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-semicolon-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-directive-after-kept-line-kept]
+[fixture: semicolons/closing-semicolon-before-statement-after-kept-line-kept]
+[fixture: semicolons/closing-semicolon-before-comment-with-semicolon-kept]
+[fixture: semicolons/closing-semicolon-without-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-without-space-after-kept-line-dropped] [fixture:
+semicolons/closing-two-semicolons-adjacent-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-at-end-of-text-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-next-to-ignored-semicolon-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-kept-as-written]
+[fixture:
+semicolons/closing-semicolon-before-unclosed-directive-after-kept-line] [test:
+agentflow: U+2028 after `end ;` of a flow on a kept line, then a statement]
+[test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a line
+break] [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a
+comment] [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a
+directive] [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then
+a second `;`] [test: agentflow: U+2028 after `end ;` of a flow on a kept line,
+then the end of the text] [test: agentflow: U+2028 between `end` and `;` of a
+flow on a kept line, then a comment] [test: agentflow: U+2029 after `end ;` of a
+flow on a kept line, then a statement] [test: agentflow: U+2029 after `end ;` of
+a flow on a kept line, then a line break] [test: agentflow: U+2029 after `end ;`
+of a flow on a kept line, then a comment] [test: agentflow: U+2029 after `end ;`
+of a flow on a kept line, then a directive] [test: agentflow: U+2029 after
+`end ;` of a flow on a kept line, then a second `;`] [test: agentflow: U+2029
+after `end ;` of a flow on a kept line, then the end of the text] [test:
+agentflow: U+2029 between `end` and `;` of a flow on a kept line, then a
+comment] [fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-closed-directive-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-unclosed-directive-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-comment-line-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-empty-line-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-at-end-of-text-kept-as-written]
+[test: agentflow: U+2028 after `end ;;` of a flow with an ignored `;`] [test:
+agentflow: U+2029 after `end ;;` of a flow with an ignored `;`]
 
 Keep a separating semicolon after a statement or name ending in `accTitle`,
 `accDescr`, `direction`, `click`, `call` or `href`, and after any id ending in

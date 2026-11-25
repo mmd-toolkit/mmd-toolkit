@@ -18,19 +18,37 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header.
+The statements after the header stand one level deeper than the header, as
+Prettier prints the body of a block one level deeper than the line that opens it
+(the body of a function in JavaScript, the declarations of a rule in CSS). Rule
+1 gives no form here, since the start of a line is no place that its table names
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [flowchart](./flowchart.md#indentation), [class](./class.md#indentation),
+[state](./state.md#indentation), and [sequence](./sequence.md#indentation) put
+the statements after the header one level deeper than the header.
 
 [fixture: indentation/written-indentation-dropped]
 
 The statements of a subgraph stand one level deeper than the line of the
 subgraph, and its `end` stands on a line of its own at the level of that line,
-also when it was written after a statement.
+also when it was written after a statement. Prettier puts the `}` that closes a
+block at the level of the line that opens it, and
+[flowchart](./flowchart.md#indentation) and [state](./state.md#indentation) put
+the statements of a subgraph or of a composite state one level deeper than the
+line that opens it, with `end` or `}` at the level of that line (rule 2, as
+above); an `end` written after a statement goes to a line of its own, as under
+[Statements one per line](#statements-one-per-line).
 
 [fixture: indentation/nested-subgraphs] [fixture:
 subgraphs/end-on-the-line-of-a-statement]
 
 The attributes of an entity stand one level deeper than the line of the entity,
-and its `}` stands at the level of that line, also in a subgraph.
+and its `}` stands at the level of that line, also in a subgraph. Rule 2 gives
+it, as [class](./class.md#member-bodies) and
+[requirement](./requirement.md#indentation) put the members of a body one level
+deeper than the line of the class or of the requirement, with the `}` at the
+level of that line.
 
 [fixture: indentation/attribute-blocks-in-subgraphs]
 
@@ -47,8 +65,9 @@ was indented with.
 [fixture: indentation/written-indentation-dropped]
 
 The one exception is an `accTitle` or `accDescr` statement that holds a
-direction, which keeps the first column (see
-[Accessibility statements](#accessibility-statements)).
+direction, which keeps the first column, since the lexer reads it as a title or
+a description at the first column and as a direction line after an indentation
+(see [Accessibility statements](#accessibility-statements)).
 
 Input
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -84,7 +103,17 @@ erDiagram
 
 The `{` of an attribute block stays on the line of the entity, after one space;
 each attribute stands on a line of its own, one level deeper; and the `}` stands
-on a line of its own at the level of the entity.
+on a line of its own at the level of the entity. Rule 1 gives the one space
+before the `{` of a block (Prettier prints `function f(){}` as
+`function f() {}`). The start of a line is no place of rule 1, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the lines, as [class](./class.md#member-bodies),
+[requirement](./requirement.md#bodies), and [state](./state.md#composite-states)
+print the `{` of a body after one space on the line of its opener, also where it
+was written touching it, and [class](./class.md#member-bodies),
+[requirement](./requirement.md#indentation), and [state](./state.md#indentation)
+put the members one level deeper on lines of their own and the `}` on a line of
+its own at the level of the opener.
 
 [fixture: attribute-blocks/opening-brace-after-one-space] [fixture:
 attribute-blocks/split]
@@ -92,11 +121,14 @@ attribute-blocks/split]
 A block written on one line, or with its first attribute on the line of the `{`
 or its last on the line of the `}`, is split so: mermaid.js reads the attribute
 block without regard to line breaks, so it reads the same attributes.
+[class](./class.md#member-bodies) and [state](./state.md#composite-states) split
+a body written on one line in the same way (rule 2).
 
 [fixture: attribute-blocks/split] [corpus fixture: er/gram-attributes-one-line]
 [corpus fixture: er/gram-attribute-split-lines]
 
-A statement that follows the `}` on its line stands on a line of its own.
+A statement that follows the `}` on its line stands on a line of its own, as
+under [Statements one per line](#statements-one-per-line).
 
 [fixture: attribute-blocks/entity-after-closing-brace] [corpus fixture:
 er/gram-block-then-name-one-line]
@@ -108,8 +140,11 @@ The name, the alias, and the classes before the `{` are formatted as in
 
 An empty block, with nothing but whitespace between its braces, is printed as
 `{ }` on the line of the entity, however it is written: `{}`, `{   }`, and
-braces on different lines all declare the entity without attributes. The form
-`{ }` is the one of the other diagram types.
+braces on different lines all declare the entity without attributes. The
+versions that were run accept `{}` for an entity, also in a subgraph, and give
+`{ }` the same result: the one that rejects `{}` after an entity with a class,
+`C:::c {}`, rejects `{ }` there as well. No version needs the space, so it has
+no reason.
 
 [fixture: attribute-blocks/empty-unified] [corpus fixture: er/gram-block-empty]
 [corpus fixture: er/gram-block-empty-space] [corpus fixture:
@@ -148,12 +183,17 @@ join: `A["x;~y"] B {`, a line break, and `}` are `A["x;~y"] B { }`. Where the
 lines stay apart and only spaces, tabs, and line feeds stand between the braces,
 the statement is printed as written up to and including the `{`, then one line
 break and the `}` at the indentation of the entity: whitespace after a `{` that
-ends its line and empty lines between the braces draw nothing, and the joined
-form `{ }` drops them too. Where a whitespace character that is no space or tab
-(a U+00A0 or a U+2028, say) stands between the braces, the statement stays as
-written, except that the `}` stands at the indentation of the entity where only
-spaces and tabs precede it on its line. The block is printed so also where the
-line of the `{` is printed as written with its statements on it (see
+ends its line and empty lines between the braces draw nothing, and Prettier
+prints neither beside the braces of an empty block that was written over lines
+(a CSS rule written as `a {`, two spaces, two empty lines, and `}` is printed as
+`a {` and `}` on the next line;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and the `}` stands
+at the level of the line that opens the block, as under
+[Indentation](#indentation). Where a whitespace character that is no space or
+tab (a U+00A0 or a U+2028, say) stands between the braces, the statement stays
+as written, except that the `}` stands at the indentation of the entity where
+only spaces and tabs precede it on its line. The block is printed so also where
+the line of the `{` is printed as written with its statements on it (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)): the `}`
 stands at the indentation of the entity, and where only spaces, tabs, and line
 feeds stand between the braces, the spaces after the `{` and the empty lines
@@ -246,6 +286,12 @@ empty block is printed as above.
 attribute-blocks/written-line-empty-block-closing-brace-on-a-line-read-by-its-place]
 [fixture:
 attribute-blocks/written-line-empty-block-spaces-and-empty-line-dropped-on-a-line-read-by-its-place]
+
+No rule of [How the printed form is decided](./printed-form.md) gives the form
+of what stays as written on such a line: the attributes of a block whose `}` it
+holds, and a subgraph whose `end` it holds. The released forms stay until they
+are decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 A line that holds a `;` and stays as written for no other reason is formatted,
 and so is the line of a subgraph header that holds an empty description block
@@ -444,7 +490,9 @@ examples. The `?` of an optional type touches the type, however it was written.
 [fixture: attribute-spacing/optional-touching]
 
 The keys are separated by a `,` followed by one space, with no space before it,
-and keep the case in which they are written, since the Db keeps it.
+as Prettier prints a comma where mermaid.js reads the list the same
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and keep the case
+in which they are written, since the Db keeps it.
 
 [fixture: attribute-spacing/keys-comma-space] [fixture:
 attribute-spacing/keys-case-kept]
@@ -457,8 +505,9 @@ its keys.
 The text of a type or a name is kept as written, except that a run of spaces and
 tabs inside a tilde word or a backquoted word is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-and the text of a comment is kept. Rule 1 does not decide the inside of a tilde
-word or a backquoted word, since the tree holds each as one token with its
+and the text of a comment is kept, since the Db holds the type, the name, and
+the comment of an attribute as written. Rule 1 does not decide the inside of a
+tilde word or a backquoted word, since the tree holds each as one token with its
 whitespace inside
 ([A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
@@ -478,21 +527,27 @@ er/gram-attribute-split-lines] [corpus fixture: er/gram-name-then-key-next-line]
 An attribute with a comment line or a directive between its parts keeps its line
 breaks. Later structural parts and standalone trivia stand one level inside the
 attribute, also in a subgraph; type, name and quoted-comment interiors stay as
-written. Rule 1 names no mark for a line break next to a comment line, so
+written, since the Db holds them as written. Rule 1 names no mark for a line
+break next to a comment line, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [block](./block.md#multi-line-statements),
 [sequence](./sequence.md#multi-line-statements), and
 [flowchart](./flowchart.md#accessibility-lines) put the later parts of a
 statement and the standalone trivia one continuation level inside the statement,
 where no other rule keeps the layout as written (a comment region that joins
-physical lines, a line that holds a `;`).
+physical lines, a line that holds a `;`). The line breaks next to the comment
+line or the directive stay for the reason given under
+[Multi-line statements](#multi-line-statements).
 
 [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
 attribute-spacing/comment-continuation-with-multiline-value] [fixture:
 attribute-spacing/directive-continuation-tabs]
 
-Semicolons alone do not prevent alignment of a continuation.
+A `;` keeps the statements of its line together and stays where it is (see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)), but it does not
+keep the indentation of a continuation: the continuation of an attribute that
+holds a `;` in a string is aligned as any other.
 
 [fixture: attribute-spacing/semicolon-continuation-aligned]
 
@@ -520,12 +575,11 @@ word that the character touches (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 A color that a `;` that the line rule ignores touches, or that a wide space
 other than the vertical tab and the form feed, a U+2028, or a U+2029 separates
-from it, stays as written, which the Colors rule prints in lower case: that form
-is printed against the rule and waits to be fixed by it; a color that a space, a
-tab, a vertical tab, or a form feed separates from the `;` is printed as under
-Colors where no comment region follows it on its line. The whitespace inside the
-styles stays as written (`style A fill:#F00,   stroke:#ABC`, U+2028, and `%% c`
-keep the run after the comma).
+from it, stays as written; a color that a space, a tab, a vertical tab, or a
+form feed separates from the `;` is printed as under Colors where no comment
+region follows it on its line. The whitespace inside the styles stays as written
+(`style A fill:#F00,   stroke:#ABC`, U+2028, and `%% c` keep the run after the
+comma).
 
 [test: er/attribute-spacing/comment-region-continuation-kept] [test: ER the
 quotes of the names of a relationship on a line that a comment line after U+2028
@@ -740,7 +794,9 @@ wherever a statement starts, and is printed on a line of its own.
 [fixture: statements-one-per-line/empty-description-blocks] [corpus fixture:
 er/gram-empty-description-block-between-names]
 
-A directive between two statements stands with the statement after it.
+A directive between two statements stands with the statement after it, as a
+directive moves with the unit that follows it where formatting splits units that
+were on the same line (see [Directives](#directives)).
 
 [fixture: statements-one-per-line/directive-after-statement]
 
@@ -751,7 +807,11 @@ case. On a line of its own, `end;` is rejected by every version that counts, and
 `subgraph` and its first name keeps the complete gap as written: `class;-A a`,
 `subgraph;-x`, and `subgraph;é` keep their contacts after the `;` is removed by
 the line rule. This also applies when U+2028 or U+2029 precedes the subgraph
-name.
+name. mermaid.js removes the `;` before it reads the text, so the keyword and
+the name touch there, and the text with a space between them is rejected or
+drawn differently by some versions that count (see
+[Whitespace between tokens](#whitespace-between-tokens) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: an end; on a line of its own in a subgraph of an ER diagram] [fixture:
 statements-one-per-line/closing-end-ignored-semicolon-kept] [fixture:
@@ -777,7 +837,10 @@ Directives between the number and that character change nothing, since
 mermaid.js removes the directives before it reads the text. Any other number,
 such as `2.5x`, is split from the statement after it. The line of such an entity
 is printed as written, and so is a subgraph that ends on it, from its header to
-its `end`, without the indentation of a level for its lines.
+its `end`, without the indentation of a level for its lines. No rule gives the
+form of that line and of that subgraph: the released forms stay until they are
+decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: statements-one-per-line/number-name-then-name-kept] [fixture:
 statements-one-per-line/number-name-before-uppercase] [fixture:
@@ -797,7 +860,8 @@ the line of the `end` with the gap as written: `endé` is the keyword `end` and
 the entity `é` to the pinned version, and one name to some versions that count.
 A whitespace character of that kind that ends the line of an `end` stays exactly
 once, also before a comment or directive and before a blank line and another
-statement.
+statement, for the same reason (see
+[ER lines that the place or the whitespace decides](./compatibility.md#er-lines-that-the-place-or-the-whitespace-decides)).
 
 [test: er/statements-one-per-line/R63-er-ascii-after-LS-e] [test:
 er/statements-one-per-line/R44-er-after-separator-LS-e] [test:
@@ -847,9 +911,11 @@ the statements before `direction` too, and so are `direction LR B` and
 which stays on the line of the value. A statement that starts so with another
 word (`classes`, `directionX`, a name), `class` with one name, and `direction`
 with its value alone are split from the statement after them. A name in quotes
-that follows such an `end` keeps its quotes. Directives between the keyword and
-what follows it change none of this, whether they stand before the U+2028 or
-U+2029 or touch the character outside ASCII.
+that follows such an `end` keeps its quotes, since a version that counts draws
+the name without its quotes differently. Directives between the keyword and what
+follows it change none of this, since mermaid.js removes the directives before
+it reads the text, whether they stand before the U+2028 or U+2029 or touch the
+character outside ASCII.
 
 [fixture: statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/subgraph-then-name-outside-ascii-kept] [fixture:
@@ -1043,7 +1109,12 @@ line with the text that follows it, and does not go to a line of its own, where
 that line stays as written, whatever makes it stay: a comment line after U+2028
 that joins the next line to it, a `;` in a name in quotes, an entity `1` that
 touches a letter, a pair of `~` in an attribute block on one line, or a
-directive that is not closed. A block on the line is printed as above.
+directive that is not closed. A block on the line is printed as above. Each of
+these has its reason where it is stated: the comment line in
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029),
+the `;` in [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-), the
+entity `1` and the pair of `~` above, and the directive that is not closed in
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins).
 
 [test: an ER statement attached to a class name after U+00A0, and a comment line
 after U+2028 and a statement] [test: an ER statement attached to a class name
@@ -1254,8 +1325,13 @@ and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A directive between the keyword and the `-` does not part them, since mermaid.js
 removes it before it reads the text: `class%%{init: {}}%%-A a` stays. `classDef`
-and `style` are not among them: `classDef-x` is printed `classDef -x`. A `;`
-that the line rule ignores does not part the keyword and the `-` either.
+and `style` are not among them: `classDef-x` is printed `classDef -x`, since
+each version that accepts `classDef-x` or `style-y` draws it the same with a
+space (see
+[ER lines that the place or the whitespace decides](./compatibility.md#er-lines-that-the-place-or-the-whitespace-decides)),
+and the gap between a keyword and its text is one space
+([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)). A
+`;` that the line rule ignores does not part the keyword and the `-` either.
 
 [fixture: whitespace-between-tokens/class-then-dash-ignored-semicolon-kept]
 [fixture: whitespace-between-tokens/class-then-dash-directive-kept] [fixture:
@@ -1352,7 +1428,8 @@ relationship-spacing/role-forms] [corpus fixture: er/lex-relationship-no-spaces]
 [corpus fixture: er/lex-colon-no-space]
 
 The first class of an entity touches its `:::`, and each `,` between the classes
-touches the class before it and has one space after it.
+touches the class before it and has one space after it (see
+[Entities](#entities)).
 
 [fixture: relationship-spacing/names-and-classes]
 
@@ -1503,7 +1580,9 @@ erDiagram
 ### Entities
 
 The alias of an entity touches its name and has nothing inside its brackets, as
-in most examples of the documentation of mermaid.js: `p [ Person ]` is printed
+Prettier prints `x [ 0 ]` as `x[0]`, with nothing before the `[` and nothing
+inside ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), whose table
+gives `A( text )` in a flowchart as `A(text)`): `p [ Person ]` is printed
 `p[Person]`.
 
 [fixture: entities/alias-tight]
@@ -1511,7 +1590,12 @@ in most examples of the documentation of mermaid.js: `p [ Person ]` is printed
 The first class after `:::` touches it, and the classes are separated by a `,`
 that touches the class before it and has one space after it, as Prettier prints
 a comma where mermaid.js reads the list the same: `A ::: c1 , c2` is printed
-`A:::c1, c2`.
+`A:::c1, c2`. Rule 1 names no mark for the `:::`, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [class](./class.md#whitespace-between-tokens) and
+[state](./state.md#whitespace-between-tokens) print the `:::` touching the name
+before it and the class after it (`class A ::: c` is printed `class A:::c`, and
+`A ::: c` in a state diagram is printed `A:::c`).
 
 [fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
 
@@ -1525,19 +1609,25 @@ starts with a letter, with a single `-` between its parts (`LINE-ITEM`, `a-1`),
 is plain too, as the examples write 20 such names, `LINE-ITEM` and
 `NAMED-DRIVER` among them, and none in quotes: `"LINE-ITEM"` is printed
 `LINE-ITEM`. A `_` may start a name (`"_x"` is printed `_x`): the examples write
-no such name, with quotes or without, and every version that counts reads it the
-same in both forms. The part before the first `-` is compared with the words
-that the lexer reads as a unit of its own, since a `-` ends a keyword (`"end-x"`
-is `end` and `-x`). A name with a letter outside ASCII (`"Zoë"`) keeps its
-quotes, since a version that counts rejects it without them, and so does a name
-with a `.` (`"a.b"`), which some versions that count reject without them (see
+no such name, with quotes or without, so the count of the field decides (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)), and every
+version that counts reads it the same in both forms. The part before the first
+`-` is compared with the words that the lexer reads as a unit of its own, since
+a `-` ends a keyword (`"end-x"` is `end` and `-x`). A name with a letter outside
+ASCII (`"Zoë"`) keeps its quotes, since a version that counts rejects it without
+them, and so does a name with a `.` (`"a.b"`), which some versions that count
+reject without them (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The other names are kept as written, quoted or not, numbers included, and so are
 a name with a `-` at its start or its end or two together, and a name that ends
 with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the
 lexer reads `direction`, white space (a line break too), and the name of a
 direction as one line, which a name without quotes would join with the line
-before or after it.
+before or after it. The quotes of a name that starts with `-` and of a number
+have a reason: some of the versions that count reject them without the quotes.
+The versions that were run read `"a-"` and `a-`, and `"a--b"` and `a--b`, alike,
+so the quotes of those names are kept without a reason and their row is in the
+list (D04).
 
 [fixture: entities/plain-names-without-quotes] [fixture:
 entities/hyphenated-names-without-quotes] [fixture:
@@ -1638,8 +1728,11 @@ erDiagram
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `subgraph` and its name, as Prettier prints `return  x` as `return x;`,
 and the `[` of its title touches the name: `subgraph S [t]` is printed
-`subgraph S[t]`, as in [a flowchart](./flowchart.md#subgraph-header), since the
-same word with the same title has no reason for the opposite form. mermaid.js
+`subgraph S[t]`. Rule 1 gives that too: the `[` of the title attaches to the
+name as the `[` of an index does (Prettier prints `x [ 0 ];` as `x[0];`, and the
+table of [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints
+`service a (server) [A]` of an architecture diagram as `service a(server)[A]`),
+and [a flowchart](./flowchart.md#subgraph-header) prints it so too. mermaid.js
 reads both spellings as the same subgraph. Nothing stands inside the brackets,
 and the names of the title are separated by one space, also where they were
 written touching: mermaid.js joins them with one space.
@@ -1649,25 +1742,26 @@ written touching: mermaid.js joins them with one space.
 subgraphs/quoted-and-number-ids]
 
 The statements of the body stand one level deeper, and `end` stands on a line of
-its own at the level of the subgraph, printed in the case in which it is
-written; in the body, the keyword of a `class`, `classDef`, or `style` statement
-stays as written, as it does outside a subgraph, and mermaid.js lists it as a
-node of the subgraph as written.
+its own at the level of the subgraph (see [Indentation](#indentation)), printed
+in the case in which it is written; in the body, the keyword of a `class`,
+`classDef`, or `style` statement stays as written, as it does outside a
+subgraph, and mermaid.js lists it as a node of the subgraph as written.
 
 [fixture: subgraphs/statement-keywords-case-kept]
 
-A statement that follows the `end` on its line stands on the line after it.
+A statement that follows the `end` on its line stands on the line after it, as
+under [Statements one per line](#statements-one-per-line).
 
 [fixture: subgraphs/end-on-the-line-of-a-statement] [fixture:
 subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
 
 A subgraph without statements is printed with its `end` on the next line, the
-empty lines between the header and the `end` being dropped. Rule 1 names no mark
-here, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [flowchart](./flowchart.md#blank-lines) drops the empty lines at the
-start and the end of a subgraph, and [requirement](./requirement.md#bodies)
-drops the empty lines between the `{` and the `}` of a body without fields.
+empty lines between the header and the `end` being dropped.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+drops the empty lines at the start and the end of a block in JavaScript and CSS,
+and [flowchart](./flowchart.md#blank-lines) drops the empty lines at the start
+and the end of a subgraph, and [requirement](./requirement.md#bodies) drops the
+empty lines between the `{` and the `}` of a body without fields.
 
 [fixture: subgraphs/empty]
 
@@ -1677,11 +1771,7 @@ A directive between the name and the `[` is placed as under
 [fixture: subgraphs/title-beside-directive] [fixture:
 subgraphs/title-beside-directive-runs]
 
-A U+2028 or U+2029 there stays as written. Rule 1 names no mark between the name
-of a subgraph and its title, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#line-separators) and
-[state](./state.md#line-separators) print a gap that holds one as written.
+A U+2028 or U+2029 there stays as written.
 
 [test: U+2028 between an ER subgraph name and its title] [test: U+2029 between
 an ER subgraph name and its title]
@@ -1694,7 +1784,8 @@ as written.
 er/gram-subgraph-header-blocks]
 
 Comments and directives on lines of their own in a subgraph stand at the level
-of its statements, and a directive before `end` on its line stays there.
+of its statements, as under [Comments](#comments) and [Directives](#directives),
+and a directive before `end` on its line stays there.
 
 [fixture: subgraphs/directive-and-comment-lines]
 
@@ -1767,13 +1858,17 @@ erDiagram
 ### Direction
 
 A direction line is `direction` and its value, with the text that mermaid.js
-does not read before and after them. The text is kept as written, since the tree
-holds it whole (see
-[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
+does not read before and after them. The text is kept as written, which no rule
+of [How the printed form is decided](./printed-form.md) gives, so the released
+form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 One space stands between it and `direction`, where they were written apart, and
-between `direction` and the value; the value keeps the case in which it is
-written (`lr` stays `lr`), since a version that counts reads the line as
-entities and draws `direction tb` and `direction TB` differently (see
+between `direction` and the value, which is the gap between a keyword and its
+text: one space, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it; the value keeps the case in which it is written (`lr` stays `lr`), since a
+version that counts reads the line as entities and draws `direction tb` and
+`direction TB` differently (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
@@ -1782,13 +1877,18 @@ direction/text-inner-whitespace-kept] [fixture:
 direction/text-both-sides-inner-whitespace-kept] [fixture: direction/case-kept]
 [fixture: direction/case-bt-rl-kept]
 
-A value written on a later line is printed after `direction` on one line.
+A value written on a later line is printed after `direction` on one line, as
+[requirement](./requirement.md#direction),
+[class](./class.md#multi-line-statements), and
+[state](./state.md#multi-line-statements) print `direction` and a value written
+on the next line (rule 2).
 
 [fixture: direction/value-on-next-line-joined] [corpus fixture:
 er/lex-direction-value-next-line]
 
 A direction line with a directive or comment keeps its line breaks and indents
-structural continuations one level deeper.
+structural continuations one level deeper, for the reason given under
+[Multi-line statements](#multi-line-statements).
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -1838,15 +1938,24 @@ erDiagram
 
 Name and class lists use a comma that touches the name before it and has one
 space after it, as Prettier prints a comma where mermaid.js reads the list the
-same. The first style stands after one space. For ordinary single-line
+same. The first style stands after one space: rule 1 names no mark between the
+name of a statement and its first style, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [state](./state.md#whitespace-between-tokens) and
+[requirement](./requirement.md#styles-and-classes) print the first style of a
+`style` and of a `classDef` statement after one space. For ordinary single-line
 property/value styles in `style` or `classDef`, put no space before the first
 colon of each style and one before its nonempty value; separate styles with a
-comma and one following space. Print a run of spaces or tabs between two words
-of a style as one space, in a style with a `:` and in one without:
-`stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`, and `4px    wide`
-becomes `4px wide`. Whether whitespace stands between two words stays as
-written: `fill #f00` and `fill#f00` are kept apart, since a word that touches
-the next stays touching, as a gap does elsewhere (see
+comma and one following space: the colon of a style is the colon of a key
+(`fill: #f00` in a style, see
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), and a comma
+has no whitespace before it and one space after it
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Print a run of
+spaces or tabs between two words of a style as one space, in a style with a `:`
+and in one without: `stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`,
+and `4px    wide` becomes `4px wide`. Whether whitespace stands between two
+words stays as written: `fill #f00` and `fill#f00` are kept apart, since a word
+that touches the next stays touching, as a gap does elsewhere (see
 [Directives](#directives)), and joining the words would hide where one word
 ends. Mermaid concatenates the native style units whatever whitespace separates
 them: `stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does
@@ -1876,7 +1985,9 @@ styles-and-classes/keyword-case-kept] [fixture:
 styles-and-classes/keyword-case-semicolon-line-kept]
 
 A `classDef` or `style` statement written over lines, with whitespace after a
-keyword or a name that takes the line break, is printed on one line.
+keyword or a name that takes the line break, is printed on one line, as
+[state](./state.md#multi-line-statements) prints a `classDef` or `style`
+statement written over lines (rule 2).
 
 [fixture: styles-and-classes/over-lines-joined]
 
@@ -1910,7 +2021,7 @@ diagram]
 Line-ending semicolons follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 An ending unit with a directive between it and the last style is kept with that
-gap as written.
+gap as written, and the statement keeps its styles as written.
 
 [fixture: styles-and-classes/ending-semicolon-rules]
 
@@ -1997,14 +2108,21 @@ block is printed in the one-line form with the colon that the examples write
 [fixture: accessibility-statements/block-trailing-ignored-semicolon]
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
-it; the text is without the whitespace at its ends.
+it, as the colon of a key does (see
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)); the text is
+without the whitespace at its ends, which the Db does not hold (for the
+description, see
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)).
 
-[fixture: accessibility-statements/title-and-description]
+[fixture: accessibility-statements/title-and-description] [corpus fixture:
+er/db-acc-title-trailing-space] [corpus fixture: er/db-acc-title-spaces]
 
-A text written on a later line is printed after the `:` on one line, and a
-comment line before it keeps the line breaks of the statement, and the comment
-and the text stand one level deeper. The colon of `accTitle` and `accDescr` is
-the colon of a key (the title and the description of a diagram in
+A text written on a later line is printed after the `:` on one line, as
+[requirement](./requirement.md#accessibility-statements) and
+[state](./state.md#multi-line-statements) print it (rule 2), and a comment line
+before it keeps the line breaks of the statement, and the comment and the text
+stand one level deeper. The colon of `accTitle` and `accDescr` is the colon of a
+key (the title and the description of a diagram in
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it, also
@@ -2020,15 +2138,19 @@ multi-line-statements/acc-colon-and-brace-joined]
 Later text lines of an ordinary `accDescr { ... }` block stand one level inside
 its statement, replacing only ASCII spaces and tabs immediately after LF. The
 description setter drops that indentation; line breaks and directive interiors
-stay written. Keep line breaks and interior blank lines, and the whitespace at
-the end of each line of text except the last one; a line of whitespace only
-becomes an empty line. The whitespace at the end of the last line of text is
-dropped where the closer stands on a line of its own, and is printed as one
-space where the closer follows it on that line. Inside a subgraph, keep the
-original body columns because the raw description also participates in its
-membership reading; there a line of whitespace only stays as written, and the
-whitespace at the end of the last line of text is dropped, or printed as one
-space before a closer on that line, as above.
+stay written (see
+[Description block indentation](./compatibility.md#description-block-indentation),
+which states the level and why replacing the indentation keeps the Db). Keep
+line breaks and interior blank lines, and the whitespace at the end of each line
+of text except the last one (the Db of the pinned version holds it: `x`, two
+spaces, a line break, and `y` give another accDescr than `x`, a line break, and
+`y`); a line of whitespace only becomes an empty line. The whitespace at the end
+of the last line of text is dropped where the closer stands on a line of its
+own, and is printed as one space where the closer follows it on that line.
+Inside a subgraph, keep the original body columns because the raw description
+also participates in its membership reading; there a line of whitespace only
+stays as written, and the whitespace at the end of the last line of text is
+dropped, or printed as one space before a closer on that line, as above.
 
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
@@ -2037,7 +2159,9 @@ accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
 [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
 
-Its `}` stands at the level of its statement.
+Its `}` stands at the level of its statement, as the `}` of a block does in
+Prettier and in
+[Description block indentation](./compatibility.md#description-block-indentation).
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
@@ -2049,9 +2173,14 @@ Blocks on one line follow
 
 An empty block is a statement of its own that keeps any prior description in the
 Db. It prints `{}` internally: `accDescr { }` becomes `accDescr {}`, including
-whitespace runs, line breaks and an NBSP-only interior. An already empty
+whitespace runs, line breaks and an NBSP-only interior, as Prettier prints
+`x = { }` as `x = {}`
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). An already empty
 interior stays empty, and the keyword and opening brace have one space between
-them. No text needs surrounding whitespace, so the Db-equal choice follows
+them: rule 1 gives one space before the `{` that opens a block (`class A{}` is
+printed `class A {}`), as [gantt](./gantt.md#empty-description-blocks) and
+[journey](./journey.md#empty-description-blocks) print one space there. No text
+needs surrounding whitespace, so the Db-equal choice follows
 [flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
 and usecase.
 
@@ -2061,9 +2190,16 @@ Blocks with comments or directives keep their line breaks and complete contents,
 while ordinary standalone trivia aligns inside the block. Rule 1 names no mark
 for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
-[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block with a directive or comment line.
+decides, as [flowchart](./flowchart.md#multi-line-values) keeps the comment
+lines of a block without text and puts them one level inside the block, with its
+`}` at the level of the `accDescr`. A block that holds a directive is another
+case: [flowchart](./flowchart.md#multi-line-values),
+[xychart](./xychart.md#empty-description-blocks), and
+[quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
+breaks, but their documents give that form no reason, and it is a question of
+the list of undecided forms (D34), so their printing gives no form, and the
+released form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: accessibility-statements/empty-blocks] [fixture:
 accessibility-statements/empty-block-with-directive-or-comment-line] [corpus
@@ -2231,8 +2367,8 @@ accTitle: direction BT
 
 A comment line, `%%` at the start of a line, stands at the level of the
 statements around it, and its text is kept as written; this diagram has no other
-comment (diagrams/er.md, Comments). Rule 1 gives no form here, since its table
-names the whitespace beside a mark and not the start of a line
+comment (diagrams/er.md, Comments). Rule 1 gives no form here, since the start
+of a line is no place that its table names
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
@@ -2241,7 +2377,9 @@ a comment line at the level of the statements around it.
 [fixture: comments/kept] [fixture: comments/in-blocks] [fixture:
 comments/last-in-body] [fixture: comments/text-kept]
 
-A comment line before the header stands at the first column.
+A comment line before the header stands at the first column, as in
+[gantt](./gantt.md#comments), [requirement](./requirement.md#comments),
+[block](./block.md#comments), and [journey](./journey.md#comments) (rule 2).
 
 [fixture: comments/before-header]
 
@@ -2311,10 +2449,11 @@ erDiagram
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, and a directive within a printed line is placed as in a flowchart: the gap
-is printed as without the directive, and the directive stands after its space
-and touches the unit that follows it. Rule 1 names no mark for a directive in a
-gap, so
+it, as in a flowchart, a class diagram, a state diagram, and a sequence diagram
+(rule 2, as for a comment line under [Comments](#comments)), and a directive
+within a printed line is placed as in a flowchart: the gap is printed as without
+the directive, and the directive stands after its space and touches the unit
+that follows it. Rule 1 names no mark for a directive in a gap, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [class](./class.md#directives),
 [sequence](./sequence.md#directives), and [state](./state.md#directives) print
@@ -2642,8 +2781,11 @@ it: `style CUSTOMER fill:#F9F,stroke:#ABCDEF` is printed
 `style CUSTOMER fill: #f9f, stroke: #abcdef`. The colors in the styles of the
 `style` and `classDef` statements of an ER diagram are printed so. A color is a
 `#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a
-style; it is never shortened, and a text that is no color stays as written (see
-[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+style; it is never shortened, and a text that is no color stays as written,
+since a text is a color only where it cannot be anything else (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same),
+which counts the examples for the lower case and gives the texts that Prettier
+prints the same).
 
 [fixture: colors/colors-in-lower-case] [fixture:
 colors/words-that-are-not-colors-as-written]
@@ -2702,8 +2844,9 @@ erDiagram
 ### Frontmatter YAML
 
 As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
-YAML formatter, and the `---` lines are kept as written, with the spaces and
-tabs at the end of each.
+YAML formatter, so that every mark in it has the whitespace that Prettier prints
+beside it ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and the
+`---` lines are kept as written, with the spaces and tabs at the end of each.
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/config-formatted] [fixture:
@@ -2719,7 +2862,8 @@ frontmatter-yaml/indented-delimiters-kept] [fixture:
 frontmatter-yaml/delimiter-line-kept] [fixture: frontmatter-yaml/html-tag-kept]
 [fixture: frontmatter-yaml/less-than-before-other-formatted]
 
-A comment line between the frontmatter and the header is kept.
+A comment line between the frontmatter and the header is kept, at the first
+column, as a comment line before the header is (see [Comments](#comments)).
 
 [fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
 
@@ -2868,7 +3012,7 @@ whitespace before it.
 [fixture: semicolons-at-the-end-of-a-style-statement/unit-terminators]
 
 A directive between the last style and that unit keeps the gap and `;` as
-written.
+written, and the statement keeps its styles as written.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept]
 
@@ -3042,7 +3186,9 @@ directive is rejected, by mermaid.js too, since the directive leaves its
 whitespace behind and the text ends in the style context. A directive that
 touches the character leaves nothing behind: `style A fill:red`, U+2028, and a
 directive are printed as written. A color before a dropped character is printed
-in lower case at once: `fill:#F9F` and U+2028 is printed `fill: #f9f`.
+in lower case at once, by the rule of [Colors](#colors): the color then stands
+alone at the end of the printed text. `fill:#F9F` and U+2028 is printed
+`fill: #f9f`.
 
 [test: ER a style that no semicolon ends is printed without the U+2028 or U+2029
 that ends it, before a statement and at the end of the text] [test: ER a style
@@ -3206,11 +3352,12 @@ line break, and for the last color of the statement where no `;` follows it on
 its line. A color that characters follow after whitespace stays as written, as
 under Colors, and so does a color that a `;` touches (`#ABC;`, `#ABC;;`, and
 `#ABC; ;`) and a color that a wide space other than the vertical tab and the
-form feed, a U+2028, or a U+2029 separates from the `;`, which the Colors rule
-prints in lower case: that form is printed against the rule and waits to be
-fixed by it. A color that a space, a tab, a vertical tab, or a form feed
-separates from the `;` is printed as under Colors where no comment region
-follows it on its line: where one does, the color stays as written.
+form feed, a U+2028, or a U+2029 separates from the `;`. A color that a space, a
+tab, a vertical tab, or a form feed separates from the `;` is printed as under
+Colors where no comment region follows it on its line: where one does, the color
+stays as written, since the U+2028 or U+2029 that the text of the style keeps
+after the color makes it a word that the character touches (see
+[Attribute spacing](#attribute-spacing)).
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:

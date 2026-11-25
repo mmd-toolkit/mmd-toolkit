@@ -418,11 +418,7 @@ decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep bare inertia and (inertia) distinct, along with build, buy, outsource and
 market. The inertia forms can share a Db, but converting them loses an authored
-node form; do not supply defaults. The versions that were run accept both forms
-and draw them alike, and the examples write `(inertia)` 2 times and the bare
-form never (see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)),
-so the bare form is printed against rule 3 and waits to be fixed by the rule.
+node form; do not supply defaults.
 
 [fixture: wardley/decorations/decorations-all] [fixture:
 wardley/decorations/decorations-spaced] [fixture:
@@ -491,15 +487,11 @@ Separate complete AST names, ports and arrows by one ordinary space, including
 arrowless links. Preserve every port and arrow spelling.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
 around an arrow, a mark between two things: a flowchart prints `A-->B` as
-`A --> B`, and Prettier prints `x = a+b` as `x = a + b;`. The examples in the
-documentation of mermaid.js write all 31 of their links with a space on each
-side (see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram))
-(`Customer -> Service`, `App +> API`, `Cache +'backup'> Database`). A-->B is the
-name A- and arrow ->, but the first version with the diagram rejects a name with
-a `-` in it and reads the same text as the name A and the arrow -->, so an arrow
-is not separated from a name that ends with `-`: A-->B prints A--> B, which
-every version draws as it draws A-->B, not A- -> B (see
+`A --> B`, and Prettier prints `x = a+b` as `x = a + b;`. A-->B is the name A-
+and arrow ->, but the first version with the diagram rejects a name with a `-`
+in it and reads the same text as the name A and the arrow -->, so an arrow is
+not separated from a name that ends with `-`: A-->B prints A--> B, which every
+version draws as it draws A-->B, not A- -> B (see
 [Wardley authored text and required line breaks](./compatibility.md#wardley-authored-text-and-required-line-breaks)).
 A directive between the name and the arrow does not part them, as mermaid.js
 takes the directive away before it reads the text: A-%%{init: {}}%%->B prints
@@ -507,12 +499,8 @@ A-%%{init: {}}%%-> B.
 
 [fixture: wardley/links/link-glued-directive-between]
 
-Do not search the source for arrow-shaped text. A -->B instead keeps -->. The
-versions that were run accept `-->` and `->` and draw them alike, and the
-examples write 28 of the 31 links with `->` and none with `-->` (see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)),
-so keeping `-->` is printed against rule 3 and waits to be fixed by the rule.
-This spacing follows the components already read by the parser.
+Do not search the source for arrow-shaped text. A -->B instead keeps -->. This
+spacing follows the components already read by the parser.
 
 [fixture: wardley/links/link-short]
 
@@ -746,9 +734,7 @@ pairs consistent. The comma and the brackets are those of
 bracket, none before a comma and one after it), the space between `size` and the
 `[` is the one that [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
 gives before the `[` that opens the values of a keyword (see
-[Component spacing](#component-spacing)), and the examples in the documentation
-of mermaid.js write their one size so (`size [1100, 800]`; see
-[The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
+[Component spacing](#component-spacing)).
 
 [fixture: wardley/size/size-spacing]
 
@@ -3776,8 +3762,8 @@ with its `}` at the level of the `accDescr`. No rule gives the interior of a
 block that holds a directive: [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
-breaks, but in them this is a question of the list of undecided forms (D34) and
-a form printed against a rule, so their printing is no decided form, and the
+breaks, but their documents give that form no reason, and it is a question of
+the list of undecided forms (D34), so their printing is no decided form, and the
 released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
@@ -4292,14 +4278,11 @@ reads the YAML) and for a body that would create a fence (`--- !!map` after
 `%YAML 1.2`, which every version that counts accepts and rejects once it is
 split); the indented fences stay as written until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
-Prettier prints the delimiter of a front matter without the whitespace after
-`---`, and the versions that were run read a delimiter with it like one without
-it (the same Db and the same drawing), so the padding of a delimiter is printed
-against rule 1 and waits to be fixed by the rule. YAML uses the shared positive
-indentation minimum at tabWidth zero. Its indentation carries block scalars and
-nested values: at zero width every version that counts rejects a block scalar
-and draws a diagram differently where a nested `config` value is no longer
-nested (see [Frontmatter](./compatibility.md#frontmatter) and the rows of
+YAML uses the shared positive indentation minimum at tabWidth zero. Its
+indentation carries block scalars and nested values: at zero width every version
+that counts rejects a block scalar and draws a diagram differently where a
+nested `config` value is no longer nested (see
+[Frontmatter](./compatibility.md#frontmatter) and the rows of
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 If textBeforeHeader is present, keep the complete prefix, including leading LF,
 passed trivia, second-scan forms and real/retained order. The shared keepsPrefix

@@ -29,6 +29,11 @@ interface TaskRow {
   /** Whether the name holds a tab, whose width is up to the editor. */
   readonly holdsTab: boolean
   readonly widthFromColon: number
+  /**
+   * Whether the printer prints the line as written, as it prints a line that
+   * mermaid.js reads over several lines: its colon stays where it is.
+   */
+  readonly staysAsWritten: boolean
 }
 
 /** The places of the colons of the tasks of a chart, for the options used. */
@@ -65,13 +70,17 @@ const alignmentBySource = new WeakMap<Source, Alignment>()
  * name, so its lines only get shorter. A chart that holds `white-space` is left
  * as it is, since its CSS may draw the whitespace.
  *
- * A task is no part of a section's tasks where the printer prints its line as
- * written, where it runs over lines, where it does not start its printed line
- * (see `startsItsPrintedLine`), where its name ends with a directive, or where
- * its name is a keyword once the directives are taken out of it. A section
- * where a name holds a tab is left as it is: a tab reaches the next tab stop of
- * the editor, so no width that Prettier counts lines the colons up. The width
- * of a name, and of the rest of the task up to the next statement on its line,
+ * A task is no part of a section's tasks where the diagram keeps its line as
+ * written (`kept.verbatim`), where it runs over lines, where it does not start
+ * its printed line (see `startsItsPrintedLine`), where its name ends with a
+ * directive, or where its name is a keyword once the directives are taken out
+ * of it. A task whose line a comment region joins to the next line is a task of
+ * its section too, but the printer prints its line as written, so its colon
+ * stays where it is; the colons of a section that holds one in another column
+ * than the others get are lined up apart from the sections of that column (see
+ * `holdsColonApartFrom`). A section where a name holds a tab is left as it is:
+ * a tab reaches the next tab stop of the editor, so no width that Prettier
+ * counts lines the colons up. The width of a name, and of the rest of the task up to the next statement on its line,
  * is the width as written, so a directive in the name counts, as the colons are
  * lined up in the text.
  *
@@ -86,6 +95,7 @@ export function findColonColumns(
   source: Source,
   statements: readonly GanttStatement[],
   kept: KeptLines,
+  stays: KeptLines,
   options: ParserOptions<MermaidAst>,
 ): ReadonlyMap<GanttTaskStatement, number> {
   const cached = alignmentBySource.get(source)
@@ -124,7 +134,7 @@ export function findColonColumns(
       for (const row of section) columns.set(row.task, column)
   }
 
-  const taskSections = findSections(source, statements, kept)
+  const taskSections = findSections(source, statements, kept, stays)
   // The tasks before the first section stand one level less deep.
   const [before, ...after] = withoutUnalignableSections(taskSections)
   if (isPadded(before)) align([before], longestName(before) + 1, 1)
@@ -133,12 +143,11 @@ export function findColonColumns(
   for (const section of padded) {
     if (grouped.has(section)) continue
     const column = commonColumn(section)
-    const group =
+    let group =
       column === null
         ? [section]
         : padded.filter((other) => commonColumn(other) === column)
-    for (const member of group) grouped.add(member)
-    const unchanged =
+    let unchanged =
       column === null
         ? []
         : after.filter(
@@ -147,12 +156,41 @@ export function findColonColumns(
               isSingleSpaced(other) &&
               commonColumn(other) === column,
           )
+    // A section with a line that stays as written, whose colon is not at the
+    // column of the group, has its colons in more than one column once the
+    // others are moved, so it is alone, as the second formatting finds it.
+    for (;;) {
+      const target = maxOf([...group, ...unchanged].map(longestName)) + 1
+      const apart = group.filter((member) =>
+        holdsColonApartFrom(member, target),
+      )
+      if (apart.length === 0) break
+      group = group.filter((member) => !apart.includes(member))
+      if (apart.includes(section)) {
+        group = [section]
+        unchanged = []
+        break
+      }
+    }
+    for (const member of group) grouped.add(member)
     align(group, maxOf([...group, ...unchanged].map(longestName)) + 1, 2)
   }
   for (const row of taskSections.flat())
     if (touchesItsColon(row) && !columns.has(row.task))
       columns.set(row.task, row.nameWidth + 1)
   return columns
+}
+
+/**
+ * Whether a section holds a line that stays as written with its colon not at
+ * `column`, so that the colons of the section are not all in `column` once the
+ * printer has moved the others.
+ */
+function holdsColonApartFrom(
+  section: readonly TaskRow[],
+  column: number,
+): boolean {
+  return section.some((row) => row.staysAsWritten && row.column !== column)
 }
 
 /** Whether the colon of a row stands right after its name. */
@@ -192,12 +230,13 @@ function findSections(
   source: Source,
   statements: readonly GanttStatement[],
   kept: KeptLines,
+  stays: KeptLines,
 ): TaskRow[][] {
   const sections: TaskRow[][] = [[]]
   for (const statement of statements) {
     if (statement.type === "GanttSectionStatement") sections.push([])
     else if (statement.type === "GanttTaskStatement") {
-      const row = toRow(source, statement, kept)
+      const row = toRow(source, statement, kept, stays)
       if (row !== null) sections.at(-1)!.push(row)
     }
   }
@@ -287,6 +326,7 @@ function toRow(
   source: Source,
   task: GanttTaskStatement,
   kept: KeptLines,
+  stays: KeptLines,
 ): TaskRow | null {
   // A task whose name does not stand at the start of its printed line is left,
   // since its colon would not line up with the others. This also leaves the
@@ -342,5 +382,6 @@ function toRow(
     padded: padding !== "" && padding !== " ",
     holdsTab: source.text.slice(from, nameEnd).includes("\t"),
     widthFromColon: util.getStringWidth(source.text.slice(colon, dataEnd)),
+    staysAsWritten: stays.verbatim.has(lineStartOf(source, task.range[0])),
   }
 }

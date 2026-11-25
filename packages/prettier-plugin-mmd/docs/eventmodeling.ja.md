@@ -82,16 +82,8 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 普通のトップレベルの文は、第 1 列から始めます。
 フレーム、モデルの実体、`data`、`note`、`gwt` が対象です。
-行頭は規則 1 の場所ではないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-規則 2 は、ヘッダーの後の文を 1 段深く置きます。
-[flowchart](./flowchart.ja.md#字下げ)、[class](./class.ja.md#字下げ)、
-[er](./er.ja.md#字下げ)、[state](./state.ja.md#字下げ) がそう置きます。
-したがって、第 1 列に置くフレーム、モデルの実体、`gwt` の文、
-`data` と `note` の見出しは、規則 2 に反して印字していて、
-規則で直されるのを待ちます。
-改行の後の `title` とブロックの `}` は、対象にする版の mermaid.js のすべてが、
-字下げした形を拒否するので、この図種ではより深く置けません。
+改行の後の `title` とブロックの `}` も、第 1 列に置きます。
+対象にする版の mermaid.js のすべてが、字下げした形を拒否するからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -1022,18 +1014,9 @@ U+2029 も値に属するので、書かれたまま残します。
 連なりを書かれたまま残します。
 つなぐと、対象にするどの版でも、
 Db と mermaid.js が描くテキストが変わるからです。
-`title` と `accDescr:` では、連なりをつないでも描くものは同じです。
-title の Db は同じで、説明の Db は連なりか末尾だけが違い、
-mermaid.js は説明を空白をつめた HTML として描きます。
-規則 2 は空白 1 つを与えます。
-journey、timeline、sequence は `title T  %% c` を `title T %% c` と印字し、
-title や説明の中の連なり（`title T  // c`）にも、
-同じに描かれるテキスト中の空白の連なりが空白 1 つを与えます。
-（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 リリース済みの版は、`title T  %% c`、`title T  // c`、`title T  /* c */`、
 `accDescr: T  %% c`、`accDescr: T  // c`、`accDescr: T  /* c */` を、
-書かれたまま残すので、その形は規則 2 に反して印字しており、
-規則による修正を待っています。
+書かれたまま残します。
 
 [fixture: eventmodeling/title/header-line-title-run-before-percent-comment-kept]
 [fixture: eventmodeling/title/header-line-acctitle-run-before-percent-comment-kept]

@@ -924,6 +924,63 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 [fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
 
+box モードでは、コメントの前、
+または枝のない行のディレクティブの前にある連なりは、
+次のノードに枝が付くとき消え、コメントやディレクティブは、
+前にあるものに接します。
+枝は 2 つ目の連なりになり、最初の連なりの後では mermaid.js が拒否するためです。
+`"a" %% c`、`─`、`"b"` は `"a"%% c`、`│`、`└── "b"` と印字し、`├── "a" %% c`、
+`│`、`"b"` は `├── "a"%% c`、`│`、`└── "b"` と印字します。
+クラスやアイコンの後、コメントの前のタブや空白 2 つ、
+ディレクティブとコメントが並ぶ形、間に空行、1 つ以上のコメント行、
+字下げしたコメント行、ディレクティブの行がある形も同じです。
+`─` の行にコメントが続くと、その行は元の場所に残り、
+枝の `└──` が `"b"` ではなく `─` の前に付きます。
+`"a" %% c`、`─ %% n`、`"b"` は `"a"%% c`、`└── ─ %% n`、`"b"` と印字します。
+枝のある行のディレクティブの前の空白は、
+その行にコメントが続かないときは残ります。
+`├── "a" %%{x}%%`、`─`、`"b"` は `├── "a" %%{x}%%`、`│`、
+`└── "b"` と印字します。
+コメントが続くときは、ディレクティブの前と間の空白も消えます。
+mermaid.js はディレクティブを除くので、その空白は引用符の後の連なりに合わさり、
+空白を残す形は拒否されるためです。
+`├── "a" %%{x}%% %% c`、`─`、`"b"` は `├── "a"%%{x}%%%% c`、`│`、
+`└── "b"` と印字し、
+ディレクティブが 2 つあるときは `├── "a"%%{x}%%%%{y}%%%% c` と印字します。
+テキストを終えるノード、`End` という名前のノード、`}` という名前のノードにも、
+同じように枝を付けます。
+行の規則が無視する `;` を含む行は、続く `─` の行と一緒に、書かれたまま残します。
+ディレクティブとコメントでテキストが終わり、その後にノードがない行も同じです。
+`├── "a" %%{x}%%` と `%% c` は `└── "a" %%{x}%%` と `%% c` と印字します。
+
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-and-decoration]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-on-branch-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-without-decoration]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directive-and-decoration]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directive-and-comment]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-after-class]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-tab]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-blank-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-comment-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-directive-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-nested-branches]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directive-on-branch-line-kept]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-icon]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-two-spaces]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-indented-comment-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-decoration-comment-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directive-comment-comment-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directives-comment-on-branch-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-two-comment-lines]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-end-of-text]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-node-named-end]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-node-named-brace]
+[fixture: treeview/carried-indentation/box-redraw-run-before-ignored-semicolon-comment-kept]
+[fixture: treeview/carried-indentation/box-redraw-run-before-two-ignored-semicolons-comment-kept]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directive-comment-line-at-end-kept]
+[test: treeview: a quote in box mode, U+2028, and a comment before the next line of the box]
+[test: treeview: a quote in box mode, U+2029, and a directive before the next line of the box]
+
 ### Tabs
 
 普通の字下げは空白とタブを各 1 と数え、設定の正の段を使います。
@@ -2970,6 +3027,47 @@ mermaid.js は値を読む前にディレクティブを取り除き、
 `R   %%{x}%%   %%{y}%%  ` は `R %%{x}%% %%{y}%%` と印字します。
 
 [fixture: trailing-whitespace/directives-end-blanks-dropped]
+
+改行か `;` を含むディレクティブも、ほかのディレクティブと同じに、
+名前か description を終えます。
+最後に置いても、後ろのディレクティブに接していても同じで、
+最後のディレクティブの後に空白とタブが続いても同じです。
+`R  %%{init: {a;b}}%%` の後に空白とタブが続くときは、
+続かないときと同じ `R %%{init: {a;b}}%%` と印字します。
+mermaid.js が値を読む前にディレクティブを除くためで、
+罫線の形も同じに印字します。
+空白かタブでそのディレクティブから隔てた後ろのディレクティブがあるときは、
+そのディレクティブは名前か description の一部になり、
+その空白とタブを書かれたままにします。
+`R  %%{init: {`、改行、`}}%%`、空白、`%%{x}%%` は、空白 2 つを残し、
+最後のディレクティブの後の空白とタブを除いて印字します。
+そのようなディレクティブの後のノーブレークスペースと行区切りは、
+テキストの文字なので、書かれたままにします。
+U+2028 か U+2029 を含むディレクティブは改行を含まないので、
+行の末尾の空白とタブを除くほかは、書かれたままにします。
+
+[fixture: trailing-whitespace/directive-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-unclosed-end-runs-collapsed]
+[fixture: trailing-whitespace/directive-lines-end-comment-at-end-of-text-kept]
+[fixture: trailing-whitespace/directive-lines-end-comment-line-at-end-of-text]
+[fixture: trailing-whitespace/node-named-end-directive-lines-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-nested-end-blanks-dropped]
+[fixture: trailing-whitespace/description-directive-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/description-directive-lines-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-touching-end-blanks-dropped]
+[fixture: trailing-whitespace/directives-lines-touching-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-then-directive-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-before-directive-runs-kept]
+[fixture: trailing-whitespace/box-directive-lines-end-blanks-dropped]
+[test: treeview: spaces and tabs after a directive over lines with a CRLF]
+[test: treeview: U+00A0 after a directive over lines stays]
+[test: treeview: U+00A0 after a directive with a `;` stays]
+[test: treeview: U+00A0 after a directive over lines stays after a description]
+[test: treeview: U+2028 after a directive over lines stays]
+[test: treeview: a directive that holds U+2028 is no directive over lines]
+[test: treeview: a directive that holds U+2029 is no directive over lines]
 
 名前や description の末尾の U+2028 と U+2029 は、
 空白やタブではなくテキストの文字なので、その後の空白は除き、
