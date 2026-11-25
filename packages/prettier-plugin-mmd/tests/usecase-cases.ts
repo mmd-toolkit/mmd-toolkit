@@ -549,4 +549,19 @@ export const usecaseCases: readonly UsecaseCase[] = [
     output: "usecase-beta\n  accDescr: D  \u2029 %% c\n  \n  actor B\n",
     options: {},
   },
+  {
+    name: "usecase: U+2028, two comments that touch, and a statement on the next line after the text of an accTitle line",
+    id: "usecase/line-terminators/acctitle-u2028-two-comments-statement",
+    input: "usecase-beta\naccTitle  :   Title   \u2028 %% c\n%% d\nactor B\n",
+    output:
+      "usecase-beta\n  accTitle  :   Title   \u2028 %% c\n%% d\nactor B\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2028 and two comments that touch at the end of the text after the text of an accTitle line",
+    id: "usecase/line-terminators/acctitle-u2028-two-comments-end-of-text",
+    input: "usecase-beta\naccTitle  :   Title   \u2028 %% c\n%% d",
+    output: "usecase-beta\n  accTitle: Title\n  %% c\n  %% d\n",
+    options: {},
+  },
 ]
