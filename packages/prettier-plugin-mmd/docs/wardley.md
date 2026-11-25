@@ -3755,11 +3755,14 @@ dropped where the closer stands on a line of its own, and is printed as one
 space where the closer follows it on that line. Directives and shared removed
 comment regions keep their complete source, including in a block that contains
 only a directive, and trivia keeps its shared continuation layout. Rule 1 names
-no mark for a line inside a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
+no mark for a line inside a block, and no rule gives these interiors:
+[xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block with a directive or comment line.
+breaks of a block with a directive or comment line, but in them this is a
+question of the list of undecided forms (D34) and a form printed against a rule,
+so their printing is no decided form, and the released form stays until it is
+decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: wardley/accessibility/description-closer] [fixture:
 wardley/accessibility/description-comment-only] [fixture:
