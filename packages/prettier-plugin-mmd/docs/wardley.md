@@ -169,12 +169,18 @@ number, string or bracket.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the space before a name, a number, or a string: the gap between a keyword and
 its text is one space in the other diagram types, as `title    Pets` in a pie
-chart and `title    Plan` in a Gantt chart are printed with one. Rule 1 gives no
-space before a bracket (see [Name boundaries](#name-boundaries)), and the
-released version prints one against it. The same rule formats glued keywords,
-including the pipeline keyword: keyword terminals have no trailing boundary, and
-the AST already separates them from the name. Keep trivia and hidden boundaries
-instead of applying ordinary gap rules through them.
+chart and `title    Plan` in a Gantt chart are printed with one. No rule gives
+the space before a bracket that a keyword takes: the table of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) has no row for the
+`[` that opens the values of a keyword, and
+[xychart](./xychart.md#brackets-and-commas), which prints one space before such
+a `[`, gives that form no reason beyond its choice. The released version prints
+one space there, which stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+The same rule formats glued keywords, including the pipeline keyword: keyword
+terminals have no trailing boundary, and the AST already separates them from the
+name. Keep trivia and hidden boundaries instead of applying ordinary gap rules
+through them.
 
 [fixture: wardley/component-spacing/keyword-anchor]
 
@@ -286,14 +292,13 @@ space is the gap of [Component spacing](#component-spacing) after a keyword, of
 [Pipeline](#pipeline) before a `{`, and of [Links](#links) around an arrow. The
 space before the number of an `evolve` is the one that [Evolves](#evolves) says
 no rule gives. Before the `[` of a coordinate pair it is not one of these gaps:
-rule 1 gives none before a `[` that follows a name, as for the `[` of an index
-(Prettier prints `Foo [0.3, 0.6];` as `Foo[(0.3, 0.6)];`, and the table of
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints
+rule 1 gives none before a `[` that follows a name or a string, as for the `[`
+of an index (Prettier prints `Foo [0.3, 0.6];` as `Foo[(0.3, 0.6)];`, and the
+table of [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints
 `service a (server) [A]` of an architecture diagram as `service a(server)[A]`).
 The released version prints one space there, so that form is printed against
 rule 1 and waits to be fixed by the rule. The examples in the documentation of
-mermaid.js write the `[` of all 66 coordinates that follow a name, a string, or
-`annotations` after a space (see
+mermaid.js write the `[` of all 66 coordinates after a space (see
 [The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
 Whitespace after title makes it metadata instead of a name. Quoted "title" and
 bare titlex follow ordinary spacing; uppercase names stay names.
@@ -393,10 +398,10 @@ wardley-beta
 Keep every authored label offset, strategy and inertia decoration in grammar
 order. Separate decorations by one space and compact parenthesized interiors.
 Prettier prints no space inside parentheses
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 1 gives none
-before the `[` of a label offset, as before any `[` that follows a name (see
-[Name boundaries](#name-boundaries)), and the released version prints one space
-there. Rule 1 names no mark for the other gaps before a decoration, so
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). No rule gives the
+space before the `[` of a label offset, which the keyword `label` takes (see
+[Component spacing](#component-spacing)), and the released version prints one
+space there. Rule 1 names no mark for the other gaps before a decoration, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides where another diagram type has a gap of that kind. Two gaps have one:
 [quadrant](./quadrant.md#styles) prints one space between the `]` of a point and
@@ -682,9 +687,11 @@ Separate note, annotations, annotation and force components with one space; the
 outer annotation comma has no preceding space and one following space too. This
 follows coordinate punctuation without aligning columns. The space between a
 keyword and a string is that of [Component spacing](#component-spacing), the
-space before a `[` is the one of [Name boundaries](#name-boundaries), where rule
-1 gives none, and the comma is the whitespace that Prettier prints beside a
-comma ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Keep empty
+space before the `[` after a string is the one of
+[Name boundaries](#name-boundaries), where rule 1 gives none, the space before
+the `[` of `annotations` is the one of [Component spacing](#component-spacing),
+which no rule gives, and the comma is the whitespace that Prettier prints beside
+a comma ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Keep empty
 strings, annotation zero, integer/decimal coordinate forms and later unchecked
 annotations boxes.
 
@@ -747,7 +754,7 @@ pairs consistent. The comma and the brackets are those of
 [Coordinates](#coordinates)
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): none inside a
 bracket, none before a comma and one after it), the space between `size` and the
-`[` is the one of [Name boundaries](#name-boundaries), printed against rule 1,
+`[` is the one of [Component spacing](#component-spacing), which no rule gives,
 and the examples in the documentation of mermaid.js write their one size so
 (`size [1100, 800]`; see
 [The examples that decide the whitespace in a Wardley diagram](./compatibility.md#the-examples-that-decide-the-whitespace-in-a-wardley-diagram)).
@@ -3770,13 +3777,16 @@ dropped where the closer stands on a line of its own, and is printed as one
 space where the closer follows it on that line. Directives and shared removed
 comment regions keep their complete source, including in a block that contains
 only a directive, and trivia keeps its shared continuation layout. Rule 1 names
-no mark for a line inside a block, and no rule gives these interiors:
-[xychart](./xychart.md#empty-description-blocks) and
-[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block with a directive or comment line, but in them this is a
-question of the list of undecided forms (D34) and a form printed against a rule,
-so their printing is no decided form, and the released form stays until it is
-decided (see
+no mark for a line inside a block. For a block that holds only comment lines,
+rule 2 decides, as [flowchart](./flowchart.md#multi-line-values) keeps the
+comment lines of a block without text and puts them one level inside the block,
+with its `}` at the level of the `accDescr`. No rule gives the interior of a
+block that holds a directive: [flowchart](./flowchart.md#multi-line-values),
+[xychart](./xychart.md#empty-description-blocks), and
+[quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
+breaks, but in them this is a question of the list of undecided forms (D34) and
+a form printed against a rule, so their printing is no decided form, and the
+released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: wardley/accessibility/description-closer] [fixture:

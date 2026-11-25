@@ -3476,9 +3476,9 @@ journey has two colons, and both are counted.
 
 The examples in the documentation of the pinned mermaid.js decide the whitespace
 around the arrow of a link, and show the whitespace before the `[` of a
-coordinate and of a size, which they do not decide: rule 1 gives none before a
-`[` that follows a name (see [Name boundaries](./wardley.md#name-boundaries)).
-They are counted as under
+coordinate and of a size, which they do not decide (see
+[Name boundaries](./wardley.md#name-boundaries) and
+[Component spacing](./wardley.md#component-spacing)). They are counted as under
 [The examples that decide the whitespace before a colon](#the-examples-that-decide-the-whitespace-before-a-colon):
 the page is `packages/mermaid/src/docs/syntax/wardley.md` of the pinned commit,
 the blocks are its 16 fenced `mermaid-example` blocks, and the frontmatter of a
