@@ -280,17 +280,17 @@ block-beta
 
 ### Blank lines
 
-A run of empty lines becomes one empty line, and there is none before the
-header, none between the header and the first statement, and none at the end of
-the text. A blank line is a choice of the author that the Db does not hold, and
-one empty line shows it at the least cost, as Prettier does in code (see
+A run of empty lines becomes one empty line, and there is none at the start of
+the text, none between the header and the first statement, and none at the end
+of the text. A blank line is a choice of the author that the Db does not hold,
+and one empty line shows it at the least cost, as Prettier does in code (see
 [Blank lines](./flowchart.md#blank-lines)). A blank line between the statements
 of a diagram is a gap of a kind that Prettier does not have in a diagram, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [Gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines),
 and [sankey](./sankey.md#blank-lines) print a run of empty lines as one and drop
-the empty lines at the start and at the end of a body, and every diagram type
-drops the empty lines before its header.
+the empty lines at the start and at the end of a body, and every other diagram
+type drops the empty lines at the start of the text, before its header.
 
 [fixture: blank-lines/runs-become-one] [fixture:
 blank-lines/none-after-the-header] [fixture: blank-lines/none-at-the-end]
@@ -478,8 +478,9 @@ printed with the space.
 [fixture: shapes/block-arrow-comma-on-kept-line]
 
 A comment line or a directive there keeps its line, and a U+2028 or U+2029 stays
-where it is, as it does in every gap (see [Line separators](#line-separators)).
-Rule 1 names no mark for a line break next to a comment or a directive, so
+where it is, as it does in a gap inside a statement (see
+[Line separators](#line-separators)). Rule 1 names no mark for a line break next
+to a comment or a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
@@ -504,10 +505,10 @@ U+2028, and ` %%{x}%% down)` stay. Where a line break follows a directive after
 a `,`, the whitespace before it stays as written and the next line stands one
 level deeper: `(right,  %%{x}%%` and a line break stay. A run of spaces or tabs
 before the directive stays too, which rule 2 does not give:
-[flowchart](./flowchart.md#directives), [Gantt](./gantt.md#directives), and
-[journey](./journey.md#directives) print a run before a directive at the end of
-a line as one space. So block prints it against rule 2 and waits to be fixed by
-the rule.
+[flowchart](./flowchart.md#directives) prints a run before a directive at the
+end of a line as one space, and the formatter, run on Gantt and journey, prints
+it so as well. So block prints it against rule 2 and waits to be fixed by the
+rule.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [fixture:
@@ -637,12 +638,13 @@ is printed in its shortest form, also after the label of a link: `--->` is
 `==>`. The length of the line is not in the Db, and the versions that count draw
 the same figure from the shorter line (the versions that do not read a thick
 line reject both). The documentation of mermaid.js writes the arrow `-->` nine
-times, once after the label of a link (`A-- "X" -->B`), and never a longer line
-of that kind (`--->`), so rule 3 gives the shortest form for it
+times, once of them after the label of a link (`A-- "X" -->B`), and never a
+longer line of that kind (`--->`), so rule 3 gives the shortest form for it
 ([A spelling](./printed-form.md#3-a-spelling)). It writes no other kind of line
 (`---`, `-.->`, `==>`, `<-->`, `--x`, `--o`, `~~~`, `-.-`) at all, so no rule
-gives the length of those lines: the shortest form, which the released version
-prints, stays until it is decided (see
+gives the length of the lines that the formatter shortens (`-----`, `-..->`,
+`====>`, `<--->`, `-..-`): the shortest form, which the released version prints,
+stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 A line that starts with `<` is shortened whatever it ends in, since the versions
 that count draw it the same: `<---x` is `<--x`, and `<====` is `<===`. A line
@@ -733,9 +735,9 @@ whitespace before it and one space after it, as in ER and requirement (see
 `classDef c fill: #f00, color: white`, and the styles of a `style` statement use
 the same form. Rule 1 gives both: the colon of a key has no whitespace before it
 and one space after it (`color: red` in CSS), and a comma has none before it and
-one space after it (Prettier prints `transition: opacity 0.3s ease, color 1s`);
-see [Which kind a colon is](./printed-form.md#which-kind-a-colon-is). A run of
-spaces and tabs between the words of a style is printed as one space, and
+one space after it (Prettier prints `font-family: a,b` as `font-family: a, b;`
+in CSS); see [Which kind a colon is](./printed-form.md#which-kind-a-colon-is). A
+run of spaces and tabs between the words of a style is printed as one space, and
 whether whitespace stands between two words stays as written; a run inside a
 string, a comment, or the parentheses of `url(`, and the escape after a
 backslash, stay as written, since CSS reads them as part of the value: the
@@ -1689,20 +1691,18 @@ usual (`block:G%% x`, U+2028, and `%% c` print `block: G%% x`, U+2028, and
 `%% c`, and `block:G %% x` prints `block: G %% x`). A second U+2028 or U+2029 on
 the comment line (`b`, U+2028, `%% c`, U+2028, and `%% d`) is part of the
 comment, which runs to the next line feed, so it stays as written, whatever
-follows it on the line: nothing, a comment, or the text of a statement. A
-comment is kept as written, as every comment of a text is (see
-[What decides a form](./printed-form.md#what-decides-a-form)). The first one is
-dropped or stays as the rules above say, and where it is dropped the comment
-line stands on a line of its own (`b`, a line break, `%% c`, U+2028, and `%% d`;
-`b %% c`, U+2028, `%% d`, U+2028, and `%% d` are not changed). Two of them in a
-row before the comment (`b`, U+2028, U+2028, and `%% c`) follow the rules above,
-as one does, and so do two U+2029: they are both dropped where the first would
-be dropped, and one line break remains, and both stay where it stays (`b %% x`,
-`b;`, and `b` with a statement after the comment line). Where a statement
-follows, the color stays as written if the statement is on the line right after
-a comment line, and is in lower case if an empty line, a line of whitespace, or
-a directive line stands right before it. The case of every color in these rows
-is the case that the Colors rule gives
+follows it on the line: nothing, a comment, or the text of a statement. The
+first one is dropped or stays as the rules above say, and where it is dropped
+the comment line stands on a line of its own (`b`, a line break, `%% c`, U+2028,
+and `%% d`; `b %% c`, U+2028, `%% d`, U+2028, and `%% d` are not changed). Two
+of them in a row before the comment (`b`, U+2028, U+2028, and `%% c`) follow the
+rules above, as one does, and so do two U+2029: they are both dropped where the
+first would be dropped, and one line break remains, and both stay where it stays
+(`b %% x`, `b;`, and `b` with a statement after the comment line). Where a
+statement follows, the color stays as written if the statement is on the line
+right after a comment line, and is in lower case if an empty line, a line of
+whitespace, or a directive line stands right before it. The case of every color
+in these rows is the case that the Colors rule gives
 ([Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)):
 a color is in lower case where it is a word of its own (whitespace, a `,`, or
 the `;` that ends the statement follows it), and stays as written where a
