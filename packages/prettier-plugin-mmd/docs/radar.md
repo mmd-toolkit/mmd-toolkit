@@ -12,8 +12,8 @@ preserved text and differences from mermaid.js.
 ### Header
 
 Print `radar-beta` at column one and put an ordinary first statement on the next
-line so the heading is easy to find. Rule 1 names no mark for the line break
-after a header, so
+line so the heading is easy to find. Where a statement stands is no place of
+rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [pie](./pie.md#header), [packet](./packet.md#header),
 [architecture](./architecture.md#header), [treemap](./treemap.md#header),
@@ -47,14 +47,18 @@ is printed `radar-beta%%{x}%%%%{y}%%:`. With no colon the spaces stay:
 are printed as under [Directives](./flowchart.md#directives): mermaid.js removes
 a directive before it reads the text, so a gap is printed as its ordinary rule
 prints it without the directive, and the directive stands after the space of
-that rule. Without a directive, nothing stands between the header word and its
-colon, since Prettier prints no space before the colon of a label or of
-`default` (`label :` and `default :` are printed `label:` and `default:`), so
-the directive touches the colon. Two directives in one gap touch each other in a
-flowchart, and the gap keeps whether it holds whitespace at the end of a line
-(`A %%{x}%% %%{y}%%` stays as written), but in it these are a question of the
-list of undecided forms (D50), so no rule gives the contact of two directives,
-and the released form stays until it is decided (see
+that rule. The kind of the colon after a header is not plain from the steps of
+rule 1 (see [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)):
+it gives the header word no value, and in the printed form no text of its line
+follows it. So no kind is assumed for it, no rule gives the whitespace before
+it, and the forms above, which print nothing between the header word, a
+directive and the colon, stay as released until they are decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Two directives in one gap touch each other in a flowchart, and the gap keeps
+whether it holds whitespace at the end of a line (`A %%{x}%% %%{y}%%` stays as
+written), but in it these are a question of the list of undecided forms (D50),
+so no rule gives the contact of two directives, and the released form stays
+until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 [gitgraph](./gitgraph.md#header) prints `gitGraph %%{x}%%:` as
 `gitGraph%%{x}%%:`. The colon stays before an unclosed directive too:
@@ -164,8 +168,8 @@ radar-beta
 ### Statements one per line
 
 Print each ordinary axis, curve, options or common statement on its own line to
-expose the authored statement units. Rule 1 names no mark for the end of a
-statement, so
+expose the authored statement units. Where a statement stands is no place of
+rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [er](./er.md#statements-one-per-line),
 [gantt](./gantt.md#statements-one-per-line), and
@@ -259,16 +263,15 @@ radar-beta
 
 Print attached labels as `axis A["label"]` and `curve c['label']`: ordinary gaps
 before `[`, after `[` and before `]` are empty. Rule 1 gives none inside the
-brackets (`f( a )` is printed `f(a)` in its table) and names no mark for the gap
-before `[`, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [architecture](./architecture.md#declaration-spacing) and
-[er](./er.md#entities) print the brackets of a label touching their name
-(`service a  [ A ]` is printed `service a[A]`, and `A  [ "x" ]` is printed
-`A["x"]`). This makes the label read with its name. Keep absent labels distinct
-from empty quoted labels: removing an empty label changes the ID fallback (see
-[Quotes](#quotes)). Quote interiors are values, not component spacing, and
-hidden/global boundaries take precedence.
+brackets (`f( a )` is printed `f(a)` in its table) and none before the `[`
+(`x [ 0 ];` is printed `x[0];`, and its table gives `service a (server) [A]` of
+an architecture diagram as the example of the `[` of an index), and
+[architecture](./architecture.md#declaration-spacing) and [er](./er.md#entities)
+print the brackets of a label touching their name (`service a  [ A ]` is printed
+`service a[A]`, and `A  [ "x" ]` is printed `A["x"]`). This makes the label read
+with its name. Keep absent labels distinct from empty quoted labels: removing an
+empty label changes the ID fallback (see [Quotes](#quotes)). Quote interiors are
+values, not component spacing, and hidden/global boundaries take precedence.
 
 [fixture: radar/labels/axis-double-brackets]
 
@@ -3537,8 +3540,8 @@ against a rule, so their printing is no decided form, and the released form
 stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Ordinary description body and standalone comment lines align one level inside
-the statement: the Db removes indentation after LF. Rule 1 names no mark for the
-indentation of a line inside a block, so
+the statement: the Db removes indentation after LF. The start of a line is no
+place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: at the top level, [flowchart](./flowchart.md#multi-line-values),
 [class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
