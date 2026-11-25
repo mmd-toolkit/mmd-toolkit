@@ -476,11 +476,13 @@ info
 ### Global directives
 
 Keep opaque Root directive source and order because common removal joins the
-surrounding text. Within a printed line, place a directive as under
-[Directives](./flowchart.md#directives). When formatting splits units that were
-on the same line, a directive in their gap moves with the following unit: its
-right boundary stays touching or separated, while its left contact is broken.
-Rule 1 names no mark for a directive between two units, so
+surrounding text, and because the later of two `init` directives that set the
+same key decides the figure: reversing `theme: dark` and `theme: default` draws
+another figure in every version that counts. Within a printed line, place a
+directive as under [Directives](./flowchart.md#directives). When formatting
+splits units that were on the same line, a directive in their gap moves with the
+following unit: its right boundary stays touching or separated, while its left
+contact is broken. Rule 1 names no mark for a directive between two units, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [sequence](./sequence.md#directives),
 [flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
