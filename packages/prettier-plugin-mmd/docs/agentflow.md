@@ -1172,7 +1172,7 @@ standalone directives, and place a directive within a printed line as under
 standalone directives stand at neighbouring statements' depth. Where an ordinary
 gap supplies a space, an inline directive follows that space and touches the
 next unit.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 agentflow the same directive placements. A directive after a header separator
 moves into the body with its following statement, keeping whether they touch,
 just as in flowchart: the Db is the same, and no reason specific to Agentflow
@@ -2059,7 +2059,7 @@ next line is printed `click A "/u" "x` and `  y"`. Both
 [class](./class.md#whitespace-between-tokens) and
 [flowchart](./flowchart.md#whitespace-between-tokens) diagrams print one space
 after `click` even when a quoted tooltip spans lines.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 that form for the first gap after `click`. The tooltip's line breaks and later
 columns are characters of its string value, so they stay as written. A line
 break in a gap, or between the blank parentheses of `f(` and `)`, keeps the
