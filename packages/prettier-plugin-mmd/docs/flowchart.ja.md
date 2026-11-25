@@ -868,7 +868,9 @@ Markdown 文字列ではバッククォートの間の文字です。
 スタイルは名前に値を与えるので、最初の `:` はキーのコロンです。
 その前に空白を置かず、値が空でなければ後ろに空白 1 つを置く形は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
-スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
+スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置く形は、
+Prettier が `f(a,b)` を `f(a, b);` と印字するとおり、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 `style A fill :#f00,stroke:  #333` は、
 `style A fill: #f00, stroke: #333` になります。
 
@@ -1128,8 +1130,6 @@ Db では、`fill:red/* a   b` と `fill:red/* a b` が違い、
 [fixture: whitespace-between-tokens/style-words-directive-kept]
 
 `linkStyle default`、`classDef`、`style` の形は、ER と requirement と同じです。
-通常のスタイルを分ける `,` の前に空白を置かず、後ろに空白 1 つを置く形は、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。
 

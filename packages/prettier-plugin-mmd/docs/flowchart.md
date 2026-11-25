@@ -852,7 +852,9 @@ style property gives a name its value, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) treats its first
 colon as the colon of a key: no whitespace before it and one space after it when
 the value is nonempty. The `,` between styles has no whitespace before it and
-one space after it: `style A fill :#f00,stroke:  #333` is printed
+one space after it, as Prettier prints the comma of `f(a,b)` as `f(a, b);`
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)):
+`style A fill :#f00,stroke:  #333` is printed
 `style A fill: #f00, stroke: #333`.
 
 [fixture: whitespace-between-tokens/style-colon-spaced] [fixture:
@@ -1089,9 +1091,6 @@ whitespace-between-tokens/style-words-directive-kept]
 `linkStyle default`, `classDef`, and `style` use the same form as ER and
 requirement (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-Commas between ordinary styles follow
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), with no whitespace
-before them and one space after them.
 
 A style that starts with the `:`, and one whose `:` follows a backslash and a
 space, are printed as any other style: no whitespace before the `:` besides the
