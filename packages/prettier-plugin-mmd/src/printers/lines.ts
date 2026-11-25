@@ -254,6 +254,14 @@ export function printTextGap(
   return printed
 }
 
+/**
+ * Prints the items of a run as written, with the whitespace that stays after
+ * them (`ItemRun.tail`): for a line that is kept as written.
+ */
+export function printRunAsWritten(source: Source, run: ItemRun): Doc {
+  return [printAsWritten(source, run.range[0], run.range[1]), run.tail]
+}
+
 /** Prints items that stand after `doc` on its line. */
 export function withTrailing(doc: Doc, run: ItemRun | null): Doc {
   if (run === null) return doc

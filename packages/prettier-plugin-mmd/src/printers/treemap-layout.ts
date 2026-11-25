@@ -383,7 +383,13 @@ function hasTrailingIndentation(
   let hasWhitespace = false
   for (let offset = start; offset < end;) {
     const { element, end: next } = readGapElement(source, offset)
-    if (element.kind === "lineTerminator") return false
+    // A U+2028 or U+2029 that a comment line follows ends the line, as a line
+    // feed does: the printer puts the comment on a line of its own.
+    if (
+      element.kind === "lineTerminator" ||
+      (element.kind === "whitespace" && element.breaksLine)
+    )
+      return false
     if (element.kind === "item" && element.item.type === "Comment")
       return hasWhitespace
     if (
