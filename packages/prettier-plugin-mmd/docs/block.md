@@ -550,7 +550,11 @@ A label is a string, between the quotes of the grammar, and is printed as
 written with the line breaks inside it; a run of spaces and tabs inside it is
 printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-The quotes are part of the syntax: mermaid.js rejects a label without them.
+A line break inside the quotes is a character of the label, not whitespace
+between words: a label with a line break between `a` and `b` is another label in
+the Db than `a b`, and the pinned version draws the first on two lines and the
+second on one, so the line break stays. The quotes are part of the syntax:
+mermaid.js rejects a label without them.
 
 [fixture: shapes/label-runs-collapsed]
 
@@ -892,7 +896,12 @@ member.
 When the first style is only whitespace, as in `classDef c ,fill:#f00`, the Db
 has an empty first style and the whitespace before the `,` belongs to no style,
 so the styles start at the first `,`: that whitespace becomes one space, and the
-`,` and what follows are printed as written.
+`,` and what follows are printed as written. That is against rule 1 and waits to
+be fixed by it: in every other `classDef` the colon of a style has no whitespace
+before it and one space after it, and the `,` between styles has one space after
+it, so rule 1 gives `classDef c , fill: #f00` for `classDef c ,fill:#f00`, and
+the Db changes in the whitespace of a style only, as in
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same).
 
 [fixture: styles/styles-with-a-leading-comma] [corpus fixture:
 block/db-class-def-leading-comma]
