@@ -899,15 +899,6 @@ ishikawa, radar, railroad, timeline, treeview, usecase, venn, wardley.
 | treeview  | [Final newline (treeview.md)](./docs/treeview.md#final-newline) "Unfinished EOF directives and protected/source-kept endings"                                              | `treeView-beta\n\"R\"%%{unfinished`         |
 | wardley   | [Wardley authored text and required line breaks (compatibility.md)](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) "Bare `;` rejects."            | `wardley-beta\n\"style:#x\"  -> \"Tail\"; ` |
 
-### D42. Whether a leading U+FEFF is retained
-
-2 forms in kanban, usecase.
-
-| Diagram | Rules document                                                                                                    | Written form              |
-| ------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| kanban  | [Whitespace characters (kanban.md)](./docs/kanban.md#whitespace-characters) "A file that starts with a"           | `\ufeffkanban\n S\n`      |
-| usecase | [Line terminators (usecase.md)](./docs/usecase.md#line-terminators) "The shared file-leading BOM and frontmatter" | `\ufeffusecase-beta\nA\n` |
-
 ### D43. Which spelling of a comment delimiter is printed
 
 1 form in eventmodeling.

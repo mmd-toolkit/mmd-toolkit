@@ -908,15 +908,6 @@ wardleyである。
 | treeview  | [Final newline（treeview.ja.md）](./docs/treeview.ja.md#final-newline) 「値の末尾は保ち、」                                                                                                                                              | `treeView-beta\n\"R\"%%{unfinished`         |
 | wardley   | [Wardley の原文と必須の改行（compatibility.ja.md）](./docs/compatibility.ja.md#wardley-の原文と必須の改行) 「空白だけのラベルと末尾余白も含み、裸の `;` は拒否されま」                                                                   | `wardley-beta\n\"style:#x\"  -> \"Tail\"; ` |
 
-### D42. 先頭の U+FEFF を残すか
-
-2件の形があり、図種はkanban、usecaseである。
-
-| 図種    | 規則の文書                                                                                                                             | 書かれた形                |
-| ------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| kanban  | [空白文字（kanban.ja.md）](./docs/kanban.ja.md#空白文字) 「U+FEFF で始まるファイルはそれを残します。」                                 | `\ufeffkanban\n S\n`      |
-| usecase | [Line terminators（usecase.ja.md）](./docs/usecase.ja.md#line-terminators) 「ファイル先頭の BOM とフロントマターの共有の制限も同じで」 | `\ufeffusecase-beta\nA\n` |
-
 ### D43. コメントの区切りをどの綴りで印字するか
 
 1件の形があり、図種はeventmodelingである。
