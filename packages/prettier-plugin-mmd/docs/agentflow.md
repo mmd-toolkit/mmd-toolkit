@@ -53,9 +53,9 @@ directive attachment follows Directives.
 header/header-next-line-direction] [fixture: header/header-symbol] [fixture:
 header/header-direction-spelling-after-directive]
 
-A symbol direction stands after one space, as in
-[flowchart](./flowchart.md#direction): `agentflow-beta<` is printed
-`agentflow-beta <`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between the header keyword and a symbol direction, as Prettier prints
+`return  x` as `return x;`: `agentflow-beta<` is printed `agentflow-beta <`.
 
 [fixture: header/header-symbol-touching-spaced] [test: agentflow: U+2028 between
 the header keyword and its direction]
