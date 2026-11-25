@@ -393,4 +393,34 @@ export const pieCases: readonly PieCase[] = [
     output: 'pie\n  title T\n  %%{x}%%%% c\n  %%{y\n"A": 1\n',
     options: {},
   },
+  {
+    name: "pie/title/title-text-ls-comment-then-whitespace-line-kept",
+    input: 'pie\ntitle T\u2028%% c\n \t\n"A":1\n',
+    output: 'pie\n  title T\u2028%% c\n \t\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "pie/title/title-text-ls-comment-at-end-moved",
+    input: "pie\ntitle T\u2028%% c",
+    output: "pie\n  title T\n  %% c\n",
+    options: {},
+  },
+  {
+    name: "pie/title/title-ignored-semicolon-ls-comment-then-percent-line-kept",
+    input: 'pie\ntitle style:#x;\u2028%% c\n%%\n"A":1\n',
+    output: 'pie\n  title style:#x;\u2028%% c\n%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "pie/title/title-two-ignored-semicolons-ls-comment-then-percent-line-kept",
+    input: 'pie\ntitle style classDef:#x;;\u2028%% c\n%%\n"A":1\n',
+    output: 'pie\n  title style classDef:#x;;\u2028%% c\n%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "pie/accessibility-lines/accdescr-ps-directive-comment-at-end-moved",
+    input: "pie\naccDescr: D\u2029%%{x}%%%% c",
+    output: "pie\n  accDescr: D\n  %%{x}%%%% c\n",
+    options: {},
+  },
 ]

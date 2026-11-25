@@ -273,12 +273,17 @@ mermaid.js はコメントの領域を、それを終える改行と一緒に取
 そのような行が続く title は、その `%%` まで書かれたまま印字します。
 title を独立した行にして、コメントの領域と `%%` の行を続けると、
 その版は違う title を描くためです。
-領域の後に空行かディレクティブの行が続くときは、どの title とも同じく、
-title と領域を独立した行に移します。
-テキストのあるコメント行が続くときは、title と続きを書かれたまま残します。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+どの title とも同じく、title と領域を独立した行に移します。
+テキストのあるコメント行か、空白だけの行が続くときは、
+title と続きを書かれたまま残します。
 U+2028 か U+2029 で title が終わらないときは、通常どおり印字します。
 どれもこれまでどおりです。
 
+[test: pie/title/title-text-ls-comment-then-whitespace-line-kept]
+[test: pie/title/title-text-ls-comment-at-end-moved]
+[test: pie/title/title-ignored-semicolon-ls-comment-then-percent-line-kept]
+[test: pie/title/title-two-ignored-semicolons-ls-comment-then-percent-line-kept]
 [test: pie/title/title-ls-comment-then-percent-line-kept]
 [test: pie/title/title-text-ls-comment-then-percent-line-kept]
 [test: pie/title/title-ps-comment-then-percent-line-kept]
@@ -373,9 +378,10 @@ U+2029 があるときを除きます。
 U+2028 か U+2029 で値が終わり、コメントの領域が続き、
 その後に `%%` だけの行がある行は、その `%%` まで書かれたまま印字します。
 数える版のうち最も古い版が、`%%` の行を、描画に出る値に取り込むためです。
-領域の後に空行かディレクティブの行が続くときは、これまでどおり、
-その行と領域を独立した行に移します。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+これまでどおり、その行と領域を独立した行に移します。
 
+[test: pie/accessibility-lines/accdescr-ps-directive-comment-at-end-moved]
 [test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-kept]
 [test: pie/accessibility-lines/acctitle-ps-comment-then-percent-line-kept]
 [test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-at-end-kept]

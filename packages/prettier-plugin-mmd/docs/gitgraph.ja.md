@@ -601,11 +601,12 @@ mermaid.js はコメントの領域を、それを終える改行と一緒に取
 その後の行は値の行に続き、数える版のうち最も古い版は、`%%` の行を、
 描画に出る値に取り込みます。
 固定した文法はそれをコメントと読みます。
-領域の後に空行かディレクティブの行が続くときは、これまでどおり、
-その行と領域を独立した行に移します。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+これまでどおり、その行と領域を独立した行に移します。
 gitGraph の title はそう読まれません。
 数える版のうち最も古い版が拒否するからです。
 
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-at-end-moved]
 [test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-kept]
 [test: gitgraph/title-and-common-values/acctitle-ps-comment-then-percent-line-kept]
 [test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-at-end-kept]

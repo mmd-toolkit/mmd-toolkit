@@ -559,11 +559,11 @@ region, is printed as written, up to that `%%`: mermaid.js removes the comment
 region with the line feed that ends it, so the line after it goes on the line of
 the value, and the oldest version that counts takes the `%%` line into the value
 that the drawing shows, while the pinned grammar reads it as a comment. A blank
-line or a directive line after the region moves the line and the region onto
-lines of their own as before. The title of a gitGraph is not read so: the oldest
-version that counts rejects it.
+line, a directive line, or the end of the text after the region moves the line
+and the region onto lines of their own as before. The title of a gitGraph is not
+read so: the oldest version that counts rejects it.
 
-[test:
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-at-end-moved] [test:
 gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-kept]
 [test:
 gitgraph/title-and-common-values/acctitle-ps-comment-then-percent-line-kept]

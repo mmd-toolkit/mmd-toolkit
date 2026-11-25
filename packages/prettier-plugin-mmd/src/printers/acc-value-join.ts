@@ -93,7 +93,7 @@ function hasNoValue(item: BodyItem): boolean {
  */
 export function findPercentLineReadByOlderVersions(
   source: Source,
-  statement: BodyItem & { readonly range: readonly [number, number] },
+  statement: BodyItem,
 ): number | undefined {
   // The oldest version that counts reads the title of a pie chart with that
   // lexer; it rejects the title of a gitGraph, which has no such reading.

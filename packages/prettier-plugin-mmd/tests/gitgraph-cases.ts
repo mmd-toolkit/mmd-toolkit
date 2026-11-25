@@ -192,4 +192,10 @@ export const gitgraphCases: readonly GitgraphCase[] = [
     output: "gitGraph\n  accDescr: D\n  %%{x}%%%% c\n  %%{y\ncommit\n",
     options: {},
   },
+  {
+    name: "gitgraph/title-and-common-values/accdescr-ls-comment-at-end-moved",
+    input: "gitGraph\naccDescr: D\u2028%% c",
+    output: "gitGraph\n  accDescr: D\n  %% c\n",
+    options: {},
+  },
 ]
