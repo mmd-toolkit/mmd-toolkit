@@ -630,4 +630,28 @@ export const railroadCases: readonly RailroadCase[] = [
     output: 'railroad-abnf-beta\n  ; \u2029%%{x\n\nr=("x");\n',
     options: {},
   },
+  {
+    name: "railroad/comments/abnf-semicolon-in-rule-comment-bl-ls",
+    input: 'railroad-abnf-beta\nr=("x" ; \u2028%% c\n\n "y");',
+    output: 'railroad-abnf-beta\n  r = ("x" ; \n    %% c\n\n    "y");\n',
+    options: {},
+  },
+  {
+    name: "railroad/comments/abnf-semicolon-in-rule-comment-bl-ps",
+    input: 'railroad-abnf-beta\nr=("x" ; \u2029%% c\n\n "y");',
+    output: 'railroad-abnf-beta\n  r = ("x" ; \n    %% c\n\n    "y");\n',
+    options: {},
+  },
+  {
+    name: "railroad/comments/abnf-semicolon-in-rule-line-comment-bl-ls",
+    input: 'railroad-abnf-beta\nr=("x"\n; \u2028%% c\n\n "y");',
+    output: 'railroad-abnf-beta\n  r = ("x"\n    ; \n    %% c\n\n    "y");\n',
+    options: {},
+  },
+  {
+    name: "railroad/comments/abnf-semicolon-in-rule-line-comment-bl-ps",
+    input: 'railroad-abnf-beta\nr=("x"\n; \u2029%% c\n\n "y");',
+    output: 'railroad-abnf-beta\n  r = ("x"\n    ; \n    %% c\n\n    "y");\n',
+    options: {},
+  },
 ]

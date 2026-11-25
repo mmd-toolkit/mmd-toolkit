@@ -64,14 +64,15 @@ export interface ItemRun {
   readonly absentItems: readonly AbsentItem[] | null
   /**
    * Whether the run ends with whitespace that must be kept: a comment that
-   * ends with spaces or tabs. `%% ` is a comment; `%%` is not.
+   * ends with spaces or tabs, or a `tail`. `%% ` is a comment; `%%` is not.
    */
   readonly endsWithWhitespace: boolean
   /**
-   * The whitespace that stays after the last item, or an empty string: where
-   * the last item is the `;` of an ABNF comment, the whitespace that follows
-   * it (`bareSemicolonTail`). `doc` ends with it, and a line printed as
-   * written adds it to the text of the items (`printRunAsWritten`).
+   * The whitespace that is printed after the last item although the item does
+   * not hold it, or an empty string: after the `;` of an ABNF comment, the
+   * spaces and tabs written after it, or one space where none was written
+   * (`bareSemicolonTail`). `doc` ends with it, and a line printed as written
+   * adds it to the text of the items (`printRunAsWritten`).
    */
   readonly tail: string
 }
@@ -722,11 +723,11 @@ function toRun(
           isSemicolon: part.item.type === "IgnoredSemicolon",
         }))
       : null,
+    tail,
     // The same comment-end decision that allows statements to split also
     // lets hardline remove the whitespace after the comment of a statement; a
     // comment line keeps it, as every comment does (docs/sequence.md,
     // Statements one per line; docs/flowchart.md, Comments).
-    tail,
     endsWithWhitespace:
       tail !== "" ||
       (endsWithSpaceOrTab(

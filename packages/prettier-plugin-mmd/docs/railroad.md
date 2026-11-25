@@ -1573,8 +1573,9 @@ above. A bare `;` is punctuation, and every version of mermaid.js that counts
 rejects it where a comment is meant, so a `;` printed without that whitespace
 would give a text that the second formatting cannot read. The same holds where
 the comment line ends with a `;` and so is kept as written (`%% style:#x;`,
-`%% c;`). Where no comment line follows the character, as with a directive, the
-`;` and the character stay as written.
+`%% c;`). It holds also where the comment stands inside a rule, after an atom or
+on a line of its own. Where no comment line follows the character, as with a
+directive, the `;` and the character stay as written.
 
 [test: railroad/comments/abnf-semicolon-sp-comment-bl-ls] [test:
 railroad/comments/abnf-semicolon-tight-comment-bl-ls] [test:
@@ -1617,7 +1618,11 @@ railroad/comments/abnf-semicolon-sp-endsemi-bl-ps] [test:
 railroad/comments/abnf-semicolon-sp-dir-endsemi-bl-ls] [test:
 railroad/comments/abnf-semicolon-sp-dir-endsemi-bl-ps] [test:
 railroad/comments/abnf-semicolon-sp-unclosed-dir-ls] [test:
-railroad/comments/abnf-semicolon-sp-unclosed-dir-ps]
+railroad/comments/abnf-semicolon-sp-unclosed-dir-ps] [test:
+railroad/comments/abnf-semicolon-in-rule-comment-bl-ls] [test:
+railroad/comments/abnf-semicolon-in-rule-comment-bl-ps] [test:
+railroad/comments/abnf-semicolon-in-rule-line-comment-bl-ls] [test:
+railroad/comments/abnf-semicolon-in-rule-line-comment-bl-ps]
 
 ### Global directives
 

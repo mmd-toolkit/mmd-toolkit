@@ -1638,6 +1638,7 @@ ABNF のコメントの `;` の後ろの空白は、そのコメントの本文�
 2 回目の整形が読めないテキストになります。
 コメント行が `;` で終わり、書かれたまま残る行でも同じです（`%% style:#x;`、
 `%% c;`）。
+規則の中にあるコメントでも、アトムの後ろでも自分の行でも同じです。
 文字の後ろにコメント行が続かないとき（ディレクティブが続く場合）は、
 `;` と文字を書かれたまま残します。
 
@@ -1683,6 +1684,10 @@ ABNF のコメントの `;` の後ろの空白は、そのコメントの本文�
 [test: railroad/comments/abnf-semicolon-sp-dir-endsemi-bl-ps]
 [test: railroad/comments/abnf-semicolon-sp-unclosed-dir-ls]
 [test: railroad/comments/abnf-semicolon-sp-unclosed-dir-ps]
+[test: railroad/comments/abnf-semicolon-in-rule-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-in-rule-comment-bl-ps]
+[test: railroad/comments/abnf-semicolon-in-rule-line-comment-bl-ls]
+[test: railroad/comments/abnf-semicolon-in-rule-line-comment-bl-ps]
 
 ### 共有 directive
 
