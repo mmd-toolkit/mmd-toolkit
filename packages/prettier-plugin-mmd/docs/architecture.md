@@ -3869,13 +3869,16 @@ architecture/description-blocks/keyword-u2028-directive-touching-brace-on-line]
 architecture/description-blocks/keyword-u2028-directive-then-spaces-and-brace-on-line]
 
 Keep comment/directive-only interiors. Rule 1 names no mark for a line inside a
-block, and no rule gives these interiors:
-[xychart](./xychart.md#empty-description-blocks) and
-[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block with a directive or comment line, but in them this is a
-question of the list of undecided forms (D34) and a form printed against a rule,
-so their printing is no decided form, and the released form stays until it is
-decided (see
+block. For a block that holds only comment lines, rule 2 decides, as
+[flowchart](./flowchart.md#multi-line-values) keeps the comment lines of a block
+without text and puts them one level inside the block, with its `}` at the level
+of the `accDescr`. No rule gives the interior of a block that holds a directive:
+[flowchart](./flowchart.md#multi-line-values),
+[xychart](./xychart.md#empty-description-blocks), and
+[quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
+breaks, but in them this is a question of the list of undecided forms (D34) and
+a form printed against a rule, so their printing is no decided form, and the
+released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Ordinary description body and standalone comment lines align one level inside
 the statement, since the Db removes indentation after LF. Keep line breaks and
