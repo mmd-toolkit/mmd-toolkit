@@ -1748,12 +1748,12 @@ under [Statements one per line](#statements-one-per-line).
 subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
 
 A subgraph without statements is printed with its `end` on the next line, the
-empty lines between the header and the `end` being dropped. Rule 1 names no mark
-here, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [flowchart](./flowchart.md#blank-lines) drops the empty lines at the
-start and the end of a subgraph, and [requirement](./requirement.md#bodies)
-drops the empty lines between the `{` and the `}` of a body without fields.
+empty lines between the header and the `end` being dropped.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+drops the empty lines at the start and the end of a block in JavaScript and CSS,
+and [flowchart](./flowchart.md#blank-lines) drops the empty lines at the start
+and the end of a subgraph, and [requirement](./requirement.md#bodies) drops the
+empty lines between the `{` and the `}` of a body without fields.
 
 [fixture: subgraphs/empty]
 

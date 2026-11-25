@@ -1714,8 +1714,8 @@ mermaid.js は、それを書かれたまま subgraph のノードに並べま�
 
 文のない subgraph は、`end` を次の行に置いて印字します。
 見出しと `end` の間の空行は落とします。
-規則 1 は、ここの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、JavaScript と CSS で、ブロックの先頭と末尾の空行を落とします。
 [flowchart](./flowchart.ja.md#空行) は、subgraph の最初と最後の空行を落とし、
 [requirement](./requirement.ja.md#本体) は、
 フィールドのない本体の `{` と `}` の間の空行を落とします。
