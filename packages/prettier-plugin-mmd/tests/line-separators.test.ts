@@ -1007,6 +1007,11 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart LR\n  A\n  style A fill: red\u2028, stroke: blue\n",
   ],
   [
+    "U+2029 between the value of a flowchart style and its comma",
+    "flowchart LR\nA\nstyle A fill:red\u2029,stroke:blue\n",
+    "flowchart LR\n  A\n  style A fill: red\u2029, stroke: blue\n",
+  ],
+  [
     "flowchart direction after a U+2028 and a joined comment line",
     "flowchart TD\naccDescr {D;}\u2028%% c\ndirection TB;\n",
     "flowchart TD\n  accDescr {D;}\u2028%% c\ndirection TB;\n",
