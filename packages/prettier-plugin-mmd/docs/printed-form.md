@@ -280,6 +280,20 @@ best. The output of the released version is then not changed on the judgment of
 whoever is working on it: the form is decided as AGENTS.md (item 4) says, added
 to these rules, and printed after that.
 
+### Forms decided under rule 4
+
+These forms were decided as AGENTS.md (item 4) says, for a flowchart and a
+swimlane diagram, where none of rules 1 to 3 gives a form. The document of the
+diagram type says where each one applies and where it does not.
+
+- Each statement stands on a line of its own: statements written on one line and
+  separated by `;` are split into lines.
+- A `;` that ends a statement is dropped, and so is a `;` that stands alone at
+  the top level.
+- A line is not wrapped, whatever Prettier's `printWidth` option says.
+- With `useTabs`, a statement that holds a block of several lines is printed as
+  written.
+
 ## The versions of mermaid.js that count
 
 The check uses the pinned mermaid.js only, while the formatted text is also
