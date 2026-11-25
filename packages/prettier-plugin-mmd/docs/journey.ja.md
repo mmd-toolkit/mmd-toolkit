@@ -945,7 +945,7 @@ journey
 テキストの末尾のコメントは最後の文の段です。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
-Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
+Prettier が ブロックの中のコメント行をそう印字するためです。
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
@@ -1025,7 +1025,7 @@ journey # c
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ブロックの中の単独のディレクティブ行は、
 そのブロックを開く行より 1 段深く置きます。
-Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
+Prettier が ブロックの中の行をそう印字するためです。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
