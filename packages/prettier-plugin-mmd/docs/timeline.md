@@ -1670,14 +1670,59 @@ spaces before it stay.
 [test: U+2029 and spaces at the end of a timeline title] [test: U+2028 and
 spaces at the end of the last event of a line]
 
-A comment line after U+2028 or U+2029 joins the next line to its line, and the
-line stays as written to its end, also after the `}` of a description block that
-starts on the line of the header, and before a period (see
+A comment line after U+2028 or U+2029 joins the next line to its line, and where
+a statement stands on the next line, the line stays as written to its end, also
+after the `}` of a description block that starts on the line of the header, and
+before a period (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [test: a line separator and a comment line after the closing brace of a
 description block that starts on the line of the timeline header, before a
-period]
+period] [test: timeline: an event that a comment after U+2028 joins to the next
+event line stays as written]
+
+A directive after a comment line that follows a U+2028 or U+2029 inside a period
+is on the line of the event, since the comment line joins the next line to its
+line, and the whitespace before the directive is part of the text of the event:
+the printer adds none, so a directive written at the start of its line stays
+there, and where whitespace is written before it, it is one space, as in any
+text. The directive is not printed at the indentation of the other lines of the
+statement.
+
+[test: timeline: an event that a comment after U+2028 joins to a directive line,
+with an event after it] [test: timeline: an event that a comment alone after
+U+2028 joins to a directive line, with an event after it] [test: timeline: an
+event that a comment after U+2028 joins to an indented directive line, with an
+event after it] [test: timeline: an event that U+2028 ends before an indented
+directive line, with an event after it] [test: timeline: an event that a comment
+after U+2028 joins to a directive line, with a period after it] [test: timeline:
+an event that a comment after U+2029 joins to a directive line, with an event
+after it] [test: timeline: an event that a comment after U+2028 joins to a
+comment line and a directive line, with an event after it] [test: timeline: an
+event that a comment after U+2029 joins to a comment line and a directive line,
+with an event after it] [test: timeline: an event that a comment after U+2028
+joins to a directive that is not closed, with an event after it] [test:
+timeline: an event that a comment after U+2028 joins to a line of whitespace and
+a directive line, with an event after it] [test: timeline: an event with an
+ignored semicolon that a comment after U+2028 joins to a directive line, with an
+event after it] [test: timeline: an event that a comment after U+2028 joins to a
+directive line at the end of the text] [test: timeline: an event that a comment
+after U+2028 joins to an empty line and a directive line, with an event after
+it]
+
+A comment line that starts with `#` or `%` ends at a U+2028 or U+2029, and the
+text after the character is a line of its own. A directive and a comment on that
+line are printed as on a line after a line feed: with one space between them
+where the source has whitespace there, and none where it has none. Two comment
+lines on the next lines with no empty line between keep the line as written.
+
+[test: timeline: a hash comment line, U+2028, a directive, two spaces, a
+comment, and two comment lines after it] [test: timeline: a hash comment line,
+U+2028, a directive, two spaces, and a comment] [test: timeline: a percent
+comment line, U+2028, a directive, two spaces, and a comment] [test: timeline: a
+hash comment line, U+2028, a directive touching a comment] [test: timeline: a
+percent comment line, U+2028, a directive, a tab, and a comment] [test:
+timeline: a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 ### Whitespace characters
 
