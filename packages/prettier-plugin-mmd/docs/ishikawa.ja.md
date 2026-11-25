@@ -670,6 +670,10 @@ mermaid.js が行を読む前にディレクティブを除くためです。
 そのようなディレクティブの後のノーブレークスペースは、
 どのテキストの末尾とも同じに、書かれたままにします。
 
+[fixture: trailing-whitespace/directive-unclosed-end-runs-collapsed]
+[fixture: trailing-whitespace/directive-lines-end-of-text-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-end-empty-line-blanks-dropped]
+[fixture: trailing-whitespace/literal-brace-directive-lines-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directive-lines-root-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directive-lines-touching-end-blanks-dropped]

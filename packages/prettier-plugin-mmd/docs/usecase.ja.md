@@ -1187,7 +1187,9 @@ U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF、U+0
 U+000C が当たり、空白、タブ、互いとの連なりも同じです。
 U+0085 と U+200B は空白ではないので、その行は書かれたままにします。
 
+[fixture: direction-and-accessibility/acctitle-directive-unclosed-end-runs-collapsed]
 [fixture: direction-and-accessibility/acctitle-directive-lines-end-blanks-dropped]
+[fixture: direction-and-accessibility/accdescr-directive-lines-end-of-text-blanks-dropped]
 [fixture: direction-and-accessibility/accdescr-directive-lines-end-blanks-dropped]
 [fixture: direction-and-accessibility/acctitle-directive-semicolon-end-blanks-dropped]
 [test: usecase accTitle: U+00A0 after a directive over lines]
@@ -1247,6 +1249,7 @@ U+2028、U+2029 を含んでも、末尾は同じに印字します。
 `accTitle: %%{x}%% T  %%{y}%%  %%{z}%%  ` は
 `accTitle: %%{x}%% T  %%{y}%% %%{z}%%` と印字します。
 
+[fixture: direction-and-accessibility/accdescr-directive-end-two-comment-lines-blanks-dropped]
 [fixture: direction-and-accessibility/accdescr-trailing-directive-blanks-dropped]
 [fixture: direction-and-accessibility/acctitle-directives-before-text-end-directives-gap-kept]
 [fixture: direction-and-accessibility/accdescr-directive-before-text-trailing-directive-blanks-dropped]

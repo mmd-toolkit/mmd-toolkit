@@ -651,9 +651,12 @@ the literal, which keeps its runs as written: `A  b %%{init: {`, a line break,
 after the last directive. A no-break space after such a directive stays as
 written, as at the end of any literal.
 
-[fixture: ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped]
-[fixture: ishikawa/trailing-whitespace/directive-lines-root-end-blanks-dropped]
-[fixture:
+[fixture: trailing-whitespace/directive-unclosed-end-runs-collapsed] [fixture:
+trailing-whitespace/directive-lines-end-of-text-blanks-dropped] [fixture:
+trailing-whitespace/directive-lines-end-empty-line-blanks-dropped] [fixture:
+trailing-whitespace/literal-brace-directive-lines-end-blanks-dropped] [fixture:
+ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped] [fixture:
+ishikawa/trailing-whitespace/directive-lines-root-end-blanks-dropped] [fixture:
 ishikawa/trailing-whitespace/directive-lines-touching-end-blanks-dropped]
 [fixture:
 ishikawa/trailing-whitespace/directive-lines-gap-run-end-blanks-dropped]

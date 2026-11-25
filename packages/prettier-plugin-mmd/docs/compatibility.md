@@ -2163,6 +2163,8 @@ journey/titles-and-sections/title-ending-line-break-directive-runs-collapsed]
 [fixture:
 journey/titles-and-sections/title-ending-line-break-directive-blanks-kept]
 [fixture:
+timeline/titles-and-sections/title-unclosed-ending-directive-runs-collapsed]
+[fixture:
 timeline/titles-and-sections/title-ending-line-break-directive-runs-collapsed]
 [fixture:
 timeline/titles-and-sections/title-ending-line-break-directive-blanks-kept]
@@ -2195,7 +2197,10 @@ a U+2028 in its text and a directive at its end, two spaces after the directive]
 [test: C4 accDescription with a U+2028 in its text and a directive at its end,
 no blanks after the directive] [test: C4 accDescription with a U+2028 in its
 text and a directive at its end, two spaces after the directive] [fixture:
+gantt/titles-and-sections/title-two-ignored-semicolons-gap-kept] [fixture:
 gantt/titles-and-sections/title-ignored-semicolon-gap-kept] [fixture:
+gantt/titles-and-sections/title-two-ignored-semicolons-blanks-gap-one-space]
+[fixture:
 gantt/titles-and-sections/title-ignored-semicolon-blanks-gap-one-space]
 [fixture: timeline/titles-and-sections/title-ignored-semicolon-gap-kept]
 [fixture:
@@ -2368,9 +2373,13 @@ printed touching.
 gantt/titles-and-sections/title-keyword-gap-tab-directives-runs-collapsed]
 [fixture:
 gantt/titles-and-sections/title-keyword-gap-directive-last-gap-printed]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-two-comment-lines-runs-collapsed]
 [fixture: gantt/titles-and-sections/title-directives-gap-comment-runs-collapsed]
 [fixture:
 gantt/titles-and-sections/title-directives-gap-semicolon-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-comment-at-end-of-text-runs-collapsed]
 [fixture:
 gantt/titles-and-sections/title-directives-gap-end-of-text-runs-collapsed]
 [fixture:
@@ -2379,8 +2388,11 @@ gantt/titles-and-sections/title-directives-gap-inner-directive-runs-kept]
 [fixture: journey/titles-and-sections/title-directives-gap-runs-collapsed]
 [fixture:
 journey/titles-and-sections/title-keyword-gap-directive-runs-collapsed]
+[fixture: journey/titles-and-sections/title-keyword-gap-comment-line-kept]
 [fixture:
 journey/titles-and-sections/title-directives-gap-comment-runs-collapsed]
+[fixture:
+journey/titles-and-sections/title-directives-gap-end-of-text-one-space]
 [fixture:
 journey/titles-and-sections/title-directives-gap-end-of-text-runs-collapsed]
 [fixture:
@@ -2398,12 +2410,16 @@ timeline/titles-and-sections/title-directives-gap-end-of-text-runs-collapsed]
 [fixture:
 timeline/titles-and-sections/title-directives-gap-inner-directive-runs-kept]
 [fixture: timeline/titles-and-sections/title-directives-gap-without-text-kept]
+[fixture: gantt/titles-and-sections/title-leading-directive-unclosed-kept]
 [fixture: gantt/titles-and-sections/title-directives-gap-line-break-kept]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-end-of-text-comment-runs-kept]
 [fixture:
 gantt/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
 [fixture: journey/titles-and-sections/title-directives-gap-line-break-kept]
 [fixture:
 journey/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
+[fixture: timeline/titles-and-sections/title-directives-gap-empty-line-kept]
 [fixture: timeline/titles-and-sections/title-directives-gap-line-break-kept]
 [fixture:
 timeline/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
@@ -2434,6 +2450,8 @@ directives precede the text: `accTitle: %%{x}%% T  %%{y}%%  ` is printed
 
 [fixture:
 gantt/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+gantt/titles-and-sections/title-two-directives-padding-trailing-directive-blanks-dropped]
 [fixture:
 gantt/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
 [fixture:

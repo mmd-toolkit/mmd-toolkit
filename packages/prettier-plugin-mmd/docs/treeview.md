@@ -2961,6 +2961,10 @@ U+2028 or U+2029 holds no line break: the line stays as written, apart from the
 spaces and tabs at its end.
 
 [fixture: trailing-whitespace/directive-semicolon-end-blanks-dropped] [fixture:
+trailing-whitespace/directive-unclosed-end-runs-collapsed] [fixture:
+trailing-whitespace/directive-lines-end-comment-at-end-of-text-kept] [fixture:
+trailing-whitespace/directive-lines-end-comment-line-at-end-of-text] [fixture:
+trailing-whitespace/node-named-end-directive-lines-end-blanks-dropped] [fixture:
 trailing-whitespace/directive-lines-end-blanks-dropped] [fixture:
 trailing-whitespace/directive-lines-semicolon-end-blanks-dropped] [fixture:
 trailing-whitespace/directive-lines-nested-end-blanks-dropped] [fixture:

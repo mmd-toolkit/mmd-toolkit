@@ -1112,7 +1112,11 @@ in a run with spaces, tabs, and each other. U+0085 and U+200B are no whitespace,
 and the line stays as written with them.
 
 [fixture:
+direction-and-accessibility/acctitle-directive-unclosed-end-runs-collapsed]
+[fixture:
 direction-and-accessibility/acctitle-directive-lines-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/accdescr-directive-lines-end-of-text-blanks-dropped]
 [fixture:
 direction-and-accessibility/accdescr-directive-lines-end-blanks-dropped]
 [fixture:
@@ -1163,6 +1167,8 @@ before a directive that a space or a tab separates from the last stays as
 written: `accTitle: %%{x}%% T  %%{y}%%  %%{z}%%  ` is printed
 `accTitle: %%{x}%% T  %%{y}%% %%{z}%%`.
 
+[fixture:
+direction-and-accessibility/accdescr-directive-end-two-comment-lines-blanks-dropped]
 [fixture:
 direction-and-accessibility/accdescr-trailing-directive-blanks-dropped]
 [fixture:
