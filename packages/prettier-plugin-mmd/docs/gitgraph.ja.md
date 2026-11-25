@@ -593,6 +593,36 @@ Db で LF 後の字下げが取り除かれるためです。
 [corpus fixture: gitgraph/common-title-only-whitespace]
 [test: gitgraph/title-and-common-values/block-opener-join-fixed]
 
+`accTitle:` か `accDescr:` の行で、値が U+2028 か U+2029 で終わり、
+コメントの領域が続き、その後に `%%` だけの行があるものは、
+その `%%` まで書かれたまま印字します。
+mermaid.js はコメントの領域を、それを終える改行と一緒に取り除くので、
+その後の行は値の行に続き、数える版のうち最も古い版は、`%%` の行を、
+描画に出る値に取り込みます。
+固定した文法はそれをコメントと読みます。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+これまでどおり、その行と領域を独立した行に移します。
+gitGraph の title はそう読まれません。
+数える版のうち最も古い版が拒否するからです。
+
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-at-end-moved]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/acctitle-ps-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-at-end-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-two-percent-lines-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-percent-line-crlf-kept]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-blank-line-moved]
+[test: gitgraph/title-and-common-values/acctitle-ls-comment-then-unclosed-directive-line-moved]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/accdescr-ps-comment-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-at-end-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-two-percent-lines-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-percent-line-crlf-kept]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-blank-line-moved]
+[test: gitgraph/title-and-common-values/accdescr-ls-comment-then-unclosed-directive-line-moved]
+
 入力（エスケープ表記）: `"gitGraph\ntitle\t  A  B\t C  \n"`
 
 出力

@@ -207,8 +207,9 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 引用符、バックスラッシュ、
 重複代入と代わりに使われるフロントマターの値は残します。
-pie は次の物理行を title に結合しません。
-空行・コメント・ディレクティブを挟んでも次の区分は別文です。
+固定した文法は次の物理行を title に結合しません。
+空行・コメント・ディレクティブを挟んでも次の区分は別文で、
+数える版のうち最も古い版が別に読む場合は、下の場合に書きます。
 保持する注釈類とセミコロンのまとまりを優先します。
 テキストと `%%` のコメントの間の、空白でもタブでもない空白文字（U+000B、U+000C、
 改行しない空白、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF）は、
@@ -261,6 +262,42 @@ pie
   title Sales report
   "Sales": 8
 ```
+
+数える版のうち最も古い版では、U+2028 か U+2029 でテキストが終わり、
+コメントの領域が続く title は、その領域の後の `%%` だけの行を、
+テキストの一部として取り込みます。
+mermaid.js はコメントの領域を、それを終える改行と一緒に取り除くので、
+その後の行は title の行に続きます。
+`%%` だけの行はコメント行ではないので残り、
+固定した文法はそれをコメントと読みます。
+そのような行が続く title は、その `%%` まで書かれたまま印字します。
+title を独立した行にして、コメントの領域と `%%` の行を続けると、
+その版は違う title を描くためです。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+どの title とも同じく、title と領域を独立した行に移します。
+テキストのあるコメント行か、空白だけの行が続くときは、
+title と続きを書かれたまま残します。
+U+2028 か U+2029 で title が終わらないときは、通常どおり印字します。
+どれもこれまでどおりです。
+
+[test: pie/title/title-text-ls-comment-then-whitespace-line-kept]
+[test: pie/title/title-text-ls-comment-at-end-moved]
+[test: pie/title/title-ignored-semicolon-ls-comment-then-percent-line-kept]
+[test: pie/title/title-two-ignored-semicolons-ls-comment-then-percent-line-kept]
+[test: pie/title/title-ls-comment-then-percent-line-kept]
+[test: pie/title/title-text-ls-comment-then-percent-line-kept]
+[test: pie/title/title-ps-comment-then-percent-line-kept]
+[test: pie/title/title-ls-spaced-comment-then-percent-line-kept]
+[test: pie/title/title-ls-comment-only-then-percent-line-kept]
+[test: pie/title/title-ls-comment-then-percent-line-at-end-kept]
+[test: pie/title/title-ls-comment-then-blank-line-moved]
+[test: pie/title/title-ls-comment-then-directive-line-moved]
+[test: pie/title/title-ls-comment-then-comment-line-kept]
+[test: pie/title/title-comment-then-percent-line-without-separator]
+[test: pie/title/title-text-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/title/title-text-ls-comment-then-two-percent-lines-kept]
+[test: pie/title/title-text-ls-comment-then-percent-line-crlf-kept]
+[test: pie/title/title-text-ls-comment-then-unclosed-directive-line-moved]
 
 ### Accessibility lines
 
@@ -336,6 +373,31 @@ U+2029 があるときを除きます。
 [test: a no-break space and spaces before a comment after the accDescr line of a pie chart]
 [test: a no-break space before a directive and two spaces before a comment after the accDescr line of a pie chart]
 [test: a no-break space before a comment after the accDescr line, with no line break at the end of a pie chart]
+
+`accTitle:` と `accDescr:` の行も同じです。
+U+2028 か U+2029 で値が終わり、コメントの領域が続き、
+その後に `%%` だけの行がある行は、その `%%` まで書かれたまま印字します。
+数える版のうち最も古い版が、`%%` の行を、描画に出る値に取り込むためです。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+これまでどおり、その行と領域を独立した行に移します。
+
+[test: pie/accessibility-lines/accdescr-ps-directive-comment-at-end-moved]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ps-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-at-end-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-blank-line-moved]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-unclosed-directive-line-moved]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ps-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-at-end-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-blank-line-moved]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-unclosed-directive-line-moved]
 
 入力（エスケープ表記）:
 `"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`
