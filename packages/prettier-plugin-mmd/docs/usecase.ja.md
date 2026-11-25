@@ -79,7 +79,6 @@ usecase-beta
 
 ### Indentation
 
-class の[字下げ](./class.ja.md#字下げ)を再利用します。
 ヘッダーの下を設定の 1 段、境界内の宣言を 2 段とし、`end` は開始文に揃えます。
 文をヘッダーより 1 段深く置く形は、
 [ER](./er.ja.md#字下げ) と [class](./class.ja.md#字下げ) の図と同じです。
@@ -569,11 +568,6 @@ usecase-beta
 
 開始文、宣言の本文、揃えた `end` を別々の行に置きます。
 空の境界や空の引用名も同じです。
-[ER の subgraph](./er.ja.md#字下げ) は、開始文、本文の文、閉じる行を分け、
-閉じる行を開始文に揃えます。
-境界の開始文、本文、閉じる `end` には、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -1225,10 +1219,9 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 [fixture: direction-and-accessibility/acctitle-inner-gap-kept]
 [fixture: direction-and-accessibility/acc-descr-line-trailing-spaces-kept]
 
-説明ブロックは、class の[複数行の値](./class.ja.md#複数行の値)と同じく、
-本文行を文より 1 段深くし、独立した `}` を文の字下げに揃えます。
+説明ブロックは、本文行を文より 1 段深くし、独立した `}` を文の字下げに揃えます。
 コメント行だけが入ったブロックも同じ配置です。
-Mermaid が説明から LF 後の字下げを除くためです。
+mermaid.js は説明から行送り後の字下げを除きます。
 構造の字下げは、幅 0 やタブでも同じ配置を保ちます。
 
 [fixture: direction-and-accessibility/a11y-closer-aligned]
@@ -1471,11 +1464,7 @@ usecase-beta
 共有の[ディレクティブ](./class.ja.md#ディレクティブ)を再利用します。
 除去は区切りを補いません。
 内容、順序、複数行の列を保ち、独立したディレクティブは揃えます。
-独立したディレクティブを、周囲の文と同じ段に置く形は、
-[flowchart](./flowchart.ja.md#ディレクティブ) と
-[class](./class.ja.md#ディレクティブ) の図と同じです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
+独立したディレクティブを、周囲の文と同じ段に置きます。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 

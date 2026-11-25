@@ -72,11 +72,10 @@ usecase-beta
 
 ### Indentation
 
-Reuse structural [class indentation](./class.md#indentation): one configured
-step below the header, two for boundary declarations, and `end` aligned with its
-opener, as in class diagrams. Statements stand one indentation level below the
-header, as in [ER](./er.md#indentation) and [class](./class.md#indentation)
-diagrams;
+Use structural indentation: one configured step below the header, two for
+boundary declarations, and `end` aligned with its opener. Statements stand one
+indentation level below the header, as in [ER](./er.md#indentation) and
+[class](./class.md#indentation) diagrams;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 this depth.
 
@@ -521,12 +520,7 @@ usecase-beta
 ### System boundaries
 
 Openings, declaration bodies and aligned `end` use separate lines, including
-empty boundaries and empty quoted names. [ER subgraphs](./er.md#indentation)
-print their openings, body statements and closers on separate lines and align
-each closer with its opening. Under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
-system boundaries use the same layout for their openings, bodies and closing
-`end`.
+empty boundaries and empty quoted names.
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -1130,11 +1124,11 @@ direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 [fixture: direction-and-accessibility/acctitle-inner-gap-kept] [fixture:
 direction-and-accessibility/acc-descr-line-trailing-spaces-kept]
 
-Description blocks reuse [class multiline values](./class.md#multi-line-values):
-align body lines one step inside the statement and a separate `}` with the
-statement, including a block whose only content is a comment line. Mermaid
-discards indentation after LF from the description. Structural indentation keeps
-the same layout with zero width or tabs.
+In description blocks, align body lines one step inside the statement and a
+separate `}` with the statement, including a block whose only content is a
+comment line. mermaid.js discards the indentation after a line feed from the
+description. Structural indentation keeps the same layout with zero width or
+tabs.
 
 [fixture: direction-and-accessibility/a11y-closer-aligned] [fixture:
 direction-and-accessibility/a11y-closer-tabs] [fixture:
@@ -1373,11 +1367,7 @@ Reuse [shared directive attachment](./class.md#directives): removal supplies no
 separator. Keep directive contents, order and multiline columns; align
 standalone directives, and place a directive within a printed line as under
 [flowchart's Directives](./flowchart.md#directives). A directive on a line of
-its own stands at the level of the surrounding statements, as in
-[flowchart](./flowchart.md#directives) and [class](./class.md#directives)
-diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this alignment.
+its own stands at the level of the surrounding statements.
 
 [fixture: system-boundaries/boundary-id-title-directed-gap] [fixture:
 arrows/semantic-operator-directives] [fixture:
