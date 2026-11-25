@@ -515,10 +515,20 @@ export abstract class UnitGrammar<
    * `docs/tokens.md`, Tokens: one token of kind `kind` of the whitespace at
    * `range`, which a value holds and the token of no unit does: the value of
    * a label that is all whitespace, and the whitespace between the parts of
-   * a sequence box text. A cut in it cuts it as any token.
+   * a sequence box text. A cut in it cuts it as any token: a directive, a
+   * comment region, or a `;` that the line rule ignores cuts it when the
+   * tokens are recorded (see `SourceLexer.recordTokens`), and a diagram
+   * comment inside `range`, which lies outside every token, cuts it here
+   * into one token for each run of whitespace around the comments.
    */
   protected addWhitespaceToken(kind: DiagramTokenKind, range: Range): void {
-    this.tokens.push({ kind, range })
+    let start = range[0]
+    for (const comment of this.diagramCommentsInside(range)) {
+      if (start < comment[0])
+        this.tokens.push({ kind, range: [start, comment[0]] })
+      start = comment[1]
+    }
+    if (start < range[1]) this.tokens.push({ kind, range: [start, range[1]] })
   }
 
   /**

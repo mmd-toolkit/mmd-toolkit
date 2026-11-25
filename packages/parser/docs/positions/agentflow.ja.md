@@ -109,14 +109,24 @@ Arrow と OpeningArrow は矢印の文字を覆い、周囲の空白を含めな
 [fixture: agentflow/gram-split-sequence-label]
 
 Label は先頭に文字列があればその区切りを含み、続く裸のテキストまでを覆う。
-裸の外側の空白は含めず、空白だけのラベルはその空白トークンを覆う。
+裸の外側の空白は含めず、空白だけのラベルは、
+内側のコメントの前後の空白の連なりごとに一つずつあるトークンを覆う。
 裸のラベル内のコメントは範囲内にあるが、値とトークンには含めない。
+`A[ %% c` とそれに続く行 `]` のラベルの範囲は、空白から LF までで、
+その内側にコメントがあり、両側にトークンがある。
 
 [fixture: agentflow/gram-node-quoted-padding]
 [fixture: agentflow/gram-split-edge-string-bare-tail]
 [fixture: agentflow/gram-label-whitespace-only]
 [fixture: agentflow/comment-label-keeps-interior-spaces]
 [fixture: agentflow/comment-square-after-string-padding]
+[fixture: agentflow/lex-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-label-whitespace-only-comment-after-tab]
+[fixture: agentflow/lex-label-whitespace-only-comment]
+[fixture: agentflow/lex-slanted-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-ellipse-label-whitespace-only-comment-after-space]
+[fixture: agentflow/lex-pipe-label-whitespace-only-comment]
+[fixture: agentflow/lex-label-whitespace-only-two-comments]
 
 DataBlock は一つの完全な @{ から } までで、別の値範囲はない。
 内部は書かれた空白を保持し、波括弧後に読み方が畳まれる空白も含む。

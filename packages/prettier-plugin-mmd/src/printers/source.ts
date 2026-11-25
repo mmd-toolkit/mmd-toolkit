@@ -118,8 +118,9 @@ export interface JoiningRegion {
   readonly end: number
   /**
    * Whether the lexer reads anything after the region, wherever it stands, to be
-   * joined to what comes before. `findCommentRegions` decides it together with
-   * `joinsText`, from the same text that the lexer reads.
+   * joined to what comes before (see `findReadEnd`). `findCommentRegions`
+   * decides it next to `joinsText`, which looks only at the line right after
+   * the region.
    */
   readonly hasTextAfter: boolean
   /**
@@ -743,10 +744,12 @@ function findCommentRegions(
     regions.push({ comment, start, end })
   }
   // What follows a region is decided here, for both questions that
-  // `JoiningRegion` asks, from the text that the lexer reads. The `;` that end
-  // the text stand for no statement in a diagram where a `;` separates
-  // statements, and the printer drops them, except one on the line that follows
-  // the region, which stays with the line that the region joins
+  // `JoiningRegion` asks: whether the lexer reads anything after it
+  // (`hasTextAfter`, from where the text read ends) and whether the line right
+  // after it holds text (`joinsText`). The `;` that end the text stand for no
+  // statement in a diagram where a `;` separates statements, and the printer
+  // drops them, except one on the line that follows the region, which stays
+  // with the line that the region joins
   // (docs/flowchart.md, Semicolons).
   const readEnd = findReadEnd(text, all, false)
   const statementEnd = diagramBodiesWithSeparatingSemicolons.has(root.body.type)

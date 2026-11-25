@@ -1,9 +1,11 @@
 import type {
   ErAttribute,
+  ErClassDefStatement,
   ErEntityReference,
   ErEntityStatement,
   ErRelationshipStatement,
   ErStatement,
+  ErStyleStatement,
   ErSubgraphStatement,
   Node,
   Range,
@@ -21,6 +23,7 @@ import {
   holdsJoiningRegion,
   isDroppedSemicolon,
   isFirstOnItsLine,
+  lineEndOf,
   lineStartOf,
   spansKeptBreaks,
 } from "./kept-lines.ts"
@@ -58,8 +61,10 @@ import {
   findTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
+  isLineSeparator,
   isSpaceOrTab,
   isStructural,
+  isWhitespace,
 } from "./source.ts"
 
 /**
@@ -553,9 +558,33 @@ export function layoutErStatement(
 }
 
 /**
+ * Where the printed text of a `classDef` or `style` statement ends where a
+ * U+2028 or U+2029 stands between the statement and a comment or a directive
+ * on its line: right before that comment or directive. The characters stay
+ * with the style, since mermaid.js keeps them in its text and the style
+ * attribute of the figure holds them, which no whitespace of CSS is, so the
+ * gap that holds them is printed as written with the statement (docs/er.md,
+ * Semicolons at the end of a style statement).
+ */
+export function endBeforeTriviaAfterSeparators(
+  source: Source,
+  statement: ErStyleStatement | ErClassDefStatement,
+): number {
+  const from = statement.range[1]
+  const first = findTriviaBetween(source, from, lineEndOf(source, from))[0]
+  if (first === undefined) return from
+  const gap = [...source.text.slice(from, first.range[0])]
+  return gap.every(isWhitespace) && gap.some(isLineSeparator)
+    ? first.range[0]
+    : from
+}
+
+/**
  * The stretches of a statement that are printed as written: the `;` that
- * ends a `classDef` or `style` statement, with what lies before it, and the
- * whitespace between the entity `only` and a cardinality `one`.
+ * ends a `classDef` or `style` statement, with what lies before it, the gap
+ * between such a statement and the comment or the directive that a U+2028 or
+ * U+2029 in it joins to its line, and the whitespace between the entity `only`
+ * and a cardinality `one`.
  */
 function findKeptStretches(
   source: Source,
@@ -566,10 +595,30 @@ function findKeptStretches(
       return findOnlyOneStretches(source, statement)
     case "ErClassDefStatement":
     case "ErStyleStatement":
-      return findEndingSemicolonStretches(source, statement)
+      return [
+        ...findEndingSemicolonStretches(source, statement),
+        ...findGapBeforeTriviaStretches(source, statement),
+      ]
     default:
       return []
   }
+}
+
+/**
+ * The gap after a `classDef` or `style` statement that holds a U+2028 or
+ * U+2029 and ends at a comment or a directive of its line, as written (see
+ * `endBeforeTriviaAfterSeparators`).
+ */
+function findGapBeforeTriviaStretches(
+  source: Source,
+  statement: Extract<
+    ErSimpleStatement,
+    { type: "ErClassDefStatement" | "ErStyleStatement" }
+  >,
+): Atom[] {
+  const start = statement.range[1]
+  const end = endBeforeTriviaAfterSeparators(source, statement)
+  return end > start ? [{ start, end }] : []
 }
 
 /**

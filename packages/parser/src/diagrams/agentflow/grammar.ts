@@ -511,8 +511,9 @@ export class AgentflowGrammar extends GraphGrammar<
       lastPiece !== undefined &&
       pieces.every((piece) => piece.significantRange === null)
     ) {
-      // A label that is all whitespace has one token of that whitespace,
-      // which is its value (docs/tokens.md, Tokens).
+      // A label that is all whitespace has the token of that whitespace,
+      // which is its value (docs/tokens.md, Tokens), cut at the diagram
+      // comments inside it.
       this.addWhitespaceToken("RawText", [firstPiece.start, lastPiece.end])
     }
     appendItems(units, pieces)
