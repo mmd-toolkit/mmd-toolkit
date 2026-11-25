@@ -3810,12 +3810,10 @@ space when only a directive follows it and the `{` stands on a later line, with
 the directive on the line of `accDescr`. When a comment follows the directive,
 the directive and the comment stand on a line of their own one level deeper, as
 the comment does. Where the `{` follows the directive on its line, the line
-stays as written. Rule 2 gives no one form for the separator:
-[sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) print `accDescr`, a U+2028, and a
-comment as written, and [radar](./radar.md#description-blocks) prints a line
-break as architecture does, so the released form stays until it is decided (see
+stays as written. Rule 2 gives no one form for the separator: the formatter, run
+on `accDescr`, a U+2028, and a comment, prints them as written in sequence,
+gantt, and journey, and prints a line break in radar, as it does in
+architecture, so the released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 The line that holds the `{` after a comment or a directive stands at the level
@@ -3872,22 +3870,25 @@ whitespace at the end of each line of text except the last one; a line of
 whitespace only becomes an empty line. The whitespace at the end of the last
 line of text is dropped where the closer stands on a line of its own, and is
 printed as one space where the closer follows it on that line. The other diagram
-types that accept a block over several lines print it in the same way:
-[flowchart](./flowchart.md#multi-line-values),
+types that accept a block over several lines print it in the same way. The
+formatter, run on a block of each of flowchart, sequence, state, gantt, journey,
+timeline, pie, and radar, with the closer on a line of its own and with the
+closer after the text, puts the text lines and the comment lines of the block
+one level inside the statement, keeps its line breaks, its empty lines, and the
+whitespace at the end of each line but the last, prints a line of whitespace
+only as an empty line, drops the whitespace at the end of the last line where
+the closer stands on a line of its own and prints it as one space where the
+closer follows it, and puts a separate closer at the level of the statement. The
+sections of [flowchart](./flowchart.md#multi-line-values),
 [sequence](./sequence.md#multi-line-values),
 [state](./state.md#multi-line-values),
-[gantt](./gantt.md#accessibility-statements),
-[journey](./journey.md#accessibility-statements),
-[timeline](./timeline.md#multi-line-values), [pie](./pie.md#description-blocks),
-and [radar](./radar.md#description-blocks) put the text lines and the comment
-lines of the block one level inside the statement, keep its line breaks, its
-empty lines, and the whitespace at the end of each line but the last, print a
-line of whitespace only as an empty line, drop the whitespace at the end of the
-last line where the closer stands on a line of its own and print it as one space
-where the closer follows it, and put a separate closer at the level of the
-statement. Directives and shared removed comment regions keep their complete
-source. A separate closer aligns with the statement; the first closing brace
-still ends the value.
+[gantt](./gantt.md#accessibility-statements), and
+[journey](./journey.md#accessibility-statements) state the one level inside and
+the separate closer, and those of [timeline](./timeline.md#multi-line-values),
+[pie](./pie.md#description-blocks), and [radar](./radar.md#description-blocks)
+state the line breaks, the empty lines, and the whitespace as well. Directives
+and shared removed comment regions keep their complete source. A separate closer
+aligns with the statement; the first closing brace still ends the value.
 
 [fixture: architecture/description-blocks/asymmetric] [fixture:
 architecture/description-blocks/directive-line-between-keyword-and-brace]

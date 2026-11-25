@@ -2735,10 +2735,8 @@ Prettier は、キーワードとそのブロックの `{` の間に空白を 1 
 コメントと同じく 1 段深い独立した行に置きます。
 `{` がディレクティブと同じ行に続くときは、その行を書かれたままにします。
 規則 2 は、この区切り文字の形を 1 つに決めません。
-[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[journey](./journey.ja.md#複数行の文)は `accDescr`、U+2028、
-コメントを書かれたまま印字し、[radar](./radar.ja.md#description-blocks) は、
-architecture と同じく改行で印字します。
+フォーマッタで `accDescr`、U+2028、コメントを走らせると、sequence、gantt、
+journey は書かれたまま印字し、radar は architecture と同じく改行で印字します。
 決まるまで公開版の形を残します。
 （[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)）。
 
@@ -2787,18 +2785,23 @@ Db で LF 後の字下げが取り除かれるためです。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 複数行のブロックを受け付けるほかの図の種類も、同じように印字します。
-[flowchart](./flowchart.ja.md#複数行の値)、
-[sequence](./sequence.ja.md#複数行の値)、[state](./state.ja.md#複数行の値)、
-[gantt](./gantt.ja.md#アクセシビリティの文)、
-[journey](./journey.ja.md#アクセシビリティの文)、
-[timeline](./timeline.ja.md#複数行の値)、[pie](./pie.ja.md#description-blocks)、
-[radar](./radar.ja.md#description-blocks) は、
-ブロックのテキスト行とコメント行を文より 1 段内側に置き、改行、空行、
+flowchart、sequence、state、gantt、journey、timeline、pie、radar のそれぞれで、
+閉じ括弧が自分の行にあるブロックと、閉じ括弧が本文の後に続くブロックを、
+フォーマッタで走らせました。
+どれも、ブロックのテキスト行とコメント行を文より 1 段内側に置き、改行、空行、
 最後の行を除く各行の行末の空白を保ちます。
 空白だけの行は空行にします。
 最後の行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 独立した閉じ括弧は文の段に置きます。
+[flowchart](./flowchart.ja.md#複数行の値)、
+[sequence](./sequence.ja.md#複数行の値)、[state](./state.ja.md#複数行の値)、
+[gantt](./gantt.ja.md#アクセシビリティの文)、
+[journey](./journey.ja.md#アクセシビリティの文) の節は、
+1 段内側と独立した閉じ括弧を書いています。
+[timeline](./timeline.ja.md#複数行の値)、[pie](./pie.ja.md#description-blocks)、
+[radar](./radar.ja.md#description-blocks) の節は、改行、空行、
+空白も書いています。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 独立する閉じは文の位置に揃え、最初の閉じ波括弧が値を終える規則も保ちます。
 
