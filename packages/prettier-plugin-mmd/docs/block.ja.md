@@ -300,8 +300,9 @@ block-beta
 空行は、Db に入らない書き手の選択で、
 1 つの空行がそれを最小の手間で示します（[空行](./flowchart.ja.md#空行)を参照）。
 Prettier がコードでそうするのと同じです。
-図の文の間の空行は、Prettier が図に持たない種類の隙間なので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が空行の形を与えます。
+Prettier は、JavaScript と CSS で、連続する空行を 1 つにし、
+ファイルとブロックの先頭と末尾の空行を取ります。
 [Gantt](./gantt.ja.md#空行)、[ユーザージャーニー](./journey.ja.md#空行)、
 [sankey](./sankey.ja.md#空行)は、連続する空行を 1 つにし、
 本体の初めと終わりの空行を取ります。

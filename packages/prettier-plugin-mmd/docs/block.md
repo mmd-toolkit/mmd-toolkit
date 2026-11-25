@@ -284,13 +284,14 @@ A run of empty lines becomes one empty line, and there is none at the start of
 the text, none between the header and the first statement, and none at the end
 of the text. A blank line is a choice of the author that the Db does not hold,
 and one empty line shows it at the least cost, as Prettier does in code (see
-[Blank lines](./flowchart.md#blank-lines)). A blank line between the statements
-of a diagram is a gap of a kind that Prettier does not have in a diagram, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [Gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines),
-and [sankey](./sankey.md#blank-lines) print a run of empty lines as one and drop
-the empty lines at the start and at the end of a body, and every other diagram
-type drops the empty lines at the start of the text, before its header.
+[Blank lines](./flowchart.md#blank-lines)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the empty
+lines: Prettier prints a run of empty lines as one and drops the empty lines at
+the start and at the end of a file or of a block in JavaScript and CSS, and
+[Gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines), and
+[sankey](./sankey.md#blank-lines) print a run of empty lines as one and drop the
+empty lines at the start and at the end of a body, and every other diagram type
+drops the empty lines at the start of the text, before its header.
 
 [fixture: blank-lines/runs-become-one] [fixture:
 blank-lines/none-after-the-header] [fixture: blank-lines/none-at-the-end]
