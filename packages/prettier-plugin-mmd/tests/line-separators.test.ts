@@ -4995,6 +4995,46 @@ const requirementLineSeparatorExamples: readonly (readonly [
     'requirementDiagram\n  requirement r {\n    id: 1\n  }\n  style r fill: red\n  "r":::c\n  classDef c fill: red\n  "r":::c\n  class r c "r"\n- satisfies -> b \u2028 %%{x}%%  %% c  \n\n  class r c\n  "r":::d\n',
   ],
   [
+    "requirement: U+2028 and a comment at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028 and a comment at the end of the text after the string and the class of a classDef statement",
+    'requirementDiagram\nclassDef c fill:red "r"\n:::c\u2028 %% c',
+    'requirementDiagram\n  classDef c fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028 and a comment at the end of the text after the string and the class of a class statement",
+    'requirementDiagram\nclass r c "r"\n:::c\u2028 %% c',
+    'requirementDiagram\n  class r c\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2029 and a comment at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2029 %% c',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and a comment line at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c\n%% d\n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n  %% d\n',
+  ],
+  [
+    "requirement: U+2028, a comment, and a line of whitespace at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %% c\n   \n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c\n  %% c\n',
+  ],
+  [
+    "requirement: U+2028 and a directive that is not closed at the end of the text after the string and the class of a style statement",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c\u2028 %%{x',
+    'requirementDiagram\n  style r fill: red\n  "r":::c %%{x',
+  ],
+  [
+    "requirement: U+2028 and a comment before an ignored semicolon after the string of a style statement",
+    'requirementDiagram\nstyle r fill:#f00 "r";\n:::c\u2028 %% c',
+    'requirementDiagram\n  style r fill:#f00 "r";\n:::c\n  %% c\n',
+  ],
+  [
     "requirement: U+2028, a directive, a comment, and an empty line after a block, with a name in quotes after them",
     'requirementDiagram\nrequirement "r" {\n}\nrequirement s {\n} \u2028 %%{x}%%  %% c  \n\n"r" - satisfies -> s\n',
     "requirementDiagram\n  requirement r {\n  }\n  requirement s {\n} \u2028 %%{x}%%  %% c  \n\n  r - satisfies -> s\n",

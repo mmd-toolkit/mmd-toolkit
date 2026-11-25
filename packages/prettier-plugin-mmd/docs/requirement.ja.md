@@ -2023,9 +2023,10 @@ U+2028 と U+2029 は、requirement の図の単位の間の空白であり、�
 
 U+2028 か U+2029 の後のコメント行が途中で切る文は、
 終わりまで書かれたまま印字します。
-`style`、`classDef`、
-`class` の文の後で最後の行にそのコメント行がある文も同じで、
-スタイルに続く文字列と改行はその場に残ります。
+`style`、`classDef`、`class` の文の後で最後の行にそのコメント行があり、
+その後にテキストが続く文も同じで、スタイルに続く文字列と改行はその場に残ります。
+コメント行の後に何も続かないとき（テキストの終わりなど）は、
+文とコメント行をほかと同じに印字します。
 切られた文の中で、行を終え、文の残りが後の行にある、引用符つきの名前は、
 引用符を残します。
 引用符がないと名前が改行を越えて続き、
@@ -2041,6 +2042,14 @@ mermaid.js がそのテキストを拒否するからです。
 [test: requirement: U+2028, a directive, a comment, and a directive line after the string and the class of a style statement]
 [test: requirement: U+2028, a directive, a comment, and an empty line after the string and the class of a classDef statement]
 [test: requirement: U+2028, a directive, a comment, and an empty line after a relationship that goes on a later line]
+[test: requirement: U+2028 and a comment at the end of the text after the string and the class of a style statement]
+[test: requirement: U+2028 and a comment at the end of the text after the string and the class of a classDef statement]
+[test: requirement: U+2028 and a comment at the end of the text after the string and the class of a class statement]
+[test: requirement: U+2029 and a comment at the end of the text after the string and the class of a style statement]
+[test: requirement: U+2028, a comment, and a comment line at the end of the text after the string and the class of a style statement]
+[test: requirement: U+2028, a comment, and a line of whitespace at the end of the text after the string and the class of a style statement]
+[test: requirement: U+2028 and a directive that is not closed at the end of the text after the string and the class of a style statement]
+[test: requirement: U+2028 and a comment before an ignored semicolon after the string of a style statement]
 [test: requirement: U+2028, a directive, a comment, and an empty line after a block, with a name in quotes after them]
 [test: requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes and the rest of the statement on its line]
 [test: requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes and a class on its line]

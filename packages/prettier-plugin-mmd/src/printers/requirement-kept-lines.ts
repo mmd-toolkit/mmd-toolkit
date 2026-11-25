@@ -10,7 +10,6 @@ import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   findSemicolonLines,
-  holdsJoiningRegion,
   lineEndOf,
   lineStartOf,
   spansKeptBreaks,
@@ -99,7 +98,7 @@ function findLinesOfContinuedStatements(
         statement.range[1],
       ) ||
         semicolonLines.has(line) ||
-        holdsJoiningRegion(
+        holdsRegionJoiningText(
           source,
           statement.range[0],
           lineEndOf(source, statement.range[1] - 1),
@@ -109,6 +108,25 @@ function findLinesOfContinuedStatements(
     }
   }
   return lines
+}
+
+/**
+ * Whether a comment line of a region that joins the line to the text after it
+ * starts in the range: where nothing follows the region, the printer puts the
+ * comment on a line of its own and the parts of the statement on one line, as
+ * it does without the region (docs/requirement.md, Statements one per line).
+ */
+function holdsRegionJoiningText(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  return source.joiningRegions.some(
+    (region) =>
+      region.hasTextAfter &&
+      start <= region.comment.range[0] &&
+      region.comment.range[0] < end,
+  )
 }
 
 /** Whether the lexer is in the style context after a statement, on its last line. */
