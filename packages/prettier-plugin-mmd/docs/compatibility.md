@@ -1002,7 +1002,7 @@ name that ends with `stroke` keeps whether whitespace stands between it and the
 printed `linkStyle 0 stroke : #f00`. A `style` styles a node, and is printed in
 the one form: the pixels of `style A stroke :#f00` and `style A stroke: #f00`
 were the same. A node style property gives its name one value, so its colon is
-the colon of a key. [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+the colon of a key. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
 gives no whitespace before that colon and one space after it.
 
 [fixture:
@@ -1498,7 +1498,7 @@ alias. Trailing directives in [mindmap](./mindmap.md#directives) nodes and
 spaces or tabs preceded them and keep touching where none did.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the same gaps before trailing directives here.
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
 and tabs after the last directive, as at other line ends. The runs of spaces and
 tabs inside a date format, an axis format, or the value of an `accTitle:` line
 stay as written before the directives as they do without them. An axis format
@@ -7222,7 +7222,7 @@ around them. What the Db or the lexer reads stays. See
 
 Ordinary point and class styles use `name: value`. A style property gives its
 name one value, so its first colon is the colon of a key.
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
 before that colon and one space after it. Only ASCII spaces and tabs next to the
 first colon are normalized; the value spelling stays intact. A style with
 trivia, whitespace other than ASCII spaces and tabs, a semicolon or a second
