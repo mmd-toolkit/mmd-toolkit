@@ -5014,6 +5014,16 @@ const requirementLineSeparatorExamples: readonly (readonly [
     'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n\nclass r c "r"\n- satisfies -> b\n',
     'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n\n  class r c\n  r - satisfies -> b\n',
   ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;  %% c\n \t\nclass r c\n',
+    'requirementDiagram\n  style r fill: red\n  "r":::c; %% c\n\n  class r c\n',
+  ],
+  [
+    "requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls",
+    'requirementDiagram\nstyle r fill:red "r"\n:::c;\u2028 %% c\n \t\nclass r c "r"\n- satisfies -> b\n',
+    'requirementDiagram\n  style r fill:red "r"\n:::c;\u2028 %% c\n \t\n  class r c\n  r - satisfies -> b\n',
+  ],
 ]
 
 /**

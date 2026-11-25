@@ -916,6 +916,10 @@ requirement/statements-one-per-line/continued-semicolon-class-region-with-direct
 requirement/statements-one-per-line/continued-semicolon-class-region-then-comment-line-ls]
 [test:
 requirement/statements-one-per-line/continued-semicolon-class-region-then-empty-line-and-statement-ls]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line]
+[test:
+requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls]
 
 A line that holds a kept `;` keeps its statements together: the line rule of
 mermaid.js removes the last `;` of a line that holds `style`, a `:` after it,

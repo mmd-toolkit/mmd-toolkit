@@ -910,6 +910,8 @@ mermaid.js は同じ行に続く文を読みます。
 [test: requirement/statements-one-per-line/continued-semicolon-class-region-with-directive-ls]
 [test: requirement/statements-one-per-line/continued-semicolon-class-region-then-comment-line-ls]
 [test: requirement/statements-one-per-line/continued-semicolon-class-region-then-empty-line-and-statement-ls]
+[test: requirement/statements-one-per-line/continued-semicolon-class-comment-then-whitespace-line]
+[test: requirement/statements-one-per-line/continued-semicolon-class-region-then-whitespace-line-and-statement-ls]
 
 保持する `;` を含む行は、その行の文をそのまま一緒に残します。
 mermaid.js の行の規則は、`style`、その後の `:`、
