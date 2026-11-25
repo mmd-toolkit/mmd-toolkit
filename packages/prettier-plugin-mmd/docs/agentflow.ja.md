@@ -606,10 +606,7 @@ Prettier は、コンマの前に空白を置かず、後ろに空白を 1 つ�
 Prettier は、CSS のコロンの後ろに空白を 1 つ置くので、
 `:` で始まるスタイルのコロンの後ろも、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が同じ形を与えます。
-[class](./class.ja.md#トークンの間の空白) と [block](./block.ja.md#スタイル)
-の図も、`:` で始まるスタイルの語と語の間の連続を、空白 1 つにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-語の隙間に同じ形を与えます。
+
 `style A :  red   x` は `style A : red x` と印字します。
 
 [fixture: single-space-gaps/style-colon-first-run-spaced]
@@ -997,12 +994,6 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 [test: data blocks: agentflow U+2029] [test: data blocks: agentflow CRLF]
 
 `flow` や `global` のコンテナの見出しにあるブロックも、同じように動かします。
-移動の条件を満たす複数行のブロックは、
-[flowchart](./flowchart.ja.md#データブロック) と
-[kanban](./kanban.ja.md#データブロック) の図で、
-文字がある本文の最も浅い行を文の 1 段内側に置きます。
-`flow` や `global` の見出しのブロックも、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 
 [fixture: metadata-blocks/container-header]
 

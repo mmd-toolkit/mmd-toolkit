@@ -592,12 +592,8 @@ before the comma of a style statement]
 A style that starts with the `:` is printed as any other: one space after the
 `:`, and the runs between its words as one space. Prettier prints one space
 after a CSS colon, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives one space after the leading colon of a style.
-[Class](./class.md#whitespace-between-tokens) and [block](./block.md#styles)
-diagrams also print each run between the words of a colon-first style as one
-space, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that form to the word gaps. `style A :  red   x` is printed `style A : red x`.
+gives one space after the leading colon of a style. `style A :  red   x` is
+printed `style A : red x`.
 
 [fixture: single-space-gaps/style-colon-first-run-spaced]
 
@@ -950,12 +946,7 @@ metadata-blocks/use-tabs-folded-empty-lines-kept] [fixture:
 metadata-blocks/surrounding-trivia] [test: data blocks: agentflow U+2029] [test:
 data blocks: agentflow CRLF]
 
-The header of a `flow` or `global` container moves its block in the same way. In
-eligible multiline data blocks, [flowchart](./flowchart.md#data-blocks) and
-[kanban](./kanban.md#data-blocks) diagrams place the shallowest body text one
-level inside its statement;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-a `flow` or `global` header's block the same margin.
+The header of a `flow` or `global` container moves its block in the same way.
 
 [fixture: metadata-blocks/container-header]
 
