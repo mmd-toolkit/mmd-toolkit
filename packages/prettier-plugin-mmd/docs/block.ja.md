@@ -90,13 +90,9 @@ composite は 3 種類の行でできています。
 `block:G` は `block: G` に、`block:G:2` は `block: G:2` に印字します。
 幅のコロンは、ブロック図のほかの箇所と同じくノードに接します。
 その理由は[形](#形)にあります。
-キーワードとその後ろのものの間の隙間は、
-どの図種でも同じ形にします（`title Pets`）。
-詳しくは
-[Prettier にない種類の隙間](./printed-form.ja.md#2-prettier-にない種類の隙間)
-を参照してください。
-この決まりは、mermaid.js の例に綴りを合わせる決まりより先に当たります。
-例は `block:` をノードに接して 4 回書き、後に空白を置く形は一度も書きません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+`block:` とそのノードの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 mermaid.js は `block: G` と `block:G` を同じに読み、
 対象にする版もすべて同じなので、接する形が要る版はありません。
 対象にする版はどれも、コロンの前の空白（`block : G`）を拒否します。
@@ -400,8 +396,9 @@ block-beta
 `columns` の後には、その数か `auto` を、空白 1 つで続けます。
 間に書かれた空白（タブ、改行）はどれも同じです。
 mermaid.js はそこのどの空白も同じに読むので、形は 1 行になります。
-キーワードとその後ろのものの間の隙間は、
-どの図種でも同じ形です（[composite](#composite)を参照）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとその後ろのものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 `space:2` は `:` を接して印字します。
 この形は、
 [mermaid.js が空白を許さない所](./printed-form.ja.md#mermaidjs-が空白を許さない所)
@@ -758,8 +755,10 @@ block-beta
 空白 1 つを置きます。
 キーワードの後と最初のスタイルの前の空白は Db に入らないので、
 空白 1 つにします。
-キーワードとその後ろのものの間の隙間は、
-どの図種でも同じ形です（[composite](#composite)を参照）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとその後ろのものの間と、続く値の間に空白 1 つを与えます。
+Prettier は `return  x` を `return x;` と印字し、
+CSS の `margin: 1px    2px` を `margin: 1px 2px` と印字します。
 `classDef` と `style` のスタイルは下の空白の規則に従い、
 `class` の値は書かれたまま印字しますが、
 クラス名の中の空白とタブの連なりは空白 1 つで印字します。
@@ -944,12 +943,9 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 
 スタイルのない `style` は `style A` と出力し、id は 1 つの空白の後に置き、
 その後ろには何も置きません。
-規則 1 は、キーワードと ID の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[wardley](./wardley.ja.md#部品間の空白)
-はコマンドのキーワードと最初の名前の間に、
-[radar](./radar.ja.md#groups-and-commas)
-はグループのキーワードと最初の項目の間に、普通の空白 1 個を置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+`style` と ID の間に空白 1 個を与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 
 [fixture: styles/style-without-styles] [corpus fixture: block/db-style-none]
 
