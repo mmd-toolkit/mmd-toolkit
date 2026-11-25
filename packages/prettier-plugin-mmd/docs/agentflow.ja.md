@@ -287,6 +287,15 @@ mermaid.js が名前を trim するので Db は同じであり、
 どんな文字でも同じに扱うので、`flow Front end ;  %% c` は、
 `;` のないテキストと同じく、すぐに `flow Front end%% c` と印字し、
 2 回目の整形は何も変えません。
+プリンタが落とす `;` の連なり、
+たとえば `connector Front end ; ;  %% c` も同じです。
+プリンタが残す `;` は名前に付けたまま残します。
+残すのは、コメントの末尾にある、行の規則が無視する `;` が後ろに続く場合と、
+ディレクティブが後ろに続く場合です。
+`connector Front end ; %% style:#x;` は `connector Front end; %% style:#x;`、
+`connector Front end ; %%{x}%%` は `connector Front end; %%{x}%%` と印字し、
+ディレクティブが閉じていなくても同じです。
+テキストの終わりにある `;` は、その前の空白と一緒に落とします。
 キーワードがキーワードになるのは、名前の単位が始まる所です。
 agentflow が flowchart から再利用する字句の規則で決めます。
 規則は flowchart の規則 10〜12、16、17、20、21 で、
@@ -330,6 +339,16 @@ id の連なりの中（`Front-end`、`Front9end`、
 [fixture: names-and-headings/connector-global-keyword-semicolon-comment]
 [fixture: names-and-headings/heading-upper-end-semicolon-comment-one-space]
 [fixture: names-and-headings/heading-ending-word-semicolon-comment-one-space]
+[fixture: names-and-headings/connector-end-keyword-semicolon-closed-directive]
+[fixture: names-and-headings/connector-end-keyword-semicolon-open-directive]
+[fixture: names-and-headings/connector-end-keyword-two-semicolons-comment]
+[fixture: names-and-headings/connector-end-keyword-spaced-semicolons-comment]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment-ignored-semicolon-kept]
+[fixture: names-and-headings/connector-end-keyword-semicolon-two-comment-lines]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment-empty-line]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment-whitespace-line]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment-end-of-text]
+[fixture: names-and-headings/connector-end-keyword-semicolon-end-of-text]
 [test: agentflow: U+2028 after the keyword at the end of a flow name before a semicolon and a comment]
 [test: agentflow: vertical tab after the semicolon after the keyword at the end of a flow name before a comment]
 [test: agentflow: form feed after the semicolon after the keyword at the end of a flow name before a comment]

@@ -278,9 +278,16 @@ it, also before a comment: `flow Front end %% c` is printed
 `flow Front end%% c`. A `;` that the printer drops after such a name, and the
 whitespace around it, whatever its characters, go the same way, so
 `flow Front end ;  %% c` is printed `flow Front end%% c` at once, as the text
-without the `;` is, and a second formatting changes nothing. A keyword is a
-keyword where a unit of the name starts, by the lexical rules that agentflow
-reuses from flowchart
+without the `;` is, and a second formatting changes nothing. So does a run of
+`;` that the printer drops, as in `connector Front end ; ;  %% c`. A `;` that
+the printer keeps, because the `;` that the line rule ignores at the end of the
+comment follows it, or because a directive does, stays against the name:
+`connector Front end ; %% style:#x;` is printed
+`connector Front end; %% style:#x;`, and `connector Front end ; %%{x}%%` is
+printed `connector Front end; %%{x}%%`, also where the directive is not closed.
+A `;` at the end of the text is dropped with the whitespace before it. A keyword
+is a keyword where a unit of the name starts, by the lexical rules that
+agentflow reuses from flowchart
 ([Flows, globals, connectors, and names](../../spec/docs/diagrams/agentflow.md#flows-globals-connectors-and-names);
 flowchart rules 10 to 12, 16, 17, 20, and 21): at the start of the name, after
 whitespace, a `:`, a `^`, a `#`, an `&`, a `*`, a number, or a character that is
@@ -320,11 +327,24 @@ names-and-headings/heading-end-keyword-after-non-ascii-letter-semicolon-comment]
 [fixture: names-and-headings/connector-global-keyword-semicolon-comment]
 [fixture: names-and-headings/heading-upper-end-semicolon-comment-one-space]
 [fixture: names-and-headings/heading-ending-word-semicolon-comment-one-space]
-[test: agentflow: U+2028 after the keyword at the end of a flow name before a
-semicolon and a comment] [test: agentflow: vertical tab after the semicolon
-after the keyword at the end of a flow name before a comment] [test: agentflow:
-form feed after the semicolon after the keyword at the end of a flow name before
-a comment] [test: agentflow: U+3000 after the semicolon after the keyword at the
+[fixture: names-and-headings/connector-end-keyword-semicolon-closed-directive]
+[fixture: names-and-headings/connector-end-keyword-semicolon-open-directive]
+[fixture: names-and-headings/connector-end-keyword-two-semicolons-comment]
+[fixture: names-and-headings/connector-end-keyword-spaced-semicolons-comment]
+[fixture:
+names-and-headings/connector-end-keyword-semicolon-comment-ignored-semicolon-kept]
+[fixture: names-and-headings/connector-end-keyword-semicolon-two-comment-lines]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment-empty-line]
+[fixture:
+names-and-headings/connector-end-keyword-semicolon-comment-whitespace-line]
+[fixture:
+names-and-headings/connector-end-keyword-semicolon-comment-end-of-text]
+[fixture: names-and-headings/connector-end-keyword-semicolon-end-of-text] [test:
+agentflow: U+2028 after the keyword at the end of a flow name before a semicolon
+and a comment] [test: agentflow: vertical tab after the semicolon after the
+keyword at the end of a flow name before a comment] [test: agentflow: form feed
+after the semicolon after the keyword at the end of a flow name before a
+comment] [test: agentflow: U+3000 after the semicolon after the keyword at the
 end of a flow name before a comment] [test: agentflow: no-break space after the
 semicolon after the keyword at the end of a flow name before a comment] [test:
 agentflow: U+2028 after the semicolon after the keyword at the end of a flow
