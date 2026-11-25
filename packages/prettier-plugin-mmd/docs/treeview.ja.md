@@ -3507,8 +3507,11 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 設定の改行 1 個で終えます。
 値の末尾は保ち、
 EOF の未完ディレクティブと保護・原文保持の終端は共有の例外に従います。
-規則 1 は、
-閉じていないディレクティブのあるテキストの終わりの印を挙げていないので、
+Prettier は、行の終わりの空白とタブを、JavaScript、CSS、YAML、
+Markdown で取り除き、ほかの空白文字は YAML が残します。
+そのため[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+閉じていないディレクティブの最後の文字の後の空白とタブを取り除く形を与え、
+それ以外の空白文字は、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [c4](./c4.ja.md#末尾の改行) と [ishikawa](./ishikawa.ja.md#final-newline) は、
 単独の行にある閉じていないディレクティブを、

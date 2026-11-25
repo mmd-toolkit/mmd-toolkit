@@ -3484,31 +3484,35 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 End ordinary accepted input with one configured newline, including empty bodies,
 nodes, common forms, closed blocks and comments. Preserve value tails.
 Unfinished EOF directives and protected/source-kept endings follow shared
-exceptions. Rule 1 names no mark for the end of a text that has an open
-directive, so
+exceptions. Prettier removes the spaces and tabs at the end of a line in
+JavaScript, CSS, YAML, and Markdown, and YAML keeps every other whitespace
+character there, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the removal of the spaces and tabs after the last character of an open
+directive, and
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [c4](./c4.md#final-newline) and [ishikawa](./ishikawa.md#final-newline)
-print an open directive on a line of its own without the whitespace after its
-last character, as treeView does here (kanban, which drops only spaces and tabs
-after the open directive on the line of a card, is no precedent for the other
-whitespace), so treeView reads an open directive up to its last character that
-is no whitespace on a line of its own, on the line after a brace description
-block, and on the line of a node (a quoted name or a bare name), of a
-description (`## d`), of an icon, of a title, of an `accTitle:` or `accDescr:`
-line, of a class after `:::`, and of a node in box mode. After a quoted name or
-after a class the directive has to touch it: written after a space it is
-rejected. U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace here. The
-whitespace after that character is dropped: U+0009 to U+000D (the tab, LF, the
-vertical tab, the form feed, and CR), U+0020, U+00A0, U+1680, U+2000 to U+200A,
-U+202F, U+205F, U+3000, and U+FEFF, and with them the empty lines. One line
-break ends the text; nothing is added only where the text ends right after the
-character and it is no U+2028 or U+2029. Prettier ends a file with one line
-break, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
-final line break that follows an unfinished directive once its trailing
-whitespace is removed. `%%{unfinished` and two spaces print `%%{unfinished` and
-a line break, `%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a
-line break, and `"R"%%{unfinished` and two spaces print `"R"%%{unfinished` and a
-line break. Prettier ends a file with one line break, so
+decides for the other whitespace after it: [c4](./c4.md#final-newline) and
+[ishikawa](./ishikawa.md#final-newline) print an open directive on a line of its
+own without the whitespace after its last character, as treeView does here
+(kanban, which drops only spaces and tabs after the open directive on the line
+of a card, is no precedent for the other whitespace), so treeView reads an open
+directive up to its last character that is no whitespace on a line of its own,
+on the line after a brace description block, and on the line of a node (a quoted
+name or a bare name), of a description (`## d`), of an icon, of a title, of an
+`accTitle:` or `accDescr:` line, of a class after `:::`, and of a node in box
+mode. After a quoted name or after a class the directive has to touch it:
+written after a space it is rejected. U+2028, U+2029, U+0085, U+180E, and U+200B
+are no whitespace here. The whitespace after that character is dropped: U+0009
+to U+000D (the tab, LF, the vertical tab, the form feed, and CR), U+0020,
+U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF, and with
+them the empty lines. One line break ends the text; nothing is added only where
+the text ends right after the character and it is no U+2028 or U+2029. Prettier
+ends a file with one line break, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the final line
+break that follows an unfinished directive once its trailing whitespace is
+removed. `%%{unfinished` and two spaces print `%%{unfinished` and a line break,
+`%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line break, and
+`"R"%%{unfinished` and two spaces print `"R"%%{unfinished` and a line break.
+Prettier ends a file with one line break, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the final line
 break after an unfinished directive that ends in U+2028 or U+2029, and after one
 that touches a quoted node name. Rejected unused indentation runs are not
