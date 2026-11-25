@@ -767,6 +767,24 @@ export const treeviewCases: readonly TreeviewCase[] = [
     options: {},
   },
   {
+    name: "treeview/branch-prefixes/continued-name-line-separator-directive-comment",
+    input: "treeView-beta\nroot\n├── a\u2028%%{x}%%%% c\n└── z\n",
+    output: "treeView-beta\nroot\n└── a\u2028%%{x}%%%% c\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-line-separator-comment-crlf",
+    input: "treeView-beta\r\nroot\r\n├── a\u2028%% c\r\n└── z\r\n",
+    output: "treeView-beta\nroot\n└── a\u2028%% c\n└── z\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/continued-name-line-separator-comment-line-follows",
+    input: "treeView-beta\nroot\n├── a\u2028%% c\n%% d\n└── z\n",
+    output: "treeView-beta\nroot\n└── a\u2028%% c\n%% d\n└── z\n",
+    options: {},
+  },
+  {
     name: "treeview/decorations/box-redraw-decoration-comment-region-ps",
     input: "treeView-beta\nr\n├─ a\n│\u2029%% note\n┃\n└─ b\n",
     output: "treeView-beta\nr\n├─ a\n│\u2029%% note\n┃\n└─ b\n",
