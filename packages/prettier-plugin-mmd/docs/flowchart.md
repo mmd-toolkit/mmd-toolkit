@@ -528,6 +528,70 @@ where it is, and so is its line (see
 [fixture: semicolons/compat-ignored-semicolon-in-label] [fixture:
 semicolons/compat-ignored-semicolon-in-string]
 
+On such a line, the `end` of a subgraph that only `;`, whitespace, and
+directives follow goes to a line of its own, and a `;` that stands alone at the
+top level after the `end` is dropped there as it is anywhere else, a `;` before
+a directive excepted (see below): `subgraph S; A[x;] --> B; end ;` is printed
+with `end` on a line of its own and no `;` after it. A `;` kept after the `end`
+that has moved would be dropped by a second formatting, since the line of the
+`end` holds no `;` of its own for the line to keep. A statement after the `;`
+keeps the `end` on the line, and the `;` with it:
+`subgraph S; A[x;] --> B; end ; C` stays as it is. A `%%` after the `;` on the
+line keeps the line as written (see
+[Statements one per line](#statements-one-per-line)), and so does a `;` that the
+line rule ignores next to another `;`, as in
+`subgraph S[style:#x;]; A --> B; end ;;`: the `end` stays on the line, as below.
+
+[fixture: semicolons/closing-semicolon-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-after-style-space-kept-line-dropped] [fixture:
+semicolons/closing-semicolons-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-tab-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-before-statement-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-empty-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-comment-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-directive-line-after-kept-line-dropped]
+[fixture:
+semicolons/closing-semicolon-before-semicolon-line-after-kept-line-dropped]
+[fixture: semicolons/closing-semicolon-before-directive-after-kept-line-kept]
+[fixture: semicolons/closing-semicolon-before-statement-after-kept-line-kept]
+[fixture: semicolons/closing-semicolon-without-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-without-space-after-kept-line-dropped] [fixture:
+semicolons/closing-two-semicolons-adjacent-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-at-end-of-text-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-next-to-ignored-semicolon-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-kept-as-written]
+[fixture:
+semicolons/closing-semicolon-before-unclosed-directive-after-kept-line] [test:
+U+2028 after `end ;` of a subgraph on a kept line, then a statement, in a
+flowchart] [test: U+2028 after `end ;` of a subgraph on a kept line, then a line
+break, in a flowchart] [test: U+2028 after `end ;` of a subgraph on a kept line,
+then a comment, in a flowchart] [test: U+2028 after `end ;` of a subgraph on a
+kept line, then a directive, in a flowchart] [test: U+2028 after `end ;` of a
+subgraph on a kept line, then a second `;`, in a flowchart] [test: U+2028 after
+`end ;` of a subgraph on a kept line, then the end of the text, in a flowchart]
+[test: U+2029 after `end ;` of a subgraph on a kept line, then a statement, in a
+flowchart] [test: U+2029 after `end ;` of a subgraph on a kept line, then a line
+break, in a flowchart] [test: U+2029 after `end ;` of a subgraph on a kept line,
+then a comment, in a flowchart] [test: U+2029 after `end ;` of a subgraph on a
+kept line, then a directive, in a flowchart] [test: U+2029 after `end ;` of a
+subgraph on a kept line, then a second `;`, in a flowchart] [test: U+2029 after
+`end ;` of a subgraph on a kept line, then the end of the text, in a flowchart]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-closed-directive-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-unclosed-directive-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-comment-line-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-before-empty-line-kept-as-written]
+[fixture:
+semicolons/closing-semicolons-after-ignored-semicolon-at-end-of-text-kept-as-written]
+[test: U+2028 after `end ;;` of a subgraph with an ignored `;`, in a flowchart]
+[test: U+2029 after `end ;;` of a subgraph with an ignored `;`, in a flowchart]
+
 A `;` at the end of a statement is kept too when a directive follows it on the
 same line: without the `;`, the whitespace before the directive would be read as
 part of the statement.
