@@ -1909,9 +1909,9 @@ because changing it would change the diagram or the input would be rejected:
 
 - a backquoted name that is not closed, to the end of the text;
 
-- the spelling of the header, `classDiagram` or `classDiagram-v2`: 11.7.0 writes
-  another `aria-roledescription` and other marker ids for the one than for the
-  other (see
+- the spelling of the header, `classDiagram` or `classDiagram-v2`: one of the
+  versions that count writes another `aria-roledescription` and other marker ids
+  for the one than for the other (see
   [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
   [fixture: indentation/header-v2-kept]
