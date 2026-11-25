@@ -416,7 +416,12 @@ function layoutTitle(
   // draws the same text without it (docs/compatibility.md, Texts after a
   // keyword that are drawn the same).
   if (!keepsSeparator) {
-    trimTextAfterKeyword(source, atoms, [text.start, end], true)
+    trimTextAfterKeyword(
+      source,
+      atoms,
+      [text.start, end],
+      "collapsedBeforeEndingDirectives",
+    )
   }
   return {
     atoms,

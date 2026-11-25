@@ -321,6 +321,56 @@ connector の見出しのときも同じです。
 [fixture: names-and-headings/heading-nonentity-gap-before-kept-semicolons]
 [fixture: names-and-headings/heading-nonentity-gap-before-directive-and-kept-semicolons]
 
+同じことは、
+コメントでない項目が同じ行で後に続くためにプリンタが残す `;`
+の前でも成り立ちます。
+その項目は、ディレクティブか、コメントの末尾にある、
+行の規則が無視する `;` です。
+`flow Front#fin ;  %%{x}%%` は `flow Front#fin ; %%{x}%%`、
+`flow Front#fin ;  %% style:#x;` は `flow Front#fin ; %% style:#x;`
+と印字します。
+`flow Front#fin; %%{x}%%` は名前にエンティティ `#fin;` を含み、
+mermaid.js が拒否するためです。
+名前の末尾が `#` と 1 つ以上の単語文字のとき、
+`#` がどこにあってもエンティティになります（`Fr#ont`、`F#r#ont`、`Front #fin`、
+`Front#38`）。
+connector の見出しも、flow の中の flow も同じです。
+`;` の前の空白は、タブも含めて、書かれたまま印字します。
+`;` の後にコメントが続くとき、または何も続かないときは、ほかの名前の後と同じく、
+`;` とその前の空白を落とします。
+`flow Front#fin ;  %% c` は `flow Front#fin %% c` と印字します。
+`#` の後に単語文字がなければエンティティになりません。
+`flow Front# ;  %%{x}%%` は `flow Front#; %%{x}%%` と印字します。
+
+[fixture: names-and-headings/heading-entity-name-end-semicolon-directive-space-kept]
+[fixture: names-and-headings/heading-entity-name-middle-hash-semicolon-directive-space-kept]
+[fixture: names-and-headings/heading-entity-name-two-hashes-semicolon-directive-space-kept]
+[fixture: names-and-headings/heading-entity-name-number-semicolon-directive-space-kept]
+[fixture: names-and-headings/heading-entity-name-after-space-semicolon-directive-space-kept]
+[fixture: names-and-headings/connector-entity-name-end-semicolon-directive-space-kept]
+[fixture: names-and-headings/heading-nested-entity-name-end-semicolon-directive-space-kept]
+[fixture: names-and-headings/heading-entity-name-end-two-directives-semicolon-space-kept]
+[fixture: names-and-headings/heading-entity-name-end-semicolon-comment-dropped]
+[fixture: names-and-headings/heading-entity-name-end-directive-only]
+[fixture: names-and-headings/heading-entity-name-end-semicolon-alone-dropped]
+[fixture: names-and-headings/heading-hash-name-end-semicolon-directive-space-dropped]
+[fixture: names-and-headings/heading-plain-name-end-semicolon-directive-space-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-open-directive-kept]
+[fixture: names-and-headings/connector-entity-name-semicolon-directive-ignored-semicolon-kept]
+[fixture: names-and-headings/connector-entity-name-semicolon-comment-ignored-semicolon-kept]
+[fixture: names-and-headings/connector-entity-name-two-semicolons-directive-kept]
+[fixture: names-and-headings/connector-entity-name-semicolon-comment-line-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-two-comment-lines-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-empty-line-directive-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-whitespace-line-directive-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-directive-end-of-text-kept]
+[fixture: names-and-headings/connector-entity-name-semicolon-comment-end-of-text-dropped]
+[fixture: names-and-headings/connector-entity-name-semicolon-end-of-text-dropped]
+[test: agentflow: U+2028 between a semicolon that a directive follows and an entity-shaped name end]
+[test: agentflow: U+2029 between a semicolon that a directive follows and an entity-shaped name end]
+[test: agentflow: a tab between an entity-shaped name end and a semicolon that a directive follows]
+[test: agentflow: no-break space between an entity-shaped name end and a semicolon that a directive follows]
+
 `flow`、`connector`、`global` の後ろの空白は、
 空白やタブがいくつ書かれていても空白 1 つにします。
 キーワードが空白を 1 文字取り、残りは mermaid.js が名前から trim するからです。

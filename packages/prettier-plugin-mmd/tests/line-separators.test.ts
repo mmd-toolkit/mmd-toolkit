@@ -28005,6 +28005,33 @@ describe("a comment after the directives that end the title or the value of an a
   )
 })
 
+/** A separator before a comment or directive keeps a quoted box line as written (docs/treeview.md, Carried indentation). */
+const treeviewBoxLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "treeview: a quote in box mode, U+2028, and a comment before the next line of the box",
+    'treeView-beta\n"a"\u2028%% c\n─\n"b"\n',
+    'treeView-beta\n"a"\u2028%% c\n─\n"b"\n',
+  ],
+  [
+    "treeview: a quote in box mode, U+2029, and a directive before the next line of the box",
+    'treeView-beta\n"a"\u2029%%{x}%%\n─\n"b"\n',
+    'treeView-beta\n"a"\u2029%%{x}%%\n─\n"b"\n',
+  ],
+]
+
+describe("a treeView box line with a separator before a comment or directive", () => {
+  it.each(treeviewBoxLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
 /** Venn separators are characters inside values and whole diagram comments. */
 const vennExamples: readonly (readonly [string, string, string])[] = [
   [
@@ -37854,6 +37881,507 @@ describe("requirement color words with rejected tabs", () => {
     ["classDef", "requirementDiagram\nclassDef c fill:#F9F\tab\n"],
   ])("rejects a tab after the color of %s", async (_kind, input) => {
     await expect(format(input)).rejects.toThrow("Unexpected character")
+  })
+})
+
+/**
+ * Each example is an `accTitle:` or `accDescr:` line of a usecase diagram, or
+ * an ishikawa literal, that ends with a directive that holds a line break or a
+ * `;` and is followed by a whitespace character that no fixture file holds.
+ * The usecase value is trimmed of every whitespace character, so each of them
+ * after the last directive is a blank that is dropped, and the line is printed
+ * as it is without it; the ishikawa literal drops spaces and tabs only, and
+ * U+0085 and U+200B are no whitespace (docs/usecase.md, Accessibility lines;
+ * docs/ishikawa.md, Trailing whitespace).
+ */
+const directiveEndsLineAfterWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "usecase accTitle: U+00A0 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+1680 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u1680\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2000 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2000\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2001 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2001\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2002 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2002\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2003 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2003\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2004 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2004\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2005 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2005\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2006 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2006\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2007 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2007\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2008 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2008\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2009 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2009\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+200A after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u200a\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+202F after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u202f\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+205F after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u205f\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+3000 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u3000\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+FEFF after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\ufeff\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+000B after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u000b\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+000C after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\f\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: a space and U+00A0 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%% \u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 and a space after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u00a0 \nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: a tab and U+00A0 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\t\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 and U+3000 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u00a0\u3000\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+00A0 after a directive over lines",
+    "usecase-beta\naccDescr: T  b  %%{init: {\n}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accDescr: T b %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+3000 after a directive over lines",
+    "usecase-beta\naccDescr: T  b  %%{init: {\n}}%%\u3000\nactor A\n",
+    "usecase-beta\n  accDescr: T b %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 after a directive with a `;`",
+    "usecase-beta\naccTitle: T  %%{init: {;}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {;}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 after a directive over lines with a `;`",
+    "usecase-beta\naccTitle: T  %%{init: {\n;}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n;}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+3000 after a directive with a `;`",
+    "usecase-beta\naccDescr: T  b  %%{init: {;}}%%\u3000\nactor A\n",
+    "usecase-beta\n  accDescr: T b %%{init: {;}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 after two directives over lines that touch each other",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%%%{init: {\n}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%%%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+0085 after a directive over lines is no blank",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u0085\nactor A\n",
+    "usecase-beta\n  accTitle: T  %%{init: {\n}}%%\u0085\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+200B after a directive over lines is no blank",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u200b\nactor A\n",
+    "usecase-beta\n  accTitle: T  %%{init: {\n}}%%\u200b\n  actor A\n",
+  ],
+  [
+    "ishikawa: U+00A0 after a directive over lines stays",
+    "ishikawa\nP\n  A  b %%{init: {\n}}%%\u00a0\n",
+    "ishikawa\n  P\n    A  b %%{init: {\n}}%%\u00a0\n",
+  ],
+]
+
+describe("a text that ends with a directive over lines or with a `;` and a whitespace character", () => {
+  it.each(directiveEndsLineAfterWhitespaceExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * Each example is a treeView node whose last directive holds a line break or a
+ * `;` and is followed by a character that no fixture file holds. The name and
+ * the description drop the spaces and tabs at their end only, so a no-break
+ * space or a line separator after the directive is text, and a directive that
+ * holds a U+2028 or U+2029 holds no line break (docs/treeview.md, Trailing
+ * whitespace).
+ */
+const treeviewDirectiveEndsLineExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "treeview: spaces and tabs after a directive over lines with a CRLF",
+    "treeView-beta\r\nR  %%{init: {\r\n}}%% \t\r\n",
+    "treeView-beta\n  R %%{init: {\n}}%%\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive over lines stays",
+    "treeView-beta\nR  %%{init: {\n}}%%\u00a0\n",
+    "treeView-beta\n  R  %%{init: {\n}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive with a `;` stays",
+    "treeView-beta\nR  %%{init: {a;b}}%%\u00a0\n",
+    "treeView-beta\n  R  %%{init: {a;b}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive over lines stays after a description",
+    "treeView-beta\nR ## note  %%{init: {\n}}%%\u00a0\n",
+    "treeView-beta\n  R ## note  %%{init: {\n}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+2028 after a directive over lines stays",
+    "treeView-beta\nR  %%{init: {\n}}%%\u2028\n",
+    "treeView-beta\n  R  %%{init: {\n}}%%\u2028\n",
+  ],
+  [
+    "treeview: a directive that holds U+2028 is no directive over lines",
+    "treeView-beta\nR  %%{init: {\u2028}}%% \t\n",
+    "treeView-beta\n  R  %%{init: {\u2028}}%%\n",
+  ],
+  [
+    "treeview: a directive that holds U+2029 is no directive over lines",
+    "treeView-beta\nR  %%{init: {\u2029}}%% \t\n",
+    "treeView-beta\n  R  %%{init: {\u2029}}%%\n",
+  ],
+]
+
+describe("a treeView node that ends with a directive over lines or with a `;`", () => {
+  it.each(treeviewDirectiveEndsLineExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * Each example is the title of a Gantt chart with two directives between the
+ * keyword and the text, separated by whitespace, and a character that no
+ * fixture file holds: a U+2028 or U+2029 in the text, and a no-break space
+ * between the directives. The text with a line separator stays as written, and
+ * so does the whitespace around the no-break space, which is no space or tab
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ */
+const titleAfterSeparatedDirectivesExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "gantt title: U+2028 in the text after directives that whitespace separates",
+    "gantt\ntitle %%{x}%% %%{y}%% A\u2028  b\nsection S\n",
+    "gantt\n  title %%{x}%%%%{y}%%A\u2028  b\n  section S\n",
+  ],
+  [
+    "gantt title: U+2029 in the text after directives that whitespace separates",
+    "gantt\ntitle %%{x}%% %%{y}%% A  \u2029b\nsection S\n",
+    "gantt\n  title %%{x}%%%%{y}%%A  \u2029b\n  section S\n",
+  ],
+  [
+    "gantt title: a no-break space between two directives",
+    "gantt\ntitle %%{x}%%\u00a0%%{y}%% A  b\nsection S\n",
+    "gantt\n  title %%{x}%%\u00a0%%{y}%% A  b\n  section S\n",
+  ],
+]
+
+describe("the title of a Gantt chart after directives that whitespace separates", () => {
+  it.each(titleAfterSeparatedDirectivesExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * Each example is a line of a usecase diagram or an ishikawa literal whose text
+ * holds a U+2028 or U+2029, which no fixture file holds, before a last
+ * directive that spaces follow. The usecase line prints the last directive as
+ * the line without those spaces does, one space after the text; the ishikawa
+ * literal stays as written, as it does without them, and loses the spaces
+ * after the last directive only (docs/usecase.md, Direction and accessibility;
+ * docs/ishikawa.md, Trailing whitespace).
+ */
+const textWithSeparatorBeforeDirectiveExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "usecase accTitle: U+2028 in the text before the last directive",
+    "usecase-beta\naccTitle: A\u2028 b  %%{z}%%  \nactor A\n",
+    "usecase-beta\n  accTitle: A\u2028 b %%{z}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+2029 in the text before the last directive",
+    "usecase-beta\naccDescr: A  \u2029b  %%{z}%%  \nactor A\n",
+    "usecase-beta\n  accDescr: A  \u2029b %%{z}%%\n  actor A\n",
+  ],
+  [
+    "ishikawa: U+2028 in the literal before the last directive",
+    "ishikawa\nP\n  A\u2028 b  %%{z}%%  \n",
+    "ishikawa\n  P\n    A\u2028 b  %%{z}%%\n",
+  ],
+  [
+    "ishikawa: U+2029 in the literal before the last directive",
+    "ishikawa\nP\n  A  \u2029b  %%{z}%%  \n",
+    "ishikawa\n  P\n    A  \u2029b  %%{z}%%\n",
+  ],
+]
+
+describe("a text with a line separator before a last directive that spaces follow", () => {
+  it.each(textWithSeparatorBeforeDirectiveExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * Each example is the title of a diagram, or the `accDescription` of a C4
+ * diagram, whose text holds a U+2028 and ends with a directive. The text stays
+ * as written, so the gap before the last directive is printed as written where
+ * no whitespace follows that directive, and as one space where whitespace
+ * follows it (docs/compatibility.md, Texts after a keyword that are drawn the
+ * same).
+ */
+const directiveAfterSeparatorTextExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "Gantt title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    "gantt\ntitle A\u2028  b  %%{z}%%\nsection S\nA : a1, 2024-01-01, 1d\n",
+    "gantt\n  title A\u2028  b  %%{z}%%\n  section S\n    A : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "Gantt title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    "gantt\ntitle A\u2028  b  %%{z}%%  \nsection S\nA : a1, 2024-01-01, 1d\n",
+    "gantt\n  title A\u2028  b %%{z}%%\n  section S\n    A : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "journey title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    "journey\ntitle A\u2028  b  %%{z}%%\nsection S\nT: 5: Me\n",
+    "journey\n  title A\u2028  b  %%{z}%%\n  section S\n    T: 5: Me\n",
+  ],
+  [
+    "journey title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    "journey\ntitle A\u2028  b  %%{z}%%  \nsection S\nT: 5: Me\n",
+    "journey\n  title A\u2028  b %%{z}%%\n  section S\n    T: 5: Me\n",
+  ],
+  [
+    "timeline title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    "timeline\ntitle A\u2028  b  %%{z}%%\n2020 : e\n",
+    "timeline\n  title A\u2028  b  %%{z}%%\n  2020 : e\n",
+  ],
+  [
+    "timeline title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    "timeline\ntitle A\u2028  b  %%{z}%%  \n2020 : e\n",
+    "timeline\n  title A\u2028  b %%{z}%%\n  2020 : e\n",
+  ],
+  [
+    "sequence title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    "sequenceDiagram\ntitle A\u2028  b  %%{z}%%\nA->>B: hi\n",
+    "sequenceDiagram\n  title A\u2028  b  %%{z}%%\n  A ->> B: hi\n",
+  ],
+  [
+    "sequence title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    "sequenceDiagram\ntitle A\u2028  b  %%{z}%%  \nA->>B: hi\n",
+    "sequenceDiagram\n  title A\u2028  b %%{z}%%\n  A ->> B: hi\n",
+  ],
+  [
+    "Venn title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    "venn-beta\nset A\ntitle A\u2028  b  %%{z}%%\n",
+    "venn-beta\n  set A\n  title A\u2028  b  %%{z}%%\n",
+  ],
+  [
+    "Venn title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    "venn-beta\nset A\ntitle A\u2028  b  %%{z}%%  \n",
+    "venn-beta\n  set A\n  title A\u2028  b %%{z}%%\n",
+  ],
+  [
+    "C4 title with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    'C4Context\ntitle A\u2028  b  %%{z}%%\nPerson(a,"A")\n',
+    'C4Context\n  title A\u2028  b  %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 title with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    'C4Context\ntitle A\u2028  b  %%{z}%%  \nPerson(a,"A")\n',
+    'C4Context\n  title A\u2028  b %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 accDescription with a U+2028 in its text and a directive at its end, no blanks after the directive",
+    'C4Context\naccDescription A\u2028  b  %%{z}%%\nPerson(a,"A")\n',
+    'C4Context\n  accDescription A\u2028  b  %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 accDescription with a U+2028 in its text and a directive at its end, two spaces after the directive",
+    'C4Context\naccDescription A\u2028  b  %%{z}%%  \nPerson(a,"A")\n',
+    'C4Context\n  accDescription A\u2028  b %%{z}%%\n  Person(a, "A")\n',
+  ],
+]
+
+/** The same examples with a U+2029 where each one has a U+2028. */
+const directiveAfterParagraphSeparatorTextExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "Gantt title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "gantt\ntitle A\u2029  b  %%{z}%%\nsection S\nA : a1, 2024-01-01, 1d\n",
+    "gantt\n  title A\u2029  b  %%{z}%%\n  section S\n    A : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "Gantt title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "gantt\ntitle A\u2029  b  %%{z}%%  \nsection S\nA : a1, 2024-01-01, 1d\n",
+    "gantt\n  title A\u2029  b %%{z}%%\n  section S\n    A : a1, 2024-01-01, 1d\n",
+  ],
+  [
+    "journey title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "journey\ntitle A\u2029  b  %%{z}%%\nsection S\nT: 5: Me\n",
+    "journey\n  title A\u2029  b  %%{z}%%\n  section S\n    T: 5: Me\n",
+  ],
+  [
+    "journey title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "journey\ntitle A\u2029  b  %%{z}%%  \nsection S\nT: 5: Me\n",
+    "journey\n  title A\u2029  b %%{z}%%\n  section S\n    T: 5: Me\n",
+  ],
+  [
+    "timeline title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "timeline\ntitle A\u2029  b  %%{z}%%\n2020 : e\n",
+    "timeline\n  title A\u2029  b  %%{z}%%\n  2020 : e\n",
+  ],
+  [
+    "timeline title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "timeline\ntitle A\u2029  b  %%{z}%%  \n2020 : e\n",
+    "timeline\n  title A\u2029  b %%{z}%%\n  2020 : e\n",
+  ],
+  [
+    "sequence title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "sequenceDiagram\ntitle A\u2029  b  %%{z}%%\nA->>B: hi\n",
+    "sequenceDiagram\n  title A\u2029  b  %%{z}%%\n  A ->> B: hi\n",
+  ],
+  [
+    "sequence title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "sequenceDiagram\ntitle A\u2029  b  %%{z}%%  \nA->>B: hi\n",
+    "sequenceDiagram\n  title A\u2029  b %%{z}%%\n  A ->> B: hi\n",
+  ],
+  [
+    "Venn title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    "venn-beta\nset A\ntitle A\u2029  b  %%{z}%%\n",
+    "venn-beta\n  set A\n  title A\u2029  b  %%{z}%%\n",
+  ],
+  [
+    "Venn title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    "venn-beta\nset A\ntitle A\u2029  b  %%{z}%%  \n",
+    "venn-beta\n  set A\n  title A\u2029  b %%{z}%%\n",
+  ],
+  [
+    "C4 title with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    'C4Context\ntitle A\u2029  b  %%{z}%%\nPerson(a,"A")\n',
+    'C4Context\n  title A\u2029  b  %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 title with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    'C4Context\ntitle A\u2029  b  %%{z}%%  \nPerson(a,"A")\n',
+    'C4Context\n  title A\u2029  b %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 accDescription with a U+2029 in its text and a directive at its end, no blanks after the directive",
+    'C4Context\naccDescription A\u2029  b  %%{z}%%\nPerson(a,"A")\n',
+    'C4Context\n  accDescription A\u2029  b  %%{z}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "C4 accDescription with a U+2029 in its text and a directive at its end, two spaces after the directive",
+    'C4Context\naccDescription A\u2029  b  %%{z}%%  \nPerson(a,"A")\n',
+    'C4Context\n  accDescription A\u2029  b %%{z}%%\n  Person(a, "A")\n',
+  ],
+]
+
+describe("a title that holds a line separator and ends with a directive", () => {
+  it.each([
+    ...directiveAfterSeparatorTextExamples,
+    ...directiveAfterParagraphSeparatorTextExamples,
+  ])("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
   })
 })
 

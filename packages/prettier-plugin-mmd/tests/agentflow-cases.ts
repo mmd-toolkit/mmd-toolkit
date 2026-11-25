@@ -133,6 +133,27 @@ export const agentflowCases: readonly AgentflowCase[] = [
     output: "agentflow-beta TB\n  connector F  \u2029\n",
   },
   {
+    name: "agentflow: a tab between an entity-shaped name end and a semicolon that a directive follows",
+    input: "agentflow-beta TB\nflow Fr#ont\t;  %%{x}%%\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Fr#ont\t; %%{x}%%\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: no-break space between an entity-shaped name end and a semicolon that a directive follows",
+    input: "agentflow-beta TB\nflow Fr#ont\u00a0;  %%{x}%%\nA --> B\nend\n",
+    output:
+      "agentflow-beta TB\n  flow Fr#ont\u00a0; %%{x}%%\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 between a semicolon that a directive follows and an entity-shaped name end",
+    input: "agentflow-beta TB\nconnector Front#fin ;\u2028%%{x}%%\n",
+    output: "agentflow-beta TB\n  connector Front#fin ; %%{x}%%\n",
+  },
+  {
+    name: "agentflow: U+2029 between a semicolon that a directive follows and an entity-shaped name end",
+    input: "agentflow-beta TB\nconnector Front#fin ;\u2029%%{x}%%\n",
+    output: "agentflow-beta TB\n  connector Front#fin ; %%{x}%%\n",
+  },
+  {
     name: "agentflow: a no-break space before a comment that ends the label of a vertex",
     input: "agentflow-beta TB\nA[x\u00a0%% c\n]\n",
     output: 'agentflow-beta TB\n  A["x" %% c\n    ]\n',
