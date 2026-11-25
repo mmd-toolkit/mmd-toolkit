@@ -932,8 +932,8 @@ box モードでは、コメントの前、
 `"a" %% c`、`─`、`"b"` は `"a"%% c`、`│`、`└── "b"` と印字し、`├── "a" %% c`、
 `│`、`"b"` は `├── "a"%% c`、`│`、`└── "b"` と印字します。
 クラスやアイコンの後、コメントの前のタブや空白 2 つ、
-ディレクティブとコメントが並ぶ形、間に空行、コメント行、字下げしたコメント行、
-ディレクティブの行がある形も同じです。
+ディレクティブとコメントが並ぶ形、間に空行、1 つ以上のコメント行、
+字下げしたコメント行、ディレクティブの行がある形も同じです。
 `─` の行にコメントが続くと、その行は元の場所に残り、
 枝の `└──` が `"b"` ではなく `─` の前に付きます。
 `"a" %% c`、`─ %% n`、`"b"` は `"a"%% c`、`└── ─ %% n`、`"b"` と印字します。
@@ -947,6 +947,11 @@ mermaid.js はディレクティブを除くので、その空白は引用符の
 `├── "a" %%{x}%% %% c`、`─`、`"b"` は `├── "a"%%{x}%%%% c`、`│`、
 `└── "b"` と印字し、
 ディレクティブが 2 つあるときは `├── "a"%%{x}%%%%{y}%%%% c` と印字します。
+テキストを終えるノード、`End` という名前のノード、`}` という名前のノードにも、
+同じように枝を付けます。
+行の規則が無視する `;` を含む行は、続く `─` の行と一緒に、書かれたまま残します。
+ディレクティブとコメントでテキストが終わり、その後にノードがない行も同じです。
+`├── "a" %%{x}%%` と `%% c` は `└── "a" %%{x}%%` と `%% c` と印字します。
 
 [fixture: treeview/carried-indentation/box-redraw-run-before-comment-and-decoration]
 [fixture: treeview/carried-indentation/box-redraw-run-before-comment-on-branch-line]
@@ -966,6 +971,13 @@ mermaid.js はディレクティブを除くので、その空白は引用符の
 [fixture: treeview/carried-indentation/box-redraw-run-before-comment-decoration-comment-line]
 [fixture: treeview/carried-indentation/box-redraw-run-before-directive-comment-comment-line]
 [fixture: treeview/carried-indentation/box-redraw-run-before-directives-comment-on-branch-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-two-comment-lines]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-end-of-text]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-node-named-end]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-node-named-brace]
+[fixture: treeview/carried-indentation/box-redraw-run-before-ignored-semicolon-comment-kept]
+[fixture: treeview/carried-indentation/box-redraw-run-before-two-ignored-semicolons-comment-kept]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directive-comment-line-at-end-kept]
 
 ### Tabs
 
