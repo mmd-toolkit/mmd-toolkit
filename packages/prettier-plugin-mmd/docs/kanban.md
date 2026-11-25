@@ -585,10 +585,13 @@ Apply the movement and safety conditions of
 shallowest text one level inside its node. A section's body is two levels below
 the header, an item's three; nested YAML keeps its relative indentation. A
 separate `}` aligns with the node, even if it had no margin; a closer after text
-stays on that line. A `}` after the text of a literal or folded scalar (`|`,
-`|-`, `|+`, `>`, `>-`, and `>+`) stays on its line: on a line of its own it
-changes the end of the text of the scalar in the Db, and formatting does not
-change the Db. The drawing is the same, but no kind of exception that
+stays on that line. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the depth of that separate closing `}` when the block opens on the node's
+line: the closing line stands at the level of the opening line, as Prettier
+prints the closing line of a block. A `}` after the text of a literal or folded
+scalar (`|`, `|-`, `|+`, `>`, `>-`, and `>+`) stays on its line: on a line of
+its own it changes the end of the text of the scalar in the Db, and formatting
+does not change the Db. The drawing is the same, but no kind of exception that
 [How the printed form is decided](./printed-form.md#the-check-and-formatting-that-changes-the-db)
 defines covers that gap. The formatter does not look at the kind of scalar, so a
 `}` after the text of a plain scalar stays too.

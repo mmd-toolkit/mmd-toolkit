@@ -2786,11 +2786,16 @@ treeview、wardley は、文と同じ段に置きます。
 [test: architecture/description-blocks/keyword-u2028-directive-then-spaces-and-brace-on-line]
 
 コメント・ディレクティブだけの内側を保ちます。
-規則 1 は、ブロックの中の行の印を挙げていません。
-コメント行だけのブロックは、規則 2 が決めます。
+規則 1 は、説明ブロックの境界にあるコメント行の段を決めません。
+コメント行だけのブロックでは、規則 2 が境界のコメント行の段を決めます。
 [flowchart](./flowchart.ja.md#複数行の値)は、
-本文のないブロックのコメント行をそのまま残し、ブロックの内側に 1 段深く置いて、
-`}` を `accDescr` と同じ段に置きます。
+本文のないブロックのコメント行をそのまま残し、
+ブロックの内側に 1 段深く置きます。
+`}` は `accDescr` と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+開始の `{` が文と同じ行にある場合に、
+Prettier が ブロックの閉じ行を開始行と同じ段に印字するのと同じく、
+この閉じ行の段を与えます。
 ディレクティブのあるブロックの内側は、どの規則も与えません。
 [flowchart](./flowchart.ja.md#複数行の値)、
 [xychart](./xychart.ja.md#空の説明ブロック)、
@@ -2807,7 +2812,7 @@ Db で LF 後の字下げが取り除かれるためです。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
-説明ブロックの行の段と、独立した閉じ括弧の位置は、規則 2 が与えます。
+説明ブロックの本文の行と境界のコメント行の段は、規則 2 が与えます。
 flowchart、sequence、state、gantt、journey、timeline、pie、radar のそれぞれで、
 フォーマッタを走らせると、
 ブロックのテキスト行とコメント行を文より 1 段内側に置き、
@@ -2826,6 +2831,10 @@ flowchart、sequence、state、gantt、journey、timeline、pie、radar のそ�
 を参照してください。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 独立する閉じは文の位置に揃え、最初の閉じ波括弧が値を終える規則も保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+開始の `{` が文と同じ行にある場合に、
+Prettier が ブロックの閉じ行を開始行と同じ段に印字するのと同じく、
+この閉じ行の段を与えます。
 
 [fixture: architecture/description-blocks/asymmetric]
 [fixture: architecture/description-blocks/directive-line-between-keyword-and-brace]

@@ -19,10 +19,13 @@ fixture の置き方と確かめ方は、
 ### 字下げ
 
 ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
-ブロックの文と、`box` の参加者は、それを開く行より 1 段深く置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、ブロックの文と、
+`box` の参加者は、それを開く行より 1 段深く置き、`end` は、
+その行と同じ段に置きます。
+Prettier が ブロックの中の行をそう印字するためです。
 ブロックは、`loop`、`alt`、`opt`、`par`、`par_over`、`critical`、`break`、
 `rect` です。
-`else`、`and`、`option`、`end` は、その行と同じ段に置きます。
+`else`、`and`、`option` は、その行と同じ段に置きます。
 
 [fixture: indentation/blocks] [fixture: indentation/sections]
 [fixture: indentation/other-blocks-kept]
@@ -1201,6 +1204,9 @@ sequenceDiagram
 
 行に単独のコメント（`%%`、`#`、`%`）は、周りの文と同じ段に置き、
 本文は書かれたまま残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中で同じ段の行の間にある単独のコメント行は、その行と同じ段に置きます。
+Prettier が ブロックの中のコメント行をそう印字するためです。
 
 [fixture: comments/kept]
 [corpus fixture: sequence/lex-single-percent-comment-line]
@@ -1696,8 +1702,12 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 ### ディレクティブ
 
-flowchart と同じです。
 行に単独のディレクティブは周りの文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中で同じ段の行の間にある単独のディレクティブ行は、
+その行と同じ段に置きます。
+Prettier が ブロックの中のコメント行をそう印字するためです。
+それ以外の位置では、flowchart と同じです。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
@@ -1878,10 +1888,13 @@ sequenceDiagram
 
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
-`accDescr { ... }` の本文行は文より 1 段深くそろえ、
-独立した `}` は文と同じ段に置きます。
+`accDescr { ... }` の本文行は文より 1 段深くそろえます。
 [flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
 Mermaid が説明からこの字下げを除くためです。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: multi-line-values/description-and-data-indented]
 [fixture: multi-line-values/accdescr-block-closing-brace-after-text]
@@ -1889,8 +1902,11 @@ Mermaid が説明からこの字下げを除くためです。
 [fixture: multi-line-values/data-block-in-block-indented]
 
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
-そのコメント行は、文の中のコメント行と同じく `accDescr` より 1 段深く置き、
-`}` は `accDescr` と同じ段に置きます。
+そのコメント行は、文の中のコメント行と同じく `accDescr` より 1 段深く置きます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: multi-line-values/accdescr-block-comment-only]
 [fixture: multi-line-values/accdescr-block-without-text-kept]
@@ -1907,6 +1923,9 @@ participant と actor のデータブロックには、
 [データブロック](./flowchart.ja.md#データブロック)を適用します。
 その行を文の 1 段内側に動かし、単独行の `}` は文の段に揃えます。
 本文の後の閉じ括弧はその行と一緒に動かします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、ブロックが文の行で開くとき、
+その独立した `}` を開く行と同じ段に置きます。
+Prettier が ブロックを閉じる行を、開く行と同じ段に印字する形です。
 トップレベルと `loop` 内で適用しますが、`useTabs` のときは、
 文を書かれたまま印字します（詳しくは、
 [データブロック](./flowchart.ja.md#データブロック)を参照）。

@@ -73,15 +73,18 @@ agentflow-beta
 
 ### Indentation
 
-Reuse [Indentation](./flowchart.md#indentation) for the same reason: indentation
-is set from the AST, while authored columns do not determine membership. Use one
-configured step below the header and each flow/global, align end with its
-opener, and give connectors no body. `useTabs` uses one tab per level. Agentflow
-uses the shared significant indentation width: even with `tabWidth: 0`, each
-body step is at least one space. Indented lines such as `accTitle: direction LR`
-are direction statements; moving them to column one would change the Db or
-reject a style-prefixed direction line. Non-direction lines whose reading
-depends on their columns keep their written indentation under Direction.
+Indentation is set from the AST, while authored columns do not determine
+membership. Use one configured step below the header, as under
+[Indentation](./flowchart.md#indentation).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+inside each flow/global one configured step below its opener and end at the
+level of its opener, as Prettier prints the lines inside a block. Give
+connectors no body. `useTabs` uses one tab per level. Agentflow uses the shared
+significant indentation width: even with `tabWidth: 0`, each body step is at
+least one space. Indented lines such as `accTitle: direction LR` are direction
+statements; moving them to column one would change the Db or reject a
+style-prefixed direction line. Non-direction lines whose reading depends on
+their columns keep their written indentation under Direction.
 
 [fixture: indentation/indent-direction-unsafe] [fixture:
 indentation/indent-nested] [fixture: indentation/indent-tabs] [fixture:
@@ -954,7 +957,10 @@ For a block whose opener is immediately followed by a newline, move all body
 lines by the same number of ASCII spaces so the shallowest text is one level
 inside the statement, including in a `flow` body. Nested YAML keeps its relative
 indentation; a separate `}` aligns with the statement, and a closer after text
-moves with that line.
+moves with that line. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the depth of that separate closing `}` when the block opens on the
+statement's line: the closing line stands at the level of the opening line, as
+Prettier prints the closing line of a block.
 
 [fixture: metadata-blocks/zero-and-shallow] [fixture:
 metadata-blocks/deep-nested-yaml] [fixture: metadata-blocks/closing-after-text]
@@ -981,8 +987,9 @@ The header of a `flow` or `global` container moves its block in the same way.
 
 With `useTabs` the header is not printed as written, unlike a statement: the
 `end` of the container stands at the indentation that the printer gives the
-header, so the header takes it, and the lines of its block move with it, as
-without `useTabs`.
+header under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), as
+Prettier prints the lines inside a block, so the header takes it, and the lines
+of its block move with it, as without `useTabs`.
 
 [fixture: metadata-blocks/use-tabs-container-header-indented]
 
@@ -1203,8 +1210,11 @@ comment are removed as well.
 [fixture: comments/repeated-separators-before-comment] [fixture:
 comments/comment-looking-values] [fixture: comments/comments-align]
 
-Reuse [Comments](./flowchart.md#comments) for the same reason: align standalone
-comments with neighbouring statements and retain the author's complete text,
+Align standalone comments with neighbouring statements.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line between lines of the same depth inside a block at their level, as
+Prettier prints a comment line inside a block. At other positions follow
+[Comments](./flowchart.md#comments). Retain the author's complete text,
 including trailing spaces, except that the spaces and tabs at the end of a
 comment after a statement are dropped where the comment holds a `;` (`A %% c;  `
 is printed `A %% c;`) and stay where it holds none.
@@ -1251,13 +1261,17 @@ agentflow-beta TB
 ### Directives
 
 Reuse [Directives](./flowchart.md#directives) for the same reason: removal
-supplies no separator. Keep contents, order and continuation columns, align
-standalone directives, and place a directive within a printed line as under
-[Directives](./flowchart.md#directives). A directive after a header separator
-moves into the body with its following statement, keeping whether they touch,
-just as in flowchart: the Db is the same, and no reason specific to Agentflow
-calls for attaching it to the header instead. A line already kept under Kept
-lines stays together.
+supplies no separator. Keep contents, order and continuation columns. Align
+standalone directives.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line between lines of the same depth inside a block at their level, as
+Prettier prints a comment line inside a block. At other positions follow
+[Directives](./flowchart.md#directives), and place a directive within a printed
+line as under [Directives](./flowchart.md#directives). A directive after a
+header separator moves into the body with its following statement, keeping
+whether they touch, just as in flowchart: the Db is the same, and no reason
+specific to Agentflow calls for attaching it to the header instead. A line
+already kept under Kept lines stays together.
 
 [fixture: directives/header-directive-before-body] [fixture:
 directives/header-directive-touching-body] [fixture:
@@ -1521,7 +1535,10 @@ the members of a later flow.
 [fixture: accessibility/global-description-membership-kept]
 
 A closed description brace on its own line aligns with `accDescr`, whether
-written at column zero or indented.
+written at column zero or indented. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: accessibility/block-close-column-zero] [fixture:
 accessibility/block-close-indented] [fixture:

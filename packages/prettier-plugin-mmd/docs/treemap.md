@@ -954,10 +954,13 @@ Join plain opener whitespace, keep comment/directive contents and their
 boundaries, and align body lines one step inside the statement while retaining
 internal blank lines. Mermaid discards indentation after LF from the
 description. The body uses the configured indentation, including tabs and the
-positive minimum step at width zero. Align a separate opener or closer with its
-statement. The first `}` still closes the block. A block that was not written
-indented is printed at the start of its line, with its body one step inside it
-(see [Title](#title)).
+positive minimum step at width zero. Align a separate opener with its statement.
+A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. The first `}`
+still closes the block. A block that was not written indented is printed at the
+start of its line, with its body one step inside it (see [Title](#title)).
 
 [fixture: treemap/description-blocks/block-touching-with-text-fixed] [fixture:
 treemap/description-blocks/empty]

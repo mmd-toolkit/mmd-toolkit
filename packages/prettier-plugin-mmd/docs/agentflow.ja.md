@@ -79,9 +79,11 @@ agentflow-beta
 
 ### Indentation
 
-[字下げ](./flowchart.ja.md#字下げ)と同じ規則と理由です。
 字下げは木から決め、元の桁位置では所属を決めません。
-見出しとflow/globalの本文を1段深くし、endを開始語に揃えます。
+見出しの本文を、[字下げ](./flowchart.ja.md#字下げ)と同じく1段深くします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+flow/globalの本文を開始語より1段深くし、endを開始語に揃えます。
+Prettier が ブロックの中の行をそう印字するためです。
 connectorには本文がありません。
 `useTabs`では1段をタブ1つにします。
 agentflowは共有の意味を持つ字下げ幅を使い、
@@ -978,6 +980,9 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 `flow` の本文でも同じです。
 入れ子の YAML の字下げの差を保ち、単独行の `}` は文の段に揃え、
 本文の後の閉じ括弧はその行と一緒に動かします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、ブロックが文の行で開くとき、
+その独立した `}` を開く行と同じ段に置きます。
+Prettier が ブロックを閉じる行を、開く行と同じ段に印字する形です。
 
 [fixture: metadata-blocks/zero-and-shallow]
 [fixture: metadata-blocks/deep-nested-yaml]
@@ -1006,8 +1011,10 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 [fixture: metadata-blocks/container-header]
 
 `useTabs` では、文と違い、見出しを書かれたまま印字しません。
-コンテナの `end` は、プリンタが見出しに与える字下げに置かれるので、
-見出しもその字下げにし、`useTabs` でないときと同じく、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、コンテナの `end` は、
+プリンタが見出しに与える字下げに置かれます。
+Prettier が ブロックの中の行をそう印字するためです。
+そのため、見出しもその字下げにし、`useTabs` でないときと同じく、
 ブロックの行も見出しと一緒に動かします。
 
 [fixture: metadata-blocks/use-tabs-container-header-indented]
@@ -1226,8 +1233,11 @@ agentflow-beta TB
 [fixture: comments/repeated-separators-before-comment]
 [fixture: comments/comment-looking-values] [fixture: comments/comments-align]
 
-[コメント](./flowchart.ja.md#コメント)と同じ理由で、
 独立したコメントを近隣の文に揃え、著者の全文と末尾空白を保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中で同じ段の行の間にある単独のコメント行は、その行と同じ段に置きます。
+Prettier が ブロックの中のコメント行をそう印字するためです。
+それ以外の位置では、[コメント](./flowchart.ja.md#コメント)と同じ理由です。
 ただし、文の後ろのコメントは、
 `;` を含む場合にだけ末尾の空白とタブを落とします（`A %% c;  ` は `A %% c;`
 と印字します）。
@@ -1275,7 +1285,14 @@ agentflow-beta TB
 
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)と同じ理由です。
 除去で区切りが生まれないため、内容、順序、後続行の桁位置を保ちます。
-独立したディレクティブを揃え、同じ印字行の中のディレクティブは、
+独立したディレクティブを揃えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中で同じ段の行の間にある単独のディレクティブ行は、
+その行と同じ段に置きます。
+Prettier が ブロックの中のコメント行をそう印字するためです。
+それ以外の位置では、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)に従います。
+同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 見出しの区切りの後のディレクティブは、後続文との接触の有無を保ち、
 flowchartと同じく本文へ移します。
@@ -1550,6 +1567,10 @@ global 本文の原文を変えると、後続の flow のメンバーが変わ�
 [fixture: accessibility/global-description-membership-kept]
 
 単独行の閉じ括弧は、0桁目でも字下げされていても`accDescr`に揃えます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: accessibility/block-close-column-zero]
 [fixture: accessibility/block-close-indented]

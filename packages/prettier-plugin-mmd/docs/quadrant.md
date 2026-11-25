@@ -691,9 +691,12 @@ A block on one line follows
 [fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 
 In a block with a text over several lines, indent the body one level inside the
-statement and align a separate `}` with the statement: mermaid.js discards
-indentation after LF from the description. A block that is not closed makes the
-input rejected, so it is not printed.
+statement: mermaid.js discards indentation after LF from the description. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. A block that
+is not closed makes the input rejected, so it is not printed.
 
 [fixture: titles-and-accessibility-statements/block-lines-kept] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]

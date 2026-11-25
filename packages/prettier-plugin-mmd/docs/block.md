@@ -21,19 +21,18 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header, and the
-statements of a composite one level deeper than its `block:` line, with `end` at
-the level of `block:`. A level is what Prettier's `useTabs` and `tabWidth`
-options say: two spaces by default. The indentation written in the input is not
-kept: whitespace at the start of a line is nothing to mermaid.js, so the printer
-chooses it from the structure alone, and every text has one form. The nesting
-shows where a composite starts and ends, which `block:` and `end` alone would
-not once composites nest deeply, and it is how the documentation of mermaid.js
-writes them, as the other diagrams nest their blocks (see
-[Indentation](./flowchart.md#indentation) in the flowchart rules). The header,
-and a comment line before it, stand at the first column, also where whitespace
-was written before them. A gap of a kind that Prettier does not have takes the
-form that the other diagram types print for it
+The statements after the header stand one level deeper than the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+of a composite one level deeper than its `block:` line and `end` at the level of
+`block:`, as Prettier prints the lines inside a block. A level is what
+Prettier's `useTabs` and `tabWidth` options say: two spaces by default. The
+indentation written in the input is not kept: whitespace at the start of a line
+is nothing to mermaid.js, so the printer chooses it from the structure alone,
+and every text has one form. The nesting shows where a composite starts and
+ends, which `block:` and `end` alone would not once composites nest deeply. The
+header, and a comment line before it, stand at the first column, also where
+whitespace was written before them. A gap of a kind that Prettier does not have
+takes the form that the other diagram types print for it
 ([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)), and
 every diagram type prints its header and the comment lines before it at the
 first column: the Indentation of [Gantt](./gantt.md#indentation) and of
@@ -101,6 +100,8 @@ the head, and the statement after `end`, go to lines of their own, also where
 the composite was written on one line (`block:G a b end`), so that every
 composite is laid out in the same way and the indentation shows its body. `end`
 stands on a line of its own, at the level of its `block:`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts `end` at the
+level of its `block:` line, as Prettier prints the lines inside a block.
 
 [fixture: composites/space-after-the-colon] [fixture:
 composites/tab-after-the-colon] [fixture:
@@ -1282,9 +1283,10 @@ A comment line starts with `%%` at the start of a line, after whitespace, and is
 removed before the lexer reads the text. A comment line on a line of its own
 stands at the level of the statement after it, and its text and its mark are
 kept as written: a comment line after the last statement stays after it, and one
-before the header stands at the first column. Rule 1 gives no form here, since
-the start of a line is no place that its table names
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+before the header stands at the first column.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line between lines of the same depth inside a block at their level, as
+Prettier prints a comment line inside a block. For the other positions,
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
 a comment line at the level of the statements around it. A comment line before
@@ -1360,6 +1362,9 @@ the reason: mermaid.js removes a directive before it reads the text, so the
 whitespace that remains is that of the two sides together. A directive on a line
 of its own stands at the level of the statement after it, and one before the
 header stands at the first column, as a comment line does.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line between lines of the same depth inside a block at their level, as
+Prettier prints a comment line inside a block.
 
 [fixture: directives/directive-before-the-header] [fixture:
 directives/directive-line-at-the-level-of-the-next-statement] [fixture:
@@ -1444,14 +1449,16 @@ keyword from its body: `accDescr{  }` becomes `accDescr {}`.
 Unicode and tab interiors]
 
 A block with a directive or comment line keeps its contents and line breaks,
-with standalone trivia one level inside and its closer at statement level. The
-start of a line is no place of rule 1, so
+with standalone trivia one level inside and its closer at statement level.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block. Rule 1 does not
+decide the depth of these standalone trivia lines at a block boundary, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [pie](./pie.md#description-blocks),
+decides their depth, as [pie](./pie.md#description-blocks),
 [sequence](./sequence.md#multi-line-values), and
 [info](./info.md#description-blocks) stand a comment or directive line of a
-block on a line of its own one level inside and its closer at the level of its
-statement.
+block on a line of its own one level inside.
 
 [fixture: empty-description-blocks/trivia-continuations]
 

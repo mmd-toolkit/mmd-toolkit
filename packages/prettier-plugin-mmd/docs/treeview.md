@@ -2322,8 +2322,12 @@ description-blocks/block-ignored-semicolon-interior]
 For blocks that keep their braces, put one space between `accDescr` and `{`,
 even when originally touching, to distinguish the keyword from its body. Join
 plain opener whitespace, align ordinary body lines one step inside the
-statement, preserve trivia contents, and align separate closers with the
-statement. Rule 1 names no mark for the indentation of a line inside a block, so
+statement, and preserve trivia contents. A separate `}` aligns with its
+statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
+depth when the `{` stands on the `accDescr` line: it puts the closing line at
+the level of the opening line, as Prettier prints the closing line of a block.
+The lines of the description's body text are outside the "Lines inside a block"
+row of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: in indentation mode, [flowchart](./flowchart.md#multi-line-values),
 [class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
@@ -2336,8 +2340,11 @@ plain physical line can make box syntax reject it. Value-owned box geometry
 still keeps its complete brace span. The first effective `}` remains the closer.
 Unsafe removal follows Branch prefixes, including common-value tabs. A sole mode
 selector in the opener gap keeps just that gap, as described in Decorations. The
-whitespace before the `}` is no text, so the `}` stays aligned with the
-statement in every pass, also after a comment line.
+whitespace before the `}` is no text. The `}` stays aligned with the statement
+in every pass, also after a comment line. A separate `}` aligns with its
+statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
+depth when the `{` stands on the `accDescr` line: it puts the closing line at
+the level of the opening line, as Prettier prints the closing line of a block.
 
 [fixture: treeview/description-blocks/block-comment-line-after-the-text]
 

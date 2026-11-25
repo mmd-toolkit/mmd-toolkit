@@ -27,8 +27,9 @@ period と、そのほかのすべての文です。
 `section` 自身は 1 段目です。
 timeline の木は平らで、文のまとまりを表す block を持たないので、文の段は、
 ほかの文の中での位置で決まります。
-これは journey と Gantt 図の規則で、section の period は、
-mermaid.js の文書の書き方と同じく、section の中に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+section の period とそのほかのすべての文を `section` の行より 1 段深く置きます。
+Prettier が ブロックの中の行を印字する形です。
 
 [fixture: indentation/sections-and-periods-nested]
 [fixture: indentation/statements-before-the-first-section]
@@ -53,8 +54,11 @@ mermaid.js の文書の書き方と同じく、section の中に置きます。
 [fixture: indentation/header-leading-whitespace]
 
 `accDescr` ブロックの後ろのテキスト行は、その文より 1 段深く置きます。
-ブロックを閉じる `}` は、
-その文の段に置きます（[複数行の値](#複数行の値)を参照）。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+[複数行の値](#複数行の値)を参照してください。
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -1051,8 +1055,13 @@ journey と同じ形です。
 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-inner-runs-collapsed]
 
-本文が複数行のブロックでは、後ろのテキスト行はその文より 1 段深く置き、
-独立した `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
+本文が複数行のブロックでは、
+後ろのテキスト行はその文より 1
+段深く置きます（[複数行の値](#複数行の値)を参照）。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1410,8 +1419,11 @@ timeline
 period の前のコメントは period の段に置きます。
 テキストの末尾にあるときは、最後の文の段に置きます。
 これらは journey と同じ規則です。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
+section の中の同じ深さの 2 つの文の間の独立したコメント行は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+それらの文と同じ段に置きます。
+Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
+ほかの独立行の位置は、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [gantt](./gantt.ja.md#コメント)、[block](./block.ja.md#コメント)、
 [quadrant](./quadrant.ja.md#コメント)も、
@@ -1514,7 +1526,12 @@ timeline
 
 ### 指令
 
-単独の行にある指令は、journey と同じく、後ろの文と同じ段に置きます。
+単独の行にある指令は、後ろの文と同じ段に置きます。
+section の中の同じ深さの 2 つの文の間の独立したディレクティブ行は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+それらの文と同じ段に置きます。
+Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
+それ以外の独立した行では、journey と同じ理由です。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。

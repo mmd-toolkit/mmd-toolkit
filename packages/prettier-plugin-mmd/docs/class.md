@@ -28,6 +28,9 @@ The `{` of a namespace stands on the line of its name, after one space, as the
 statements of the namespace stand one level deeper than that line, and its `}`
 stands on a line of its own at the level of that line, also when the namespace
 was written on one line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+of the namespace one level deeper than the line that opens it and its closing
+`}` at that line's level, as Prettier prints the lines inside a block.
 
 [fixture: indentation/namespaces] [fixture:
 indentation/namespace-brace-after-one-space] [fixture:
@@ -101,6 +104,9 @@ space, as the documentation of mermaid.js writes it; each member line stands on
 a line of its own, one level deeper; and the `}` stands on a line of its own at
 the level of the class, unless a directive stands before it on its line:
 `%%{init: {}}%% }` stays as it is written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the member lines
+one level deeper than the line of the class and the separate closing `}` at the
+level of the class, as Prettier prints the lines inside a block.
 
 [fixture: member-bodies/directive-on-closing-brace-line-kept] [fixture:
 member-bodies/split] [fixture: member-bodies/opening-brace-after-one-space]
@@ -1007,6 +1013,9 @@ classDiagram
 
 A comment on a line of its own stands at the level of the statements around it,
 or of the member lines in a body, and its text is kept as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line between lines of the same depth inside a block at their level, as
+Prettier prints a comment line inside a block.
 
 [fixture: comments/kept] [fixture: comments/before-header] [fixture:
 comments/in-namespace] [fixture: comments/last-in-body] [fixture:
@@ -1082,10 +1091,13 @@ comments/empty-line-after-comment-kept]
 
 ### Directives
 
-As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive on the line of a statement is placed as in
-a flowchart: the gap is printed as without the directive, and the directive
-stands after its space and touches the unit that follows it.
+A directive on a line of its own stands at the level of the statements around
+it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line between lines of the same depth inside a block at their level, as
+Prettier prints a comment line inside a block. At other positions it follows
+[flowchart](./flowchart.md#directives). A directive on the line of a statement
+is placed as in a flowchart: the gap is printed as without the directive, and
+the directive stands after its space and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/in-namespace] [fixture: directives/after-header-on-same-line]
@@ -1436,10 +1448,13 @@ classDiagram
 ### Multi-line values
 
 As in [flowchart's top-level descriptions](./flowchart.md#multi-line-values),
-align the lines of an `accDescr { ... }` body one step inside its statement,
-with a separate `}` at the statement's level. Mermaid discards this indentation
-from the description. A string, a backquoted name, and a generic type written
-over several lines are kept as written too.
+align the lines of an `accDescr { ... }` body one step inside its statement. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. Mermaid
+discards this indentation from the description. A string, a backquoted name, and
+a generic type written over several lines are kept as written too.
 
 [fixture: multi-line-values/kept] [fixture:
 multi-line-values/block-text-on-opening-line-spaced] [fixture:
@@ -1764,6 +1779,9 @@ line with another statement or with the header, before it or after it:
 its own is rejected, as mermaid.js rejects it. Such a line keeps its statements
 together; a class with a body on that line is printed as any class, with its
 members one level deeper and its `}` at the level of the line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the members of
+that class one level deeper than the line that opens its body and its closing
+`}` at that line's level, as Prettier prints the lines inside a block.
 
 [fixture: empty-description-blocks/before-class-with-body-indented] [fixture:
 empty-description-blocks/kept-with-statement] [fixture:

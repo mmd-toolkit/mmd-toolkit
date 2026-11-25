@@ -416,9 +416,12 @@ interior blank lines, and the whitespace at the end of each line of text except
 the last one; a line of whitespace only becomes an empty line. The whitespace at
 the end of the last line of text is dropped where the closer stands on a line of
 its own, and is printed as one space where the closer follows it on that line. A
-separate closer aligns with the statement. Directives and shared removed comment
-regions keep their complete source. Quotes, backslashes and hidden-looking text
-do not protect the first closing brace.
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. Directives and
+shared removed comment regions keep their complete source. Quotes, backslashes
+and hidden-looking text do not protect the first closing brace.
 
 [fixture: packet/description-blocks/description-gaps] [fixture:
 description-blocks/block-trailing-whitespace] [fixture:

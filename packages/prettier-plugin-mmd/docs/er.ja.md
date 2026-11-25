@@ -34,23 +34,19 @@ Prettier は、ブロックの本体（JavaScript の関数の本体、CSS の�
 subgraph の文は、subgraph の行より 1 段深く置き、その `end` は、
 その行と同じ段に、行に単独で置きます。
 文の後に書かれていても同じです。
-Prettier は、ブロックを閉じる `}` を、そのブロックを開く行と同じ段に置きます。
-[flowchart](./flowchart.ja.md#字下げ)と [state](./state.ja.md#字下げ)も、
-subgraph や複合状態の文を、それを開く行より 1 段深く置き、
-`end` か `}` をその行と同じ段に置きます（規則 2。上と同じです）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+subgraph の文は開く行より 1 段深く、`end` はその行と同じ段に置きます。
+Prettier が ブロックの中の行と閉じる行をその深さに印字するためです。
 文の後に書かれた `end` は、[1 行に 1 文](#1-行に-1-文)のとおり、
 行に単独で置きます。
 
 [fixture: indentation/nested-subgraphs]
 [fixture: subgraphs/end-on-the-line-of-a-statement]
 
-実体の属性は、実体の行より 1 段深く置き、その `}` は、その行と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、実体の属性は、
+実体の行より 1 段深く置き、その `}` は、その行と同じ段に置きます。
+Prettier が ブロックの中の行をそう印字するためです。
 subgraph の中でも同じです。
-規則 2 が形を与えます。
-[class](./class.ja.md#メンバーの本体)と
-[requirement](./requirement.ja.md#インデント)が、
-本体のメンバーを class や requirement の行より 1 段深く置き、
-`}` をその行と同じ段に置くためです。
 
 [fixture: indentation/attribute-blocks-in-subgraphs]
 
@@ -106,18 +102,17 @@ erDiagram
 属性ブロックの `{` は、空白 1 つの後に、実体の行に置きます。
 各属性は、1 段深く、行に 1 つずつ置き、`}` は、実体と同じ段に、
 行に単独で置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+各属性は実体の行より 1 段深く、閉じる `}` はその行と同じ段に置きます。
+Prettier が ブロックの中の行と閉じる行をその深さに印字するためです。
 規則 1 は、
 ブロックの `{` の前に空白 1 つを置きます（Prettier は `function f(){}` を
 `function f() {}` と印字します）。
-行頭は規則 1 の場所ではないので、
-行の形は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+開始する波括弧を置く行の形は、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
 [class](./class.ja.md#メンバーの本体)、[requirement](./requirement.ja.md#本体)、
 [state](./state.ja.md#複合状態)が、本体の `{` を、
 `{` が名前に接して書かれていても、開く行に空白 1 つの後に置くためです。
-[class](./class.ja.md#メンバーの本体)、
-[requirement](./requirement.ja.md#インデント)、[state](./state.ja.md#字下げ)は、
-メンバーを 1 段深く、行に 1 つずつ置き、`}` を開く行と同じ段に、
-行に単独で置きます。
 
 [fixture: attribute-blocks/opening-brace-after-one-space]
 [fixture: attribute-blocks/split]
@@ -1717,6 +1712,9 @@ mermaid.js が空白 1 つで結ぶからです。
 [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids]
 
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+本体の文は subgraph の行より 1 段深く、`end` はその行と同じ段に置きます。
+Prettier が ブロックの中の行と閉じる行をその深さに印字するためです。
 本体の文は 1 段深く置き、`end` は、
 subgraph と同じ段に行に単独で置き（[字下げ](#字下げ)を参照）、
 書かれた大文字小文字のまま印字します。
@@ -2160,10 +2158,10 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 [fixture: accessibility-statements/block-trailing-whitespace-in-a-subgraph]
 [fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
 
-`}` は文と同じ段に置きます。
-Prettier がブロックの `}` をそう置き、
-[説明ブロックの字下げ](./compatibility.ja.md#説明ブロックの字下げ)
-もそうだからです。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -2193,11 +2191,16 @@ agentflow、usecase に合わせます。
 
 コメントやディレクティブがあるブロックは、改行と完全な内容を保ち、
 普通の独立した注釈類はブロックの内側にそろえます。
-規則 1 は、ブロックの中の行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+規則 1 は、ブロックの境界にあるこれらのコメント行の段を決めないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がその段を決めます。
 [flowchart](./flowchart.ja.md#複数行の値)は、
-本文のないブロックのコメント行をそのまま残し、ブロックの内側に 1 段深く置いて、
-`}` を `accDescr` と同じ段に置きます。
+本文のないブロックのコメント行をそのまま残し、
+ブロックの内側に 1 段深く置きます。
+`}` は `accDescr` と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+開始の `{` が文と同じ行にある場合に、
+Prettier が ブロックの閉じ行を開始行と同じ段に印字するのと同じく、
+この閉じ行の段を与えます。
 ディレクティブがあるブロックは別の場合です。
 [flowchart](./flowchart.ja.md#複数行の値)、
 [xychart](./xychart.ja.md#空の説明ブロック)、
@@ -2370,8 +2373,10 @@ accTitle: direction BT
 コメント行、つまり行頭の `%%` は、周りの文と同じ段に置き、
 テキストは書かれたまま残します。
 この図にほかのコメントはありません（diagrams/er.md、コメント）。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は行頭を挙げていないからです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中で同じ段の行の間にある単独のコメント行は、その行と同じ段に置きます。
+Prettier が ブロックの中のコメント行をそう印字するためです。
+それ以外の位置では、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [state](./state.ja.md#コメント) と [flowchart](./flowchart.ja.md#コメント) も、
 コメント行を周りの文と同じ段に置きます。
@@ -2452,8 +2457,12 @@ erDiagram
 ### ディレクティブ
 
 行に単独で置かれたディレクティブは、周りの文と同じ段に置きます。
-flowchart、class 図、state 図、sequence 図も同じです（規則 2。
-[コメント](#コメント)のコメント行と同じです）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中で同じ段の行の間にある単独のディレクティブ行は、
+その行と同じ段に置きます。
+Prettier が ブロックの中のコメント行をそう印字するためです。
+それ以外の位置では、flowchart、class 図、state 図、
+sequence 図も同じです（規則 2。[コメント](#コメント)のコメント行と同じです）。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
@@ -3445,7 +3454,9 @@ U+2029 が色を `;` から離すときも、書かれたまま残します。
 
 空でない複数行の属性ブロックを持つエンティティでは、書かれたまま印字するのは、
 ブロックを開く行で、`{` の後ろにあるものと、そこで始まる属性が続く行も含みます。
-その後の属性と `}` は、通常どおり、属性は 1 段深く、`}` は文の位置に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、その後の属性は 1 段深く、
+`}` は文の位置に置きます。
+Prettier が ブロックの中の行をそう印字するためです。
 ただし `}` が、U+2028 か U+2029 の後のコメント行が始まる行にあるときは、
 ブロックはその行と一緒に書かれたままにします。
 `}` が書かれたまま残るどの行にあるときも、同じです。

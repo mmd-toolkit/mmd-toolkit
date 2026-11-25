@@ -24,9 +24,9 @@ fixture の置き方と確かめ方は、
 `section` 自体は最初の段です。
 Gantt 図の木は平らで、文のブロックがないので、文の段は、
 ほかの文の中での位置で決まります。
-section の下のタスクは、mermaid.js の文書の書き方と同じく、
-section の中に置きます。
-journey も同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、section のタスク、
+click 文、設定など、どの文も `section` の行より 1 段深く置きます。
+Prettier が ブロックの中の行を印字する形です。
 
 [fixture: indentation/sections-and-tasks-nested]
 [fixture: indentation/statements-before-the-first-section]
@@ -50,8 +50,11 @@ journey も同じです。
 [fixture: indentation/header-leading-whitespace]
 
 原文を保つ値は行ごとの列を保ちます。
-説明本文の行は[複数行の値](#複数行の値)に従って文より 1 段深くし、
-独立した `}` は文と同じ段に置きます。
+説明本文の行は[複数行の値](#複数行の値)に従って文より 1 段深くします。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -1268,9 +1271,12 @@ gantt
 
 [fixture: accessibility-statements/block-text-on-opening-line]
 
-本文が複数行のブロックでは、本文を文より 1 段深くし、
-独立した `}` は文と同じ段に置きます。
+本文が複数行のブロックでは、本文を文より 1 段深くします。
 mermaid.js が説明から LF 後の字下げを除くためです。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1354,13 +1360,17 @@ Prettier は、
 
 ディレクティブやコメント行の内容と改行は保ち、
 本文の字下げは [アクセシビリティの文](#アクセシビリティの文)に従います。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[pie](./pie.ja.md#description-blocks) は、コメントだけのブロックを、
-コメントを 1 段内側に、独立した閉じ括弧を文の段に置き、
+規則 1 は、ブロックの境界にあるこれらのコメント行の段を決めません。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がその段を与えます。
+[pie](./pie.ja.md#description-blocks) は、コメントだけのブロックを保ち、
+コメントを 1 段内側に置きます。
 [class](./class.ja.md#空の説明ブロック) は、
 コメントやディレクティブのあるブロックの内容と改行を保ちます。
+独立した閉じ括弧は文の段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+開始の `{` が文と同じ行にある場合に、
+Prettier が ブロックの閉じ行を開始行と同じ段に印字するのと同じく、
+この閉じ行の段を与えます。
 
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 
@@ -1631,8 +1641,11 @@ gantt
 コメント行は、その次の文と同じ段に置きます。
 `section` の前のコメントは `section` の段、タスクの前のコメントはタスクの段、
 テキストの末尾のコメントは最後の文の段です。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
+section の中の同じ深さの 2 つの文の間の独立したコメント行は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+それらの文と同じ段に置きます。
+Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
+ほかの独立行の位置は、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [quadrant](./quadrant.ja.md#コメント)、[xychart](./xychart.ja.md#コメント)、
 [ishikawa](./ishikawa.ja.md#comments) も、単独の行のコメントを、
@@ -1768,6 +1781,10 @@ gantt
 ### ディレクティブ
 
 単独の行のディレクティブは周りの文と同じ段に置きます。
+section の中の同じ深さの 2 つの文の間の独立したディレクティブ行は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+それらの文と同じ段に置きます。
+Prettier が ブロックの中で、同じ深さの 2 行の間のコメント行を印字する形です。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。

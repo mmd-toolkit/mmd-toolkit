@@ -3867,11 +3867,16 @@ architecture/description-blocks/keyword-u2028-directive-touching-brace-on-line]
 [test:
 architecture/description-blocks/keyword-u2028-directive-then-spaces-and-brace-on-line]
 
-Keep comment/directive-only interiors. Rule 1 names no mark for a line inside a
-block. For a block that holds only comment lines, rule 2 decides, as
+Keep comment/directive-only interiors. Rule 1 does not decide the depth of
+comment lines at the boundary of a description block. For a block that holds
+only comment lines, rule 2 decides the depth of those boundary comment lines, as
 [flowchart](./flowchart.md#multi-line-values) keeps the comment lines of a block
-without text and puts them one level inside the block, with its `}` at the level
-of the `accDescr`. No rule gives the interior of a block that holds a directive:
+without text and puts them one level inside the block. A separate `}` stands at
+the level of the `accDescr`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block. No rule gives the
+interior of a block that holds a directive:
 [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
@@ -3885,7 +3890,7 @@ interior blank lines, and the whitespace at the end of each line of text except
 the last one; a line of whitespace only becomes an empty line. The whitespace at
 the end of the last line of text is dropped where the closer stands on a line of
 its own, and is printed as one space where the closer follows it on that line.
-Rule 2 gives the level of the lines and the place of a separate closer: the
+Rule 2 gives the level of the description text and boundary comment lines: the
 formatter, run on a block of each of flowchart, sequence, state, gantt, journey,
 timeline, pie, and radar, puts the text lines and the comment lines of the block
 one level inside the statement and a separate closer at the level of the
@@ -3902,7 +3907,9 @@ decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Directives and shared removed comment regions keep their complete source. A
 separate closer aligns with the statement; the first closing brace still ends
-the value.
+the value. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+closer that level where the opening `{` stands on the statement's line, as
+Prettier prints the closing line at the level of the line that opens a block.
 
 [fixture: architecture/description-blocks/asymmetric] [fixture:
 architecture/description-blocks/directive-line-between-keyword-and-brace]

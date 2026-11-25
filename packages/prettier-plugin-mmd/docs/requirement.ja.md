@@ -20,6 +20,10 @@ fixture の置き方と確かめ方は、
 ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
 requirement と element のフィールドは、その文の行より 1 段深く、
 1 行に 1 つ置き、本体を閉じる `}` は、その行と同じ段に、行に単独で置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+requirement と element のフィールドはその文の行より 1 段深く、
+閉じる `}` はその行と同じ段に置きます。
+Prettier が ブロックの中の行と閉じる行をその深さに印字するためです。
 
 [fixture: indentation/statements-and-bodies]
 
@@ -38,8 +42,12 @@ requirement と element のフィールドは、その文の行より 1 段深�
 
 [fixture: indentation/header-leading-whitespace]
 
-書かれたまま残すテキスト（`accDescr` ブロックの行など）は、行ごとの桁を保ち、
-ブロックを閉じる `}` は文と同じ段に置きます。
+書かれたまま残すテキスト（`accDescr` ブロックの行など）は、
+行ごとの桁を保ちます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: indentation/description-block-lines-kept]
 
@@ -102,8 +110,10 @@ requirementDiagram
 
 ### 本体
 
-注釈類を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
-本文がさらに 1 段深く見えるようにします。
+注釈類を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+本文はさらに 1 段深く置きます。
+Prettier が ブロックの中の行をそう印字するためです。
 その行をまたぐ値や保護された原文の境界は変えません。
 
 [fixture: bodies/header-completion-after-comment]
@@ -1108,12 +1118,15 @@ Prettier は、
 ディレクティブかコメント行を含むブロックは、その内容と改行を保ちます。
 独立した注釈をブロックの 1 段内側に置き、
 独立した `}` は `accDescr` にそろえます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+開始の `{` が文と同じ行にある場合に、
+Prettier が ブロックの閉じ行を開始行と同じ段に印字するのと同じく、
+この閉じ行の段を与えます。
 requirement と element の本文にある空のブロックも同じです。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+規則 1 は、ブロックの境界にあるこれらの独立した注釈の段を決めません。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がその段を与えます。
 [block](./block.ja.md#空の説明ブロック) と [c4](./c4.ja.md#説明ブロック)も、
-独立した注釈類をブロックの 1 段内側に、独立した `}` を文の段に置きます。
+独立した注釈類をブロックの 1 段内側に置きます。
 
 [fixture: empty-description-blocks/in-body-with-directive-line]
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
@@ -1220,7 +1233,7 @@ requirementDiagram
 `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
 説明の設定関数がこの字下げを捨てるためです。
-規則 1 は、ブロックの中の行の字下げの印を挙げていないので、
+説明の本文の行は規則 1 の「ブロックの中の行」の対象ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [flowchart](./flowchart.ja.md#複数行の値)、[class](./class.ja.md#複数行の値)、
 [state](./state.ja.md#複数行の値)も、`accDescr { ... }` の本文の行を、
@@ -1231,7 +1244,10 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
-`}` は文と同じ段に置きます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1649,8 +1665,10 @@ requirementdiagram
 単独の行のコメントは、後ろの文と同じ段に置き、
 本体の中ではフィールドと同じ段に置きます。
 テキストと印は書かれたまま残します。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中で同じ段の行の間にある単独のコメント行は、その行と同じ段に置きます。
+Prettier が ブロックの中のコメント行をそう印字するためです。
+それ以外の位置では、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [c4](./c4.ja.md#コメント) と [quadrant](./quadrant.ja.md#コメント) も、
 単独のコメントを、後ろの文か、テキストの末尾では最後の文の段に置き、
@@ -1782,6 +1800,10 @@ requirementDiagram
 
 単独の行のディレクティブは、周りの文と同じ段に置き、
 本体の中ではフィールドと同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中で同じ段の行の間にある単独のディレクティブ行は、
+その行と同じ段に置きます。
+Prettier が ブロックの中のコメント行をそう印字するためです。
 文の行の中では、flowchart と同じく、隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 

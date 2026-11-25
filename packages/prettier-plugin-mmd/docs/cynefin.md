@@ -110,10 +110,12 @@ cynefin-beta
 
 ### Indentation
 
-Use one configured step for body statements and two for domain items. Columns do
-not define parents: the authored item lists do. tabWidth zero adds no spaces;
-useTabs adds one tab per step even at width zero. Other value continuations and
-protected interiors retain their written columns.
+Use one configured step for body statements.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts domain items one
+level deeper than their domain line, as Prettier prints the lines inside a
+block. Columns do not define parents: the authored item lists do. tabWidth zero
+adds no spaces; useTabs adds one tab per step even at width zero. Other value
+continuations and protected interiors retain their written columns.
 
 [fixture: cynefin/indentation/indent-two]
 
@@ -139,12 +141,14 @@ cynefin-beta
 
 ### Domains and items
 
-Put the domain word on its own line and each item one step deeper, as the other
-diagram types nest a block. The grammar requires no EOL between a domain and its
-items, adjacent strings or adjacent domains, so splitting these units keeps the
-Db. Keep empty strings, repeated items and multiline strings. Comments,
-directives, blanks and hidden forms between items leave the sequence open.
-Protected or hidden inline neighbors take precedence; add no closing delimiter.
+Put the domain word on its own line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts each item one
+level deeper than its domain line, as Prettier prints the lines inside a block.
+The grammar requires no EOL between a domain and its items, adjacent strings or
+adjacent domains, so splitting these units keeps the Db. Keep empty strings,
+repeated items and multiline strings. Comments, directives, blanks and hidden
+forms between items leave the sequence open. Protected or hidden inline
+neighbors take precedence; add no closing delimiter.
 
 On a kept semicolon line, keep the domain word with its first item too. Moving
 only the items could make the next formatting split them again.
@@ -544,16 +548,19 @@ Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 Whitespace-only interiors become `{}`. For blocks that keep their braces,
 separate the keyword and opening brace with one space so the block boundary is
-clear. Join plain opener whitespace and align a separate closer with the
-statement. Ordinary description body and standalone comment lines align one
-level inside it, since the Db removes indentation after LF. Keep line breaks and
-interior blank lines, and the whitespace at the end of each line of text except
-the last one; a line of whitespace only becomes an empty line. The whitespace at
-the end of the last line of text is dropped where the closer stands on a line of
-its own, and is printed as one space where the closer follows it on that line.
-Directives and shared removed comment regions keep their complete source.
-Comments/directives inside empty blocks retain their shared layout.
-Native-looking text inside a value remains value text.
+clear. Join plain opener whitespace. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. Ordinary
+description body and standalone comment lines align one level inside it, since
+the Db removes indentation after LF. Keep line breaks and interior blank lines,
+and the whitespace at the end of each line of text except the last one; a line
+of whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. Directives and
+shared removed comment regions keep their complete source. Comments/directives
+inside empty blocks retain their shared layout. Native-looking text inside a
+value remains value text.
 
 [fixture: cynefin/description-blocks/description-empty] [fixture:
 description-blocks/block-trailing-whitespace] [fixture:
@@ -836,9 +843,12 @@ as under [Directives](./flowchart.md#directives). When formatting splits units
 that were on the same line, a directive in their gap moves with the following
 unit: its right boundary stays touching or separated, while its left contact is
 broken. Ordinary standalone lines align with their body, including item depth
-between items. Multiline interiors and unfinished EOF endings remain written.
-Reordering directives or editing their JSON can change the text that common
-removal joins; native hidden directives remain separate forms.
+between items. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a
+directive line between two items of the same depth at their level, as Prettier
+prints a comment line between two lines of the same depth inside a block.
+Multiline interiors and unfinished EOF endings remain written. Reordering
+directives or editing their JSON can change the text that common removal joins;
+native hidden directives remain separate forms.
 
 [fixture: cynefin/global-directives/header-to-body]
 
@@ -872,8 +882,11 @@ cynefin-beta
 ### Comments
 
 Align ordinary standalone comments with their body, item comments at item depth
-and prefix comments at column one. Inline comments keep their line, and a run of
-spaces and tabs before one becomes one space.
+and prefix comments at column one.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
+between two items of the same depth at their level, as Prettier prints a comment
+line between two lines of the same depth inside a block. Inline comments keep
+their line, and a run of spaces and tabs before one becomes one space.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
@@ -1103,8 +1116,11 @@ cynefin/semicolon-chaotic-parts]
 Do not wrap at printWidth. Apart from domain/item splitting, retain physical
 string and transition-label contents, continuation columns and interior blanks.
 Description bodies use the shared indentation above. Reflow or reindentation can
-change the Db, and wrapping transition components can reject. A separate
-description closer uses the shared alignment rule.
+change the Db, and wrapping transition components can reject. A separate `}`
+aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
 

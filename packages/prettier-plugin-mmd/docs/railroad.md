@@ -990,8 +990,11 @@ Keep physical newlines, internal blank lines and continuation columns inside
 strings and EBNF special sequences. These values are indivisible atoms and gain
 no structural indentation on their later lines. Reflowing or reindenting these
 contents can change the Db, including PEG predicate labels. Description body
-indentation, exterior edges and its separate closer use the shared description
-rule.
+indentation and exterior edges use the shared description rule. A separate `}`
+aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: railroad/multiline-values/abnf-columns]
 
@@ -1294,8 +1297,11 @@ indentation after LF. Keep line breaks and interior blank lines, and the
 whitespace at the end of each line of text except the last one; a line of
 whitespace only becomes an empty line. The whitespace at the end of the last
 line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. Align a separate
-closing brace with the statement.
+printed as one space where the closer follows it on that line. A separate `}`
+aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: railroad/description-blocks/abnf-lines] [fixture:
 railroad/description-blocks/ebnf-lines] [fixture:

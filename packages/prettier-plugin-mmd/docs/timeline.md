@@ -24,9 +24,10 @@ The statements after the header stand one level deeper than the header, and the
 statements after a `section`, up to the next `section`, one level deeper still:
 the periods, and every other statement. The `section` itself stands at the first
 level. The tree of a timeline is flat, with no block of statements, so the level
-of a statement is decided by its place among the others. This is the rule of a
-user journey and a Gantt chart: the periods of a section stand inside it, as the
-documentation of mermaid.js writes them.
+of a statement is decided by its place among the others.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the periods and
+every other statement of a section one level deeper than its `section` line, as
+Prettier prints the lines inside a block.
 
 [fixture: indentation/sections-and-periods-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
@@ -51,9 +52,11 @@ it.
 
 [fixture: indentation/header-leading-whitespace]
 
-The later text lines of an `accDescr` block stand one level inside its
-statement, and the `}` that closes it stands at the statement level (see
-[Multi-line values](#multi-line-values)).
+The later text lines of an `accDescr` block stand one level inside its statement
+(see [Multi-line values](#multi-line-values)). A separate `}` aligns with its
+statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
+depth when the `{` stands on the `accDescr` line: it puts the closing line at
+the level of the opening line, as Prettier prints the closing line of a block.
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -1049,8 +1052,11 @@ A block on one line follows
 accessibility-statements/block-inner-runs-collapsed]
 
 In a block with a text over several lines, later text lines stand one level
-inside the statement and a separate `}` stands at its level (see
-[Multi-line values](#multi-line-values)).
+inside the statement (see [Multi-line values](#multi-line-values)). A separate
+`}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1402,11 +1408,13 @@ end of the line. A comment on a line of its own stands at the level of the
 statement after it, as in a user journey, and its text and its mark are kept as
 written: a comment before a `section` stands at its level, and one before a
 period at the level of the period; at the end of the text it stands at the level
-of the last statement. Rule 1 gives no form here, since its table does not name
-the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+of the last statement. Inside a section,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment between two statements of the same depth at their level, as Prettier
+prints a comment line between two lines of the same depth inside a block. At
+other standalone positions,
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [gantt](./gantt.md#comments), [block](./block.md#comments), and
+the form, as [gantt](./gantt.md#comments), [block](./block.md#comments), and
 [quadrant](./quadrant.md#comments) put a comment line at the level of the
 statement after it.
 
@@ -1504,9 +1512,13 @@ timeline
 ### Directives
 
 A directive on a line of its own stands at the level of the statement after it,
-as in a user journey, and a directive within a printed line is placed as in a
-flowchart: the gap is printed as without the directive, and the directive stands
-after its space and touches the unit that follows it.
+and a directive within a printed line is placed as in a flowchart: the gap is
+printed as without the directive, and the directive stands after its space and
+touches the unit that follows it. Inside a section,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive between two statements of the same depth at their level, as Prettier
+prints a comment line between two lines of the same depth inside a block. At
+other standalone positions it follows a user journey.
 
 [fixture: directives/kept] [fixture: directives/levels-around-sections]
 [fixture: directives/before-header] [fixture:

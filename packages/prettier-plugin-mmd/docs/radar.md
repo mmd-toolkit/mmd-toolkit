@@ -326,19 +326,19 @@ Never add a newline before a comma or inside a named entry, where mermaid.js
 rejects one. Keep newlines holding comments or Root directives; ordinary
 continuation lines and comments use two indentation steps, while a separate `}`
 aligns with its statement. A comment takes the rest of its line, so joining the
-next entry onto it would put the entry into the comment. The start of a line is
-no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#multi-line-statements) puts the continuation
-lines one level inside the statement, and the separate `}` stands at the level
-of its statement, as the `}` of an attribute block does in
-[er](./er.md#attribute-blocks) and the `}` of a description block in
-[flowchart](./flowchart.md#multi-line-values). No rule gives the line breaks
-that hold a directive, or the other authored entry newlines of a commented list,
-which stay as written: [xychart](./xychart.md#multi-line-statements) keeps the
-line breaks that hold a comment or a directive, but in it this is a question of
-the list of undecided forms (D45), so its printing is no decided form, and the
-released form stays until it is decided (see
+next entry onto it would put the entry into the comment.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the entries
+inside the braced list one level deeper than the statement that opens it and the
+separate `}` at the level of that statement, as Prettier prints the lines inside
+a block, with the closing line at the level of the opening line. A comment or
+Root directive line between entries of the same depth stands at their level, as
+Prettier prints a comment line at the level of the lines around it. No rule
+gives the line breaks that hold a directive, or the other authored entry
+newlines of a commented list, which stay as written:
+[xychart](./xychart.md#multi-line-statements) keeps the line breaks that hold a
+comment or a directive, but in it this is a question of the list of undecided
+forms (D45), so its printing is no decided form, and the released form stays
+until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Hidden boundaries, value lines and protected semicolon segments remain written,
 including their continuation columns. No continuation indentation is added
@@ -3524,11 +3524,16 @@ printed in the form with the colon: the formatter, run on a flowchart, prints
 [A description block on one line](./compatibility.md#a-description-block-on-one-line)
 states for every diagram type that accepts a block, and keeps the line break
 after a directive that stands between them. Preserve comment/directive-only
-interiors. Rule 1 names no mark for a line inside a block. For a block that
-holds only comment lines, rule 2 decides, as
+interiors. Rule 1 does not decide the depth of comment lines at the boundary of
+a description block. For a block that holds only comment lines, rule 2 decides
+the depth of those boundary comment lines, as
 [flowchart](./flowchart.md#multi-line-values) keeps the comment lines of a block
-without text and puts them one level inside the block, with its `}` at the level
-of the `accDescr`. No rule gives the interior of a block that holds a directive:
+without text and puts them one level inside the block. A separate `}` stands at
+the level of the `accDescr`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block. No rule gives the
+interior of a block that holds a directive:
 [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
@@ -3537,8 +3542,8 @@ the list of undecided forms (D34), so their printing is no decided form, and the
 released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Ordinary description body and standalone comment lines align one level inside
-the statement: the Db removes indentation after LF. The start of a line is no
-place of rule 1, so
+the statement: the Db removes indentation after LF. Rule 1 does not decide the
+indentation of description text, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: at the top level, [flowchart](./flowchart.md#multi-line-values),
 [class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
@@ -3548,8 +3553,11 @@ line of text except the last one; a line of whitespace only becomes an empty
 line. The whitespace at the end of the last line of text is dropped where the
 closer stands on a line of its own, and is printed as one space where the closer
 follows it on that line. Align a separate opener or closer with the statement.
-Directives and shared removed comment regions keep their complete source. The
-first closing brace still ends the value.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block. Directives and
+shared removed comment regions keep their complete source. The first closing
+brace still ends the value.
 
 [fixture: radar/description-blocks/block-touching-with-text-fixed] [fixture:
 radar/description-blocks/block-empty-fixed] [fixture:

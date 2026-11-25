@@ -22,17 +22,16 @@ fixture の置き方と確かめ方は、
 ### インデント
 
 ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 composite の中の文は `block:` の行より 1 段深く置き、
 `end` は `block:` と同じ段に置きます。
+Prettier が ブロックの中の行をそう印字するためです。
 1 段は Prettier の `useTabs` と `tabWidth` の指定どおりで、既定は空白 2 つです。
 入力に書かれた字下げは残しません。
 行頭の空白は mermaid.js にとって何の意味も持たないので、字下げは構造だけで決め、
 どのテキストも 1 つの形になります。
 入れ子は composite の始まりと終わりを見せます。
-`block:` と `end` だけでは、深く入れ子になると始まりと終わりが見えないからで、
-mermaid.js の文書もそう書き、
-ほかの図もブロックを入れ子にします（flowchart
-の[字下げ](./flowchart.ja.md#字下げ)を参照）。
+`block:` と `end` だけでは、深く入れ子になると始まりと終わりが見えないからです。
 ヘッダーと、その前のコメント行は、前に空白が書かれていても 1 列目に置きます。
 Prettier にない種類の隙間は、ほかの図種が印字する形にします。
 これが[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
@@ -106,6 +105,9 @@ mermaid.js は `block: G` と `block:G` を同じに読み、
 1 行に書かれた composite（`block:G a b end`）も同じで、
 どの composite も同じ形に置き、字下げが中身を示します。
 `end` は自分の行に置き、`block:` と同じ段にします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+`end` はその `block:` の行と同じ段に置きます。
+Prettier が ブロックの中の行と閉じる行をその深さに印字するためです。
 
 [fixture: composites/space-after-the-colon]
 [fixture: composites/tab-after-the-colon]
@@ -1296,8 +1298,10 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 テキストと印は書かれたまま残します。
 最後の文の後のコメント行は、その後ろに残ります。
 ヘッダーより前のコメント行は 1 列目に置きます。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は行頭を挙げていないからです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中で同じ段の行の間にある単独のコメント行は、その行と同じ段に置きます。
+Prettier が ブロックの中のコメント行をそう印字するためです。
+それ以外の位置では、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [state](./state.ja.md#コメント) と [flowchart](./flowchart.ja.md#コメント) も、
 コメント行を周りの文と同じ段に置きます。
@@ -1382,6 +1386,10 @@ mermaid.js はディレクティブを読む前に取り除くので、
 残る空白は両側の空白を合わせたものだからです。
 単独の行にある指令は、後ろの文と同じ段に置き、ヘッダーより前の指令は、
 コメント行と同じに 1 列目に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中で同じ段の行の間にある単独のディレクティブ行は、
+その行と同じ段に置きます。
+Prettier が ブロックの中のコメント行をそう印字するためです。
 
 [fixture: directives/directive-before-the-header]
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
@@ -1471,12 +1479,15 @@ block-beta
 
 指令かコメント行を持つブロックは、内容と改行を保ち、独立した注釈類を 1 段内側、
 閉じ括弧を文の段に置きます。
-行頭は規則 1 の場所ではないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+開始の `{` が文と同じ行にある場合に、
+Prettier が ブロックの閉じ行を開始行と同じ段に印字するのと同じく、
+この閉じ行の段を与えます。
+規則 1 は、ブロックの境界にあるこれらの独立した注釈類の段を決めないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がその段を決めます。
 [pie](./pie.ja.md#description-blocks)、[sequence](./sequence.ja.md#複数行の値)、
 [info](./info.ja.md#description-blocks)も、ブロックの、
-自分の行にあるコメント行やディレクティブの行を 1 段内側に置き、
-閉じ括弧を文の段に置きます。
+自分の行にあるコメント行やディレクティブの行を 1 段内側に置きます。
 
 [fixture: empty-description-blocks/trivia-continuations]
 

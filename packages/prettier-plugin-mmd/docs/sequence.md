@@ -18,11 +18,12 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header. The
-statements of a block (`loop`, `alt`, `opt`, `par`, `par_over`, `critical`,
-`break`, `rect`) and the participants of a `box` stand one level deeper than the
-line that opens it; `else`, `and`, `option`, and `end` stand at the level of
-that line.
+The statements after the header stand one level deeper than the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+of a block (`loop`, `alt`, `opt`, `par`, `par_over`, `critical`, `break`,
+`rect`) and the participants of a `box` one level deeper than the line that
+opens it and `end` at the level of that line, as Prettier prints the lines
+inside a block. `else`, `and`, and `option` stand at the level of that line.
 
 [fixture: indentation/blocks] [fixture: indentation/sections] [fixture:
 indentation/other-blocks-kept]
@@ -1148,6 +1149,9 @@ sequenceDiagram
 
 A comment on a line of its own, `%%`, `#`, or `%`, stands at the level of the
 statements around it, and its text is kept as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line between lines of the same depth inside a block at their level, as
+Prettier prints a comment line inside a block.
 
 [fixture: comments/kept] [corpus fixture:
 sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
@@ -1649,10 +1653,13 @@ statements-one-per-line/ignored-semicolon-next-to-semicolon-kept]
 
 ### Directives
 
-As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive within a printed line is placed as in a
-flowchart: the gap is printed as without the directive, and the directive stands
-after its space and touches the unit that follows it.
+A directive on a line of its own stands at the level of the statements around
+it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line between lines of the same depth inside a block at their level, as
+Prettier prints a comment line inside a block. At other positions it follows
+[flowchart](./flowchart.md#directives). A directive within a printed line is
+placed as in a flowchart: the gap is printed as without the directive, and the
+directive stands after its space and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/section-edges-kept] [fixture:
 directives/whitespace-on-each-side] [fixture: directives/touching-kept]
@@ -1827,9 +1834,12 @@ Blocks on one line follow
 
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
-Align the lines of an `accDescr { ... }` body one step inside its statement,
-with a separate `}` at the statement's level, as in
-[flowchart's top-level descriptions](./flowchart.md#multi-line-values). Mermaid
+Align the lines of an `accDescr { ... }` body one step inside its statement, as
+in [flowchart's top-level descriptions](./flowchart.md#multi-line-values). A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. Mermaid
 discards this indentation from the description.
 
 [fixture: multi-line-values/description-and-data-indented] [fixture:
@@ -1839,7 +1849,10 @@ multi-line-values/data-block-in-block-indented]
 
 A block without text, whose lines are only comment lines, holds no value: its
 comment lines stand one level deeper than the `accDescr`, as comment lines
-inside a statement do, and its `}` at the level of the `accDescr`.
+inside a statement do. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: multi-line-values/accdescr-block-comment-only] [fixture:
 multi-line-values/accdescr-block-without-text-kept]
@@ -1855,16 +1868,20 @@ and its body lines stand one level inside the statement as in a closed block; no
 For participant and actor data blocks, apply
 [Data blocks](./flowchart.md#data-blocks) only when exactly one body line holds
 text. Move that line one level inside the statement and align a separate `}`
-with the statement; a closer after text stays with that line. This applies at
-the top level and inside `loop`, except with `useTabs`, where the statement is
-printed as written (see [Data blocks](./flowchart.md#data-blocks)), unless the
-statement is not at the depth of the first thing on its line: the header of a
-`box` or a block, as in `box Aqua G; participant A@{ … }`, a section keyword, as
-in `else z; participant P@{ … }`, or a statement inside the box or block before
-an `end`, as in `participant B; end; participant A@{ … }`. The written
-indentation is then that of that thing, and the statement is printed with the
-usual indentation, the lines of its block moving with it. So is a statement on a
-line that starts with anything else than the things listed under
+with the statement; a closer after text stays with that line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of
+that separate closing `}` when the block opens on the statement's line: the
+closing line stands at the level of the opening line, as Prettier prints the
+closing line of a block. This applies at the top level and inside `loop`, except
+with `useTabs`, where the statement is printed as written (see
+[Data blocks](./flowchart.md#data-blocks)), unless the statement is not at the
+depth of the first thing on its line: the header of a `box` or a block, as in
+`box Aqua G; participant A@{ … }`, a section keyword, as in
+`else z; participant P@{ … }`, or a statement inside the box or block before an
+`end`, as in `participant B; end; participant A@{ … }`. The written indentation
+is then that of that thing, and the statement is printed with the usual
+indentation, the lines of its block moving with it. So is a statement on a line
+that starts with anything else than the things listed under
 [Data blocks](./flowchart.md#data-blocks), such as the rest of a directive that
 runs over lines. A statement after an `end` that comes first is at the depth of
 the line and is printed as written.
