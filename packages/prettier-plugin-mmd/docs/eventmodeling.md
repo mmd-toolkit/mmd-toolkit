@@ -688,8 +688,10 @@ inside an inline directive, does not add this step: the step stands for a
 continuation line that the printer indents, a joined LF leaves none, and the
 lines of a directive stay as written. Native hidden header forms retain their
 boundary columns and use the ordinary one-step body rule. Use spaces even with
-`useTabs`. At `tabWidth: 0`, keep the body as written, since the margin there is
-none, and removing the margin of a later line draws a different diagram (see
+`useTabs`: a tab margin gives the same Db and the same drawing in the versions
+that were run, so no reason keeps the spaces, and its row is in the list (D35).
+At `tabWidth: 0`, keep the body as written, since the margin there is none, and
+removing the margin of a later line draws a different diagram (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count):
 a later line at column one against two spaces in). A body of one line, and a
 body none of whose later lines has a margin, is kept as written, which no rule
@@ -1056,10 +1058,16 @@ tf 01 evt Alpha
 
 Keep accessibility line forms as written: leading padding, the keyword/colon
 gap, colon-side and trailing padding, empty payloads, quotes and brace-looking
-text. EM_ACC_TITLE and EM_ACC_DESCR include these parts in their values. For the
-`accTitle` line with a space and a tab before `:`, that gap stays, since every
-version of mermaid.js that counts draws different accessibility text when the
-gap is removed (see
+text. EM_ACC_TITLE and EM_ACC_DESCR include some of these parts in their values:
+the Db of the pinned version has another accDescr for
+`eventmodeling   accDescr: A` than for `eventmodeling accDescr: A`, and the
+versions that were run draw both alike, so that padding stays as a part of the
+value. The padding between the header and an `accTitle` is no part of the Db
+(the setter strips leading whitespace) and the versions that were run draw both
+forms alike, so it stays without a reason, and its row is in the list (D18). For
+the `accTitle` line with a space and a tab before `:`, that gap stays, since
+every version of mermaid.js that counts draws different accessibility text when
+the gap is removed (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 An empty payload is still a nonempty terminal; the colon form is not converted
 into a description block. LS/PS inside line values remain content.
@@ -1091,14 +1099,19 @@ tf 01 evt Alpha accTitle:
 
 Keep the complete description block and its leading run, including opener
 newlines, whitespace-only interiors and closing columns. Empty, whitespace-only
-and removal-only interiors remain distinct authored forms. This is the single
-selection point that bypasses shared `layoutDescriptionBlock`: its ordinary `{}`
-compaction and closer alignment would rewrite an EM_ACC_DESCR value. No
-diagram-local empty-block normalization replaces it. For `accDescr {` followed
-by a space, a tab, LF and `  }`, that whitespace stays, since every version of
-mermaid.js that counts draws different accessibility text for `accDescr {}`, the
-compact form used for whitespace-only descriptions in flowchart and class
-diagrams (see
+and removal-only interiors remain distinct authored forms. The Db of the pinned
+version holds the block as written (`accDescr { }` and `accDescr {}`, and
+`accDescr`, a line break, and `{ Details }` against `accDescr { Details }`, have
+different accDescr values), so the whitespace-only interior and the opener
+newline stay. The closing column is no part of the Db and the versions that were
+run draw both forms alike, so it stays without a reason, and its row is in the
+list (D34). This is the single selection point that bypasses shared
+`layoutDescriptionBlock`: its ordinary `{}` compaction and closer alignment
+would rewrite an EM_ACC_DESCR value. No diagram-local empty-block normalization
+replaces it. For `accDescr {` followed by a space, a tab, LF and `  }`, that
+whitespace stays, since every version of mermaid.js that counts draws different
+accessibility text for `accDescr {}`, the compact form used for whitespace-only
+descriptions in flowchart and class diagrams (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture:
