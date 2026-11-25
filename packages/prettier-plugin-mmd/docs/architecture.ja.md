@@ -127,12 +127,9 @@ architecture-beta title t service a; junction j
 ### Declaration spacing
 
 キーワードと ID の間は空白1個です。
-規則 1 は、キーワードと ID の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[wardley](./wardley.ja.md#部品間の空白)
-はコマンドのキーワードと最初の名前の間に、
-[radar](./radar.ja.md#groups-and-commas)
-はグループのキーワードと最初の項目の間に、普通の空白 1 個を置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+キーワードと ID の間に空白 1 個を与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 `group g(cloud)[G]`、`service a(server)[A]`、`service a[A]` と印字し、
 括弧・角括弧の付属部品を1つの node として印字します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
@@ -661,19 +658,15 @@ architecture-beta
 ### Alignment
 
 `align`、row・column の方向、各構成要素の間は通常の空白1個です。
-規則 1 は、文の語と語の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-キーワードとその後のテキストの間は空白 1 個です。
-規則 2 の例では、円グラフの `title    Pets` が `title Pets` と印字されます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+キーワードとそれが取るものの間に空白 1 個を与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 これが、`align` と方向の間、方向と最初の構成要素の間の隙間を与えます。
-構成要素どうしの間は、どの規則も与えません（`a   b` と、`a`、タブ、
-`b` は `a b` と印字されます）。
-[block](./block.ja.md#行) は、行のノードを空白 1 個で印字しますが、
-行の形はどの規則も与えないと述べているので、規則 2 の基準になりません。
-リリース済みの形は、決まるまで残します。
-詳しくは
-[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
-を参照してください。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+並んで続く値の間に空白 1 個を与えます。
+Prettier が CSS の `margin: 1px    2px;` を印字すると、
+`margin: 1px 2px;` になるのと同じです。
+`a   b` と、`a`、タブ、`b` は `a b` と印字されます。
 列揃え、構成要素の並べ替え、繰り返す制約の統合、折り返しはしません。
 作者が書いた順序を変えず、可視の改行を加えずに隙間を統一し、読みやすくします。
 
@@ -703,7 +696,9 @@ architecture-beta
 共有の共通行処理を、
 下の段落と[セミコロン](#semicolons)の節が述べるところを除いて使い、
 `title value` の両端から、共通規則が読む空白だけを除きます。
-`null` と空白だけの値は `title` とし、同じ意味の外側の空白を詰めます。
+`null` と空白だけの値は `title` とし、非空値の前には、
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が空白 1 個を与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 注釈類を挟んでも次の物理行を値にしません。

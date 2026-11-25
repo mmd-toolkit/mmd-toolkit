@@ -285,8 +285,10 @@ classDiagram
 
 Within a line, where no rule below gives the gap another form (a string, an
 arrow, a colon, the name before the `(` of a callback, `:::`, and the like), a
-run of spaces and tabs between two tokens becomes one space, and tokens that
-touch keep touching, as in a flowchart.
+run of spaces and tabs between two tokens becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`. Tokens that touch keep touching, as in a flowchart.
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
@@ -368,11 +370,11 @@ space after the keyword, `link A"u""t"` is printed `link A "u" "t"`,
 `click B href"u""t"_self` is printed `click B href "u" "t" _self`,
 `cssClass"A,B"c` is printed `cssClass "A,B" c`, `click C call f()"t"` is printed
 `click C call f() "t"`, and `click C~T~call f()` is printed
-`click C~T~ call f()`. mermaid.js reads every spelling as the same statement, so
-nothing forces the form; its documentation writes a space before each string
-([`note "…"` and `note for MyClass "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L639-L640),
-[`link Shape "…" "…"` and `click Shape2 href "…" "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L650-L652),
-[`cssClass "nodeId1,nodeId2" className`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L773)).
+`click C~T~ call f()`. mermaid.js reads every spelling as the same statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes, as Prettier prints `return  x` as
+`return x;`, and between values that follow one another, as Prettier prints CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`.
 
 [fixture: whitespace-between-tokens/note-and-name-strings-touching-spaced]
 [fixture: whitespace-between-tokens/link-strings-touching-spaced] [fixture:

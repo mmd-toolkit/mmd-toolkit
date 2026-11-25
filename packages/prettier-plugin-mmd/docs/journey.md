@@ -477,9 +477,11 @@ journey
 
 ### Titles and sections
 
-A `title` is printed with one space after the keyword, so that the separator has
-one form, as in a Gantt chart, and the value without the spaces and tabs at its
-start or at its end, which the Db keeps and which are drawn without (see
+A `title` is printed with one space after the keyword, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives between a
+keyword and its value (Prettier prints `return  x` as `return x;`), and the
+value without the spaces and tabs at its start or at its end, which the Db keeps
+and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 `title   My trip  ` is printed `title My trip`. The name of a `section` is
 printed as written, the whitespace at its start and at its end included: two

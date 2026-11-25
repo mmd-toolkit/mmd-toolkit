@@ -304,7 +304,10 @@ sequenceDiagram
 
 ### トークンの間の空白
 
-行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにし、
+行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+キーワードとそれが取るものの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 接しているトークンは接したまま残します。
 flowchart と同じです。
 ただし、接頭辞やブロックのキーワードの後のテキストは、空白 1 つの後に置きます。
@@ -321,11 +324,10 @@ flowchart と同じです。
 空白 1 つの後に置きます。
 `loop$$x$$` は `loop $$x$$` に、
 `par-:<>,;# comment` は `par -:<>,;# comment` と印字します。
-この空白は Db に入らないので形は選べます。
-mermaid.js の文書では、
-すべてのブロックのキーワードの後に空白を書いています
-([`loop Loop text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L472)、
-[`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492))。
+この空白は Db に入りません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+ブロックや節のキーワードとそのテキストの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するためです。
 
 [fixture: whitespace-between-tokens/wrap-text-spaced]
 [fixture: whitespace-between-tokens/block-text-touching-spaced]

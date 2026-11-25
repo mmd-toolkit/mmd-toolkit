@@ -173,11 +173,11 @@ usecase-beta
 
 ### Declarations
 
-ER の[実体](./er.ja.md#実体)を再利用します。
-[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
-`actor` の後を空白 1 個にします。
+`actor` の後の空白は、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+キーワードとその値の間に与える空白 1 個です。
 Prettier が `return  x` を `return x;` と印字するためです。
-id と形の区切り、メタデータと class の接尾辞は詰め、
+それ以外は、ER の[実体](./er.ja.md#実体)を再利用します。
+`actor` の後は空白 1 個、id と形の区切り、メタデータと class の接尾辞は詰め、
 ラベルの外側の ASCII 空白を除き、actor の項目はコンマと空白で区切ります。
 1 つの `actor` キーワードが導入する別々のアクターの出現を、見える形にします。
 ステレオタイプの隙間は、[class に揃えた規則](#stereotypes)に従います。
@@ -1077,7 +1077,10 @@ usecase-beta
 
 ### Classes and styles
 
-ER の[スタイルとクラス](./er.ja.md#スタイルとクラス)を再利用し、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、キーワードとその値の間と、
+続く値同士の間に空白 1 個を与えます。
+Prettier は `return  x` を `return x;` と印字し、
+CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 対象名と class 名の間のコンマは前の名前に接して後ろに空白 1 個を置き、
 [規則 1](./printed-form.ja.md#1-記号の横の空白) が、
 一覧同士と最初の宣言の前を空白 1 個にします。
@@ -1157,11 +1160,12 @@ usecase-beta
 `note for <target> <label>` の各部分の間を通常の空白 1 個にします。
 対象、markdown または空のラベル、および note の順序を保ちます。
 通常のラベルは、引用符で囲んで印字します（[引用符](#quotes) を参照）。
-class の[トークンの間の空白](./class.ja.md#トークンの間の空白)と同じ、
-値の原文を保つ理由と同じです。
-[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
-キーワードとそれが取るものの間を通常の空白 1 個にします。
-Prettier が `return  x` を `return x;` と印字するためです。
+値の原文を保つ理由は、
+class の[トークンの間の空白](./class.ja.md#トークンの間の空白)と同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、キーワードとその値の間と、
+続く値である対象とラベルの間に、空白 1 個を与えます。
+Prettier は `return  x` を `return x;` と印字し、
+CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 前方参照の解決で id、位置、宣言を作りません。
 行内のパーセント文字はラベルの内容のままです。
 
