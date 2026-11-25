@@ -48,6 +48,7 @@ import {
   findTriviaBetween,
   isSpaceOrTab,
   isWhitespace,
+  isWordCharacter,
   previousRead,
   skipRemoved,
   textRead,
@@ -338,6 +339,8 @@ export function findNamePrintedEnd(
   name: AgentflowName,
 ): number {
   if (!endsWithClickFragment(source, name)) {
+    const beforeComment = findCommentAfterDroppedSemicolon(source, name)
+    if (beforeComment !== undefined) return beforeComment
     const last = name.parts.at(-1)
     if (
       name.parts.length < 2 ||
@@ -383,6 +386,121 @@ export function findNamePrintedEnd(
     else return name.range[1]
   }
   return name.range[1]
+}
+
+/**
+ * Whether the text of a name ends with the keyword `end` or `global` as a unit
+ * of its own: those two keywords take the spaces and tabs after them, so that
+ * the whitespace belongs to the name when a comment follows (diagrams/
+ * agentflow.md, Shared units and ordered contexts). In `Front end`,
+ * `Front 9end`, `Front:end`, and `Front #end` the keyword is a unit, and in
+ * `Front-end`, `Front9end`, and `Front#end` it is inside an id run. The tree
+ * cannot say it: the text of a name before a `;` ends with its whitespace
+ * whatever its last unit is.
+ *
+ * The text is cut into units from its start, by the lexical rules of the
+ * statement context that agentflow reuses from flowchart, in the order of that
+ * context and restarting at every position (the same section; flowchart.md,
+ * rules 10 to 12, 16, 17, 20, and 21): a keyword that no word character
+ * follows, the digits of a number, one of `#`, `:`, `&`, `,`, `*` (`:::` is
+ * three of them for the boundaries that this finds), an id run as long as it
+ * goes, and any other single character: a `-`, a letter, a `^`, or one
+ * whitespace character (agentflow reads one space unit for each). The text ends
+ * with the keyword as a unit when the units before it end where it starts.
+ */
+function endsWithSpaceTakingKeyword(text: string): boolean {
+  const spaceTakingKeyword = ["end", "global"].find((word) =>
+    text.endsWith(word),
+  )
+  if (spaceTakingKeyword === undefined) return false
+  const target = text.length - spaceTakingKeyword.length
+  // The keywords of the pieces of a name; the longer of two with the same
+  // start comes first.
+  const keywords = [
+    "agentflow-beta",
+    "connector",
+    "classDef",
+    "linkStyle",
+    "global",
+    "class",
+    "style",
+    "flow",
+    "end",
+    "v",
+  ]
+
+  /**
+   * Whether the character at `position` belongs to an id run: an ASCII letter
+   * or digit, one of `!"#$%&'*+./?\_` and the backquote, or a `-` followed by
+   * a character other than `>`, `-`, and `.` (rule 21).
+   */
+  function isIdRunCharacter(position: number): boolean {
+    const character = text[position]
+    if (character === "-") return !">-.".includes(text[position + 1] ?? ">")
+    return isWordCharacter(character) || "!\"#$%&'*+./?\\`".includes(character)
+  }
+
+  let offset = 0
+  while (offset < target) {
+    let end = offset + 1
+    const character = text[offset]
+    let keyword: string | undefined
+    for (const word of keywords) {
+      if (
+        text.startsWith(word, offset) &&
+        !isWordCharacter(text[offset + word.length])
+      ) {
+        keyword = word
+        break
+      }
+    }
+    if (keyword !== undefined) end = offset + keyword.length
+    else if (character >= "0" && character <= "9") {
+      while (text[end] >= "0" && text[end] <= "9") end++
+    } else if (!"#:&,*".includes(character) && isIdRunCharacter(offset)) {
+      while (end < text.length && isIdRunCharacter(end)) end++
+    }
+    offset = end
+  }
+  return offset === target
+}
+
+/**
+ * Where the comment starts that follows a name that ends with the keyword
+ * `end` or `global`, when the printer drops the `;` between them: that
+ * keyword takes the whitespace after it, also before a comment, so the
+ * whitespace is the name's own and a comment touches the name. Printing the
+ * name up to the comment leaves the dropped `;` and the whitespace around it
+ * out, so that the next formatting reads the same text (docs/agentflow.md,
+ * Names and headings). Which `;` stay is the decision of the printed run (see
+ * `readRunOnItsLine`). Undefined for any other name.
+ */
+function findCommentAfterDroppedSemicolon(
+  source: Source,
+  name: AgentflowName,
+): number | undefined {
+  // A name that holds a directive or a comment, or that ends with a character
+  // other than the spaces and tabs that the keyword takes (U+2028 and U+2029
+  // are text there), is printed as written.
+  if (
+    name.parts.length !== 1 ||
+    findTriviaBetween(source, name.range[0], name.range[1]).length > 0
+  )
+    return undefined
+  let textEnd = name.range[1]
+  while (textEnd > name.range[0] && isSpaceOrTab(source.text[textEnd - 1]))
+    textEnd--
+  if (!endsWithSpaceTakingKeyword(source.text.slice(name.range[0], textEnd)))
+    return undefined
+  const kept = findAgentflowKeptLines(source)
+  const line = lineStartOf(source, name.range[1])
+  if (kept.joined.has(line) || kept.verbatim.has(line)) return undefined
+  const run = readRunOnItsLine(source, name.range[1], {
+    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
+  })
+  if (run == null || run.separators.length > 0) return undefined
+  const first = findTriviaBetween(source, run.range[0], run.range[0] + 1).at(0)
+  return first?.type === "Comment" ? first.range[0] : undefined
 }
 
 /**

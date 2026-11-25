@@ -210,8 +210,9 @@ Prettier が `return  x` を `return x;` と印字するためです。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 引用符、バックスラッシュ、
 重複代入と代わりに使われるフロントマターの値は残します。
-pie は次の物理行を title に結合しません。
-空行・コメント・ディレクティブを挟んでも次の区分は別文です。
+固定した文法は次の物理行を title に結合しません。
+空行・コメント・ディレクティブを挟んでも次の区分は別文で、
+数える版のうち最も古い版が別に読む場合は、下の場合に書きます。
 保持する注釈類とセミコロンのまとまりを優先します。
 テキストと `%%` のコメントの間の、空白でもタブでもない空白文字（U+000B、U+000C、
 改行しない空白、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF）は、
@@ -223,6 +224,13 @@ pie は次の物理行を title に結合しません。
 `%% c` は `title T %% c` と印字します。
 コメントに接するディレクティブがあっても同じです（`title T`、改行しない空白、
 `%%{x}%%`、`%% c` は変えません）。
+`%%{` の後ろに、空白を除いて語の文字が続かないもの（`%%{}%%` など）は、
+その版が `%%` と同じようにテキストとして読むので、その前の空白も同じに扱います。
+`title T`、改行しない空白、`%%{}%%` は変えません。
+`title T`、空白 2 つ、`%%{}%%` は `title T %%{}%%` と印字します。
+詳しくは
+[最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
+を参照してください。
 テキストの後のディレクティブの後に空白が続くときは、ほかの図と同じに印字します。
 `title    T`、改行しない空白、`%%{x}%%`、空白 2 つ、`%% c` は、`title T`、
 その改行しない空白、`%%{x}%% %% c` と印字します。
@@ -239,6 +247,8 @@ U+2029 があるときを除きます。
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
 [fixture: pie/title/title-inner-text]
 [fixture: pie/title/empty-value-with-directive]
+[fixture: pie/title/title-empty-directive-gap-printed]
+[test: a whitespace character that is no space or tab before an empty directive after the title of a pie chart]
 [test: a no-break space before a comment after the title of a pie chart]
 [test: U+3000 before a comment after the title of a pie chart]
 [test: U+2003 before a comment after the title of a pie chart]
@@ -264,6 +274,42 @@ pie
   title Sales report
   "Sales": 8
 ```
+
+数える版のうち最も古い版では、U+2028 か U+2029 でテキストが終わり、
+コメントの領域が続く title は、その領域の後の `%%` だけの行を、
+テキストの一部として取り込みます。
+mermaid.js はコメントの領域を、それを終える改行と一緒に取り除くので、
+その後の行は title の行に続きます。
+`%%` だけの行はコメント行ではないので残り、
+固定した文法はそれをコメントと読みます。
+そのような行が続く title は、その `%%` まで書かれたまま印字します。
+title を独立した行にして、コメントの領域と `%%` の行を続けると、
+その版は違う title を描くためです。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+どの title とも同じく、title と領域を独立した行に移します。
+テキストのあるコメント行か、空白だけの行が続くときは、
+title と続きを書かれたまま残します。
+U+2028 か U+2029 で title が終わらないときは、通常どおり印字します。
+どれもこれまでどおりです。
+
+[test: pie/title/title-text-ls-comment-then-whitespace-line-kept]
+[test: pie/title/title-text-ls-comment-at-end-moved]
+[test: pie/title/title-ignored-semicolon-ls-comment-then-percent-line-kept]
+[test: pie/title/title-two-ignored-semicolons-ls-comment-then-percent-line-kept]
+[test: pie/title/title-ls-comment-then-percent-line-kept]
+[test: pie/title/title-text-ls-comment-then-percent-line-kept]
+[test: pie/title/title-ps-comment-then-percent-line-kept]
+[test: pie/title/title-ls-spaced-comment-then-percent-line-kept]
+[test: pie/title/title-ls-comment-only-then-percent-line-kept]
+[test: pie/title/title-ls-comment-then-percent-line-at-end-kept]
+[test: pie/title/title-ls-comment-then-blank-line-moved]
+[test: pie/title/title-ls-comment-then-directive-line-moved]
+[test: pie/title/title-ls-comment-then-comment-line-kept]
+[test: pie/title/title-comment-then-percent-line-without-separator]
+[test: pie/title/title-text-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/title/title-text-ls-comment-then-two-percent-lines-kept]
+[test: pie/title/title-text-ls-comment-then-percent-line-crlf-kept]
+[test: pie/title/title-text-ls-comment-then-unclosed-directive-line-moved]
 
 ### Accessibility lines
 
@@ -293,7 +339,10 @@ mermaid.js が先に取り除く空行・コメント・ディレクティブの
 その文は書かれたまま残します（`"A":1` を `"A": 1` と印字しません）。
 `accTitle` の値の後の `%%` の前の空白も、その版が title の一部として読むので、
 書かれたまま残します（`accTitle: Value   %% note`）。
-`accDescr` の値の後の `%%` の前の、
+`%%{` の後ろに、空白を除いて語の文字が続かないもの（`%%{}%%` など）も、
+その版はテキストとして読むので、
+その前の空白は同じに残します（`accTitle: Value   %%{}%%`）。
+`accDescr` の値の後の `%%` か、そうした `%%{` の前の、
 空白でもタブでもない空白文字（[Title](./pie.ja.md#title)
 が挙げる文字）も同じです。
 その版が説明の一部として描くので、その場に残します（`accDescr: Value`、
@@ -318,6 +367,18 @@ U+2029 があるときを除きます。
 [fixture: accessibility-lines/acc-title-percent-gap-kept]
 [fixture: accessibility-lines/acc-value-after-blank-and-directive-kept]
 [fixture: accessibility-lines/acc-value-with-value-then-row-split]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-tab-kept]
+[fixture: pie/accessibility-lines/acc-title-spaced-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-punctuation-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-then-comment-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-directive-then-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-unclosed-empty-directive-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-empty-directive-no-final-newline-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-spaced-word-directive-gap-printed]
+[fixture: pie/accessibility-lines/acc-descr-empty-directive-gap-printed]
+[test: a whitespace character that is no space or tab before an empty directive after the accTitle line of a pie chart]
+[test: a whitespace character that is no space or tab before an empty directive after the accDescr line of a pie chart]
 [fixture: pie/accessibility-lines/a11y-lines]
 [fixture: pie/accessibility-lines/a11y-empty]
 [fixture: pie/accessibility-lines/a11y-next-section]
@@ -339,6 +400,31 @@ U+2029 があるときを除きます。
 [test: a no-break space and spaces before a comment after the accDescr line of a pie chart]
 [test: a no-break space before a directive and two spaces before a comment after the accDescr line of a pie chart]
 [test: a no-break space before a comment after the accDescr line, with no line break at the end of a pie chart]
+
+`accTitle:` と `accDescr:` の行も同じです。
+U+2028 か U+2029 で値が終わり、コメントの領域が続き、
+その後に `%%` だけの行がある行は、その `%%` まで書かれたまま印字します。
+数える版のうち最も古い版が、`%%` の行を、描画に出る値に取り込むためです。
+領域の後に空行かディレクティブの行が続くとき、またはテキストが終わるときは、
+これまでどおり、その行と領域を独立した行に移します。
+
+[test: pie/accessibility-lines/accdescr-ps-directive-comment-at-end-moved]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ps-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-at-end-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-blank-line-moved]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-unclosed-directive-line-moved]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ps-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-at-end-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-blank-line-moved]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-unclosed-directive-line-moved]
 
 入力（エスケープ表記）:
 `"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`
@@ -581,7 +667,8 @@ pie
 自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。
-コメントの前の空白が例外になるのは、`accTitle` の値の後ろの `%%` です。
+コメントの前の空白が例外になるのは、
+`accTitle` の値の後ろの `%%` と `%%{}%%` です。
 数える版のうち最も古い版が、その空白をタイトルの一部として読むためです。
 詳しくは [アクセシビリティの行](#accessibility-lines) を参照してください。
 裸・3つのパーセントと末尾の空白を残します。
