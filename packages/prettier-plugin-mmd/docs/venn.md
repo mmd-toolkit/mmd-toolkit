@@ -218,7 +218,11 @@ venn-beta
 ### Blank lines
 
 Ordinary blank runs collapse to one and body-edge blanks disappear, retaining
-grouping without excess space. Value blanks and protected diagram-comment gaps
+grouping without excess space. Prettier prints at most one ordinary blank line
+between items and none at the start or end of a block or the text in JavaScript,
+CSS, YAML, and Markdown;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives ordinary Venn
+blank lines the same form. Value blanks and protected diagram-comment gaps
 remain: an empty line and a nonempty space/tab-only line before an unindented
 `%%{ }%%` can select different modes. Common comment regions that join source
 lines also retain their boundaries.
@@ -442,6 +446,13 @@ properties of a `style` statement of a Venn diagram are printed so. A color is a
 `#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a
 style; it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+A style value consisting of `#` and five or seven hexadecimal digits is text in
+the Db of mermaid.js, outside the
+[exception for the case of colors](./compatibility.md#colors-that-are-drawn-the-same).
+Changing its case changes that stored text, so its spelling stays as written.
+
+[corpus fixture: venn/db-style-hex-five] [corpus fixture:
+venn/db-style-hex-seven]
 
 [fixture: colors/colors-in-lower-case] [fixture:
 colors/words-that-are-not-colors-as-written]
@@ -613,11 +624,21 @@ sizes-and-numbers/colon-of-a-size-directive]
 A size that is a plain decimal is printed in the shortest form (`+5` is `5`,
 `-.5` is `-0.5`; see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-A zero at the start of the integer part, signed zero and overflow retain their
-spelling; numeric text ids also retain their spelling because rewriting them
-changes the Db, and so do the numbers of a `text` or `style` statement
-(`text A 1.50`, `opacity:0.50`), which mermaid.js reads as text. Absent size and
-written zero remain distinct written forms.
+A zero at the start of the integer part and signed zero retain their spelling.
+An overflowing decimal size has the numeric value `Infinity` in the Db, but
+mermaid.js rejects `Infinity` written as a size. The overflowing size therefore
+keeps its decimal spelling. Numeric text ids also retain their spelling because
+rewriting them changes the Db, and so do the numbers of a `text` or `style`
+statement (`text A 1.50`, `opacity:0.50`), which mermaid.js reads as text.
+Absent size and written zero remain distinct written forms. A set without a size
+has Db size 10 in mermaid.js, while a set with `: 0` has size 0. The omitted
+size and written zero stay distinct because replacing one with the other changes
+the Db.
+
+[corpus fixture: venn/db-form-set] [corpus fixture: venn/db-size-zero]
+
+[corpus fixture: venn/db-size-overflow] [corpus fixture:
+venn/gram-size-infinity]
 
 [fixture: venn/sizes-and-numbers/absent-zero-signs] [fixture:
 venn/sizes-and-numbers/text-and-style-numbers-kept] [corpus fixture:
@@ -734,7 +755,11 @@ terminator leaves the Db unchanged, also with several styles.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
-Whitespace immediately before a dropped `;` is dropped with it.
+Whitespace immediately before a dropped `;` is dropped with it. Dropping an
+ignored `;` leaves the whitespace before it at the end of the line. Prettier
+removes the spaces and tabs there, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same form
+here.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
 
@@ -883,11 +908,21 @@ and tabs after it, and the spaces and tabs at the end of the title are left out,
 except in the case below: mermaid.js keeps them in the Db, but draws the same
 title without them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-Every later value character, including statement-looking words, stays as
-written, because everything after the one separator is the title value in the
-tree and in the Db. At the end of the title, U+2028 and U+2029 are characters of
-the title and no spaces or tabs: the spaces after one are left out, and the
-spaces before it stay.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `title` and its text, as Prettier prints `return  x` as `return x;`. The
+title's final spaces and tabs are whitespace at the end of a line, which
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes. The
+exception for title margins permits these Db changes because mermaid.js draws
+the title without those margins. Every later value character, including
+statement-looking words, stays as written, because everything after the one
+separator is the title value in the tree and in the Db. At the end of the title,
+U+2028 and U+2029 are characters of the title and no spaces or tabs: the spaces
+after one are left out, and the spaces before it stay. U+2028 and U+2029 remain
+in the title's Db value, so a space before either character is interior
+whitespace, outside the exception for title margins. Spaces and tabs after the
+last title character form the removable margin, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that line end
+without them.
 
 [test: venn: title-line-separator-spaces]
 
@@ -906,7 +941,10 @@ counts rejects `title` alone on its line (see
 A title that ends with directives and then spaces and tabs is printed as the
 same title with the directives last: `title T  %%{x}%%  ` is printed
 `title T %%{x}%%`, and `title T  %%{x}%%  %%{y}%%  ` is printed
-`title T %%{x}%% %%{y}%%`.
+`title T %%{x}%% %%{y}%%`. For an eligible title, mermaid.js removes trailing
+directives and draws the same title without the resulting margin of spaces and
+tabs. The final spaces and tabs are whitespace at the end of a line, which
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes.
 
 [fixture: venn/title/title-trailing-directive-blanks-dropped] [fixture:
 venn/title/title-two-directives-trailing-blanks-dropped]
@@ -922,11 +960,13 @@ After the text, spaces and tabs before a comment are printed as one space, and
 the spaces and tabs after the comment are left out: `title T  %% c  ` is printed
 `title T %% c`. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
 one space before a comment that stands after something on its line, as Prettier
-prints `x = 1;   // c` as `x = 1; // c`. A comment that follows a directive, a
-no-break space, U+3000, U+2003, U+2028, U+2029, or text after the last
-directive, spaces after a directive that starts the title, and a title of
-directives only stay as written (`title T %%{x}%% U` and two spaces is not
-changed).
+prints `x = 1;   // c` as `x = 1; // c`. For an eligible title ending in a
+comment, the exception for title margins permits dropping the final spaces and
+tabs; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that line
+end without whitespace. A comment that follows a directive, a no-break space,
+U+3000, U+2003, U+2028, U+2029, or text after the last directive, spaces after a
+directive that starts the title, and a title of directives only stay as written
+(`title T %%{x}%% U` and two spaces is not changed).
 
 [test: runs and spaces around a comment after the text of a title] [test: text
 after a directive and spaces at the end of a title] [test: a no-break space
@@ -1072,10 +1112,15 @@ venn-beta%%{init: {}}%%
 ### Trailing whitespace
 
 Exterior ASCII spaces and tabs after completed headers and non-title statements
-disappear, including after kept parts and safe suffixes. Spaces inside names,
-colors, style strings, comments and directives remain authored text. A run of
-spaces and tabs inside a label or a title value is printed as one space, and the
-spaces at the end of a title are left out (see [Title](#title) and
+disappear, including after kept parts and safe suffixes. Exterior spaces and
+tabs after completed headers and non-title statements lie at the end of a line,
+including after kept parts and safe suffixes where they are outside values and
+protected gaps. Prettier removes such spaces and tabs, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it the same
+form here. Spaces inside names, colors, style strings, comments and directives
+remain authored text. A run of spaces and tabs inside a label or a title value
+is printed as one space, and the spaces at the end of a title are left out (see
+[Title](#title) and
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 
 [fixture: venn/trailing-whitespace/continuation-spaces] [corpus fixture:
@@ -1212,9 +1257,14 @@ Escaped input and output:
 
 Ordinary gaps normalize only accepted ASCII spaces/tabs; non-ASCII whitespace
 inside values stays, while broader leading detection whitespace and title
-separators use their dedicated rules. U+0085 is not whitespace, and NBSP, BOM,
-U+3000, VT and FF do not become accepted body gaps. File-leading BOM and
-BOM/frontmatter limitations follow shared host handling.
+separators use their dedicated rules. A no-break space inside a name is part of
+the name that mermaid.js stores in the Db. Replacing it with an ASCII space
+changes that name outside the permitted whitespace exceptions, so the no-break
+space stays as written. U+0085 is not whitespace, and NBSP, BOM, U+3000, VT and
+FF do not become accepted body gaps. File-leading BOM and BOM/frontmatter
+limitations follow shared host handling.
+
+[corpus fixture: venn/lex-nbsp-quoted-value]
 
 [corpus fixture: venn/db-form-set] [fixture:
 venn/whitespace-characters/tab-gaps] [test: venn: nbsp-leading-header] [test:
@@ -1224,7 +1274,7 @@ bom-leading-header] [test: venn: bom-frontmatter] [test: venn:
 unicode-role-whitespace]
 
 Escaped input and output:
-`"venn-beta\ntitle\u00a0 T" -> "venn-beta\ntitle  T\n"`.
+`"venn-beta\ntitle\u00a0 T" -> "venn-beta\n  title T\n"`.
 
 [test: venn: nbsp-title-separator]
 
@@ -1272,10 +1322,12 @@ venn-beta
 ### Final newline
 
 Ordinary accepted input ends with one configured newline for the shared file
-convention, including a header-only body. Protected comment gaps and unclosed
-directives reaching EOF retain their written endings; terminal value spaces
-remain. Markdown supplies fence/container indentation around these same Venn
-rules.
+convention, including a header-only body. Prettier ends ordinary text with one
+line break and no final blank line in JavaScript, CSS, YAML, and Markdown;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives ordinary Venn
+input the same ending. Protected comment gaps and unclosed directives reaching
+EOF retain their written endings; terminal value spaces remain. Markdown
+supplies fence/container indentation around these same Venn rules.
 
 [fixture: venn/final-newline/bounded-argument-eof] [fixture:
 venn/final-newline/comment-gap-eof] [corpus fixture: venn/db-style-string-eof]

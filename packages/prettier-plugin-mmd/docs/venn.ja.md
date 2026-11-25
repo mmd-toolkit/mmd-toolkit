@@ -231,8 +231,12 @@ venn-beta
 
 ### Blank lines
 
-通常の空行の列は1行にまとめ、本文の両端の空行を除きます。
-余分な空間を減らしてまとまりを残すためです。
+通常の空行の列は1行にまとめ、本文の両端の空行を除いて、
+余分な空間を減らしてまとまりを残します。
+Prettier は JavaScript、CSS、YAML、Markdown で、
+通常の空行を項目の間で最大 1 行にし、ブロックとテキストの両端から除きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+Venn 図の空行にもこの形を与えます。
 値の空行と保護する図コメントの隙間は保ちます。
 字下げのない `%%{ }%%` の前では、
 空行と空でない空白・タブだけの行でモードが異なります。
@@ -476,6 +480,13 @@ Venn 図の `style` 文のプロパティの色が対象です。
 色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
 色を短くすることはなく、色でないテキストは書かれたままにします。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+`#` と 5 桁か 7 桁の 16 進数だけのスタイルの値は、
+mermaid.js がテキストとして Db に保存します。
+[色の大小文字の例外](./compatibility.ja.md#同じに描かれる色) の対象ではなく、
+大小文字を変えると Db のテキストが変わるため、その綴りを保ちます。
+
+[corpus fixture: venn/db-style-hex-five]
+[corpus fixture: venn/db-style-hex-seven]
 
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
@@ -654,12 +665,23 @@ Prettier がこの種類の記号の両側に印字するとおり、空白を 1
 通常の十進数のサイズは、最短の形で印字します。
 `+5` は `5`、`-.5` は `-0.5` にします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-整数部の先頭のゼロ、符号つきゼロ、桁あふれの綴りを保ちます。
+整数部の先頭のゼロと符号つきゼロの綴りを保ちます。
+mermaid.js は桁あふれした十進数のサイズを、Db に `Infinity` として保存しますが、
+サイズを `Infinity` と書くと拒否します。
+そのため、桁あふれしたサイズは十進数の綴りを保ちます。
 数値の text id も綴りを保ちます。
 書き換えると Db が変わるためです。
 `text` 文と `style` 文の数（`text A 1.50`、`opacity:0.50`）も、
 mermaid.js がテキストとして読むため、綴りを保ちます。
 サイズの省略と書かれたゼロは別の形として保ちます。
+mermaid.js は、サイズのない集合の Db のサイズを 10 とし、
+`: 0` のある集合では 0 とします。
+サイズの省略と書かれたゼロを入れ替えると Db が変わるため、別の形として保ちます。
+
+[corpus fixture: venn/db-form-set] [corpus fixture: venn/db-size-zero]
+
+[corpus fixture: venn/db-size-overflow]
+[corpus fixture: venn/gram-size-infinity]
 
 [fixture: venn/sizes-and-numbers/absent-zero-signs]
 [fixture: venn/sizes-and-numbers/text-and-style-numbers-kept]
@@ -784,6 +806,9 @@ venn-beta
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
 削除する `;` の直前の空白も一緒に削除します。
+無視される `;` を除くと、直前の空白とタブは行末の外側の空白になります。
+Prettier は行末の外側の空白とタブを除き、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、ここでも同じ形を与えます。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
 
@@ -932,10 +957,21 @@ title の最初の区切りを ASCII 空白1つにします。
 タイトルの末尾の空白とタブは、次の場合を除いて除きます。
 mermaid.js はそれらを Db に残しますが、それらがなくても同じタイトルを描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`title` とテキストの間に空白 1 つを与えます（Prettier は `return  x` を
+`return x;` と印字する）。
+タイトル末尾の空白とタブは行末の空白なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、それらを除く形を与えます。
+mermaid.js は、前後の空白とタブなしで同じタイトルを描くので、
+タイトルの余白の例外が Db の変更を認めます。
 それより後の値の全ての文字は、文に見える単語も含めて保ちます。
 最初の区切りの後は全て title の値で、木でも Db でもそうだからです。
 タイトルの末尾の U+2028 と U+2029 は、空白やタブではなくタイトルの文字なので、
 その後の空白は除き、その前の空白は残します。
+U+2028 と U+2029 は、タイトルの Db の値に残るので、
+その前の空白は値の内側にあり、タイトルの余白の例外に含まれません。
+最後のタイトル文字の後の空白とタブは、除ける末尾の余白なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、空白のない行末を与えます。
 
 [test: venn: title-line-separator-spaces]
 
@@ -958,6 +994,10 @@ mermaid.js はそれらを Db に残しますが、それらがなくても同�
 ディレクティブを最後にして印字します。
 `title T  %%{x}%%  ` は `title T %%{x}%%` と印字し、
 `title T  %%{x}%%  %%{y}%%  ` は `title T %%{x}%% %%{y}%%` と印字します。
+対象になるタイトルでは、mermaid.js が末尾のディレクティブを除き、
+残る末尾の空白とタブなしで同じタイトルを描きます。
+最後の空白とタブは行末の空白なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、それらを除きます。
 
 [fixture: venn/title/title-trailing-directive-blanks-dropped]
 [fixture: venn/title/title-two-directives-trailing-blanks-dropped]
@@ -975,6 +1015,9 @@ Venn 図のディレクティブかコメントのあるタイトルは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
 同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
 Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+対象になるタイトルとコメントの行は、
+タイトルの余白の例外で末尾の空白とタブを除けるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、空白のない行末を与えます。
 ディレクティブの後のコメント、U+00A0、U+3000、U+2003、U+2028、U+2029、
 最後のディレクティブの後のテキスト、先頭のディレクティブの後の空白、
 ディレクティブだけのタイトルがあるときは、タイトルは書かれたまま残ります。
@@ -1134,6 +1177,10 @@ venn-beta%%{init: {}}%%
 
 完結したヘッダーと title 以外の文の後の外側の ASCII 空白とタブは除きます。
 保持部分と安全な接尾部の後も同じです。
+完結したヘッダーと title 以外の文の後では、保持部分や安全な接尾部の後でも、
+値や保護する隙間の外側の空白とタブは行末にあります。
+Prettier はこの行末の空白とタブを除くので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、同じ形を与えます。
 名前、色、style の文字列、
 コメントとディレクティブ内の空白は書かれたテキストとして保ちます。
 ラベルや title の値の中の空白とタブの連なりは空白 1 つにして印字し、
@@ -1280,9 +1327,14 @@ ASCII 空白にできるのは title の最初の区切りだけです。
 通常の隙間は受理される ASCII 空白とタブだけを正規化します。
 値内の非 ASCII 空白は保ち、
 検出前の広い空白と title の区切りは専用の規則に従います。
+名前の中の改行しない空白は、mermaid.js が Db に保存する名前の一部です。
+ASCII 空白に置き換えると名前が変わり、許される空白の例外の対象にもならないため、
+書かれたまま保ちます。
 U+0085 は空白ではなく、NBSP、BOM、U+3000、VT、
 FF を本文の隙間として受理はしません。
 ファイル先頭の BOM と BOM・フロントマターの制限は共通のホスト処理に従います。
+
+[corpus fixture: venn/lex-nbsp-quoted-value]
 
 [corpus fixture: venn/db-form-set]
 
@@ -1293,7 +1345,7 @@ FF を本文の隙間として受理はしません。
 [test: venn: unicode-role-whitespace]
 
 エスケープ表記の入出力:
-`"venn-beta\ntitle\u00a0 T" -> "venn-beta\ntitle  T\n"`。
+`"venn-beta\ntitle\u00a0 T" -> "venn-beta\n  title T\n"`。
 
 [test: venn: nbsp-title-separator]
 
@@ -1344,6 +1396,10 @@ venn-beta
 
 通常の受理する入力は共通のファイルの規則に合わせ、設定の改行1つで終えます。
 ヘッダーだけの本文も同じです。
+Prettier は JavaScript、CSS、YAML、Markdown で、
+通常のテキストを改行 1 つで終え、末尾に空行を残しません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+通常の入力の末尾にもこの形を与えます。
 保護するコメントの隙間と末尾までの閉じないディレクティブは終端を保ち、
 値の末尾空白も残します。
 Markdown は同じ Venn の規則の外側にフェンスとコンテナーの字下げを付けます。
