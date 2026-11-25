@@ -1920,12 +1920,13 @@ here.
 
 A U+2028 or a U+2029 before the last directive, or between it and a comment,
 ends the line for what follows the title where a comment follows it: the line
-after the title is not indented (`title T\u2028%%{x}%%%% c` and the node `R`
-under it are printed as they are, `R` at column one). Where nothing, an empty
-line, or a comment line follows the title and the text ends, the directive and
-the comment that follow a U+2028 or a U+2029 before the directive are printed on
-a line of their own, and the whitespace around that U+2028 or U+2029 is left out
-(a U+0085 before it is no whitespace and stays at the end of the title line;
+after the title is not indented, as the comment takes it in
+(`title T\u2028%%{x}%%%% c` and the line `R` under it, which is no node, are
+printed as they are, `R` at column one). Where nothing, an empty line, or a
+comment line follows the title and the text ends, the directive and the comment
+that follow a U+2028 or a U+2029 before the directive are printed on a line of
+their own, and the whitespace around that U+2028 or U+2029 is left out (a U+0085
+before it is no whitespace and stays at the end of the title line;
 `title T\u2028%%{x}%%%% c` is printed `title T` and `%%{x}%%%% c` on the next
 line); a second U+2028 or U+2029 between the directive and the comment puts the
 comment on a line of its own after the directive (`title T`, a U+2028,
@@ -1938,9 +1939,9 @@ and up to the comment, keeps the line as written (with nothing after the line,
 the run between the directive and the comment is printed as that paragraph
 says). The specification treats U+0085 after a title's first U+2028 or U+2029,
 outside directives and before the comment, as text rather than whitespace.
-Splitting that line would move U+0085 to the start of a node line: 11.14.0
-rejects that text, 11.17.2, 12.0.0, and 12.3.0 draw another figure, and 12.3.0
-adds a node to the Db, so the title line stays as written (see
+Splitting that line would move U+0085 to the start of a node line: some of the
+versions that count reject that text, the others draw another figure, and the Db
+gains a node, so the title line stays as written (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 For a title line with a directive and a comment after it, with a statement
 directly after the title or after a comment line, with a line of spaces after it
