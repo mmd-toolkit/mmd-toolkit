@@ -261,6 +261,9 @@ mermaid.js が名前を trim するので Db は同じであり、
 上に書いたとおり書かれたまま残します。
 名前の末尾では、U+2028 と U+2029 は空白やタブではなく名前の文字なので、
 その後の空白は落とし、前の空白は残します。
+名前の末尾の U+2028 や U+2029 の後では、空白やタブが行末にあるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が落とします。
+その文字の前の空白は、名前の内側に残ります。
 ディレクティブを含む名前は、末尾まで書かれたまま残しますが、
 行の規則が無視する `;` が末尾にあるときは、その前後の空白とともに落とします。
 ディレクティブのない名前と同じです。
@@ -375,6 +378,9 @@ connectorにも名前がありますが、閉じる`end`はありません。
 Db が異なるからです。
 後ろに空白、改行、区切りだけが続く空白やタブは落とします。
 その文字のない EOF と同じく、テキストが id を終わらせ、Db も図も同じだからです。
+click の id の後ろが空白、改行、区切りだけなら、
+読みを終える空白やタブは行末の空白なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が落とします。
 行の規則が無視する `;` は、この判断では後続のテキストになりません。
 
 [fixture: names-and-headings/click-exit-before-ignored-semicolon]
@@ -415,6 +421,8 @@ connectorの名前では、消される空文字列に直続する文字が`;`�
 click の ID として読む名前が、終了文字なしで EOF に達するときは、
 名前の本文を書かれたとおりに保ちます。
 加えるのは [末尾の改行](#final-newline) の末尾の LF だけです。
+EOF に達する click の id に加える LF は、
+Prettier が末尾に置く 1 つの改行であり、空行は足しません。
 
 [fixture: names-and-headings/name-click-exit-eof]
 
@@ -431,6 +439,9 @@ clickのIDの読みを終える文字の後の通常の空行は、空行に従�
 区切りの`;`を改行に変えるときは、空の説明ブロックの後で名前を終える、
 空白だけの断片を落とします。
 `;`の前の空白は名前の文字ですが、印字するLFの前では名前でないためです。
+空の説明ブロックの後で名前を終える空白だけの断片は、
+`;` が改行になると行末の空白になるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が落とします。
 行の保持によってセミコロンが同じ行に残る場合は保ちます。
 
 [fixture: names-and-headings/empty-description-kept-separator]
@@ -1124,9 +1135,14 @@ agentflow-beta TB
 それ以上の連続する空行を1つにします。
 空白だけの行も同じで、文書とflow/globalの本文の両端の空行を落とします。
 値、データ、ディレクティブの内部の空行を保ちます。
+引用符付きのラベルの内部の空行は、
+mermaid.js の Db ではラベルの文字に含まれるので、
+取り除くとラベルの文字が変わります。
 agentflowのコメントはLFを残し、後続の空行を取りません。
 空行の対応付けの既知の差異は適用しません。
 既定のサイズによる分岐が通常の空行規則に優先します。
+
+[corpus fixture: agentflow/lex-brace-string-keeps-blank-line]
 
 [fixture: blank-lines/blank-comment-content] [fixture: blank-lines/blank-runs]
 [fixture: blank-lines/blank-value]
@@ -1158,6 +1174,10 @@ agentflow-beta TB
 ただし、文の後ろのコメントは、
 `;` を含む場合にだけ末尾の空白とタブを落とします（`A %% c;  ` は `A %% c;`
 と印字します）。
+文の後ろのコメントが `;` を含むとき、末尾の空白とタブは行末にあり、
+Prettier は取り除きます。
+コメントとそのセミコロンを残して、末尾の空白とタブを取り除く形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
 [fixture: comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
@@ -1372,6 +1392,9 @@ usecaseと両方のgraphで、`accTitle: value`と`accDescr: value`に揃えま�
 
 空と空白だけの値も`accTitle:`または`accDescr:`の文として保ち、
 後ろに空白を足しません。
+空の `accTitle:` や `accDescr:` の後に空白を置くと、
+Prettier が取り除く行末の空白になるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、空白のない形を与えます。
 
 [fixture: accessibility/empty-title] [fixture: accessibility/empty-description]
 [fixture: accessibility/accessibility-empty-null]

@@ -245,16 +245,19 @@ spaces is printed `flow F`, and so is `flow F ;` followed by a line, where the
 directive or a comment, a name of several parts, and a name of whitespace only
 are kept as written, as above. At the end of the name, U+2028 and U+2029 are
 characters of the name and no spaces or tabs: the spaces after one go, and the
-spaces before it stay. A name that holds a directive stays as written up to its
-end, but a `;` that the line rule ignores at its end, with the whitespace around
-it, goes with it, as it does from a name without a directive:
-`accDescr {style:#x} flow F #%%{init: {}}%%;` followed by two spaces is printed
-`accDescr: style:#x` and `flow F #%%{init: {}}%%`, as it is without the
-whitespace after the `;`. The directives at its end then stand as they do
-without that whitespace: the whitespace before them is dropped, as at the end of
-any name, so `flow F%% style:#x %%{init: {}}%%;` followed by two spaces is
-printed `flow F%% style:#x%%{init: {}}%%`, and so is the same text with a tab,
-or a space before the `;`, after the `;`.
+spaces before it stay. Spaces and tabs after a final U+2028 or U+2029 end the
+printed line, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+removes them; spaces before either name character remain inside the name. A name
+that holds a directive stays as written up to its end, but a `;` that the line
+rule ignores at its end, with the whitespace around it, goes with it, as it does
+from a name without a directive: `accDescr {style:#x} flow F #%%{init: {}}%%;`
+followed by two spaces is printed `accDescr: style:#x` and
+`flow F #%%{init: {}}%%`, as it is without the whitespace after the `;`. The
+directives at its end then stand as they do without that whitespace: the
+whitespace before them is dropped, as at the end of any name, so
+`flow F%% style:#x %%{init: {}}%%;` followed by two spaces is printed
+`flow F%% style:#x%%{init: {}}%%`, and so is the same text with a tab, or a
+space before the `;`, after the `;`.
 
 [test: agentflow: U+2028 and spaces at the end of a flow name] [test: agentflow:
 U+2029 and spaces at the end of a connector name] [fixture:
@@ -372,8 +375,11 @@ statement that follows, also one after a `;` that becomes a line break: without
 it the line break ends the id and the next statement is read as a part of the
 name, so the Db differs. Drop a space or tab where nothing follows it but
 whitespace, line breaks, and separators: the text then ends the id, as at EOF
-without the character, and the Db and the figure are the same. A `;` that the
-line rule ignores leaves no following text for this decision.
+without the character, and the Db and the figure are the same. When only
+whitespace, line breaks, and separators follow a click id, its exit space or tab
+ends the printed line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes it. A `;`
+that the line rule ignores leaves no following text for this decision.
 
 [fixture: names-and-headings/click-exit-before-ignored-semicolon] [fixture:
 names-and-headings/name-exit-space-before-statement-kept] [fixture:
@@ -412,7 +418,8 @@ names-and-headings/name-click-exit-before-title-tab]
 
 A name read as a click id that reaches EOF with no exit character keeps its text
 as written; the only addition is the final LF of
-[Final newline](#final-newline).
+[Final newline](#final-newline). Prettier adds the final line break, so a click
+id that reaches EOF gains one LF without an extra blank line.
 
 [fixture: names-and-headings/name-click-exit-eof]
 
@@ -428,8 +435,10 @@ names-and-headings/name-ordinary-fragment-blank]
 
 When a separator `;` becomes a line break, drop a final name part made only of
 whitespace after an empty description block: whitespace before `;` is name text,
-but whitespace before the printed LF is not. Keep it when the semicolon stays on
-its line under Kept lines.
+but whitespace before the printed LF is not. After an empty description block,
+the final whitespace-only name part becomes line-end whitespace when `;` becomes
+a line break, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+removes it. Keep it when the semicolon stays on its line under Kept lines.
 
 [fixture: names-and-headings/empty-description-kept-separator]
 
@@ -1075,9 +1084,13 @@ agentflow-beta TB
 Reuse [Blank lines](./flowchart.md#blank-lines): one blank groups statements;
 more add nothing. Collapse ordinary and whitespace-only runs to one and drop
 document/body-edge blanks, including inside flows/globals. Preserve blanks
-inside values, metadata and directives. Agentflow comments leave LF and do not
-consume following blanks; no blank-line-pairing divergence applies. Default size
-branches override ordinary blank layout.
+inside values, metadata and directives. An empty line inside a quoted label is
+part of that label in mermaid.js's Db, so removing the line changes the label
+text. Agentflow comments leave LF and do not consume following blanks; no
+blank-line-pairing divergence applies. Default size branches override ordinary
+blank layout.
+
+[corpus fixture: agentflow/lex-brace-string-keeps-blank-line]
 
 [fixture: blank-lines/blank-comment-content] [fixture: blank-lines/blank-runs]
 [fixture: blank-lines/blank-value]
@@ -1109,7 +1122,10 @@ Reuse [Comments](./flowchart.md#comments) for the same reason: align standalone
 comments with neighbouring statements and retain the author's complete text,
 including trailing spaces, except that the spaces and tabs at the end of a
 comment after a statement are dropped where the comment holds a `;` (`A %% c;  `
-is printed `A %% c;`) and stay where it holds none.
+is printed `A %% c;`) and stay where it holds none. The final spaces and tabs of
+a trailing comment that contains `;` stand at the line end, where Prettier
+removes them, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives their removal while the comment and its semicolon remain.
 
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
 [fixture:
@@ -1320,7 +1336,10 @@ tooltip.
 accessibility/inline-percent-hash]
 
 Empty and whitespace-only values keep `accTitle:` or `accDescr:` without a
-following space.
+following space. A space after an empty `accTitle:` or `accDescr:` would stand
+at the line end, where Prettier removes whitespace, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
+without a following space.
 
 [fixture: accessibility/empty-title] [fixture: accessibility/empty-description]
 [fixture: accessibility/accessibility-empty-null] [corpus fixture:
