@@ -1130,10 +1130,6 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 `linkStyle default`、`classDef`、`style` の形は、ER と requirement と同じです。
 通常のスタイルを分ける `,` の前に空白を置かず、後ろに空白 1 つを置く形は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
-[ER](./er.ja.md#スタイルとクラス) と
-[requirement](./requirement.ja.md#スタイルとクラス) の図も、
-スタイルの語と語の間では、空白とタブの連続を空白 1 つにするので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が同じ形を与えます。
 [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。
 
@@ -1145,11 +1141,6 @@ CSS が `:` の前後の空白を捨て、連続を 1 つとして読むため�
 エスケープされた空白の後の `:` は、スタイル名に値を与える印なので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 空でない値の前の空白 1 つを与えます。
-[ER](./er.ja.md#スタイルとクラス) と
-[requirement](./requirement.ja.md#スタイルとクラス) の図も、
-`:` で始まるスタイルの、語と語の間の連続を、空白 1 つで印字します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この語の間の隙間を与えます。
 `style A :  red   x` は `style A : red x` と印字し、
 `style A fill\ :red   x` は `style A fill\ : red x` と印字します。
 スタイル名が、エスケープされた空白で終わっても、`:` は名前に値を与える印です。
@@ -2726,11 +2717,6 @@ CRLF と CR は `endOfLine` に従い、値の U+2028 と U+2029 は文字とし
 
 移動できるブロック内の字下げしたコメント行は、ほかの本文行と一緒に動かし、
 書かれた行とテキストを保ちます。
-移動できるブロックのコメント行は、
-[agentflow](./agentflow.ja.md#metadata-blocks) と
-[kanban](./kanban.ja.md#データブロック) の図と同じく、
-ほかの本文行と同じ量だけ動かし、本文に対する字下げを保ちます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 
 [fixture: data-blocks/indented-comment-line]
 
@@ -3498,12 +3484,11 @@ subgraph の id は `subGraph0` になり、空白がなければ `S` になり�
 swimlane 図を描く、対象にする版の一部も、そう読みます。
 id を挙げる文がなければ、id は見えないので、空白は 1 つにします。
 タイトルのある名前、複数の語の名前、タブ 1 つの場合も同じです。
-名前の前の空白は、[ER](./er.ja.md#subgraph) 図の `subgraph` の後も、
-[agentflow](./agentflow.ja.md#names-and-headings) 図の `flow` の後も 1 つです。
+`subgraph` の後の名前の前は、空白 1 つです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+Prettier が `return  x` を `return x;` と印字するのと同じく、
 タイトルのある名前、複数の語の名前、id を挙げる文のない 1 語の名前の前や、
-タブ 1 つの場合には、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この空白 1 つの形を与えます。
+タブ 1 つの場合に、この空白 1 つの形を与えます。
 
 [fixture: subgraph-header/name-leading-space-run-named-kept]
 [fixture: subgraph-header/name-leading-space-run-style-kept]

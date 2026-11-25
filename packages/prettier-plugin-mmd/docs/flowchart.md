@@ -1091,11 +1091,7 @@ requirement (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 Commas between ordinary styles follow
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), with no whitespace
-before them and one space after them. [ER](./er.md#styles-and-classes) and
-[requirement](./requirement.md#styles-and-classes) diagrams print a run of
-spaces or tabs between style words as one space, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that word gap.
+before them and one space after them.
 
 A style that starts with the `:`, and one whose `:` follows a backslash and a
 space, are printed as any other style: no whitespace before the `:` besides the
@@ -1103,13 +1099,10 @@ space that the backslash escapes, one space after it, and the runs between their
 words as one space, as CSS drops the whitespace around the `:` and reads a run
 as one. The colon after an escaped space gives the style name its value, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space after
-the colon before a nonempty value. [ER](./er.md#styles-and-classes) and
-[requirement](./requirement.md#styles-and-classes) diagrams also print a run
-between style words as one space when the style starts with a colon.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that word gap. `style A :  red   x` is printed `style A : red x`, and
-`style A fill\ :red   x` is printed `style A fill\ : red x`. In a style whose
-name ends in an escaped space, the colon gives the name its value.
+the colon before a nonempty value. `style A :  red   x` is printed
+`style A : red x`, and `style A fill\ :red   x` is printed
+`style A fill\ : red x`. In a style whose name ends in an escaped space, the
+colon gives the name its value.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore puts one
 space after the colon before a nonempty value.
 
@@ -2627,13 +2620,7 @@ does not cover it.
 data blocks: flowchart U+2029]
 
 An indented comment line inside an eligible block moves with the other body
-lines, keeping its authored line and text. In
-[agentflow](./agentflow.md#metadata-blocks) and
-[kanban](./kanban.md#data-blocks) diagrams, all body lines of an eligible block
-move by the same amount, including embedded comment lines.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the comment line the same movement, preserving its indentation relative to the
-other body lines.
+lines, keeping its authored line and text.
 
 [fixture: data-blocks/indented-comment-line]
 
@@ -3371,11 +3358,11 @@ on nothing in the other. Some of the versions that count that draw a swimlane
 diagram read it so there too. Where no statement names the id, nobody sees it,
 and the whitespace becomes one space, as it does before a name with a title,
 before a name of several words, and where a single tab stands. A name follows
-one space after `subgraph` in [ER](./er.md#subgraphs) diagrams and after `flow`
-in [agentflow](./agentflow.md#names-and-headings) diagrams.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that gap before a subgraph name with a title, a name of several words, or a
-one-word name whose id no statement names, and where a single tab stands.
+one space after `subgraph`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that gap, as
+Prettier prints `return  x` as `return x;`, before a subgraph name with a title,
+a name of several words, or a one-word name whose id no statement names, and
+where a single tab stands.
 
 [fixture: subgraph-header/name-leading-space-run-named-kept] [fixture:
 subgraph-header/name-leading-space-run-style-kept] [fixture:
