@@ -3472,10 +3472,11 @@ are the lines that start with that word or that have that shape, with the colon
 that follows the word, the range, the name, or the arrow. A task of a user
 journey has two colons, and both are counted.
 
-## The examples that decide the whitespace in a Wardley diagram
+## The examples that decide the spelling in a Wardley diagram
 
-The examples in the documentation of the pinned mermaid.js decide the whitespace
-around the arrow of a link. They are counted as under
+The examples in the documentation of the pinned mermaid.js decide the spelling
+of the arrow of a link and of the inertia of a component. They are counted as
+under
 [The examples that decide the whitespace before a colon](#the-examples-that-decide-the-whitespace-before-a-colon):
 the page is `packages/mermaid/src/docs/syntax/wardley.md` of the pinned commit,
 the blocks are its 16 fenced `mermaid-example` blocks, and the frontmatter of a
@@ -3485,13 +3486,12 @@ holds (`docs-syntax-wardley-*`) are not these blocks, and their counts differ.
 
 A link is a line that holds a name, an arrow, and a name.
 
-| Mark                | Page         | Space on each side | An arrow that touches | Not counted |
-| ------------------- | ------------ | ------------------ | --------------------- | ----------- |
-| The arrow of a link | `wardley.md` | 31                 | 0                     | 0           |
+| Spelling                   | Page         | Written       | Not written      |
+| -------------------------- | ------------ | ------------- | ---------------- |
+| The arrow of a link        | `wardley.md` | `->` 28 of 31 | `-->` 0          |
+| The inertia of a component | `wardley.md` | `(inertia)` 2 | bare `inertia` 0 |
 
-The 31 arrows are `->` 28 times, `+>` once, `+<>` once, and `+'backup'>` once,
-and none of them is `-->`. The inertia of a component is written in parentheses,
-`(inertia)`, 2 times, and bare, `inertia`, never.
+The other 3 arrows are `+>`, `+<>`, and `+'backup'>`, once each.
 
 ## Lists separated by commas
 
