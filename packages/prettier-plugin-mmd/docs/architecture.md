@@ -4179,12 +4179,13 @@ counts rejects the same lines without that space (see
 Only the header's own hidden forms need no spare LF. A statement retained on the
 header line still has a statement boundary after its suffix. Keep multiple
 suffix owners and forms after visible EOL distinct; exterior excess blanks use
-the shared one-blank-line rule. Rule 1 names no mark for an empty line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [gantt](./gantt.md#blank-lines),
-[journey](./journey.md#blank-lines), and [sankey](./sankey.md#blank-lines) print
-a run of empty lines as one and drop the empty lines at the start and at the end
-of a body.
+the shared one-blank-line rule.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and at
+the end of a file or of a block in JavaScript and CSS, and
+[gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines), and
+[sankey](./sankey.md#blank-lines) print a run of empty lines as one and drop the
+empty lines at the start and at the end of a body.
 
 [fixture: architecture/hidden-boundaries/header-and-statement]
 
@@ -4264,9 +4265,10 @@ architecture-beta%%{}%% group a%%{}%%
 
 Keep at most one ordinary ASCII blank line between statements or trivia,
 removing ordinary body/document-edge blanks. This preserves visible grouping
-without excess space. Rule 1 names no mark for an empty line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as under [Hidden boundaries](#hidden-boundaries):
+without excess space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives it, as under [Hidden boundaries](#hidden-boundaries): Prettier prints a
+run of empty lines as one and drops the empty lines at the start and at the end
+of a file or of a block in JavaScript and CSS, and
 [gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines), and
 [sankey](./sankey.md#blank-lines) print a run of empty lines as one and drop the
 empty lines at the start and at the end of a body. Value interiors, retained
@@ -4491,14 +4493,13 @@ architecture-beta
 ### Line terminators and unicode
 
 Use the shared host policy: normalize physical CR/CRLF to LF, then emit
-configured endOfLine, including in values and hidden forms.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
-turns every CR and CRLF into the line ending of its `endOfLine` option, inside a
-template literal and a comment too, and `endOfLine: "crlf"` prints CRLF
-everywhere. Keep LS/PS/NBSP/BOM in content; common line-value edges alone trim
-common whitespace. Non-ASCII structural separators remain rejected. A leading
-BOM follows Prettier host handling rather than byte identity. Prettier keeps the
-BOM at the start of a JavaScript file.
+configured endOfLine, including in values and hidden forms. Prettier reads the
+line ending before the printer does: it turns every CR and CRLF into the line
+ending of its `endOfLine` option, inside a template literal and a comment too,
+and `endOfLine: "crlf"` prints CRLF everywhere. Keep LS/PS/NBSP/BOM in content;
+common line-value edges alone trim common whitespace. Non-ASCII structural
+separators remain rejected. A leading BOM follows Prettier host handling rather
+than byte identity. Prettier keeps the BOM at the start of a JavaScript file.
 
 [corpus fixture: architecture/hidden-yaml-crlf]
 

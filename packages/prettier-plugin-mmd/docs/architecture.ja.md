@@ -3106,8 +3106,9 @@ EOF も文を終えます。
 見出し行に残った文も、その後置部分の後ろは文と文の境界です。
 複数の後置部分の所有ノードと可視 EOL 後の形を区別し、
 外側の余分な空行は共有の最大1空行の規則に従います。
-規則 1 は、空行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、JavaScript と CSS で、空行の連なりを 1 行にし、
+ファイルとブロックの先頭と末尾の空行を取り除きます。
 [gantt](./gantt.ja.md#空行)、[journey](./journey.ja.md#空行)、
 [sankey](./sankey.ja.md#空行)も、空行の連続を 1 行にし、
 本文の先頭と末尾の空行を取り除きます。
@@ -3189,8 +3190,9 @@ architecture-beta%%{}%% group a%%{}%%
 
 通常の ASCII 空行は文・注釈類間に最大1行残し、本文・文書端では除きます。
 過剰な空白を除きながら、見た目のまとまりを保つためです。
-規則 1 は、空行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、JavaScript と CSS で、空行の連なりを 1 行にし、
+ファイルとブロックの先頭と末尾の空行を除きます。
 [隠れた境界](#hidden-boundaries)と同じく、[gantt](./gantt.ja.md#空行)、
 [journey](./journey.ja.md#空行)、[sankey](./sankey.ja.md#空行)は、
 空行の連なりを 1 行にし、本文の先頭と末尾の空行を除きます。
@@ -3417,8 +3419,8 @@ architecture-beta
 
 共有の埋め込み先方針で物理 CR・CRLF を LF にし、設定の `endOfLine` を出します。
 値と隠れた形の内部も同じです。
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
-Prettier はすべての CR と CRLF を `endOfLine` の改行にし、
+Prettier は、プラグインが読む前に、
+すべての CR と CRLF を `endOfLine` の改行にし、
 テンプレートリテラルやコメントの中も同じです。
 `endOfLine: "crlf"` では全体が CRLF になります。
 内容の LS・PS・NBSP・BOM は保ち、共通の行値の端からだけ、
