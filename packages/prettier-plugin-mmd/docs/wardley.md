@@ -3989,7 +3989,8 @@ change acceptance or values. Native hidden directives remain separate nodes.
 
 [fixture: wardley/global-directives/global-unclosed]
 
-[fixture: flowchart/directives/touching-token]
+[fixture: flowchart/directives/touching-token] [fixture:
+sequence/directives/whitespace-on-each-side]
 
 Input (escaped): `"wardley-beta\ncomponent%%{wrap}%%Glued[0.3,0.6]"`.
 

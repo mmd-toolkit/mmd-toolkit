@@ -3157,6 +3157,7 @@ JSON 整形や順の入れ替えはしません。
 [fixture: wardley/global-directives/global-unclosed]
 
 [fixture: flowchart/directives/touching-token]
+[fixture: sequence/directives/whitespace-on-each-side]
 
 入力（エスケープ表記）: `"wardley-beta\ncomponent%%{wrap}%%Glued[0.3,0.6]"`
 
