@@ -211,10 +211,13 @@ of mermaid.js decide the whitespace before it (step 3 of
 examples that write a space after the colon, 29 write no space before it and
 none writes one (counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
-Trivia-bearing gaps retain their boundaries. For
-`0%%{!before}%% :%%{!after}%% "Gap"`, the space before `:` stays, since some of
-the versions of mermaid.js that count reject `0%%{!before}%%:%%{!after}%% "Gap"`
-(see
+A directive in the gap after the colon is printed after the space that the gap
+gets, touching the label, as under
+[Directives between tokens](./compatibility.md#directives-between-tokens):
+`0:  %%{wrap}%%  "A"` is printed `0: %%{wrap}%%"A"`. A hidden form keeps the
+boundaries of its gap. For `0%%{!before}%% :%%{!after}%% "Gap"`, the space
+before `:` stays, since some of the versions of mermaid.js that count reject
+`0%%{!before}%%:%%{!after}%% "Gap"` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: packet/block-colons/colon-compact]
