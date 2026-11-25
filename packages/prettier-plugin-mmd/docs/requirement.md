@@ -1934,6 +1934,9 @@ and `classDef` statements of a requirement diagram are printed so. A color is a
 `#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a
 style; it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+A word such as `#ABCDE`, which is no color, keeps its case: the Db holds the
+text of a style as written, so `#ABCDE` and `#abcde` are two values in it,
+although the drawing is the same.
 
 [fixture: colors/colors-in-lower-case] [fixture:
 colors/words-that-are-not-colors-as-written]

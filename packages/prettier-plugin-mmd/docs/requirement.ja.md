@@ -1949,6 +1949,9 @@ requirement 図の `style`、`classDef` 文のスタイルの色が対象です�
 色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
 色を短くすることはなく、色でないテキストは書かれたままにします。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+`#ABCDE` のように色でない語は、大文字小文字も残します。
+Db はスタイルのテキストを書かれたまま持つので、`#ABCDE` と `#abcde` は別の値で、
+描画は同じでも Db が変わるからです。
 
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
