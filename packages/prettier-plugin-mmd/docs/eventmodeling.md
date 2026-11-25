@@ -86,7 +86,7 @@ frames, the model entities, the `gwt` statements, and the headers of `data` and
 `note` at column one are therefore printed against rule 2 and wait to be fixed
 by the rule; a `title` after a line break and the `}` of a block could not stand
 deeper in this one, since every version that counts rejects them indented (see
-the table).
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 The pinned Mermaid requires `data` and `note` block closers at column one; the
 formatter aligns their headers there and keeps peer statements at the same level
@@ -277,8 +277,8 @@ tf 01 evt Alpha
 
 Print complete source arrows as `Name ->> 02 ->> 001`, with one ordinary space
 on each side. Rule 1 gives it: the `->>` stands between two things, and Prettier
-prints `x = a+b` as `x = a + b`, with one space on each side of the mark, as the
-table of rule 1 prints `A-->B` in a flowchart as `A --> B`. Preserve every
+prints `x = a+b;` as `x = a + b;`, with one space on each side of the mark, as
+the table of rule 1 prints `A-->B` in a flowchart as `A --> B`. Preserve every
 source, its order and leading zeroes; do not reverse or resolve references.
 Hidden gaps and global trivia keep their protected boundaries.
 
@@ -417,8 +417,8 @@ Join ordinary gaps around qualified-name dots into `Shop.Bought`, including
 ordinary component newlines and Unicode whitespace. Rule 1 gives it: the dot of
 a qualified name joins two names as the dot of a member access does, and
 Prettier prints a member access written with a space, a line break, a no-break
-space, or U+3000 around the dot as `a.b` in JavaScript (`x = a . b` is printed
-`x = a.b`). The dot connects the existing identifier segments rather than
+space, or U+3000 around the dot as `a.b` in JavaScript (`x = a . b;` is printed
+`x = a.b;`). The dot connects the existing identifier segments rather than
 starting another component. Keep each complete identifier's spelling, since the
 Db holds the complete qualified name of a frame as written, and every owned
 hidden/comment gap. After a hidden consumed LF, a `title` segment gains no new
