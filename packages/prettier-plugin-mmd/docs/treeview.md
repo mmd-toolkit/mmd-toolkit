@@ -1938,22 +1938,24 @@ and up to the comment, keeps the line as written (with nothing after the line,
 the run between the directive and the comment is printed as that paragraph
 says). The specification treats U+0085 after a title's first U+2028 or U+2029,
 outside directives and before the comment, as text rather than whitespace.
-Splitting that line would move U+0085 to the start of a node line and add a node
-to the Db, so the title line stays as written. For a title line with a directive
-and a comment after it, with a statement directly after the title or after a
-comment line, with a line of spaces after it (with nothing after the line of
-spaces, or then a statement), with a line of a directive with nothing after it,
-or with a line of a directive after a space (with nothing after it, or then a
-statement), the title stays as written, the whitespace between the directive and
-the comment included. Other sequences of lines between the title and the next
-statement are not given, and one region of them has forms that no rule gives:
-where an empty line, or a line of a directive that stands alone at the first
-column, lies between the next statement and a title, an `accTitle:` line, or an
-`accDescr:` line that holds a U+2028 or a U+2029 with a directive and a comment,
-the whitespace around the separators and between the directive and the comment
-is printed in forms that depend on each character beside each separator, and an
-`accDescr:` line differs from the other two. The forms that the released version
-prints stay until they are decided (see
+Splitting that line would move U+0085 to the start of a node line: 11.14.0
+rejects that text, 11.17.2, 12.0.0, and 12.3.0 draw another figure, and 12.3.0
+adds a node to the Db, so the title line stays as written (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+For a title line with a directive and a comment after it, with a statement
+directly after the title or after a comment line, with a line of spaces after it
+(with nothing after the line of spaces, or then a statement), with a line of a
+directive with nothing after it, or with a line of a directive after a space
+(with nothing after it, or then a statement), the title stays as written, the
+whitespace between the directive and the comment included. Other sequences of
+lines between the title and the next statement are not given, and one region of
+them has forms that no rule gives: where an empty line, or a line of a directive
+that stands alone at the first column, lies between the next statement and a
+title, an `accTitle:` line, or an `accDescr:` line that holds a U+2028 or a
+U+2029 with a directive and a comment, the whitespace around the separators and
+between the directive and the comment is printed in forms that depend on each
+character beside each separator, and an `accDescr:` line differs from the other
+two. The forms that the released version prints stay until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 Where the last directive holds a line break or a `;` (`%%{init: {`, a line
