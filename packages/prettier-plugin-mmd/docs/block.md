@@ -632,14 +632,21 @@ is printed in its shortest form, also after the label of a link: `--->` is
 `-->`, `-----` is `---`, `<--->` is `<-->`, `-..->` is `-.->`, and `====>` is
 `==>`. The length of the line is not in the Db, and the versions that count draw
 the same figure from the shorter line (the versions that do not read a thick
-line reject both). The documentation of mermaid.js writes `-->` nine times and
-`--` once, and no longer line. A line that starts with `<` is shortened whatever
-it ends in, since the versions that count draw it the same: `<---x` is `<--x`,
-and `<====` is `<===`. A line without the `<` that ends in `x` or `o` stays as
-written, since some of the versions that count draw `---x` and `--x`, and `---o`
-and `--o`, differently. So does a thick line that does not end in `>` (`====`),
-which some of them read as ids that differ with the length, and so does a line
-of `~`, which is an id in every version (see
+line reject both). The documentation of mermaid.js writes the arrow `-->` nine
+times, once after the label of a link (`A-- "X" -->B`), and never a longer line
+of that kind (`--->`), so rule 3 gives the shortest form for it
+([A spelling](./printed-form.md#3-a-spelling)). It writes no other kind of line
+(`---`, `-.->`, `==>`, `<-->`, `--x`, `--o`, `~~~`, `-.-`) at all, so no rule
+gives the length of those lines: the shortest form, which the released version
+prints, stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+A line that starts with `<` is shortened whatever it ends in, since the versions
+that count draw it the same: `<---x` is `<--x`, and `<====` is `<===`. A line
+without the `<` that ends in `x` or `o` stays as written, since some of the
+versions that count draw `---x` and `--x`, and `---o` and `--o`, differently. So
+does a thick line that does not end in `>` (`====`), which some of them read as
+ids that differ with the length, and so does a line of `~`, which is an id in
+every version (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
