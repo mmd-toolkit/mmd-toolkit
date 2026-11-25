@@ -683,15 +683,11 @@ keyword-case/accessibility-alias-direction-one-form]
 
 A style that starts with the `:`, and one whose `:` follows a backslash and a
 space, are printed as any other style: one space after the `:`, and the runs
-between their words as one space. In
-[flowchart](./flowchart.md#whitespace-between-tokens) and
-[class](./class.md#whitespace-between-tokens) diagrams, a style beginning with
-`:` has one space after it and collapses each run between words to one space;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same form here. After a nonempty name ending in an escaped space, `:` is a
-key colon, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
-it one following space when the value is nonempty. `style A :  red   x` is
-printed `style A : red x`.
+between their words as one space. After a nonempty name ending in an escaped
+space, `:` is a key colon, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it one
+following space when the value is nonempty. `style A :  red   x` is printed
+`style A : red x`.
 
 [fixture: whitespace-between-tokens/style-colon-first-run-spaced] [fixture:
 whitespace-between-tokens/style-escaped-space-run-spaced]

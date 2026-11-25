@@ -710,15 +710,7 @@ Db が書かれたまま保つからです。
 `:` で始まるスタイルと、バックスラッシュと空白の後に `:` があるスタイルも、
 ほかのスタイルと同じく、`:` の後ろに空白を 1 つ置き、
 語と語の間の連続は空白 1 つで印字します。
-[flowchart](./flowchart.ja.md#トークンの間の空白) と
-[class](./class.ja.md#トークンの間の空白) の図は、
-`:` で始まるスタイルの `:` の後に空白を 1 つ置き、
-語の間の連続も空白 1 つにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-state 図にもこの形を与えます。
-末尾の空白がエスケープされた空でない名前の `:` は、キーのコロンなので、
-値が空でなければ、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が後ろの空白 1 つを与えます。
+
 `style A :  red   x` は `style A : red x` と印字します。
 
 [fixture: whitespace-between-tokens/style-colon-first-run-spaced]
