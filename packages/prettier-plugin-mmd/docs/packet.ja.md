@@ -11,6 +11,11 @@
 ### Header
 
 書かれたキーワード `packet` または `packet-beta` を第1列に置きます。
+見出しを第1列に置く形は、
+[pie](./pie.ja.md#header) と [info](./info.ja.md#header)
+の図の見出しと同じです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この配置を与えます。
 通常の最初の文は、ほかの図種と同じく次行へ移します。
 `packet` だけは直後の境界が必要で、接着した綴りを作りません。
 隠れた形の境界と保護された見出し・本文の組を優先します。
@@ -120,6 +125,10 @@ mermaid.js は両方を同じに読み、文書の例は位置だけを 7 回使
 同じラベルと空の共通代入を含め、全出現を順に残します。
 Db から文を再構成したり併合したりしません。
 行分割と公開上限は作者の構造を失い、空代入の削除は最終値を変えるためです。
+同じラベルでも位置が異なるブロックは、mermaid.js の Db に別々に記録されるため、
+出現の併合や削除はブロックを変えます。
+
+[corpus fixture: packet/db-same-label]
 
 [fixture: packet/block-forms-and-order/block-three-forms]
 
@@ -343,6 +352,16 @@ packet
 等価な外側の空白を統一し、内部文字列、引用符、エスケープを保つためです。
 ただし、値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+題の引用符とバックスラッシュは、mermaid.js の Db の文字列の一部なので、
+書かれたまま保ちます。
+引用符を除いたりエスケープを復号したりすると、題が変わります。
+題のキーワードの後を空白1個とし、値の外端の共通の空白を除く形は、
+[info](./info.ja.md#title) と [architecture](./architecture.ja.md#title)
+の図と同じです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この題の行の形を与えます。
+題のテキストがないときは、`title` の後の空白とタブが行末にあるため、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、その空白を除きます。
 空行・コメント・ディレクティブを挟んでも、次の物理行から値を取りません。
 空の最終代入と、代わりに使われるフロントマターの値を残します。
 保護された注釈類と隠れた形の境界を優先します。
@@ -353,6 +372,14 @@ packet
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+題の末尾のディレクティブの前の空白やタブは、
+[pie](./pie.ja.md#title) と [info](./info.ja.md#title) の図も空白 1
+つにするため、[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この形を与えます。
+最後のディレクティブの後の空白とタブは行末にあるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、それらを除きます。
+
+[corpus fixture: packet/title-quotes]
 
 [fixture: title/title-directives-end-blanks-dropped]
 [fixture: packet/title/title-trim]
@@ -385,6 +412,12 @@ packet
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
+`accTitle` と `accDescr` の行は、図に 1 つの題や説明を与えるため、
+コロンはキーのコロンです。
+語に接するコロンと、非空値の前の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)に従います。
+行末の空白とタブを除き、空値をコロンで終える形も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)に従います。
 コロン後の波括弧は行値です。
 次行の値は結合せず、隠れた後置部分と保護された組の隙間を保ちます。
 値のテキストの後にディレクティブだけが続くときは、
@@ -394,6 +427,12 @@ packet
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+アクセシビリティの値の末尾のディレクティブの前の空白やタブは、
+[pie](./pie.ja.md#accessibility-lines) と
+[info](./info.ja.md#accessibility-lines) の図も空白 1 つにするため、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+最後のディレクティブの後の空白とタブは行末にあるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、それらを除きます。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: packet/accessibility-lines/a11y-lines]
@@ -424,8 +463,17 @@ packet
 キーワードと開始波括弧の間に空白を 1 つ置きます。
 開始記号前の通常の空白は物理・Unicode 行を越えて結合します。
 実際の注釈類があれば改行を保ちます。
+開始記号前の除去対象のコメント領域を `accDescr` の横へ移すと、
+図固有のコメントになり、mermaid.js がキーワードと `{` の間で受理しないため、
+コメント領域を独立した行に保ちます。
 囲む文字列がないため、空白だけの内側は `{}` にします。
+Prettier は空のオブジェクトや配列の内側に空白を置かないため、
+空白だけの説明本文も `{}` になり、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 コメント・ディレクティブだけの内側は注釈類を残します。
+説明ブロック内の `%%` だけの行は、
+mermaid.js の Db に説明の文字列として記録されます。
+その行を除くと説明が変わるため、説明ブロック内に残します。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
 改行と内部の空行は保ちます。
@@ -437,6 +485,10 @@ Db で LF 後の字下げが取り除かれるためです。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 引用符、バックスラッシュ、
 隠れた形に見える文字列も最初の閉じ波括弧を保護しません。
+
+[corpus fixture: packet/common-block-bare]
+
+[corpus fixture: packet/lex-block-native-comment-inline-gap]
 
 [fixture: packet/description-blocks/description-gaps]
 [fixture: description-blocks/block-trailing-whitespace]
@@ -583,10 +635,22 @@ YAML ブロックの `PacketIgnoredText` を、`textBeforeHeader`、`body`、
 必須の境界を動かしたり空白を除いたりすると、後続文が拒否され得るためです。
 範囲外の余分な LF と端の空行は [空行](#blank-lines) に従います。
 不透明な本文は YAML 整形せず、直前に LF を追加しません。
+`+` と個数の間の隠れた YAML の直前に改行を足すと、
+ブロック構成要素間の可視 LF となり、mermaid.js が拒否するため、
+その位置で改行しません。
 通常の本文の開始記号は字下げできますが、内部と閉じの列は保ちます。
+通常の隠れた YAML の開始記号は、
+[pie](./pie.ja.md#hidden-yaml) と [info](./info.ja.md#hidden-yaml)
+の図も本文の1段の字下げを使うため、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この配置を与えます。
+字下げした囲み記号は、mermaid.js が隠れた YAML の終わりと認めないため、
+閉じは第1列に残します。
 空の一致範囲と囲み記号3つの一致範囲、複数の形、後ろで有効になる閉じ、
 大域的な処理による分断も保ちます。
 先行する値の字句優先順位を保ちます。
+
+[corpus fixture: packet/hidden-yaml-indent-close]
 
 [fixture: packet/hidden-yaml/yaml-gap-count]
 
@@ -794,6 +858,10 @@ packet
 過剰な空白を減らして区切りを見せるため、通常の内部 ASCII 空行列は1空行、
 文書と本文の通常の端の空行は削除します。
 コメント周辺も同じです。
+Prettier は JavaScript、CSS、YAML、Markdown で、内部の空行を 1 行までとし、
+ブロックの端の空行を除くため、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、通常の空行の形を与えます。
+隠れた形が消費する LF は、文法上の別の境界です。
 値、ブロック、ディレクティブ、隠れた形の内部、共通領域の結合、
 保持する前置部分の空行は、内容や原文の役割に属するため保ちます。
 隠れた形が LF を消費した後は、次の文に必要なときだけ予備の LF 1 つを保ちます。
