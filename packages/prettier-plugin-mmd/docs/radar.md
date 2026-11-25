@@ -219,19 +219,15 @@ radar-beta
 
 ### Groups and commas
 
-Put one ordinary space between a group keyword and its first member. Rule 1
-names no mark between a keyword and its first member, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [er](./er.md#whitespace-between-tokens),
-[class](./class.md#whitespace-between-tokens), and
-[state](./state.md#whitespace-between-tokens) print a run of spaces and tabs
-between a keyword and its name as one space (`class    A,B  c` is printed
-`class A, B c` in an ER diagram). A comma has no space before it and one after
-it, in axis, curve, options and entry lists. This makes lists consistent with
-xychart and quadrant. Do not insert visible newlines into axis/curve/options
-groups: those grammars reject them. A gap that holds a global directive is
-printed as under [Global directives](#global-directives), and a gap that holds a
-hidden form keeps its written contact (see [Hidden forms](#hidden-forms)).
+Put one ordinary space between a group keyword and its first member.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one ordinary
+space between a group keyword and its first member, as Prettier prints
+`return  x` as `return x;`. A comma has no space before it and one after it, in
+axis, curve, options and entry lists. This makes lists consistent with xychart
+and quadrant. Do not insert visible newlines into axis/curve/options groups:
+those grammars reject them. A gap that holds a global directive is printed as
+under [Global directives](#global-directives), and a gap that holds a hidden
+form keeps its written contact (see [Hidden forms](#hidden-forms)).
 
 [fixture: radar/groups-and-commas/axis-comma]
 
@@ -590,10 +586,10 @@ radar-beta
 Use the shared common-line layout, except as the paragraphs below and the
 [Semicolons](#semicolons) section state: trim common-whitespace edges and put
 one space before a nonempty value; null/whitespace-only values print `title`.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the gap between a keyword and its text as one space, and Prettier ends no line
-with whitespace: `title    Pets` is printed `title Pets` in a pie chart, as
-`title    Plan` is printed `title Plan` in a Gantt chart. The rule gives it for
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its text, as Prettier prints `return  x` as `return x;`,
+and Prettier ends no line with whitespace. The one-space form that
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives applies to
 spaces and tabs. This removes equivalent exterior padding while retaining
 internal spelling, quotes and apparent keywords, apart from a run of spaces and
 tabs inside the value, which is printed as one space (see

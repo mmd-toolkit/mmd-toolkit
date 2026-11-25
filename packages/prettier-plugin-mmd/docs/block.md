@@ -79,9 +79,9 @@ the lines of its statements, and the line of `end`. `block` and `block-beta` are
 printed as written. The keyword `block:` holds its colon, and one space
 separates it from its node: `block:G` is printed `block: G`, and `block:G:2` is
 printed `block: G:2`, the colon of the width touching the node as it does
-elsewhere in a block diagram. A gap between a keyword and what follows it has
-one form in every diagram type (`title Pets`; see
-[A gap of a kind that Prettier does not have](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)),
+elsewhere in a block diagram.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `block:` and its node, as Prettier prints `return  x` as `return x;`,
 and that rule comes before the spelling of the examples of mermaid.js, which
 write `block:` touching its node 4 times and never with a space after it.
 mermaid.js reads `block: G` and `block:G` alike, and so do all the versions that
@@ -829,14 +829,9 @@ printed `style A : red x`.
 [fixture: styles/style-colon-first-run-spaced]
 
 A `style` with no styles is printed as `style A`: the id stands after one space
-and nothing follows it. Rule 1 of
-[How the printed form is decided](./printed-form.md#1-the-whitespace-beside-a-mark)
-names no mark between a keyword and its id, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [wardley](./wardley.md#component-spacing) puts one ordinary space
-between each command keyword and its first complete name, and
-[radar](./radar.md#groups-and-commas) between a group keyword and its first
-member.
+and nothing follows it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `style` and its ID, as Prettier prints `return  x` as `return x;`.
 
 [fixture: styles/style-without-styles] [corpus fixture: block/db-style-none]
 

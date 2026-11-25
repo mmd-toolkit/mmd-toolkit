@@ -82,11 +82,9 @@ composite は 3 種類の行でできています。
 キーワード `block:` はコロンを含み、そのノードとの間は空白 1 つにします。
 `block:G` は `block: G` に、`block:G:2` は `block: G:2` に印字します。
 幅のコロンは、ブロック図のほかの箇所と同じくノードに接します。
-キーワードとその後ろのものの間の隙間は、
-どの図種でも同じ形にします（`title Pets`）。
-詳しくは
-[Prettier にない種類の隙間](./printed-form.ja.md#2-prettier-にない種類の隙間)
-を参照してください。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+`block:` とそのノードの間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 この決まりは、mermaid.js の例に綴りを合わせる決まりより先に当たります。
 例は `block:` をノードに接して 4 回書き、後に空白を置く形は一度も書きません。
 mermaid.js は `block: G` と `block:G` を同じに読み、
@@ -873,12 +871,9 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 
 スタイルのない `style` は `style A` と出力し、id は 1 つの空白の後に置き、
 その後ろには何も置きません。
-規則 1 は、キーワードと ID の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[wardley](./wardley.ja.md#部品間の空白)
-はコマンドのキーワードと最初の名前の間に、
-[radar](./radar.ja.md#groups-and-commas)
-はグループのキーワードと最初の項目の間に、普通の空白 1 個を置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+`style` と ID の間に空白 1 個を与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 
 [fixture: styles/style-without-styles] [corpus fixture: block/db-style-none]
 

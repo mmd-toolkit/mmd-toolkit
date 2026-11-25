@@ -69,6 +69,7 @@ Prettier の例は、言語を書いていないものは JavaScript である�
 | 名前の中のコロン                 | CSS のセレクター `a:hover` は `a:hover` のまま            | 両側とも詰める                                      | architecture 図の `a : R -- L : b`             | `a:R -- L:b`                  |
 | 2 つのものの間に置く、ほかの記号 | `x = a+b` を `x = a + b;` と印字する                      | 両側に空白 1 つずつ                                 | flowchart の `A-->B`                           | `A --> B`                     |
 | 2 つのものの間に置くキーワード   | `x = a  in   b;` を `x = a in b;` と印字する              | 両側に空白 1 つずつ                                 | architecture 図の `service a(server)[A]in   g` | `service a(server)[A] in g`   |
+| 取るものの前に置くキーワード     | `return  x;` を `return x;` と印字する                    | 間に空白 1 つ                                       | pie 図の `title    Pets`                       | `title Pets`                  |
 | メンバーアクセスのドット         | `x = a . b;` を `x = a.b;` と印字する                     | 両側とも詰める                                      | event modeling 図の `tf 01 evt Shop . Buy`     | `tf 01 evt Shop.Buy`          |
 | 丸括弧と角括弧                   | `f( a )` を `f(a);` と印字する                            | 内側は詰める                                        | flowchart の `A( text )`                       | `A(text)`                     |
 | 文を終える `;`                   | `a ;` を `a;` と印字する                                  | 前は詰める                                          | railroad 図の `r="a" ;`                        | `r = "a";`                    |
@@ -84,6 +85,18 @@ Prettier の例は、言語を書いていないものは JavaScript である�
 
 最初の 2 種類の波括弧は、Prettier のオブジェクトと配列に当たり、3 つ目は、
 その一方に何も入れないものに当たる。
+
+キーワードは、2 つのものの間に立つ（`a in b`）か、
+取るものの前に立つ（`return x`、`typeof y`、`throw e`、
+CSS の `@media screen` と `@import "a.css"`）。
+どちらの行に当たるかは、コロンの種類と同じく、働きで決める。
+キーワードが取るものは、括弧で始まってもよい。
+`return  [800, 600]` は `return [800, 600];` と印字するので、
+Wardley マップの `size [800, 600]` と XY チャートの `x-axis [jan, feb]` で、
+値の並びを開く `[` の前にも、空白 1 つを置く。
+これは添字の `[` ではない。
+添字の `[` は、添字を付けるものに続き、前に空白を置かない。
+呼び出しを開く `(` と、ブロックを開く `{` は、それぞれの行のままにする。
 
 行の終わり、テキストの終わり、空行は、JavaScript、CSS、YAML、Markdown で同じで、
 空白だけの行は、4 つとも空行にする。
@@ -246,9 +259,13 @@ flowchart の `A@{ shape : circle }` は、コロンの前の空白を保つ。
 ## 2. Prettier にない種類の隙間
 
 Prettier にない種類の隙間は、ほかの図種が同じ種類の隙間を印字する形にする。
-キーワードとそのテキストの間の隙間が、その例である。
-pie 図の `title    Pets` は `title Pets` と印字し、
-Gantt 図の `title    Plan` も `title Plan` と印字する。
+文を継ぐ行のインデントが、その例である。
+requirement 図のフィールドの続きの行と、その間のコメント行は、
+フィールドより 1 段深く置く。
+sequence 図、flowchart、XY チャートも同じに置く。
+詳しくは
+[コメントやディレクティブの前後の構造の継続行](./compatibility.ja.md#コメントやディレクティブの前後の構造の継続行)
+を参照。
 
 ## 3. 綴り
 

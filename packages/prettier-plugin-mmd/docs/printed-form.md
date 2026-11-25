@@ -65,6 +65,7 @@ same way. The texts of Prettier are JavaScript where no language is named.
 | A colon inside a name                    | the selector `a:hover` of CSS stays `a:hover`                        | none on either side                                                                | `a : R -- L : b` in an architecture diagram                | `a:R -- L:b`                  |
 | Another mark between two things          | `x = a+b` is printed `x = a + b;`                                    | one space on each side                                                             | `A-->B` in a flowchart                                     | `A --> B`                     |
 | A keyword between two things             | `x = a  in   b;` is printed `x = a in b;`                            | one space on each side                                                             | `service a(server)[A]in   g` in an architecture diagram    | `service a(server)[A] in g`   |
+| A keyword before what it takes           | `return  x;` is printed `return x;`                                  | one space between                                                                  | `title    Pets` in a pie chart                             | `title Pets`                  |
 | The dot of a member access               | `x = a . b;` is printed `x = a.b;`                                   | none on either side                                                                | `tf 01 evt Shop . Buy` in an event modeling diagram        | `tf 01 evt Shop.Buy`          |
 | Parentheses and square brackets          | `f( a )` is printed `f(a);`                                          | none inside                                                                        | `A( text )` in a flowchart                                 | `A(text)`                     |
 | A `;` that ends a statement              | `a ;` is printed `a;`                                                | none before                                                                        | `r="a" ;` in a railroad diagram                            | `r = "a";`                    |
@@ -80,6 +81,16 @@ same way. The texts of Prettier are JavaScript where no language is named.
 
 The first two kinds of braces are the object and the array of Prettier, and the
 third is either of them with nothing in it.
+
+A keyword stands between two things (`a in b`) or before what it takes
+(`return x`, `typeof y`, `throw e`, and in CSS `@media screen` and
+`@import "a.css"`). Its role decides the row, as the role of a colon decides its
+kind. What a keyword takes can open with a bracket: `return  [800, 600]` is
+printed `return [800, 600];`, so the `[` that opens the list of values of
+`size [800, 600]` in a Wardley map and of `x-axis [jan, feb]` in an XY chart has
+one space before it. It is no `[` of an index, which follows what it indexes and
+has no space before it. A `(` that opens a call and a `{` that opens a block
+keep their rows.
 
 The end of a line, the end of the text, and blank lines are the same in
 JavaScript, CSS, YAML, and Markdown, and a line of whitespace only is a blank
@@ -231,9 +242,11 @@ text is defined in the document of its diagram type.
 ## 2. A gap of a kind that Prettier does not have
 
 A gap of a kind that Prettier does not have takes the form that the other
-diagram types print for the same kind of gap. The gap between a keyword and its
-text is one: `title    Pets` in a pie chart is printed `title Pets`, as
-`title    Plan` in a Gantt chart is printed `title Plan`.
+diagram types print for the same kind of gap. The indentation of a line that
+continues a statement is one: in a requirement diagram the continuation of a
+field, and a comment line between its parts, stand one level deeper than the
+field, as they do in a sequence diagram, a flowchart, and an XY chart (see
+[Structural continuations around comments and directives](./compatibility.md#structural-continuations-around-comments-and-directives)).
 
 ## 3. A spelling
 

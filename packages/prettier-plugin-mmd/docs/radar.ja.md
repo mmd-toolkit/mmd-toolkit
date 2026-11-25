@@ -242,12 +242,9 @@ radar-beta
 ### Groups and commas
 
 群のキーワードと最初の構成要素の間は普通の空白 1 個にします。
-規則 1 は、キーワードと最初の構成要素の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[er](./er.ja.md#トークンの間の空白)、[class](./class.ja.md#トークンの間の空白)、
-[state](./state.ja.md#トークンの間の空白)は、
-キーワードと名前の間の空白とタブの連なりを空白 1 つにして印字します（ER 図の
-`class    A,B  c` は `class A, B c` と印字します）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) は、
+群のキーワードと最初の構成要素の間を普通の空白 1 個にします。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 axis、curve、options、項目のカンマは前を詰め、後を空白 1 つにします。
 xychart と quadrant と同じ見た目にそろえるためです。
 axis・curve・options の群には可視改行を追加しません。
@@ -635,11 +632,12 @@ radar-beta
 下の段落と[セミコロン](#semicolons)の節が述べるところを除いて使います。
 共通空白の外端を除き、非空の値の前は空白 1 つにします。
 `null` と空白だけの値は `title` にします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)は、
-キーワードとそのテキストの間を空白 1 つにし、Prettier は行末に空白を残しません。
-pie 図の `title    Pets` は `title Pets` と印字し、
-Gantt 図の `title    Plan` も `title Plan` と印字します。
-この規則が与えるのは、空白とタブについてです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) は、
+Prettier が `return  x` を `return x;` と印字するのと同じく、
+キーワードとそのテキストの間を空白 1 つにします。
+Prettier は行末に空白を残しません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が与える空白 1 つの形は、
+空白とタブに適用されます。
 同じ意味の外端だけをそろえ、内部の綴り、引用符、見かけのキーワードを保ちます。
 ただし、値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。

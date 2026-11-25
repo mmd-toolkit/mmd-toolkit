@@ -127,12 +127,9 @@ architecture-beta title t service a; junction j
 ### Declaration spacing
 
 キーワードと ID の間は空白1個です。
-規則 1 は、キーワードと ID の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[wardley](./wardley.ja.md#部品間の空白)
-はコマンドのキーワードと最初の名前の間に、
-[radar](./radar.ja.md#groups-and-commas)
-はグループのキーワードと最初の項目の間に、普通の空白 1 個を置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+キーワードと ID の間に空白 1 個を与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 `group g(cloud)[G]`、`service a(server)[A]`、`service a[A]` と印字し、
 括弧・角括弧の付属部品を1つの node として印字します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
@@ -665,10 +662,9 @@ architecture-beta
 ### Alignment
 
 `align`、row・column の方向、各構成要素の間は通常の空白1個です。
-規則 1 は、文の語と語の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-キーワードとその後のテキストの間は空白 1 個です。
-規則 2 の例では、円グラフの `title    Pets` が `title Pets` と印字されます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+キーワードとそれが取るものの間に空白 1 個を与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 これが、`align` と方向の間、方向と最初の構成要素の間の隙間を与えます。
 構成要素どうしの間は、どの規則も与えません（`a   b` と、`a`、タブ、
 `b` は `a b` と印字されます）。

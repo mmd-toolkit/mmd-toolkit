@@ -326,14 +326,15 @@ wardley-beta
 Keep every authored label offset, strategy and inertia decoration in grammar
 order. Separate decorations by one space and compact parenthesized interiors.
 Prettier prints no space inside parentheses
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 1 names no
-mark for the gap before a decoration, so
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between the keyword `label` and the `[` of its label offset, as Prettier prints
+`return  x` as `return x;`. Rule 1 names no mark for the other gaps before
+decorations, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides where another diagram type has a gap of that kind. Three gaps have one:
-[xychart](./xychart.md#brackets-and-commas) prints one space before a `[` that
-follows a keyword or a title, written touching or not, as wardley prints one
-before the `[` of a label offset; [quadrant](./quadrant.md#styles) prints one
-space between the `]` of a point and its first style, written touching or not
+decides where another diagram type has a gap of that kind. Two other gaps have a
+precedent under rule 2: [quadrant](./quadrant.md#styles) prints one space
+between the `]` of a point and its first style, written touching or not
 (`]radius:9`), as wardley prints one between a `]` and the word `label` or the
 bare `inertia` that follows it; and [class](./class.md#member-lines) prints one
 space between the `)` of a method and its return type, where no other rule keeps
