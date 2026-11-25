@@ -1291,7 +1291,7 @@ removed before the lexer reads the text. A comment line on a line of its own
 stands at the level of the statement after it, and its text and its mark are
 kept as written: a comment line after the last statement stays after it, and one
 before the header stands at the first column. Rule 1 gives no form here, since
-its table names the whitespace beside a mark and not the start of a line
+the start of a line is no place that its table names
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
