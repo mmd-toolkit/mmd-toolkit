@@ -1690,10 +1690,10 @@ statements-one-per-line/ignored-semicolon-next-to-semicolon-kept]
 
 ### Directives
 
-As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive within a printed line is placed as in a
-flowchart: the gap is printed as without the directive, and the directive stands
-after its space and touches the unit that follows it.
+A directive on a line of its own stands at the level of the statements around
+it, and a directive within a printed line is placed as in a flowchart: the gap
+is printed as without the directive, and the directive stands after its space
+and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/section-edges-kept] [fixture:
 directives/whitespace-on-each-side] [fixture: directives/touching-kept]
@@ -1869,12 +1869,11 @@ Blocks on one line follow
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 Align the lines of an `accDescr { ... }` body one step inside its statement,
-with a separate `}` at the statement's level, as in
-[flowchart's top-level descriptions](./flowchart.md#multi-line-values). Mermaid
-discards this indentation from the description. Mermaid.js records spaces at the
-end of an internal description line as part of the description in the Db, and
-every version of mermaid.js that counts puts another description text in the SVG
-without them, so those spaces stay as written (see
+with a separate `}` at the statement's level. mermaid.js discards the
+indentation after a line feed from the description. Mermaid.js records spaces at
+the end of an internal description line as part of the description in the Db,
+and every version of mermaid.js that counts puts another description text in the
+SVG without them, so those spaces stay as written (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: sequence/db-acc-descr-block-blank-lines]
@@ -1885,12 +1884,8 @@ multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:
 multi-line-values/data-block-in-block-indented]
 
 A block without text, whose lines are only comment lines, holds no value: its
-comment lines stand one level deeper than the `accDescr`, as comment lines
-inside a statement do, and its `}` at the level of the `accDescr`. The separate
-`}` of a comment-only description block aligns with `accDescr` in
-[flowcharts](./flowchart.md#multi-line-values), so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same alignment here.
+comment lines stand one level deeper than the `accDescr`, and its separate `}`
+at the level of the `accDescr`.
 
 [fixture: multi-line-values/accdescr-block-comment-only] [fixture:
 multi-line-values/accdescr-block-without-text-kept]

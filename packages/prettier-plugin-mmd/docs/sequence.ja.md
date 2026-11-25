@@ -1739,7 +1739,6 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 ### ディレクティブ
 
-flowchart と同じです。
 行に単独のディレクティブは周りの文と同じ段に置きます。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
@@ -1923,8 +1922,7 @@ sequenceDiagram
 
 `accDescr { ... }` の本文行は文より 1 段深くそろえ、
 独立した `}` は文と同じ段に置きます。
-[flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
-Mermaid が説明からこの字下げを除くためです。
+mermaid.js は説明から行送り後の字下げを除きます。
 説明の途中の行末にある空白は、mermaid.js が説明の一部として Db に記録し、
 除くとどの対象の版も別の説明の文字を SVG に入れるため、書かれたまま残します。
 詳しくは
@@ -1939,12 +1937,8 @@ Mermaid が説明からこの字下げを除くためです。
 [fixture: multi-line-values/data-block-in-block-indented]
 
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
-そのコメント行は、文の中のコメント行と同じく `accDescr` より 1 段深く置き、
-`}` は `accDescr` と同じ段に置きます。
-コメント行だけの説明ブロックでは、単独行の `}` を、
-`accDescr` と同じ段に置きます。
-[flowchart](./flowchart.ja.md#複数行の値) も同じで、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+そのコメント行は、`accDescr` より 1 段深く置き、
+単独行の `}` は `accDescr` と同じ段に置きます。
 
 [fixture: multi-line-values/accdescr-block-comment-only]
 [fixture: multi-line-values/accdescr-block-without-text-kept]
