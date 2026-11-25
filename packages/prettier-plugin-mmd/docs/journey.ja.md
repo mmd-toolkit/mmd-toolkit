@@ -869,9 +869,13 @@ T
 `accDescr` ブロックでは、内部の LF 前の空白を mermaid.js が Db に保ち、
 LF 後の字下げを除きます。
 LF 前の空白をすべて除くと、連なりを空白 1 つにする範囲を超えて、
-Db の説明が変わるので、その空白は残します。
+Db の説明が変わり、対象にするどの版も別の説明の文字を SVG に入れるので、
+その空白は残します（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 
 [corpus fixture: journey/db-acc-descr-block-spaces-before-line-feed]
+[fixture: multi-line-values/description-block-inner-line-trailing-spaces-kept]
 
 [fixture: multi-line-values/description-block-lines-kept]
 
@@ -976,12 +980,16 @@ Prettier は、テキストの末尾に改行 1 つを置きます。
 `title` の後では、その空白をタイトルのほかの末尾の空白とタブと同じく除きます。
 詳しくは [タイトルとセクション](#タイトルとセクション) を参照してください。
 どちらでも、コメントは文の行に残す 1 つの規則にして、Gantt 図と同じにします。
-コロンの形の `accDescr` では、
-mermaid.js が後ろの `#` とコメントも説明として読み、Db が変わります。
-そのため、`#` のコメントが後ろにある 1 行の `accDescr` ブロックは、
+`#` のコメントが後ろにある 1 行の `accDescr` ブロックは、
 ブロックのまま残します。
+コロンの形の `accDescr` では、
+mermaid.js が後ろの `#` とコメントも説明として読み、Db も、
+対象にするどの版の SVG の説明も変わるからです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
+[fixture: comments/one-line-description-block-then-hash-comment-kept]
 [fixture: comments/after-header-percent] [fixture: comments/after-statement]
 [fixture: comments/after-statement-glued]
 [fixture: comments/after-statement-under-a-section]

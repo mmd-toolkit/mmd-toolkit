@@ -850,9 +850,12 @@ one step inside the statement, as described in
 [Accessibility statements](#accessibility-statements). Spaces before an internal
 LF in an `accDescr` block remain in the Db, while mermaid.js discards
 indentation after LF. Removing those spaces entirely changes the description
-beyond the permitted replacement of a run by one space, so they stay.
+beyond the permitted replacement of a run by one space, and every version that
+counts puts another description text in the SVG without them, so they stay (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[corpus fixture: journey/db-acc-descr-block-spaces-before-line-feed]
+[corpus fixture: journey/db-acc-descr-block-spaces-before-line-feed] [fixture:
+multi-line-values/description-block-inner-line-trailing-spaces-kept]
 
 [fixture: multi-line-values/description-block-lines-kept]
 
@@ -953,14 +956,16 @@ touches. Moving it to a line of its own would change the Db after a `section`,
 where the whitespace before the comment is part of the value; after a `title`
 that whitespace is left out like the other spaces and tabs at the end of a title
 (see [Titles and sections](#titles-and-sections)). One rule keeps the comment on
-its line in both, as in a Gantt chart. In the colon form of `accDescr`,
-mermaid.js reads a following `#` and its comment as part of the accessible
-description, changing the Db. A one-line block followed by a hash comment
-therefore stays a block.
+its line in both, as in a Gantt chart. A one-line block followed by a hash
+comment stays a block: in the colon form of `accDescr`, mermaid.js reads the `#`
+and its comment after the colon as part of the accessible description, which
+changes the Db and the description in the SVG of every version that counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
-[fixture: comments/after-header-percent] [fixture: comments/after-statement]
-[fixture: comments/after-statement-glued] [fixture:
+[fixture: comments/one-line-description-block-then-hash-comment-kept] [fixture:
+comments/after-header-percent] [fixture: comments/after-statement] [fixture:
+comments/after-statement-glued] [fixture:
 comments/after-statement-under-a-section]
 
 After a `section`, the whitespace before the `#` is part of the value, and
