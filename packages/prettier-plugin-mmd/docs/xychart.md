@@ -381,11 +381,20 @@ or before the `]`; a comma has no space before it and one after it
 (`[jan, feb, mar]`). A keyword and the string that follows it are separated by
 one space in the same way (`title"T"` is printed `title "T"`). None of this
 whitespace is in the Db, and none of it changes how units are read, since a
-bracket, a comma, and a quote are no characters of a word, so the form is a
-choice. It is the form that most examples in the documentation of mermaid.js use
-(`[jan, feb, mar]`, `[5000, 6000, 7500]`); some examples there have no space
-after a comma (`[12,2,20,25,17,24]`), and every chart has one form. A space
-after each comma is the whitespace that Prettier prints beside a comma.
+bracket, a comma, and a quote are no characters of a word;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes (`return  x` is printed `return x;`),
+including the `[` that opens the values that the statement takes
+(`return  [800, 600]` is printed `return [800, 600];`), and between values that
+follow one another, also before the `[` after a title (CSS `margin: 1px    2px;`
+is printed `margin: 1px 2px;`).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and what it takes and before the `[` that opens the values
+that the statement takes, as Prettier prints `return  x` as `return x;` and
+`return  [800, 600]` as `return [800, 600];`; some examples in the documentation
+of mermaid.js have no space after a comma (`[12,2,20,25,17,24]`), and every
+chart has one form. A space after each comma is the whitespace that Prettier
+prints beside a comma.
 
 [fixture: brackets-and-commas/spaces-inside-and-around-commas] [fixture:
 brackets-and-commas/bracket-touching-the-keyword] [fixture:
@@ -473,9 +482,9 @@ xychart
 A value and the label after it are separated by one space (`20 "peak"`), also
 where they were written touching (`10"peak"`), and a comma follows the label
 with no space before it. mermaid.js reads the label whether it touches the value
-or not, so the form is a choice: one space is the form that its documentation
-uses (`25 "Launch"`) and the same separator as between a keyword and a string
-(see [Brackets and commas](#brackets-and-commas)).
+or not; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between the value and label as values that follow one another, as Prettier
+prints CSS `margin: 1px    2px;` as `margin: 1px 2px;`.
 
 [fixture: values-and-labels/label-touching-the-value] [fixture:
 values-and-labels/label-with-more-whitespace] [fixture:

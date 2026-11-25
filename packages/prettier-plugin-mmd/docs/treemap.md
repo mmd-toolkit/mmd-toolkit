@@ -789,8 +789,11 @@ treemap
 
 Use shared common-line placement: trim ordinary common-whitespace edges and
 print one space before a nonempty value, or bare `title` for
-null/whitespace-only text. This selects one Db-equivalent outer spacing and
-prints a run of spaces and tabs inside the text as one space (see
+null/whitespace-only text.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `title` and its nonempty value, as Prettier prints `return  x` as
+`return x;`. The outer spacing is Db-equivalent, and the formatter prints a run
+of spaces and tabs inside the text as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 without rewriting quote-looking text. Never take a value from the next physical
 line, across comments or directives. Trivia-bearing values retain their written

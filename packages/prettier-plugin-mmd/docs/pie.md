@@ -10,10 +10,12 @@ output reparsing. Invisible-character examples are escaped test cases.
 ### Header
 
 Reuse [XY chart header/body layout](./xychart.md#header-and-orientation): an
-exact lower-case `pie` starts at column one and a written `showData` follows one
-space, as in the other diagram types. An ordinary inline first statement moves
-below it. Hidden predecessors of the flag retain their position and consumed
-breaks; moving them would end the flag opportunity.
+exact lower-case `pie` starts at column one;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `pie` and a written `showData`, as Prettier prints `return  x` as
+`return x;`. An ordinary inline first statement moves below it. Hidden
+predecessors of the flag retain their position and consumed breaks; moving them
+would end the flag opportunity.
 
 [fixture: pie/header/header-space] [fixture: pie/header/header-absent] [fixture:
 pie/header/flag-hidden-yaml] [fixture: pie/header/flag-hidden-directive]
@@ -184,11 +186,12 @@ pie showData
 
 ### Title
 
-Reuse the compact common-value reason of
-[C4 accessibility lines](./c4.md#accessibility-lines): equivalent exterior
-whitespace gets one form. Print `title`, one space, and a trimmed nonempty
-value; a null/empty/whitespace-only value prints bare `title`. Print a run of
-spaces and tabs inside the value as one space (see
+For equivalent exterior whitespace,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `title` and its value, as Prettier prints `return  x` as `return x;`.
+Print `title`, one space, and a trimmed nonempty value; a
+null/empty/whitespace-only value prints bare `title`. Print a run of spaces and
+tabs inside the value as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and preserve quotes and backslashes, and all repeated assignments, including
 frontmatter fallback. Pie never joins the next physical line into a title: even

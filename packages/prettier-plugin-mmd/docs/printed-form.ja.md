@@ -78,7 +78,7 @@ Prettier の例は、言語を書いていないものは JavaScript である�
 | 呼び出しの `(`                   | `f (a)` を `f(a);` と印字する                                                            | 前は詰める                                          | railroad 図の `terminal ("x")`                 | `terminal("x")`               |
 | 添字の `[`                       | `x [ 0 ];` を `x[0];` と印字する                                                         | 前は詰める                                          | architecture 図の `service a (server) [A]`     | `service a(server)[A]`        |
 | ブロックを開く `{`               | `class A{}` を `class A {}` と印字する                                                   | 前に空白 1 つ                                       | ER 図の `A   {`                                | `A {`                         |
-| 名前と値の組を並べた波括弧       | `x = {a:1}` を `x = { a: 1 };` と印字する                                                | 内側に空白 1 つ                                     | flowchart の `A@{shape:rect}`                  | `A@{ shape:rect }`            |
+| 名前と値の組を並べた波括弧       | `x = {a:1}` を `x = { a: 1 };` と印字する                                                | 内側に空白 1 つ                                     | flowchart の `A@{shape: rect}`                 | `A@{ shape: rect }`           |
 | 値だけを並べた波括弧             | `x = [ 1, 2 ]` を `x = [1, 2];` と印字する                                               | 内側は詰める                                        | XY チャートの `x-axis [ jan, feb ]`            | `x-axis [jan, feb]`           |
 | 何も入れない波括弧               | `x = { }` を `x = {};` と印字する                                                        | 内側は詰める                                        | Gantt 図の `accDescr { }`                      | `accDescr {}`                 |
 | 行の終わり                       | `a = 1;` と空白 3 つを `a = 1;` と印字する                                               | 空白なし                                            | radar 図の `radar-beta` と空白 3 つ            | `radar-beta`                  |
@@ -99,6 +99,9 @@ Wardley マップの `size [800, 600]` と XY チャートの `x-axis [jan, feb]
 CSS の宣言の値のように、並んで続く値の間には空白を 1 つ置くので、
 文が取る値を開く `[` は、前にある名前やタイトルの後でも、空白 1 つを置く。
 `anchor Coord   [0.3, 0.6]` は `anchor Coord [0.3, 0.6]` と印字する。
+radar 図の曲線の値を開く `{`（`curve c{1, 2}`）も同じ括弧で、
+Prettier が `return  {a: 1}` を `return { a: 1 };` と印字するのと同じく、
+前に空白 1 つを置く。
 名前のタイトルやラベルを開く括弧は、添字の `[` が添字を付けるものに接し、
 前に空白を置かないのと同じく、名前に接する。
 flowchart の `subgraph S [t]` は `subgraph S[t]` と、
