@@ -3289,8 +3289,11 @@ where the text of the name holds no whitespace. A name of several words, as
 `subgraph S1 S2` or `subgraph "o p"`, has a generated id with or without
 whitespace after it, so the whitespace at the end of its line is left out, but
 not the whitespace that separates it from a block, a `;` that stays or a
-directive on its line. That whitespace keeps whether it is there, a run becoming
-one space (see
+directive on its line. Prettier leaves no whitespace at line ends. A subgraph
+name of several words has a generated id with or without trailing whitespace, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
+without line-end whitespace. That whitespace keeps whether it is there, a run
+becoming one space (see
 [Directives between tokens](./compatibility.md#directives-between-tokens)), also
 where whitespace after the directive makes mermaid.js read the directive as part
 of the name. It is so for a markdown string and in a swimlane diagram too, where
@@ -3760,7 +3763,11 @@ Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
 are dropped, except where the figure depends on them, in the statements that the
 paragraphs below and the document of the diagram type name: a space or a tab
 after a backslash that ends the last style stays as one character, and a style
-of whitespace only stays as written.
+of whitespace only stays as written. At the end of a style, a backslash escapes
+only the first character after it, leaving any further spaces and tabs as
+unescaped line-end whitespace.
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes those
+remaining spaces and tabs, as Prettier does at line ends.
 
 [fixture: style-trailing-whitespace/removed] [fixture:
 style-trailing-whitespace/removed-tab] [fixture:
