@@ -51,9 +51,14 @@ usecase/div-comment-preheader-bare]
 Reuse the visible header convention of [C4](./c4.md#header): put exact
 lower-case `usecase-beta` at column one and place the body below it, so the
 diagram starts visibly. Exterior ASCII spaces/tabs disappear; direction remains
-a separate statement. A header alone is accepted and gains the ordinary final
-newline; case, stable-header and inline-body failures follow the shared failure
-path. Leading comments and directives follow their rules below.
+a separate statement. The header starts at column one, as in
+[C4](./c4.md#header) and [Gantt](./gantt.md#indentation) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this placement. Trailing ASCII spaces and tabs disappear under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) because they are at
+the end of the header line. A header alone is accepted and gains the ordinary
+final newline; case, stable-header and inline-body failures follow the shared
+failure path. Leading comments and directives follow their rules below.
 
 [fixture: header/header-column] [fixture: header/leading-trivia-empty] [corpus
 fixture: usecase/spec-usecase-parser-7ae00acb]
@@ -72,7 +77,11 @@ usecase-beta
 
 Reuse structural [class indentation](./class.md#indentation): one configured
 step below the header, two for boundary declarations, and `end` aligned with its
-opener, as in class diagrams.
+opener, as in class diagrams. Statements stand one indentation level below the
+header, as in [ER](./er.md#indentation) and [class](./class.md#indentation)
+diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this depth.
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -167,10 +176,19 @@ occurrences that one `actor` keyword introduces. Stereotype spacing follows
 [its class-based rule](#stereotypes). Keep explicit ids, ellipse/rectangle
 spelling, markdown labels, suffix order and every declaration/reference
 occurrence; a name and a label are printed in the form that the examples use
-(see [Quotes](#quotes)). Generated ids and resolved actor endpoints never
-replace authored nodes; boundary metadata forms remain declarations while
-top-level forms remain updates. This shows written syntax without inventing
-aliases or geometry.
+(see [Quotes](#quotes)). Parentheses and square brackets keep a use case's shape
+because mermaid.js records an ellipse and a rectangle as different Db shapes.
+Suffixes stay in the order required by the native grammar: metadata, stereotype,
+then classes for an actor or use case, and metadata then classes for a boundary.
+Placing metadata after a stereotype or classes is rejected. Generated ids and
+resolved actor endpoints never replace authored nodes; boundary metadata forms
+remain declarations while top-level forms remain updates. This shows written
+syntax without inventing aliases or geometry.
+
+[corpus fixture: usecase/gram-label-padding] [corpus fixture:
+usecase/gram-note-empty] [corpus fixture:
+usecase/gram-actor-suffix-metadata-after-stereotype] [corpus fixture:
+usecase/gram-entity-class-before-metadata]
 
 [fixture: declarations/actor-list] [fixture: declarations/entity-shapes]
 [fixture: declarations/suffixes] [fixture: declarations/generated-name]
@@ -193,13 +211,15 @@ usecase-beta
 
 Reuse [C4's authored value forms](./c4.md#argument-forms): a markdown label
 keeps its kind, since markdown changes the label type, and every label keeps its
-interior characters, including empty quoted values. A plain label is printed in
-the form that the examples use (see [Quotes](#quotes)). Only exterior ASCII HWS
-outside a bare label's contributing units is trimmed. Internal gaps, Unicode
-padding, backslashes, entities and HTML stay. The run in `A(unquoted  words)`
-stays in the printed form `A("unquoted  words")`, since every version of
-mermaid.js that counts draws different accessibility text for
-`A("unquoted words")` (see
+interior characters, including empty quoted values. No-break spaces at a label's
+ends and literal backslashes are part of its Db text; entity decoding and HTML
+stripping also change the text mermaid.js records. Those characters therefore
+stay as written. A plain label is printed in the form that the examples use (see
+[Quotes](#quotes)). Only exterior ASCII HWS outside a bare label's contributing
+units is trimmed. Internal gaps, Unicode padding, backslashes, entities and HTML
+stay. The run in `A(unquoted  words)` stays in the printed form
+`A("unquoted  words")`, since every version of mermaid.js that counts draws
+different accessibility text for `A("unquoted words")` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
@@ -207,6 +227,10 @@ a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 and `singleQuote` is not read. A string that holds a `"` stays between `'`,
 since every version of mermaid.js that counts rejects `B("a"b")` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[corpus fixture: usecase/lex-actor-label-unicode-padding] [corpus fixture:
+usecase/lex-plain-backslash] [corpus fixture: usecase/entity-all-texts] [corpus
+fixture: usecase/html-all-texts]
 
 [fixture: labels/single-quote-sensitive-kept] [fixture:
 labels/label-quote-kinds]
@@ -364,7 +388,9 @@ In the native metadata, a key in quotes and the scalar of a property but `icon`
 are printed without quotes where they are such a word (`"type": "hollow"` is
 printed `type: hollow`), and the scalar of `icon` is printed in quotes where it
 is such a word (`icon: user` is printed `icon: "user"`). A scalar that is not a
-word, such as `"fa:user"`, stays.
+word, such as `"fa:user"`, stays. A scalar such as `"fa:user"` keeps its quotes
+because the native metadata grammar accepts only an id, a plain string or a
+boolean; the colon cannot be part of an unquoted id.
 
 [fixture: quotes/metadata]
 
@@ -487,7 +513,12 @@ usecase-beta
 ### System boundaries
 
 Openings, declaration bodies and aligned `end` use separate lines, including
-empty boundaries and empty quoted names.
+empty boundaries and empty quoted names. [ER subgraphs](./er.md#indentation) and
+[class namespaces](./class.md#indentation) print their openings, body statements
+and closers on separate lines and align each closer with its opening. Under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
+system boundaries use the same layout for their openings, bodies and closing
+`end`.
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -556,12 +587,14 @@ usecase-beta
 ### Arrows
 
 Reuse [arrow spacing](./class.md#arrow-spacing): one ordinary gap on each side
-of the actual complete usecase operator. Keep direction, marker, and every
-dash/dot, including long split closing halves whose Db length is fixed. Semantic
-operators print `..> : include` and `..> : extend`, with one space before and
-after the colon and the keyword in lower case, as the examples in the
-documentation of mermaid.js write it, 7 times and never with the colon touching
-(counted as under
+of the actual complete usecase operator. A complete arrow stands between two
+endpoints, the same kind of mark as Prettier's binary `+`;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space on
+each side. Keep direction, marker, and every dash/dot, including long split
+closing halves whose Db length is fixed. Semantic operators print
+`..> : include` and `..> : extend`, with one space before and after the colon
+and the keyword in lower case, as the examples in the documentation of
+mermaid.js write it, 7 times and never with the colon touching (counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon);
 see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
@@ -576,7 +609,12 @@ Never swap endpoints or translate operator families. Direction, marker, and the
 dash and dot counts stay as written because the printer never prints a
 normalized Db operator: `A---->B` printed as `A --> B` changes the minimum
 length, and `A<--B` printed as `B --> A` changes the order of source and target.
-A split arrow keeps its dash counts even where the Db length is fixed.
+A split arrow keeps its dash counts even where the Db length is fixed. The `o`
+and `x` markers stay as written because mermaid.js records them as distinct
+arrow kinds in the Db; replacing them with another marker or a markerless arrow
+changes the relationship.
+
+[corpus fixture: usecase/db-arrows]
 
 [fixture: arrows/arrows-solid] [fixture: arrows/arrows-markers] [fixture:
 arrows/arrows-semantic] [fixture: arrows/arrows-length-kept] [fixture:
@@ -633,7 +671,11 @@ Space the arrow and endpoint exactly as the AST records them: `A --order` prints
 before markerless `--` without a word boundary, so adding or removing a gap
 inside those units changes the reading. Longer markerless dash runs and
 uppercase O/X keep their recorded target; a directive in a gap at a complete
-boundary is placed as under [Directives](#directives).
+boundary is placed as under [Directives](#directives). Longer markerless dash
+runs and uppercase `O` or `X` keep the whole target because the lexer recognizes
+only the exact lowercase `--o` and `--x` units as forward circle and cross
+arrows. Treating the target's first character as a marker would change both the
+target and the arrow kind in the Db.
 
 [fixture: arrow-id-boundaries/arrow-marker-both-gap-sides]
 
@@ -671,7 +713,10 @@ tight edge-id attachment: keep split labels with one exterior gap, and print an
 explicit id touching `@` and its opening/sole arrow. Usecase keeps only its
 allowed split halves, markdown labels, empty quoted labels, actor source
 keywords and both endpoint occurrences; a plain label is printed in quotes (see
-[Quotes](#quotes)). Explicit ids remain available to later metadata/class/style
+[Quotes](#quotes)). The `actor` keyword at a relationship source declares an
+actor; mermaid.js otherwise reads an unresolved endpoint as an implicit use
+case. Removing the keyword from an otherwise unresolved source therefore changes
+its kind in the Db. Explicit ids remain available to later metadata/class/style
 targets. A pipe or class-style colon label would be another grammar, and a chain
 is never split into valid relationships.
 
@@ -721,7 +766,13 @@ Keep the first property on its written opening or following line.
 [fixture: native-metadata/metadata-first-gap-standalone-directive]
 
 Ordinary property/comment/directive lines stand one level below the containing
-statement; a separate closing brace aligns with that statement.
+statement; a separate closing brace aligns with that statement. Ordinary
+metadata property, comment and directive lines use the same layout as
+[requirement fields](./requirement.md#indentation) and
+[ER attributes](./er.md#indentation): one level below the containing statement,
+with a separate closing brace aligned to that statement. Under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
+ordinary metadata lines take this layout.
 
 [fixture: native-metadata/metadata-comma-comment-close] [fixture:
 native-metadata/metadata-closer-directive-own-line]
@@ -828,7 +879,12 @@ defined in [Data blocks](./flowchart.md#data-blocks).
 
 When `{` is immediately followed by a newline, shift all body lines by the same
 number of ASCII spaces so the shallowest text stands one level inside the JSON
-statement. Relative indentation, including nested objects, stays unchanged. A
+statement. The uniform JSON body margin puts the shallowest text one level
+inside its statement, as eligible multiline data blocks in
+[flowchart](./flowchart.md#data-blocks) and [kanban](./kanban.md#data-blocks)
+diagrams do;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that margin. Relative indentation, including nested objects, stays unchanged. A
 separate `}` aligns with the statement; a closer after text stays on that line.
 JSON strings cannot contain raw newlines: Mermaid rejects them with
 `Bad control character in string literal`, so this movement cannot change a
@@ -887,7 +943,10 @@ terminator leaves the Db unchanged, also with several styles.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
-Whitespace immediately before a dropped `;` is dropped with it.
+Whitespace immediately before a dropped `;` is dropped with it. Removing the
+ignored `;` leaves the spaces and tabs before it at the end of the line, where
+Prettier prints none in JavaScript, CSS and YAML;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives their removal.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
 
@@ -946,20 +1005,28 @@ usecase-beta
 
 Reuse [ER's class lists](./er.md#styles-and-classes): a comma touches the target
 or class name before it and has one space after it, with one gap between lists
-and before the first declaration; CSS declarations use comma-space. A
-declaration has no whitespace before its first colon and one space after it, as
-in the other diagram types (see
+and before the first declaration; CSS declarations use comma-space. The `:::` of
+a class suffix touches the name before it and the first class after it, as in
+[class](./class.md#whitespace-between-tokens) and
+[state](./state.md#whitespace-between-tokens) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this gap its form. A declaration has no whitespace before its first colon and
+one space after it, as in the other diagram types (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 Mermaid stores the padding before and after the colon, so the Db changes, but it
 draws the same figure. A name that ends with `stroke` is the exception, since a
 `classDef` or a `style` can reach a relationship with an explicit id, and
 mermaid.js colours its arrowheads from `stroke:` only: such a name keeps whether
-whitespace stands before the colon, a run becoming one space. The text of a
-declaration from its name's start through its last value component otherwise
-stays as written: directives in the dash gap, quoted or escaped commas, empty
-string components, functions, order and repetition, except that a run of spaces
-and tabs between its words is printed as one space, as in the other diagram
-types (see
+whitespace stands before the colon, a run becoming one space. For a name ending
+with `stroke`, retained spaces and tabs before the colon become one space, as in
+[flowchart](./flowchart.md#whitespace-between-tokens) and
+[Agentflow](./agentflow.md#single-space-gaps) link styles;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the length of that gap. The text of a declaration from its name's start through
+its last value component otherwise stays as written: directives in the dash gap,
+quoted or escaped commas, empty string components, functions, order and
+repetition, except that a run of spaces and tabs between its words is printed as
+one space, as in the other diagram types (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `style A --  color:red` is printed `style A -- color: red`, and
 `translate(1  2)` is printed `translate(1 2)`. A run inside a string, a comment,
@@ -1046,10 +1113,13 @@ accessibility title, `accTitle: first  last` stays, since every version of
 mermaid.js that counts draws different title text for `accTitle: first last`
 (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Empty and whitespace-only lines print the colon form without a value. The next
-physical line remains a separate statement; the siblings' next-line joining does
-not apply. In particular, direction text after an empty colon line remains a
-separate direction statement, rather than becoming accessibility value text.
+Empty and whitespace-only lines print the colon form without a value. An empty
+accessibility line ends at its colon, so a following space would be trailing
+whitespace; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+form with nothing after the colon. The next physical line remains a separate
+statement; the siblings' next-line joining does not apply. In particular,
+direction text after an empty colon line remains a separate direction statement,
+rather than becoming accessibility value text.
 
 [fixture: direction-and-accessibility/title-next-direction-separate] [fixture:
 direction-and-accessibility/description-next-direction-separate] [fixture:
@@ -1101,7 +1171,14 @@ The directives that end the value of an `accTitle` or an `accDescr` are printed
 as those that end a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `accTitle: Column zero  %%{x}%%  ` and `accTitle: Column zero  %%{x}%%` are both
-printed `accTitle: Column zero %%{x}%%`.
+printed `accTitle: Column zero %%{x}%%`. A directive at the end of accessibility
+text has one space before it where spaces or tabs preceded it, as in a
+[pie title](./pie.md#title) or a
+[state's second alias description](./state.md#aliases);
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that gap. Spaces and tabs after the last closed directive lie outside it at the
+line end, where [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+prints none.
 
 [fixture:
 direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
@@ -1213,16 +1290,24 @@ usecase-beta
 Reuse [shared directive attachment](./class.md#directives): removal supplies no
 separator. Keep directive contents, order and multiline columns; align
 standalone directives, and place a directive within a printed line as under
-[flowchart's Directives](./flowchart.md#directives).
+[flowchart's Directives](./flowchart.md#directives). A directive on a line of
+its own stands at the level of the surrounding statements, as in
+[flowchart](./flowchart.md#directives) and [class](./class.md#directives)
+diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this alignment.
 
 [fixture: system-boundaries/boundary-id-title-directed-gap] [fixture:
 arrows/semantic-operator-directives] [fixture:
 arrow-id-boundaries/arrow-marker-both-gap-sides]
 
-Header-line directives remain with the header. Value-side gaps, CSS name/value
-spans and opaque JSON remain exact apart from
-[JSON table margins](#json-tables), including separate JSON id/`@`/brace
-boundaries.
+Header-line directives remain with the header. A directive after the header
+stays on the header's line, as in [flowchart](./flowchart.md#directives) and
+[block](./block.md#directives) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this gap its form. Value-side gaps, CSS name/value spans and opaque JSON remain
+exact apart from [JSON table margins](#json-tables), including separate JSON
+id/`@`/brace boundaries.
 
 [fixture: classes-and-styles/css-name-multiline-directive] [fixture:
 json-tables/json-prefix-id-at-multiline-directive]
@@ -1338,7 +1423,19 @@ physical CR/CRLF to LF before reading, and output follows `endOfLine`, including
 inside metadata, JSON, markdown, accessibility, CSS and directives. LS/PS remain
 contextual characters in labels, stereotype text, notes, quoted native/CSS
 values, accessibility and comments; accessibility and stereotype exterior
-whitespace follows their normalization rules.
+whitespace follows their normalization rules. An interior U+2028 or U+2029 in
+stereotype or accessibility text, or one in a note label or quoted native or CSS
+value, is part of the Db value. Replacing it with a space or line break changes
+that value outside the documented whitespace exceptions. Native comments
+continue through these characters; replacing one with LF can expose text that
+mermaid.js reads as part of the comment.
+
+[corpus fixture: usecase/gram-stereotype-u2028] [corpus fixture:
+usecase/lex-native-label-separators] [corpus fixture:
+usecase/lex-native-single-quote-comment-region-ls] [corpus fixture:
+usecase/lex-css-quoted-component-line-separator-then-comment-line] [corpus
+fixture: usecase/lex-accessibility-line-separators] [corpus fixture:
+usecase/comment-u2028]
 
 [test: usecase: a11y-unicode-exterior] [test: usecase:
 stereotype-unicode-exterior-padding]

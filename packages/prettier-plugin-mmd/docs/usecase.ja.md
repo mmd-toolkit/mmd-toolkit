@@ -58,6 +58,12 @@ class の未完のバッククォート名の EOF 規則は適用しません。
 [C4](./c4.ja.md#ヘッダー) と同じく、図の始まりを見つけやすくするため、
 正確な小文字の `usecase-beta` を先頭列に置き、本文を次の行から置きます。
 外側の ASCII 空白とタブを除き、方向は独立した文のままにします。
+ヘッダーを先頭列に置く形は、
+[C4](./c4.ja.md#ヘッダー) と [Gantt](./gantt.ja.md#インデント) の図と同じです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この配置を与えます。
+ヘッダーの行末の ASCII 空白とタブは、行末の空白なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)に従って除きます。
 ヘッダーだけの入力も受理し、通常の末尾改行を加えます。
 大文字、安定版の名前、同じ行の本文を持つ拒否入力は、共有の失敗経路に従います。
 前のコメントとディレクティブは後述の規則に従います。
@@ -79,6 +85,10 @@ usecase-beta
 
 class の[字下げ](./class.ja.md#字下げ)を再利用します。
 ヘッダーの下を設定の 1 段、境界内の宣言を 2 段とし、`end` は開始文に揃えます。
+文をヘッダーより 1 段深く置く形は、
+[ER](./er.ja.md#字下げ) と [class](./class.ja.md#字下げ) の図と同じです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この字下げを与えます。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -179,10 +189,20 @@ ER の[実体](./er.ja.md#実体)を再利用します。
 ステレオタイプの隙間は、[class に揃えた規則](#stereotypes)に従います。
 明示 id、楕円と長方形の綴り、markdown ラベル、接尾辞の順序、
 宣言と参照のすべての出現を保ちます。
+丸括弧と角括弧は use case の形を保ちます。
+mermaid.js が楕円と長方形を、Db の別々の形として記録するためです。
+接尾辞は固有の文法に従い、actor と use case ではメタデータ、ステレオタイプ、
+class の順、境界ではメタデータ、class の順に保ちます。
+ステレオタイプや class の後にメタデータを置くと、拒否されます。
 名前とラベルは、例で使われている形で印字します（[引用符](#quotes) を参照）。
 生成 id や解決後の actor を、書かれた端点の代わりにはしません。
 境界内のメタデータ形式は宣言、最上位の形式は更新のままです。
 別名や形を作らず、書かれた構文を見える形にします。
+
+[corpus fixture: usecase/gram-label-padding]
+[corpus fixture: usecase/gram-note-empty]
+[corpus fixture: usecase/gram-actor-suffix-metadata-after-stereotype]
+[corpus fixture: usecase/gram-entity-class-before-metadata]
 
 [fixture: declarations/actor-list] [fixture: declarations/entity-shapes]
 [fixture: declarations/suffixes] [fixture: declarations/generated-name]
@@ -206,6 +226,9 @@ usecase-beta
 C4 の[引数の形](./c4.ja.md#引数の形)を再利用します。
 markdown はラベルの種類を変えるため、markdown ラベルは種類を保ちます。
 どのラベルも、空の引用値を含め、内部の文字を保ちます。
+ラベルの両端の改行しない空白とバックスラッシュは、Db のテキストの一部です。
+文字参照の展開や HTML の除去も、mermaid.js が記録するテキストを変えるため、
+これらの文字は書かれたまま保ちます。
 通常のラベルは、例で使われている形で印字します（[引用符](#quotes) を参照）。
 裸のラベルを構成する単位の外側にある ASCII の水平空白だけを除きます。
 内部の空白、Unicode の余白、バックスラッシュ、文字参照、HTML は保ちます。
@@ -225,6 +248,11 @@ U+2029、バッククォート、`&`、`#`、`<` を含む場合を除き、`"` 
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+
+[corpus fixture: usecase/lex-actor-label-unicode-padding]
+[corpus fixture: usecase/lex-plain-backslash]
+[corpus fixture: usecase/entity-all-texts]
+[corpus fixture: usecase/html-all-texts]
 
 [fixture: labels/single-quote-sensitive-kept]
 [fixture: labels/label-quote-kinds]
@@ -392,6 +420,9 @@ use case の角括弧内のラベルは、ASCII の英字、数字、
 `icon` のスカラーは、そのような語であれば、引用符で囲んで印字します。
 `icon: user` は `icon: "user"` と印字します。
 `"fa:user"` のような、語ではないスカラーはそのままにします。
+`"fa:user"` のようなスカラーの引用符は、固有のメタデータの文法が id、
+通常の文字列、真偽値だけを許し、コロンを引用符のない id に含められないため、
+保ちます。
 
 [fixture: quotes/metadata]
 
@@ -528,6 +559,12 @@ usecase-beta
 
 開始文、宣言の本文、揃えた `end` を別々の行に置きます。
 空の境界や空の引用名も同じです。
+[ER の subgraph](./er.ja.md#字下げ) と
+[class の namespace](./class.ja.md#字下げ) は、開始文、本文の文、
+閉じる行を分け、閉じる行を開始文に揃えます。
+境界の開始文、本文、閉じる `end` には、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この配置を与えます。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -605,6 +642,10 @@ usecase-beta
 
 class の[矢印の前後の空白](./class.ja.md#矢印の前後の空白)を再利用し、
 実際の usecase 演算子全体の両側を通常の空白 1 個にします。
+完全な矢印は二つの端点の間の記号であり、
+Prettier の二項演算子 `+` と同じ種類です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+矢印の両側の空白 1 個を与えます。
 方向、マーカー、ダッシュと点の数を保ちます。
 Db の長さが固定される分割矢印の長い右半分も同じです。
 意味を持つ演算子は、コロンの前後に空白を 1 つ置き、キーワードを小文字にして、
@@ -630,6 +671,11 @@ mermaid.js は `..>:include`、`..> :include`、`..>: include`、
 `A---->B` を `A --> B` にすると最小の長さが変わり、
 `A<--B` を `B --> A` にすると始点と終点の順序が変わります。
 分割矢印は、Db の長さが固定される場合もダッシュの数を保ちます。
+`o` と `x` のマーカーは、mermaid.js が Db に異なる矢印の種類を記録するため、
+書かれたままにします。
+別のマーカーやマーカーなしの矢印に置き換えると、記録された関係が変わります。
+
+[corpus fixture: usecase/db-arrows]
 
 [fixture: arrows/arrows-solid] [fixture: arrows/arrows-markers]
 [fixture: arrows/arrows-semantic] [fixture: arrows/arrows-length-kept]
@@ -688,6 +734,10 @@ usecase-beta
 前向きの `--o` と `--x` は語境界を調べずにマーカーなしの `--` より先に読むため、
 その単位の中に隙間を足したり消したりすると読みが変わります。
 長いマーカーなしのダッシュ列と大文字の O、X も記録された端点を保ちます。
+長いマーカーなしのダッシュ列と大文字の `O`、`X` では、端点の名前全体を保ちます。
+字句解析器は、正確に小文字の `--o` と `--x` だけを、
+前向きの円と交差の矢印として読むためです。
+端点の最初の文字をマーカーにすると、Db の端点と矢印の種類が変わります。
 完全な単位の境界の隙間にあるディレクティブは、
 [ディレクティブ](#directives)のとおりに置きます。
 
@@ -728,6 +778,10 @@ flowchart
 分割した矢印の開始側または単独の矢印に接して置きます。
 usecase が許す矢印の半分、markdown ラベル、空の引用ラベル、
 actor の開始キーワード、二つの端点の出現を保ちます。
+関係の始点の `actor` キーワードは、アクターを宣言します。
+mermaid.js は、ほかに解決先のない端点を、暗黙の use case として読みます。
+ほかに解決先のない始点から、このキーワードを除くと、
+Db の端点の種類が変わります。
 通常のラベルは、引用符で囲んで印字します（[引用符](#quotes) を参照）。
 明示 id は、後のメタデータ、class、style の対象のままです。
 パイプや class 風のコロンラベルは別の文法であり、
@@ -782,6 +836,12 @@ YAML や flowchart、Agentflow の不透明なメタデータの整形は当て�
 
 通常のプロパティ、コメント、ディレクティブの行は含む文より 1 段深くし、
 独立した閉じ波括弧はその文に揃えます。
+通常のメタデータのプロパティ、コメント、ディレクティブの行は、
+含む文より 1 段深くし、独立した閉じ波括弧はその文に揃えます。
+[requirement のフィールド](./requirement.ja.md#インデント) と
+[ER の属性](./er.ja.md#字下げ) も、同じ配置を印字します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この配置を与えます。
 
 [fixture: native-metadata/metadata-comma-comment-close]
 [fixture: native-metadata/metadata-closer-directive-own-line]
@@ -891,6 +951,11 @@ Db の検査は共有のデータブロックの経路に従います。
 
 `{` の直後が改行なら、本文の全行を同じ数の半角空白だけ動かし、
 文字がある最も浅い行を JSON 文の 1 段内側に置きます。
+JSON 本文の一定量の余白の移動で、文字がある最も浅い行を文の 1 段内側に置きます。
+[flowchart](./flowchart.ja.md#データブロック) と
+[kanban](./kanban.ja.md#データブロック)
+の適用条件を満たす複数行データブロックも同じで、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの余白を与えます。
 入れ子のオブジェクトを含め、行どうしの字下げの差を保ちます。
 単独行の `}` は文の段に揃え、本文の後の閉じ括弧はその行に残します。
 JSON の文字列には生の改行を入れられず、
@@ -957,6 +1022,9 @@ usecase-beta
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
 削除する `;` の直前の空白も一緒に削除します。
+無視される `;` を削除すると、その直前の空白とタブは行末に残ります。
+Prettier は JavaScript、CSS、YAML の行末に空白とタブを印字せず、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がその削除を与えます。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
 
@@ -1013,6 +1081,10 @@ ER の[スタイルとクラス](./er.ja.md#スタイルとクラス)を再利�
 対象名と class 名の間のコンマは前の名前に接して後ろに空白 1 個を置き、
 一覧同士と最初の宣言の前は空白 1 個にします。
 CSS 宣言同士はコンマと空白で区切ります。
+class 接尾辞の `:::` は、前の名前と後ろの最初の class 名に接します。
+[class](./class.ja.md#トークンの間の空白) と
+[state](./state.ja.md#トークンの間の空白) の図も、同じ隙間を印字します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 宣言の最初のコロンの前には空白を置かず、後ろには空白を 1 つ置きます。
 ほかの図種と同じです。
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
@@ -1023,6 +1095,11 @@ Mermaid はコロンの前後の余白を保存するため Db は変わりま�
 mermaid.js は `stroke:` だけでその矢印の先端を着色するため、
 そのような名前はコロンの前に空白があるかないかを保ち、
 連続する空白を 1 つにします。
+`stroke` で終わる名前のコロンの前に残す空白とタブの連続は、空白 1 個にします。
+[flowchart](./flowchart.ja.md#トークンの間の空白) と
+[Agentflow](./agentflow.ja.md#single-space-gaps) のリンクのスタイルも同じで、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+その隙間の長さを与えます。
 宣言の名前の始まりから最後の値の成分までのテキストは、
 それ以外は書かれたままです。
 ダッシュの隙間のディレクティブ、引用またはエスケープしたコンマ、空文字の成分、
@@ -1122,6 +1199,9 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 空と空白だけの行は、値のないコロン形式にします。
+空のアクセシビリティ行はコロンで終わり、その後ろの空白は行末の空白になります。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+コロンの後ろに空白を置かない形を与えます。
 次の物理行は別の文のままで、兄弟の次行の結合は取り込みません。
 空のコロン行の次の方向の文字も、値の文字ではなく独立した方向文のままです。
 
@@ -1177,6 +1257,13 @@ Prettier が `x = { }` を `x = {}`
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `accTitle: Column zero  %%{x}%%  ` も `accTitle: Column zero  %%{x}%%` も、
 `accTitle: Column zero %%{x}%%` と印字します。
+アクセシビリティの値の最後のディレクティブは、前に空白やタブがあれば、
+直前を空白 1 個にします。
+[pie のタイトル](./pie.ja.md#title) や
+[state の別名の第 2 説明](./state.ja.md#別名) も同じで、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの隙間を与えます。
+最後の閉じたディレクティブの後の空白とタブは、外側の行末の空白なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が残さない形を与えます。
 
 [fixture: direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: direction-and-accessibility/direction-values]
@@ -1294,6 +1381,11 @@ usecase-beta
 共有の[ディレクティブ](./class.ja.md#ディレクティブ)を再利用します。
 除去は区切りを補いません。
 内容、順序、複数行の列を保ち、独立したディレクティブは揃えます。
+独立したディレクティブを、周囲の文と同じ段に置く形は、
+[flowchart](./flowchart.ja.md#ディレクティブ) と
+[class](./class.ja.md#ディレクティブ) の図と同じです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この配置を与えます。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 
@@ -1302,6 +1394,11 @@ usecase-beta
 [fixture: arrow-id-boundaries/arrow-marker-both-gap-sides]
 
 ヘッダー行のディレクティブはヘッダーと同じ行に残します。
+ヘッダーの後のディレクティブを、ヘッダーと同じ行に残す形は、
+[flowchart](./flowchart.ja.md#ディレクティブ) と [block](./block.ja.md#指令)
+の図と同じです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+この配置を与えます。
 値側の隙間、CSS の名前と値の範囲、不透明な JSON は、
 [JSON の表](#json-tables) の余白を除いて正確に保ちます。
 独立した JSON の id、`@`、波括弧の境界も含みます。
@@ -1427,6 +1524,18 @@ Mermaid は読む前に物理的な CR と CRLF を LF にし、
 LS と PS は文脈に従う文字として、ラベル、ステレオタイプの本文、note、
 固有の構文と CSS の、引用符で囲んだ値、アクセシビリティ、コメントに保ちます。
 アクセシビリティとステレオタイプの外側の空白は、それぞれの規則に従って整えます。
+ステレオタイプやアクセシビリティの本文内部、note のラベル、
+固有の構文と CSS の引用符で囲んだ値では、U+2028 と U+2029 は Db の値の文字です。
+空白や改行への置き換えは、文書に定義した空白の例外に含まれず、その値を変えます。
+固有コメントはこれらの文字を越えて続くので、LF への置き換えは、
+mermaid.js がコメントの一部として読む文字を露出させることがあります。
+
+[corpus fixture: usecase/gram-stereotype-u2028]
+[corpus fixture: usecase/lex-native-label-separators]
+[corpus fixture: usecase/lex-native-single-quote-comment-region-ls]
+[corpus fixture: usecase/lex-css-quoted-component-line-separator-then-comment-line]
+[corpus fixture: usecase/lex-accessibility-line-separators]
+[corpus fixture: usecase/comment-u2028]
 
 [test: usecase: a11y-unicode-exterior]
 [test: usecase: stereotype-unicode-exterior-padding]
