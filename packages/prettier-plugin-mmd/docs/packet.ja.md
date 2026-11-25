@@ -375,10 +375,6 @@ Prettier が `return  x` を `return x;` と印字するのと同じく、
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-題の末尾のディレクティブの前の空白やタブは、
-[pie](./pie.ja.md#title) と [info](./info.ja.md#title) の図も空白 1
-つにするため、[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この形を与えます。
 最後のディレクティブの後の空白とタブは行末にあるので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、それらを除きます。
 
@@ -430,10 +426,6 @@ packet
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-アクセシビリティの値の末尾のディレクティブの前の空白やタブは、
-[pie](./pie.ja.md#accessibility-lines) と
-[info](./info.ja.md#accessibility-lines) の図も空白 1 つにするため、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 最後のディレクティブの後の空白とタブは行末にあるので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、それらを除きます。
 

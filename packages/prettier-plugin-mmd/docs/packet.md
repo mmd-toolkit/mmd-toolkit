@@ -352,12 +352,8 @@ directive of the line holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-The nonempty gap before a directive at the end of a title is one space in
-[pie](./pie.md#title) and [info](./info.md#title) diagrams, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that gap here. The spaces and tabs after the final directive stand at the end of
-the line, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes
-them.
+The spaces and tabs after the final directive stand at the end of the line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them.
 
 [corpus fixture: packet/title-quotes]
 
@@ -405,13 +401,8 @@ directive of the line holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-The nonempty gap before a directive at the end of an accessibility value is one
-space in [pie](./pie.md#accessibility-lines) and
-[info](./info.md#accessibility-lines) diagrams, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that gap here. The spaces and tabs after the final directive stand at the end of
-the line, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes
-them.
+The spaces and tabs after the final directive stand at the end of the line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them.
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 packet/accessibility-lines/a11y-lines]
