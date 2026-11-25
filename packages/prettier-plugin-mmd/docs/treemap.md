@@ -905,8 +905,9 @@ treemap/title/title-text-directive-before-line-separator-directive-comment-befor
 [test:
 treemap/title/title-text-directive-before-paragraph-separator-directive-comment-before-empty-line-one-space]
 
-The other ways in which the comment can be followed, such as an empty line, a
-directive line that is not bare, and the end of the text, are not stated here.
+The other ways in which the comment can be followed, such as an empty line and
+the end of the text, or an empty line and a bare directive line, are not stated
+here.
 
 A comment line after an empty title aligns with the next statement without
 becoming the title's value.

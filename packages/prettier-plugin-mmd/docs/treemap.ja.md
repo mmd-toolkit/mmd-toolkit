@@ -917,7 +917,7 @@ section か leaf が直後に続くときは、行を書かれたまま残しま
 [test: treemap/title/title-text-directive-before-paragraph-separator-directive-comment-before-empty-line-one-space]
 
 コメントの後がそれ以外の形のとき、たとえば空行とテキストの終わりのときや、
-ディレクティブだけではない行のときは、ここでは述べません。
+空行とディレクティブだけの行のときは、ここでは述べません。
 
 空の title の次のコメント行は次の文にそろえ、title の値にはしません。
 
