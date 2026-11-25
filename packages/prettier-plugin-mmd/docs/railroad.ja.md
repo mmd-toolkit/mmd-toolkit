@@ -17,10 +17,6 @@ mermaid.js との差をまとめます。
 
 見出しを第1列に置き、通常の最初の文を次の行へ移します。
 方言を見つけやすくするためです。
-見出しを第1列に置き、通常の最初の文を次の行に置く形は、
-[radar](./radar.ja.md#header) と [wardley](./wardley.ja.md#見出し)
-も印字するので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が同じ配置を与えます。
 IR は `railroad-beta`、EBNF は `railroad-ebnf-beta`、
 ABNF は `railroad-abnf-beta`、PEG は `railroad-peg-beta` を保ちます。
 コロンや指定は加えません。

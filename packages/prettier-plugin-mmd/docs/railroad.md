@@ -15,11 +15,7 @@ records preserved text and differences from mermaid.js.
 ### Header
 
 Print the authored header at column one and put an ordinary first statement on
-the next line, making the dialect easy to find. The [radar](./radar.md#header)
-and [wardley](./wardley.md#header) headers start at column one with an ordinary
-first statement on the next line;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same layout for railroad headers. IR keeps `railroad-beta`, EBNF
+the next line, making the dialect easy to find. IR keeps `railroad-beta`, EBNF
 `railroad-ebnf-beta`, ABNF `railroad-abnf-beta`, and PEG `railroad-peg-beta`.
 Add no colon or flags. mermaid.js reads each of the four names in this spelling
 only: it rejects the name without `-beta`, with `-beta` in another case, and in
