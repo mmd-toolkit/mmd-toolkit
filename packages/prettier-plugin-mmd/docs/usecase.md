@@ -213,12 +213,11 @@ keeps its kind, since markdown changes the label type, and every label keeps its
 interior characters, including empty quoted values. No-break spaces at a label's
 ends and literal backslashes are part of its Db text; entity decoding and HTML
 stripping also change the text mermaid.js records. Those characters therefore
-stay as written. 12.0.0 and 12.3.0 draw a label with no-break spaces at its
-ends, a label with two literal backslashes, `A("a &amp; b")`, and
-`A("<b>x</b>")` differently from the same label without the no-break spaces,
-without the backslashes, with the entity decoded, and with the HTML stripped,
-and 12.3.0 holds another label in the Db `useCases` for each of them (for the
-no-break spaces, see
+stay as written. The figure and the Db differ for a label with no-break spaces
+at its ends, a label with two literal backslashes, `A("a &amp; b")`, and
+`A("<b>x</b>")`, compared with the same label without the no-break spaces,
+without the backslashes, with the entity decoded, and with the HTML stripped
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The padding inside the backquotes of a markdown label is part of its Db label
 too, so it stays (see
@@ -522,9 +521,9 @@ usecase-beta
 ### System boundaries
 
 Openings, declaration bodies and aligned `end` use separate lines, including
-empty boundaries and empty quoted names. [ER subgraphs](./er.md#indentation) and
-[class namespaces](./class.md#indentation) print their openings, body statements
-and closers on separate lines and align each closer with its opening. Under
+empty boundaries and empty quoted names. [ER subgraphs](./er.md#indentation)
+print their openings, body statements and closers on separate lines and align
+each closer with its opening. Under
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
 system boundaries use the same layout for their openings, bodies and closing
 `end`.
