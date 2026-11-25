@@ -50,10 +50,21 @@ architecture-beta
 ### Indentation
 
 Indent ordinary declarations, edges, alignments, common statements and
-standalone trivia one configured step. The body is flat: `in` is a reference,
-not nesting. `tabWidth: 0` gives zero spaces; `useTabs` gives one tab even at
-width zero, because architecture columns have no grammatical meaning. Other
-value continuation columns, hidden closers and retained prefixes stay written.
+standalone trivia one configured step. The start of a line is no place of rule
+1, so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [flowchart](./flowchart.md#indentation),
+[sequence](./sequence.md#indentation), [gantt](./gantt.md#indentation),
+[pie](./pie.md#indentation), and [info](./info.md#indentation) put the
+statements of the body one level below the header. The body is flat: `in` is a
+reference, not nesting. `tabWidth: 0` gives zero spaces; `useTabs` gives one tab
+even at width zero, because architecture columns have no grammatical meaning. A
+level is what Prettier's `tabWidth` and `useTabs` options say, as
+[pie](./pie.md#indentation), [packet](./packet.md#indentation),
+[gitgraph](./gitgraph.md#indentation), [info](./info.md#indentation),
+[radar](./radar.md#indentation), and [wardley](./wardley.md#indentation) print
+it, and as Prettier indents JavaScript: in `if (a) { b }` there are zero spaces
+before `b` at `tabWidth: 0` and one tab with `useTabs`. Other value continuation
+columns, hidden closers and retained prefixes stay written.
 
 [fixture: architecture/indentation/indent-four]
 
@@ -116,9 +127,15 @@ decides: [wardley](./wardley.md#component-spacing) puts one ordinary space
 between each command keyword and its first complete name, and
 [radar](./radar.md#groups-and-commas) between a group keyword and its first
 member. Print `group g(cloud)[G]`, `service a(server)[A]` and `service a[A]`:
-touching parentheses and brackets make the attached parts read as one node. A
-quoted text icon is an independent value, so print `service a "I" [A]`. Missing
-optional parts stay absent. Trivia-bearing gaps keep their contact.
+touching parentheses and brackets make the attached parts read as one node.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the touching
+`(` and `[`: Prettier prints no whitespace before the `(` of a call and none
+before the `[` of an index (`f (a) [0]` is printed `f(a)[0];`).
+[Block](./block.md#shapes) and [mindmap](./mindmap.md#node-text) print the shape
+of a node touching its id too (`A ("x")` is printed `A("x")`, and `a (x)` is
+printed `a(x)`). A quoted text icon is an independent value, so print
+`service a "I" [A]`. Missing optional parts stay absent. Trivia-bearing gaps
+keep their contact.
 
 [fixture: architecture/declaration-spacing/double-text-icon]
 
@@ -152,8 +169,12 @@ architecture-beta
 
 Put one space on each side of `in`, without column alignment. This gives
 equivalent padding a consistent spelling while preserving explicit references
-and their absence. Do not move declarations to resolve parents or turn
-membership into a nested body.
+and their absence. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the space on each side of `in`: it is a mark between two things, as it is
+in JavaScript, where Prettier prints `[G]in p` as `[G] in p` and `a  in   b` as
+`a in b`, with one space on each side as for any other mark between two things.
+Do not move declarations to resolve parents or turn membership into a nested
+body.
 
 [fixture: architecture/parent-references/group-parent]
 
@@ -181,9 +202,16 @@ architecture-beta
 ### Named icons
 
 Keep each icon name as written inside its parentheses, including leading symbols
-and unknown names. The composite requires a nonempty unpadded name: inserting
-spaces would reject accepted input. Global directives between complete
-components retain their boundaries.
+and unknown names. The Db holds the icon name as it is written, and the drawing
+looks the icon up by that name, so another spelling is another name and not
+another form of the same name. The composite requires a nonempty unpadded name:
+inserting spaces would reject accepted input. Rule 1 prints none either:
+Prettier prints no whitespace inside parentheses (`f( a )` is printed `f(a);`).
+Global directives between complete components retain their boundaries. A
+directive in such a gap is placed as under
+[Directives](./flowchart.md#directives): the gap is printed as without the
+directive, and inside the parentheses of an icon it has no space, so the
+directive touches the unit on each side.
 
 [fixture: architecture/named-icons/leading-symbols]
 
@@ -317,18 +345,23 @@ quote, backslash, or line break, and has no space at its ends: a label without
 quotes runs to the next `]`, and one that starts and ends with a quote is read
 as a label in quotes, so `"a-b"`, `"A.B"`, and `"日本語"` are printed without
 quotes, while `"a[b"`, the empty label, and a label with padding inside the
-quotes (`[" padded "]`) keep theirs. So do a backslash and a quote: mermaid.js
-takes one pair of outer quotes, `"` or `'`, off the title that it reads, and
-turns `\"` and `\'` into `"` and `'` only in a title that had them, so `"a\"b"`
-printed `a\"b`, and `"'x'"` printed `'x'`, would be read as other titles. A
-label without quotes is never put in quotes. A run of spaces and tabs in a label
-is printed as one space, except where it makes a word of its own: mermaid.js
-draws a label word by word, split at single spaces, so a run of tabs alone, and
-a tab between two spaces, stay (`"A<tab>B"` is printed `A<tab>B`). The words are
-what mermaid.js keeps of the title: it takes the brackets off, trims, takes one
-pair of outer quotes off, and trims again. A quote inside the words, or beside a
-bracket inside them, is a character of a word like any other, so a tab beside it
-stays too (`["A'<tab>B"]` and `["A[<tab>B"]` are printed as written).
+quotes (`[" padded "]`) keep theirs. The versions that were run reject
+`service s[]` and accept `service s[""]`, which is the reason for the empty
+label. The padding inside the quotes has none: they read `[" padded "]` and
+`[padded]` alike, so that label is printed against rule 3 (the examples write 36
+of 36 labels without quotes) and waits to be fixed by the rule. A backslash and
+a quote keep theirs too: mermaid.js takes one pair of outer quotes, `"` or `'`,
+off the title that it reads, and turns `\"` and `\'` into `"` and `'` only in a
+title that had them, so `"a\"b"` printed `a\"b`, and `"'x'"` printed `'x'`,
+would be read as other titles. A label without quotes is never put in quotes. A
+run of spaces and tabs in a label is printed as one space, except where it makes
+a word of its own: mermaid.js draws a label word by word, split at single
+spaces, so a run of tabs alone, and a tab between two spaces, stay (`"A<tab>B"`
+is printed `A<tab>B`). The words are what mermaid.js keeps of the title: it
+takes the brackets off, trims, takes one pair of outer quotes off, and trims
+again. A quote inside the words, or beside a bracket inside them, is a character
+of a word like any other, so a tab beside it stays too (`["A'<tab>B"]` and
+`["A[<tab>B"]` are printed as written).
 
 [fixture: quotes/labels-without-quotes] [fixture:
 quotes/labels-with-punctuation-without-quotes] [fixture:
@@ -487,8 +520,16 @@ architecture-beta
 
 Keep the line and its optional markers together, with one ordinary space on each
 side: `a:R <-- L:b`, `a:T --> B:b`, `a:R <--> L:b`. This separates the line from
-the ports. Keep both actual marker characters, including `>--<`; their presence
-flags do not specify their glyphs. No-marker lines use the same spaces.
+the ports. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+space on each side: the line with its markers is a mark between two things, as
+the `-->` of a flowchart is, and Prettier prints a mark between two things with
+one space on each side (the row of rule 1 for another mark between two things:
+`A-->B` in a flowchart is printed `A --> B`, and `A<-->B` and `A---B` are
+printed `A <--> B` and `A --- B`). Keep both actual marker characters, including
+`>--<`; their presence flags do not specify their glyphs. The Db of the pinned
+version gives `>--<` and `<-->` the same flags, and the versions that were run
+read and draw both alike, so no reason keeps the reversed glyph, and its row is
+in the list (D02). No-marker lines use the same spaces.
 
 [fixture: architecture/arrow-lines/arrow-both-markers]
 
@@ -591,9 +632,19 @@ architecture-beta
 ### Alignment
 
 Use one ordinary space between `align`, its row/column direction and each
-member. Do not align columns, sort members, merge repeated constraints or wrap
-them: consistent gaps improve reading without changing authored order or
-introducing visible EOL.
+member. Rule 1 names no mark for a gap between the words of a statement, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: the gap between a keyword and its text is one space (`title    Pets` in
+a pie chart is printed `title Pets`, the example of rule 2), which gives the gap
+between `align` and its direction and the gap between the direction and the
+first member. No rule gives the gap between two members (`a   b` and `a`, a tab,
+and `b` are printed `a b`): [block](./block.md#rows) prints the nodes of a row
+with one space, but states that no rule gives the form of its rows, so it is no
+basis for rule 2, and the released form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Do not align columns, sort members, merge repeated constraints or wrap them:
+consistent gaps improve reading without changing authored order or introducing
+visible EOL.
 
 [fixture: architecture/alignment/alignment-row-and-column]
 
@@ -2525,7 +2576,11 @@ Reuse shared `accTitle: value` and `accDescr: value`, except as the paragraphs
 below state, as the [paragraph on a directive before the text](#title) states,
 and as the [Semicolons](#semicolons) section states: the colon touches its
 keyword, with one space before a trimmed nonempty value; empty values end at the
-colon. This keeps consistent outer spacing. A run of spaces and tabs inside the
+colon. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+colon: it is the colon of a key (step 2 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is), and the table
+there has `accTitle: text`), so it touches the keyword and has one space after
+it. This keeps consistent outer spacing. A run of spaces and tabs inside the
 value of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
@@ -3746,9 +3801,12 @@ architecture-beta
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, separate the keyword and opening brace with
-one space so the block boundary is clear. Whitespace-only interiors become `{}`
-because no text needs surrounding space. Plain opener whitespace can join; real
-trivia keeps its break.
+one space so the block boundary is clear.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space:
+Prettier prints one space between a keyword and the `{` of its block
+(`try  { a }` is printed with `try {`, and `else   { z }` with `else {`).
+Whitespace-only interiors become `{}` because no text needs surrounding space.
+Plain opener whitespace can join; real trivia keeps its break.
 
 Rule 1 names no mark for a line break next to a comment or a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
@@ -3762,7 +3820,11 @@ space when only a directive follows it and the `{` stands on a later line, with
 the directive on the line of `accDescr`. When a comment follows the directive,
 the directive and the comment stand on a line of their own one level deeper, as
 the comment does. Where the `{` follows the directive on its line, the line
-stays as written.
+stays as written. Rule 2 gives no one form for the separator: the formatter, run
+on `accDescr`, a U+2028, and a comment, prints them as written in sequence,
+gantt, and journey, and prints a line break in radar, as it does in
+architecture, so the released form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 The line that holds the `{` after a comment or a directive stands at the level
 of its statement. Of the 23 other diagram types that accept the form, c4, class,
@@ -3807,19 +3869,41 @@ architecture/description-blocks/keyword-u2028-directive-touching-brace-on-line]
 architecture/description-blocks/keyword-u2028-directive-then-spaces-and-brace-on-line]
 
 Keep comment/directive-only interiors. Rule 1 names no mark for a line inside a
-block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
-[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block with a directive or comment line. Ordinary description body
-and standalone comment lines align one level inside the statement, since the Db
-removes indentation after LF. Keep line breaks and interior blank lines, and the
-whitespace at the end of each line of text except the last one; a line of
-whitespace only becomes an empty line. The whitespace at the end of the last
-line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. Directives and
-shared removed comment regions keep their complete source. A separate closer
-aligns with the statement; the first closing brace still ends the value.
+block. For a block that holds only comment lines, rule 2 decides, as
+[flowchart](./flowchart.md#multi-line-values) keeps the comment lines of a block
+without text and puts them one level inside the block, with its `}` at the level
+of the `accDescr`. No rule gives the interior of a block that holds a directive:
+[flowchart](./flowchart.md#multi-line-values),
+[xychart](./xychart.md#empty-description-blocks), and
+[quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
+breaks, but in them this is a question of the list of undecided forms (D34) and
+a form printed against a rule, so their printing is no decided form, and the
+released form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Ordinary description body and standalone comment lines align one level inside
+the statement, since the Db removes indentation after LF. Keep line breaks and
+interior blank lines, and the whitespace at the end of each line of text except
+the last one; a line of whitespace only becomes an empty line. The whitespace at
+the end of the last line of text is dropped where the closer stands on a line of
+its own, and is printed as one space where the closer follows it on that line.
+Rule 2 gives the level of the lines and the place of a separate closer: the
+formatter, run on a block of each of flowchart, sequence, state, gantt, journey,
+timeline, pie, and radar, puts the text lines and the comment lines of the block
+one level inside the statement and a separate closer at the level of the
+statement, and the sections of [flowchart](./flowchart.md#multi-line-values),
+[sequence](./sequence.md#multi-line-values),
+[state](./state.md#multi-line-values),
+[gantt](./gantt.md#accessibility-statements), and
+[journey](./journey.md#accessibility-statements) state both. No rule gives the
+line breaks, the empty lines, the whitespace at the end of each line, and the
+last line of the block: those types print them in the same way, but in each of
+them these forms are a question of the list of undecided forms (D38 and D39), so
+their printing is no decided form, and the released form stays until it is
+decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Directives and shared removed comment regions keep their complete source. A
+separate closer aligns with the statement; the first closing brace still ends
+the value.
 
 [fixture: architecture/description-blocks/asymmetric] [fixture:
 architecture/description-blocks/directive-line-between-keyword-and-brace]
@@ -3906,9 +3990,8 @@ C" ["D
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. Rule 1 gives no form here, since its table names the whitespace beside a
-mark and not the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+header. Rule 1 gives no form here, since the start of a line is no place that
+its table names ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [flowchart](./flowchart.md#comments) and [wardley](./wardley.md#comments)
 align a comment on a line of its own with the body in the same way. Inline
@@ -3968,7 +4051,10 @@ decides, as [gantt](./gantt.md#directives) and
 formatting splits with the following unit, keep its right-side contact or
 separation, and break its left contact, where no other rule keeps the layout as
 written. Ordinary standalone starts align one body step in; multiline interiors
-and EOF-reaching endings stay written. Common removal joins surrounding text, so
+and EOF-reaching endings stay written. A directive on a line of its own stands
+at the level of the statements around it, as in
+[flowchart](./flowchart.md#directives), [sequence](./sequence.md#directives),
+and [gantt](./gantt.md#directives). Common removal joins surrounding text, so
 deleting component-boundary whitespace can reject a declaration. Preserve
 component/value-internal directives rather than treating their opaque text as
 JSON.
@@ -4107,12 +4193,13 @@ counts rejects the same lines without that space (see
 Only the header's own hidden forms need no spare LF. A statement retained on the
 header line still has a statement boundary after its suffix. Keep multiple
 suffix owners and forms after visible EOL distinct; exterior excess blanks use
-the shared one-blank-line rule. Rule 1 names no mark for an empty line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [gantt](./gantt.md#blank-lines),
-[journey](./journey.md#blank-lines), and [sankey](./sankey.md#blank-lines) print
-a run of empty lines as one and drop the empty lines at the start and at the end
-of a body.
+the shared one-blank-line rule.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and at
+the end of a file or of a block in JavaScript and CSS, and
+[gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines), and
+[sankey](./sankey.md#blank-lines) print a run of empty lines as one and drop the
+empty lines at the start and at the end of a body.
 
 [fixture: architecture/hidden-boundaries/header-and-statement]
 
@@ -4192,8 +4279,15 @@ architecture-beta%%{}%% group a%%{}%%
 
 Keep at most one ordinary ASCII blank line between statements or trivia,
 removing ordinary body/document-edge blanks. This preserves visible grouping
-without excess space. Value interiors, retained prefixes, protected segments and
-required hidden-boundary LFs keep their own rules.
+without excess space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives it, as under [Hidden boundaries](#hidden-boundaries): Prettier prints a
+run of empty lines as one and drops the empty lines at the start and at the end
+of a file or of a block in JavaScript and CSS, and
+[gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines), and
+[sankey](./sankey.md#blank-lines) print a run of empty lines as one and drop the
+empty lines at the start and at the end of a body. Value interiors, retained
+prefixes, protected segments and required hidden-boundary LFs keep their own
+rules.
 
 [fixture: architecture/blank-lines/blank-collapse]
 
@@ -4217,10 +4311,13 @@ architecture-beta
 ### Trailing whitespace
 
 Remove harmless exterior ASCII padding after the header and completed
-declarations, edges, alignments and description closers. Keep source inside
-values and continuation lines, comment tails, directive/hidden interiors,
-retained prefixes and protected segments. Hidden closing padding remains even at
-EOF because trimming it can remove visible EOL.
+declarations, edges, alignments and description closers.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints no whitespace at the end of a line (`a = 1;` followed by spaces and a tab
+is printed `a = 1;`). Keep source inside values and continuation lines, comment
+tails, directive/hidden interiors, retained prefixes and protected segments.
+Hidden closing padding remains even at EOF because trimming it can remove
+visible EOL.
 
 [fixture: architecture/trailing-whitespace/trailing-exterior]
 
@@ -4322,7 +4419,11 @@ the fixtures). Text that no part of the layout holds stays as written. A
 statement over several lines whose lines, joined with one space or with nothing,
 could change which `;` the line rule ignores keeps the text of each segment, up
 to its last kept `;`, as written; any other statement over several lines is
-formatted like one on a single line.
+formatted like one on a single line. Where a line holds more than one `;`,
+removing one can make the line rule ignore another `;` and change a label or an
+entity (see [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-));
+that reason does not reach a `;` that stands alone on its line, which stays as
+written.
 
 [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
 semicolons/no-stretch-formatted] [fixture: semicolons/crossing-comment]
@@ -4407,10 +4508,13 @@ architecture-beta
 ### Line terminators and unicode
 
 Use the shared host policy: normalize physical CR/CRLF to LF, then emit
-configured endOfLine, including in values and hidden forms. Keep LS/PS/NBSP/BOM
-in content; common line-value edges alone trim common whitespace. Non-ASCII
-structural separators remain rejected. A leading BOM follows Prettier host
-handling rather than byte identity.
+configured endOfLine, including in values and hidden forms. Prettier reads the
+line ending before the printer does: it turns every CR and CRLF into the line
+ending of its `endOfLine` option, inside a template literal and a comment too,
+and `endOfLine: "crlf"` prints CRLF everywhere. Keep LS/PS/NBSP/BOM in content;
+common line-value edges alone trim common whitespace. Non-ASCII structural
+separators remain rejected. A leading BOM follows Prettier host handling rather
+than byte identity. Prettier keeps the BOM at the start of a JavaScript file.
 
 [corpus fixture: architecture/hidden-yaml-crlf]
 
@@ -4472,7 +4576,10 @@ Output (escaped): `"architecture-beta\n  service cr_node\n"`.
 
 End ordinary accepted input with one configured newline, including empty bodies,
 final statements and comments. Remove ordinary terminal blank runs for a
-predictable file ending. EOF-reaching global directives and hidden closing
+predictable file ending.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: Prettier
+ends a file with one line ending, adding it where it is missing and dropping the
+empty lines at the end. EOF-reaching global directives and hidden closing
 padding keep their shared boundary behavior; a closed hidden form can gain LF.
 
 [fixture: architecture/final-newline/ending-comment]
