@@ -1993,6 +1993,11 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
 
 - ヘッダーの綴り。
   `classDiagram` か `classDiagram-v2`。
+  11.7.0 は、一方と他方で、
+  別の `aria-roledescription` と別のマーカーの id を書きます。
+  詳しくは
+  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+  を参照してください。
 
   [fixture: indentation/header-v2-kept]
 
