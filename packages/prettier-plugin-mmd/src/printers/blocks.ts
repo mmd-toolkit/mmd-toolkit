@@ -427,6 +427,12 @@ interface Stretch {
   readonly first: number
   /** The position after its last statement in the block. */
   readonly after: number
+  /**
+   * The position after the statements that follow a block of the stretch whose
+   * closing goes to a line of its own, on its line, which the stretch leaves
+   * out (see `followsSplitClosing`); undefined where it leaves none out.
+   */
+  readonly leftOutEnd?: number
 }
 
 /**
@@ -475,11 +481,6 @@ export function printBlock<Statement extends Positioned>(
   let stretchEndsWithComment = false
   let endsAfterBareMarker = false
   let endsAfterTakingComment = false
-  /**
-   * The positions of the statements that the block drops after a block whose
-   * closing goes to a line of its own (see `followsSplitClosing`).
-   */
-  const droppedAfterSplitClosing = new Set<number>()
   /**
    * The indentation beyond the block's for the lines being added (see
    * `BlockRules.extraIndentationOf`).
@@ -750,9 +751,9 @@ export function printBlock<Statement extends Positioned>(
       ) {
         return { start, end: stretchEnd, first, after }
       }
-      // The stretch ends before a statement that the printer drops after a
-      // closing that goes to a line of its own, unless the stretch is printed
-      // as written (see `followsSplitClosing`).
+      // The stretch ends before a statement that follows a closing that goes
+      // to a line of its own, unless the stretch is printed as written (see
+      // `followsSplitClosing`).
       if (followsSplitClosing(after)) {
         let uncutAfter = after
         while (
@@ -767,9 +768,13 @@ export function printBlock<Statement extends Positioned>(
           after: uncutAfter,
         }
         if (!printsAsWritten(uncut, statements.slice(first, uncutAfter))) {
-          for (let dropped = after; dropped < uncutAfter; dropped++)
-            droppedAfterSplitClosing.add(dropped)
-          return { start, end: stretchEnd, first, after }
+          return {
+            start,
+            end: stretchEnd,
+            first,
+            after,
+            leftOutEnd: uncutAfter,
+          }
         }
       }
       stretchEnd = Math.max(stretchEnd, rules.printedEnd(following))
@@ -818,6 +823,18 @@ export function printBlock<Statement extends Positioned>(
       (rules.joiningRegionsPrintedAsWritten !== true &&
         holdsJoiningRegion(source, stretch.start, stretch.end))
     )
+  }
+
+  /**
+   * The position of the statement that the block prints after a stretch: the
+   * statements that follow a split closing on its line, `;` of their own, are
+   * dropped at the top level, as they are on any line of their own; in a block
+   * they are statements like the others, printed on lines of their own.
+   */
+  function nextAfter(stretch: Stretch): number {
+    return bounds.isTopLevel && stretch.leftOutEnd !== undefined
+      ? stretch.leftOutEnd
+      : stretch.after
   }
 
   /**
@@ -1139,7 +1156,7 @@ export function printBlock<Statement extends Positioned>(
       pushLine(printStretch(stretch))
       stretchEndsWithComment = endsWithComment(stretch.end)
       continuesOpeningLine = true
-      next = stretch.after
+      next = nextAfter(stretch)
       offset = stretch.end
     }
   }
@@ -1177,15 +1194,15 @@ export function printBlock<Statement extends Positioned>(
         offset = end
       } else {
         stretchEndsWithComment = endsWithComment(stretch.end)
-        next = stretch.after
+        next = nextAfter(stretch)
         offset = stretch.end
       }
       continue
     }
     if (
+      !startsStretch &&
       bounds.isTopLevel &&
-      rules.isDroppedAtTopLevel(statement) &&
-      (!startsStretch || droppedAfterSplitClosing.has(index))
+      rules.isDroppedAtTopLevel(statement)
     ) {
       next++
       continue
@@ -1273,7 +1290,7 @@ export function printBlock<Statement extends Positioned>(
         : {}),
     })
     stretchEndsWithComment = endsWithComment(stretch.end)
-    next = stretch.after
+    next = nextAfter(stretch)
     offset = stretch.end
   }
   // The top-level block is the body of the diagram, which ends at the end of

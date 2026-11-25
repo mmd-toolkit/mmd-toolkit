@@ -1004,7 +1004,9 @@ in [Semicolons](./flowchart.md#semicolons): `flow F[x;]; A --> B; end ;  %% c`
 is printed `flow F[x;]; A --> B;` and `end %% c`. A `;` before a directive
 stays, and so does one before a comment that holds a `;` of its own, since the
 line of the `end` then holds a `;` that the line keeps. A statement after the
-`;` keeps the `end` on the line, and the `;` with it.
+`;` keeps the `end` on the line, and the `;` with it. A `;` that the line rule
+ignores next to another `;`, as in `flow F[style:#x;]; A --> B; end ;;`, keeps
+the line as written (see [Semicolons](./flowchart.md#semicolons)).
 
 [fixture: semicolons/closing-semicolon-after-kept-line-dropped] [fixture:
 semicolons/closing-semicolon-after-style-space-kept-line-dropped] [fixture:
@@ -1026,7 +1028,14 @@ semicolons/closing-semicolon-before-semicolon-line-after-kept-line-dropped]
 [fixture: semicolons/closing-semicolon-before-directive-after-kept-line-kept]
 [fixture: semicolons/closing-semicolon-before-statement-after-kept-line-kept]
 [fixture: semicolons/closing-semicolon-before-comment-with-semicolon-kept]
-[fixture: semicolons/closing-semicolon-without-kept-line-dropped] [test:
+[fixture: semicolons/closing-semicolon-without-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-without-space-after-kept-line-dropped] [fixture:
+semicolons/closing-two-semicolons-adjacent-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-at-end-of-text-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-next-to-ignored-semicolon-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-kept-as-written]
+[fixture:
+semicolons/closing-semicolon-before-unclosed-directive-after-kept-line] [test:
 agentflow: U+2028 after `end ;` of a flow on a kept line, then a statement]
 [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a line
 break] [test: agentflow: U+2028 after `end ;` of a flow on a kept line, then a

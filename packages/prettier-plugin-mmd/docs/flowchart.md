@@ -538,7 +538,9 @@ that has moved would be dropped by a second formatting, since the line of the
 keeps the `end` on the line, and the `;` with it:
 `subgraph S; A[x;] --> B; end ; C` stays as it is. A `%%` after the `;` on the
 line keeps the line as written (see
-[Statements one per line](#statements-one-per-line)).
+[Statements one per line](#statements-one-per-line)), and so does a `;` that the
+line rule ignores next to another `;`, as in
+`subgraph S[style:#x;]; A --> B; end ;;`: the `end` stays on the line, as below.
 
 [fixture: semicolons/closing-semicolon-after-kept-line-dropped] [fixture:
 semicolons/closing-semicolon-after-style-space-kept-line-dropped] [fixture:
@@ -555,12 +557,19 @@ semicolons/closing-semicolon-before-directive-line-after-kept-line-dropped]
 semicolons/closing-semicolon-before-semicolon-line-after-kept-line-dropped]
 [fixture: semicolons/closing-semicolon-before-directive-after-kept-line-kept]
 [fixture: semicolons/closing-semicolon-before-statement-after-kept-line-kept]
-[fixture: semicolons/closing-semicolon-without-kept-line-dropped] [test: U+2028
-after `end ;` of a subgraph on a kept line, then a statement, in a flowchart]
-[test: U+2028 after `end ;` of a subgraph on a kept line, then a line break, in
-a flowchart] [test: U+2028 after `end ;` of a subgraph on a kept line, then a
-comment, in a flowchart] [test: U+2028 after `end ;` of a subgraph on a kept
-line, then a directive, in a flowchart] [test: U+2028 after `end ;` of a
+[fixture: semicolons/closing-semicolon-without-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-without-space-after-kept-line-dropped] [fixture:
+semicolons/closing-two-semicolons-adjacent-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-at-end-of-text-after-kept-line-dropped] [fixture:
+semicolons/closing-semicolon-next-to-ignored-semicolon-kept-as-written]
+[fixture: semicolons/closing-semicolons-after-ignored-semicolon-kept-as-written]
+[fixture:
+semicolons/closing-semicolon-before-unclosed-directive-after-kept-line] [test:
+U+2028 after `end ;` of a subgraph on a kept line, then a statement, in a
+flowchart] [test: U+2028 after `end ;` of a subgraph on a kept line, then a line
+break, in a flowchart] [test: U+2028 after `end ;` of a subgraph on a kept line,
+then a comment, in a flowchart] [test: U+2028 after `end ;` of a subgraph on a
+kept line, then a directive, in a flowchart] [test: U+2028 after `end ;` of a
 subgraph on a kept line, then a second `;`, in a flowchart] [test: U+2028 after
 `end ;` of a subgraph on a kept line, then the end of the text, in a flowchart]
 [test: U+2029 after `end ;` of a subgraph on a kept line, then a statement, in a
