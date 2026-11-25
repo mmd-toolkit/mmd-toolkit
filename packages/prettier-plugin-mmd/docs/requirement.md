@@ -1843,11 +1843,7 @@ A directive on a line of its own stands at the level of the statements around
 it, in a body at the level of the fields, and a directive on the line of a
 statement is placed as in a flowchart: the gap is printed as without the
 directive, and the directive stands after its space and touches the unit that
-follows it. Inline directives keep their authored gap in flowcharts and quadrant
-charts, with the ordinary gap space before the directive and the next unit
-touching it.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-these inline directive positions and gaps their forms.
+follows it.
 
 [fixture: directives/kept] [fixture: directives/in-body] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]

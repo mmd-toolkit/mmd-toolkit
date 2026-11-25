@@ -1849,10 +1849,6 @@ requirementDiagram
 本体の中ではフィールドと同じ段に置きます。
 文の行の中では、flowchart と同じく、隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
-文の行の中のディレクティブも、flowchart と quadrant の図と同じく、
-書かれた隙間に残し、通常の隙間の空白の後ろに置き、後ろの単位に接します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この文の行の中のディレクティブの位置と隙間を決めます。
 
 [fixture: directives/kept] [fixture: directives/in-body]
 [fixture: directives/before-header]
