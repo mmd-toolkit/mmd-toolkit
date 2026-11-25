@@ -1071,9 +1071,12 @@ out of the title. The two stand on lines of their own as every statement does
 `x=terminal("title prefix");` the text of the title, and the Db that mermaid.js
 builds in the pinned version and the figure of every version that counts change.
 The comparison Db of the tests omits body titles, which gives no permission to
-rewrite their contents. The directives that end a title are printed with one
-space before each that has whitespace before it, and the whitespace after the
-last one is left out, whatever the whitespace at the end of the line (see
+rewrite their contents. Where only directives follow the text of a title, they
+are printed with one space before each that has spaces or tabs before it, and
+the spaces and tabs after the last one are left out, unless a directive of the
+line holds a line break, a `;`, a U+2028, or a U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: railroad/title/ir-rule-on-next-line]
@@ -1186,8 +1189,12 @@ tooltip. Keep next-line values separate: `accTitle:`, a line break, and
 text of the title, and so it is for `accDescr`: the Db of the pinned version and
 the figure of every version that counts change (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The directives that end the value are printed with one space before each that
-has whitespace before it, and the whitespace after the last one is left out (see
+Where only directives follow the text of the value, they are printed with one
+space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out, unless a directive of the line holds a line
+break, a `;`, a U+2028, or a U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]

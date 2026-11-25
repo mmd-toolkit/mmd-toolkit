@@ -1,7 +1,7 @@
 import type { Node, Range } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { appendItems } from "./collections.ts"
+import { appendItems, minOf } from "./collections.ts"
 import type { FillOfLabel } from "./flowchart-link-styles.ts"
 import type { TextEdit } from "./layout.ts"
 import {
@@ -828,7 +828,11 @@ function collectPlaceEdits(
  * The layout of a line that stays as written, apart from the end of its text
  * where directives end it: the whitespace after the last directive is left out,
  * and each directive keeps whether whitespace precedes it, a run becoming one
- * space (see `collectTextEndEdits`). The runs inside the text stay.
+ * space (see `collectTextEndEdits`). The runs inside the text stay. The end,
+ * from the first whitespace that an edit replaces, is an atom of its own: an
+ * atom that has a replacement is not formatted further, so the text before it,
+ * which may hold a data block (see `formatDataBlocks`), stays in an atom that
+ * has none (docs/kanban.md, Data blocks).
  */
 export function keptWithDirectiveEnd(
   source: Source,
@@ -837,8 +841,14 @@ export function keptWithDirectiveEnd(
 ): AtomLayout {
   const layout = keptAsWritten(start, end)
   if (!endsWithDirectives(source, [start, end])) return layout
-  const atoms = [...layout.atoms]
-  replaceInAtoms(source, atoms, collectTextEndEdits(source, start, end, "kept"))
+  const edits = collectTextEndEdits(source, start, end, "kept")
+  if (edits.length === 0) return layout
+  const endStart = minOf(edits.map((edit) => edit.range[0]))
+  const atoms: Atom[] = [
+    { start, end: endStart },
+    { start: endStart, end },
+  ]
+  replaceInAtoms(source, atoms, edits)
   return { ...layout, atoms }
 }
 
