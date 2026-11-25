@@ -1489,10 +1489,10 @@ arrow-spacing/edge-id-arrow-like-after-ignored-semicolon] [fixture:
 arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 An edge id after a data block touches the block: `A@{ shape: circle } e1@--> B`
-is printed `A@{ shape: circle }e1@--> B`. mermaid.js 12.3.0 reads the two forms
-the same, and draws the same figure from them. Some of the versions that count
-have no rule for a space after a data block before an edge id, so they reject
-the form with the space (another has no data block, and rejects both; see
+is printed `A@{ shape: circle }e1@--> B`. mermaid.js reads the two forms the
+same, and draws the same figure from them. Some of the versions that count have
+no rule for a space after a data block before an edge id, so they reject the
+form with the space (another has no data block, and rejects both; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The touching form is the one that every version that reads a data block reads. A
 directive or an ignored `;` between the block and the edge id is removed before
@@ -3423,10 +3423,10 @@ and a `;`, as in `subgraph "S"accDescr {} accDescr {}` and
 
 The blocks read no token, so that whitespace follows the name: the subgraph has
 the id `subGraph0`, and the id `S` without it, which the Db holds
-(`subgraphs[0].id` in 12.3.0), while every version that counts draws the same
-figure up to the ids. That the whitespace is there is kept; how wide it is, only
-before the first block, where it follows the name as written, and a run between
-two blocks or before a `;` becomes one space.
+(`subgraphs[0].id`), while every version that counts draws the same figure up to
+the ids. That the whitespace is there is kept; how wide it is, only before the
+first block, where it follows the name as written, and a run between two blocks
+or before a `;` becomes one space.
 
 [fixture: subgraph-header/runs-between-blocks-become-one]
 
