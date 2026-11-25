@@ -3530,9 +3530,9 @@ of the `accDescr`. No rule gives the interior of a block that holds a directive:
 [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
-breaks, but in them this is a question of the list of undecided forms (D34) and
-of the list of forms to fix by the rule, so their printing is no decided form,
-and the released form stays until it is decided (see
+breaks, but their documents give that form no reason, and it is a question of
+the list of undecided forms (D34), so their printing is no decided form, and the
+released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Ordinary description body and standalone comment lines align one level inside
 the statement: the Db removes indentation after LF. The start of a line is no

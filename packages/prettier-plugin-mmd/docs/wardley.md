@@ -639,9 +639,8 @@ the authored reference and decimal.
 the one space after the keyword (see [Component spacing](#component-spacing)).
 No rule gives the space between the name and its number:
 [radar](./radar.md#named-entries) prints a name and its number with one space as
-well (`North 4`), but gives that form no reason (it is a form to fix by the rule
-in the list), so it is no basis for rule 2, and the released form stays until it
-is decided (see
+well (`North 4`), but gives that form no reason, so it is no basis for rule 2,
+and the released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep empty quoted names and unpublished targets. A missing ID does not justify
 deleting the statement, and joining a bare name to its number can reject it.
@@ -3762,9 +3761,9 @@ with its `}` at the level of the `accDescr`. No rule gives the interior of a
 block that holds a directive: [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
-breaks, but in them this is a question of the list of undecided forms (D34) and
-of the list of forms to fix by the rule, so their printing is no decided form,
-and the released form stays until it is decided (see
+breaks, but their documents give that form no reason, and it is a question of
+the list of undecided forms (D34), so their printing is no decided form, and the
+released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: wardley/accessibility/description-closer] [fixture:
