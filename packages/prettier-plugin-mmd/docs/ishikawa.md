@@ -640,6 +640,83 @@ comment-run-after-leading-directive-collapsed] [test: ishikawa:
 comment-run-after-directive-between-words-kept] [test: ishikawa:
 comment-run-after-leading-and-between-directives-kept]
 
+A directive that holds a line break or a `;` ends a literal like any other: it
+may stand last, or touch the directives after it, with spaces and tabs after the
+last of them. `A  b %%{init: {`, a line break, and `}}%%` with a space and a tab
+after it is printed `A b %%{init: {`, a line break, and `}}%%`, as it is without
+them, since mermaid.js removes a directive before it reads the lines. A space or
+a tab that separates such a directive from a directive after it makes it part of
+the literal, which keeps its runs as written: `A  b %%{init: {`, a line break,
+`}}%%`, a space, and `%%{x}%%` is printed as it is, without the spaces and tabs
+after the last directive. A no-break space after such a directive stays as
+written, as at the end of any literal.
+
+[fixture: trailing-whitespace/directive-unclosed-end-runs-collapsed] [fixture:
+trailing-whitespace/directive-lines-end-of-text-blanks-dropped] [fixture:
+trailing-whitespace/directive-lines-end-empty-line-blanks-dropped] [fixture:
+trailing-whitespace/literal-brace-directive-lines-end-blanks-dropped] [fixture:
+ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped] [fixture:
+ishikawa/trailing-whitespace/directive-lines-root-end-blanks-dropped] [fixture:
+ishikawa/trailing-whitespace/directive-lines-touching-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-lines-gap-run-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-then-directive-lines-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directives-lines-touching-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-semicolon-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-lines-semicolon-end-blanks-dropped]
+[test: ishikawa: U+00A0 after a directive over lines stays] [fixture:
+ishikawa/trailing-whitespace/directive-lines-before-directive-runs-kept]
+
+A `;` in the literal before the directives that end it changes nothing:
+`A;b  %%{z}%%  ` is printed `A;b %%{z}%%`, and the runs of the literal are
+printed as one space, `A;  b  %%{z}%%  ` as `A; b %%{z}%%`. A literal that holds
+a directive between its words, or a U+2028 or U+2029, stays as written, with the
+spaces and tabs after the last directive left out, as does one whose last
+directive a space or a tab separates from the directive before it:
+`A;b  %%{x}%%  %%{z}%%  ` is printed `A;b  %%{x}%%  %%{z}%%`. Where a literal
+that holds a `;` stays as written, because it holds a `<` too, which may start
+an HTML tag that keeps whitespace, or the diagram holds `white-space` (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+the gap before the last directive stays as written too, as it does without the
+spaces and tabs after the directive: `A;  <b  %%{z}%%  ` is printed
+`A;  <b  %%{z}%%`.
+
+[fixture:
+ishikawa/trailing-whitespace/directive-after-semicolon-text-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-semicolon-run-text-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-inner-directive-text-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directives-after-semicolon-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-semicolon-angle-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-semicolon-white-space-text-gap-kept]
+[test: ishikawa: U+2028 in the literal before the last directive] [test:
+ishikawa: U+2029 in the literal before the last directive]
+
+Without a `;`, a literal that stays as written, because it holds a `<` or the
+diagram holds `white-space`, prints the gap before its last directive as written
+where no whitespace follows that directive, and as one space where whitespace
+follows it: `A  <b  %%{z}%%` stays as it is, and `A  <b  %%{z}%%  ` is printed
+`A  <b %%{z}%%`. The same holds after a directive that precedes the literal:
+`%%{x}%% A  <b  %%{z}%%` stays, and `%%{x}%% A  <b  %%{z}%%  ` is printed
+`%%{x}%% A  <b %%{z}%%`.
+
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-angle-text-blanks-gap-one-space]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-white-space-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-white-space-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-before-angle-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-before-angle-text-blanks-gap-one-space]
+
 Only exterior header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value.
 

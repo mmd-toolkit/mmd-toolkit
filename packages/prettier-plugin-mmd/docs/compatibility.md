@@ -2089,6 +2089,148 @@ c4/title-and-accdescription/accdescription] [fixture:
 c4/title-and-accdescription/title-white-only] [fixture:
 state/aliases/second-description-trailing-whitespace-dropped]
 
+In the title of a Gantt chart, a user journey, a timeline, a sequence diagram, a
+Venn diagram, and a C4 diagram, in the `accDescription` of a C4 diagram, and in
+an ishikawa literal, a text that stays as written (see
+[Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same))
+is not printed alike with and without the whitespace after its last directive,
+since mermaid.js reads the last directive of a line as part of the text only
+where whitespace follows it. Where no whitespace follows, the text ends before
+the directive and the gap before it stays as written. Where whitespace follows,
+the directive is part of the text and the gap before it is one space. Any reason
+that the section named above gives for a text to stay as written makes it so;
+these are examples. A `<`: `title A  <b  %%{z}%%` is printed as it is, and
+`title A  <b  %%{z}%%  ` is printed `title A  <b %%{z}%%`. A `;` that the line
+rule ignores: `title style:#x;  b  C  %%{z}%%` in a Gantt chart and a timeline.
+`white-space` anywhere in the diagram: the title of a user journey
+(`title A  b  %%{z}%%`), the title of a Gantt chart, and an ishikawa literal. A
+directive between the words: the title of a Gantt chart, a user journey, a
+timeline, and a sequence diagram. A U+2028 or U+2029 in the text: every line
+named here but the ishikawa literal. In the title of a sequence diagram, a
+directive that precedes the text is in the text, since mermaid.js reads that
+title from the keyword on, and the text after it does not stay as written by
+itself: `title %%{x}%%  A  b  %%{z}%%` is printed `title %%{x}%%A  b  %%{z}%%`,
+and where whitespace follows the last directive, the runs of spaces and tabs
+before it are printed as one space too, `title %%{x}%%  A  b  %%{z}%%  ` being
+printed `title %%{x}%%A b %%{z}%%`. A directive that holds a line break and ends
+the text is part of the text only where whitespace follows it, and keeps the
+text as written only then: `title A  b  %%{init: {`, a line break, and `}}%%` is
+printed `title A b %%{init: {`, a line break, and `}}%%`, and with whitespace
+after the `}}%%` the whole text stays as written. The title of a Venn diagram
+and an ishikawa literal print the text as in the first form whether or not
+whitespace follows.
+
+[fixture: gantt/titles-and-sections/title-angle-text-gap-kept] [fixture:
+gantt/titles-and-sections/title-angle-text-blanks-gap-one-space] [fixture:
+journey/titles-and-sections/title-angle-text-gap-kept] [fixture:
+journey/titles-and-sections/title-angle-text-blanks-gap-one-space] [fixture:
+timeline/titles-and-sections/title-angle-text-gap-kept] [fixture:
+timeline/titles-and-sections/title-angle-text-blanks-gap-one-space] [fixture:
+sequence/title/title-angle-text-gap-kept] [fixture:
+sequence/title/title-angle-text-blanks-gap-one-space] [fixture:
+venn/title/title-angle-text-gap-kept] [fixture:
+venn/title/title-angle-text-blanks-gap-one-space] [fixture:
+c4/title-and-accdescription/title-angle-text-gap-kept] [fixture:
+c4/title-and-accdescription/title-angle-text-blanks-gap-one-space] [fixture:
+c4/title-and-accdescription/description-angle-text-gap-kept] [fixture:
+c4/title-and-accdescription/description-angle-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-angle-text-blanks-gap-one-space]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-white-space-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-white-space-text-blanks-gap-one-space]
+[fixture: gantt/titles-and-sections/title-white-space-text-gap-kept] [fixture:
+gantt/titles-and-sections/title-white-space-text-blanks-gap-one-space] [fixture:
+gantt/titles-and-sections/title-between-words-directive-gap-kept] [fixture:
+gantt/titles-and-sections/title-between-words-directive-blanks-gap-one-space]
+[fixture: journey/titles-and-sections/title-between-words-directive-gap-kept]
+[fixture:
+journey/titles-and-sections/title-between-words-directive-blanks-gap-one-space]
+[fixture: timeline/titles-and-sections/title-between-words-directive-gap-kept]
+[fixture:
+timeline/titles-and-sections/title-between-words-directive-blanks-gap-one-space]
+[fixture: sequence/title/title-between-words-directive-gap-kept] [fixture:
+sequence/title/title-between-words-directive-blanks-gap-one-space] [fixture:
+sequence/title/title-leading-directive-gap-kept] [fixture:
+sequence/title/title-leading-directive-blanks-gap-one-space] [fixture:
+gantt/titles-and-sections/title-ending-line-break-directive-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-ending-line-break-directive-blanks-kept]
+[fixture:
+journey/titles-and-sections/title-ending-line-break-directive-runs-collapsed]
+[fixture:
+journey/titles-and-sections/title-ending-line-break-directive-blanks-kept]
+[fixture:
+timeline/titles-and-sections/title-unclosed-ending-directive-runs-collapsed]
+[fixture:
+timeline/titles-and-sections/title-ending-line-break-directive-runs-collapsed]
+[fixture:
+timeline/titles-and-sections/title-ending-line-break-directive-blanks-kept]
+[fixture: sequence/title/title-ending-line-break-directive-runs-collapsed]
+[fixture: sequence/title/title-ending-line-break-directive-blanks-kept]
+[fixture:
+c4/title-and-accdescription/title-ending-line-break-directive-runs-collapsed]
+[fixture:
+c4/title-and-accdescription/title-ending-line-break-directive-blanks-kept]
+[fixture:
+c4/title-and-accdescription/description-ending-line-break-directive-runs-collapsed]
+[fixture:
+c4/title-and-accdescription/description-ending-line-break-directive-blanks-kept]
+[test: Gantt title with a U+2028 in its text and a directive at its end, no
+blanks after the directive] [test: Gantt title with a U+2028 in its text and a
+directive at its end, two spaces after the directive] [test: journey title with
+a U+2028 in its text and a directive at its end, no blanks after the directive]
+[test: journey title with a U+2028 in its text and a directive at its end, two
+spaces after the directive] [test: timeline title with a U+2028 in its text and
+a directive at its end, no blanks after the directive] [test: timeline title
+with a U+2028 in its text and a directive at its end, two spaces after the
+directive] [test: sequence title with a U+2028 in its text and a directive at
+its end, no blanks after the directive] [test: sequence title with a U+2028 in
+its text and a directive at its end, two spaces after the directive] [test: Venn
+title with a U+2028 in its text and a directive at its end, no blanks after the
+directive] [test: Venn title with a U+2028 in its text and a directive at its
+end, two spaces after the directive] [test: C4 title with a U+2028 in its text
+and a directive at its end, no blanks after the directive] [test: C4 title with
+a U+2028 in its text and a directive at its end, two spaces after the directive]
+[test: C4 accDescription with a U+2028 in its text and a directive at its end,
+no blanks after the directive] [test: C4 accDescription with a U+2028 in its
+text and a directive at its end, two spaces after the directive] [fixture:
+gantt/titles-and-sections/title-two-ignored-semicolons-gap-kept] [fixture:
+gantt/titles-and-sections/title-ignored-semicolon-gap-kept] [fixture:
+gantt/titles-and-sections/title-two-ignored-semicolons-blanks-gap-one-space]
+[fixture:
+gantt/titles-and-sections/title-ignored-semicolon-blanks-gap-one-space]
+[fixture: timeline/titles-and-sections/title-ignored-semicolon-gap-kept]
+[fixture:
+timeline/titles-and-sections/title-ignored-semicolon-blanks-gap-one-space]
+[fixture: journey/titles-and-sections/title-white-space-text-gap-kept] [fixture:
+journey/titles-and-sections/title-white-space-text-blanks-gap-one-space]
+[fixture: sequence/title/title-leading-directive-inner-run-gap-kept] [fixture:
+sequence/title/title-leading-directive-inner-run-blanks-runs-collapsed]
+[fixture: venn/title/title-ending-line-break-directive-blanks-runs-collapsed]
+[fixture: ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped]
+[test: Gantt title with a U+2029 in its text and a directive at its end, no
+blanks after the directive] [test: Gantt title with a U+2029 in its text and a
+directive at its end, two spaces after the directive] [test: journey title with
+a U+2029 in its text and a directive at its end, no blanks after the directive]
+[test: journey title with a U+2029 in its text and a directive at its end, two
+spaces after the directive] [test: timeline title with a U+2029 in its text and
+a directive at its end, no blanks after the directive] [test: timeline title
+with a U+2029 in its text and a directive at its end, two spaces after the
+directive] [test: sequence title with a U+2029 in its text and a directive at
+its end, no blanks after the directive] [test: sequence title with a U+2029 in
+its text and a directive at its end, two spaces after the directive] [test: Venn
+title with a U+2029 in its text and a directive at its end, no blanks after the
+directive] [test: Venn title with a U+2029 in its text and a directive at its
+end, two spaces after the directive] [test: C4 title with a U+2029 in its text
+and a directive at its end, no blanks after the directive] [test: C4 title with
+a U+2029 in its text and a directive at its end, two spaces after the directive]
+[test: C4 accDescription with a U+2029 in its text and a directive at its end,
+no blanks after the directive] [test: C4 accDescription with a U+2029 in its
+text and a directive at its end, two spaces after the directive]
+
 mermaid.js reads one whitespace character after the keyword and keeps the rest
 in the Db, so the Db of the printed text differs from the Db of the written
 text, but it draws the same figure. Each renderer puts the text into an SVG
@@ -2199,6 +2341,143 @@ texts differ. So the printer leaves the colons of a chart that holds
 [fixture: gantt/task-data/colon-column-new-longest-name] [fixture:
 gantt/task-data/description-padding-tightened] [fixture:
 gantt/task-data/colon-column-white-space-kept]
+
+In the title of a Gantt chart, a user journey, and a timeline, the directives
+between the keyword and the text are printed touching each other and the text,
+whatever spaces and tabs separate them, since mermaid.js removes them before it
+reads the title: `title %%{x}%% %%{y}%% A  b` is printed
+`title %%{x}%%%%{y}%%A b`. A directive that holds a line break among the
+directives that precede the text keeps the title as written. One that ends the
+title, with no directive before the text, does not, unless whitespace follows
+it, which makes the directive part of the text. The runs of spaces and tabs
+inside the title are printed as one space, whether the directives touch or
+whitespace separates them, also where a comment follows the text, where the text
+ends, and, in a Gantt chart and a timeline, where the title holds a `;`:
+`title %%{x}%%%%{y}%% A  b` and `title %%{x}%% A  b` are printed the same way,
+and so are the forms with more than one space, or a tab, between the keyword and
+the first directive, `title  %%{x}%%A  b`. A title that holds a directive
+between its words keeps its runs, as does a title of whitespace and directives
+only, and a title that ends with a directive and a comment:
+`title %%{x}%% %%{y}%% A  b  %%{z}%%  %% c` is printed
+`title %%{x}%%%%{y}%%A  b  %%{z}%%  %% c`. A no-break space between two
+directives is a character of the title, not whitespace. A U+2028 or U+2029 in
+the text keeps the text as written, and the directives before it are still
+printed touching.
+
+[fixture: gantt/titles-and-sections/title-directives-gap-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-run-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-tab-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-three-directives-gap-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-keyword-gap-directive-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-keyword-gap-tab-directives-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-keyword-gap-directive-last-gap-printed]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-two-comment-lines-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-comment-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-semicolon-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-comment-at-end-of-text-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-end-of-text-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-inner-directive-runs-kept]
+[fixture: gantt/titles-and-sections/title-directives-gap-without-text-kept]
+[fixture: journey/titles-and-sections/title-directives-gap-runs-collapsed]
+[fixture:
+journey/titles-and-sections/title-keyword-gap-directive-runs-collapsed]
+[fixture: journey/titles-and-sections/title-keyword-gap-comment-line-kept]
+[fixture:
+journey/titles-and-sections/title-directives-gap-comment-runs-collapsed]
+[fixture:
+journey/titles-and-sections/title-directives-gap-end-of-text-one-space]
+[fixture:
+journey/titles-and-sections/title-directives-gap-end-of-text-runs-collapsed]
+[fixture:
+journey/titles-and-sections/title-directives-gap-inner-directive-runs-kept]
+[fixture: journey/titles-and-sections/title-directives-gap-without-text-kept]
+[fixture: timeline/titles-and-sections/title-directives-gap-runs-collapsed]
+[fixture:
+timeline/titles-and-sections/title-keyword-gap-directive-runs-collapsed]
+[fixture:
+timeline/titles-and-sections/title-directives-gap-comment-runs-collapsed]
+[fixture:
+timeline/titles-and-sections/title-directives-gap-semicolon-runs-collapsed]
+[fixture:
+timeline/titles-and-sections/title-directives-gap-end-of-text-runs-collapsed]
+[fixture:
+timeline/titles-and-sections/title-directives-gap-inner-directive-runs-kept]
+[fixture: timeline/titles-and-sections/title-directives-gap-without-text-kept]
+[fixture: gantt/titles-and-sections/title-leading-directive-unclosed-kept]
+[fixture: gantt/titles-and-sections/title-directives-gap-line-break-kept]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-end-of-text-comment-runs-kept]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
+[fixture: journey/titles-and-sections/title-directives-gap-line-break-kept]
+[fixture:
+journey/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
+[fixture: timeline/titles-and-sections/title-directives-gap-empty-line-kept]
+[fixture: timeline/titles-and-sections/title-directives-gap-line-break-kept]
+[fixture:
+timeline/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
+[fixture: gantt/titles-and-sections/title-directive-lines-end-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directive-lines-end-blanks-kept]
+[fixture: journey/titles-and-sections/title-directive-lines-end-runs-collapsed]
+[fixture: journey/titles-and-sections/title-directive-lines-end-blanks-kept]
+[fixture: timeline/titles-and-sections/title-directive-lines-end-runs-collapsed]
+[fixture: timeline/titles-and-sections/title-directive-lines-end-blanks-kept]
+[test: gantt title: a no-break space between two directives] [test: gantt title:
+U+2028 in the text after directives that whitespace separates] [test: gantt
+title: U+2029 in the text after directives that whitespace separates]
+
+The spaces and tabs between the keyword and the text beyond the one space that
+the keyword takes are left out where directives end the text and whitespace
+follows the last of them, as they are where none does: `title   A b  %%{z}%%  `
+is printed `title A b %%{z}%%`, in Gantt, user journey, timeline, sequence,
+Venn, and C4 diagrams, and in the `accDescription` of a C4 diagram. Where
+directives precede the text, all the spaces and tabs between the last of them
+and the text are left out in Gantt, user journey, timeline, and sequence
+diagrams: `title %%{x}%%   A b  %%{z}%%  ` is printed
+`title %%{x}%%A b %%{z}%%`. A Venn diagram and a C4 diagram keep a title that
+directives precede as written, and the `accDescription` of a C4 diagram too:
+`title %%{x}%%   A b  %%{z}%%  ` is printed as it is. In a usecase diagram, the
+directives at the end of an `accTitle:` line are printed the same where
+directives precede the text: `accTitle: %%{x}%% T  %%{y}%%  ` is printed
+`accTitle: %%{x}%% T %%{y}%%`.
+
+[fixture:
+gantt/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+gantt/titles-and-sections/title-two-directives-padding-trailing-directive-blanks-dropped]
+[fixture:
+gantt/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture:
+journey/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+journey/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture:
+timeline/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+timeline/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture: sequence/title/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+sequence/title/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture: venn/title/title-padding-trailing-directive-blanks-dropped] [fixture:
+venn/title/title-directive-padding-trailing-directive-blanks-kept] [fixture:
+c4/title-and-accdescription/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+c4/title-and-accdescription/title-directive-padding-trailing-directive-blanks-kept]
+[fixture:
+c4/title-and-accdescription/description-padding-trailing-directive-blanks-dropped]
+[fixture:
+c4/title-and-accdescription/description-directive-padding-trailing-directive-blanks-kept]
+[fixture:
+usecase/direction-and-accessibility/acctitle-directive-before-text-trailing-directive-blanks-dropped]
+[fixture:
+usecase/direction-and-accessibility/acctitle-directives-before-text-trailing-directive-blanks-dropped]
 
 The tests compare the Db of the printed text with the whitespace at the ends of
 its texts restored from the Db of the written text
