@@ -123,10 +123,7 @@ railroad-peg-beta%%{!heading}%%
 別行の構造的な閉じ括弧と終端は文の位置に揃えます。
 入れ子の IR 呼出しは[長い行](#長い行)の規則で引数の段を使います。
 その他の値の継続列、隠れた形の内部と保持前置部分は元の列を保ちます。
-隠れた形の通常の開始記号は、
-[info](./info.ja.md#hidden-yaml) と [packet](./packet.ja.md#hidden-yaml)
-の図でも字下げでき、内部と閉じ記号の列を保つので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が同じ列を与えます。
+
 セミコロンの保護区間の最初の行は、他の平坦な図種と同じく本文の1段に揃えます。
 2行目以降は保護された本文に属するため、書かれた列を保ちます。
 この配置は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
@@ -712,10 +709,6 @@ EBNF の special sequence は原文範囲全体を保ちます。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 外端の空白だけを除いて Db が同じでも、原文の保持により再解釈を避けます。
-EBNF の special sequence の内側では、空白とタブの連なりを空白 1 つにする形を、
-[packet](./packet.ja.md#label-content) のラベルと [radar](./radar.ja.md#quotes)
-の文字列も印字するので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が同じ形を与えます。
 
 [fixture: railroad/special-sequences/ebnf-content]
 
@@ -740,20 +733,11 @@ railroad-ebnf-beta
 規則名は空白を含まないため、
 文字列にその連なりを含む nonterminal はどの規則も参照せず、
 その文字列はほかの文字列と同じに印字します。
-[packet](./packet.ja.md#label-content) のラベルと、
-[radar](./radar.ja.md#quotes) の文字列も、
-中の空白とタブの連なりを空白 1 つにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-nonterminal の文字列にもこの形を与えます。
+
 mermaid.js は IR の空の引用引数を値として読み、空呼出しを拒否するので、
 空文字列を保ちます。
 文字列内の隠れた形やコメントに見える文字は、Db の値に属するので、
 除くと Db が変わります。
-[packet](./packet.ja.md#label-content) のラベルと [radar](./radar.ja.md#quotes)
-の文字列は、空白とタブだけの値も含め、
-中の空白とタブの連なりを空白 1 つにするので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が railroad
-の文字列にも同じ形を与えます。
 
 [corpus fixture: railroad/ir-db-empty-strings]
 [corpus fixture: railroad/ir-error-empty-call]
@@ -1130,16 +1114,13 @@ last";
 共有の共通行配置を使います。
 非空値の通常の外端の空白だけを除いて `title value` にし、
 `null` と空白だけの値は裸の `title` にします。
-[info](./info.ja.md#title) と [packet](./packet.ja.md#title) の図も、
-値の外端の空白を除き、非空値の前に空白 1 つを置き、空値は裸の `title` にします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この題の形を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`title` と空でない値の間に空白 1 つを与え（Prettier は `return  x` を
+`return x;` と印字する）、行末の空白とタブを除きます。
+そのため、空の値の title は `title` だけになります。
 引用符に見える内容とエスケープは保ち、
 値の中の空白とタブの連なりは空白 1 つにして印字します。
-[info](./info.ja.md#title) と [packet](./packet.ja.md#title) の図も、
-題の値の中の空白とタブの連なりを、空白 1 つにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-題の値の同じ隙間にこの形を与えます。
+
 次の物理行から値を取りません。
 `title`、改行、`r=terminal("x");` を `title r=terminal("x");` とつなぐと、
 規則 `r` が題のテキストになり、固定した版の Db と、
@@ -1162,12 +1143,7 @@ mermaid.js が固定した版で作る Db と、対象にする版のすべて�
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[info](./info.ja.md#title) と [packet](./packet.ja.md#title) の図でも、
-例外に当たらない題の末尾のディレクティブは、
-前に空白かタブがあれば空白 1 つを置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
-最後のディレクティブの後の空白とタブは行末にあるので、
+題の最後のディレクティブの後の空白とタブは行末にあるので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が除きます。
 
 [fixture: railroad/title/ir-rule-on-next-line]
@@ -1292,13 +1268,7 @@ railroad-peg-beta
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[info](./info.ja.md#accessibility-lines) と
-[packet](./packet.ja.md#accessibility-lines) の図でも、
-例外に当たらない accessibility の値の末尾のディレクティブは、
-前に空白かタブがあれば空白 1 つを置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
-最後のディレクティブの後の空白とタブは行末にあるので、
+accessibility の値の最後のディレクティブの後の空白とタブは行末にあるので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が除きます。
 
 [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]
@@ -1785,11 +1755,7 @@ railroad-peg-beta
 規則、呼び出し、リスト構成要素、group、後置演算子、例外、repeat と基本式、
 先読み条件と適用先の隙間を保ちます。
 本文の開始記号は字下げできますが、内部と閉じ記号は元の列を保ちます。
-本文の隠れた形は、
-[info](./info.ja.md#hidden-yaml) と [packet](./packet.ja.md#hidden-yaml)
-の図でも、開始記号を字下げでき、内部と閉じ記号の列を保ちます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
+
 図固有の形の YAML や JSON を整形せず、注釈類を除いた値も使いません。
 三つの囲み記号が一つの形になる場合と、
 失敗したディレクティブ開始記号がパーセントコメントになる場合も保ちます。

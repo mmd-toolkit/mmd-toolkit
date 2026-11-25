@@ -115,14 +115,10 @@ grammatical meaning. useTabs uses one tab, even at width zero. Structural
 continuation lines and standalone trivia inside a rule use two steps; a separate
 structural closer or terminator aligns with the statement. Nested IR calls use
 their argument levels as described in [Long lines](#long-lines). Other written
-value columns, hidden interiors and retained prefixes keep their own columns. In
-[info](./info.md#hidden-yaml) and [packet](./packet.md#hidden-yaml) diagrams,
-ordinary hidden-form openers may indent while the interior and closing-delimiter
-columns stay as written;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same columns for railroad hidden forms. Semicolon-protected segments start
-at one body step, like other flat diagrams; their later lines keep their written
-columns because these belong to the protected text.
+value columns, hidden interiors and retained prefixes keep their own columns.
+Semicolon-protected segments start at one body step, like other flat diagrams;
+their later lines keep their written columns because these belong to the
+protected text.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 this layout, as [wardley](./wardley.md#indentation) aligns the first line of a
 protected segment with the body and keeps its later lines in their written
@@ -684,11 +680,7 @@ marks, exterior whitespace, quotes, backslashes and physical continuation
 columns, with a run of spaces and tabs inside the text printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Trimming just its edges may keep the Db, but preserving the authored text avoids
-a second lexical interpretation. An interior run of spaces and tabs prints as
-one space in [packet](./packet.md#label-content) labels and
-[radar](./radar.md#quotes) strings;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-that form inside EBNF special sequences.
+a second lexical interpretation.
 
 [fixture: railroad/special-sequences/ebnf-content]
 
@@ -710,19 +702,10 @@ Keep StringLiteral source spans unchanged: escapes, empty strings, HTML,
 entities and hidden/comment-looking text, with a run of spaces and tabs inside a
 string printed as one space, so a string of spaces and tabs only becomes one
 space. The name of a rule holds no whitespace, so a nonterminal whose string
-holds a run refers to no rule, and the string is printed like any other. Labels
-in [packet](./packet.md#label-content) diagrams and strings in
-[radar](./radar.md#quotes) diagrams print an interior run of spaces and tabs as
-one space;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same form to the run inside a nonterminal string. An empty quoted IR
-argument is a value and mermaid.js rejects an empty call, so the empty string
-stays. Characters that look like hidden forms or comments belong to string
-values in the Db, so removing them changes the Db. Labels in
-[packet](./packet.md#label-content) and strings in [radar](./radar.md#quotes)
-print each run of spaces and tabs as one space, including a whitespace-only
-value; [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-gives the same form for railroad strings.
+holds a run refers to no rule, and the string is printed like any other. An
+empty quoted IR argument is a value and mermaid.js rejects an empty call, so the
+empty string stays. Characters that look like hidden forms or comments belong to
+string values in the Db, so removing them changes the Db.
 
 [corpus fixture: railroad/ir-db-empty-strings] [corpus fixture:
 railroad/ir-error-empty-call] [corpus fixture:
@@ -1090,19 +1073,14 @@ last";
 
 Use the shared common-line layout: trim ordinary exterior whitespace around a
 nonempty value and print `title value`; null or whitespace-only values print
-bare `title`. Titles in [info](./info.md#title) and [packet](./packet.md#title)
-diagrams trim exterior value whitespace, put one space before a nonempty value,
-and print bare `title` for an empty value;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-these title forms. Keep quote-looking content and escape spelling, and print a
-run of spaces and tabs inside the value as one space. Titles in
-[info](./info.md#title) and [packet](./packet.md#title) diagrams print an
-interior run of spaces and tabs as one space, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-one space for the same gap inside a title value. Do not read a value from the
-next physical line: `title`, a line break, and `r=terminal("x");` joined as
-`title r=terminal("x");` make the rule `r` the text of the title: the Db of the
-pinned version and the figure of every version that counts change (see
+bare `title`. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+one space between `title` and a nonempty value, as Prettier prints `return  x`
+as `return x;`, and drops the spaces and tabs at the end of the line, so an
+empty value prints bare `title`. Keep quote-looking content and escape spelling,
+and print a run of spaces and tabs inside the value as one space. Do not read a
+value from the next physical line: `title`, a line break, and `r=terminal("x");`
+joined as `title r=terminal("x");` make the rule `r` the text of the title: the
+Db of the pinned version and the figure of every version that counts change (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A bare title prefix followed by a rule becomes two statements, keeping the rule
 out of the title. The two stand on lines of their own as every statement does
@@ -1118,12 +1096,9 @@ line holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-Titles in [info](./info.md#title) and [packet](./packet.md#title) diagrams put
-one space before each eligible trailing directive that has a separated gap;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same layout. The spaces and tabs after the last directive stand at the end
-of the line, where [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-removes them.
+The spaces and tabs after the last directive of a title stand at the end of the
+line, where [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes
+them.
 
 [fixture: railroad/title/ir-rule-on-next-line]
 
@@ -1242,13 +1217,9 @@ break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-Accessibility values in [info](./info.md#accessibility-lines) and
-[packet](./packet.md#accessibility-lines) diagrams put one space before each
-eligible trailing directive that has a separated gap;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same layout. The spaces and tabs after the last directive stand at the end
-of the line, where [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-removes them.
+The spaces and tabs after the last directive of an accessibility value stand at
+the end of the line, where
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them.
 
 [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]
 
@@ -1712,14 +1683,10 @@ railroad-peg-beta
 Print each RailroadIgnoredText once, from its whole range at its AST owner.
 Preserve rule gaps, all call and list-member gaps, groups, postfixes,
 exceptions, repeat-primary gaps and predicate operands. Body openers may indent;
-interiors and closers keep their columns. For a hidden body form,
-[info](./info.md#hidden-yaml) and [packet](./packet.md#hidden-yaml) diagrams
-allow the opener to indent while keeping the interior and closer columns;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same layout. Do not YAML/JSON-format native forms or print their
-trivia-stripped value field. Three fences can belong to one hidden form; a
-failed directive opener can remain a percent comment. Preserve these readings to
-avoid changing acceptance or moving opaque text.
+interiors and closers keep their columns. Do not YAML/JSON-format native forms
+or print their trivia-stripped value field. Three fences can belong to one
+hidden form; a failed directive opener can remain a percent comment. Preserve
+these readings to avoid changing acceptance or moving opaque text.
 
 Inside ordinary IR calls, retain each native hidden form as one opaque item,
 including any global directive inside it. Its contents and interior columns
