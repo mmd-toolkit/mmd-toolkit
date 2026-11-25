@@ -1618,7 +1618,6 @@ stateDiagram-v2
 
 ### ディレクティブ
 
-flowchart と同じです。
 行に単独のディレクティブは周りの文と同じ段に置きます。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
@@ -1787,10 +1786,9 @@ stateDiagram-v2
 
 ### 複数行の値
 
-[flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
 `accDescr { ... }` の本文行は文より 1 段深くそろえ、
 独立した `}` は文と同じ段に置きます。
-Mermaid が説明からこの字下げを除くためです。
+mermaid.js は説明から行送り後の字下げを除きます。
 
 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/accdescr-block-single-line]
@@ -1814,11 +1812,6 @@ agentflow、usecase に合わせます。
 
 コメントやディレクティブがあるブロックの内容と改行は保ち、
 閉じられていないブロックは開いたままにします。
-規則 1 は、ブロックの中の行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[xychart](./xychart.ja.md#空の説明ブロック) と
-[quadrant](./quadrant.ja.md#空の説明ブロック) も、
-ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 
 [fixture: multi-line-values/empty-description-trivia-kept]
 [corpus fixture: state/lex-acc-descr-block-unclosed]

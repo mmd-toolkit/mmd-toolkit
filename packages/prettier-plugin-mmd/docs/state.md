@@ -1546,10 +1546,10 @@ stateDiagram-v2
 
 ### Directives
 
-As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive within a printed line is placed as in a
-flowchart: the gap is printed as without the directive, and the directive stands
-after its space and touches the unit that follows it.
+A directive on a line of its own stands at the level of the statements around
+it, and a directive within a printed line is placed as in a flowchart: the gap
+is printed as without the directive, and the directive stands after its space
+and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-statement] [fixture: directives/whitespace-on-each-side]
@@ -1709,10 +1709,9 @@ stateDiagram-v2
 
 ### Multi-line values
 
-As in [flowchart's top-level descriptions](./flowchart.md#multi-line-values),
-align the lines of an `accDescr { ... }` body one step inside its statement,
-with a separate `}` at the statement's level. Mermaid discards this indentation
-from the description.
+Align the lines of an `accDescr { ... }` body one step inside its statement,
+with a separate `}` at the statement's level. mermaid.js discards the
+indentation after a line feed from the description.
 
 [fixture: multi-line-values/kept] [fixture:
 multi-line-values/accdescr-block-single-line] [fixture:
@@ -1732,11 +1731,7 @@ space before it. A prior description stays in the Db.
 revisions: state empty-description-nbsp]
 
 Blocks with comments or directives keep their contents and line breaks, and
-unclosed blocks stay open. Rule 1 names no mark for a line inside a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
-[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block with a directive or comment line.
+unclosed blocks stay open.
 
 [fixture: multi-line-values/empty-description-trivia-kept] [corpus fixture:
 state/lex-acc-descr-block-unclosed]
