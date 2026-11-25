@@ -1,5 +1,14 @@
 # @mmd-toolkit/parser
 
+## 0.4.1
+
+### Patch Changes
+
+- [#250](https://github.com/mmd-toolkit/mmd-toolkit/pull/250) [`f6973e7`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f6973e7f135fa1daceff2809c0c90648ae287912) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix `parse()` stopping with an internal error on an `agentflow-beta` label that
+  holds only whitespace and a comment, such as `A[ %% c` followed by a line `]`.
+- Updated dependencies:
+  - [@mmd-toolkit/ast@0.4.1](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fast%400.4.1)
+
 ## 0.4.0
 
 ### Minor Changes

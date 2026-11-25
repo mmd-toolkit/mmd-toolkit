@@ -331,9 +331,9 @@ timeline
 ### Periods and events
 
 A period and its events are printed as written, with the whitespace between
-their texts and their colons, except for the whitespace at the end of the last
-event of a line and for a space that is added before a colon: mermaid.js keeps
-both in the Db, but draws the same text without them (see
+their texts and their colons, except for the spaces and tabs at the end of the
+last event of a line and for a space that is added before a colon: mermaid.js
+keeps both in the Db, but draws the same text without them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 The Db keeps the whitespace at the end of a period, which is the whitespace
 before its colon, and the whitespace at both ends of an event beyond the one
@@ -354,9 +354,13 @@ with the text `: x`. A directive between the text and the colon keeps the gap as
 written (see [Directives](#directives)). An event that a line break separates
 from the next colon ends its line too: in `2020 : e1  ` followed by a line
 `: e2`, the whitespace after `e1` is left out. The directives that end such an
-event are printed with one space before each that has whitespace before it, and
-the whitespace after the last one is left out: `2020 : e1   %%{x}%%  ` is
-printed `2020 : e1 %%{x}%%` (see
+event are printed with one space before each that has spaces or tabs before it,
+and the spaces and tabs after the last one are left out: `2020 : e1   %%{x}%%  `
+is printed `2020 : e1 %%{x}%%`, unless a directive of the line holds a U+2028 or
+a U+2029, which keeps the run of spaces before the directive while the spaces
+after the last directive are still left out (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: periods-and-events/event-trailing-directive-blanks-dropped] [fixture:
@@ -679,8 +683,8 @@ timeline
 ### Titles and sections
 
 A `title` is printed with one space after the keyword, as in a user journey, and
-the value without the whitespace at its start or at its end, which the Db keeps
-and which is drawn without (see
+the value without the spaces and tabs at its start or at its end, which the Db
+keeps and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 `title   History  ` is printed `title History`, and a run of spaces and tabs
 inside it is printed as one space (see
@@ -1664,8 +1668,8 @@ between the header and a direction]
 
 At the end of a title and at the end of the last event of a line, U+2028 and
 U+2029 are characters of the text and no spaces or tabs: the spaces after one
-are left out with the other whitespace at the end of the text, and the spaces
-before it stay.
+are left out with the other spaces and tabs at the end of the text, and the
+spaces before it stay.
 
 [test: U+2029 and spaces at the end of a timeline title] [test: U+2028 and
 spaces at the end of the last event of a line]
