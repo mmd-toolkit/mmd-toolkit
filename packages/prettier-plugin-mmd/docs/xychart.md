@@ -256,7 +256,7 @@ reads it after whitespace of any kind and also after whitespace and a line
 break; the line break is whitespace to the lexer, so the orientation goes to the
 header's line, and no whitespace is left at the end of a line that nobody sees
 (see [Multi-line statements](#multi-line-statements)).
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between the header and its orientation, as between a keyword and what it takes
 (Prettier prints `return  x` as `return x;`). The orientation is printed as
 written, in the case written: only `horizontal`, in lower case, makes the chart
