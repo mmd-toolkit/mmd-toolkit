@@ -1318,10 +1318,10 @@ Prettier が `x = { }` を `x = {}`
 すでに空の内側は空のままです。
 通常のキーワードと開き括弧の間には空白 1 つを置き、
 `accDescr{  }` は `accDescr {}` にします。
-規則 1 は、キーワードと開き括弧の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[class](./class.ja.md#空の説明ブロック) と
-[journey](./journey.ja.md#空の説明ブロック) も、ここを空白 1 個で印字します。
+Prettier は、
+ブロックを開く `{` の前に空白を 1 つ置いて印字する（`class A{}` を `class A {}`
+と印字する）ので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの空白を与えます。
 
 [fixture: gantt/empty-description-blocks/touching-comment-body]
 [fixture: empty-description-blocks/empty-whitespace-interiors]

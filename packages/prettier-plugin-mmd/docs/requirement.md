@@ -1083,11 +1083,9 @@ and Unicode whitespace, prints `{}`, as Prettier prints `x = { }` as `x = {}`
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)): there is no text
 for interior whitespace to surround. An already empty interior stays empty. The
 keyword and opening brace have one space between them: `accDescr{  }` becomes
-`accDescr {}`. Rule 1 names no mark between a keyword and its opening brace, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [gantt](./gantt.md#empty-description-blocks),
-[class](./class.md#empty-description-blocks), and
-[journey](./journey.md#empty-description-blocks) print one space there.
+`accDescr {}`. Prettier prints one space before the `{` that opens a block
+(`class A{}` is printed `class A {}`), so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that space.
 
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test:
 requirement Unicode and tab interiors] [test: requirement body Unicode and tab

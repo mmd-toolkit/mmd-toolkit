@@ -51,20 +51,24 @@ same kind of mark in the languages it formats. The table gives what Prettier
 prints for each kind, and a text that the formatter prints in the same way. The
 texts of Prettier are JavaScript where no language is named.
 
-| Mark                                     | Prettier                                               | Whitespace                   | Written                                     | Printed                       |
-| ---------------------------------------- | ------------------------------------------------------ | ---------------------------- | ------------------------------------------- | ----------------------------- |
-| A comma                                  | `f(a,b)` is printed `f(a, b);`                         | none before, one space after | `class A,B c` in an ER diagram              | `class A, B c`                |
-| A `=` that gives a name its value        | `function f(a=1) {}` is printed `function f(a = 1) {}` | one space on each side       | `Person(a, "A", $link="x")` in a C4 diagram | `Person(a, "A", $link = "x")` |
-| The colon of a key                       | `x = {a : 1}` is printed `x = { a: 1 };`               | none before, one space after | `"Dogs" : 386` in a pie chart               | `"Dogs": 386`                 |
-| A colon between two things               | `y = c ? d:e` is printed `y = c ? d : e;`              | one space on each side       | `s1 --> s2: go` in a state diagram          | `s1 --> s2 : go`              |
-| A colon inside a name                    | the selector `a:hover` of CSS stays `a:hover`          | none on either side          | `a : R -- L : b` in an architecture diagram | `a:R -- L:b`                  |
-| Another mark between two things          | `x = a+b` is printed `x = a + b;`                      | one space on each side       | `A-->B` in a flowchart                      | `A --> B`                     |
-| Parentheses and square brackets          | `f( a )` is printed `f(a);`                            | none inside                  | `A( text )` in a flowchart                  | `A(text)`                     |
-| A `;` that ends a statement              | `a ;` is printed `a;`                                  | none before                  | `r="a" ;` in a railroad diagram             | `r = "a";`                    |
-| The `(` of a call                        | `f (a)` is printed `f(a);`                             | none before                  | `terminal ("x")` in a railroad diagram      | `terminal("x")`               |
-| Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                 | one space inside             | `curve c{m: 60, s: 70}` in a radar chart    | `curve c{ m: 60, s: 70 }`     |
-| Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                | none inside                  | `curve d{ 85, 90 }` in a radar chart        | `curve d{85, 90}`             |
-| Braces that hold nothing                 | `x = { }` is printed `x = {};`                         | none inside                  | `accDescr { }` in a Gantt chart             | `accDescr {}`                 |
+| Mark                                     | Prettier                                               | Whitespace                   | Written                                                 | Printed                       |
+| ---------------------------------------- | ------------------------------------------------------ | ---------------------------- | ------------------------------------------------------- | ----------------------------- |
+| A comma                                  | `f(a,b)` is printed `f(a, b);`                         | none before, one space after | `class A,B c` in an ER diagram                          | `class A, B c`                |
+| A `=` that gives a name its value        | `function f(a=1) {}` is printed `function f(a = 1) {}` | one space on each side       | `Person(a, "A", $link="x")` in a C4 diagram             | `Person(a, "A", $link = "x")` |
+| The colon of a key                       | `x = {a : 1}` is printed `x = { a: 1 };`               | none before, one space after | `"Dogs" : 386` in a pie chart                           | `"Dogs": 386`                 |
+| A colon between two things               | `y = c ? d:e` is printed `y = c ? d : e;`              | one space on each side       | `s1 --> s2: go` in a state diagram                      | `s1 --> s2 : go`              |
+| A colon inside a name                    | the selector `a:hover` of CSS stays `a:hover`          | none on either side          | `a : R -- L : b` in an architecture diagram             | `a:R -- L:b`                  |
+| Another mark between two things          | `x = a+b` is printed `x = a + b;`                      | one space on each side       | `A-->B` in a flowchart                                  | `A --> B`                     |
+| A keyword between two things             | `x = a  in   b;` is printed `x = a in b;`              | one space on each side       | `service a(server)[A]in   g` in an architecture diagram | `service a(server)[A] in g`   |
+| The dot of a member access               | `x = a . b;` is printed `x = a.b;`                     | none on either side          | `tf 01 evt Shop . Buy` in an event modeling diagram     | `tf 01 evt Shop.Buy`          |
+| Parentheses and square brackets          | `f( a )` is printed `f(a);`                            | none inside                  | `A( text )` in a flowchart                              | `A(text)`                     |
+| A `;` that ends a statement              | `a ;` is printed `a;`                                  | none before                  | `r="a" ;` in a railroad diagram                         | `r = "a";`                    |
+| The `(` of a call                        | `f (a)` is printed `f(a);`                             | none before                  | `terminal ("x")` in a railroad diagram                  | `terminal("x")`               |
+| The `[` of an index                      | `x [ 0 ];` is printed `x[0];`                          | none before                  | `service a (server) [A]` in an architecture diagram     | `service a(server)[A]`        |
+| The `{` that opens a block               | `class A{}` is printed `class A {}`                    | one space before             | `A   {` in an ER diagram                                | `A {`                         |
+| Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                 | one space inside             | `curve c{m: 60, s: 70}` in a radar chart                | `curve c{ m: 60, s: 70 }`     |
+| Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                | none inside                  | `curve d{ 85, 90 }` in a radar chart                    | `curve d{85, 90}`             |
+| Braces that hold nothing                 | `x = { }` is printed `x = {};`                         | none inside                  | `accDescr { }` in a Gantt chart                         | `accDescr {}`                 |
 
 The first two kinds of braces are the object and the array of Prettier, and the
 third is either of them with nothing in it.
