@@ -33,7 +33,13 @@ composite の中の文は `block:` の行より 1 段深く置き、
 mermaid.js の文書もそう書き、
 ほかの図もブロックを入れ子にします（flowchart
 の[字下げ](./flowchart.ja.md#字下げ)を参照）。
-ヘッダーと、その前のコメント行は 1 列目に置きます。
+ヘッダーと、その前のコメント行は、前に空白が書かれていても 1 列目に置きます。
+Prettier にない種類の隙間は、ほかの図種が印字する形にします。
+これが[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
+どの図種も、ヘッダーとその前のコメント行を 1 列目に印字します。
+[Gantt](./gantt.ja.md#インデント)のインデント、
+[ユーザージャーニー](./journey.ja.md#インデント)のインデント、
+[ER](./er.ja.md#コメント)のコメントがそう書いています。
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/composite-body-one-level-deeper-end-at-the-level-of-block]
@@ -79,9 +85,11 @@ block-beta
 composite は 3 種類の行でできています。
 `block:` とそのノードの行、中の文の行、`end` の行です。
 `block` と `block-beta` は書かれたままに印字します。
+理由は[ヘッダー](#ヘッダー)にあります。
 キーワード `block:` はコロンを含み、そのノードとの間は空白 1 つにします。
 `block:G` は `block: G` に、`block:G:2` は `block: G:2` に印字します。
 幅のコロンは、ブロック図のほかの箇所と同じくノードに接します。
+その理由は[形](#形)にあります。
 キーワードとその後ろのものの間の隙間は、
 どの図種でも同じ形にします（`title Pets`）。
 詳しくは
@@ -179,6 +187,12 @@ mermaid.js の文書もそう書いています（`a b c`、`a["A label"] b:2 c:
 `Start(("Start")) space:2`）。
 ノードを 1 行ずつに分けると、その行が見えなくなり、
 列の数を `columns` の文から数えなおすことになります。
+[印字する形の決め方](./printed-form.ja.md)の規則は、この形を与えません。
+規則 2 が与えるのはほかの図種の形、つまり文を自分の行に置く形ですが、
+それでは行が見えなくなります。
+リリース済みの形は、
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+のとおり、決めるまでそのままです。
 
 [fixture: rows/documentation-row-with-widths] [fixture: rows/space-in-a-row]
 
@@ -192,6 +206,9 @@ mermaid.js の文書もそう書いています（`a b c`、`a["A label"] b:2 c:
 `columns 3` と、行 `a b c` になります）。
 連なりの中の 2 つの文の間に、印字は改行を足さず、取りもしないので、
 もう一度整形しても、同じ行が見つかります。
+何行にもわたる文は例外で、[複数行の文](#複数行の文)に書いた理由で 1 行に印字し、
+その最後の行にある後ろの文はそれと同じ行に残します（`A -->`、改行、
+`B C` は `A --> B C` になります）。
 
 [fixture: rows/rows-kept] [fixture: rows/line-break-between-statements-kept]
 [fixture: rows/edges-in-a-row] [fixture: rows/touching-statements-apart]
@@ -278,10 +295,17 @@ block-beta
 ### 空行
 
 連続する空行は 1 つの空行にします。
-ヘッダーと最初の文の間にも、テキストの最後にも、空行は置きません。
+ヘッダーの前にも、ヘッダーと最初の文の間にも、テキストの最後にも、
+空行は置きません。
 空行は、Db に入らない書き手の選択で、
 1 つの空行がそれを最小の手間で示します（[空行](./flowchart.ja.md#空行)を参照）。
 Prettier がコードでそうするのと同じです。
+図の文の間の空行は、Prettier が図に持たない種類の隙間なので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[Gantt](./gantt.ja.md#空行)、[ユーザージャーニー](./journey.ja.md#空行)、
+[sankey](./sankey.ja.md#空行)は、連続する空行を 1 つにし、
+本体の初めと終わりの空行を取ります。
+どの図種も、ヘッダーの前の空行を取ります。
 
 [fixture: blank-lines/runs-become-one]
 [fixture: blank-lines/none-after-the-header]
@@ -323,7 +347,8 @@ mermaid.js 12.3.0 はどちらも同じ図種として読みますが、
 残す版は
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 の表にあります。
-前の空白は落とし、同じ行の後ろの文は自分の行に移します（[行](#行)を参照）。
+前の空白は落とし（[インデント](#インデント)を参照）、
+同じ行の後ろの文は自分の行に移します（[行](#行)を参照）。
 
 [fixture: header/block-beta-kept] [fixture: header/block-kept]
 [fixture: header/statement-after-the-header-on-a-line-of-its-own]
@@ -374,6 +399,8 @@ block-beta
 `columns` の後には、その数か `auto` を、空白 1 つで続けます。
 間に書かれた空白（タブ、改行）はどれも同じです。
 mermaid.js はそこのどの空白も同じに読むので、形は 1 行になります。
+キーワードとその後ろのものの間の隙間は、
+どの図種でも同じ形です（[composite](#composite)を参照）。
 `space:2` は `:` を接して印字します。
 対象にする版の mermaid.js はすべて、
 `space :2` と `space: 2` を拒否するからです。
@@ -471,6 +498,9 @@ mermaid.js は向きの後の空白と、
 です）。
 `,` の後の空白はどの向きにも入らないので、空白 1 つにします。
 `(right,down)` と `(right,   down)` は `(right, down)` になります。
+規則 1 も、コンマの後ろに空白 1 つを与えます。
+詳しくは [記号の横の空白](./printed-form.ja.md#1-記号の横の空白)
+を参照してください。
 行の規則が読むかもしれない行の `:` と `#` の間では、
 隙間は空白があるかどうかを保つので、空白を足しません。
 `a<["style:"]>(x,down)  b["#y;"]` では、
@@ -483,8 +513,8 @@ mermaid.js は向きの後の空白と、
 
 [fixture: shapes/block-arrow-comma-on-kept-line]
 
-そこにあるコメント行やディレクティブは行ごと残り、
-U+2028 と U+2029 はそのまま残します。
+そこにあるコメント行やディレクティブは行ごと残り、U+2028 と U+2029 は、
+どの隙間でも同じく、そのまま残します（[行区切り文字](#行区切り文字)を参照）。
 規則 1 は、コメントやディレクティブの隣の改行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
@@ -511,6 +541,13 @@ U+2028 と U+2029 はそのまま残します。
 `,` の後のディレクティブの後に改行があるときは、その前の空白は書かれたままで、
 次の行は 1 段深く置きます。
 `(right,  %%{x}%%` と改行はそのままです。
+ディレクティブの前の空白やタブの連なりもそのままですが、規則 2 は与えません。
+[flowchart](./flowchart.ja.md#ディレクティブ)、
+[Gantt](./gantt.ja.md#ディレクティブ)、
+[ユーザージャーニー](./journey.ja.md#ディレクティブ)は、
+行末のディレクティブの前の連なりを空白 1 つで印字します。
+そのためブロック図は、この形を規則 2 に反して印字しており、
+規則による修正を待っています。
 
 [fixture: shapes/block-arrow-comma-space]
 [fixture: shapes/block-arrow-comma-comment-line]
@@ -706,6 +743,8 @@ block-beta
 空白 1 つを置きます。
 キーワードの後と最初のスタイルの前の空白は Db に入らないので、
 空白 1 つにします。
+キーワードとその後ろのものの間の隙間は、
+どの図種でも同じ形です（[composite](#composite)を参照）。
 `classDef` と `style` のスタイルは下の空白の規則に従い、
 `class` の値は書かれたまま印字しますが、
 クラス名の中の空白とタブの連なりは空白 1 つで印字します。
@@ -734,6 +773,14 @@ Db は変わりますが、対象にする版の mermaid.js のすべてが、�
 `classDef c fill:#f00 , color:white` は、
 `classDef c fill: #f00, color: white` になります。
 `style` 文のスタイルも、同じ形で印字します。
+規則 1 が両方を与えます。
+キーの `:` は、前に空白を置かず、
+後ろに空白を 1 つ置きます（CSS の `color: red`）。
+`,` も、前に空白を置かず、
+後ろに空白を 1 つ置きます（Prettier は `transition: opacity 0.3s ease, color 1s`
+と印字します）。
+詳しくは [どの種類のコロンか](./printed-form.ja.md#コロンがどの種類かの決め方)
+を参照してください。
 スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
 語と語の間に空白があるかどうかは、書かれたまま残します。
 文字列、コメント、`url(` の括弧の中の連続と、
@@ -761,6 +808,7 @@ Db は変わりますが、mermaid.js が描く図は同じです。
 バックスラッシュの後で `:` の前にある空白は、
 除くと `:` がエスケープされるので残します。
 その空白の後ろの空白は除きます。
+キーの `:` の前に空白は置かないからです（上の規則 1）。
 
 [fixture: styles/style-backslash-before-comma]
 [fixture: styles/style-colon-escaped-space-kept]
@@ -774,6 +822,9 @@ block arrow と group の形が、スタイルを書かれたまま `;` でつ�
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
 `style A stroke-width:3px\ ,stroke:#0f0` は、
 `style A stroke-width: 3px\ , stroke: #0f0` と印字します。
+連なりの最初の 1 文字はバックスラッシュがエスケープする文字で、
+残りは `,` の前か文末にあり、そこには空白を印字しません（規則 1 と、
+下の文末の規則）。
 
 [fixture: styles/style-backslash-space-kept]
 [fixture: styles/style-backslash-at-end-kept]
@@ -790,6 +841,8 @@ block arrow がそれを書かれたまま使うからです。
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
 `style K fill:#ff0,color:red` は、`style K fill: #ff0,color: red` と印字し、
 `style K color :red` は `style K color : red` と印字します。
+空白の連なりは、スタイルの語と語の間の連なりと同じく、
+空白 1 つになります（上を参照）。
 
 [fixture: styles/style-label-styles-kept]
 [test: block: a-color-before-a-semicolon-that-the-line-rule-ignores-stays-in-a-style-that-holds-two-semicolons]
@@ -859,13 +912,16 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 `class` 文のクラス名は語として読むので、
 中の空白とタブの連なりは空白 1 つにして印字します。
 `class A c   d` は `class A c d` と印字します。
+この節の初めに書いたとおり、Db は変わりますが、
+対象にする版の mermaid.js のすべてが、同じ図を描きます。
 
 [fixture: styles/class-name-with-a-comma-runs-collapsed]
 [fixture: styles/class-name-runs-collapsed]
 [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 
-`:` で始まるスタイルも、ほかのスタイルと同じく、`:` の後ろに空白を 1 つ置き、
+`:` で始まるスタイルも、ほかのスタイルと同じく、
+`:` の後ろに空白を 1 つ置き（上の規則 1）、
 語と語の間の連続は空白 1 つで印字します。
 `style A :  red   x` は `style A : red x` と印字します。
 
@@ -975,7 +1031,8 @@ block-beta
 
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
-文の前後の空行とコメント行は、通常の配置に従います。
+文の前後の空行とコメント行は、
+通常の配置に従います（[空行](#空行)と[コメント](#コメント)を参照）。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
 
@@ -1302,6 +1359,14 @@ block-beta
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
+規則 1 は、隙間にあるディレクティブの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#ディレクティブ)、
+[Gantt](./gantt.ja.md#ディレクティブ)、
+[ユーザージャーニー](./journey.ja.md#ディレクティブ)も同じに置き、
+理由は flowchart の規則にあります。
+mermaid.js はディレクティブを読む前に取り除くので、
+残る空白は両側の空白を合わせたものだからです。
 単独の行にある指令は、後ろの文と同じ段に置き、ヘッダーより前の指令は、
 コメント行と同じに 1 列目に置きます。
 
@@ -1515,6 +1580,8 @@ block-beta
 フロントマターは、ほかの図と同じに Prettier が YAML として整形します（詳しくは、
 [フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml) を参照）。
 正しい YAML でないフロントマターは、書かれたまま残します。
+Prettier も、Markdown ファイルの正しい YAML でないフロントマターを、
+そのまま残します。
 
 [fixture: frontmatter-yaml/formatted] [fixture: frontmatter-yaml/malformed-kept]
 [fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
@@ -1635,6 +1702,9 @@ U+2028 や U+2029 を残し、通常どおり整形します（`block:G%% x`、U
 コメント行にある 2 つ目の U+2028 や U+2029（`b`、U+2028、`%% c`、U+2028、
 `%% d`）は、次の改行までのコメントの一部なので、後ろに何が続いても（何もない、
 コメント、文のテキスト）書かれたまま残ります。
+コメントはどれも書かれたまま残します。
+詳しくは [形を決めるもの](./printed-form.ja.md#形を決めるもの)
+を参照してください。
 1 つ目は、上の規則のとおり落とすか残し、
 落とすときはコメント行を行として独立させます（`b`、改行、`%% c`、U+2028、
 `%% d` になります。`b %% c`、U+2028、`%% d`、U+2028、`%% d` は変わりません）。
@@ -1645,11 +1715,27 @@ U+2028 や U+2029 を残し、通常どおり整形します（`block:G%% x`、U
 コメント行の後に文がある `b`）両方が残ります。
 文が続くときの色は、文がコメント行のすぐ後の行にあれば書かれたまま残り、空行、
 空白だけの行、ディレクティブの行が文のすぐ前にあれば小文字になります。
-flowchart、class、state、ER は、ブロック図が落とすどの行でも、
+これらの行の色の大文字小文字は、色の規則が与えるとおりです。
+詳しくは [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)
+を参照してください。
+色は、単独の語であるとき（後ろに空白、`,`、
+文を終える `;` が続くとき）小文字になり、
+スタイルのテキストの文字が接するときは書かれたまま残ります。
+行の規則が残す `;` は、その文字です。
+下の文が、`,` の前や、行の規則が無視する `;` の前で色が残ると述べる所は、
+ブロック図が色の規則に反して印字しており、規則による修正を待っています。
+flowchart、class、state、ER は、`style` 文でブロック図が落とすどの行でも、
 その行を書かれたまま残し（ER は空白だけの行を拒否します）、
 その形は規則 2 が与えます。
 そのためブロック図は、それらの行を規則 2 に反して印字しており、
 規則による修正を待っています。
+ノードか辺の後に U+2028 か U+2029 とコメント行が続くときは、
+図種の間で形が一致しません。
+flowchart と class は、ブロック図と同じくコメント行を自分の行に置き、
+state と ER は、その行を書かれたまま残します（`b`、U+2028、`%% c`）。
+この形を与える決まりはなく、上の条件が述べるリリース済みの形は、
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+のとおり、決めるまでそのままです。
 そのような行で、その行でコンマが続く色（空白、タブ、
 フォームフィードを挟んでもです）と、行の規則が無視する `;` が続かない、
 最後の行の最後の色は、小文字にします。
