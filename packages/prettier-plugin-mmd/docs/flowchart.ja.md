@@ -1109,7 +1109,7 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 エスケープは、最大 6 桁の 16 進数字とその直後の空白かタブ 1 文字、
 または 16 進数字が続かないときの次の 1 文字です。
 閉じていないコメントの中の連続は、Db がそれを持つので、書かれたまま残します。
-12.3.0 の Db では、`fill:red/* a   b` と `fill:red/* a b` が違い、
+Db では、`fill:red/* a   b` と `fill:red/* a b` が違い、
 [スタイルの例外](./compatibility.ja.md#同じに描かれるスタイル)は、
 スタイルの語と語の間の連続だけを挙げています。
 エスケープの後ろの連続は、ほかと同じ連続です。
@@ -1971,8 +1971,7 @@ flowchartはコロンの後のコメントを読み飛ばして後の値を読�
 1 行の `accTitle: direction TB` につなぐと、Db が変わります。
 書かれたテキストでは、タイトルが `direction` で、頂点が `TB` です。
 つないだテキストでは、タイトルが `direction TB` になり、図も変わります。
-10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は、つないだテキストで別の図を描き、
-12.3.0 は Db の `accTitle` と `vertices` も変えます。
+対象にするどの版も、つないだテキストで別の図を描きます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -2789,12 +2788,6 @@ flowchart のトップレベルでは、
 そのコメント行は、文の中のコメント行と同じく、
 `accDescr` より 1 段深く置き（[コメント](#コメント)を参照）、
 `}` は `accDescr` と同じ段に置きます。
-[block](./block.ja.md#空の説明ブロック) の図と
-[XY チャート](./xychart.ja.md#空の説明ブロック) も、
-コメントだけの説明ブロックでは、コメントと改行を保ちます。
-コメント行は文より 1 段深く、閉じ波括弧は文と同じ段に置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を flowchart にも与えます。
 
 [fixture: multi-line-values/accdescr-block-comment-only-several-comments]
 [fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]

@@ -1069,7 +1069,7 @@ after a backslash, since CSS reads it as part of the value: the hexadecimal
 digits (at most six) and the one space or tab that follows them, or else the
 next character. A run inside a comment that is not closed stays as written
 because the Db holds it: `fill:red/* a   b` and `fill:red/* a b` differ in the
-Db of 12.3.0, and
+Db, and
 [the exception for styles](./compatibility.md#styles-that-are-drawn-the-same)
 names only the runs between the words of a style. The run after the escape is a
 run like any other: `font-family:a\   b` is printed `font-family: a\  b`,
@@ -1906,9 +1906,8 @@ Direction-text lines keep their written text, line breaks and indentation under
 priority. Joining `accTitle:direction`, a comment line, and `TB` into the one
 line `accTitle: direction TB` changes the Db: the written text has the title
 `direction` and a vertex `TB`, and the joined text has the title `direction TB`;
-the figures differ too: 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 draw another
-figure for the joined text, and 12.3.0 holds another `accTitle` and other
-`vertices` in the Db (see
+the figures differ too: every version that counts draws another figure for the
+joined text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: accessibility-lines/direction-text-kept] [fixture:
@@ -2687,13 +2686,7 @@ and empty blocks without trivia follow
 [Accessibility lines](#accessibility-lines). A block without text, whose lines
 are only comment lines, holds no value: its comment lines stand one level deeper
 than the `accDescr`, as comment lines inside a statement do (see
-[Comments](#comments)), and its `}` at the level of the `accDescr`. Comment-only
-description blocks in [block](./block.md#empty-description-blocks) diagrams and
-[XY charts](./xychart.md#empty-description-blocks) keep their comments and line
-breaks, with comments one level inside the statement and the closing brace at
-statement level;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-a flowchart the same layout.
+[Comments](#comments)), and its `}` at the level of the `accDescr`.
 
 [fixture: multi-line-values/accdescr-block-comment-only-several-comments]
 [fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
