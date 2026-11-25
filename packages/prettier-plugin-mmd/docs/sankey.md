@@ -385,8 +385,8 @@ c,d,2
 ### Header
 
 The header `sankey` or `sankey-beta` keeps the case in which it is written: Both
-are the same diagram type and give the same Db in mermaid.js 12.3.0, but some
-versions that count read `sankey-beta` only (see
+are the same diagram type and give the same Db in mermaid.js, but some versions
+that count read `sankey-beta` only (see
 [The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
 so the printer keeps the spelling that the author wrote. It stands at the first

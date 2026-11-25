@@ -20,7 +20,7 @@
 [architecture](./architecture.ja.md#header)、[cynefin](./cynefin.ja.md#header)、
 [radar](./radar.ja.md#header)、[treemap](./treemap.ja.md#header)も、
 見出しを 1 行に置き、普通の最初の文を次の行へ移して印字します。
-mermaid.js 12.3.0 は見出しの後のコロンを拒否するので、コロンは足しません。
+mermaid.js は見出しの後のコロンを拒否するので、コロンは足しません。
 読み飛ばす構文、保持前置部分、保護行には共有の境界規則を使います。
 空の本文には文を足しません。
 
@@ -259,7 +259,7 @@ mermaid.js の文書の例と同じく引用符で囲んで印字します。
 （[セミコロンのラベル](#セミコロンのラベル)を参照）。
 component の名前は Db の id で、pipeline は同じ id で component を探します。
 そのため、空白の連なりが違う名前は別の名前です。
-12.3.0 は書かれたとおりの空白を持つ id を保ち、
+Db は書かれたとおりの空白を持つ id を保ち、mermaid.js は、
 名前の空白がタブかスペースかで component と違う pipeline を拒否します。
 名前が空白の連なりだけ違う 2 つの component は、描かれる図も違います。
 詳しくは

@@ -219,10 +219,10 @@ xychart
 ### Header and orientation
 
 The header is printed as written: `xychart` or `xychart-beta`, in the case
-written. mermaid.js 12.3.0 reads them as the same diagram type, but some
-versions that count detect `xychart-beta` only, so the spelling is the author's,
-not the printer's (see
-[The names of a header](./compatibility.md#the-names-of-a-header) and
+written. mermaid.js reads them as the same diagram type, but some versions that
+count detect `xychart-beta` only, so the spelling is the author's, not the
+printer's (see [The names of a header](./compatibility.md#the-names-of-a-header)
+and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A header after the first stands on a line of its own, and none is dropped: a
 later header with an orientation changes the orientation, and one without

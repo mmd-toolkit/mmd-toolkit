@@ -815,11 +815,11 @@ so preserve that padding, the comment and its LF/continuation columns, including
 a closing bracket that belongs to the comment rather than closing the shape.
 Where only the closing bracket follows the line break of the comment, the label
 ends before the comment (the text of `A[x  %% c`, a line break, and `]` is `x`
-in the Db of 12.3.0, and it is also with another whitespace character of the
-specification in place of the spaces, a no-break space, U+3000, U+2003, U+2028,
-and U+2029 among them), so a run of whitespace before the comment, of one kind
-of character or of several, is printed as one space, a comment that touches
-stays touching, a bare label is printed in quotes (see
+in the Db, and it is also with another whitespace character of the specification
+in place of the spaces, a no-break space, U+3000, U+2003, U+2028, and U+2029
+among them), so a run of whitespace before the comment, of one kind of character
+or of several, is printed as one space, a comment that touches stays touching, a
+bare label is printed in quotes (see
 [Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)),
 and the closing bracket stands on a line of its own, one level deeper than the
 vertex. Where the comment holds a `;`, the label is not quoted, the characters

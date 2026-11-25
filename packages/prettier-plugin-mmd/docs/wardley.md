@@ -19,9 +19,9 @@ Where a statement stands is no place of rule 1, so
 decides, as [architecture](./architecture.md#header),
 [cynefin](./cynefin.md#header), [radar](./radar.md#header), and
 [treemap](./treemap.md#header) print the header on a line of its own and an
-ordinary first statement on the next line. mermaid.js 12.3.0 rejects a colon
-after the header, so none is added. Hidden forms, retained prefixes and
-protected lines keep their shared boundaries, including an empty body.
+ordinary first statement on the next line. mermaid.js rejects a colon after the
+header, so none is added. Hidden forms, retained prefixes and protected lines
+keep their shared boundaries, including an empty body.
 
 [fixture: wardley/header/header-glued]
 
@@ -240,10 +240,10 @@ internal spaces/tabs, hyphens, parentheses, ampersands, escapes, empty strings
 and whitespace-only strings, except for the label of a link, which prints a run
 of spaces and tabs as one space (see [Semicolon labels](#semicolon-labels)). The
 name of a component is its id in the Db, and a pipeline finds its component by
-the exact id, so a name with another run of whitespace is another name: 12.3.0
-holds the id with the whitespace as written, and rejects a pipeline whose name
-differs from its component's by a tab for a space. The figures differ too for
-two components whose names differ by a run (see
+the exact id, so a name with another run of whitespace is another name: the Db
+holds the id with the whitespace as written, and mermaid.js rejects a pipeline
+whose name differs from its component's by a tab for a space. The figures differ
+too for two components whose names differ by a run (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 A string of a name between `'` is printed between `"` unless its text holds a
 `'`, a `"`, a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or

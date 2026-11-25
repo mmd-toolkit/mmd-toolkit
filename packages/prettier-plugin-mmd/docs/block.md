@@ -323,9 +323,9 @@ block-beta
 
 ### Header
 
-The header, `block-beta` or `block`, is printed as written: mermaid.js 12.3.0
-reads them as the same diagram type, but some versions that count detect
-`block-beta` only, so the spelling is the author's (see
+The header, `block-beta` or `block`, is printed as written: mermaid.js reads
+them as the same diagram type, but some versions that count detect `block-beta`
+only, so the spelling is the author's (see
 [The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The whitespace before it is dropped (see [Indentation](#indentation)), and a
@@ -1746,17 +1746,16 @@ right before the statement, it is in lower case (`style a fill:#F00;`, U+2028,
 and `%% c` are printed `style a fill:#f00;`, U+2028, and `%% c`). In a block
 diagram, mermaid.js reads the U+2028 as the end of the line and `%% c` as a
 comment. For `style a fill:#F00`, a U+2028, and `%% c` at the end of the text,
-the Db of 12.3.0 holds neither of them in the style, and differs from that of
-the plain line only in the whitespace after the first `:` and in the case of the
-color, which
+the Db holds neither of them in the style, and differs from that of the plain
+line only in the whitespace after the first `:` and in the case of the color,
+which
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
-define, and the drawings of 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 are the
-same; so are the drawings of the other rows of the table that drop the U+2028
-after a style statement, and the record holds the row where nothing follows and
-twelve inputs of the others (one row holds two). In a label they are characters
-and stay.
+define, and the drawings of every version that counts are the same; so are the
+drawings of the other rows of the table that drop the U+2028 after a style
+statement, and the record holds the row where nothing follows and twelve inputs
+of the others (one row holds two). In a label they are characters and stay.
 
 [test: U+2028 between two statements of a row] [test: U+2029 between two
 statements of a row] [test: U+2028 around the arrow of an edge] [test: U+2028

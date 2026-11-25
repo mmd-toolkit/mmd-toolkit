@@ -41,8 +41,8 @@ mermaid.js がディレクティブを後ろの改行ごと取り除き、
 大域的なディレクティブの接触、隠れた形の隣接、保護行は共有規則に従います。
 見出し行を保つときは、その行の領域と項目の開きも同じ行に保ちます。
 空白で離れたコロンは修復せず、拒否します。
-`cynefin-beta %%{x}%%:`、`cynefin-beta%%{x}%% :`、`cynefin-beta :` は、11.16.1、
-11.17.2、12.0.0、12.3.0 のどれにも拒否されます。
+`cynefin-beta %%{x}%%:`、`cynefin-beta%%{x}%% :`、`cynefin-beta :` は、
+対象にするどの版にも拒否されます。
 コロンのない `cynefin-beta %%{x}%%` は変えません。
 
 [fixture: cynefin/header/directive-no-colon-space-kept]
