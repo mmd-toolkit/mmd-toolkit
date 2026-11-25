@@ -230,8 +230,11 @@ mermaid.js が名前の後の空白を trim するので Db は同じであり�
 
 タイトルの前の空白は、行の規則が無視する `;` を挟んでいても除きます。
 `connector style:#x ; [T]` は `connector style:#x;[T]` と印字します。
-規則 1 は、タイトルの `[` の印を挙げていないので、
-[規則 3](./printed-form.ja.md#3-綴り)が決めます。
+Prettier は、
+添字の `[` の前に空白を置かずに印字する（`x [ 0 ];` を `x[0];`
+と印字する）ので、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+タイトルの `[` の前を詰める形を与えます。
+[規則 3](./printed-form.ja.md#3-綴り)も同じ形を与えます。
 タイトルのある見出しは、
 [agentflow のドキュメント](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
 に 19 個あり、すべてが `flow F[T]` のように `[` を名前に接して書いています。

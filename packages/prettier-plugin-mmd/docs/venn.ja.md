@@ -300,6 +300,7 @@ venn-beta
 値内のパーセント対は値のままです。
 保護する隙間ではコメントとモードの境界も保ちます。
 
+[test: a venn set with two spaces before a comment and an empty line after the comment]
 [fixture: venn/comments/bare-percent-tail]
 [fixture: venn/comments/comment-directives]
 [fixture: venn/comments/comment-mark-value]

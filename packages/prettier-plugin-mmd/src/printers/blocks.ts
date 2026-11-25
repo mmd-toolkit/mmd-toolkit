@@ -35,6 +35,7 @@ import {
   joinLines,
   lineBreakBetween,
   printAsWritten,
+  printRunAsWritten,
   printTextGap,
   withLeading,
   withTrailing,
@@ -453,6 +454,28 @@ function percentBraceIndentation(gaps: number, one: string): string {
 }
 
 /**
+ * The kept lines of a block as `printBlock` takes them: the lines of the rules
+ * of the diagram type, completed (see `completeKeptLines`), where a comment
+ * region joins lines unless the diagram prints such lines as written
+ * (`BlockRules.joiningRegionsPrintedAsWritten`). A printer that asks which
+ * lines a block prints as written asks here, so that the answer is the one of
+ * the block.
+ */
+export function keptLinesOfBlock(
+  source: Source,
+  rules: Pick<
+    BlockRules<Positioned>,
+    "kept" | "joiningRegionsPrintedAsWritten"
+  >,
+): KeptLines {
+  return completeKeptLines(
+    source,
+    rules.kept,
+    rules.joiningRegionsPrintedAsWritten !== true,
+  )
+}
+
+/**
  * Prints the statements of a block, whose printed forms are `docs`, with
  * the comments and directives between them.
  *
@@ -473,11 +496,7 @@ export function printBlock<Statement extends Positioned>(
   rules: BlockRules<Statement>,
 ): PrintedBlock {
   const { statements } = bounds
-  const kept = completeKeptLines(
-    source,
-    rules.kept,
-    rules.joiningRegionsPrintedAsWritten !== true,
-  )
+  const kept = keptLinesOfBlock(source, rules)
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
   let offset = bounds.start
@@ -645,7 +664,7 @@ export function printBlock<Statement extends Positioned>(
         // A verbatim trivia line keeps spacing between its comments and
         // directives too; the block still supplies its ordinary indentation.
         doc: kept.verbatim.has(lineStartOf(source, line.run.range[0]))
-          ? printAsWritten(source, line.run.range[0], line.run.range[1])
+          ? printRunAsWritten(source, line.run)
           : line.run.doc,
         ...(triviaBreakBefore(line.run.range[0]) === undefined
           ? {}
