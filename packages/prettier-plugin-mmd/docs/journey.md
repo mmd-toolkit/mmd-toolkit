@@ -478,8 +478,8 @@ journey
 ### Titles and sections
 
 A `title` is printed with one space after the keyword, so that the separator has
-one form, as in a Gantt chart, and the value without the whitespace at its start
-or at its end, which the Db keeps and which is drawn without (see
+one form, as in a Gantt chart, and the value without the spaces and tabs at its
+start or at its end, which the Db keeps and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 `title   My trip  ` is printed `title My trip`. The name of a `section` is
 printed as written, the whitespace at its start and at its end included: two
@@ -514,8 +514,8 @@ The value holds `:`, `%`, and `%%` as characters, and ends at a `#`.
 titles-and-sections/value-ends-at-hash]
 
 The whitespace before that `#` is part of the value. For a `title` it is left
-out like the other whitespace at the end of a title, and one space stands before
-the `#`; for a `section` it stays.
+out like the other spaces and tabs at the end of a title, and one space stands
+before the `#`; for a `section` it stays.
 
 [fixture: titles-and-sections/title-hash-gap-one-space-section-kept]
 
@@ -934,9 +934,9 @@ A comment after a statement, or after the header, stays on the line, as written:
 one space stands before it where whitespace was written, and none where it
 touches. Moving it to a line of its own would change the Db after a `section`,
 where the whitespace before the comment is part of the value; after a `title`
-that whitespace is left out like the other whitespace at the end of a title (see
-[Titles and sections](#titles-and-sections)). One rule keeps the comment on its
-line in both, as in a Gantt chart.
+that whitespace is left out like the other spaces and tabs at the end of a title
+(see [Titles and sections](#titles-and-sections)). One rule keeps the comment on
+its line in both, as in a Gantt chart.
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-header-percent] [fixture: comments/after-statement]

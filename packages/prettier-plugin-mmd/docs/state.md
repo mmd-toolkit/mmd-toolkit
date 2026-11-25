@@ -1327,7 +1327,9 @@ whitespace at its end: mermaid.js reads it with the whitespace at its ends, so
 whitespace at its end (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 The directives that end it are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out:
+spaces or tabs before it, and the spaces and tabs after the last one are left
+out, unless a directive of the line holds a `;`, a U+2028, or a U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)):
 `state "d" as A : x   %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`. A
 description of spaces and tabs only, and one that holds a `;`, stay as written.
 A second description of three spaces after `state "d" as A :` stays, since some

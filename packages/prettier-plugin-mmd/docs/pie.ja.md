@@ -210,8 +210,25 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 pie は次の物理行を title に結合しません。
 空行・コメント・ディレクティブを挟んでも次の区分は別文です。
 保持する注釈類とセミコロンのまとまりを優先します。
-題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+テキストと `%%` のコメントの間の、空白でもタブでもない空白文字（U+000B、U+000C、
+改行しない空白、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF）は、
+その場に残し、その両側の空白とタブは、それぞれ空白 1 つにして印字します。
+対象にする版のうち最も古い版が title の一部として描き、
+後の版は取り除くからです。
+（[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)）。
+`title T`、改行しない空白、`%% c` は変えず、`title T`、空白 2 つ、
+`%% c` は `title T %% c` と印字します。
+コメントに接するディレクティブがあっても同じです（`title T`、改行しない空白、
+`%%{x}%%`、`%% c` は変えません）。
+テキストの後のディレクティブの後に空白が続くときは、ほかの図と同じに印字します。
+`title    T`、改行しない空白、`%%{x}%%`、空白 2 つ、`%% c` は、`title T`、
+その改行しない空白、`%%{x}%% %% c` と印字します。
+題のテキストの後にディレクティブだけが続くときは、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブを除いて印字します。
+ただし、行のディレクティブのどれかに改行、`;`、U+2028、
+U+2029 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title/title-directives-end-blanks-dropped]
@@ -219,6 +236,20 @@ pie は次の物理行を title に結合しません。
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
 [fixture: pie/title/title-inner-text]
 [fixture: pie/title/empty-value-with-directive]
+[test: a no-break space before a comment after the title of a pie chart]
+[test: U+3000 before a comment after the title of a pie chart]
+[test: U+2003 before a comment after the title of a pie chart]
+[test: spaces and a no-break space before a comment after the title of a pie chart]
+[test: a no-break space before a directive and a comment after the title of a pie chart]
+[test: two spaces before a comment after the title of a pie chart]
+[test: a no-break space at the end of the title of a pie chart]
+[test: a whitespace character that is no space or tab before a comment after the title of a pie chart]
+[test: a no-break space before a directive and two spaces before a comment after the title of a pie chart]
+[test: spaces before the text, a no-break space before a directive and two spaces before a comment after the title of a pie chart]
+[test: a no-break space before a directive and a tab before a comment after the title of a pie chart]
+[test: a no-break space before two directives and a comment after the title of a pie chart]
+[test: a no-break space before a comment after the title of a pie chart, with CRLF line ends]
+[test: a no-break space before a comment after the last line of a pie chart, with no line break]
 
 入力（エスケープ表記）: `"pie\ntitle\t   Sales  report  \n\"Sales\":8"`
 
@@ -259,14 +290,25 @@ mermaid.js が先に取り除く空行・コメント・ディレクティブの
 その文は書かれたまま残します（`"A":1` を `"A": 1` と印字しません）。
 `accTitle` の値の後の `%%` の前の空白も、その版が title の一部として読むので、
 書かれたまま残します（`accTitle: Value   %% note`）。
+`accDescr` の値の後の `%%` の前の、
+空白でもタブでもない空白文字（[Title](./pie.ja.md#title)
+が挙げる文字）も同じです。
+その版が説明の一部として描くので、その場に残します（`accDescr: Value`、
+改行しない空白、`%% note`）。
+その両側の空白とタブは、それぞれ空白 1 つにして印字します。
+値の中にディレクティブがあるときは、ほかの図と同じに印字します。
 説明ブロックの `}` の後のコメントは、コロンの形の本文が取り込むので、
 ブロックの形を残します。
 詳しくは
 [最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
 を参照してください。
 隠れた形と保持する文字のまとまりの隙間を残します。
-値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-最後のディレクティブの後の空白を除いて印字します。
+値のテキストの後にディレクティブだけが続くときは、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブを除いて印字します。
+ただし、行のディレクティブのどれかに改行、`;`、U+2028、
+U+2029 があるときを除きます。
+（[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
@@ -284,6 +326,16 @@ mermaid.js が先に取り除く空行・コメント・ディレクティブの
 [fixture: pie/accessibility-lines/accessibility-inner-tab]
 [fixture: pie/accessibility-lines/acc-title-inner-spaces-kept]
 [fixture: pie/accessibility-lines/accessibility-only-global-trivia]
+[test: a no-break space before a comment after the accDescr line of a pie chart]
+[test: U+3000 before a comment after the accDescr line of a pie chart]
+[test: two spaces before a comment after the accDescr line of a pie chart]
+[test: a no-break space before a comment after the accDescr line of a gitGraph]
+[test: U+3000 before a comment after the accDescr line of a gitGraph]
+[test: U+2003 before a comment after the accDescr line of a pie chart]
+[test: a whitespace character that is no space or tab before a comment after the accDescr line of a pie chart]
+[test: a no-break space and spaces before a comment after the accDescr line of a pie chart]
+[test: a no-break space before a directive and two spaces before a comment after the accDescr line of a pie chart]
+[test: a no-break space before a comment after the accDescr line, with no line break at the end of a pie chart]
 
 入力（エスケープ表記）:
 `"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`

@@ -587,6 +587,55 @@ interface CommentRegions {
 }
 
 /**
+ * The diagram types in which a `;` separates statements: a `;` that ends the
+ * text stands for no statement there, and the printer drops it unless it is
+ * kept for another reason (docs/flowchart.md, Semicolons). In every other type
+ * a `;` is text or a statement of its own.
+ */
+export const diagramBodiesWithSeparatingSemicolons: ReadonlySet<string> =
+  new Set([
+    "FlowchartDiagram",
+    "AgentflowDiagram",
+    "SequenceDiagram",
+    "QuadrantDiagram",
+    "XychartDiagram",
+  ])
+
+/** Whether the physical line that starts at `offset` holds a `;`. */
+function holdsSemicolonOnLine(text: string, offset: number): boolean {
+  const lineEnd = text.indexOf("\n", offset)
+  return text
+    .slice(offset, lineEnd === -1 ? text.length : lineEnd)
+    .includes(";")
+}
+
+/**
+ * Where the text that the lexer reads ends: after the last character that is no
+ * whitespace and lies in none of the `regions` that mermaid.js removes, and, with
+ * `skipsSemicolons`, no `;`.
+ */
+function findReadEnd(
+  text: string,
+  regions: readonly Range[],
+  skipsSemicolons: boolean,
+): number {
+  let offset = text.length
+  while (offset > 0) {
+    if (
+      isWhitespace(text[offset - 1]) ||
+      (skipsSemicolons && text[offset - 1] === ";")
+    ) {
+      offset--
+      continue
+    }
+    const region = findCoveringRange(regions, offset - 1)
+    if (region === undefined) break
+    offset = region[0]
+  }
+  return offset
+}
+
+/**
  * Finds the comment regions (see `JoiningRegion`), and those that join lines.
  *
  * The region of a comment starts at the earliest comment start from which
@@ -645,10 +694,6 @@ function findCommentRegions(
     return undefined
   }
 
-  // Where the text ends once the whitespace at its end is left out: a region
-  // has text after it when it ends before that.
-  const contentEnd = text.trimEnd().length
-
   const all: Range[] = []
   const joining: JoiningRegion[] = []
   let previousEnd = -1
@@ -669,8 +714,25 @@ function findCommentRegions(
       comment,
       start,
       end,
-      hasTextAfter: end < contentEnd,
+      hasTextAfter: false,
     })
+  }
+  // A region has text after it when the lexer reads something after it. The
+  // `;` that end the text stand for no statement in a diagram where a `;`
+  // separates statements, and the printer drops them, except one on the line
+  // that follows the region, which stays with the line that the region joins
+  // (docs/flowchart.md, Semicolons).
+  const readEnd = findReadEnd(text, all, false)
+  const statementEnd = diagramBodiesWithSeparatingSemicolons.has(root.body.type)
+    ? findReadEnd(text, all, true)
+    : readEnd
+  for (const [index, region] of joining.entries()) {
+    joining[index] = {
+      ...region,
+      hasTextAfter:
+        region.end < statementEnd ||
+        (region.end < readEnd && holdsSemicolonOnLine(text, region.end)),
+    }
   }
   // Regions that touch are removed together: text follows all of them, and the
   // last one decides, not the next comment line, which is removed too.
