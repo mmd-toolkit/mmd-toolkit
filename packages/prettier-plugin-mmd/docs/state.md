@@ -1412,8 +1412,8 @@ stateDiagram-v2
 
 A comment on a line of its own, `%%` or `#`, stands at the level of the
 statements around it, and its text is kept as written. Rule 1 gives no form
-here, since its table names the whitespace beside a mark and not the start of a
-line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+here, since its table does not name the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [flowchart](./flowchart.md#comments), [class](./class.md#comments), and
 [sequence](./sequence.md#comments) put a comment line at the level of the
@@ -1972,6 +1972,22 @@ A directive before a leading separator does not hide the separator: the line
 keeps its written indentation.
 
 [test: a state line starting with a directive before U+2028]
+
+A comment line that starts with `#` ends at a U+2028 or U+2029, and the text
+after the character is a line of its own. A directive and a comment on that line
+are printed as on a line after a line feed, with one space between them where
+the source has whitespace there, and none where the source has none: `# c`,
+U+2028, `%%{x}%%`, two spaces, and `%% c` print `# c` and `%%{x}%% %% c` on two
+lines. A comment line, or a node named `End`, on the next line with no empty
+line between keeps the line as written.
+
+[test: state: a hash comment line, U+2028, a directive, two spaces, a comment,
+and a comment line after it] [test: state: a hash comment line, U+2028, a
+directive, two spaces, a comment, and a node named End] [test: state: a hash
+comment line, U+2028, a directive, two spaces, and a comment] [test: state: a
+hash comment line, U+2028, a directive touching a comment] [test: state: a hash
+comment line, U+2028, a directive, a tab, and a comment] [test: state: a hash
+comment line, U+2029, a directive, two spaces, and a comment]
 
 A line that holds U+2028 or U+2029 is kept as written, the second description of
 an alias included, whitespace after the character too: `state "d" as A : x`, two

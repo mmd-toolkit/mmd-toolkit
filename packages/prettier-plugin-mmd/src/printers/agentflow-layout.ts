@@ -30,7 +30,7 @@ import {
   keptAsWritten,
   walk,
 } from "./layout.ts"
-import { readGapElement } from "./gap.ts"
+import { readGapElement, readRunOnItsLine } from "./gap.ts"
 import {
   endsEntityName,
   holdsJoiningRegion,
@@ -160,12 +160,15 @@ export function layoutContainerHeader(
       // removing the gap would form an entity (common.md, Entities;
       // docs/agentflow.md, Names and headings). The directives after the name
       // are removed before mermaid.js reads the text, so a separator behind
-      // them touches the name as well.
+      // them touches the name as well. A separator is retained on a line that
+      // stays as written, and before a directive on its line.
+      const semicolon = skipDirectivesAt(source, name.range[1])
       if (
-        source.text[skipDirectivesAt(source, name.range[1])] === ";" &&
-        findAgentflowKeptLines(source).verbatim.has(
+        source.text[semicolon] === ";" &&
+        (findAgentflowKeptLines(source).verbatim.has(
           lineStartOf(source, name.range[0]),
-        ) &&
+        ) ||
+          keepsSemicolon(source, name.range[1], semicolon)) &&
         endsEntityName(source, nameEnd)
       )
         nameEnd = name.range[1]
@@ -258,6 +261,31 @@ export function layoutContainerHeader(
         atom.start >= name.range[1],
     ),
   }
+}
+
+/**
+ * Whether the block of an agentflow diagram drops a `;` that separates
+ * statements before a comment (see `readGap`). The layouts that plan around
+ * the printed gap ask `readRunOnItsLine` with the same value.
+ */
+export const agentflowDropsSeparatorsBeforeComments = true
+
+/**
+ * Whether the printed run after the name, which starts at `nameEnd`, keeps the
+ * `;` at `semicolon`, which separates statements: the gap prints it as an item
+ * where an item that is not a comment follows it on its line (see `toRun`,
+ * which decides it once), because without the `;` the whitespace before that
+ * item would be read with the statement before it.
+ */
+function keepsSemicolon(
+  source: Source,
+  nameEnd: number,
+  semicolon: number,
+): boolean {
+  const run = readRunOnItsLine(source, nameEnd, {
+    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
+  })
+  return run?.separators.includes(semicolon) === true
 }
 
 /**

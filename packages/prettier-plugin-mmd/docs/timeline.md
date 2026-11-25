@@ -446,8 +446,8 @@ before a later event] [test: U+2029 inside a period before a later event]
 
 Comment lines and directive lines between event lines align with the next event
 colon. When the colons use ordinary continuation indentation, these lines use
-that indentation too. Rule 1 gives no form here, since its table names the
-whitespace beside a mark and not the start of a line
+that indentation too. Rule 1 gives no form here, since its table does not name
+the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields) and
@@ -975,11 +975,9 @@ header-and-direction/description-block-after-the-header-without-direction-moves]
 A comment after the direction stays on the line (see [Comments](#comments)), and
 a directive before it or after it is placed as everywhere else (see
 [Directives](#directives)). The whitespace at the end of the line is dropped.
-Rule 1 names no mark at the end of a line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [radar](./radar.md#trailing-whitespace) and
-[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
-the header.
+Prettier prints no whitespace at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) drops the whitespace
+after the header.
 
 [fixture: header-and-direction/comment-after-the-direction] [fixture:
 header-and-direction/directive-before-the-direction] [fixture:
@@ -1365,12 +1363,10 @@ block on one line follows
 
 [fixture: whitespace-between-tokens/description-block-braces]
 
-The whitespace at the end of the header's line is dropped. Rule 1 names no mark
-at the end of a line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [radar](./radar.md#trailing-whitespace) and
-[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
-the header.
+The whitespace at the end of the header's line is dropped. Prettier prints no
+whitespace at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) drops the whitespace
+after the header.
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -1404,8 +1400,8 @@ end of the line. A comment on a line of its own stands at the level of the
 statement after it, as in a user journey, and its text and its mark are kept as
 written: a comment before a `section` stands at its level, and one before a
 period at the level of the period; at the end of the text it stands at the level
-of the last statement. Rule 1 gives no form here, since its table names the
-whitespace beside a mark and not the start of a line
+of the last statement. Rule 1 gives no form here, since its table does not name
+the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [gantt](./gantt.md#comments), [block](./block.md#comments), and
@@ -1674,14 +1670,59 @@ spaces before it stay.
 [test: U+2029 and spaces at the end of a timeline title] [test: U+2028 and
 spaces at the end of the last event of a line]
 
-A comment line after U+2028 or U+2029 joins the next line to its line, and the
-line stays as written to its end, also after the `}` of a description block that
-starts on the line of the header, and before a period (see
+A comment line after U+2028 or U+2029 joins the next line to its line, and where
+a statement stands on the next line, the line stays as written to its end, also
+after the `}` of a description block that starts on the line of the header, and
+before a period (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [test: a line separator and a comment line after the closing brace of a
 description block that starts on the line of the timeline header, before a
-period]
+period] [test: timeline: an event that a comment after U+2028 joins to the next
+event line stays as written]
+
+A directive after a comment line that follows a U+2028 or U+2029 inside a period
+is on the line of the event, since the comment line joins the next line to its
+line, and the whitespace before the directive is part of the text of the event:
+the printer adds none, so a directive written at the start of its line stays
+there, and where whitespace is written before it, it is one space, as in any
+text. The directive is not printed at the indentation of the other lines of the
+statement.
+
+[test: timeline: an event that a comment after U+2028 joins to a directive line,
+with an event after it] [test: timeline: an event that a comment alone after
+U+2028 joins to a directive line, with an event after it] [test: timeline: an
+event that a comment after U+2028 joins to an indented directive line, with an
+event after it] [test: timeline: an event that U+2028 ends before an indented
+directive line, with an event after it] [test: timeline: an event that a comment
+after U+2028 joins to a directive line, with a period after it] [test: timeline:
+an event that a comment after U+2029 joins to a directive line, with an event
+after it] [test: timeline: an event that a comment after U+2028 joins to a
+comment line and a directive line, with an event after it] [test: timeline: an
+event that a comment after U+2029 joins to a comment line and a directive line,
+with an event after it] [test: timeline: an event that a comment after U+2028
+joins to a directive that is not closed, with an event after it] [test:
+timeline: an event that a comment after U+2028 joins to a line of whitespace and
+a directive line, with an event after it] [test: timeline: an event with an
+ignored semicolon that a comment after U+2028 joins to a directive line, with an
+event after it] [test: timeline: an event that a comment after U+2028 joins to a
+directive line at the end of the text] [test: timeline: an event that a comment
+after U+2028 joins to an empty line and a directive line, with an event after
+it]
+
+A comment line that starts with `#` or `%` ends at a U+2028 or U+2029, and the
+text after the character is a line of its own. A directive and a comment on that
+line are printed as on a line after a line feed: with one space between them
+where the source has whitespace there, and none where it has none. Two comment
+lines on the next lines with no empty line between keep the line as written.
+
+[test: timeline: a hash comment line, U+2028, a directive, two spaces, a
+comment, and two comment lines after it] [test: timeline: a hash comment line,
+U+2028, a directive, two spaces, and a comment] [test: timeline: a percent
+comment line, U+2028, a directive, two spaces, and a comment] [test: timeline: a
+hash comment line, U+2028, a directive touching a comment] [test: timeline: a
+percent comment line, U+2028, a directive, a tab, and a comment] [test:
+timeline: a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 ### Whitespace characters
 

@@ -61,6 +61,7 @@ import {
   findStructuralToken,
   findTokensBetween,
   findTriviaBetween,
+  isInlineWhitespace,
   isSpaceOrTab,
   isStructural,
   isWhitespace,
@@ -163,6 +164,29 @@ function isAccTitle(statement: CommonStatement): boolean {
 }
 
 /**
+ * Whether the value of a common line holds a directive or a comment, which
+ * `layoutCommonLine` prints as written unless the value ends with directives.
+ */
+export function valueHoldsTrivia(source: Source, value: Node): boolean {
+  return findTriviaBetween(source, ...value.range).length > 0
+}
+
+/**
+ * The end of the value of a common line without its trailing whitespace: where
+ * the printed text of the line ends, and where the whitespace that follows it,
+ * a U+2028 or U+2029 included, is a gap.
+ */
+export function commonValueTextEnd(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  let textEnd = end
+  while (textEnd > start && isWhitespace(source.text[textEnd - 1])) textEnd--
+  return textEnd
+}
+
+/**
  * Where the whitespace that the planned indentation of the next line supplies
  * starts, after a line that ends with `statement`. A `title` with no text ends
  * where its keyword ends, and the whitespace after it is no part of its range,
@@ -210,8 +234,7 @@ export function layoutCommonLine(
         "the accessibility colon",
       )
   const value = statement.value
-  const hasTrivia =
-    value !== null && findTriviaBetween(source, ...value.range).length > 0
+  const hasTrivia = value !== null && valueHoldsTrivia(source, value)
   const diagramType = source.root.diagramType
   const commentStart =
     value === null ? null : skipRemoved(source, value.range[1])
@@ -273,10 +296,8 @@ export function layoutCommonLine(
     // of the title to the oldest version that counts, which shows the title as
     // a tooltip: the whitespace before the `%%` stays (docs/pie.md,
     // Accessibility lines).
-    if (!valueReachesComment) {
-      while (valueStart < valueEnd && source.text[valueEnd - 1].trim() === "")
-        valueEnd--
-    }
+    if (!valueReachesComment)
+      valueEnd = commonValueTextEnd(source, valueStart, valueEnd)
   } else if (endsInDirectives) {
     while (valueStart < valueEnd && source.text[valueStart].trim() === "")
       valueStart++
@@ -317,13 +338,16 @@ export function layoutCommonLine(
   ]
   // A text that ends with directives prints them as at the end of a line, and
   // leaves out the whitespace at its end (docs/compatibility.md, Texts after a
-  // keyword that are drawn the same). The runs inside an `accTitle` stay.
+  // keyword that are drawn the same). The runs inside an `accTitle` stay. The
+  // run before the last directive holds any whitespace of a line, which the
+  // line without blanks after the directive prints as one space too.
   if (endsInDirectives) {
     trimTextAfterKeyword(
       source,
       atoms,
       [valueStart, valueEnd],
-      !statement.type.includes("AccTitle"),
+      statement.type.includes("AccTitle") ? "kept" : "collapsed",
+      isInlineWhitespace,
     )
   }
   // An ignored `;` at the trimmed end stays against the text, as when its

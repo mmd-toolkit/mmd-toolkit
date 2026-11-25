@@ -1101,7 +1101,92 @@ The directives that end the value of an `accTitle` or an `accDescr` are printed
 as those that end a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `accTitle: Column zero  %%{x}%%  ` and `accTitle: Column zero  %%{x}%%` are both
-printed `accTitle: Column zero %%{x}%%`.
+printed `accTitle: Column zero %%{x}%%`. A directive that holds a line break or
+a `;` ends the value like any other, where it is the last or touches the
+directives after it: `accDescr: A  b  %%{init: {`, a line break, and `}}%%` with
+a space and a tab after it is printed `accDescr: A b %%{init: {`, a line break,
+and `}}%%`. The value is trimmed of every whitespace character, so each of them
+after the last directive is a blank, as a space or a tab is: U+00A0, U+1680,
+U+2000 to U+200A, U+202F, U+205F, U+3000, U+FEFF, U+000B, and U+000C, alone or
+in a run with spaces, tabs, and each other. U+0085 and U+200B are no whitespace,
+and the line stays as written with them.
+
+[fixture:
+direction-and-accessibility/acctitle-directive-unclosed-end-runs-collapsed]
+[fixture:
+direction-and-accessibility/acctitle-directive-lines-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/accdescr-directive-lines-end-of-text-blanks-dropped]
+[fixture:
+direction-and-accessibility/accdescr-directive-lines-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/acctitle-directive-semicolon-end-blanks-dropped]
+[test: usecase accTitle: U+00A0 after a directive over lines] [test: usecase
+accTitle: U+1680 after a directive over lines] [test: usecase accTitle: U+2000
+after a directive over lines] [test: usecase accTitle: U+2001 after a directive
+over lines] [test: usecase accTitle: U+2002 after a directive over lines] [test:
+usecase accTitle: U+2003 after a directive over lines] [test: usecase accTitle:
+U+2004 after a directive over lines] [test: usecase accTitle: U+2005 after a
+directive over lines] [test: usecase accTitle: U+2006 after a directive over
+lines] [test: usecase accTitle: U+2007 after a directive over lines] [test:
+usecase accTitle: U+2008 after a directive over lines] [test: usecase accTitle:
+U+2009 after a directive over lines] [test: usecase accTitle: U+200A after a
+directive over lines] [test: usecase accTitle: U+202F after a directive over
+lines] [test: usecase accTitle: U+205F after a directive over lines] [test:
+usecase accTitle: U+3000 after a directive over lines] [test: usecase accTitle:
+U+FEFF after a directive over lines] [test: usecase accTitle: U+000B after a
+directive over lines] [test: usecase accTitle: U+000C after a directive over
+lines] [test: usecase accTitle: a space and U+00A0 after a directive over lines]
+[test: usecase accTitle: U+00A0 and a space after a directive over lines] [test:
+usecase accTitle: a tab and U+00A0 after a directive over lines] [test: usecase
+accTitle: U+00A0 and U+3000 after a directive over lines] [test: usecase
+accDescr: U+00A0 after a directive over lines] [test: usecase accDescr: U+3000
+after a directive over lines] [test: usecase accTitle: U+00A0 after a directive
+with a `;`] [test: usecase accTitle: U+00A0 after a directive over lines with a
+`;`] [test: usecase accDescr: U+3000 after a directive with a `;`] [test:
+usecase accTitle: U+00A0 after two directives over lines that touch each other]
+[test: usecase accTitle: U+0085 after a directive over lines is no blank] [test:
+usecase accTitle: U+200B after a directive over lines is no blank]
+
+The text before the directives that end the value may hold a `;`, a directive of
+its own, or a U+2028 or U+2029, and the end is printed the same:
+`accTitle: A;b  %%{z}%%  ` is printed `accTitle: A;b %%{z}%%`. The runs of the
+text of an `accDescr:` line are printed as one space where no directive stands
+in the text, and stay where one does: `accDescr: A;  b  %%{z}%%  ` is printed
+`accDescr: A; b %%{z}%%`. A directive that a space or a tab separates from the
+last of them stays as written, and only the gap before the last is printed as
+one space: `accTitle: A;b  %%{x}%%  %%{z}%%  ` is printed
+`accTitle: A;b  %%{x}%% %%{z}%%`. Directives that precede the text change one
+thing only: the runs of an `accDescr:` text, which are printed as one space,
+stay. `accDescr: A  b  %%{z}%%  ` is printed `accDescr: A b %%{z}%%`, and
+`accDescr: %%{x}%% A  b  %%{z}%%  ` is printed `accDescr: %%{x}%% A  b %%{z}%%`.
+The gap before the last directive is printed as one space either way:
+`accTitle: %%{x}%% T  %%{init: {`, a line break, `}}%%`, and two spaces is
+printed `accTitle: %%{x}%% T %%{init: {`, a line break, and `}}%%`. The gap
+before a directive that a space or a tab separates from the last stays as
+written: `accTitle: %%{x}%% T  %%{y}%%  %%{z}%%  ` is printed
+`accTitle: %%{x}%% T  %%{y}%% %%{z}%%`.
+
+[fixture:
+direction-and-accessibility/accdescr-directive-end-two-comment-lines-blanks-dropped]
+[fixture:
+direction-and-accessibility/accdescr-trailing-directive-blanks-dropped]
+[fixture:
+direction-and-accessibility/acctitle-directives-before-text-end-directives-gap-kept]
+[fixture:
+direction-and-accessibility/accdescr-directive-before-text-trailing-directive-blanks-dropped]
+[fixture:
+direction-and-accessibility/acctitle-directive-after-semicolon-text-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/accdescr-directive-after-semicolon-run-text-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/acctitle-directive-after-inner-directive-text-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/acctitle-directives-after-semicolon-text-last-gap-printed]
+[fixture:
+direction-and-accessibility/acctitle-directive-before-text-directive-lines-end-blanks-dropped]
+[test: usecase accTitle: U+2028 in the text before the last directive] [test:
+usecase accDescr: U+2029 in the text before the last directive]
 
 [fixture:
 direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
@@ -1173,8 +1258,8 @@ usecase-beta
 Reuse [standalone comment alignment](./class.md#comments): comments align with
 nearby statements, with declarations before boundary `end`, and at column one
 before the header, retaining all comment text and terminal HWS. Rule 1 gives no
-form here, since its table names the whitespace beside a mark and not the start
-of a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+form here, since its table does not name the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [block](./block.md#comments) and [er](./er.md#comments) put a comment
 line at the level of the statements around it.
@@ -1207,6 +1292,19 @@ usecase-beta
   %%{}%%
   A
 ```
+
+The text after a U+2028 or U+2029 that follows the text of an `accTitle:` or an
+`accDescr:` line is a line of its own. A directive and a comment on that line
+are printed as on a line after a line feed, with one space between them where
+the source has whitespace there.
+
+[test: usecase: an accTitle line, U+2028, a directive, two spaces, and a
+comment] [test: usecase: an accTitle line, U+2028 right after the text, a
+directive, two spaces, and a comment] [test: usecase: an accDescr line, U+2028,
+a directive, two spaces, and a comment] [test: usecase: an accTitle line,
+U+2028, a directive touching a comment] [test: usecase: an accTitle line,
+U+2028, a directive, a tab, and a comment] [test: usecase: an accTitle line,
+U+2029, a directive, two spaces, and a comment]
 
 ### Directives
 
@@ -1362,6 +1460,61 @@ unicode-css-string] [test: usecase: unicode-joined-native-metadata] [test:
 usecase: unicode-semicolon-segments] [test: usecase: crlf-metadata-blank-lines]
 [test: usecase: nbsp-css-string] [test: usecase: unicode-boundary-title] [test:
 usecase: crlf-output-values]
+
+A one-line `accTitle:` or `accDescr:` statement whose text ends at a U+2028 or
+U+2029 that a comment line follows is printed as such a statement is printed
+without the character, where the line after the comment line is empty, holds
+directives that touch each other and nothing else, or is not there: the comment
+goes to a line of its own, the colon has one space after it where the statement
+has text, and nothing after it where the value is empty or only whitespace, and
+the whitespace at the end of the text goes. It is the form that the second
+formatting printed from the first form, so that formatting twice changes
+nothing. Comment lines that follow each other count as one comment line, and the
+line after the last of them decides. The statement stays as written where a
+statement or a `;` stands on the line after the comment line, with or without a
+directive before it, and where whitespace stands there: whitespace before a
+directive, after it, between directives, or alone on the line belongs to the
+text of the statement.
+
+[test: usecase: U+2028, a comment, and an empty line after the text of an
+accTitle line] [test: usecase: U+2028, a directive, a comment, and an empty line
+after the text of an accTitle line] [test: usecase: U+2028, a comment, and an
+empty line after the text of an accDescr line with a tab before it] [test:
+usecase: U+2028, a comment, and an empty line after an accTitle line without
+text] [test: usecase: U+2029, a comment, and an empty line after the text of an
+accTitle line] [test: usecase: U+2028, a comment, and a directive line after the
+text of an accTitle line] [test: usecase: U+2028, a comment, and an empty line
+after the text of an accDescr line with a tab inside] [test: usecase: U+2028, a
+comment, and a statement on the next line after the text of an accTitle line]
+[test: usecase: U+2028, a comment, and a line of whitespace after the text of an
+accTitle line] [test: usecase: U+2028 and a comment at the end of the text after
+the text of an accTitle line] [test: usecase: U+2028, a comment, and a line of
+two touching directives after the text of an accTitle line] [test: usecase:
+U+2028, a comment, and a directive line with a space before it after the text of
+an accTitle line] [test: usecase: U+2028, a comment, and a directive line with a
+space after it after the text of an accTitle line] [test: usecase: U+2028, a
+comment, and a line of two directives with a space between them after the text
+of an accTitle line] [test: usecase: U+2028, a comment, and a directive line
+with a semicolon after the text of an accTitle line] [test: usecase: U+2028, a
+comment, and a directive and a statement on the next line after the text of an
+accTitle line] [test: usecase: U+2028, two comments that touch, and an empty
+line after the text of an accTitle line] [test: usecase: two U+2028, a comment,
+and an empty line after the text of an accTitle line] [test: usecase: U+2029, a
+comment, and a directive line after the text of an accDescr line] [test:
+usecase: U+2029, a comment, and a directive line with a space before it after
+the text of an accDescr line] [test: usecase: U+2029, a comment, and a line of
+whitespace after the text of an accDescr line] [test: usecase: U+2028, two
+comments that touch, and a statement on the next line after the text of an
+accTitle line] [test: usecase: U+2028 and two comments that touch at the end of
+the text after the text of an accTitle line] [test: usecase: U+2028 and a
+directive that is not closed after the text of an accTitle line] [test: usecase:
+U+2028, a comment, and an empty line after an accTitle line whose text holds an
+ignored semicolon] [test: usecase: U+2028, a comment, and a directive that is
+not closed after the text of an accTitle line] [test: usecase: U+2028, a
+comment, and an empty line after an accTitle line of whitespace] [test: usecase:
+U+2028, a comment that ends in a semicolon, and an empty line after an accDescr
+line whose text holds an ignored semicolon] [test: usecase: U+2028, two comments
+that touch, and a line of whitespace after the text of an accTitle line]
 
 ### Frontmatter YAML
 
