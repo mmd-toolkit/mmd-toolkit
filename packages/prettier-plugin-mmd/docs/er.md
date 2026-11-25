@@ -1778,7 +1778,8 @@ as written.
 er/gram-subgraph-header-blocks]
 
 Comments and directives on lines of their own in a subgraph stand at the level
-of its statements, and a directive before `end` on its line stays there.
+of its statements, as under [Comments](#comments) and [Directives](#directives),
+and a directive before `end` on its line stays there.
 
 [fixture: subgraphs/directive-and-comment-lines]
 
