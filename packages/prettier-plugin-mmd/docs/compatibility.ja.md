@@ -7460,6 +7460,42 @@ ER 図では、そのような行にある実体のブロックだけは、
 ほかの実体と同じに置きます。
 ただし `}` が、そのようなコメント行が始まる行にあるときは、
 書かれたまま残ります（[ER](./er.ja.md#複数行の文)を参照）。
+`;` がテキストの文字として行を一緒に残す行は、たとえば `title T;` や、
+kanban の section のテキスト `S[x;]` で、U+2028 か U+2029 の後のコメント行ごと、
+書かれたまま印字します。
+コメント行の後に続くものが、文の行でも、空行でも、テキストの終わりでも同じです。
+`;` が行を残さない行では、
+コメント行は自分の行に置かれますが（[Title](./treemap.ja.md#title)を参照）、
+ここでは置かれず、整形は止まりません。
+
+[test: treemap: a title with a `;` inside, U+2028, a directive, three spaces, and a comment]
+[test: treemap: a title with a `;` inside, a directive, U+2028, three spaces, a comment, and an empty line]
+[test: treemap: a title with a `;` inside, a directive, U+2028, a directive, U+2028, three spaces, and a comment]
+[test: pie: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: pie: a title that ends with a `;`, U+2028, and a comment at the end of the text]
+[test: radar: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: radar: a title that ends with a `;`, U+2028, and a comment at the end of the text]
+[test: packet: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: packet: a title that ends with a `;`, U+2028, and a comment at the end of the text]
+[test: architecture: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: architecture: a title that ends with a `;`, U+2028, and a comment at the end of the text]
+[test: wardley: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: wardley: a title that ends with a `;`, U+2028, and a comment at the end of the text]
+[test: gitGraph: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: gitGraph: a title that ends with a `;`, U+2028, and a comment at the end of the text]
+[test: info: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: info: a title that ends with a `;`, U+2028, and a comment at the end of the text]
+[test: cynefin: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: cynefin: a title that ends with a `;`, U+2028, and a comment at the end of the text]
+[test: kanban: a section with a `;` in its text, U+2028, a comment, and an empty line]
+[test: kanban: a section with a `;` in its text, U+2028, and a comment at the end of the text]
+[test: treemap: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: treemap: a title that ends with a `;`, U+2028, and a comment at the end of the text]
+[test: railroad: a title that ends with a `;`, U+2028, and a comment at the end of the text]
+[test: treemap: a title that ends with a `;`, a space, U+2028, a directive, two spaces, a comment, and an empty line]
+[test: treemap: a title that ends with a `;`, a space, U+2029, a directive, two spaces, a comment, and an empty line]
+[test: treemap: an accTitle that ends with a `;`, U+2028, a directive, two spaces, a comment, and an empty line]
+
 ER 図では、そのような行の文について、スタイルの色、関係の語、
 1 語の名前の引用符のように普通の行と別に印字するものを、
 [ER](./er.ja.md#属性の空白)が述べています。

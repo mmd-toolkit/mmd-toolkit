@@ -41703,3 +41703,161 @@ describe("a cynefin header with whitespace before a directive or the colon", () 
     await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
   })
 })
+
+/**
+ * Each example is a line that a `;` of its text keeps together, with U+2028 or
+ * U+2029 and a comment after it. The comment line of such a region gets no line
+ * of its own on a kept line, so the line is printed as written, whatever
+ * follows the comment (docs/compatibility.md, A comment line after U+2028 or
+ * U+2029).
+ */
+const keptLineCommentRegionExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "pie: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'pie\ntitle T;\u2028%% c\n\n"A":1\n',
+    'pie\n  title T;\u2028%% c\n\n  "A": 1\n',
+  ],
+  [
+    "pie: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "pie\ntitle T;\u2028%% c",
+    "pie\n  title T;\u2028%% c\n",
+  ],
+  [
+    "radar: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "radar-beta\ntitle T;\u2028%% c\n\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T;\u2028%% c\n\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "radar: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "radar-beta\ntitle T;\u2028%% c",
+    "radar-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "packet: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'packet\ntitle T;\u2028%% c\n\n0-7: "x"\n',
+    'packet\n  title T;\u2028%% c\n\n  0-7: "x"\n',
+  ],
+  [
+    "packet: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "packet\ntitle T;\u2028%% c",
+    "packet\n  title T;\u2028%% c\n",
+  ],
+  [
+    "architecture: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "architecture-beta\ntitle T;\u2028%% c\n\nservice a(server)[A]\n",
+    "architecture-beta\n  title T;\u2028%% c\n\n  service a(server)[A]\n",
+  ],
+  [
+    "architecture: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "architecture-beta\ntitle T;\u2028%% c",
+    "architecture-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "wardley: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "wardley-beta\ntitle T;\u2028%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T;\u2028%% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "wardley: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "wardley-beta\ntitle T;\u2028%% c",
+    "wardley-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "gitGraph: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "gitGraph\ntitle T;\u2028%% c\n\ncommit\n",
+    "gitGraph\n  title T;\u2028%% c\n\n  commit\n",
+  ],
+  [
+    "gitGraph: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "gitGraph\ntitle T;\u2028%% c",
+    "gitGraph\n  title T;\u2028%% c\n",
+  ],
+  [
+    "info: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    "info\ntitle T;\u2028%% c\n\n",
+    "info\n  title T;\u2028%% c\n",
+  ],
+  [
+    "info: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "info\ntitle T;\u2028%% c",
+    "info\n  title T;\u2028%% c\n",
+  ],
+  [
+    "cynefin: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'cynefin-beta\ntitle T;\u2028%% c\n\ncomplex "x"\n',
+    'cynefin-beta\n  title T;\u2028%% c\n\n  complex\n    "x"\n',
+  ],
+  [
+    "cynefin: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "cynefin-beta\ntitle T;\u2028%% c",
+    "cynefin-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "kanban: a section with a `;` in its text, U+2028, a comment, and an empty line",
+    "kanban\n  S[x;]\u2028%% c\n\n    A\n",
+    "kanban\n  S[x;]\u2028%% c\n\n    A\n",
+  ],
+  [
+    "kanban: a section with a `;` in its text, U+2028, and a comment at the end of the text",
+    "kanban\n  S[x;]\u2028%% c",
+    "kanban\n  S[x;]\u2028%% c\n",
+  ],
+  [
+    "treemap: a title that ends with a `;`, U+2028, a comment, and an empty line",
+    'treemap\ntitle T;\u2028%% c\n\n"A":1\n',
+    'treemap\ntitle T;\u2028%% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "treemap\ntitle T;\u2028%% c",
+    "treemap\ntitle T;\u2028%% c\n",
+  ],
+  [
+    "railroad: a title that ends with a `;`, U+2028, and a comment at the end of the text",
+    "railroad-beta\ntitle T;\u2028%% c",
+    "railroad-beta\n  title T;\u2028%% c\n",
+  ],
+  [
+    "treemap: a title that ends with a `;`, a space, U+2028, a directive, two spaces, a comment, and an empty line",
+    'treemap\ntitle T; \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    'treemap\ntitle T; \u2028 %%{x}%%  %% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title that ends with a `;`, a space, U+2029, a directive, two spaces, a comment, and an empty line",
+    'treemap\ntitle T; \u2029 %%{x}%%  %% c\n\n"A":1\n',
+    'treemap\ntitle T; \u2029 %%{x}%%  %% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: an accTitle that ends with a `;`, U+2028, a directive, two spaces, a comment, and an empty line",
+    'treemap\naccTitle: T;\u2028%%{x}%%  %% c\n\n"A":1\n',
+    'treemap\naccTitle: T;\u2028%%{x}%%  %% c\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title with a `;` inside, U+2028, a directive, three spaces, and a comment",
+    "treemap\ntitle a;b\u2028%%{x}%%   %% d\n",
+    "treemap\ntitle a;b\u2028%%{x}%%   %% d\n",
+  ],
+  [
+    "treemap: a title with a `;` inside, a directive, U+2028, three spaces, a comment, and an empty line",
+    'treemap\ntitle a;b%%{x}%%\u2028   %% d\n\n"A":1\n',
+    'treemap\ntitle a;b%%{x}%%\u2028   %% d\n\n  "A": 1\n',
+  ],
+  [
+    "treemap: a title with a `;` inside, a directive, U+2028, a directive, U+2028, three spaces, and a comment",
+    "treemap\ntitle a;b%%{x}%%\u2028%%{y}%%\u2028   %% d\n",
+    "treemap\ntitle a;b%%{x}%%\u2028%%{y}%%\u2028   %% d\n",
+  ],
+]
+
+describe("a line that a `;` keeps together, with a comment line after a line separator", () => {
+  it.each(keptLineCommentRegionExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})

@@ -1491,11 +1491,10 @@ export function printInlineGap(
     omitted: omittedRanges,
     relocatedWhitespace,
   })
-  if (gap.breaksLine) {
-    throw new Error(
-      `prettier-plugin-mmd: a line break within a kept line at offset ${start}`,
-    )
-  }
+  // The comment line of a region that joins lines cannot go to a line of its
+  // own on a kept line, whose statements stay on it: the gap stays as written
+  // (docs/compatibility.md, A comment line after U+2028 or U+2029).
+  if (gap.breaksLine) return printAsWritten(source, start, end)
   const run = gap.leading ?? gap.trailing
   if (run === null) {
     if (ordinaryRule !== undefined && !place.atLineStart && !place.atLineEnd)

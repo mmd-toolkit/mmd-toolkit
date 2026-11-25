@@ -7197,6 +7197,47 @@ after it and the `}` stand as those of any entity, unless the `}` stands on a
 line that holds the start of such a comment line (see
 [ER](./er.md#multi-line-statements)).
 
+A line that a `;` of its text keeps together, as `title T;` or the text of a
+kanban section `S[x;]`, is printed as written with the comment line after a
+U+2028 or U+2029, whatever follows the comment line: a line of a statement, an
+empty line, or the end of the text. The comment line gets no line of its own
+there, as it does on a line that no `;` keeps (see [Title](./treemap.md#title)),
+and the formatter does not stop.
+
+[test: treemap: a title with a `;` inside, U+2028, a directive, three spaces,
+and a comment] [test: treemap: a title with a `;` inside, a directive, U+2028,
+three spaces, a comment, and an empty line] [test: treemap: a title with a `;`
+inside, a directive, U+2028, a directive, U+2028, three spaces, and a comment]
+[test: pie: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: pie: a title that ends with a `;`, U+2028, and a comment at the end of
+the text] [test: radar: a title that ends with a `;`, U+2028, a comment, and an
+empty line] [test: radar: a title that ends with a `;`, U+2028, and a comment at
+the end of the text] [test: packet: a title that ends with a `;`, U+2028, a
+comment, and an empty line] [test: packet: a title that ends with a `;`, U+2028,
+and a comment at the end of the text] [test: architecture: a title that ends
+with a `;`, U+2028, a comment, and an empty line] [test: architecture: a title
+that ends with a `;`, U+2028, and a comment at the end of the text] [test:
+wardley: a title that ends with a `;`, U+2028, a comment, and an empty line]
+[test: wardley: a title that ends with a `;`, U+2028, and a comment at the end
+of the text] [test: gitGraph: a title that ends with a `;`, U+2028, a comment,
+and an empty line] [test: gitGraph: a title that ends with a `;`, U+2028, and a
+comment at the end of the text] [test: info: a title that ends with a `;`,
+U+2028, a comment, and an empty line] [test: info: a title that ends with a `;`,
+U+2028, and a comment at the end of the text] [test: cynefin: a title that ends
+with a `;`, U+2028, a comment, and an empty line] [test: cynefin: a title that
+ends with a `;`, U+2028, and a comment at the end of the text] [test: kanban: a
+section with a `;` in its text, U+2028, a comment, and an empty line] [test:
+kanban: a section with a `;` in its text, U+2028, and a comment at the end of
+the text] [test: treemap: a title that ends with a `;`, U+2028, a comment, and
+an empty line] [test: treemap: a title that ends with a `;`, U+2028, and a
+comment at the end of the text] [test: railroad: a title that ends with a `;`,
+U+2028, and a comment at the end of the text] [test: treemap: a title that ends
+with a `;`, a space, U+2028, a directive, two spaces, a comment, and an empty
+line] [test: treemap: a title that ends with a `;`, a space, U+2029, a
+directive, two spaces, a comment, and an empty line] [test: treemap: an accTitle
+that ends with a `;`, U+2028, a directive, two spaces, a comment, and an empty
+line]
+
 In an ER diagram, what else the formatter prints on a statement of such a line,
 as the colors of a style, the words of a relationship, and the quotes of a name
 that is one plain word, is stated in [ER](./er.md#attribute-spacing). A color
