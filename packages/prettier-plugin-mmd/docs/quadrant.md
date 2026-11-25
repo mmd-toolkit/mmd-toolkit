@@ -249,20 +249,17 @@ quadrantChart %% c
 
 ### Keywords and texts
 
-The keyword of a statement and its text are separated by one space. Prettier
-prints one space between a keyword and what it takes, turning `return  x;` into
-`return x;`. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives a
-statement's keyword and text the same gap, including when they were written
-touching. A run of whitespace becomes one space, and a keyword that touches its
-text or string gets one: `x-axisL --> R` is printed `x-axis L --> R`,
-`quadrant-3C` is printed `quadrant-3 C`, `title-x` is printed `title -x`, and
-`title"T"` is printed `title "T"`. Whitespace between them is not in the Db, so
-the form is a choice: `x-axisL --> R` and `x-axis L --> R` are the same axis,
-and `quadrant-10 A` is the quadrant 1 with the text `0 A`, the same as
-`quadrant-1 0 A`, which the printed space shows. A space marks where the text
-starts, which a keyword glued to its text hides, and the documentation of
-mermaid.js writes every keyword apart from its text
-([`title`, `x-axis`, `y-axis`, and `quadrant-1` to `quadrant-4`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L13-L19)).
+The keyword of a statement and its text are separated by one space. A run of
+whitespace becomes one space, and a keyword that touches its text or string gets
+one: `x-axisL --> R` is printed `x-axis L --> R`, `quadrant-3C` is printed
+`quadrant-3 C`, `title-x` is printed `title -x`, and `title"T"` is printed
+`title "T"`. Whitespace between them is not in the Db;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its text, as Prettier prints `return  x` as `return x;`:
+`x-axisL --> R` and `x-axis L --> R` are the same axis, and `quadrant-10 A` is
+the quadrant 1 with the text `0 A`, the same as `quadrant-1 0 A`, which the
+printed space shows. A space marks where the text starts, which a keyword glued
+to its text hides.
 
 [fixture: keywords-and-texts/title-spaces] [fixture:
 keywords-and-texts/title-tab] [fixture: keywords-and-texts/axis-keyword-spaces]

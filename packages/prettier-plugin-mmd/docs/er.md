@@ -484,8 +484,11 @@ parts becomes one space.
 The parts are not aligned in columns: aligning would change every line of a
 block when one attribute changes, the width of a name cannot be counted in
 characters, and the examples in the documentation of mermaid.js are not aligned
-either. The one space, and the `?` touching its type, are the form of those
-examples. The `?` of an optional type touches the type, however it was written.
+either. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between the parts of an attribute as values that follow one another, as
+Prettier prints CSS `margin: 1px    2px;` as `margin: 1px 2px;`; the `?`
+touching its type is the form of those examples. The `?` of an optional type
+touches the type, however it was written.
 
 [fixture: attribute-spacing/optional-touching]
 
@@ -1329,8 +1332,8 @@ and `style` are not among them: `classDef-x` is printed `classDef -x`, since
 each version that accepts `classDef-x` or `style-y` draws it the same with a
 space (see
 [ER lines that the place or the whitespace decides](./compatibility.md#er-lines-that-the-place-or-the-whitespace-decides)),
-and the gap between a keyword and its text is one space
-([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)). A
+and [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its text, as Prettier prints `return  x` as `return x;`. A
 `;` that the line rule ignores does not part the keyword and the `-` either.
 
 [fixture: whitespace-between-tokens/class-then-dash-ignored-semicolon-kept]
@@ -1725,11 +1728,12 @@ erDiagram
 
 ### Subgraphs
 
-The name of a subgraph stands after one space, and the `[` of its title touches
-the name: `subgraph S [t]` is printed `subgraph S[t]`. Rule 1 gives it: the `[`
-of the title attaches to the name as the `[` of an index does (Prettier prints
-`x [ 0 ];` as `x[0];`, and the table of
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between `subgraph` and its name, as Prettier prints `return  x` as `return x;`,
+and the `[` of its title touches the name: `subgraph S [t]` is printed
+`subgraph S[t]`. Rule 1 gives that too: the `[` of the title attaches to the
+name as the `[` of an index does (Prettier prints `x [ 0 ];` as `x[0];`, and the
+table of [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints
 `service a (server) [A]` of an architecture diagram as `service a(server)[A]`),
 and [a flowchart](./flowchart.md#subgraph-header) prints it so too. mermaid.js
 reads both spellings as the same subgraph. Nothing stands inside the brackets,
@@ -1862,11 +1866,11 @@ of [How the printed form is decided](./printed-form.md) gives, so the released
 form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 One space stands between it and `direction`, where they were written apart, and
-between `direction` and the value, which is the gap between a keyword and its
-text: one space, as
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it; the value keeps the case in which it is written (`lr` stays `lr`), since a
-version that counts reads the line as entities and draws `direction tb` and
+between `direction` and the value, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its text (Prettier prints `return  x` as `return x;`); the
+value keeps the case in which it is written (`lr` stays `lr`), since a version
+that counts reads the line as entities and draws `direction tb` and
 `direction TB` differently (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -1937,12 +1941,10 @@ erDiagram
 
 Name and class lists use a comma that touches the name before it and has one
 space after it, as Prettier prints a comma where mermaid.js reads the list the
-same. The first style stands after one space: rule 1 names no mark between the
-name of a statement and its first style, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [state](./state.md#whitespace-between-tokens) and
-[requirement](./requirement.md#styles-and-classes) print the first style of a
-`style` and of a `classDef` statement after one space. For ordinary single-line
+same. The first style stands after one space:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between values that follow one another, as Prettier prints CSS
+`margin: 1px    2px` as `margin: 1px 2px`. For ordinary single-line
 property/value styles in `style` or `classDef`, put no space before the first
 colon of each style and one before its nonempty value; separate styles with a
 comma and one following space: the colon of a style is the colon of a key
