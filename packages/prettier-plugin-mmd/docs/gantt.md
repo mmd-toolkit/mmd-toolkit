@@ -20,11 +20,16 @@ organized and checked is described in
 
 The statements after the header stand one level deeper than the header, and the
 statements after a `section`, up to the next `section`, one level deeper still:
-the tasks, click statements, settings, and every other statement. The `section`
-itself stands at the first level. The tree of a Gantt chart is flat, with no
-block of statements, so the level of a statement is decided by its place among
-the others. The tasks of a section stand inside it, as the documentation of
-mermaid.js writes them in a Gantt chart and in a user journey.
+the tasks, click statements, settings, and every other statement.
+[User journeys](./journey.md#indentation) and
+[timelines](./timeline.md#indentation) place body statements and sections one
+level below the header, and section contents one level below the section;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt statements the same levels. The `section` itself stands at the first
+level. The tree of a Gantt chart is flat, with no block of statements, so the
+level of a statement is decided by its place among the others. The tasks of a
+section stand inside it, as the documentation of mermaid.js writes them in a
+Gantt chart and in a user journey.
 
 [fixture: indentation/sections-and-tasks-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
@@ -52,6 +57,11 @@ it.
 Values kept as written retain their columns. Description-body lines instead
 stand one step inside their statement, with a separate `}` at its level (see
 [Multi-line values](#multi-line-values)).
+[Class diagrams](./class.md#multi-line-values) and
+[flowcharts](./flowchart.md#multi-line-values) align the separate closing brace
+of a description block with its statement;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt description blocks the same closing brace position.
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -153,6 +163,11 @@ statements-one-per-line/description-block-between-statements] [fixture:
 statements-one-per-line/description-block-after-click]
 
 A directive between two statements on a line moves with the statement after it.
+[Radar](./radar.md#global-directives) and [XY](./xychart.md#directives) charts
+move a directive between statements to the line of the following statement when
+they split the statements across lines;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt directives the same placement.
 
 [fixture: statements-one-per-line/directive-after-statement]
 
@@ -250,7 +265,10 @@ gantt
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the body are dropped, as in the other diagram types.
+end of the body are dropped, as in the other diagram types. Prettier prints at
+most one blank line between statements and none at the start or end of a block;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the Gantt body
+the same blank-line form.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
 
@@ -258,7 +276,10 @@ An empty line between statements is kept, as one.
 
 [fixture: blank-lines/between-statements-kept-as-one]
 
-The empty lines around comment lines are handled in the same way.
+The empty lines around comment lines are handled in the same way. Prettier
+collapses consecutive blank lines to one beside comments too;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives blank lines
+around Gantt comment lines the same limit.
 
 [fixture: blank-lines/around-comment-lines]
 
@@ -498,7 +519,10 @@ task-data/colon-directive-before-first-item] [fixture:
 task-data/colon-touches-first-item] [fixture: task-data/comma-spacing] [fixture:
 task-data/tab-around-items]
 
-The whitespace at the end of the data is dropped.
+The whitespace at the end of the data is dropped. Prettier removes the spaces
+and tabs at the end of a line;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+removal at the end of task data.
 
 [fixture: task-data/trailing-whitespace-dropped]
 
@@ -518,9 +542,13 @@ and `a : 1d,` keeps its comma.
 Data of whitespace only is one empty item, and mermaid.js needs a character
 after the colon: `a : ` is a task, and `a :` is rejected. So one whitespace
 character stays after the colon, the first one as written, and the rest is
-dropped. Where a directive or another character follows on the line, the line is
-printed as written, since the whitespace is read together with it. A task that
-ends a line which stays together because of a `;` keeps that character too.
+dropped. Mermaid.js rejects a task with no character after its colon, so
+whitespace-only data retains one character;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the surplus
+spaces and tabs at the end of the line. Where a directive or another character
+follows on the line, the line is printed as written, since the whitespace is
+read together with it. A task that ends a line which stays together because of a
+`;` keeps that character too.
 
 [fixture: task-data/whitespace-only-data] [fixture:
 task-data/whitespace-only-data-then-directive] [fixture:
@@ -859,7 +887,10 @@ Commas with no item between them stay as written.
 
 [fixture: lists/empty-items-kept]
 
-The whitespace at the end of a list is dropped.
+The whitespace at the end of a list is dropped. Prettier removes the spaces and
+tabs at the end of a line;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+removal at the end of an includes or excludes list.
 
 [fixture: lists/trailing-whitespace-dropped]
 
@@ -943,6 +974,9 @@ weekday-and-weekend/day-case-one-form] [fixture:
 weekday-and-weekend/day-on-next-line]
 
 The whitespace at the end of the line is dropped, after `inclusiveEndDates` too.
+Prettier removes the spaces and tabs at the end of a line;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+removal after `weekday`, `weekend`, and `inclusiveEndDates`.
 
 [fixture: weekday-and-weekend/trailing-whitespace-dropped]
 
@@ -1056,13 +1090,22 @@ gantt
 
 A click statement is printed on one line with one space between `click`, its
 ids, and its parts, where it was written with more whitespace, a tab, or a line
-break.
+break. [Class diagrams](./class.md#whitespace-between-tokens) and
+[flowcharts](./flowchart.md#whitespace-between-tokens) print one space between
+the structural parts of a click statement where whitespace separates them;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt click statements the same gaps.
 
 [fixture: click-statements/one-space-between-parts] [fixture:
 click-statements/parts-over-lines-joined]
 
 A `,` between ids touches the ids on both sides, since a space ends the id text,
-and an empty id stays.
+and an empty id stays. Mermaid.js records empty items in the id text of a click
+call in the Db, and an empty id can name a task whose id is empty. Removing an
+empty id changes that recorded text, so empty ids stay as written.
+
+[corpus fixture: gantt/db-click-call-ids-empty-id] [corpus fixture:
+gantt/db-click-empty-id]
 
 [fixture: click-statements/ids-touch-commas]
 
@@ -1070,7 +1113,10 @@ The parts stay in the order in which they are written.
 
 [fixture: click-statements/part-order-kept]
 
-The whitespace at the end of the statement is dropped.
+The whitespace at the end of the statement is dropped. Prettier removes the
+spaces and tabs at the end of a line;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+removal at the end of a click statement.
 
 [fixture: click-statements/trailing-whitespace-dropped]
 
@@ -1085,8 +1131,10 @@ ends or before a `,`, and one space after it: `f( 1,2 )` is printed `f(1, 2)`,
 since mermaid.js splits the arguments at the `,` outside quotes and trims each
 part, and calls the function with the same arguments (see
 [Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
-The whitespace inside quotes stays, and so do arguments with an empty part;
-blank arguments are dropped.
+Prettier prints a comma with no whitespace before it and one space after it;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+spacing to commas between call arguments. The whitespace inside quotes stays,
+and so do arguments with an empty part; blank arguments are dropped.
 
 [fixture: click-statements/call-name-kept-arguments-spaced] [fixture:
 click-statements/call-arguments-spaced]
@@ -1103,7 +1151,11 @@ The string of a link is printed as written.
 [fixture: click-statements/href-string-kept]
 
 A string or an argument list written over lines is printed as written (see
-[Multi-line values](#multi-line-values)).
+[Multi-line values](#multi-line-values)). A line break inside a link string
+stays because mermaid.js records it in the URL in the Db; joining the lines
+changes the link.
+
+[corpus fixture: gantt/gram-click-href-line-feed-inside]
 
 [fixture: click-statements/string-over-lines-kept]
 
@@ -1214,6 +1266,11 @@ A block on one line follows
 In a block with a text over several lines, indent the body one level inside the
 statement and align a separate `}` with the statement: mermaid.js discards
 indentation after LF from the description.
+[Class diagrams](./class.md#multi-line-values) and
+[flowcharts](./flowchart.md#multi-line-values) align the separate closing brace
+of a description block with its statement;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt description blocks the same closing brace position.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1302,6 +1359,11 @@ it, as [pie](./pie.md#description-blocks) keeps comment-only blocks with
 comments one level inside and a separate closer at statement level, and
 [class](./class.md#empty-description-blocks) keeps the contents and line breaks
 of a block with comments or directives.
+[Class](./class.md#empty-description-blocks) and
+[sequence](./sequence.md#multi-line-values) diagrams keep the contents and line
+breaks of description blocks with comments or directives;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt blocks the same preservation.
 
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 
@@ -1354,7 +1416,12 @@ A statement that mermaid.js reads over several lines is printed on one line
 where the line break is whitespace to the lexer: after `title`, `section`, a
 setting, `weekday`, `weekend`, `includes`, `excludes`, `accTitle:`, and
 `accDescr:`, between the parts of a click statement, and around the `:` of
-`accTitle` and `accDescr`. Empty lines there are dropped too.
+`accTitle` and `accDescr`. [Sequence diagrams](./sequence.md#title) and
+[XY charts](./xychart.md#multi-line-statements) join a keyword and its value
+with one space where the lexer treats a line break as whitespace;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the keyword/value gaps in Gantt statements the same one-line form. Empty lines
+there are dropped too.
 
 [fixture: multi-line-statements/value-on-next-line-joined] [fixture:
 multi-line-statements/blank-lines-between-keyword-and-day]
@@ -1503,9 +1570,14 @@ gantt
 
 Where no rule above applies, a run of whitespace between two tokens of a
 statement becomes one space, and tokens that touch keep touching, as the braces
-of a description block. The parentheses of a call with blank arguments touch
-each other: `f(    )` is printed `f()`, since mermaid.js reads it as the same
-call. A directive between them touches both parentheses, as under
+of a description block. [Class diagrams](./class.md#whitespace-between-tokens)
+and [flowcharts](./flowchart.md#whitespace-between-tokens) print an ordinary
+token gap as one space where whitespace was written and retain contact
+otherwise;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt statements the same token gaps. The parentheses of a call with blank
+arguments touch each other: `f(    )` is printed `f()`, since mermaid.js reads
+it as the same call. A directive between them touches both parentheses, as under
 [Directives](#directives). The same holds for the parentheses with a line break
 between them, while a comment line there stays on its own line.
 
@@ -1557,8 +1629,8 @@ gantt
 ### Comments
 
 A comment starts with `%%` or `%`, where a unit starts, and runs to the end of
-the line. A comment on a line of its own stands at the level of the statements
-around it, and its text and its mark are kept as written.
+the line. A comment on a line of its own stands at the level of the statement
+after it, and its text and its mark are kept as written.
 
 [fixture: comments/lines-at-statement-level] [fixture:
 comments/directive-before-comment-line] [fixture: comments/text-kept] [fixture:
@@ -1579,6 +1651,11 @@ directives/levels-around-sections]
 
 A comment line before the header stands at the first column, and one at the end
 of the text stays on a line of its own, with the line break added.
+[Quadrant](./quadrant.md#comments) and [ishikawa](./ishikawa.md#comments)
+diagrams place a comment before the header at column one and keep a final
+comment on its own line after the last statement;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt comments the same boundary positions.
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
@@ -1625,7 +1702,11 @@ kept as written.
 A comment after a statement, or after the header, stays on the line, as written:
 one space stands before it where whitespace was written, and none where it
 touches, since the comment of a statement that touches it is read otherwise by
-mermaid.js.
+mermaid.js. [Architecture](./architecture.md#comments) and
+[cynefin](./cynefin.md#comments) diagrams print one space before an inline
+comment where spaces or tabs were written;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt inline comments the same gap.
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-keyword-statement] [fixture:
@@ -1705,7 +1786,12 @@ gantt
 A directive on a line of its own stands at the level of the statements around
 it, and a directive within a printed line is placed as in a flowchart: the gap
 is printed as without the directive, and the directive stands after its space
-and touches the unit that follows it.
+and touches the unit that follows it. [Quadrant](./quadrant.md#directives) and
+[XY](./xychart.md#directives) charts place a directive on its own line at
+statement level; within a line, they print the gap as without the directive and
+place the directive after the gap's space, touching the following unit.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt directives the same positions.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
@@ -1716,7 +1802,11 @@ directives/after-statement-at-end-of-line] [fixture:
 directives/statement-after-directive-line]
 
 When formatting splits units that were on the same line, a directive in their
-gap moves with the following unit. Keep its right-side contact or separation;
+gap moves with the following unit. [Pie](./pie.md#directives-and-semicolons) and
+[radar](./radar.md#global-directives) charts move a directive in a split gap
+with the following unit, preserving contact or separation on its right;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+Gantt directives the same placement. Keep its right-side contact or separation;
 break its left contact.
 
 [fixture: gantt/directives/split-directive-gap]
@@ -1883,7 +1973,13 @@ of accTitle] [test: U+2028 between a click id and its part]
 At the end of a title, a date format, or an axis format, U+2028 and U+2029 are
 characters of the text and no spaces or tabs: the spaces after one are left out
 with the other spaces and tabs at the end of the text, and the spaces before it
-stay.
+stay. Removing spaces and tabs after a final U+2028 or U+2029 leaves the drawing
+unchanged under
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes those spaces
+and tabs at the line end. Mermaid.js records the separator as a character of the
+title or format in the Db. A single space before it is inside the value, so
+removing it changes recorded text outside that end-trimming exception.
 
 [test: U+2028 and spaces at the end of a title] [test: U+2029 and spaces at the
 end of a date format]

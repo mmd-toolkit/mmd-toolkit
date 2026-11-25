@@ -21,6 +21,11 @@ fixture の置き方と確かめ方は、
 ヘッダーの後の文は、ヘッダーより 1 段深く置き、`section` の後の文は、
 次の `section` まで、さらに 1 段深く置きます。
 タスク、click 文、設定など、どの文も同じです。
+[journey](./journey.ja.md#インデント) と [timeline](./timeline.ja.md#インデント)
+も、本体の文と section を、ヘッダーより 1 段深く置き、section の中の文を、
+さらに 1 段深く置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、Gantt 図の文にも、
+この段を与えます。
 `section` 自体は最初の段です。
 Gantt 図の木は平らで、文のブロックがないので、文の段は、
 ほかの文の中での位置で決まります。
@@ -52,6 +57,11 @@ journey も同じです。
 原文を保つ値は行ごとの列を保ちます。
 説明本文の行は[複数行の値](#複数行の値)に従って文より 1 段深くし、
 独立した `}` は文と同じ段に置きます。
+[class](./class.ja.md#複数行の値) の図と
+[flowchart](./flowchart.ja.md#複数行の値) も、説明ブロックの独立した閉じ括弧を、
+文と同じ段に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、その閉じ括弧にも、
+この位置を与えます。
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -153,6 +163,11 @@ click 文の後ろには、同じ行に次の文を続けられます。
 [fixture: statements-one-per-line/description-block-after-click]
 
 同じ行の 2 つの文の間のディレクティブは、後ろの文と一緒に置きます。
+文を別の行に分けるときは、
+[radar](./radar.ja.md#global-directives) と [xychart](./xychart.ja.md#指令) も、
+間のディレクティブを、後ろの文と一緒に移します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+文の間のディレクティブに、この配置を与えます。
 
 [fixture: statements-one-per-line/directive-after-statement]
 
@@ -252,6 +267,10 @@ gantt
 ### 空行
 
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+Prettier は、文の間の空行を多くても 1 つにし、
+ブロックの先頭と末尾には残しません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+本体の空行にも同じ形を与えます。
 他の図種と同じ規則です。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
@@ -261,6 +280,9 @@ gantt
 [fixture: blank-lines/between-statements-kept-as-one]
 
 コメント行の周りの空行も同じに扱います。
+Prettier は、コメントの周りでも、連続する空行を 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+Gantt 図のコメント行の周りにも、同じ空行の上限を与えます。
 
 [fixture: blank-lines/around-comment-lines]
 
@@ -528,6 +550,8 @@ mermaid.js は規則を当てる前にディレクティブを取り除くので
 [fixture: task-data/tab-around-items]
 
 データの末尾の空白は落とします。
+Prettier は、行末の空白とタブを落とすので、タスクのデータの末尾にも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [fixture: task-data/trailing-whitespace-dropped]
 
@@ -549,6 +573,10 @@ mermaid.js はコロンの後に 1 文字を要求します。
 `a : ` はタスクで、`a :` は拒否されます。
 そのため、コロンの後に空白 1 文字（書かれた最初の 1 文字）を残し、
 残りは落とします。
+mermaid.js は、コロンの後に文字のないタスクを拒否するので、
+空白だけのデータにも 1 文字を残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+行末の余分な空白とタブを落とす形を与えます。
 行の続きにディレクティブなどの文字があるときは、
 空白がそれらと一緒に読まれるので、行を書かれたまま印字します。
 `;` によって分割せずに残す行の末尾にあるタスクも、その空白 1 文字を残します。
@@ -890,6 +918,9 @@ Db はどの区切りでも同じなので、区切りの種類は作者のも�
 [fixture: lists/empty-items-kept]
 
 リストの末尾の空白は落とします。
+Prettier は、行末の空白とタブを落とすので、
+includes と excludes のリストの末尾にも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [fixture: lists/trailing-whitespace-dropped]
 
@@ -977,6 +1008,9 @@ gantt
 
 行末の空白は落とします。
 `inclusiveEndDates` の後も同じです。
+Prettier は、行末の空白とタブを落とすので、`weekday` と `weekend` の文や、
+`inclusiveEndDates` の後の行末にも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [fixture: weekday-and-weekend/trailing-whitespace-dropped]
 
@@ -1090,6 +1124,11 @@ gantt
 
 click 文は、`click`、ID、部分の間に空白 1 つを置いて 1 行に印字します。
 空白が多く書かれていたり、タブや改行で書かれていたりしても同じです。
+[class](./class.ja.md#トークンの間の空白) の図と
+[flowchart](./flowchart.ja.md#トークンの間の空白) も、
+click 文の構造部分を区切る空白を、1 つにします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+click 文の部分の間にも、この空白を与えます。
 
 [fixture: click-statements/one-space-between-parts]
 [fixture: click-statements/parts-over-lines-joined]
@@ -1097,6 +1136,13 @@ click 文は、`click`、ID、部分の間に空白 1 つを置いて 1 行に�
 ID の間の `,` は両側の ID に接します。
 空白は ID の終わりだからです。
 空の ID は残します。
+mermaid.js は、click 呼び出しの ID のテキストを、
+空の項目も含めて Db に記録します。
+空の ID は、ID が空のタスクを指すこともあり、
+除くと記録されたテキストが変わるので、そのまま残します。
+
+[corpus fixture: gantt/db-click-call-ids-empty-id]
+[corpus fixture: gantt/db-click-empty-id]
 
 [fixture: click-statements/ids-touch-commas]
 
@@ -1105,6 +1151,8 @@ ID の間の `,` は両側の ID に接します。
 [fixture: click-statements/part-order-kept]
 
 文の末尾の空白は落とします。
+Prettier は、行末の空白とタブを落とすので、click 文の末尾にも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [fixture: click-statements/trailing-whitespace-dropped]
 
@@ -1120,6 +1168,9 @@ ID の間の `,` は両側の ID に接します。
 mermaid.js は引用符の外の `,` で引数を分け、各部分の両端の空白を除き、
 同じ引数で関数を呼ぶからです。
 （[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+Prettier は、`,` の前に空白を置かず、後ろに空白を 1 つ置きます。
+呼び出しの引数の `,` の前後にも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 引用符の中の空白は残し、空の部分を含む引数も書かれたままにします。
 空白だけの引数は落とします。
 
@@ -1140,6 +1191,10 @@ mermaid.js の行の規則が読むかもしれない引数の間の隙間は、
 
 複数行に書かれた文字列や引数は、
 書かれたまま印字します（[複数行の値](#複数行の値)を参照）。
+mermaid.js は、リンクの文字列の中の改行を、Db の URL に記録します。
+行をつなぐとリンクが変わるので、リンクの文字列の中の改行は残します。
+
+[corpus fixture: gantt/gram-click-href-line-feed-inside]
 
 [fixture: click-statements/string-over-lines-kept]
 
@@ -1249,6 +1304,11 @@ gantt
 本文が複数行のブロックでは、本文を文より 1 段深くし、
 独立した `}` は文と同じ段に置きます。
 mermaid.js が説明から LF 後の字下げを除くためです。
+[class](./class.ja.md#複数行の値) の図と
+[flowchart](./flowchart.ja.md#複数行の値) も、説明ブロックの独立した閉じ括弧を、
+文と同じ段に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、その閉じ括弧にも、
+この位置を与えます。
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1339,6 +1399,11 @@ Prettier は、
 コメントを 1 段内側に、独立した閉じ括弧を文の段に置き、
 [class](./class.ja.md#空の説明ブロック) は、
 コメントやディレクティブのあるブロックの内容と改行を保ちます。
+[class](./class.ja.md#空の説明ブロック) と
+[sequence](./sequence.ja.md#複数行の値) の図も、
+コメントやディレクティブのある説明ブロックで、内容と改行を保ちます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+そのようなブロックの内容と改行にも、この形を与えます。
 
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 
@@ -1392,6 +1457,10 @@ mermaid.js が複数行にわたって読む文は、
 `title`、`section`、設定、`weekday`、`weekend`、`includes`、`excludes`、
 `accTitle:`、`accDescr:` の後、click 文の部分の間、
 `accTitle` と `accDescr` の `:` の前後が該当し、そこの空行も落とします。
+[sequence](./sequence.ja.md#タイトル) と [xychart](./xychart.ja.md#複数行の文)
+も、字句解析器が空白と読む改行では、キーワードと値を、空白 1 つでつなぎます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+キーワードと値を 1 行にする形を与えます。
 
 [fixture: multi-line-statements/value-on-next-line-joined]
 [fixture: multi-line-statements/blank-lines-between-keyword-and-day]
@@ -1543,6 +1612,11 @@ gantt
 上の規則が当てはまらない所では、文のトークンの間の空白の連続は空白 1 つにし、
 接しているトークンは接したままにします。
 説明ブロックの括弧が該当します。
+[class](./class.ja.md#トークンの間の空白) の図と
+[flowchart](./flowchart.ja.md#トークンの間の空白) も、通常のトークンの隙間は、
+空白があれば 1 つにし、接していればそのままにします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+文のトークンの間にも、この形を与えます。
 引数が空白だけの呼び出しの括弧は互いに接し、`f(    )` は `f()` になります。
 mermaid.js はどちらも同じ呼び出しとして読むからです。
 括弧の間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおり、
@@ -1600,7 +1674,7 @@ gantt
 ### コメント
 
 コメントは、単位が始まる所の `%%` か `%` で始まり、行末まで続きます。
-単独の行のコメントは周りの文と同じ段に置き、テキストと印は書かれたまま残します。
+単独の行のコメントは次の文と同じ段に置き、テキストと印は書かれたまま残します。
 
 [fixture: comments/lines-at-statement-level]
 [fixture: comments/directive-before-comment-line] [fixture: comments/text-kept]
@@ -1621,6 +1695,11 @@ gantt
 
 ヘッダーより前のコメント行は 1 桁目に置き、テキストの末尾のコメント行は、
 改行を足して自分の行に残します。
+[quadrant](./quadrant.ja.md#コメント) と [ishikawa](./ishikawa.ja.md#comments)
+の図も、ヘッダーより前のコメントを 1 桁目に置き、末尾のコメントを、
+最後の文の後の独立した行に残します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+ヘッダー前と末尾のコメントにも、この配置を与えます。
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
@@ -1664,6 +1743,11 @@ mermaid.js は、その `%%{` を、前の空白が 1 文字か、
 文やヘッダーの後ろのコメントは、書かれたとおり行に残します。
 空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
 接している文のコメントは mermaid.js が別に読むことがあるからです。
+[architecture](./architecture.ja.md#comments) と
+[cynefin](./cynefin.ja.md#comments) の図も、
+同じ行のコメントの前に空白やタブがあれば、空白 1 つにします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+同じ行のコメントの前にも、この隙間を与えます。
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-keyword-statement]
@@ -1745,6 +1829,12 @@ gantt
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
+[quadrant](./quadrant.ja.md#指令) と [xychart](./xychart.ja.md#指令) の図も、
+単独の行のディレクティブを、文と同じ段に置きます。
+同じ行の中では、ディレクティブがないものとして隙間を印字し、
+その空白の後ろにディレクティブを置いて、後ろの単位に接します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+ディレクティブにも、この位置を与えます。
 
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
@@ -1756,6 +1846,12 @@ gantt
 
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
+単位を別の行に分けるときは、
+[pie](./pie.ja.md#directives-and-semicolons) と
+[radar](./radar.ja.md#global-directives) も、間のディレクティブを、
+次の単位と一緒に移し、右側の接触か分離を保ちます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+分けた隙間のディレクティブに、この配置を与えます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: gantt/directives/split-directive-gap]
@@ -1925,6 +2021,13 @@ U+2028 と U+2029 は、Gantt 図の単位の間の空白であり、
 タイトル、日付書式、軸の書式の末尾では、
 U+2028 と U+2029 は空白やタブではなくテキストの文字なので、
 その後の空白はテキスト末尾のほかの空白とタブと一緒に除き、前の空白は残します。
+末尾の U+2028 や U+2029 の後の空白とタブは、
+[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+に従って除いても、図が変わらないので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、行末から落とす形を与えます。
+mermaid.js は、区切り文字を、タイトルや書式の Db に文字として記録します。
+区切り文字の前の空白 1 つを消すと、値の中のテキストが変わり、
+末尾の空白を除く例外には収まりません。
 
 [test: U+2028 and spaces at the end of a title]
 [test: U+2029 and spaces at the end of a date format]
