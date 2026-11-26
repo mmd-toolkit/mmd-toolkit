@@ -689,9 +689,12 @@ wardley-beta
 ### Evolution
 
 Attach @ on both sides and put one ordinary space around / and each stage arrow
-->. Preserve optional boundaries, second names, empty quoted names and source
-stage order. The annotation mark is tight and the alternatives are separated,
-without filling missing values; bare title retains Name boundaries.
+->. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
+around `/` and `->`, each a mark between two things, as under [Links](#links):
+Prettier prints `x = a/b` as `x = a / b;`. Preserve optional boundaries, second
+names, empty quoted names and source stage order. The annotation mark is tight
+and the alternatives are separated, without filling missing values; bare title
+retains Name boundaries.
 
 [fixture: wardley/evolution/stage-all-gaps]
 
