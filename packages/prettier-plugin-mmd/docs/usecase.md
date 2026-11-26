@@ -48,10 +48,9 @@ usecase/div-comment-preheader-bare]
 
 ### Header
 
-Reuse the visible header convention of [C4](./c4.md#header): put exact
-lower-case `usecase-beta` at column one and place the body below it, so the
-diagram starts visibly. Exterior ASCII spaces/tabs disappear; direction remains
-a separate statement. Trailing ASCII spaces and tabs disappear under
+Put exact lower-case `usecase-beta` at column one and place the body below it,
+so the diagram starts visibly. Exterior ASCII spaces/tabs disappear; direction
+remains a separate statement. Trailing ASCII spaces and tabs disappear under
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) because they are at
 the end of the header line. A header alone is accepted and gains the ordinary
 final newline; case, stable-header and inline-body failures follow the shared

@@ -19,10 +19,11 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 `eventmodeling` は第 1 列に置き、普通の最初の文を次の行へ移して、
 見出しを見つけやすくします。
 文が置かれる位置（行頭）は規則 1 の場所ではないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+最初の文を置く行を決めます。
 [wardley](./wardley.ja.md#見出し)、[cynefin](./cynefin.ja.md#header)、
 [architecture](./architecture.ja.md#header)、[packet](./packet.ja.md#header)も、
-見出しを第 1 列に置き、普通の最初の文を次の行に置きます。
+普通の最初の文を次の行に置きます。
 隠れた形、保持する前置部分、保護行は共有の規則に従い、
 見出しの行が保つ行なら最初の文もその行に残します。
 同じ項目を図種の間で同じように扱うためです。

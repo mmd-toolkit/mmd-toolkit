@@ -10,14 +10,11 @@ escaped fixed tests.
 
 ### Header
 
-Keep the authored `packet` or `packet-beta` keyword at column one. The header of
-an [info](./info.md#header) diagram also starts at column one.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the packet header the same placement. Move an ordinary first statement below it,
-as in the other diagram types. Only `packet` requires a following boundary;
-never create a glued spelling. Hidden boundaries and protected header/body
-groups take precedence. Keep the authored synonym: some versions that count read
-`packet-beta` only (see
+Keep the authored `packet` or `packet-beta` keyword at column one. Move an
+ordinary first statement below it, as in the other diagram types. Only `packet`
+requires a following boundary; never create a glued spelling. Hidden boundaries
+and protected header/body groups take precedence. Keep the authored synonym:
+some versions that count read `packet-beta` only (see
 [The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 

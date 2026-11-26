@@ -32,12 +32,7 @@ not once composites nest deeply, and it is how the documentation of mermaid.js
 writes them, as the other diagrams nest their blocks (see
 [Indentation](./flowchart.md#indentation) in the flowchart rules). The header,
 and a comment line before it, stand at the first column, also where whitespace
-was written before them. A gap of a kind that Prettier does not have takes the
-form that the other diagram types print for it
-([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)), and
-every diagram type prints its header at the first column: the Indentation of
-[Gantt](./gantt.md#indentation) and of [user journey](./journey.md#indentation)
-say so.
+was written before them.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/composite-body-one-level-deeper-end-at-the-level-of-block] [fixture:

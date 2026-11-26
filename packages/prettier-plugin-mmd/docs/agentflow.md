@@ -33,10 +33,9 @@ syntax repair, and the specification already defines the exceptional readings.
 
 ### Header
 
-[Direction](./flowchart.md#direction) supplies the same column-one header
-policy: the header is easy to find. Unlike the header of a flowchart, a header
-direction `TD` is printed `TB`, the direction that the examples in the
-documentation of mermaid.js use (10 times, and `TD` never; see
+The header stands at column one, so it is easy to find. Unlike the header of a
+flowchart, a header direction `TD` is printed `TB`, the direction that the
+examples in the documentation of mermaid.js use (10 times, and `TD` never; see
 [The direction of a header](./compatibility.md#the-direction-of-a-header)): the
 diagram type is later than the version of mermaid.js that made `TD` behave as
 `TB`, so every version that counts and reads it draws the two the same (see

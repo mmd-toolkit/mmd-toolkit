@@ -34,11 +34,6 @@ mermaid.js の文書もそう書き、
 ほかの図もブロックを入れ子にします（flowchart
 の[字下げ](./flowchart.ja.md#字下げ)を参照）。
 ヘッダーと、その前のコメント行は、前に空白が書かれていても 1 列目に置きます。
-Prettier にない種類の隙間は、ほかの図種が印字する形にします。
-これが[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
-どの図種も、ヘッダーを 1 列目に印字します。
-[Gantt](./gantt.ja.md#インデント)のインデント、
-[ユーザージャーニー](./journey.ja.md#インデント)のインデントがそう書いています。
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/composite-body-one-level-deeper-end-at-the-level-of-block]

@@ -18,9 +18,9 @@ Markdown のコードブロックでは Markdown 側に任せます。
 `treeView-beta` を第 1 列に置き、普通の本文は次の行へ移します。
 見出しを独立させ、末尾の空白、同じ行の名前や拒否される綴りは修復しません。
 [kanban](./kanban.ja.md#ヘッダー) と [C4](./c4.ja.md#ヘッダー) も、
-見出しを第 1 列に置き、普通の本文を後の行に置きます。
+普通の本文を後の行に置きます。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-treeView にも同じ配置を与えます。
+treeView の本文にも同じ配置を与えます。
 空の本文は空のままとし、接するディレクティブの境界を保ちます。
 
 [fixture: treeview/header/header-leading]

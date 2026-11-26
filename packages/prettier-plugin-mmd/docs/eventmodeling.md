@@ -18,10 +18,10 @@ data boundaries constrain the line and indentation plan before it is printed.
 Keep `eventmodeling` at column one and move an ordinary first statement to the
 next line, making the header easy to find. Where a statement stands is no place
 of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [wardley](./wardley.md#header), [cynefin](./cynefin.md#header),
-[architecture](./architecture.md#header), and [packet](./packet.md#header) print
-the header at column one and an ordinary first statement on the next line.
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the first statement its line: [wardley](./wardley.md#header),
+[cynefin](./cynefin.md#header), [architecture](./architecture.md#header), and
+[packet](./packet.md#header) print an ordinary first statement on the next line.
 Hidden forms, retained prefixes and protected lines use their shared rules: when
 the header line is kept, its first statement stays on that line. This gives
 diagram types the same treatment. A first common statement retains its original

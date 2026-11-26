@@ -10,8 +10,7 @@
 
 ### Header
 
-XY chart の[ヘッダーと向き](./xychart.ja.md#ヘッダーと向き) を再利用します。
-ほかの図種と同じく、正確な小文字の `pie` を先頭列に置きます。
+正確な小文字の `pie` を先頭列に置きます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 `pie` と書かれた `showData` の間に空白 1 つを与えます。
 Prettier が `return  x` を `return x;` と印字するためです。

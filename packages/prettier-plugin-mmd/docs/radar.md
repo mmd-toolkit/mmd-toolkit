@@ -14,16 +14,16 @@ preserved text and differences from mermaid.js.
 Print `radar-beta` at column one and put an ordinary first statement on the next
 line so the heading is easy to find. Where a statement stands is no place of
 rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [pie](./pie.md#header), [packet](./packet.md#header),
-[architecture](./architecture.md#header), [treemap](./treemap.md#header),
-[cynefin](./cynefin.md#header), and [gitgraph](./gitgraph.md#header) print the
-header at column one and an ordinary first statement on the next line, where no
-other rule keeps the boundary as written, as the hidden forms, global trivia and
-protected semicolon segments below do. A colon right after the header word is
-removed, together with the whitespace before it: mermaid.js reads `radar-beta:`
-and `radar-beta` as the same header, and the examples in its documentation write
-the header without the colon 3 times against none (see
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the first statement its line, as [pie](./pie.md#header),
+[packet](./packet.md#header), [architecture](./architecture.md#header),
+[treemap](./treemap.md#header), [cynefin](./cynefin.md#header), and
+[gitgraph](./gitgraph.md#header) print an ordinary first statement on the next
+line, where no other rule keeps the boundary as written, as the hidden forms,
+global trivia and protected semicolon segments below do. A colon right after the
+header word is removed, together with the whitespace before it: mermaid.js reads
+`radar-beta:` and `radar-beta` as the same header, and the examples in its
+documentation write the header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
