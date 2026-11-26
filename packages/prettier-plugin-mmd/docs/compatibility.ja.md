@@ -5388,8 +5388,8 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   [fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-over-lines]
   [fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-on-a-kept-line]
 
-- agentflow、C4、class、Gantt、ユーザージャーニー、quadrant、requirement、
-  sequence、state、timeline、XY チャートの図と、
+- agentflow、C4、Gantt、ユーザージャーニー、quadrant、requirement、sequence、
+  state、timeline、XY チャートの図と、ブロックが最後の文である class の図と、
   対象にする版のうち最も古い版が読む pie と gitGraph の図で、
   同じ行の `}` の後にコメントがある場合です。
   これらの図種は、コロンの形の本文の一部として `%%` を読むため、
@@ -5399,6 +5399,9 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   両方の形の説明が `a` になり、ブロックをコロンの形で印字します。
   ER、flowchart、swimlane、ユースケースの図は、
   後ろにコメントがあるブロックを拒否します。
+  class の図も、ブロックの後に文が続くと、
+  空行やコメント行をはさんでも拒否します。
+  コメントが、その文に要る改行まで取り込むためです。
 
   [fixture: agentflow/accessibility/block-then-comment-kept]
   [fixture: c4/statements-one-per-line/description-comment-adjacency]

@@ -5366,16 +5366,19 @@ block holds, or would not be read as the block is:
   [fixture:
   flowchart/accessibility-lines/block-with-directive-before-the-text-on-a-kept-line]
 
-- A comment follows the `}` on its line, in an agentflow, C4, class, Gantt, user
+- A comment follows the `}` on its line, in an agentflow, C4, Gantt, user
   journey, quadrant, requirement, sequence, state, timeline, or XY chart
-  diagram, or, for the oldest version that counts, in a pie chart or a gitGraph.
-  These diagram types take the `%%` as part of the text of the form with the
-  colon, so `accDescr: a %% c` has the description `a %% c`, while the block
+  diagram, in a class diagram where the block is the last statement, or, for the
+  oldest version that counts, in a pie chart or a gitGraph. These diagram types
+  take the `%%` as part of the text of the form with the colon, so
+  `accDescr: a %% c` has the description `a %% c`, while the block
   `accDescr {a} %% c` has `a`. In the other diagram types that end the text of
   the form with the colon before a `%%` (the next but one sentence), both forms
   have `a`, and the block is printed in the form with the colon. An ER,
   flowchart, swimlane, or use case diagram rejects a block with a comment after
-  it.
+  it, and so does a class diagram where a statement follows the block, also
+  after an empty line or a comment line: the comment takes the line break that
+  the statement needs.
 
   [fixture: agentflow/accessibility/block-then-comment-kept] [fixture:
   c4/statements-one-per-line/description-comment-adjacency] [fixture:
