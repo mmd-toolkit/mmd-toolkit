@@ -981,7 +981,8 @@ U+2028、U+2029、`%% d`）、mermaid.js が描く SVG は、
 ## 同じに描かれるスタイル
 
 flowchart、agentflow、class、state、block、usecase の `style`、`classDef`、
-`linkStyle` の文は、ER や requirement と同じ形でスタイルを印字します。
+`linkStyle` の文と、treemap の `classDef` の文は、
+ER や requirement と同じ形でスタイルを印字します。
 スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
 後ろに空白を 1 つ置きます。
 スタイルの間の `,` の前にも空白を置かず、後ろに空白を 1 つ置きます。
@@ -998,6 +999,7 @@ swimlane 図のスタイルでは、語と語の間の空白とタブの連続�
 [fixture: state/whitespace-between-tokens/style-colon-spaced]
 [fixture: block/styles/style-colon-spaced]
 [fixture: usecase/classes-and-styles/css-colon-padding]
+[fixture: treemap/colors/colors-in-lower-case]
 
 mermaid.js はこの空白を Db に残すので、印字したテキストの Db は、
 書かれたテキストの Db と違いますが、描かれる図は同じです。
@@ -3621,6 +3623,167 @@ mermaid.js は、その両側の空白を合わせて字下げとして読み、
 [test: a member in the body of a class diagram that starts with a directive that holds a line break, and the same text without the directive]
 [test: a member in the body of a class diagram that starts with a directive that holds a semicolon, and the same text without the directive]
 [test: a member line of a class diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the title of a radar chart that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of a radar chart that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a packet diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of a packet diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of an architecture diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of an architecture diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a gitGraph that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of a gitGraph that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a cynefin diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of a cynefin diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a treemap that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of a treemap that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a treeView that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of a treeView that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of an info diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of an info diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a railroad diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of a railroad diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a railroad diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the title of a user journey that starts with a directive that holds a line break, and the same text without the directive]
+[test: the title of a timeline that starts with a directive that holds a line break, and the same text without the directive]
+[test: the title of a C4 diagram that starts with a directive and a space, and the same text without the directive]
+[test: the title of a C4 diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: the title of a C4 diagram that starts with a directive and a tab, and the same text without the directive]
+[test: the title of a C4 diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: the title of a C4 diagram that starts with a directive and nothing, and the same text without the directive]
+[test: the title of a C4 diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a C4 diagram that starts with two directives that touch, and the same text without the directive]
+[test: the title of a C4 diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: the title of a C4 diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of a gitGraph that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of a gitGraph that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of a gitGraph that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of a gitGraph that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of a gitGraph that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a gitGraph that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of a gitGraph that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of a gitGraph that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of a gitGraph that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of a gitGraph that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of a radar chart that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of a radar chart that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of a radar chart that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of a radar chart that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of a radar chart that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a radar chart that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of a radar chart that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of a radar chart that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of a radar chart that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of a radar chart that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of a packet diagram that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of a packet diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of a packet diagram that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of a packet diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of a packet diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a packet diagram that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of a packet diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of a packet diagram that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of a packet diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of a packet diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of an architecture diagram that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of an architecture diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of an architecture diagram that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of an architecture diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of an architecture diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of an architecture diagram that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of an architecture diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of an architecture diagram that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of an architecture diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of an architecture diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of a cynefin diagram that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of a cynefin diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of a cynefin diagram that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of a cynefin diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of a cynefin diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a cynefin diagram that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of a cynefin diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of a cynefin diagram that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of a cynefin diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of a cynefin diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of a treemap that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of a treemap that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of a treemap that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of a treemap that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of a treemap that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a treemap that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of a treemap that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of a treemap that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of a treemap that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of a treemap that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of a Wardley map that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of a Wardley map that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of a Wardley map that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of a Wardley map that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of a Wardley map that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a Wardley map that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of a Wardley map that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of a Wardley map that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of a Wardley map that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of a Wardley map that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of a treeView that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of a treeView that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of a treeView that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of a treeView that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of a treeView that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a treeView that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of a treeView that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of a treeView that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of a treeView that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of a treeView that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of an info diagram that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of an info diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of an info diagram that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of an info diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of an info diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of an info diagram that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of an info diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of an info diagram that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of an info diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of an info diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of a railroad diagram that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of a railroad diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of a railroad diagram that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of a railroad diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of a railroad diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a railroad diagram that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of a railroad diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of a railroad diagram that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of a railroad diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of a railroad diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of an agentflow diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of an ishikawa diagram that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of an ishikawa diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of an ishikawa diagram that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of an ishikawa diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of an ishikawa diagram that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of an ishikawa diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of an ishikawa diagram that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of an ishikawa diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of an ishikawa diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of a use case diagram that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of a use case diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of a use case diagram that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of a use case diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of a use case diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a use case diagram that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of a use case diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of a use case diagram that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of a use case diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of a use case diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the link text of a Wardley map that starts with a directive and a space, and the same text without the directive]
+[test: the link text of a Wardley map that starts with a directive and two spaces, and the same text without the directive]
+[test: the link text of a Wardley map that starts with a directive and a tab, and the same text without the directive]
+[test: the link text of a Wardley map that starts with a directive and a no-break space, and the same text without the directive]
+[test: the link text of a Wardley map that starts with a directive and nothing, and the same text without the directive]
+[test: the link text of a Wardley map that starts with two directives with a space between them, and the same text without the directive]
+[test: the link text of a Wardley map that starts with two directives that touch, and the same text without the directive]
+[test: the link text of a Wardley map that starts with a directive that holds a line break, and the same text without the directive]
+[test: the link text of a Wardley map that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the label of an axis of a quadrant chart that starts with a directive that holds a line break, and the same text without the directive]
+[test: the right label of an axis of a quadrant chart that starts with a directive that holds a line break, and the same text without the directive]
 
 書かれたテキストと、書かれたままではないセルの印字したテキストを、
 各行のテキスト 1 つと上に挙げた各文字について、その図種で数える版で描き、
@@ -9086,7 +9249,10 @@ usecase は書かれた AST に従います。
 [fixture: usecase/frontmatter-yaml/frontmatter-zero]
 
 図固有の `@{...}` メタデータは解析と検証を行う構文です。
-構造の空白だけを変え、書かれた区切り、空行、綴り、順序、重複をすべて保ちます。
+変えるのは構造の空白と、キーとスカラーの引用符だけです。
+引用符は [Quotes](./usecase.ja.md#quotes) のとおりに印字し、
+`'icon' : 'person'` は `icon: "person"` になります。
+書かれた区切り、空行、順序、重複は、すべて保ちます。
 JSON の表データは不透明で、数とエスケープの綴り、プロパティの順序も含みますが、
 先頭部分の `{` は `@` に接し、
 対象となる余白は [JSON の表](./usecase.ja.md#json-tables) に従います。
@@ -9103,6 +9269,8 @@ usecase の CSS 宣言の単語間の連なりは、空白 1 つにします。
 [fixture: usecase/json-tables/json-opaque]
 [fixture: usecase/classes-and-styles/css-colon-padding]
 [fixture: usecase/classes-and-styles/css-custom-gap-run-collapsed]
+[fixture: usecase/native-metadata/metadata-inline]
+[fixture: usecase/native-metadata/metadata-quote-spelling]
 
 共通コメント領域と改行の処理後、最後のプロパティから `}` までの、
 末尾コンマと物理改行の合計は 2 個以下で、コンマは改行の前にだけ置けます。
@@ -10391,8 +10559,12 @@ Wardley 図で対象にする 4 つの版で描くと、どの版でも SVG は�
 
 flow の内部は空ラベル、バックスラッシュ、継続行の列を含め、
 書かれたまま保ちます。
-リンクの文法上のラベル開始 `;` は前の部品に付け、後ろは物理行末まで保ちます。
-空白だけのラベルと末尾余白も含み、裸の `;` は拒否されます。
+リンクの文法上のラベル開始 `;` は前の部品に付け、後ろは物理行末までラベルです。
+空白だけのラベルは書かれたまま残し、テキストのあるラベルでは、両端も含めて、
+空白とタブの連なりを空白 1 つで印字します。
+詳しくは [セミコロンのラベル](./wardley.ja.md#セミコロンのラベル)
+を参照してください。
+裸の `;` は拒否されます。
 共有のテキストの前置部分保護はその開始印を除外します。
 後続のセミコロンは区間と交差する値と注釈類全体を保護します。
 Db に影響するのが片方だけでも、両ラベルとポートを残します。
