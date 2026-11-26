@@ -548,8 +548,10 @@ A block on one line is printed with one space inside each end, as in
 [Data blocks](./flowchart.md#data-blocks): `A@{ticket: X}` becomes
 `A@{ ticket: X }`. Where its line is too long it prints on lines, one entry on
 each, under the conditions listed there, which a node text that fills the line
-before the block does not meet. The block stays as written in the cases listed
-there.
+before the block does not meet, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). The
+block stays as written in the cases listed there.
 
 [fixture: data-blocks/long-split] [fixture:
 data-blocks/long-prefix-too-long-kept] [fixture: data-blocks/one-line-padded]
@@ -1413,7 +1415,8 @@ line breaks and contents with only the eligible uniform margin change.
 their lines, since a bare node cannot be wrapped without becoming other nodes,
 and a value is text. A data block on one line is the exception: where its line
 is wider than `printWidth`, it prints on lines under the conditions of
-[Data blocks](#data-blocks).
+[Data blocks](#data-blocks), a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form).
 
 [fixture: multi-line-values/long-line-kept] [fixture:
 multi-line-values/small-print-width]
