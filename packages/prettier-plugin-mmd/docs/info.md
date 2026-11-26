@@ -74,10 +74,14 @@ info
 ### Statements one per line
 
 Move an ordinary first common statement below the header and print common
-statements one per line, in written order with every occurrence. Empty titles,
-accessibility lines and description blocks remain statements even though the
-public Db is empty. A keyword already consumed by a line value remains value
-text. Hidden boundaries and protected groups take precedence.
+statements one per line, in written order with every occurrence:
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form, as a [flowchart](./flowchart.md#statements-one-per-line) and an
+[ER diagram](./er.md#statements-one-per-line) print each statement on a line of
+its own, also one written on the line of the header. Empty titles, accessibility
+lines and description blocks remain statements even though the public Db is
+empty. A keyword already consumed by a line value remains value text. Hidden
+boundaries and protected groups take precedence.
 
 [fixture: info/statements-one-per-line/first-title-inline]
 
