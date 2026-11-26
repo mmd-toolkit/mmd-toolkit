@@ -1313,8 +1313,7 @@ The marker of an icon is read in any case, and the printer keeps the case
 written (`::ICON(x)`, `::Icon(y)`). Words that are statements in other diagram
 types, `title`, `accTitle`, `accDescr`, `style`, `classDef`, `columns`, `space`,
 `end`, and the C4 words (`C4Container`), are ordinary node text here and are
-printed as written. Nothing is changed in the case, as in
-[mindmap](./mindmap.md#keyword-case).
+printed as written. Nothing is changed in the case.
 
 [fixture: keyword-case/icon-case] [fixture: keyword-case/case-lower-icon]
 [fixture: keyword-case/lower-case-header] [fixture:
@@ -1350,9 +1349,14 @@ the `---` lines are kept as written, as in the other diagram types (see
 YAML, one whose `---` lines are indented, one that holds a `<` which may start
 an HTML tag, and one whose formatted YAML would hold a `---` line stay as
 written. Whitespace after the closing `---` stays too. A comment or a directive
-between the frontmatter and the header stays, and the board after it is
-formatted as usual. YAML formatting does not reach a data block; only its
-eligible margins move (see [Data blocks](#data-blocks)).
+between the frontmatter and the header stays, at the first column, as a comment
+line before the header does in [gantt](./gantt.md#comments),
+[requirement](./requirement.md#comments), [block](./block.md#comments), and
+[journey](./journey.md#comments), and a directive before the header does in
+[block](./block.md#directives)
+([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)); the
+board after it is formatted as usual. YAML formatting does not reach a data
+block; only its eligible margins move (see [Data blocks](#data-blocks)).
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/frontmatter-malformed] [fixture:
@@ -1360,7 +1364,8 @@ frontmatter-yaml/frontmatter-indented-kept] [fixture:
 frontmatter-yaml/frontmatter-html-tag-kept] [fixture:
 frontmatter-yaml/delimiter-line-kept] [test: kanban:
 closing-delimiter-whitespace-kept] [fixture:
-frontmatter-yaml/comment-and-directive]
+frontmatter-yaml/comment-and-directive] [fixture:
+frontmatter-yaml/comment-and-directive-indented]
 
 Input
 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/kanban/frontmatter-yaml/formatted-input.mmd)):
