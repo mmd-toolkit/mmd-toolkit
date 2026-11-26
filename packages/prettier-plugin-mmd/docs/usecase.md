@@ -1307,13 +1307,12 @@ usecase-beta
 ### Blank lines
 
 Reuse [class blank grouping](./class.md#blank-lines): collapse ordinary blank
-runs to one and drop diagram/boundary-edge blanks, because one blank separates
-groups and more add nothing. ASCII space/tab-only lines are ordinary blanks,
-including after native bare comments and around standalone directives. Values,
-native metadata, JSON, directives and protected common-region joins keep their
-own blank lines. A blank line inside a markdown label is part of the label that
-mermaid.js keeps in the Db, and removing it is no kind of change of the Db that
-formatting may make (see
+runs to one and drop diagram/boundary-edge blanks. ASCII space/tab-only lines
+are ordinary blanks, including after native bare comments and around standalone
+directives. Values, native metadata, JSON, directives and protected
+common-region joins keep their own blank lines. A blank line inside a markdown
+label is part of the label that mermaid.js keeps in the Db, and removing it is
+no kind of change of the Db that formatting may make (see
 [The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
 No C4 recovery-gap or Ishikawa blank-pairing rule is imported.
 
@@ -1626,14 +1625,14 @@ that touch, and a line of whitespace after the text of an accTitle line]
 ### Frontmatter YAML
 
 Reuse [guarded frontmatter](./flowchart.md#frontmatter-yaml): safe configuration
-benefits from YAML formatting, while malformed bodies, indented delimiters, HTML
-tag starts in written/formatted YAML and formatted delimiter hazards retain
-their reading. Keep delimiters and closing padding, comments and directives
-before the header; frontmatter title is not an accessibility statement, and
-usecase clears the common title at this pin. YAML uses the shared positive
-minimum even with `tabWidth: 0`, while the body remains zero. HTML
-cross-frontmatter cases use the specified body-only reading without rewriting
-body quotes to imitate raw Mermaid.
+is formatted as YAML, while malformed bodies, indented delimiters, HTML tag
+starts in written/formatted YAML and formatted delimiter hazards retain their
+reading. Keep delimiters and closing padding, comments and directives before the
+header; frontmatter title is not an accessibility statement, and usecase clears
+the common title at this pin. YAML uses the shared positive minimum even with
+`tabWidth: 0`, while the body remains zero. HTML cross-frontmatter cases use the
+specified body-only reading without rewriting body quotes to imitate raw
+Mermaid.
 
 [fixture: frontmatter-yaml/frontmatter-safe] [corpus fixture:
 usecase/div-frontmatter-malformed] [fixture:

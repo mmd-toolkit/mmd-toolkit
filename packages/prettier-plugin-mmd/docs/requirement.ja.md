@@ -40,6 +40,7 @@ requirement の文とフィールドと `}` に、この字下げを与えるの
 [fixture: indentation/written-indentation-dropped]
 
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
+1 桁目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 
 [fixture: indentation/header-leading-whitespace]
 
@@ -108,7 +109,7 @@ requirementDiagram
 ### 本体
 
 注釈類を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
-本文がさらに 1 段深く見えるようにします。
+本文はさらに 1 段深くなります。
 その行をまたぐ値や保護された原文の境界は変えません。
 
 [fixture: bodies/header-completion-after-comment]
@@ -882,7 +883,10 @@ requirementDiagram
 requirement の図には文を区切るものがなく、
 mermaid.js は同じ行に続く文を読みます。
 1 行に 2 つの文があると読みにくいため、各文は 1 行に 1 つ置きます。
-ほかの図種も 1 行に 1 つの文を印字します。
+[flowchart](./flowchart.ja.md#1-行に-1-文)、
+[sequence](./sequence.ja.md#1-行に-1-文)、
+[state](./state.ja.md#1-行に-1-文) の図も、1 行に 1 つの文を印字します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの形を与えます。
 `}` の後ろの文、
 ヘッダーの後ろや `}` か文字列で終わる文の後ろの空の説明ブロック、
 `style`・`classDef`・`class` 文の行末の文字列が始める文が、

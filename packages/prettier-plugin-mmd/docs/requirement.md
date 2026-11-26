@@ -44,7 +44,7 @@ was indented with.
 [fixture: indentation/written-indentation-dropped]
 
 The header stands at the first column, also where whitespace was written before
-it.
+it. A header at the first column is easier to find than an indented one.
 
 [fixture: indentation/header-leading-whitespace]
 
@@ -871,11 +871,15 @@ requirementDiagram
 
 Nothing separates two statements of a requirement diagram, and mermaid.js reads
 statements that follow one another on a line. A line of two statements is hard
-to read, and the other diagram types print one statement on a line too. Each
-statement is printed on a line of its own: a statement after the `}` of a body,
-an empty description block after the header or after a statement that ends with
-a `}` or with a string, and the statement that a string at the end of a `style`,
-`classDef`, or `class` statement starts.
+to read, and [flowchart](./flowchart.md#statements-one-per-line),
+[sequence](./sequence.md#statements-one-per-line), and
+[state](./state.md#statements-one-per-line) diagrams print one statement on a
+line too;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form. Each statement is printed on a line of its own: a statement after the
+`}` of a body, an empty description block after the header or after a statement
+that ends with a `}` or with a string, and the statement that a string at the
+end of a `style`, `classDef`, or `class` statement starts.
 
 [fixture: statements-one-per-line/header-then-empty-description-block] [fixture:
 statements-one-per-line/after-closing-brace] [fixture:

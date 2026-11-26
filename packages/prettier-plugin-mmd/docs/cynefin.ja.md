@@ -12,6 +12,7 @@ cynefin-beta と cynefin-beta: の整形規則です。
 ### Header
 
 cynefin-beta は第 1 列に置きます。
+第 1 列の見出しは、字下げした見出しより見つけやすくなります。
 
 見出しの語の直後のコロンは削除します。
 mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読み、
@@ -220,7 +221,7 @@ cynefin-beta
 
 ### Component spacing
 
-同じ行に残る普通の領域と項目の部品は空白 1 個で分け、部品を見分けやすくします。
+同じ行に残る普通の領域と項目の部品は空白 1 個で分けます。
 同じ印字行の中の大域的なディレクティブは、
 [大域的なディレクティブ](#global-directives) のとおりに置きます。
 行に分ける所も同じです。

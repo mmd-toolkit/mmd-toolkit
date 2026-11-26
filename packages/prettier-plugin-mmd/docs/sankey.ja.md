@@ -20,6 +20,7 @@ fixture の置き方と確かめ方は、
 
 ヘッダー、記録、コメント行、指令の行は、
 `useTabs` と `tabWidth` の指定に関わらず、すべて 1 列目に置きます。
+1 列目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 sankey は CSV の形の記録の並びで、その行のうち 2 種類は字下げできません。
 mermaid.js は引用符の前の空白を拒否するので、
 文字列で始まる記録は字下げできません。
@@ -27,7 +28,6 @@ mermaid.js は引用符の前の空白を拒否するので、
 それはコンマのない欄として拒否されます（diagrams/sankey.md、
 「文字」と「図と記録」）。
 タブはどこでも拒否されるので、ほかの行をタブで字下げすることもできません。
-すべての行を 1 列目にすれば、列が混ざりません。
 
 [fixture: indentation/header-and-records-at-the-first-column]
 [fixture: indentation/quoted-first-record-at-the-first-column]

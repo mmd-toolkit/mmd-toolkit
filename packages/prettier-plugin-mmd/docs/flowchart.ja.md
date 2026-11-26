@@ -856,8 +856,7 @@ flowchart LR
 ### 空行
 
 連続する空行は 1 つの空行にします。
-Prettier がコードでそうするのと同じで、空行は文をまとまりにし、
-2 つ以上は何も足さないからです。
+Prettier がコードでそうするのと同じです。
 
 [fixture: blank-lines/single-kept] [fixture: blank-lines/whitespace-only-lines]
 [fixture: blank-lines/inside-multi-line-statement]

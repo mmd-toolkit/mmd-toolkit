@@ -853,8 +853,7 @@ the end of the text]
 
 ### Blank lines
 
-A run of empty lines becomes one empty line, as Prettier does for code: an empty
-line groups statements, and more than one adds nothing.
+A run of empty lines becomes one empty line, as Prettier does for code.
 
 [fixture: blank-lines/single-kept] [fixture: blank-lines/whitespace-only-lines]
 [fixture: blank-lines/inside-multi-line-statement] [fixture:

@@ -3189,7 +3189,6 @@ radar-beta
 文や注釈類の間の普通の ASCII 空行は最大 1 行にします。
 文書・本文の端と見出し直後の普通の空行は除きます。
 空白だけの行は空行にそろえます。
-余分な空間を増やさず、まとまりを保つためです。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 [gantt](./gantt.ja.md#空行)、[journey](./journey.ja.md#空行)、
 [pie](./pie.ja.md#blank-lines)、[sankey](./sankey.ja.md#空行)は、

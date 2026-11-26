@@ -15,8 +15,9 @@ it, as [sequence](./sequence.md#statements-one-per-line) and
 [ER](./er.md#statements-one-per-line) diagrams move a statement written on the
 line of their header;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the first statement its line. Keep empty bodies. Hidden boundaries and protected
-header/body segments take precedence; never invent a glued keyword.
+the first statement its line. A header at column one is easier to find than an
+indented one. Keep empty bodies. Hidden boundaries and protected header/body
+segments take precedence; never invent a glued keyword.
 
 [fixture: architecture/header/header-empty]
 
@@ -656,8 +657,7 @@ between the direction and the first member.
 between values that follow one another, as Prettier prints CSS
 `margin: 1px    2px;` as `margin: 1px 2px;`: `a   b` and `a`, a tab, and `b` are
 printed `a b`. Do not align columns, sort members, merge repeated constraints or
-wrap them: consistent gaps improve reading without changing authored order or
-introducing visible EOL.
+wrap them. The gaps do not change authored order or introduce visible EOL.
 
 [fixture: architecture/alignment/alignment-row-and-column]
 
@@ -4289,16 +4289,15 @@ architecture-beta%%{}%% group a%%{}%%
 ### Blank lines
 
 Keep at most one ordinary ASCII blank line between statements or trivia,
-removing ordinary body/document-edge blanks. This preserves visible grouping
-without excess space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives it, as under [Hidden boundaries](#hidden-boundaries): Prettier prints a
-run of empty lines as one and drops the empty lines at the start and at the end
-of a file or of a block in JavaScript and CSS, and
-[gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines), and
-[sankey](./sankey.md#blank-lines) print a run of empty lines as one and drop the
-empty lines at the start and at the end of a body. Value interiors, retained
-prefixes, protected segments and required hidden-boundary LFs keep their own
-rules.
+removing ordinary body/document-edge blanks.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it, as under
+[Hidden boundaries](#hidden-boundaries): Prettier prints a run of empty lines as
+one and drops the empty lines at the start and at the end of a file or of a
+block in JavaScript and CSS, and [gantt](./gantt.md#blank-lines),
+[journey](./journey.md#blank-lines), and [sankey](./sankey.md#blank-lines) print
+a run of empty lines as one and drop the empty lines at the start and at the end
+of a body. Value interiors, retained prefixes, protected segments and required
+hidden-boundary LFs keep their own rules.
 
 [fixture: architecture/blank-lines/blank-collapse]
 

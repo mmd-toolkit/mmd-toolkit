@@ -30,6 +30,7 @@ fixture の置き方と確かめ方は、
 mermaid.js の文書も、ヘッダーの後の文を 1 段深く書き、
 ほかの図も同じです（flowchart の[字下げ](./flowchart.ja.md#字下げ)を参照）。
 ヘッダーと、その前のコメント行は 1 列目に置きます。
+1 列目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/written-indentation-dropped]
@@ -187,9 +188,9 @@ xychart
 
 連続する空行は 1 つの空行にします。
 ヘッダーと最初の文の間にも、テキストの最後にも、空行は置きません。
-空行は Db に入らず、
-1 つの空行がそれを最小の手間で示します（[空行](./flowchart.ja.md#空行)を参照）。
-Prettier がコードでそうするのと同じです。
+空行は Db に入りません。
+空行の形は Prettier
+がコードで印字するものと同じです（[空行](./flowchart.ja.md#空行)を参照）。
 Prettier は、テキストやブロックの先頭と、テキストの最後に空行を置きません。
 ヘッダーの前と、ヘッダーと最初の文の間と、最後の文の後に空行を置かない形は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。

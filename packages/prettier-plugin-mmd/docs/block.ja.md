@@ -34,6 +34,7 @@ mermaid.js の文書もそう書き、
 ほかの図もブロックを入れ子にします（flowchart
 の[字下げ](./flowchart.ja.md#字下げ)を参照）。
 ヘッダーと、その前のコメント行は、前に空白が書かれていても 1 列目に置きます。
+1 列目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/composite-body-one-level-deeper-end-at-the-level-of-block]
@@ -286,9 +287,9 @@ block-beta
 連続する空行は 1 つの空行にします。
 テキストの先頭にも、ヘッダーと最初の文の間にも、テキストの最後にも、
 空行は置きません。
-空行は Db に入らず、
-1 つの空行がそれを最小の手間で示します（[空行](./flowchart.ja.md#空行)を参照）。
-Prettier がコードでそうするのと同じです。
+空行は Db に入りません。
+空行の形は Prettier
+がコードで印字するものと同じです（[空行](./flowchart.ja.md#空行)を参照）。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が空行の形を与えます。
 Prettier は、JavaScript と CSS で、連続する空行を 1 つにし、
 ファイルとブロックの先頭と末尾の空行を取ります。

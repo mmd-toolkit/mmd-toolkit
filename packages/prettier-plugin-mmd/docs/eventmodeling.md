@@ -230,12 +230,11 @@ entity Shop.Beta
 
 Separate the frame keyword, digit-string name, entity-type word and qualified
 name by one ordinary space, including where native whitespace originally crossed
-lines. This distinguishes complete components such as `01 evt`.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-between a keyword and what it takes, as Prettier prints `return  x` as
-`return x;`, and between values that follow one another, as Prettier prints CSS
-`margin: 1px    2px;` as `margin: 1px 2px;`; a line break between two components
-is one space for the reason given under
+lines (`01 evt`). [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives one space between a keyword and what it takes, as Prettier prints
+`return  x` as `return x;`, and between values that follow one another, as
+Prettier prints CSS `margin: 1px    2px;` as `margin: 1px 2px;`; a line break
+between two components is one space for the reason given under
 [Declarations and notes](#declarations-and-notes). A required identifier exactly
 `title` keeps its successful boundary: an ordinary LF remains a continuation,
 while padding after a hidden form's consumed LF stays exact. Introducing padded
@@ -332,22 +331,22 @@ tf 01 evt Alpha [[D]]
 ### Type tags
 
 Keep type-tag inner gaps tight, as in `` `json` ``, and use one ordinary space
-before its body. Tight tags distinguish the annotation from its value. Retain
-the presence or absence of a tag and all eight authored type words. A tag does
-not ask the formatter to parse its payload as JSON or another language; hidden
-forms and global trivia retain their boundaries. A comment inside a tag or right
-after it stays touching where it touches, and a run of spaces and tabs before it
-becomes one space, also right after the opening backtick. A run of spaces and
-tabs after a comment inside the tag becomes one space too, while the gaps
-between the parts of the tag itself stay tight, whichever whitespace they hold
-(spaces, tabs, a no-break space, U+3000, U+2028, or U+2029). A wide space, a
-U+2028, or a U+2029 (see [Comments](#comments)) before a comment inside the tag,
-right after the opening backtick, after a comment inside the tag, and before and
-after a comment that follows the tag also becomes one space; each of these
-places has a row for a no-break space, U+3000, U+2028, and U+2029. Before a
-comment, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
-one space for a wide space, as under [Comments](#comments). After a comment, and
-for U+2028 and U+2029, no rule gives that form: no other diagram type has a type
+before its body. Retain the presence or absence of a tag and all eight authored
+type words. A tag does not ask the formatter to parse its payload as JSON or
+another language; hidden forms and global trivia retain their boundaries. A
+comment inside a tag or right after it stays touching where it touches, and a
+run of spaces and tabs before it becomes one space, also right after the opening
+backtick. A run of spaces and tabs after a comment inside the tag becomes one
+space too, while the gaps between the parts of the tag itself stay tight,
+whichever whitespace they hold (spaces, tabs, a no-break space, U+3000, U+2028,
+or U+2029). A wide space, a U+2028, or a U+2029 (see [Comments](#comments))
+before a comment inside the tag, right after the opening backtick, after a
+comment inside the tag, and before and after a comment that follows the tag also
+becomes one space; each of these places has a row for a no-break space, U+3000,
+U+2028, and U+2029. Before a comment,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+for a wide space, as under [Comments](#comments). After a comment, and for
+U+2028 and U+2029, no rule gives that form: no other diagram type has a type
 tag, and the printers that [Comments](#comments) cites print these characters
 before a comment differently. The released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
