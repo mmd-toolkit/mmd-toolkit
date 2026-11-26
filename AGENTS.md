@@ -98,10 +98,13 @@ Correctness is defined by the pinned mermaid.js.
    the user, with a text as written, the present output, and the output in that
    form, and the user decides. The formatted text is also drawn by other
    versions of mermaid.js, so a form is printed only where every version that
-   counts reads and draws it the same. The check is that formatting does not
-   change the Db; a formatting that changes the Db but not the drawing is an
-   exception of a kind that a section of the documents of the formatter defines.
-   The rules, the versions that count, and the kinds of exceptions are in
+   counts reads and draws it the same. A version that reads the written form but
+   stops with an error when it draws it, and draws the printed form, does not
+   count for that form: formatting takes nothing from what it draws. The check
+   is that formatting does not change the Db; a formatting that changes the Db
+   but not the drawing is an exception of a kind that a section of the documents
+   of the formatter defines. The rules, the versions that count, and the kinds
+   of exceptions are in
    [How the printed form is decided](packages/prettier-plugin-mmd/docs/printed-form.md).
 
 ## What each package is responsible for

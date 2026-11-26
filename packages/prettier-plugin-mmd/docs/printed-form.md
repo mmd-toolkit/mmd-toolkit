@@ -391,6 +391,13 @@ when a version stops counting. When the pinned version is raised and none of the
 versions of a row counts any longer, the rule is taken out, and the form is the
 one that the rules above give.
 
+A version that reads the written form but stops with an error when it draws it,
+and draws the form that would be printed, does not count for that form. The
+formatted text is opened in that version too, and formatting takes nothing from
+what it draws there, so it gives no reason to keep the written form. The runs of
+spaces in the label of a block of a sequence diagram are such a form (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+
 The CHANGELOG.md of mermaid.js, or the history of its grammar, shows which
 version added or changed a form.
 
