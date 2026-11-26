@@ -8137,15 +8137,19 @@ mermaid.js がこう読む行は、ソースの何行にもまたがります。
 文の間の空白は整形せず、コメント行の後の行も字下げしません。
 これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則で、
 例外は 3 つです。
-既定の大きさより小さい agentflow 図では、mermaid.js がコメントを残すので、
-そこで行は結ばれません。
+agentflow 図をふつうの配置で印字するときは、図は既定の大きさより小さく、
+mermaid.js がコメントを残すので、そこで行は結ばれません。
+詳しくは [Default size branches](./agentflow.ja.md#default-size-branches)
+を参照してください。
 コメント行の前の U+2028 か U+2029 は空白 1 つにして印字し、値の中では残し、
 コメント行の後の行はふつうの段に置きます。
 詳しくは
 [Agentflowの値、コメント、既定のサイズ境界](#agentflowの値コメント既定のサイズ境界)
 を参照してください。
-eventmodeling 図は、コメント行の前の U+2028 か U+2029 を、
-空白 1 つにして印字します。
+eventmodeling 図をふつうの配置で印字するときは、
+コメント行の前の U+2028 か U+2029 を、空白 1 つにして印字します。
+詳しくは [Default size branches](./eventmodeling.ja.md#default-size-branches)
+を参照してください。
 ただし、`title`、`accTitle`、`accDescr` の値の中では残します。
 詳しくは [Comments](./eventmodeling.ja.md#comments) を参照してください。
 コメント行の後の行は、前の文の続きなら、文の後続の行と同じく 1 段深く置き、

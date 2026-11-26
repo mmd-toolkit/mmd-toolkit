@@ -66,7 +66,8 @@ subgraph の中でも同じです。
 
 [fixture: indentation/written-indentation-dropped]
 
-例外は、direction を含む `accTitle` と `accDescr` の文で、1 桁目を保ちます。
+例外の 1 つは、direction を含む `accTitle` と `accDescr` の文で、
+1 桁目を保ちます。
 字句解析器は、1 桁目ではそれをタイトルか説明として読み、
 字下げの後では direction
 の行として読むためです（[アクセシビリティの文](#アクセシビリティの文)を参照）。

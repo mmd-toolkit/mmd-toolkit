@@ -64,9 +64,9 @@ was indented with.
 
 [fixture: indentation/written-indentation-dropped]
 
-The one exception is an `accTitle` or `accDescr` statement that holds a
-direction, which keeps the first column, since the lexer reads it as a title or
-a description at the first column and as a direction line after an indentation
+An exception is an `accTitle` or `accDescr` statement that holds a direction,
+which keeps the first column, since the lexer reads it as a title or a
+description at the first column and as a direction line after an indentation
 (see [Accessibility statements](#accessibility-statements)).
 
 Input

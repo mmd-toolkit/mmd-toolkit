@@ -7865,14 +7865,18 @@ formatter keeps the whitespace and the line breaks of such a line as written,
 from its first line to its end, with the statements that stand on it: it does
 not format the whitespace between them, and it does not indent the lines after
 the comment line. This is one rule for every statement, block opening, and
-header, with three exceptions. An agentflow diagram below the default size,
-whose comments mermaid.js keeps (see
+header, with three exceptions. Where an agentflow diagram is printed in its
+ordinary layout (see
+[Default size branches](./agentflow.md#default-size-branches)), it is below the
+default size, mermaid.js keeps its comments (see
 [Agentflow values, comments, and the default size boundary](#agentflow-values-comments-and-the-default-size-boundary)),
-joins no lines there: it prints the U+2028 or U+2029 before the comment line as
-one space, but in a value, where it stays, and the line after the comment line
-stands at its ordinary depth. An eventmodeling diagram prints the U+2028 or
-U+2029 before the comment line as one space, but in the value of a `title`, an
-`accTitle`, or an `accDescr`, where it stays (see
+and it joins no lines there: it prints the U+2028 or U+2029 before the comment
+line as one space, but in a value, where it stays, and the line after the
+comment line stands at its ordinary depth. Where an eventmodeling diagram is
+printed in its ordinary layout (see
+[Default size branches](./eventmodeling.md#default-size-branches)), it prints
+the U+2028 or U+2029 before the comment line as one space, but in the value of a
+`title`, an `accTitle`, or an `accDescr`, where it stays (see
 [Comments](./eventmodeling.md#comments)), and stands the line after the comment
 line one level deeper where it goes on the statement before it, as any later
 line of a statement, and at the level of the statements where it starts a
