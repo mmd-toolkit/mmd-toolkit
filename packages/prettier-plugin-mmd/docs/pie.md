@@ -447,16 +447,11 @@ Empty whitespace-only interiors print `{}` because no text needs surrounding
 whitespace. Prettier prints empty braces without interior whitespace, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives `{}` for a
 description block whose interior contains only whitespace. Keep comment-only
-blocks with comments one level inside. A separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
-puts the closing line at the level of the line that holds the `{`, as Prettier
-prints the closing line of a block, and that line is the `accDescr` line or,
-where a comment or a directive stands before the `{`, a later line at the level
-of the statement. In `accDescr {%% c` followed by `}` or `D}` on the next line,
-`%% c` stays after `{` as description text, since moving it to its own line one
-level inside the block, with `D` and `}` also on separate lines in the second
-case, makes mermaid.js read it as a comment, leaving the description empty or
-just `D`, respectively (see
+blocks with comments one level inside. In `accDescr {%% c` followed by `}` or
+`D}` on the next line, `%% c` stays after `{` as description text, since moving
+it to its own line one level inside the block, with `D` and `}` also on separate
+lines in the second case, makes mermaid.js read it as a comment, leaving the
+description empty or just `D`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
 statement. Keep line breaks and interior blank lines, and the whitespace at the

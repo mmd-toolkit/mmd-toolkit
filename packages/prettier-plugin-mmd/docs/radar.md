@@ -3525,13 +3525,8 @@ a description block. For a block that holds only comment lines, rule 2 decides
 the depth of those boundary comment lines, as
 [flowchart](./flowchart.md#multi-line-values) keeps the comment lines of a block
 without text and puts them one level inside the block. A separate `}` stands at
-the level of the `accDescr`.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
-level, as Prettier prints the closing line at the level of the line that opens a
-block: the line that holds the `{` is the statement's line or, where a comment
-or a directive stands before the `{`, a later line at the level of the
-statement. No rule gives the interior of a block that holds a directive:
-[flowchart](./flowchart.md#multi-line-values),
+the level of the `accDescr`. No rule gives the interior of a block that holds a
+directive: [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
 breaks, but their documents give that form no reason, and it is a question of
