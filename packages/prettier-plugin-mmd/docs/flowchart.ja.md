@@ -1435,6 +1435,15 @@ mermaid.js は呼び出しを読む前に、ディレクティブを取り除く
 
 [fixture: whitespace-between-tokens/click-without-call-collapsed]
 
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+これらの隙間に空白 1 つを与えます。
+`click` の後の隙間は、取るものの前に置くキーワードの隙間で、
+Prettier は `return  x;` を `return x;` と印字します。
+id、コールバック、ツールチップの間の隙間は、並んで続く値の隙間で、
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
+
+[fixture: whitespace-between-tokens/click-without-call-collapsed]
+
 入力
 ([whitespace-between-tokens/callback-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-input.mmd)):
 
@@ -1684,6 +1693,10 @@ flowchart LR
 [fixture: label-inner-whitespace/trimmed-every-shape]
 
 ラベルの中の空白は保ちます。
+mermaid.js は、ラベルが折り返すところで連なりを描きます。
+詳しくは
+[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+を参照してください。
 空白とタブだけのラベルは、空白 1 つに印字します。
 mermaid.js は空白とタブがいくつあっても同じ空のテキストとして読み、
 同じ図を描きます。
@@ -2275,6 +2288,18 @@ mermaid.js は、2 行目以降が字下げされていると、その一部を�
 文字列の中や、引数のある呼び出しの `(` と `)` の間にある改行は、
 その値の一部（そこにあるコメントやディレクティブも含みます）で、
 値は書かれたまま印字し、文の後の行を字下げすることもありません。
+後の行を字下げすると、click のすることが変わります。
+12.0.0 と 12.3.0 では、`click C "x`、改行、`y"` のリンク先は `xy` で、
+`y"` の前に空白 4 つを置くと、`x`、空白 4 つ、`y` になります。
+複数行に書いた呼び出しも、同じように別の引数を受け取ります。
+10.9.8、11.7.0、11.17.2 は、そのような文を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+後の行のコメント行や、単独の `)` は、引数を変えません。
+詳しくは
+[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)
+を参照してください。
 そのような文のほかの隙間には、普通の規則を掛けます。
 `click   A "/u" "x` と次の行の `y"` は、
 1 行の文と同じように `click A "/u" "x` と `y"` になります。
@@ -2308,6 +2333,12 @@ mermaid.js は、2 行目以降が字下げされていると、その一部を�
 U+2028 や U+2029 の後にコメント行がある範囲は書かれたまま残します。
 mermaid.js がコメント行とその前の空白を除き、
 後続の行を前のテキストにつなぐためです。
+U+2028 や U+2029 の代わりに改行を書くと、10.9.8、11.7.0、11.17.2、12.0.0、
+12.3.0 は、`flowchart`、U+2028、`%% c`、` TD` の `TD` を頂点として読み、
+`subgraph`、U+2028、`%% c`、` S` の図は描きません。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: a comment line after U+2028 in a flowchart header]
 [test: a comment line after U+2029 in a flowchart header]
@@ -2891,6 +2922,7 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 ブロックの `}` は、それが閉じる `accDescr` と同じ段に置きます。
 
 [fixture: multi-line-values/accdescr-block-kept]
+[fixture: multi-line-values/accdescr-block-closing-brace-aligned]
 
 そうしたブロックのコメントの内容も保ち、
 列は同じトップレベルまたは subgraph の規則に従います。
@@ -3534,6 +3566,11 @@ markdown 文字列や swimlane 図でも同じで、
 名前の末尾の空白は幅にかかわらず同じに描かれます。
 ``subgraph "`o p`"   %%{init: {}}%%`` は、
 ``subgraph "`o p`" %%{init: {}}%%`` と印字します。
+10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は、長い markdown の名前を、
+連なりのある形とない形で違う形に描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 `end` で終わる名前が取り込む次の行の字下げは、この空白には当たりません（後述）。
 
 [fixture: subgraph-header/name-several-words-directive-run-collapsed]
@@ -3550,6 +3587,7 @@ markdown 文字列や swimlane 図でも同じで、
 [fixture: subgraph-header/name-several-words-before-block-kept]
 [fixture: subgraph-header/name-whitespace-before-directive-kept]
 [fixture: subgraph-header/name-whitespace-after-directive-kept]
+[fixture: subgraph-header/long-markdown-title-runs-kept]
 
 ヘッダーと同じ行に書かれた空の説明ブロックの周りの空白も同じです。
 ブロックの前、ブロックの間、最後のブロックと `;` の間の空白がそうで、
@@ -4045,6 +4083,23 @@ flowchart と swimlane では、最後のスタイルと同じ行の `%%` コメ
 Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 
 [test: prints a form feed before a comment as one space]
+
+コメントの前のノーブレークスペースは、その連なりに入らず、残します。
+CSS はそれを空白として読まず、
+mermaid.js はそれをコメントとともに最後のスタイルの値に残すので、
+それのない行は、Db に別のスタイルを持ちます。
+`fill:red`、ノーブレークスペース、` %% c` に対して、`fill:red %% c` です。
+スタイルの例外の種類で、ノーブレークスペースに当たるものはありません。
+最も近い種類は、`%%` コメントの前の空白、タブ、改ページの連なりで、
+テストはそれを空白 1 つとして比べますが、ノーブレークスペースは含みません。
+詳しくは [スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+を参照してください。
+そのため、それを除くのは、どの種類の例外も許さない Db の変化です。
+図は同じです。
+10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は、2 つの行を同じに描きます。
+コメントを含む値は色ではなく、ブラウザは宣言をまるごと捨てるからです。
+
+[test: keeps a no-break space before a comment at the end of a flowchart style]
 
 `linkStyle` の `stroke:` の後の空白も保ちます。
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
