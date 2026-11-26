@@ -433,7 +433,10 @@ railroad-ebnf-beta
 
 ABNF と PEG の隣り合う構成要素は通常の空白1つで分けます。
 接触していた文字列や group も対象です。
-構成要素を見分けやすくし、別の名前が一つになるのを防ぎます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの空白を与えます。
+Prettier は、続けて並ぶ値の間に、
+接していても空白を 1 つ置きます（CSS の `content:"a""b"` は `content: "a" "b";`
+と印字します）。
 コンマは加えません。
 
 [fixture: railroad/sequences/abnf-members]
@@ -835,14 +838,19 @@ railroad-peg-beta
 
 `terminal`、`nonterminal`、`special` は、
 引用値と一つのコンパクトな単位にします。
-単位の括弧の内側には空白を置きません。
-規則 1 が呼出しの括弧をそう印字するからです（`f( a )` は `f(a);`
-と印字します）。
+単位の `(` の前と括弧の内側には、改行も含めて空白を置きません。
+規則 1 が、行に収まる呼出しの `(` と括弧をそう印字するからです。
+`f (a)` と `f( a )` は `f(a);` と印字し、`(` の前と後ろ、
+`)` の前で改行した呼出しも同じく印字します。
 構築関数、開き括弧、値、閉じ括弧の間の境界に、コメント、大域的なディレクティブ、
 図固有の隠れた形があれば、その leaf 呼出しも複数行にします。
 文字列の内容は、物理的な改行と継続行の元の列を保ちます。
 
 [fixture: railroad/calls/ir-singletons]
+
+[fixture: railroad/calls/ir-all]
+
+[fixture: railroad/component-newlines/ir-components]
 
 [fixture: railroad/comments/ir-leaf-value-comments]
 
@@ -1966,6 +1974,10 @@ railroad-peg-beta
 見出し自身の形だけにヘッダー端の例外を使います。
 見出しの行から移した文も本文の境界を保ちます。
 共有の行を保持する規則で隠れた形と前後の文がその行に残る場合とは区別します。
+本文の隠れた形が取る LF の後の空行は、二つの文の間の空行です。
+1 行は保ち、続く空行は 1 行にし、空行は足しません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が空行をそう印字するからです。
+`a();`、3 行の空行、`b();` は、空行 1 行で印字します。
 
 [fixture: railroad/hidden-boundaries/abnf-closing-padding]
 
@@ -1978,6 +1990,8 @@ railroad-peg-beta
 [fixture: railroad/hidden-boundaries/ebnf-header-kept-statement]
 
 [fixture: railroad/hidden-boundaries/ebnf-moved-before-hidden]
+
+[fixture: railroad/hidden-boundaries/ir-blank-lines-after-hidden]
 
 [fixture: railroad/hidden-boundaries/ir-closing-padding]
 
@@ -3447,6 +3461,7 @@ Markdown は埋込み整形を辞退します。
 埋め込み先が囲み記号、リスト、引用の列を与え、
 最終本文行の余白を除く場合があります。
 最後の隠れた形の余白も対象ですが、内部の隠れた形の境界は保ちます。
+その後の空行は [hidden の境界](#hidden-の境界)の規則で印字します。
 埋め込み先の枠の列を railroad の字下げと混同しないよう、
 埋め込み先全体の出力と本文の Db 保持を別に検査します。
 

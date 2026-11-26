@@ -416,8 +416,10 @@ railroad-ebnf-beta
 ### Sequences
 
 Separate adjacent ABNF or PEG sequence members with one ordinary space,
-including strings and groups that originally touched. This distinguishes members
-and prevents separate names from merging. Add no comma.
+including strings and groups that originally touched.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this space:
+Prettier prints values that follow one another one space apart, also where they
+touch (`content:"a""b"` in CSS is printed `content: "a" "b";`). Add no comma.
 
 [fixture: railroad/sequences/abnf-members]
 
@@ -800,14 +802,20 @@ comma.
 [corpus fixture: railroad/ir-choice-trailing-comma]
 
 Keep `terminal`, `nonterminal` and `special` together with their quoted value as
-a compact unit. The unit has no whitespace inside its parentheses, as rule 1
-prints the parentheses of a call (`f( a )` is printed `f(a);`). A comment,
-global directive or native hidden form at any boundary between the constructor,
-opening parenthesis, value and closing parenthesis makes that leaf call
-multiline too. String contents retain their physical newlines and written
-continuation columns.
+a compact unit. The unit has no whitespace before its `(` or inside its
+parentheses, a line break included, as rule 1 prints the `(` and the parentheses
+of a call that fits on its line: `f (a)` and `f( a )` are printed `f(a);`, and
+so is a call written with a line break before its `(`, after it, and before its
+`)`. A comment, global directive or native hidden form at any boundary between
+the constructor, opening parenthesis, value and closing parenthesis makes that
+leaf call multiline too. String contents retain their physical newlines and
+written continuation columns.
 
 [fixture: railroad/calls/ir-singletons]
+
+[fixture: railroad/calls/ir-all]
+
+[fixture: railroad/component-newlines/ir-components]
 
 [fixture: railroad/comments/ir-leaf-value-comments]
 
@@ -1886,7 +1894,11 @@ condition. The shared spare-LF rule applies to body forms; only forms belonging
 to the header itself use the header-edge exception. A statement originally on
 the header line retains its body boundary when moved; shared kept-line rules can
 instead keep a hidden form and its neighbors on that line. Keep both cases
-distinct.
+distinct. A blank line after the line feed that a hidden form of the body takes
+is a blank line between two statements: one is kept, a run of them is printed as
+one, and none is added, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints blank lines
+(`a();`, three blank lines, and `b();` is printed with one blank line).
 
 [fixture: railroad/hidden-boundaries/abnf-closing-padding]
 
@@ -1899,6 +1911,8 @@ distinct.
 [fixture: railroad/hidden-boundaries/ebnf-header-kept-statement]
 
 [fixture: railroad/hidden-boundaries/ebnf-moved-before-hidden]
+
+[fixture: railroad/hidden-boundaries/ir-blank-lines-after-hidden]
 
 [fixture: railroad/hidden-boundaries/ir-closing-padding]
 
@@ -3339,8 +3353,10 @@ output.
 Apply the same rules to dedented payloads through the shared Markdown route. The
 host supplies fence/list/quote columns and can trim padding on the final payload
 line, including final hidden padding. Interior hidden boundaries remain
-necessary. Test the complete host output separately from payload Db preservation
-so containers do not become railroad indentation.
+necessary, and a blank line after one is printed as
+[Hidden boundaries](#hidden-boundaries) gives. Test the complete host output
+separately from payload Db preservation so containers do not become railroad
+indentation.
 
 [test: railroad Markdown: ir-top-level]
 
