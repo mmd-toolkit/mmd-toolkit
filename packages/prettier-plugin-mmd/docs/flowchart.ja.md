@@ -4030,6 +4030,10 @@ flowchart と swimlane では、最後のスタイルと同じ行の `%%` コメ
 [スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
 を参照してください。
 
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前を、空白 1 つにします。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+
 [test: prints a form feed before a comment as one space]
 
 `linkStyle` の `stroke:` の後の空白も保ちます。

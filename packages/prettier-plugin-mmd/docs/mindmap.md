@@ -664,17 +664,13 @@ A comment line before the header stands at the first column.
 
 [fixture: comments/before-the-header]
 
-A comment after the header, a shape, or an icon stays on the line, as written:
-it touches where it touches, and a run of spaces and tabs before it becomes one
-space. Rule 1 names no mark before a comment, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
-comment after a statement in the same way, where no other rule keeps the
-whitespace as written; each of them names those cases in its own sections or in
-[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
-(whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads).
+A comment after the header, a shape, or an icon stays on its line. A run of
+spaces and tabs before it becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
+
+A comment that touches what precedes it stays touching.
 
 [fixture: comments/after-the-header] [fixture:
 comments/after-the-header-touching] [fixture: comments/after-a-shape] [fixture:
@@ -760,10 +756,15 @@ other text without it. After a bare node, a class, or the root text, such a
 character after the last directive, and text after a directive, keep the line as
 written, the spaces after the directive included: `a`, `%%{x}%%`, U+3000, and
 two spaces are not changed, and neither is `a`, two spaces, `%%{x}%%`, two
-spaces, `%% c`, and two spaces. After a shape, a comment after the last
-directive stands after one space, with the run before the directive printed as
-one space too, and it stays touching where it touches: `a[t]  %%{x}%%  %% c` is
-printed `a[t] %%{x}%% %% c`, and `a[t] %%{x}%%%% c` is not changed.
+spaces, `%% c`, and two spaces. After a shape, a run before a directive becomes
+one space. A run before a comment after the last directive becomes one space
+too. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Thus `a[t]  %%{x}%%  %% c` is printed
+`a[t] %%{x}%% %% c`.
+
+A comment that touches the last directive stays touching. `a[t] %%{x}%%%% c` is
+not changed.
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
 [fixture: directives/between-nodes] [fixture: directives/before-the-header]

@@ -866,14 +866,16 @@ pipe follows the line break of the comment (`A -->|x  %% c`, a line break, and
 `| B`), the label ends before the comment: a run of whitespace before the
 comment, spaces, tabs, and the other whitespace of the specification (a no-break
 space, U+3000, U+2003, U+2028, and U+2029 among it), alone or mixed, is printed
-as one space, a comment that touches stays touching, and the closing pipe stands
-on a line of its own, one level deeper than the arrow (`A -->|x %% c` and
-`    | B`). Where the comment holds a `;`, the characters before it are printed
-as one space in the same way, and the spaces and tabs after the `;` stay as
-well: `A -->|x  %% c;` and two spaces, a line break, and `| B` print
-`A -->|x %% c;`, the two spaces, and `| B` one level deeper. Where the label
-goes on after the line break of the comment, the spaces and tabs before the
-comment stay.
+as one space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+one space before a comment that stands after something on its line, as Prettier
+prints `x = 1;   // c` as `x = 1; // c`. A comment that touches stays touching.
+The closing pipe stands on a line of its own, one level deeper than the arrow
+(`A -->|x %% c` and `    | B`). Where the comment holds a `;`, the characters
+before it are printed as one space in the same way, and the spaces and tabs
+after the `;` stay as well: `A -->|x  %% c;` and two spaces, a line break, and
+`| B` print `A -->|x %% c;`, the two spaces, and `| B` one level deeper. Where
+the label goes on after the line break of the comment, the spaces and tabs
+before the comment stay.
 
 [fixture: edge-labels/label-comment-ends-label] [fixture:
 edge-labels/label-comment-semicolon-ends-label] [fixture:
@@ -930,8 +932,11 @@ ends before the comment (the text of `A[x  %% c`, a line break, and `]` is `x`
 in the Db, and it is also with another whitespace character of the specification
 in place of the spaces, a no-break space, U+3000, U+2003, U+2028, and U+2029
 among them), so a run of whitespace before the comment, of one kind of character
-or of several, is printed as one space, a comment that touches stays touching, a
-bare label is printed in quotes (see
+or of several, is printed as one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. A comment that touches stays touching. A bare
+label is printed in quotes (see
 [Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)),
 and the closing bracket stands on a line of its own, one level deeper than the
 vertex. Where the comment holds a `;`, the label is not quoted, the characters
@@ -1390,11 +1395,13 @@ comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 comments/trailing-comment-semicolon-trailing-whitespace-statements] [fixture:
 comments/trailing-comment-semicolon-trailing-whitespace-header-and-lines]
 
-A harmless trailing-comment gap becomes one space. Agentflow recognizes real
-comments after semicolons and description closers; ordinary separator semicolons
-before them can drop. At normal size comments continue through LS/PS until
-LF/EOF, and a percent pair inside an already-started id is id text. Label-side
-padding stays under Labels.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Agentflow recognizes real comments after
+semicolons and description closers; ordinary separator semicolons before them
+can drop. At normal size comments continue through LS/PS until LF/EOF, and a
+percent pair inside an already-started id is id text. Label-side padding stays
+under Labels.
 
 [fixture: comments/comment-label] [fixture:
 comments/comment-label-spaces-unsafe]
