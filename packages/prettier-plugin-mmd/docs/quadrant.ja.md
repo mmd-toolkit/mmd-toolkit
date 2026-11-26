@@ -31,6 +31,7 @@ fixture の置き方と確かめ方は、
 mermaid.js の文書も、ヘッダーの後の文を 1 段深く書き、
 ほかの図も同じです（flowchart の[字下げ](./flowchart.ja.md#字下げ)を参照）。
 ヘッダーと、その前のコメント行は 1 列目に置きます。
+コメント行の理由は、[コメント](#コメント)を参照してください。
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/written-indentation-dropped]
@@ -184,9 +185,10 @@ quadrantChart
 
 連続する空行は 1 つの空行にします。
 ヘッダーと最初の文の間にも、テキストの最後にも、空行は置きません。
-空行は Db に入らず、
-1 つの空行がそれを最小の手間で示します（[空行](./flowchart.ja.md#空行)を参照）。
-Prettier がコードでそうするのと同じです。
+空行は Db に入りません。
+2 つのものの間の空行を多くとも 1 つにする形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は、`a();`、3 つの空行、`b();` を、空行 1 つで印字します。
 Prettier は、テキストやブロックの先頭に空行を置きません。
 ヘッダーより前と、ヘッダーと最初の文の間に空行を置かない形は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
@@ -812,6 +814,9 @@ quadrantChart
 すでに空の内側は空のままです。
 通常のキーワードと開き括弧の間には空白 1 つを置き、
 `accDescr{  }` は `accDescr {}` にします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がどちらも与えます。
+Prettier は、何も持たない括弧の内側に何も置かず（`x = { }` は `x = {};`）、
+ブロックを開く `{` の前に空白を 1 つ置きます（`class A{}` は `class A {}`）。
 
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: quadrant Unicode and tab interiors]
@@ -819,6 +824,7 @@ quadrantChart
 指令かコメント行の内容と改行は保ち、
 本文の字下げは
 [title とアクセシビリティの文](#title-とアクセシビリティの文)に従います。
+そのようなブロックの両方の波括弧に接するディレクティブは、接したまま残します。
 規則 1 は、ブロックの中の行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [xychart](./xychart.ja.md#空の説明ブロック) と
@@ -1046,6 +1052,10 @@ quadrantChart
 テキストと印は書かれたまま残します。
 最後の文の後のコメント行は、その後ろに残ります。
 ヘッダーより前のコメント行は 1 列目に置きます。
+ヘッダーより前のコメント行の 1 列目は、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+[gantt](./gantt.ja.md#コメント)、[requirement](./requirement.ja.md#コメント)、
+[block](./block.ja.md#コメント)も、そこに置きます。
 title、アクセシビリティのテキスト、説明ブロック、文字列の中の `%%` は、
 その文字です。
 点の角括弧の中の `%%` は、入力を拒否させます。
