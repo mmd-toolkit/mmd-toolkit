@@ -123,13 +123,10 @@ pie
 ### Labels
 
 Reuse [XY chart authored strings](./xychart.md#quotes): keep complete quoted
-source spans, since the text of a string is a text that the tree holds whole
-(see
-[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
-Preserve escapes without decoding, empty and whitespace-only labels,
-entities/HTML and hidden-looking percent text; a string between `'` is printed
-between `"`, unless its text holds a `'`, a `"`, a backslash, a line break,
-U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+source spans. Preserve escapes without decoding, empty and whitespace-only
+labels, entities/HTML and hidden-looking percent text; a string between `'` is
+printed between `"`, unless its text holds a `'`, a `"`, a backslash, a line
+break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. Keep converted-label collisions as separate
 occurrences; the resolved Map is not source.
@@ -839,10 +836,8 @@ pie showData
 ### Multiline values and order
 
 Reuse [flowchart value columns](./flowchart.md#multi-line-values) and
-[shared no wrapping](./flowchart.md#line-wrapping): a label is a text that the
-tree holds whole (see
-[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
-and a line is not wrapped, as in a flowchart, a form decided under
+[shared no wrapping](./flowchart.md#line-wrapping): a line is not wrapped, as in
+a flowchart, a form decided under
 [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) that
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 a pie chart too. Keep physical label lines, their continuation columns and
