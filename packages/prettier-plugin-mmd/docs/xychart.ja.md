@@ -1134,6 +1134,10 @@ xychart
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 単独の行にある指令は、後ろの文と同じ段に置きます。
+XY チャートの木は平らなので、その行の次の文が段を決めます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)は、
+[Gantt チャート](./gantt.ja.md#ディレクティブ)の形を与えます。
+Gantt チャートも、ディレクティブの行をそう置きます。
 
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
 [fixture: directives/directive-line-before-the-header]

@@ -1084,7 +1084,11 @@ Keep directives in their authored gaps. Within a printed line, a directive is
 placed as under [Directives](./flowchart.md#directives): the gap is printed as
 without the directive, and the directive stands after its space and touches the
 unit that follows it. A directive on a line of its own stands at the level of
-the statement after it.
+the statement after it: the tree of an XY chart is flat, so the statement after
+the line decides its level, and
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the form of a [Gantt chart](./gantt.md#directives), which places a directive
+line so.
 
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
 [fixture: directives/directive-line-before-the-header] [fixture:
