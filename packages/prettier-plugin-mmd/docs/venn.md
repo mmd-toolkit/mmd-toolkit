@@ -32,7 +32,9 @@ Some words used below:
   last semicolon, extended through whole crossing values, comments and
   directives. It can cover several line-rule segments: the printer cannot cut a
   diagram comment at a Unicode separator without exposing its text as diagram
-  syntax or changing which semicolon the line rule selects.
+  syntax or changing which semicolon the line rule selects. A crossing value is
+  kept whole: its characters, such as the line break between `"style:#x;` and
+  ` value"`, are the name that mermaid.js keeps in the Db.
 
 Input/output examples link to fixed formatting fixtures. In escaped strings,
 `\n` is LF, `\r` CR, `\t` a tab, and `\u2028`/`\u2029` the Unicode separators;
@@ -122,7 +124,11 @@ its reading, and the one form does not depend on the mode. Positive indentation
 selects implicit syntax while mode is enabled; it expresses no nesting. A
 declaration enables mode, a later ordinary line-start statement clears it, and
 another declaration enables it again. The comment and directive lines before a
-statement stand at its level.
+statement stand at its level: the tree of a Venn diagram is flat, so the
+statement after the line decides its level, and
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the form of a [Gantt chart](./gantt.md#comments), which places a comment line
+before a section and before a task in the same way.
 
 [fixture: venn/indentation/ordinary-statements-stand-one-step-deep] [fixture:
 venn/indentation/explicit-text-stays-at-the-header] [fixture:
@@ -163,17 +169,21 @@ venn-beta
 
 ### Statements one per line
 
-Ordinary complete statements split into separate lines for scanning; a
-declaration and its same-line style, explicit text or title followers remain
-together because splitting would introduce a line-start statement that clears
-implicit mode. Same-line declaration runs can split, because each declaration
-enables the same mode. A retained group stays whole even where a later
-declaration on the same line resets the mode and splitting would be harmless:
-the rule is local to the syntax, not a search for the final normalized state. A
-title takes the rest of its line as its value, so statement-looking words after
-`title` cannot be split out, and swallowed fragments stay with their written
-line neighbours. Where whitespace stands between statements that stay together
-on a line, it is one space: rule 1 names no mark between two statements, so
+Ordinary complete statements split into separate lines, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives:
+a [flowchart](./flowchart.md#statements-one-per-line) and an
+[ER diagram](./er.md#statements-one-per-line) print each statement on a line of
+its own; a declaration and its same-line style, explicit text or title followers
+remain together because splitting would introduce a line-start statement that
+clears implicit mode. Same-line declaration runs can split, because each
+declaration enables the same mode. A retained group stays whole even where a
+later declaration on the same line resets the mode and splitting would be
+harmless: the rule is local to the syntax, not a search for the final normalized
+state. A title takes the rest of its line as its value, so statement-looking
+words after `title` cannot be split out, and swallowed fragments stay with their
+written line neighbours. Where whitespace stands between statements that stay
+together on a line, it is one space: rule 1 names no mark between two
+statements, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [flowchart](./flowchart.md#whitespace-between-tokens) and
 [er](./er.md#whitespace-between-tokens) print a run of spaces and tabs between
@@ -274,8 +284,12 @@ venn-beta
 
 ### Comments
 
-Standalone comments align with the next statement, or the last statement at EOF,
-to show their association. A trailing comment that touches stays touching.
+Standalone comments align with the next statement, or the last statement at EOF:
+the tree of a Venn diagram is flat, so the statement after a comment line, or
+the last statement for one at the end of the text, decides its level, and
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the form of a [Gantt chart](./gantt.md#comments), which places comment lines so.
+A trailing comment that touches stays touching.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. A swallowed `VennIgnoredText` fragment remains
@@ -362,17 +376,19 @@ text A, "B" item
 
 ### Labels
 
-A bracket label touches its name or text id for a compact suffix; every interior
-character stays as written, except the spaces, tabs, and no-break spaces next to
-the brackets, which mermaid.js trims, and a label is printed in quotes as
-[Quotes](#quotes) says: `set A[ L ]` is printed `set A["L"]`. A label that holds
-a directive stays as written. The padding is dropped on a line with a kept `;`
-too, apart from the stretch read by the line rule (see
-[Line rule and kept lines](#line-rule-and-kept-lines)): dropping it outside that
-stretch moves no `;`, so the line rule selects the same one. `set A[ a; ]` is
-printed `set A[a;]` and `set B[ a;b ]` is printed `set B[a;b]`. One space stays
-where the padding lies between a `:` and a `#` of a line that the line rule may
-read, since whether it is there decides which `;` is ignored:
+A bracket label touches its name or text id, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives: a bracket that
+opens the label of a name touches the name, as Prettier prints `x [ 0 ];` as
+`x[0];`. Every interior character stays as written, except the spaces, tabs, and
+no-break spaces next to the brackets, which mermaid.js trims, and a label is
+printed in quotes as [Quotes](#quotes) says: `set A[ L ]` is printed
+`set A["L"]`. A label that holds a directive stays as written. The padding is
+dropped on a line with a kept `;` too, apart from the stretch read by the line
+rule (see [Line rule and kept lines](#line-rule-and-kept-lines)): dropping it
+outside that stretch moves no `;`, so the line rule selects the same one.
+`set A[ a; ]` is printed `set A[a;]` and `set B[ a;b ]` is printed `set B[a;b]`.
+One space stays where the padding lies between a `:` and a `#` of a line that
+the line rule may read, since whether it is there decides which `;` is ignored:
 `set "style:"[ #x; ]` is printed `set "style:"[ #x;]`, while `set "a:b"[ #x; ]`
 has no `style` before the `:` and is printed `set "a:b"[#x;]`. A `style`, a `:`,
 a `#`, or a `;` inside a directive is not read by the rule, so it makes no
@@ -677,6 +693,8 @@ comma stands before a directive that follows the comma, in place of the
 whitespace that was there, and the contents of the directive and the whitespace
 after it stay as written (`rgb(1,%%{x}%%  2,3)` is printed
 `rgb(1, %%{x}%%  2, 3)`).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+after the comma, as Prettier prints `f(a,b)` as `f(a, b);`.
 
 [fixture: style-properties/word-run-directive-parenthesis-kept]
 
@@ -1010,13 +1028,14 @@ venn-beta
 
 ### Directives
 
-Standalone directives align with nearby statements to show their association;
-inline directives retain their containing line, order and contents, and are
-placed in their gaps as under [Directives](./flowchart.md#directives). A leading
-directive retains the positive versus zero logical indentation of implicit
-versus explicit text, choosing exterior indentation before the first directive
-while keeping its internal gap relations. Embedded, multiline, semicolon-stopped
-and EOF directives keep their boundaries; no embedded data is reformatted.
+Standalone directives align with nearby statements (see
+[Indentation](#indentation)); inline directives retain their containing line,
+order and contents, and are placed in their gaps as under
+[Directives](./flowchart.md#directives). A leading directive retains the
+positive versus zero logical indentation of implicit versus explicit text,
+choosing exterior indentation before the first directive while keeping its
+internal gap relations. Embedded, multiline, semicolon-stopped and EOF
+directives keep their boundaries; no embedded data is reformatted.
 
 [fixture: venn/directives/unclosed-after-doubled-semicolon]
 
@@ -1118,9 +1137,14 @@ including after kept parts and safe suffixes where they are outside values and
 protected gaps. Prettier removes such spaces and tabs, and
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it the same
 form here. Spaces inside names, colors, style strings, comments and directives
-remain authored text. A run of spaces and tabs inside a label or a title value
-is printed as one space, and the spaces at the end of a title are left out (see
-[Title](#title) and
+stay as written. The spaces inside a name and a style string are part of the
+value that mermaid.js keeps in the Db (`set " A "` is the set whose name has a
+space before and after `A`), and a change of them is no kind of change of the Db
+that formatting may make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
+A run of spaces and tabs inside a label or a title value is printed as one
+space, and the spaces at the end of a title are left out (see [Title](#title)
+and
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 
 [fixture: venn/trailing-whitespace/continuation-spaces] [corpus fixture:
@@ -1129,7 +1153,8 @@ venn/db-after-set-label-size-space] [corpus fixture: venn/db-title-padding]
 venn/trailing-whitespace/kept-prefix-exterior] [fixture:
 venn/trailing-whitespace/trailing-comment] [fixture:
 venn/trailing-whitespace/trailing-exterior] [fixture:
-venn/trailing-whitespace/trailing-in-values]
+venn/trailing-whitespace/trailing-in-values] [corpus fixture:
+venn/db-quoted-padding]
 
 Input `"venn-beta \nset A \n"` prints `"venn-beta\nset A\n"`; `title T  ` prints
 `title T`.
