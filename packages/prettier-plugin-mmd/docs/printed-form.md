@@ -302,8 +302,7 @@ document of the diagram type says where each one applies and where it does not.
   lines is printed as written.
 - In a Gantt chart, the colons of the tasks of a section stand in one column,
   one space after its longest name, where a name of the section was written with
-  padding before its colon, and the sections with padding whose colons were all
-  written in one and the same column share one column.
+  padding before its colon.
 
 ## The versions of mermaid.js that count
 
