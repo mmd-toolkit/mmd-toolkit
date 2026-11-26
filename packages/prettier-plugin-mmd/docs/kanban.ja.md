@@ -1417,9 +1417,7 @@ kanban
 ほかの図種で文になる単語、`title`、`accTitle`、`accDescr`、`style`、`classDef`、
 `columns`、`space`、`end` と、C4 の単語（`C4Container`）は、
 ここでは普通のノードのテキストで、書かれたまま印字します。
-大文字小文字は、
-何も変えません（[mindmap](./mindmap.ja.md#キーワードの大文字小文字)
-も同じです）。
+大文字小文字は何も変えません。
 
 [fixture: keyword-case/icon-case] [fixture: keyword-case/case-lower-icon]
 [fixture: keyword-case/lower-case-header]

@@ -1314,8 +1314,7 @@ The marker of an icon is read in any case, and the printer keeps the case
 written (`::ICON(x)`, `::Icon(y)`). Words that are statements in other diagram
 types, `title`, `accTitle`, `accDescr`, `style`, `classDef`, `columns`, `space`,
 `end`, and the C4 words (`C4Container`), are ordinary node text here and are
-printed as written. Nothing is changed in the case, as in
-[mindmap](./mindmap.md#keyword-case).
+printed as written. Nothing is changed in the case.
 
 [fixture: keyword-case/icon-case] [fixture: keyword-case/case-lower-icon]
 [fixture: keyword-case/lower-case-header] [fixture:
