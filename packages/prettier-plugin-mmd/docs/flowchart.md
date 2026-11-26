@@ -1402,6 +1402,14 @@ printed as `click A cb "tip"`.
 
 [fixture: whitespace-between-tokens/click-without-call-collapsed]
 
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these gaps one
+space: the gap after `click` is that of a keyword before what it takes, as
+Prettier prints `return  x;` as `return x;`, and the gaps between the id, the
+callback, and the tooltip are those of values that follow one another, as
+Prettier prints `margin: 1px    2px;` in CSS as `margin: 1px 2px;`.
+
+[fixture: whitespace-between-tokens/click-without-call-collapsed]
+
 Input
 ([whitespace-between-tokens/callback-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-input.mmd)):
 
@@ -1639,11 +1647,14 @@ it.
 
 [fixture: label-inner-whitespace/trimmed-every-shape]
 
-Whitespace inside the label is kept. A label that is only spaces and tabs is
-printed as one space: mermaid.js reads the same empty text for any number of
-them and draws the same figure, and it rejects a label of no character (`A[]`),
-so one space is the least that keeps the label. `A[   ]` is printed `A[ ]`, and
-so is every other shape, and the label of a link between `|`.
+Whitespace inside the label is kept. mermaid.js draws its runs where the label
+wraps (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+A label that is only spaces and tabs is printed as one space: mermaid.js reads
+the same empty text for any number of them and draws the same figure, and it
+rejects a label of no character (`A[]`), so one space is the least that keeps
+the label. `A[   ]` is printed `A[ ]`, and so is every other shape, and the
+label of a link between `|`.
 
 [fixture: label-inner-whitespace/all-whitespace-every-shape]
 
@@ -2217,10 +2228,18 @@ multi-line-statements/click-comment-inside-kept]
 
 A line break inside a string, or between the `(` and the `)` of a call with
 arguments, is part of that value (a comment or a directive there included),
-which is printed as written, and no later line of the statement is indented. The
-other gaps of such a statement follow the ordinary rules: `click   A "/u" "x`
-and `y"` on the next line is printed `click A "/u" "x` and `y"`, as the
-statement on one line would be.
+which is printed as written, and no later line of the statement is indented.
+Indenting a later line would change what a click does: in 12.0.0 and 12.3.0, the
+link of `click C "x`, a line break, and `y"` goes to `xy`, and with four spaces
+before `y"` to `x`, four spaces, and `y`, and a call written over lines gets
+other arguments in the same way, while 10.9.8, 11.7.0, and 11.17.2 reject such a
+statement (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A comment line or a `)` alone on a later line changes no argument (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+The other gaps of such a statement follow the ordinary rules:
+`click   A "/u" "x` and `y"` on the next line is printed `click A "/u" "x` and
+`y"`, as the statement on one line would be.
 
 [fixture: multi-line-statements/click-string-over-lines-collapsed] [fixture:
 multi-line-statements/click-callback-args-over-lines-collapsed] [fixture:
@@ -2249,7 +2268,11 @@ flowchart click statement with a string over lines]
 
 A diagram header or subgraph header with a comment line after U+2028 or U+2029
 keeps that span as written: mermaid.js removes the comment line and its
-preceding whitespace and joins the continuation to the preceding text.
+preceding whitespace and joins the continuation to the preceding text. With a
+line break in place of the U+2028 or U+2029, 10.9.8, 11.7.0, 11.17.2, 12.0.0,
+and 12.3.0 read the `TD` of `flowchart`, U+2028, `%% c`, and ` TD` as a vertex,
+and draw no diagram for `subgraph`, U+2028, `%% c`, and ` S` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: a comment line after U+2028 in a flowchart header] [test: a comment line
 after U+2029 in a flowchart header] [test: a comment line after U+2028 in a
@@ -2816,7 +2839,8 @@ A separate `}` aligns with its statement.
 the `{` stands on the `accDescr` line: it puts the closing line at the level of
 the opening line, as Prettier prints the closing line of a block.
 
-[fixture: multi-line-values/accdescr-block-kept]
+[fixture: multi-line-values/accdescr-block-kept] [fixture:
+multi-line-values/accdescr-block-closing-brace-aligned]
 
 Comment contents inside such a block are kept, with their columns following the
 same top-level or subgraph rule.
@@ -3439,8 +3463,11 @@ of the name. It is so for a markdown string and in a swimlane diagram too, where
 the runs inside the name stay, since mermaid.js draws them there, while the
 whitespace at the end of the name is drawn the same whatever its width:
 ``subgraph "`o p`"   %%{init: {}}%%`` is printed
-``subgraph "`o p`" %%{init: {}}%%``. The indentation of the next line that a
-name ending with `end` takes is no such whitespace (see below).
+``subgraph "`o p`" %%{init: {}}%%``. 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0
+draw a long markdown name with a run otherwise than with one space (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The indentation of the next line that a name ending with `end` takes is no such
+whitespace (see below).
 
 [fixture: subgraph-header/name-several-words-directive-run-collapsed] [fixture:
 subgraph-header/name-markdown-directive-run-collapsed] [fixture:
@@ -3455,7 +3482,8 @@ subgraph-header/name-quoted-trailing-whitespace-kept] [fixture:
 subgraph-header/name-several-words-trailing-dropped] [fixture:
 subgraph-header/name-several-words-before-block-kept] [fixture:
 subgraph-header/name-whitespace-before-directive-kept] [fixture:
-subgraph-header/name-whitespace-after-directive-kept]
+subgraph-header/name-whitespace-after-directive-kept] [fixture:
+subgraph-header/long-markdown-title-runs-kept]
 
 So does the whitespace around the empty description blocks written on the line
 of the header: before a block, between two blocks, and between the last block
@@ -3933,6 +3961,21 @@ before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
 
 [test: prints a form feed before a comment as one space]
+
+A no-break space before the comment is no part of such a run, and it stays. CSS
+does not read it as whitespace, and mermaid.js keeps it, with the comment, in
+the value of the last style, so that the line without it has another style in
+the Db: `fill:red`, a no-break space, and ` %% c` against `fill:red %% c`. No
+kind of exception for a style covers a no-break space: the nearest one, a run of
+spaces, tabs, and form feeds before a `%%` comment, which the tests compare as
+one space (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)),
+has none in it, so removing it is a change of the Db that no kind of exception
+allows. The figure is the same: 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 draw
+both lines alike, since the value with the comment is no color and the browser
+drops the whole declaration.
+
+[test: keeps a no-break space before a comment at the end of a flowchart style]
 
 The whitespace of a `linkStyle` after a `stroke:` is kept as well (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):

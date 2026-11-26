@@ -1163,6 +1163,9 @@ timeline
 すでに空の内側は空のままです。
 通常のキーワードと開き括弧の間には空白 1 つを置き、
 `accDescr{  }` は `accDescr {}` にします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がどちらも与えます。
+Prettier は、何も持たない括弧の内側に何も置かず（`x = { }` は `x = {};`）、
+ブロックを開く `{` の前に空白を 1 つ置きます（`class A{}` は `class A {}`）。
 
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: timeline Unicode and tab interiors]
@@ -1490,6 +1493,11 @@ Prettier がブロックの中のコメント行をそう印字するためで�
 
 ヘッダーの前のコメント行は 1 列目に置き、
 テキストの末尾にあるものは自分の行に残して、改行を足します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの位置を与えます。
+[Gantt チャート](./gantt.ja.md#コメント)も、
+ヘッダーの前のコメントとテキストの末尾のコメントをこの位置に印字します。
+改行は[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier はテキストを改行 1 つで終えます。
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
