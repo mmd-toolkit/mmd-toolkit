@@ -15,7 +15,8 @@ describe("structural trivia boundaries", () => {
     {
       name: "er/attribute-spacing/comment-region-keeps-the-whole-attribute",
       input: "erDiagram\nA {\nint\n%% ordinary\n a\u2028%% joined\n PK\n}\n",
-      output: "erDiagram\n  A {\n    int\n%% ordinary\n a\u2028%% joined\n PK\n  }\n",
+      output:
+        "erDiagram\n  A {\n    int\n%% ordinary\n a\u2028%% joined\n PK\n  }\n",
     },
     {
       name: "requirement/relationship-spacing/comment-region-continuation-kept",
