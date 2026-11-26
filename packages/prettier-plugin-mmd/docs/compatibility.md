@@ -260,9 +260,9 @@ The table also names the pinned version where it needs the kept form.
 | [sequence](./sequence.md#arrow-spacing)                                                                                                         | `A () ->> () B`                                                                                                                                                              | `A() ->> ()B`                                                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read `()` as part of a name                                                                                              | [fixture: sequence/arrow-spacing/parentheses-touching]                                                                                                                |
 | [sequence](./sequence.md#arrow-spacing)                                                                                                         | `A<<->>B` printed `A<<->> B`                                                                                                                                                 | `A <<->> B`                                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the `<<` as part of the name before it                                                                                        | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]                                                                                                 |
 | [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `participant A @{ x }`, a data block without `:`, `,`, `;`, or `>`                                                                                                           | `participant A@{ x }`                                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read the block as a part of the name of the participant, with the whitespace                                             | [fixture: sequence/whitespace-between-tokens/data-block-name-gap-before-kept]                                                                                         |
-| [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `participant A@{ x } %% c`, a data block without `:`, `,`, `;`, or `>`, and no alias                                                                                         | `participant A@{ x } %% c`                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 and 11.7.0 read the block and the gap as a part of the name                                                                         | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                                        |
-| [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `actor B@{ y }`, a tab, and `%% d`, a data block without `:`, `,`, `;`, or `>`                                                                                               | `actor B@{ y } %% d`                                                  | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 and 11.7.0 read the block and the gap as a part of the name                                                                         | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                                        |
-| [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `create participant C@{x}`, three spaces, and `%% c`, a data block without `:`, `,`, `;`, or `>`, and no alias                                                               | `create participant C@{x} %% c`                                       | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 and 11.7.0 read the block and the gap as a part of the name                                                                         | [fixture: sequence/whitespace-between-tokens/data-block-name-created-comment-gap-kept]                                                                                |
+| [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `participant A@{ x } %% c`, a data block without `:`, `,`, `;`, or `>`, and no alias                                                                                         | `participant A@{ x } %% c`                                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read the block and the gap as a part of the name                                                                         | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                                        |
+| [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `actor B@{ y }`, a tab, and `%% d`, a data block without `:`, `,`, `;`, or `>`                                                                                               | `actor B@{ y } %% d`                                                  | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read the block and the gap as a part of the name                                                                         | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                                        |
+| [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `create participant C@{x}`, three spaces, and `%% c`, a data block without `:`, `,`, `;`, or `>`, and no alias                                                               | `create participant C@{x} %% c`                                       | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read the block and the gap as a part of the name                                                                         | [fixture: sequence/whitespace-between-tokens/data-block-name-created-comment-gap-kept]                                                                                |
 | [sequence](./sequence.md#colors)                                                                                                                | `rect rgb(191 ,223 ,255)`                                                                                                                                                    | `rect rgb(191, 223, 255)`                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.3.0 changes `messages[0].message`                                                                                                       | [fixture: sequence/colors/function-padding-kept]                                                                                                                      |
 | [sequence](./sequence.md#colors)                                                                                                                | `rect rgb( 1 ,2,3 )`                                                                                                                                                         | `rect rgb(1, 2, 3)`                                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw another `fill` attribute                                                                                             | [fixture: sequence/colors/rect-leading-and-comma-padding-kept]                                                                                                        |
 | [sequence](./sequence.md#colors)                                                                                                                | `rect rgb( 1,2,3)` and `rect rgb(1,2,3 )`                                                                                                                                    | `rect rgb(1, 2, 3)`                                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw another `fill` attribute                                                                                             | [fixture: sequence/colors/rect-open-paren-padding-kept] [fixture: sequence/colors/rect-close-paren-padding-kept]                                                      |
@@ -3032,9 +3032,15 @@ These stay as written:
   [fixture: pie/labels/label-quotes] [fixture:
   requirement/names/inner-whitespace-kept] [fixture: state/aliases/id-kept]
 
-A comment that ends the text of one of these texts leaves the runs inside the
-text and before the comment as the table gives (`A  b  %% c` is the text `A  b`
-and the comment `%% c`):
+The table gives how runs inside a text are printed and, where `%%` starts a
+comment, how the gap before it is printed (`A  b  %% c` then means the text
+`A  b` and the comment `%% c`). Where `%%` is a character of the text,
+`A  b  %% c` is all text, and the runs before the `%%` are runs inside it: this
+is so, for example, in the title of a [Gantt chart](./gantt.md#comments), in the
+unquoted fields of a [requirement diagram](./requirement.md#comments), in the
+literal of an [ishikawa diagram](./ishikawa.md#comments), in the node rows of a
+[mindmap](./mindmap.md#comments) and a [treeView](./treeview.md#comments), and
+in the card row of a [kanban](./kanban.md#comments).
 
 | Text                                                                                                       | Diagram types                                                                                                                                                                                                                                                                                                                                                                         | Written                                                                 | Printed                                                           |
 | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |
@@ -4608,16 +4614,21 @@ gitgraph/header/header-bt]
 ### The label of a link
 
 A label can be written between two arrows (`-- text -->`) or between `|` after
-the arrow (`-->|text|`), and mermaid.js reads both the same. The form is the one
-that the examples of the diagram type use at least twice as often as the other:
-an agentflow diagram has 2 links of the first form and none of the second, so
-its label is printed between the arrows, for the arrows `-->` and `--x`, which
-it reads in the first form; a swimlane diagram has none of the first form and 12
-of the second, so its label is printed between `|`, for the eight arrows of a
+the arrow (`-->|text|`), and mermaid.js reads both the same.
+[Rule 3](./printed-form.md#3-a-spelling) gives the form: the one that the
+examples of the diagram type use at least twice as often as the other: an
+agentflow diagram has 2 links of the first form and none of the second, so its
+label is printed between the arrows, for the arrows `-->` and `--x`, which it
+reads in the first form; a swimlane diagram has none of the first form and 12 of
+the second, so its label is printed between `|`, for the eight arrows of a
 flowchart; a flowchart has 14 of the first form and 8 of the second, which is
-not twice as often, and stays as written. The label must be plain text (letters,
-digits, spaces, `_`, `,`, `?`, and `!`); a label with a `|` or a `%%`, a string,
-a Markdown label, a label of blanks only, and an empty label stay as written.
+not twice as often, so rule 3 gives no form there, and the label stays as
+written, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). The
+label must be plain text (letters, digits, spaces, `_`, `,`, `?`, and `!`); a
+label with a `|` or a `%%`, a string, a Markdown label, a label of blanks only,
+and an empty label stay as written.
 
 [fixture: agentflow/edge-labels/pipes-to-arrows] [fixture:
 agentflow/edge-labels/blank-pipe-label-kept] [fixture:
@@ -6325,11 +6336,14 @@ The line rule of mermaid.js (the specification's
 applies to a line of the text as a whole, whatever statement holds the trigger
 and whatever statement holds the `;`: `accDescr {style:#x} accTitle:;` is a line
 whose `;` is ignored because of the `style:#x` of the description block. A `;`
-that ends its line is dropped, as one that separates statements is. But where
-the statement that holds it goes on after the line with a value of its own, as
-`accTitle:` and `T` on the next line do, the `;` is not at the end of its
-statement, and the printer does not drop it: the line stays together, with the
-trigger and the `;` on it, so that no statement per line, and no description
+that ends its line is dropped, as one that separates statements is, a form
+decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). But
+where the statement that holds it goes on after the line with a value of its
+own, as `accTitle:` and `T` on the next line do, the `;` is not at the end of
+its statement, and the printer does not drop it: the line stays together, with
+the trigger and the `;` on it, so that no statement per line, and no description
 block in the form of the colon, parts the `;` from its trigger, and the value is
 joined or kept as the statement is printed otherwise. A body of statements after
 the line of a block, and the word that closes a statement (`end`), are no such

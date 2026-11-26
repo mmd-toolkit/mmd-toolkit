@@ -215,13 +215,15 @@ changed). A `%%{` that no word character follows after its whitespace, such as
 before it: `title T`, a no-break space, and `%%{}%%` is not changed, and
 `title T`, two spaces, and `%%{}%%` print `title T %%{}%%` (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
-Where whitespace follows a directive that follows the text, the title is printed
-as in the other diagrams: `title    T`, a no-break space, `%%{x}%%`, two spaces,
-and `%% c` print `title T`, the no-break space, and `%%{x}%% %% c`. Where only
-directives follow the text of a title, they are printed with one space before
-each that has spaces or tabs before it, and the spaces and tabs after the last
-one are left out, unless a directive of the line holds a line break, a `;`, a
-U+2028, or a U+2029 (see
+Where whitespace follows a directive that follows the text, one space stands
+before the comment. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives one space before a comment that stands after something on its line, as
+Prettier prints `x = 1;   // c` as `x = 1; // c`. `title    T`, a no-break
+space, `%%{x}%%`, two spaces, and `%% c` print `title T`, the no-break space,
+and `%%{x}%% %% c`. Where only directives follow the text of a title, they are
+printed with one space before each that has spaces or tabs before it, and the
+spaces and tabs after the last one are left out, unless a directive of the line
+holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
@@ -626,21 +628,13 @@ pie
 
 ### Comments
 
-Reuse [shared comment placement](./flowchart.md#comments) to keep author
-attachment and text: an inline comment that touches stays touching, and a run of
-spaces and tabs before it becomes one space; standalone comments align with body
-statements, or column one before the header. Rule 1 names no mark before a
-comment, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
-comment after a statement in the same way, where no other rule keeps the
-whitespace as written; each of them names those cases in its own sections or in
-[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
-(whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). The whitespace before a `%%` or a `%%{}%%`
-that follows an `accTitle` value is the exception: the oldest version that
-counts reads it as part of the title (see
+An inline comment stays on its line. An inline comment that touches stays
+touching. Standalone comments align with body statements, or at column one
+before the header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives one space before a comment that stands after something on its line, as
+Prettier prints `x = 1;   // c` as `x = 1; // c`. The whitespace before a `%%`
+or a `%%{}%%` that follows an `accTitle` value is the exception: the oldest
+version that counts reads it as part of the title (see
 [Accessibility lines](#accessibility-lines)). Keep bare/triple-percent marks and
 trailing comment spaces. Pie native comments end at LF, retaining LS/PS inside
 them, because pie does not treat them as separators: ending a comment at one

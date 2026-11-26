@@ -1718,14 +1718,12 @@ kept as written.
 
 [fixture: comments/directive-in-percent-brace-marker]
 
-A comment after a statement, or after the header, stays on the line, as written:
-one space stands before it where whitespace was written, and none where it
-touches, since the comment of a statement that touches it is read otherwise by
-mermaid.js. [Architecture](./architecture.md#comments) and
-[cynefin](./cynefin.md#comments) diagrams print one space before an inline
-comment where spaces or tabs were written;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt inline comments the same gap.
+A comment after a statement, or after the header, stays on the line. Where
+whitespace was written, it becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. A comment that touches stays touching, since
+mermaid.js reads a comment that touches its statement differently.
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-keyword-statement] [fixture:

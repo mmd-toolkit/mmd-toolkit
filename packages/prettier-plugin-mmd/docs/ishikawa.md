@@ -320,8 +320,10 @@ their association; comments before the header stand at column one.
 [fixture: ishikawa/comments/comments-align] [fixture:
 ishikawa/comments/comment-on-separate-line]
 
-A real trailing header comment retains touching versus spaced attachment,
-reducing an exterior spaced gap to one space.
+A real trailing header comment that touches stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 [fixture: ishikawa/comments/comment-header-gap] [fixture:
 ishikawa/comments/comment-header-touch]
@@ -433,14 +435,17 @@ whitespace between two directives, or between the last directive and a comment,
 is printed as one space, whatever the whitespace is (spaces, tabs, a no-break
 space, U+3000, U+2028, U+2029, and the other whitespace of the specification):
 `%%{x}%%  %% c  d` is printed `%%{x}%% %% c  d`, and so are `%%{x}%%`, a U+3000,
-and `%% c  d`, and `%%{x}%%  %%{y}%%` is printed `%%{x}%% %%{y}%%`. A gap of
-nothing stays nothing, so two directives, or a directive and a comment, that
-touch stay touching. The one exception is the header line: where a gap holds a
-U+2028 or a U+2029 and a comment ends the line, the whole line stays as written,
-the other gaps too (`ishikawa %%{x}%%`, three spaces, `%%{y}%%`, a U+2029, and
-`%% c` is not changed); where a directive ends the line, a gap that holds a
-U+2028 or a U+2029 is printed as one space like the others (`ishikawa %%{x}%%`,
-a U+2029, and `%%{y}%%` is printed `ishikawa %%{x}%% %%{y}%%`).
+and `%% c  d`, and `%%{x}%%  %%{y}%%` is printed `%%{x}%% %%{y}%%`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Two directives that touch stay touching. A
+comment that touches a directive stays touching. The one exception is the header
+line: where a gap holds a U+2028 or a U+2029 and a comment ends the line, the
+whole line stays as written, the other gaps too (`ishikawa %%{x}%%`, three
+spaces, `%%{y}%%`, a U+2029, and `%% c` is not changed); where a directive ends
+the line, a gap that holds a U+2028 or a U+2029 is printed as one space like the
+others (`ishikawa %%{x}%%`, a U+2029, and `%%{y}%%` is printed
+`ishikawa %%{x}%% %%{y}%%`).
 
 mermaid.js rejects a header line and a line before the root that hold two or
 more directives and no comment, written and printed alike: this is the known

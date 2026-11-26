@@ -1024,16 +1024,14 @@ comments/comment-marks-and-empty-lines] [fixture: comments/bare-percent-comment]
 [fixture:
 comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 
-A comment after a statement stays on the line of the statement, with one space
-before it where whitespace was written, and touching where it was not. The Db is
-the same wherever the spaces stand, but mermaid.js reads a `%%` that touches a
-unit of one character together with that character (the known divergence
-`comment-takes-character`): `title T%% c` is rejected, and `title A B%% c` has
-the title `A`. A rule that wrote a space before every comment would change how
-mermaid.js reads such an input, and leave a mistake of the author to read as
-another chart without a word; the printer keeps whether the comment touches, and
-a lint rule is the place to report it, as in the other diagrams (see
-[Comments](./journey.md#comments)).
+A comment after a statement stays on the line of the statement. Where whitespace
+was written, it becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. A comment that touches stays touching, since
+mermaid.js reads a `%%` that touches a unit of one character together with that
+character (the known divergence `comment-takes-character`): `title T%% c` is
+rejected, and `title A B%% c` has the title `A`.
 
 [fixture: comments/comment-after-a-statement-spaced] [fixture:
 comments/comment-after-a-statement-touching] [fixture:

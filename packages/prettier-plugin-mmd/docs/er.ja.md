@@ -480,6 +480,9 @@ Db が保つからです。
 [fixture: attribute-spacing/keys-case-kept]
 
 コメントは、名前やキーに接して書かれていても、空白 1 つの後に置きます。
+コメントは名前やキーの後に続く値であり、並んで続く値の間に空白を 1 つ置く形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 
 [fixture: attribute-spacing/comment-one-space]
 

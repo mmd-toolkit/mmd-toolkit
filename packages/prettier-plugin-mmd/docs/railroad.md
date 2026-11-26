@@ -830,9 +830,9 @@ continuation columns.
 [fixture: railroad/multiline-values/ir-columns]
 
 Comments, global directives and native hidden forms stay at their argument
-boundaries while the surrounding calls use the structural layout. Their gaps
-follow [Comments](#comments), where rule 2 gives them. Semicolons inside values
-do not prevent it. Keep trivia contents as described in [Comments](#comments),
+boundaries while the surrounding calls use the structural layout. Their layout
+and gaps follow [Comments](#comments). Semicolons inside values do not prevent
+it. Keep trivia contents as described in [Comments](#comments),
 [Global directives](#global-directives) and [Hidden forms](#hidden-forms). Lines
 containing `style` or `classDef`, and ignored semicolons, retain their protected
 layout. EBNF, ABNF and PEG keep an authored line break after the assignment of
@@ -1410,26 +1410,20 @@ railroad-peg-beta
 ### Comments
 
 Standalone comments use one body step, or column one before the header. Outside
-ordinary IR calls, inline comments keep their side and touching/separated
-boundaries; ordinary separated gaps become one space. Preserve marks, text,
-tails, block continuation columns and source order. A line comment leaves its
-following operand or terminator on the next line. For the terminator of an ABNF
-rule, every version of mermaid.js that counts rejects `r="comment"; note ;`,
-since the comment takes the terminator (see
+ordinary IR calls, inline comments keep their side and their line. An inline
+comment that touches stays touching. Preserve marks, text, tails, block
+continuation columns and source order. A line comment leaves its following
+operand or terminator on the next line. For the terminator of an ABNF rule,
+every version of mermaid.js that counts rejects `r="comment"; note ;`, since the
+comment takes the terminator (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Every dialect has `%%`; IR also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;`
 line comments, and PEG `#` line comments. Bare ABNF `;` is punctuation; `//` is
 not a native comment. Text owned by a value stays in that value. These choices
-preserve ownership and prevent a line comment from taking code. Rule 1 names no
-mark for a comment, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides. A standalone comment stands one body step in, or at column one before
-the header, and an inline comment keeps its line and keeps touching what it
-touches, with one space for a separated gap, as in [radar](./radar.md#comments),
-[wardley](./wardley.md#comments), and
-[architecture](./architecture.md#comments), where no other rule keeps the
-whitespace as written (a comment right after a character, whitespace that
-mermaid.js reads, and the like). The text of a comment is kept as written, with
+preserve ownership and prevent a line comment from taking code.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. The text of a comment is kept as written, with
 the whitespace at its end: mermaid.js does not read it, as
 [flowchart](./flowchart.md#comments) says of the text of its comments.
 
@@ -1446,12 +1440,15 @@ Within an IR call gap written on one line, put one space on both sides of
 comments between a constructor and its opener. Comments before an argument use
 that argument's ordinary separator before them and one space after them.
 Comments before a comma or closer use one space before them and none after them;
-the closing parenthesis stands on its own line. Apply the same outside spacing
-beside existing line breaks without moving punctuation across comments. Preserve
-each comment run's contents, internal contacts, continuation columns and
-trailing whitespace, including with tabs or zero-width indentation. A standalone
-comment line inside an argument list stands at the level of the arguments around
-it, as a comment line stands at the level of the statements around it in
+the closing parenthesis stands on its own line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Apply the same outside spacing beside existing
+line breaks without moving punctuation across comments. Preserve each comment
+run's contents, internal contacts, continuation columns and trailing whitespace,
+including with tabs or zero-width indentation. A standalone comment line inside
+an argument list stands at the level of the arguments around it, as a comment
+line stands at the level of the statements around it in
 [flowchart](./flowchart.md#comments), [sequence](./sequence.md#comments), and
 [state](./state.md#comments), and a run of empty lines becomes one, as in
 [radar](./radar.md#blank-lines) and [info](./info.md#blank-lines).

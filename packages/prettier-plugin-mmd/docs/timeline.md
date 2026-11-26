@@ -1470,10 +1470,13 @@ of the text stays on a line of its own, with the line break added.
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
 A comment after the header or a direction, after the `}` of an accessibility
-block, or after a period stays on the line, as written: one space stands before
-it where whitespace was written, and none where it touches. After a period, the
-whitespace before the `#` is part of the period, and stays as it is (see
-[Periods and events](#periods-and-events)).
+block, or after a period stays on the line. Where whitespace was written, it
+becomes one space, except after a period.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. A comment that touches the preceding text
+stays touching. After a period, the whitespace before the `#` is part of the
+period, and stays as it is (see [Periods and events](#periods-and-events)).
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-header-percent] [fixture: comments/after-period]

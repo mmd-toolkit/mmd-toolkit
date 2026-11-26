@@ -650,8 +650,10 @@ gitGraph
 ### Comments
 
 Align ordinary standalone comments one body step down, or at column one before
-the header. Inline comments stay on the same line, touching when authored
-touching, otherwise separated by one space. Keep marks, content and trailing
+the header. Inline comments stay on the same line. A comment that touches stays
+touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space before a comment that stands after something on its line, as Prettier
+prints `x = 1;   // c` as `x = 1; // c`. Keep marks, content and trailing
 whitespace for author attachment. Native comments keep LS/PS as content;
 strings/blocks own percent text while line values stop before it. Common removed
 regions retain complete source spans. Retained prefixes override ordinary

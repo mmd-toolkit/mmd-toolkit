@@ -625,6 +625,10 @@ mermaid.js が読まない `""` も同じです。
 [スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
 を参照してください。
 
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前を、空白 1 つにします。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+
 [test: prints a form feed before a comment as one space]
 [test: keeps a form feed before a comment where a version that counts reads the text as words]
 
@@ -1576,12 +1580,11 @@ state 図にもこの形を与えます。
 [fixture: comments/kept] [fixture: comments/text-kept]
 [fixture: comments/before-closing-brace]
 
-文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
-[requirement](./requirement.ja.md#コメント) と [C4](./c4.ja.md#コメント) は、
-文の後のコメントをその行に残し、横の空白があれば 1 つにし、
-印が接していれば接したまま保ちます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-文の後のコメントに同じ形を与えます。
+文の後のコメントはその行に残します。
+文に接するコメントは接したまま残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 
 [fixture: comments/kept] [fixture: comments/hash-after-statement-kept]
 [fixture: comments/after-brace-kept]
@@ -2336,12 +2339,11 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 次のテキストは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
 表にないキーワードの大文字小文字です。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-文の後のコメントの印の前に空白が書かれているかどうかも保ち、
-その空白の連なりは空白 1 つで印字します。
-（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+
+文に接するコメントは接したまま残します。
 
 [fixture: comments/mark-run-one-space]
-
-既知の差異（`comment-takes-character`、`percent-brace-after-unit`）の場所では、
-mermaid.js がコメントを、接するものによって読むからです。
-場所の一覧よりも、1 つの規則のほうが単純です。
