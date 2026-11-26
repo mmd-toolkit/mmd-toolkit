@@ -95,11 +95,11 @@ gitGraph
 ### Indentation
 
 Put the header at column one and ordinary body statements, standalone comments
-and global directives one configured step below it. The flat history has no
-extra level after branch. `tabWidth: 0` gives zero spaces; `useTabs` gives one
-tab even at width zero, because gitgraph columns have no grammatical meaning.
-This does not alter other value continuation columns, hidden closers or
-protected segments.
+and global directives one configured step below it. A header at column one is
+easier to find than an indented one. The flat history has no extra level after
+branch. `tabWidth: 0` gives zero spaces; `useTabs` gives one tab even at width
+zero, because gitgraph columns have no grammatical meaning. This does not alter
+other value continuation columns, hidden closers or protected segments.
 
 [fixture: gitgraph/indentation/indent-two] [fixture:
 gitgraph/indentation/indent-four] [fixture: gitgraph/indentation/indent-zero]

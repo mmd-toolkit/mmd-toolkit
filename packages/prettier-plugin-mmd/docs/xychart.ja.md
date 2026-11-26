@@ -30,6 +30,7 @@ fixture の置き方と確かめ方は、
 mermaid.js の文書も、ヘッダーの後の文を 1 段深く書き、
 ほかの図も同じです（flowchart の[字下げ](./flowchart.ja.md#字下げ)を参照）。
 ヘッダーと、その前のコメント行は 1 列目に置きます。
+1 列目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/written-indentation-dropped]

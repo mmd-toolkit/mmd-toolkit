@@ -34,6 +34,7 @@ mermaid.js の文書もそう書き、
 ほかの図もブロックを入れ子にします（flowchart
 の[字下げ](./flowchart.ja.md#字下げ)を参照）。
 ヘッダーと、その前のコメント行は、前に空白が書かれていても 1 列目に置きます。
+1 列目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/composite-body-one-level-deeper-end-at-the-level-of-block]

@@ -11,10 +11,10 @@ Formatting rules for cynefin-beta and cynefin-beta:, following the
 
 ### Header
 
-Put cynefin-beta at column one. A colon right after the header word is removed:
-mermaid.js reads `cynefin-beta:` and `cynefin-beta` as the same header, and the
-examples in its documentation write the header without the colon 3 times against
-none (see
+Put cynefin-beta at column one. A header at column one is easier to find than an
+indented one. A colon right after the header word is removed: mermaid.js reads
+`cynefin-beta:` and `cynefin-beta` as the same header, and the examples in its
+documentation write the header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;`, the `---` of a hidden YAML block, or a directive that is

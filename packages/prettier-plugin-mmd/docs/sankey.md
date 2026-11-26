@@ -20,12 +20,13 @@ organized and checked is described in
 ### Indentation
 
 The header, the records, the comment lines, and the directive lines all stand at
-the first column, whatever the `useTabs` and `tabWidth` options say. A sankey
-diagram is a list of records in the form of CSV, and two kinds of its lines
-cannot be indented: mermaid.js rejects a space before a quote, so a record that
-starts with a string has no indentation, and a line of only a directive is a
-line of whitespace once the directive is removed, which is a field without a
-comma (diagrams/sankey.md, Characters and Diagram and records). It rejects a tab
+the first column, whatever the `useTabs` and `tabWidth` options say. A header at
+the first column is easier to find than an indented one. A sankey diagram is a
+list of records in the form of CSV, and two kinds of its lines cannot be
+indented: mermaid.js rejects a space before a quote, so a record that starts
+with a string has no indentation, and a line of only a directive is a line of
+whitespace once the directive is removed, which is a field without a comma
+(diagrams/sankey.md, Characters and Diagram and records). It rejects a tab
 anywhere, so a tab could not indent the others.
 
 [fixture: indentation/header-and-records-at-the-first-column] [fixture:

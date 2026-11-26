@@ -9,8 +9,9 @@ Invisible characters and physical CR examples are escaped test cases.
 
 ### Header
 
-Print exact `info` at column one and a written `showInfo` after one space. Join
-ordinary whitespace and line breaks before the flag;
+Print exact `info` at column one and a written `showInfo` after one space. A
+header at column one is easier to find than an indented one. Join ordinary
+whitespace and line breaks before the flag;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `info` and its flag, as Prettier prints `return  x` as `return x;`;
 never add or remove the flag. Comments, global directives, hidden forms and

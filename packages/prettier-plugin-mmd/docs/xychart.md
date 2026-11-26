@@ -28,7 +28,8 @@ Nothing in the grammar forbids indenting a statement (unlike a sankey diagram),
 and the documentation of mermaid.js writes the statements one level deeper than
 the header, as the other diagrams do (see
 [Indentation](./flowchart.md#indentation) in the flowchart rules). The header,
-and a comment line before it, stand at the first column.
+and a comment line before it, stand at the first column. A header at the first
+column is easier to find than an indented one.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/written-indentation-dropped] [fixture:

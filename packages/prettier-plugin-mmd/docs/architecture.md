@@ -10,8 +10,9 @@ limits are in [compatibility.md](./compatibility.md).
 
 ### Header
 
-Print `architecture-beta` at column one. Move an ordinary first statement below
-it, as [sequence](./sequence.md#statements-one-per-line) and
+Print `architecture-beta` at column one. A header at column one is easier to
+find than an indented one. Move an ordinary first statement below it, as
+[sequence](./sequence.md#statements-one-per-line) and
 [ER](./er.md#statements-one-per-line) diagrams move a statement written on the
 line of their header;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives

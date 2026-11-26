@@ -49,6 +49,7 @@ mermaid.js の文書の書き方と同じく、section の中に置きます。
 [fixture: indentation/written-indentation-dropped]
 
 ヘッダーは、前に空白が書かれていても 1 列目に置きます。
+1 列目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 
 [fixture: indentation/header-leading-whitespace]
 

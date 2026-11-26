@@ -30,7 +30,8 @@ so the printer chooses it from the structure alone, and every text has one form.
 Nothing in the grammar forbids indenting a statement, and the documentation of
 mermaid.js writes the statements one level deeper than the header, as the other
 diagrams do (see [Indentation](./flowchart.md#indentation) in the flowchart
-rules). The header, and a comment line before it, stand at the first column.
+rules). The header, and a comment line before it, stand at the first column. A
+header at the first column is easier to find than an indented one.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/written-indentation-dropped] [fixture:

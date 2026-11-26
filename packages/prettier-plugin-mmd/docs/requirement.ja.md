@@ -40,6 +40,7 @@ requirement の文とフィールドと `}` に、この字下げを与えるの
 [fixture: indentation/written-indentation-dropped]
 
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
+1 桁目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 
 [fixture: indentation/header-leading-whitespace]
 

@@ -12,6 +12,7 @@ cynefin-beta と cynefin-beta: の整形規則です。
 ### Header
 
 cynefin-beta は第 1 列に置きます。
+第 1 列の見出しは、字下げした見出しより見つけやすくなります。
 
 見出しの語の直後のコロンは削除します。
 mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読み、

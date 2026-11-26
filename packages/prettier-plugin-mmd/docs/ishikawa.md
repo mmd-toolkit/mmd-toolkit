@@ -21,7 +21,8 @@ The header stands at column one and is printed `ishikawa`, in lower case and
 without `-beta`, whatever case and name it was written in: `IsHiKaWa-BeTa` and
 `ISHIKAWA` become `ishikawa`. Every version of mermaid.js that counts and has
 the diagram reads the names in any case and draws them the same (see
-[The names of a header](./compatibility.md#the-names-of-a-header)).
+[The names of a header](./compatibility.md#the-names-of-a-header)). A header at
+column one is easier to find than an indented one.
 
 [fixture: ishikawa/header/header-column] [fixture:
 ishikawa/header/header-stable] [fixture:

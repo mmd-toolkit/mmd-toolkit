@@ -32,7 +32,8 @@ not once composites nest deeply, and it is how the documentation of mermaid.js
 writes them, as the other diagrams nest their blocks (see
 [Indentation](./flowchart.md#indentation) in the flowchart rules). The header,
 and a comment line before it, stand at the first column, also where whitespace
-was written before them.
+was written before them. A header at the first column is easier to find than an
+indented one.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/composite-body-one-level-deeper-end-at-the-level-of-block] [fixture:

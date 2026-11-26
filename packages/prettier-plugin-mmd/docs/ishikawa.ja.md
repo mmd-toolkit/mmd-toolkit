@@ -24,6 +24,7 @@ mermaid.js は各入力とその出力を同じ Db として読みます。
 同じに描くからです。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
 を参照してください。
+1 列目の見出しは、字下げした見出しより見つけやすくなります。
 
 [fixture: ishikawa/header/header-column]
 [fixture: ishikawa/header/header-stable]
