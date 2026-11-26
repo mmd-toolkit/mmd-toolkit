@@ -224,8 +224,11 @@ of its diagram type.
 
 - The tasks of a section of a Gantt chart are rows of a name and its data. The
   printer puts the colons of a section in one column where its names were
-  written with padding before their colons. [Task data](./gantt.md#task-data)
-  defines when it does, and the sections that it leaves as written.
+  written with padding before their colons, a form decided under
+  [rule 4](#4-where-none-of-these-rules-gives-a-form) (see
+  [Forms decided under rule 4](#forms-decided-under-rule-4)).
+  [Task data](./gantt.md#task-data) defines when it does, and the sections that
+  it leaves as written.
 - The padding that lines the colons of a timeline or of a user journey up stays
   as written. [Periods and events](./timeline.md#periods-and-events) and
   [Task data](./journey.md#task-data) define it. In a timeline it is a form
@@ -328,6 +331,9 @@ and where it does not.
   lines, one entry on each, where the lines read better than the one line.
 - In a timeline, the padding that lines the colons of periods up stays as
   written: `A    : x` above `Long : y` keeps its spaces.
+- In a Gantt chart, the colons of the tasks of a section stand in one column,
+  one space after its longest name, where a name of the section was written with
+  padding before its colon.
 
 ## The versions of mermaid.js that count
 
