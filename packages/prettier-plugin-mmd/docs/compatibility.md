@@ -2517,10 +2517,12 @@ gantt/settings/trailing-whitespace-by-setting]
 
 The name of a task of a Gantt chart ends with the whitespace between its text
 and the colon, which the printer sets one space after the longest name of a
-section whose names have padding, or of the sections that share a column, and
-one space after a name that touches its colon (see
-[Task data](./gantt.md#task-data)). The rule of the grammar takes everything
-before the colon as the name, whitespace included
+section whose names have padding, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)), or
+of the sections that share a column, and one space after a name that touches its
+colon (see [Task data](./gantt.md#task-data)). The rule of the grammar takes
+everything before the colon as the name, whitespace included
 ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L93)),
 `addTask` keeps it in the `task` of the task
 ([`addTask`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L596-L606)),
@@ -7158,8 +7160,11 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   section than `section A`. The spaces and tabs at the ends of `dateFormat`,
   `axisFormat`, and `title` are left out, and the whitespace between the text of
   a task description and its colon is set one space after the longest name of a
-  section whose names have padding, or of the sections that share a column, and
-  one space after a name that touches its colon (see
+  section whose names have padding, a form decided under
+  [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+  [Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)),
+  or of the sections that share a column, and one space after a name that
+  touches its colon (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
   [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
   between a keyword and what it takes, as Prettier prints `return  x` as

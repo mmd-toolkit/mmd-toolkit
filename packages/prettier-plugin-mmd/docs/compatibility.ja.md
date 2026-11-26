@@ -2639,6 +2639,9 @@ Gantt 図のタスクの名前は、テキストとコロンの間の空白で�
 それらの最長の名前の後に空白 1 つを置いた所にそろえ、
 コロンに接する名前の後には空白を 1 つ置きます。
 （[タスクのデータ](./gantt.ja.md#タスクのデータ)）。
+1 つのセクションの中でコロンをそろえる形は、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 文法の規則は、コロンより前のすべてを、空白も含めて名前として読みます。
 （[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L93)）。
 `addTask` は、それをタスクの `task` に残します。
@@ -7403,6 +7406,9 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   それらの最長の名前の後に空白 1 つを置いた所にそろえ、
   コロンに接する名前の後に空白を 1 つ置くように整えます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
+  1 つのセクションの中でコロンをそろえる形は、
+  [規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形で、
+  [規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)にあります。
 
   [fixture: gantt/settings/trailing-whitespace-by-setting]
   [fixture: gantt/titles-and-sections/title-trailing-dropped-section-kept]
