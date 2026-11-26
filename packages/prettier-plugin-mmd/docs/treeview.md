@@ -767,13 +767,15 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 In indentation mode read the forest from AST children, including file parents.
 Print roots at one configured step and children one step beyond their parent.
-Sections and items stand one configured level below the header and one more
-below a section in [kanban](./kanban.md#indentation) diagrams. Under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
-treeView roots and children take those positions. A space step is
-`max(1, tabWidth)`; useTabs uses one tab. This selects a uniform Db-equivalent
-width even for a deep first node, later shallower roots, irregular increments,
-duplicate names and empty names.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the roots one
+configured level below the header, as Prettier prints the lines inside a block.
+A child stands deeper, since indentation determines parentage: items stand one
+more level below a section in [kanban](./kanban.md#indentation) diagrams, and
+under [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
+treeView children take that position. A space step is `max(1, tabWidth)`;
+useTabs uses one tab. This selects a uniform Db-equivalent width even for a deep
+first node, later shallower roots, irregular increments, duplicate names and
+empty names.
 
 [fixture: treeview/indentation/indent-irregular]
 

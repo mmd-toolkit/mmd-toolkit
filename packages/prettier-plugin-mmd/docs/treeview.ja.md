@@ -774,10 +774,13 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 字下げのモードでは AST の `children` から親子を読み、
 ファイルも親として扱います。
 根は設定の 1 段、子は親より 1 段深く置きます。
-[kanban](./kanban.ja.md#インデント) は、セクションを見出しの 1 段下に、
-項目をセクションのさらに 1 段下に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+根を見出しより設定の 1 段深く置きます。
+Prettier がブロックの中の行を印字する形です。
+子は、字下げが親子を決めるので、それより深く立ちます。
+[kanban](./kanban.ja.md#インデント) は、項目をセクションのさらに 1 段下に置き、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-treeView の根と子にも同じ配置を与えます。
+treeView の子にも同じ配置を与えます。
 空白の 1 段は `max(1, tabWidth)`、`useTabs` は 1 タブです。
 最初のノードが深い場合、後の根が浅い場合、不揃いな増分、重複名と空名でも、
 Db の等しい一定幅を選びます。

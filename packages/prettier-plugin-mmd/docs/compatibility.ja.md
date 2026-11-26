@@ -5038,10 +5038,9 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   `accDescr: direction RL` は行頭では説明で、
   行を字下げすると方向の行になります。
   印字は、本文の文を字下げします。
-  agentflow の本文の文をヘッダーより 1 段深く置く形は、
-  [class 図](./class.ja.md#字下げ) と [Gantt 図](./gantt.ja.md#インデント)
-  と同じで、[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-  この位置を与えます。
+  agentflow の本文の文は、ヘッダーより 1 段深く置きます。
+  [規則 1](./printed-form.ja.md#1-記号の横の空白)が、この位置を与えます。
+  Prettier がブロックの中の行を印字する形です。
 
   [fixture: class/multi-line-values/block-direction-on-its-own-line-kept]
   [fixture: class/multi-line-values/block-brace-on-the-next-line-direction-kept]

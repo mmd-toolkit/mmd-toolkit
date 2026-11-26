@@ -123,9 +123,12 @@ Prettier がブロックの中の行をそう印字するためです。
 
 セミコロンの保護区間の最初の行は、他の平坦な図種と同じく本文の1段に揃えます。
 2行目以降は保護された本文に属するため、書かれた列を保ちます。
-この配置は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
-[wardley](./wardley.ja.md#字下げ) は、保護区間の最初の行を本文に揃え、
-後の行を書かれた列に保ち、[cynefin](./cynefin.ja.md#semicolons) も同じです。
+最初の行の段は[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier がブロックの中の行を印字する形です。
+後の行は書かれた列に保ちます。
+これは[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+[wardley](./wardley.ja.md#字下げ) と [cynefin](./cynefin.ja.md#semicolons) も、
+保護区間の後の行を書かれた列に保ちます。
 ただし、
 ほかの規則が配置を書かれたまま残す所（mermaid.js が桁で読む値など）は別です。
 

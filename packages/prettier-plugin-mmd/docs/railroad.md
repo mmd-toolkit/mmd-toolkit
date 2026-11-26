@@ -115,13 +115,13 @@ their argument levels as described in [Long lines](#long-lines). Other written
 value columns, hidden interiors and retained prefixes keep their own columns.
 Semicolon-protected segments start at one body step, like other flat diagrams;
 their later lines keep their written columns because these belong to the
-protected text.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this layout, as [wardley](./wardley.md#indentation) aligns the first line of a
-protected segment with the body and keeps its later lines in their written
-columns, and so does [cynefin](./cynefin.md#semicolons), where no other rule
-keeps the layout as written (a value that mermaid.js reads by its columns, and
-the like).
+protected text. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+the first line that step, as Prettier prints the lines inside a block, and
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) keeps
+the later lines, as [wardley](./wardley.md#indentation) and
+[cynefin](./cynefin.md#semicolons) keep the later lines of a protected segment
+in their written columns, where no other rule keeps the layout as written (a
+value that mermaid.js reads by its columns, and the like).
 
 [fixture: railroad/indentation/abnf-default]
 

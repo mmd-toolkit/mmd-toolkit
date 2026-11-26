@@ -758,14 +758,14 @@ the margin exception below alone changes. The closing brace stays at column one.
 `eventmodeling tf 01 evt Alpha [[D]] data D {`, `x` and `}` stay, since every
 version of mermaid.js that counts rejects `}` indented by two spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-As [sequence](./sequence.md#indentation) and [state](./state.md#indentation) put
-the statements after the header one level deeper than the header and a closing
-line at the level of the line that opens its block,
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) would
-indent the `}` by two spaces. Preserve apparent statements, text containing
-braces and an adjacent closing-looking line when the block's body-present rule
-reads through it to a later closer, since in a `data` block that a frame reads
-they are characters of the value that the Db holds for the frame.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), which puts the
+statements after the header one level deeper than the header and a closing line
+at the level of the line that opens its block, as Prettier prints the lines
+inside a block, would indent the `}` by two spaces. Preserve apparent
+statements, text containing braces and an adjacent closing-looking line when the
+block's body-present rule reads through it to a later closer, since in a `data`
+block that a frame reads they are characters of the value that the Db holds for
+the frame.
 
 [fixture: eventmodeling/data-blocks/body-whitespace-kept] [fixture:
 eventmodeling/data-blocks/block-closer-indent-unsafe]

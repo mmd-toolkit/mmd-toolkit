@@ -50,9 +50,12 @@ later deep row after a leaf can be another root. Common statements and class
 definitions in statementsBefore keep their source position and do not determine
 parents. Print ordinary roots one configured step in and children one step
 deeper than their parent; common statements and class definitions use one body
-step. This chooses consistent depths from equivalent widths. Ordinary roots
-stand one configured step below the header and children one below their parent
-under [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
+step. This chooses consistent depths from equivalent widths.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary roots,
+common statements, and class definitions one configured step below the header,
+as Prettier prints the lines inside a block. A child stands deeper, since
+indentation determines parentage, one step below its parent under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
 following the indentation gaps in [kanban](./kanban.md#indentation) diagrams.
 Use at least one character per step at tabWidth zero because indentation
 determines parentage. A title or an accessibility statement that was not written
@@ -1274,6 +1277,12 @@ EOF, to show their association, as in [ishikawa](./ishikawa.md#comments),
 [kanban](./kanban.md#comments) and [mindmap](./mindmap.md#comments). This
 applies whether the comment was shallower or deeper than that statement,
 including before a dedent.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
+among the statements one configured step below the header, as Prettier prints
+every line inside a block at one level, whatever it holds. A comment line before
+a child, or after the last statement where that is a child, aligns with that
+child, which stands deeper since indentation determines parentage, as in those
+diagram types.
 
 [fixture: treemap/comments/aligned-depths] [fixture:
 treemap/comments/standalone] [fixture: treemap/comments/aligned-final]

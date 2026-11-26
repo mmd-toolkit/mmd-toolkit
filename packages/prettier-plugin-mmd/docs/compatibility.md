@@ -4890,10 +4890,8 @@ block holds, or would not be read as the block is:
   `accDescr: direction RL` is the description at the start of a line and a
   direction line when the line is indented, which the printer does for the
   statements of a body. Statements in an agentflow body stand one level below
-  the header, as the statements of a [class diagram](./class.md#indentation) and
-  a [Gantt chart](./gantt.md#indentation) do;
-  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-  gives this placement.
+  the header; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+  this placement, as Prettier prints the lines inside a block.
 
   [fixture: class/multi-line-values/block-direction-on-its-own-line-kept]
   [fixture: class/multi-line-values/block-brace-on-the-next-line-direction-kept]
