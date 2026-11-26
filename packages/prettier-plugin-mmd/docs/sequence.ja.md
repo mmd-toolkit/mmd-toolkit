@@ -452,8 +452,8 @@ sequenceDiagram
 ここでも、`<` を含むテキストや `white-space` を含む図は、書かれたまま残します。
 `loop`、`alt`、`else`、`opt`、`par`、`par_over`、`and`、`critical`、`option`、
 `break` のラベルでは、空白を 2 つ以上含む連なりは書かれたまま残します。
-10.9.8 はそのようなラベルを読みますが、描くときにエラーで止まり、
-その所を空白 1 つにしたラベルは描くためです。
+対象にする版の mermaid.js のどれかはそのようなラベルを読みますが、
+描くときにエラーで止まり、その所を空白 1 つにしたラベルは描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -464,6 +464,7 @@ sequenceDiagram
 [fixture: whitespace-between-tokens/values-of-other-statements-runs-collapsed]
 [fixture: whitespace-between-tokens/html-tag-runs-kept]
 [fixture: whitespace-between-tokens/block-label-runs-kept]
+[test: U+00A0 inside the label of a loop]
 
 `box` のテキストは全体を残します。
 最初の語が色でないとき、mermaid.js はテキスト全体を box の名前にするからです。

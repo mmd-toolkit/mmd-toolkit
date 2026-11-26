@@ -936,6 +936,11 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     'sequenceDiagram\n  participant   Z@{ "style": "x:#y" };participant   B;C\u2029 participant D\n  A ->> B: y\n',
   ],
   [
+    "U+00A0 inside the label of a loop",
+    "sequenceDiagram\nloop a\u00a0b\nparticipant A\nA->>B: x\nend\n",
+    "sequenceDiagram\n  loop a\u00a0b\n    participant A\n    A ->> B: x\n  end\n",
+  ],
+  [
     "U+2028 between a block keyword and its text",
     "sequenceDiagram\nA->>B: x\nloop\u2028x\nA->>B: y\nend\n",
     "sequenceDiagram\n  A ->> B: x\n  loop\u2028x\n    A ->> B: y\n  end\n",

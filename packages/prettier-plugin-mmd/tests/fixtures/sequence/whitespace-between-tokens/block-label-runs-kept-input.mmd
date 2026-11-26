@@ -27,6 +27,12 @@ A->>B: x
 and a  b
 participant A
 A->>B: x
+and a  %%{init: {}}%%  b
+participant A
+A->>B: x
+and a  b  %% c
+participant A
+A->>B: x
 end
 critical a  b
 participant A
@@ -56,6 +62,14 @@ participant A
 A->>B: x
 end
 loop a 	b
+participant A
+A->>B: x
+end
+loop a	 b
+participant A
+A->>B: x
+end
+loop a  b  
 participant A
 A->>B: x
 end

@@ -3068,9 +3068,9 @@ in the card row of a [kanban](./kanban.md#comments).
 Runs of spaces and tabs inside the texts compacted in the table become one
 space. In the label of a `loop`, `alt`, `else`, `opt`, `par`, `par_over`, `and`,
 `critical`, `option`, or `break` of a sequence diagram, a run that holds two
-spaces or more stays as written, and the other runs become one space: 10.9.8
-stops with an error when it draws such a label, and draws the label with one
-space there (see
+spaces or more stays as written, and the other runs become one space: a version
+that counts stops with an error when it draws such a label, and draws the label
+with one space there (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)),
 so `loop A  b  %% c` is not changed. For those texts, a trailing comment keeps
 its line with one preceding space where the source has spaces or tabs, as in
