@@ -3457,9 +3457,7 @@ ids and the whitespace in text nodes. A version that rejects the written text
 rejects the printed text too, but for a run of spaces in the label of a `loop`,
 `alt`, `else`, `opt`, `par`, `and`, `critical`, `option`, or `break`: 10.9.8
 reads such a text but stops with an error when it draws it, and draws the
-printed text. Formatting breaks nothing that 10.9.8 draws there, since it draws
-nothing of the written text, so the run is not kept for it (see
-[The versions of mermaid.js that count](./printed-form.md#the-versions-of-mermaidjs-that-count)).
+printed text.
 
 mermaid.js keeps the runs in the Db. The renderers put these texts into `text`
 elements of the SVG, whose whitespace the browser collapses
