@@ -5394,7 +5394,7 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   [fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-on-a-kept-line]
 
 - agentflow、C4、Gantt、ユーザージャーニー、quadrant、requirement、sequence、
-  state、timeline、XY チャートの図と、
+  state、timeline、XY チャートの図と、ブロックが最後の文である class の図と、
   対象にする版のうち最も古い版が読む pie と gitGraph の図で、
   同じ行の `}` の後にコメントがある場合です。
   これらの図種は、コロンの形の本文の一部として `%%` を読むため、
@@ -5402,13 +5402,40 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   ブロック `accDescr {a} %% c` の説明は `a` です。
   コロンの形の本文を `%%` の前で終える図種（後述）では、
   両方の形の説明が `a` になり、ブロックをコロンの形で印字します。
-  class、ER、flowchart、swimlane、ユースケースの図は、
-  後ろにコメントがあるブロックを拒否します。
+  ER、flowchart、swimlane、ユースケースの図では、
+  `}` の後の `%%` はコメントではなく、`accDescr {a} %% c` は拒否されます。
+  ER とユースケースの図は、`%%` そのものを拒否します。
+  flowchart と swimlane の図は、`%%` を名前として `%%` という頂点に読み、
+  空白の後の 2 つ目の名前 `c` を拒否します。
+  `accDescr {a} %%` と `accDescr {a} %%c` は受理され、
+  頂点は `%%` と `%%c` です。
+  class の図は、後ろにコメントのあるブロックの後に文が続くと、
+  空行やコメント行をはさんでも拒否します。
+  コメントが、その文に要る改行まで取り込むためです。
 
+  [fixture: agentflow/accessibility/block-then-comment-kept]
+  [fixture: c4/statements-one-per-line/description-comment-adjacency]
+  [fixture: class/multi-line-values/block-then-comment-kept]
+  [fixture: gantt/accessibility-statements/block-then-comment-kept]
+  [fixture: journey/accessibility-statements/block-then-comment-kept]
+  [fixture: quadrant/comments/comment-after-a-description-block]
+  [fixture: requirement/accessibility-statements/block-then-comment-kept]
   [fixture: sequence/multi-line-values/block-then-comment-kept]
+  [fixture: state/multi-line-values/block-then-comment-kept]
+  [fixture: timeline/comments/block-then-percent-comment-kept]
+  [fixture: xychart/comments/comment-after-a-description-block]
   [fixture: pie/description-blocks/block-then-comment]
   [fixture: pie/description-blocks/block-trailing-comment]
+  [fixture: gitgraph/title-and-common-values/block-then-comment-kept]
   [fixture: info/comments/comments-inline]
+  [fixture: flowchart/statements-one-per-line/percent-token-after-block-and-directive-kept]
+  [fixture: flowchart/statements-one-per-line/glued-percent-token-kept]
+  [corpus fixture: usecase/comment-after-accdescr]
+  [corpus fixture: er/lex-comment-looking-text-after-acc-descr-block]
+  [corpus fixture: flowchart/gram-comment-looking-text-after-acc-descr-block]
+  [corpus fixture: flowchart/gram-swimlane-comment-looking-text-after-acc-descr-block]
+  [corpus fixture: flowchart/lex-percent-pair-vertex-after-acc-descr-block]
+  [corpus fixture: flowchart/lex-swimlane-percent-pair-vertex-after-acc-descr-block]
 
 - 同じ行の `}` の後にその図種固有のコメントが続く場合です。
   ABNF 図では `; c`、EBNF 図では `(* c *)` と `/* c */`、PEG 図では `# c`、

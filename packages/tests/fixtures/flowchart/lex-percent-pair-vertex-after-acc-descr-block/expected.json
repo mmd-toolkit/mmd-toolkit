@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md statement context rule 21: a %% after the } of a description block, with nothing after it on its line, is no comment but the vertex id %%; mermaid.js accepts it with the vertices A and %%. With c after it, the input is rejected (gram-comment-looking-text-after-acc-descr-block)."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "%%",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "%%",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

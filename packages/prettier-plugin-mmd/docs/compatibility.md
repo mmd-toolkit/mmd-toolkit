@@ -5374,19 +5374,45 @@ block holds, or would not be read as the block is:
 
 - A comment follows the `}` on its line, in an agentflow, C4, Gantt, user
   journey, quadrant, requirement, sequence, state, timeline, or XY chart
-  diagram, or, for the oldest version that counts, in a pie chart or a gitGraph.
-  These diagram types take the `%%` as part of the text of the form with the
-  colon, so `accDescr: a %% c` has the description `a %% c`, while the block
+  diagram, in a class diagram where the block is the last statement, or, for the
+  oldest version that counts, in a pie chart or a gitGraph. These diagram types
+  take the `%%` as part of the text of the form with the colon, so
+  `accDescr: a %% c` has the description `a %% c`, while the block
   `accDescr {a} %% c` has `a`. In the other diagram types that end the text of
   the form with the colon before a `%%` (the next but one sentence), both forms
-  have `a`, and the block is printed in the form with the colon. A class, ER,
-  flowchart, swimlane, or use case diagram rejects a block with a comment after
-  it.
+  have `a`, and the block is printed in the form with the colon. In an ER,
+  flowchart, swimlane, or use case diagram, a `%%` after the `}` is no comment,
+  and `accDescr {a} %% c` is rejected: an ER or a use case diagram rejects the
+  `%%` itself, and a flowchart or a swimlane diagram reads the `%%` as a name,
+  the vertex `%%`, and rejects the second name `c` after it (`accDescr {a} %%`
+  and `accDescr {a} %%c` are accepted, with the vertex `%%` or `%%c`). A class
+  diagram rejects a block with a comment after it where a statement follows the
+  block, also after an empty line or a comment line: the comment takes the line
+  break that the statement needs.
 
-  [fixture: sequence/multi-line-values/block-then-comment-kept] [fixture:
+  [fixture: agentflow/accessibility/block-then-comment-kept] [fixture:
+  c4/statements-one-per-line/description-comment-adjacency] [fixture:
+  class/multi-line-values/block-then-comment-kept] [fixture:
+  gantt/accessibility-statements/block-then-comment-kept] [fixture:
+  journey/accessibility-statements/block-then-comment-kept] [fixture:
+  quadrant/comments/comment-after-a-description-block] [fixture:
+  requirement/accessibility-statements/block-then-comment-kept] [fixture:
+  sequence/multi-line-values/block-then-comment-kept] [fixture:
+  state/multi-line-values/block-then-comment-kept] [fixture:
+  timeline/comments/block-then-percent-comment-kept] [fixture:
+  xychart/comments/comment-after-a-description-block] [fixture:
   pie/description-blocks/block-then-comment] [fixture:
   pie/description-blocks/block-trailing-comment] [fixture:
-  info/comments/comments-inline]
+  gitgraph/title-and-common-values/block-then-comment-kept] [fixture:
+  info/comments/comments-inline] [fixture:
+  flowchart/statements-one-per-line/percent-token-after-block-and-directive-kept]
+  [fixture: flowchart/statements-one-per-line/glued-percent-token-kept] [corpus
+  fixture: usecase/comment-after-accdescr] [corpus fixture:
+  er/lex-comment-looking-text-after-acc-descr-block] [corpus fixture:
+  flowchart/gram-comment-looking-text-after-acc-descr-block] [corpus fixture:
+  flowchart/gram-swimlane-comment-looking-text-after-acc-descr-block] [corpus
+  fixture: flowchart/lex-percent-pair-vertex-after-acc-descr-block] [corpus
+  fixture: flowchart/lex-swimlane-percent-pair-vertex-after-acc-descr-block]
 
 - A comment of the diagram type's own kind follows the `}` on its line, in an
   ABNF diagram (`; c`), an EBNF diagram (`(* c *)` and `/* c */`), a PEG diagram
