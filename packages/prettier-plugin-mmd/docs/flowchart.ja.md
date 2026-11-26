@@ -1435,6 +1435,15 @@ mermaid.js は呼び出しを読む前に、ディレクティブを取り除く
 
 [fixture: whitespace-between-tokens/click-without-call-collapsed]
 
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+これらの隙間に空白 1 つを与えます。
+`click` の後の隙間は、取るものの前に置くキーワードの隙間で、
+Prettier は `return  x;` を `return x;` と印字します。
+id、コールバック、ツールチップの間の隙間は、並んで続く値の隙間で、
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
+
+[fixture: whitespace-between-tokens/click-without-call-collapsed]
+
 入力
 ([whitespace-between-tokens/callback-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-input.mmd)):
 
@@ -4056,6 +4065,18 @@ flowchart と swimlane では、最後のスタイルと同じ行の `%%` コメ
 Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 
 [test: prints a form feed before a comment as one space]
+
+コメントの前のノーブレークスペースは、その連なりに入らず、残します。
+CSS はそれを空白として読まず、
+mermaid.js はそれをコメントとともに最後のスタイルの値に残します。
+`style A fill:red`、ノーブレークスペース、` %% c` の行と、
+ノーブレークスペースのない同じ行を、10.9.8、11.7.0、11.17.2、12.0.0、
+12.3.0 で描きました。
+画素は同じでしたが、SVG は `style` 属性の文字が違いました。
+ノーブレークスペースは描画が無視する空白ではないので、
+AGENTS.md はその違いを比べます。
+
+[test: keeps a no-break space before a comment at the end of a flowchart style]
 
 `linkStyle` の `stroke:` の後の空白も保ちます。
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。

@@ -1399,6 +1399,14 @@ printed as `click A cb "tip"`.
 
 [fixture: whitespace-between-tokens/click-without-call-collapsed]
 
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these gaps one
+space: the gap after `click` is that of a keyword before what it takes, as
+Prettier prints `return  x;` as `return x;`, and the gaps between the id, the
+callback, and the tooltip are those of values that follow one another, as
+Prettier prints `margin: 1px    2px;` in CSS as `margin: 1px 2px;`.
+
+[fixture: whitespace-between-tokens/click-without-call-collapsed]
+
 Input
 ([whitespace-between-tokens/callback-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-input.mmd)):
 
@@ -3921,6 +3929,16 @@ before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
 
 [test: prints a form feed before a comment as one space]
+
+A no-break space before the comment is no part of such a run, and it stays. CSS
+does not read it as whitespace, and mermaid.js keeps it, with the comment, in
+the value of the last style. `style A fill:red`, a no-break space, and ` %% c`,
+and the same line without the no-break space, were drawn with 10.9.8, 11.7.0,
+11.17.2, 12.0.0, and 12.3.0: the pixels were the same, but the SVG differed in
+the text of the `style` attribute, which AGENTS.md compares, since a no-break
+space is no whitespace that the drawing ignores.
+
+[test: keeps a no-break space before a comment at the end of a flowchart style]
 
 The whitespace of a `linkStyle` after a `stroke:` is kept as well (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
