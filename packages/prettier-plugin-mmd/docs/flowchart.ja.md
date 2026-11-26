@@ -1435,6 +1435,15 @@ mermaid.js は呼び出しを読む前に、ディレクティブを取り除く
 
 [fixture: whitespace-between-tokens/click-without-call-collapsed]
 
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、
+これらの隙間に空白 1 つを与えます。
+`click` の後の隙間は、取るものの前に置くキーワードの隙間で、
+Prettier は `return  x;` を `return x;` と印字します。
+id、コールバック、ツールチップの間の隙間は、並んで続く値の隙間で、
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
+
+[fixture: whitespace-between-tokens/click-without-call-collapsed]
+
 入力
 ([whitespace-between-tokens/callback-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-input.mmd)):
 
@@ -2891,6 +2900,7 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 ブロックの `}` は、それが閉じる `accDescr` と同じ段に置きます。
 
 [fixture: multi-line-values/accdescr-block-kept]
+[fixture: multi-line-values/accdescr-block-closing-brace-aligned]
 
 そうしたブロックのコメントの内容も保ち、
 列は同じトップレベルまたは subgraph の規則に従います。
@@ -4045,6 +4055,23 @@ flowchart と swimlane では、最後のスタイルと同じ行の `%%` コメ
 Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 
 [test: prints a form feed before a comment as one space]
+
+コメントの前のノーブレークスペースは、その連なりに入らず、残します。
+CSS はそれを空白として読まず、
+mermaid.js はそれをコメントとともに最後のスタイルの値に残すので、
+それのない行は、Db に別のスタイルを持ちます。
+`fill:red`、ノーブレークスペース、` %% c` に対して、`fill:red %% c` です。
+スタイルの例外の種類で、ノーブレークスペースに当たるものはありません。
+最も近い種類は、`%%` コメントの前の空白、タブ、改ページの連なりで、
+テストはそれを空白 1 つとして比べますが、ノーブレークスペースは含みません。
+詳しくは [スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+を参照してください。
+そのため、それを除くのは、どの種類の例外も許さない Db の変化です。
+図は同じです。
+10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は、2 つの行を同じに描きます。
+コメントを含む値は色ではなく、ブラウザは宣言をまるごと捨てるからです。
+
+[test: keeps a no-break space before a comment at the end of a flowchart style]
 
 `linkStyle` の `stroke:` の後の空白も保ちます。
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
