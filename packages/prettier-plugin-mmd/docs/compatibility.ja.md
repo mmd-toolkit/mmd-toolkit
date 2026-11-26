@@ -6861,6 +6861,23 @@ sequence 図では、改行の前に空白があると、文は次の行に続�
 
 [fixture: sequence/multi-line-statements/joined]
 
+そのような隙間は、改行をいくつ含んでも、
+字句解析器にとって 1 つの空白の連なりです。
+詳しくは [複数行の文](./sequence.ja.md#複数行の文) を参照してください。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) は、それに、
+同じ種類の記号の横に Prettier が印字する空白を与えます。
+Prettier は、2 行に書かれたその隙間を 1 行に印字します。
+`x = a +`、改行、`b` は `x = a + b;` に、`typeof`、改行、`z` は `typeof z;` に、
+CSS の `margin: 1px`、改行、`2px` は `margin: 1px 2px;` になります。
+そのため、矢印の横（`Alice ->>` と `Bob: hi`）、
+コンマの後（`note over A,` と `B : y`）、
+取るものの前のキーワードの後（`Note` と `right of Bob`、
+`create` と `participant Carol`、`autonumber` と `3`）、
+続く値の間（`3` と `4`）には、空白 1 つを置きます。
+
+[fixture: sequence/multi-line-statements/joined]
+[fixture: sequence/multi-line-statements/more-lines-joined]
+
 コメントかディレクティブを含むものは改行を残し、構造の続きの行をそろえます。
 各隙間の最初の改行の前の空白は、
 字句解析が行をつないで読む場合があるため保ちます。
@@ -6911,6 +6928,11 @@ class の属性、注釈、メソッドの各値とジェネリック型の内�
 2 つの `~` の間の空白は Db に含まれる場合があるためです。
 通常のメソッドでは丸括弧の周囲の余白を取り除き、
 空でない戻り型の前を空白1個にします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白) が、これらの隙間を与えます。
+`(` の前と丸括弧の内側には空白を置かず、
+Prettier は `f (  a  )` を `f(a);` と印字します。
+丸括弧と戻り型は並んで続く値で、その間には空白 1 つを置き、
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 注釈類、無視されたテキスト、行区切り、
 セミコロンの保護があるメソッドは原文を保ちます。
 

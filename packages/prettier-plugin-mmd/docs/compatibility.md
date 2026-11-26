@@ -6634,6 +6634,21 @@ comes before the line break, and such a statement is printed on one line.
 
 [fixture: sequence/multi-line-statements/joined]
 
+Such a gap is one run of whitespace to the lexer, whatever line breaks it holds
+(see [Multi-line statements](./sequence.md#multi-line-statements)), and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it the
+whitespace that Prettier prints beside the same kind of mark, which Prettier
+prints on one line where it is written over two: `x = a +`, a line break, and
+`b` is printed `x = a + b;`, `typeof`, a line break, and `z` is printed
+`typeof z;`, and `margin: 1px`, a line break, and `2px` in CSS is printed
+`margin: 1px 2px;`. So one space stands beside an arrow (`Alice ->>` and
+`Bob: hi`), after a comma (`note over A,` and `B : y`), after a keyword before
+what it takes (`Note` and `right of Bob`, `create` and `participant Carol`,
+`autonumber` and `3`), and between values that follow one another (`3` and `4`).
+
+[fixture: sequence/multi-line-statements/joined] [fixture:
+sequence/multi-line-statements/more-lines-joined]
+
 One with a comment or a directive keeps its line breaks and aligns structural
 continuations. Rule 1 gives no form here, since its table does not name the
 start of a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
@@ -6680,8 +6695,13 @@ then reads the diagram otherwise. See [Comments](./class.md#comments).
 Class attributes, annotations, method-field contents and generic types keep
 their written text: whitespace after a visibility mark and between two `~` can
 be part of the Db. Ordinary methods remove padding around their parentheses and
-use one space before a nonempty return type. Methods with trivia, ignored text,
-line separators or semicolon protection keep their source.
+use one space before a nonempty return type.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these gaps: no
+whitespace before the `(` and inside the parentheses, as Prettier prints
+`f (  a  )` as `f(a);`, and one space between the parentheses and the return
+type, which are values that follow one another, as Prettier prints
+`margin: 1px    2px;` in CSS as `margin: 1px 2px;`. Methods with trivia, ignored
+text, line separators or semicolon protection keep their source.
 
 [fixture: class/member-lines/method-padding] [fixture:
 class/member-lines/method-values-and-classifiers-runs-collapsed] [fixture:
