@@ -120,6 +120,11 @@ venn-beta
 `title` の文は、ヘッダーより設定の1段だけ深く置きます（`tabWidth`、`useTabs`）。
 Prettier がブロックの中の行をそう印字するためです。
 暗黙の text は、さらに1段深くします。
+`tabWidth` が 0 でないとき、この段を残す理由はありません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)はブロックの中のどの行も同じ段に置き、
+正の字下げなら、どれだけでも暗黙の text が選ばれるためです。
+この形の行は一覧（決まりで直す形）にあります。
+`tabWidth: 0` では、前の 1 文字を、上で述べた理由で残します。
 mermaid.js は `set`、`union`、`style`、`title` の前の字下げを読み飛ばすので、
 字下げは読みを変えません。
 モードが有効な間は、`text` の前の空白が暗黙の text を選ぶので、
@@ -135,6 +140,7 @@ mermaid.js は `set`、`union`、`style`、`title` の前の字下げを読み�
 最初の文の前と最後の文の後も同じです。
 Prettier がブロックの中の行をそう印字するためです。
 
+[corpus fixture: venn/db-indent-width]
 [fixture: venn/indentation/ordinary-statements-stand-one-step-deep]
 [fixture: venn/indentation/explicit-text-stays-at-the-header]
 [fixture: venn/indentation/comment-and-directive-lines-follow-the-statement]

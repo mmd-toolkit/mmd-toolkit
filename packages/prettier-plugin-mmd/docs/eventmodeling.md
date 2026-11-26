@@ -1108,8 +1108,11 @@ version holds the block as written (`accDescr { }` and `accDescr {}`, and
 `accDescr`, a line break, and `{ Details }` against `accDescr { Details }`, have
 different accDescr values), so the whitespace-only interior and the opener
 newline stay. The closing column is no part of the Db and the versions that were
-run draw both forms alike, so it stays without a reason, and its row is in the
-list (D34). This is the single selection point that bypasses shared
+run draw both forms alike, so no reason keeps it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the closing line
+at the level of the line that opens the block, as Prettier prints the closing
+line of a block, and the row of this form is in the list (To fix by the rule).
+This is the single selection point that bypasses shared
 `layoutDescriptionBlock`: its ordinary `{}` compaction and closer alignment
 would rewrite an EM_ACC_DESCR value. No diagram-local empty-block normalization
 replaces it. For `accDescr {` followed by a space, a tab, LF and `  }`, that
