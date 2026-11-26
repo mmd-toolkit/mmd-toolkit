@@ -112,8 +112,13 @@ Each statement stands on a line of its own. Nothing separates statements in a
 Gantt chart (diagrams/gantt.md, Diagram and statements), and the header,
 `inclusiveEndDates`, a `weekday` or `weekend` statement with its day, an
 `accDescr` block, and a click statement are followed on their line by the next
-statement: the statement after any of them goes to a line of its own. The other
-diagram types print one statement on a line too.
+statement: the statement after any of them goes to a line of its own.
+[Flowchart](./flowchart.md#statements-one-per-line),
+[sequence](./sequence.md#statements-one-per-line), and
+[state](./state.md#statements-one-per-line) diagrams print one statement on a
+line too;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form.
 
 [fixture: statements-one-per-line/header-then-statement] [fixture:
 statements-one-per-line/header-then-task] [fixture:

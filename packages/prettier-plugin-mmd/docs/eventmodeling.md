@@ -752,11 +752,14 @@ the margin exception below alone changes. The closing brace stays at column one.
 `eventmodeling tf 01 evt Alpha [[D]] data D {`, `x` and `}` stay, since every
 version of mermaid.js that counts rejects `}` indented by two spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The other diagram types would indent the `}` (see [Indentation](#indentation)).
-Preserve apparent statements, text containing braces and an adjacent
-closing-looking line when the block's body-present rule reads through it to a
-later closer, since in a `data` block that a frame reads they are characters of
-the value that the Db holds for the frame.
+As [sequence](./sequence.md#indentation) and [state](./state.md#indentation) put
+the statements after the header one level deeper than the header and a closing
+line at the level of the line that opens its block,
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) would
+indent the `}` by two spaces. Preserve apparent statements, text containing
+braces and an adjacent closing-looking line when the block's body-present rule
+reads through it to a later closer, since in a `data` block that a frame reads
+they are characters of the value that the Db holds for the frame.
 
 [fixture: eventmodeling/data-blocks/body-whitespace-kept] [fixture:
 eventmodeling/data-blocks/block-closer-indent-unsafe]
@@ -1580,7 +1583,6 @@ remain authored. A `title` that follows
 one, since every version of mermaid.js that counts rejects it indented by two
 spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The other diagram types would indent it (see [Indentation](#indentation)).
 Required identifier and common-value padding takes precedence over structural
 indentation. The leading space of ` accDescr: style:#x;` after
 `eventmodeling data D {`, `x` and `}` stays, since every version of mermaid.js
@@ -1716,21 +1718,16 @@ decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep such a line break, where no
 other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`). The start of a line is no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#multi-line-statements),
-[sequence](./sequence.md#multi-line-statements), and
-[xychart](./xychart.md#multi-line-statements) stand the later lines of a
-statement and the comment or directive lines between them one level deeper than
-the statement, where no other rule keeps the layout as written (a comment region
-that joins physical lines, a line that holds a `;`) and except for the `}` that
-closes a block whose `{` stands on a later line, which stands at the level of
-the statement, as the `}` of an entity block does in
-[ER](./er.md#attribute-blocks). Only GWT's decided clause/item layout adds
-structural splits. Values, hidden forms, metadata and protected boundaries
-retain their contents, apart from the limited block-body margin in
-[Data blocks](#data-blocks). Avoiding width-dependent choices keeps those
-lexical boundaries explicit and never inserts a forbidden LF into inline data.
+lines, a line that holds a `;`). The later lines of a statement and the comment
+or directive lines between them stand one level deeper than the statement, where
+no other rule keeps the layout as written (a comment region that joins physical
+lines, a line that holds a `;`), and the `}` that closes a block whose `{`
+stands on a later line stands at the level of the statement. Only GWT's decided
+clause/item layout adds structural splits. Values, hidden forms, metadata and
+protected boundaries retain their contents, apart from the limited block-body
+margin in [Data blocks](#data-blocks). Avoiding width-dependent choices keeps
+those lexical boundaries explicit and never inserts a forbidden LF into inline
+data.
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap] [fixture:
 eventmodeling/long-lines/break-next-to-comment] [fixture:
