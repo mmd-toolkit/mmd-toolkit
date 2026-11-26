@@ -2007,7 +2007,8 @@ a flowchart the same breaks. Keep the previous
 [Multi-line statements](#multi-line-statements) layout: continuation lines,
 including comment and directive lines, stand one level deeper than the keyword;
 the comment/directive text and the authored statement breaks remain. Rule 1
-gives no form here, since its table does not name the start of a line
+gives no form here, since these are lines of a statement and no lines inside a
+block, the only lines whose start its table names
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields) and
@@ -2194,7 +2195,8 @@ multi-line-statements/label-over-lines] [fixture:
 multi-line-statements/directive-inside]
 
 Comment lines inside it stay inside it, at the level of its later lines. Rule 1
-gives no form here, since its table does not name the start of a line
+gives no form here, since these are lines of a statement and no lines inside a
+block, the only lines whose start its table names
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields) and

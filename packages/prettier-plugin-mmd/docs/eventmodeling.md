@@ -16,8 +16,8 @@ data boundaries constrain the line and indentation plan before it is printed.
 ### Header
 
 Keep `eventmodeling` at column one and move an ordinary first statement to the
-next line, making the header easy to find. Where a statement stands is no place
-of rule 1, so
+next line, making the header easy to find. The column of the header and the line
+that a statement stands on are no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [wardley](./wardley.md#header), [cynefin](./cynefin.md#header),
 [architecture](./architecture.md#header), and [packet](./packet.md#header) print
@@ -87,8 +87,8 @@ to avoid suggesting a hierarchy. Reconsider this choice if the pinned Mermaid
 later accepts whitespace before block closers, checking that raw body values and
 rendering remain unchanged.
 
-GWT clauses use one configured step and items two. The start of a line is no
-place of rule 1, so
+GWT clauses use one configured step and items two. The clauses and items of a
+GWT are parts of its statement and no lines inside a block of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#indentation) and
 [state](./state.md#indentation) stand the statements of a block one level deeper
@@ -177,7 +177,7 @@ note 01 {
 ### Statements one per line
 
 Put ordinary top-level AST statements on separate lines in source order, without
-adding semicolons. Where a statement stands is no place of rule 1, so
+adding semicolons. The line that a statement stands on is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [er](./er.md#statements-one-per-line),
 [gantt](./gantt.md#statements-one-per-line), and
@@ -674,9 +674,10 @@ tf 01 evt Alpha { 	 x  }
 
 For ordinary data and note blocks written as `{` immediately followed by LF and
 closed by LF followed by `}`, align every nonblank body line to `tabWidth` ASCII
-spaces (U+0020) where the conditions below permit it. The start of a line is no
-place of rule 1, and rule 2 gives no margin of a body line:
-[pie](./pie.md#description-blocks), [radar](./radar.md#description-blocks), and
+spaces (U+0020) where the conditions below permit it. The body lines are the
+text of a value and no lines inside a block of rule 1, and rule 2 gives no
+margin of a body line: [pie](./pie.md#description-blocks),
+[radar](./radar.md#description-blocks), and
 [cynefin](./cynefin.md#description-blocks) stand the lines of a description
 block one level inside their statement, `tabWidth` spaces and none at
 `tabWidth: 0`, but in each of them this is a question of the list of undecided
@@ -1148,16 +1149,14 @@ Print each IgnoredText once from its source range at its AST owner. Keep
 pre-header/body forms, required and optional named gaps, qualified-name tails,
 tags and GWT clause/item gaps. Do not parse retained YAML or native DIRECTIVE as
 configuration. The shared hidden path preserves internal columns, consumed LF
-and closing lookahead padding; ordinary body openers align with their body. The
-start of a line is no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [radar](./radar.md#hidden-forms) indents the ordinary body openers,
-and [pie](./pie.md#indentation) and [packet](./packet.md#indentation) stand a
-standalone directive one step below the header, which a hidden directive on a
-line of its own follows in each. Required opening gaps and common successors
-keep their authored boundaries. `eventmodeling`, `%%{{x}}%%` and ` accDescr: D`
-on lines of their own stay, with one space before `accDescr`, since every
-version of mermaid.js that counts rejects the line without that space (see
+and closing lookahead padding; ordinary body openers align with their body.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the line that
+opens a hidden form in the body at the level of the lines around it, as Prettier
+prints every line inside a block at one level, whatever it holds. Required
+opening gaps and common successors keep their authored boundaries.
+`eventmodeling`, `%%{{x}}%%` and ` accDescr: D` on lines of their own stay, with
+one space before `accDescr`, since every version of mermaid.js that counts
+rejects the line without that space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A fallback percent comment stays a comment.
 
@@ -1226,21 +1225,23 @@ tf 02 evt Beta
 ### Comments
 
 Align ordinary standalone comments with their owning body; between GWT items
-this is item depth. The start of a line is no place of rule 1, so
+this is item depth. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+puts a comment line at the level of the lines around it, as Prettier prints the
+lines inside a block. The clauses and items of a GWT are parts of its statement
+and no lines inside a block, so there
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#comments),
-[sequence](./sequence.md#comments) stand a comment line at the level of the
-statements around it, and [journey](./journey.md#comments),
+decides, as [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), [block](./block.md#comments),
-[quadrant](./quadrant.md#comments), and [gantt](./gantt.md#comments) at the
-level of the statement after it, which is the same level in the flat body of an
-eventmodeling diagram. Within a printed line, a run of spaces and tabs before a
-comment becomes one space, except in the title, the accTitle, and the accDescr
-of the header line and of a frame statement, where the run before a comment mark
-after the text belongs to the value (see [Title](#title)).
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-before a comment that stands after something on its line, as Prettier prints
-`x = 1;   // c` as `x = 1; // c`.
+[quadrant](./quadrant.md#comments), and [gantt](./gantt.md#comments) put a
+comment line at the level of the statement after it. Within a printed line, a
+run of spaces and tabs before a comment becomes one space, except in the title,
+the accTitle, and the accDescr of the header line and of a frame statement,
+where the run before a comment mark after the text belongs to the value (see
+[Title](#title)). [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives one space before a comment that stands after something on its line, as
+Prettier prints `x = 1;   // c` as `x = 1; // c`.
+
+[fixture: eventmodeling/comments/comment-lines-between-gwt-items]
 
 A comment that touches what precedes it stays touching. A wide space, a U+2028,
 or a U+2029 before a comment becomes one space, except in the title, the
@@ -1279,8 +1280,8 @@ adjustment in [Data blocks](#data-blocks), since in a `data` block that a frame
 reads the Db holds them as a part of the value. Boundaries needed for metadata
 or a required `title` take precedence. Slash comments are not moved before the
 header, where detection would reject them. A comment line before the header
-stands at column one. The start of a line is no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+stands at column one. A line before the header is no line inside a block of rule
+1, so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), and [c4](./c4.md#comments) print it so.
 
@@ -1508,14 +1509,17 @@ decides: [sequence](./sequence.md#directives),
 [flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
 print such a gap in the same way. Keep content, order, multiline interiors,
 positions inside values and unfinished EOF endings. Standalone starts align with
-the owning body. The start of a line is no place of rule 1, so
+the owning body. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts
+a directive line at the level of the lines around it, as Prettier prints every
+line inside a block at one level, whatever it holds. Between the clauses and
+items of a GWT, which are parts of its statement and no lines inside a block,
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#directives) and
-[sequence](./sequence.md#directives) stand a directive on a line of its own at
-the level of the statements around it, and [journey](./journey.md#directives) at
-the level of the statement after it. Common boundaries retain the full original
-gap instead of this ordinary spacing; a removed directive cannot replace
-required whitespace.
+decides, as [journey](./journey.md#directives) puts a directive on a line of its
+own at the level of the statement after it. Common boundaries retain the full
+original gap instead of this ordinary spacing; a removed directive cannot
+replace required whitespace.
+
+[fixture: eventmodeling/global-directives/directive-lines-between-gwt-items]
 
 A directive that is not closed takes the whitespace after its argument, line
 breaks included, so the next line goes on its line, which is printed as written

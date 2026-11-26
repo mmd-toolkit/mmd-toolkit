@@ -15,7 +15,7 @@
 
 `radar-beta` を第 1 列に置き、普通の最初の文を次の行へ移します。
 見出しを見つけやすくするためです。
-文が置かれる位置（行頭）は規則 1 の場所ではないので、
+見出しの列と、文をどの行に置くかは、規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [pie](./pie.ja.md#header)、[packet](./packet.ja.md#header)、
 [architecture](./architecture.ja.md#header)、[treemap](./treemap.ja.md#header)、
@@ -152,7 +152,7 @@ Prettier は、入れ子の JavaScript のブロックを、
 `--use-tabs` では `--tab-width 0` でも 1 段につき 1 タブで印字します。
 項目の継続行は 2 段です。
 値の継続列、隠れた形の内側と閉じ記号、保持する前置部分は各規則に従います。
-行頭は規則 1 の場所ではないので、
+継続行は、規則 1 のブロックの中の行ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [xychart](./xychart.ja.md#複数行の文)は、文の継続行をその文より 1 段深くします。
 [quadrant](./quadrant.ja.md#複数行の文)も同じです。
@@ -185,7 +185,7 @@ radar-beta
 
 普通の axis、curve、options、共通文は 1 文ずつ改行します。
 作者の文の単位を見せるためです。
-文が置かれる位置（行頭）は規則 1 の場所ではないので、
+文をどの行に置くかは、規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [er](./er.ja.md#1-行に-1-文)、[gantt](./gantt.ja.md#1-行に-1-文)、
 [journey](./journey.ja.md#1-行に-1-文)も、各文を自分の行に印字します。

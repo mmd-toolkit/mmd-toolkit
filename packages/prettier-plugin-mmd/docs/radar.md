@@ -12,8 +12,8 @@ preserved text and differences from mermaid.js.
 ### Header
 
 Print `radar-beta` at column one and put an ordinary first statement on the next
-line so the heading is easy to find. Where a statement stands is no place of
-rule 1, so
+line so the heading is easy to find. The column of the header and the line that
+a statement stands on are no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [pie](./pie.md#header), [packet](./packet.md#header),
 [architecture](./architecture.md#header), [treemap](./treemap.md#header),
@@ -132,8 +132,8 @@ because columns have no grammatical meaning. useTabs uses one tab, even at width
 zero. Prettier prints a nested block of JavaScript with no indentation at
 `--tab-width 0`, and with one tab per level at `--use-tabs`, also at
 `--tab-width 0`. Entry continuation lines use two steps; written value columns,
-hidden interiors/closers and retained prefixes keep their own rules. The start
-of a line is no place of rule 1, so
+hidden interiors/closers and retained prefixes keep their own rules.
+Continuation lines are no lines inside a block of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#multi-line-statements) and
 [quadrant](./quadrant.md#multi-line-statements) put the continuation lines of a
@@ -166,8 +166,8 @@ radar-beta
 ### Statements one per line
 
 Print each ordinary axis, curve, options or common statement on its own line to
-expose the authored statement units. Where a statement stands is no place of
-rule 1, so
+expose the authored statement units. The line that a statement stands on is no
+place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [er](./er.md#statements-one-per-line),
 [gantt](./gantt.md#statements-one-per-line), and

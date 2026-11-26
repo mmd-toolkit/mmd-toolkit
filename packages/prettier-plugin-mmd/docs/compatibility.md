@@ -5885,7 +5885,8 @@ the start or at the end of the printed line. See
 Ordinary comments and directives between structural parts retain their required
 line breaks without freezing the parts' columns. Continuations and intervening
 standalone trivia use one indentation level inside the statement. Rule 1 gives
-no form here, since its table does not name the start of a line
+no form here, since these are lines of a statement and no lines inside a block,
+the only lines whose start its table names
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields),
@@ -6620,8 +6621,9 @@ comes before the line break, and such a statement is printed on one line.
 [fixture: sequence/multi-line-statements/joined]
 
 One with a comment or a directive keeps its line breaks and aligns structural
-continuations. Rule 1 gives no form here, since its table does not name the
-start of a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+continuations. Rule 1 gives no form here, since these are lines of a statement
+and no lines inside a block, the only lines whose start its table names
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields) and
 [flowchart](./flowchart.md#multi-line-statements) put the comment and directive

@@ -467,9 +467,9 @@ before a later event] [test: U+2029 inside a period before a later event]
 
 Comment lines and directive lines between event lines align with the next event
 colon. When the colons use ordinary continuation indentation, these lines use
-that indentation too. Rule 1 gives no form here, since its table does not name
-the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+that indentation too. Rule 1 gives no form here, since these are lines of a
+statement and no lines inside a block, the only lines whose start its table
+names ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields) and
 [sequence](./sequence.md#multi-line-statements) put the intervening comment and
