@@ -33,12 +33,16 @@ cynefin/header/colon-semicolon-kept] [fixture:
 cynefin/header/colon-unclosed-directive-kept] [fixture:
 cynefin/header/colon-directive-before-hidden-yaml-kept]
 
-Move an ordinary first statement to the next line so the header is easy to find.
-Global directive contact, hidden neighbors and protected lines use their shared
-rules: a kept header line also keeps its domain and item openings on that line.
-A spaced colon is rejected rather than repaired: `cynefin-beta %%{x}%%:`,
-`cynefin-beta%%{x}%% :`, and `cynefin-beta :` are rejected by every version that
-counts, and `cynefin-beta %%{x}%%` with no colon is not changed.
+Move an ordinary first statement to the next line, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives:
+a [flowchart](./flowchart.md#statements-one-per-line) and an
+[ER diagram](./er.md#statements-one-per-line) print a statement written on the
+line of the header on a line of its own. Global directive contact, hidden
+neighbors and protected lines use their shared rules: a kept header line also
+keeps its domain and item openings on that line. A spaced colon is rejected
+rather than repaired: `cynefin-beta %%{x}%%:`, `cynefin-beta%%{x}%% :`, and
+`cynefin-beta :` are rejected by every version that counts, and
+`cynefin-beta %%{x}%%` with no colon is not changed.
 
 [fixture: cynefin/header/directive-no-colon-space-kept] [test: a space before a
 directive between the header and the colon of a cynefin diagram] [test: a space
@@ -606,8 +610,9 @@ empty braces, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
 prints whitespace-only description interiors as `{}`. For blocks that keep their
 braces, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
 space between the keyword and the opening brace, as Prettier prints `class A{}`
-as `class A {}`. Join plain opener whitespace and align a separate closer with
-the statement. Ordinary description body and standalone comment lines align one
+as `class A {}`. Join plain opener whitespace, as Prettier prints `class A`, a
+line break, and `{}` as `class A {}` too, and align a separate closer with the
+statement. Ordinary description body and standalone comment lines align one
 level inside it. Keep line breaks and interior blank lines, and the whitespace
 at the end of each line of text except the last one; a line of whitespace only
 becomes an empty line. A block description's line breaks form part of its value
@@ -1023,7 +1028,10 @@ ordinary line ends, so
 exterior spaces and tabs after completed structural units. Preserve value
 continuations, comments, directive/hidden interiors, required closer padding and
 protected text. Decide by owner: trimming every physical line can change values
-or cause rejection.
+or cause rejection. The spaces and tabs at the end of a line inside a multiline
+quoted item are part of the label that mermaid.js keeps in the Db, and a change
+of them is no kind of change of the Db that formatting may make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
 
 [fixture: cynefin/trailing-whitespace/trailing-structure]
 
@@ -1173,11 +1181,15 @@ cynefin/semicolon-chaotic-parts]
 
 ### Multiline values
 
-Do not wrap at printWidth. Apart from domain/item splitting, retain physical
-string and transition-label contents, continuation columns and interior blanks.
-Description bodies use the shared indentation above. Reflow or reindentation can
-change the Db, and wrapping transition components can reject. A separate
-description closer uses the shared alignment rule.
+Do not wrap at printWidth, as a flowchart does not:
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the form that [Line wrapping](./flowchart.md#line-wrapping) decides under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form). Apart from
+domain/item splitting, retain physical string and transition-label contents,
+continuation columns and interior blanks. Description bodies use the shared
+indentation above. Reflow or reindentation can change the Db, and wrapping
+transition components can reject. A separate description closer uses the shared
+alignment rule.
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
 
