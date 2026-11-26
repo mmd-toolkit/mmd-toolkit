@@ -467,6 +467,8 @@ mermaid.js はリンクテキスト `a}`、改行、` b` を読み、`click A ca
     [fixture: flowchart/gram-percent-token-glued-after-acc-descr-block]
     [fixture: flowchart/gram-comment-looking-text-after-acc-descr-block]
     [fixture: flowchart/gram-swimlane-comment-looking-text-after-acc-descr-block]
+    [fixture: flowchart/lex-percent-pair-vertex-after-acc-descr-block]
+    [fixture: flowchart/lex-swimlane-percent-pair-vertex-after-acc-descr-block]
 
 22. `-`: `-` の単位。
 
