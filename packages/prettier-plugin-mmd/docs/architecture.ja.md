@@ -131,8 +131,7 @@ architecture-beta title t service a; junction j
 [規則 1](./printed-form.ja.md#1-記号の横の空白) が、
 キーワードと ID の間に空白 1 個を与えます。
 Prettier が `return  x` を `return x;` と印字するのと同じです。
-`group g(cloud)[G]`、`service a(server)[A]`、`service a[A]` と印字し、
-括弧・角括弧の付属部品を1つの node として印字します。
+`group g(cloud)[G]`、`service a(server)[A]`、`service a[A]` と印字します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 くっつく `(` と `[` を与えます。
 Prettier は、呼び出しの `(` の前にも、添字の `[` の前にも空白を印字しません。
@@ -564,7 +563,7 @@ architecture-beta
 ### Arrow lines
 
 線と任意の印をまとめ、その両側を空白1個にします。
-`a:R <-- L:b`、`a:T --> B:b`、`a:R <--> L:b` とし、port から線を区別します。
+`a:R <-- L:b`、`a:T --> B:b`、`a:R <--> L:b` とします。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が両側の空白を与えます。
 印を付けた線は、flowchart の `-->` と同じく 2 つのものの間の印で、Prettier は、
 2 つのものの間の印の前後に空白を 1 個ずつ置きます。
@@ -608,7 +607,6 @@ architecture-beta
 ### Arrow labels
 
 ラベル付きの線は `a:R <-[label]-> L:b` と印字します。
-1 つのダッシュ、角括弧ラベル全体、印を視覚上の1単位にします。
 通常の外側の隙間と、ラベルの括弧に接する空白、タブ、改行しない空白を、
 group や service のタイトルと同じく除きます。
 [ラベルの内容](#label-content) を参照してください。
@@ -652,8 +650,7 @@ architecture-beta
 
 ### Group modifiers
 
-作者の `{group}` は `a{group}:R` のように端点に付け、
-ID と一緒に読める形にします。
+作者の `{group}` は `a{group}:R` のように端点に付けます。
 固定の内側と両端の有無を保ち、所属のない node でも削除しません。
 解決した group ID へ置き換えません。
 
@@ -693,7 +690,7 @@ Prettier が CSS の `margin: 1px    2px;` を印字すると、
 `margin: 1px 2px;` になるのと同じです。
 `a   b` と、`a`、タブ、`b` は `a b` と印字されます。
 列揃え、構成要素の並べ替え、繰り返す制約の統合、折り返しはしません。
-作者が書いた順序を変えず、可視の改行を加えずに隙間を統一し、読みやすくします。
+作者が書いた順序を変えず、可視の改行を加えずに隙間を統一します。
 
 [fixture: architecture/alignment/alignment-row-and-column]
 
@@ -2752,8 +2749,7 @@ architecture-beta
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
-波括弧を残すブロックは、境界がわかるよう、
-キーワードと開始波括弧の間に空白を 1 つ置きます。
+波括弧を残すブロックは、キーワードと開始波括弧の間に空白を 1 つ置きます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 Prettier は、キーワードとそのブロックの `{` の間に空白を 1 個置きます。
 `try  { a }` は `try {`、`else   { z }` は `else {` と印字されます。
@@ -3231,7 +3227,6 @@ architecture-beta%%{}%% group a%%{}%%
 ### Blank lines
 
 通常の ASCII 空行は文・注釈類間に最大1行残し、本文・文書端では除きます。
-過剰な空白を除きながら、見た目のまとまりを保つためです。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 Prettier は、JavaScript と CSS で、空行の連なりを 1 行にし、
 ファイルとブロックの先頭と末尾の空行を除きます。

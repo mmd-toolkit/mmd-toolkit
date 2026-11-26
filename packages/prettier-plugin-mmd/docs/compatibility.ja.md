@@ -10514,7 +10514,7 @@ EBNF の任意コンマ、式の構造を保ち、EBNF の `::=` は `=` と印�
 [fixture: railroad/source-order/peg-duplicates]
 [fixture: railroad/title/ir-trim]
 
-通常の IR 複合呼出しは、文法の階層を示すため、常に引数を入れ子の行にします。
+通常の IR 複合呼出しは、常に引数を入れ子の行にします。
 `printWidth` や元の空白による改行には依存しません。
 値は分割せず、末尾コンマは加えません。
 通常の `terminal`、`nonterminal`、`special` は引用値とコンパクトにまとめます。

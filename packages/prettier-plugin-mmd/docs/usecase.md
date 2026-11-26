@@ -48,9 +48,9 @@ usecase/div-comment-preheader-bare]
 
 ### Header
 
-Put exact lower-case `usecase-beta` at column one and place the body below it,
-so the diagram starts visibly. Exterior ASCII spaces/tabs disappear; direction
-remains a separate statement. Trailing ASCII spaces and tabs disappear under
+Put exact lower-case `usecase-beta` at column one and place the body below it.
+Exterior ASCII spaces/tabs disappear; direction remains a separate statement.
+Trailing ASCII spaces and tabs disappear under
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) because they are at
 the end of the header line. A header alone is accepted and gains the ordinary
 final newline; case, stable-header and inline-body failures follow the shared
@@ -164,8 +164,7 @@ usecase-beta
 `actor`, as Prettier prints `return  x` as `return x;`. Reuse
 [ER's compact entity layout](./er.md#entities) for tight id/shape delimiters and
 metadata/class suffixes, no exterior ASCII label padding, and comma-space
-between actor items, which shows the separate actor occurrences that one `actor`
-keyword introduces. Stereotype spacing follows
+between actor items. Stereotype spacing follows
 [its class-based rule](#stereotypes). Keep explicit ids, ellipse/rectangle
 spelling, markdown labels, suffix order and every declaration/reference
 occurrence; a name and a label are printed in the form that the examples use
@@ -1307,13 +1306,12 @@ usecase-beta
 ### Blank lines
 
 Reuse [class blank grouping](./class.md#blank-lines): collapse ordinary blank
-runs to one and drop diagram/boundary-edge blanks, because one blank separates
-groups and more add nothing. ASCII space/tab-only lines are ordinary blanks,
-including after native bare comments and around standalone directives. Values,
-native metadata, JSON, directives and protected common-region joins keep their
-own blank lines. A blank line inside a markdown label is part of the label that
-mermaid.js keeps in the Db, and removing it is no kind of change of the Db that
-formatting may make (see
+runs to one and drop diagram/boundary-edge blanks. ASCII space/tab-only lines
+are ordinary blanks, including after native bare comments and around standalone
+directives. Values, native metadata, JSON, directives and protected
+common-region joins keep their own blank lines. A blank line inside a markdown
+label is part of the label that mermaid.js keeps in the Db, and removing it is
+no kind of change of the Db that formatting may make (see
 [The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
 No C4 recovery-gap or Ishikawa blank-pairing rule is imported.
 
@@ -1626,14 +1624,14 @@ that touch, and a line of whitespace after the text of an accTitle line]
 ### Frontmatter YAML
 
 Reuse [guarded frontmatter](./flowchart.md#frontmatter-yaml): safe configuration
-benefits from YAML formatting, while malformed bodies, indented delimiters, HTML
-tag starts in written/formatted YAML and formatted delimiter hazards retain
-their reading. Keep delimiters and closing padding, comments and directives
-before the header; frontmatter title is not an accessibility statement, and
-usecase clears the common title at this pin. YAML uses the shared positive
-minimum even with `tabWidth: 0`, while the body remains zero. HTML
-cross-frontmatter cases use the specified body-only reading without rewriting
-body quotes to imitate raw Mermaid.
+is formatted as YAML, while malformed bodies, indented delimiters, HTML tag
+starts in written/formatted YAML and formatted delimiter hazards retain their
+reading. Keep delimiters and closing padding, comments and directives before the
+header; frontmatter title is not an accessibility statement, and usecase clears
+the common title at this pin. YAML uses the shared positive minimum even with
+`tabWidth: 0`, while the body remains zero. HTML cross-frontmatter cases use the
+specified body-only reading without rewriting body quotes to imitate raw
+Mermaid.
 
 [fixture: frontmatter-yaml/frontmatter-safe] [corpus fixture:
 usecase/div-frontmatter-malformed] [fixture:

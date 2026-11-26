@@ -141,9 +141,9 @@ gitGraph
 ### Blank lines
 
 Collapse ordinary blank runs to one blank line and remove ordinary document/body
-edge blanks, retaining visible grouping around comments too. Prettier keeps at
-most one blank line between items and none at the start or end of a block or the
-text, treating lines of spaces and tabs as blank lines.
+edge blanks, including around comments. Prettier keeps at most one blank line
+between items and none at the start or end of a block or the text, treating
+lines of spaces and tabs as blank lines.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same form
 to ordinary blank lines, including those beside comments. Quoted values,
 description blocks, directive/hidden interiors and retained prefixes keep their

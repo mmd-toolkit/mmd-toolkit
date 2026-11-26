@@ -27,7 +27,6 @@ mermaid.js は引用符の前の空白を拒否するので、
 それはコンマのない欄として拒否されます（diagrams/sankey.md、
 「文字」と「図と記録」）。
 タブはどこでも拒否されるので、ほかの行をタブで字下げすることもできません。
-すべての行を 1 列目にすれば、列が混ざりません。
 
 [fixture: indentation/header-and-records-at-the-first-column]
 [fixture: indentation/quoted-first-record-at-the-first-column]

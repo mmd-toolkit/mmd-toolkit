@@ -26,8 +26,7 @@ cannot be indented: mermaid.js rejects a space before a quote, so a record that
 starts with a string has no indentation, and a line of only a directive is a
 line of whitespace once the directive is removed, which is a field without a
 comma (diagrams/sankey.md, Characters and Diagram and records). It rejects a tab
-anywhere, so a tab could not indent the others. One column for every line avoids
-a mix of columns.
+anywhere, so a tab could not indent the others.
 
 [fixture: indentation/header-and-records-at-the-first-column] [fixture:
 indentation/quoted-first-record-at-the-first-column] [fixture:

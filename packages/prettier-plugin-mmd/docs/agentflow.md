@@ -33,9 +33,9 @@ syntax repair, and the specification already defines the exceptional readings.
 
 ### Header
 
-The header stands at column one, so it is easy to find. Unlike the header of a
-flowchart, a header direction `TD` is printed `TB`, the direction that the
-examples in the documentation of mermaid.js use (10 times, and `TD` never; see
+The header stands at column one. Unlike the header of a flowchart, a header
+direction `TD` is printed `TB`, the direction that the examples in the
+documentation of mermaid.js use (10 times, and `TD` never; see
 [The direction of a header](./compatibility.md#the-direction-of-a-header)): the
 diagram type is later than the version of mermaid.js that made `TD` behave as
 `TB`, so every version that counts and reads it draws the two the same (see
@@ -1351,14 +1351,13 @@ agentflow-beta TB
 
 ### Blank lines
 
-Reuse [Blank lines](./flowchart.md#blank-lines): one blank groups statements;
-more add nothing. Collapse ordinary and whitespace-only runs to one and drop
-document/body-edge blanks, including inside flows/globals. Preserve blanks
-inside values, metadata and directives. An empty line inside a quoted label is
-part of that label in mermaid.js's Db, so removing the line changes the label
-text. Agentflow comments leave LF and do not consume following blanks; no
-blank-line-pairing divergence applies. Default size branches override ordinary
-blank layout.
+Reuse [Blank lines](./flowchart.md#blank-lines). Collapse ordinary and
+whitespace-only runs to one and drop document/body-edge blanks, including inside
+flows/globals. Preserve blanks inside values, metadata and directives. An empty
+line inside a quoted label is part of that label in mermaid.js's Db, so removing
+the line changes the label text. Agentflow comments leave LF and do not consume
+following blanks; no blank-line-pairing divergence applies. Default size
+branches override ordinary blank layout.
 
 [corpus fixture: agentflow/lex-brace-string-keeps-blank-line]
 
@@ -1687,8 +1686,7 @@ Description blocks also reuse
 [Multi-line values](./flowchart.md#multi-line-values) with the same sibling
 reason: ordinary closed blocks with no text or trivia print their interior as
 `{}`, even with interior spaces or blank lines. The exterior keyword-to-brace
-gap prints one space, even when originally touching, to distinguish the keyword
-from its body: `accDescr {}`.
+gap prints one space, even when originally touching: `accDescr {}`.
 
 [fixture: accessibility/empty-block-touching-keyword]
 

@@ -856,8 +856,7 @@ flowchart LR
 ### 空行
 
 連続する空行は 1 つの空行にします。
-Prettier がコードでそうするのと同じで、空行は文をまとまりにし、
-2 つ以上は何も足さないからです。
+Prettier がコードでそうするのと同じです。
 
 [fixture: blank-lines/single-kept] [fixture: blank-lines/whitespace-only-lines]
 [fixture: blank-lines/inside-multi-line-statement]
@@ -2143,7 +2142,7 @@ CRには共通の改行の正規化を使います。
 
 文字と注釈類のない閉じた説明ブロックの内側は、空白や空行があっても`{}`です。
 外側の語と波括弧の隙間は、元が接していても空白 1 個にします。
-語と本文の開始を見分けやすくするためで、`accDescr {}` と印字します。
+`accDescr {}` と印字します。
 
 [fixture: accessibility-lines/empty-block-touching-keyword]
 
@@ -4151,8 +4150,7 @@ Prettier の YAML 整形で整形します。
 
 Prettier が YAML として読めないときと、`---` の行が字下げされているときは、
 YAML を書かれたまま残します。
-`---` の行は書かれたまま残すので、
-字下げされた `---` の行の間で本文だけが 1 桁目にあると、崩れて見えるからです。
+`---` の行は書かれたまま残します。
 整形した YAML の行に `---` の行があって、
 フロントマターを途中で終わらせるときも、書かれたまま残します。
 Prettier は、

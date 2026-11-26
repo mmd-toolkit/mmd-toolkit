@@ -207,9 +207,9 @@ Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, use the
 [shared description layout](./pie.md#description-blocks): separate the keyword
-and opening brace with one space so the block boundary is clear. Collapse
-exterior runs to one space, including plain opener whitespace across physical or
-Unicode line boundaries. The `accDescr` keyword takes a description block, so
+and opening brace with one space. Collapse exterior runs to one space, including
+plain opener whitespace across physical or Unicode line boundaries. The
+`accDescr` keyword takes a description block, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives plain
 whitespace before its opening brace the one-space gap that Prettier prints
 between a keyword and what it takes. Real opener trivia keeps its break and uses
@@ -579,9 +579,8 @@ info
 ### Blank lines
 
 Collapse ordinary internal ASCII blank runs to one and remove ordinary
-document/body edge blanks, preserving visible grouping without excess space.
-Prettier prints at most one blank line between statements and none at the start
-or end of a text or block, so
+document/body edge blanks. Prettier prints at most one blank line between
+statements and none at the start or end of a text or block, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives ordinary ASCII
 blank lines the same limits. Apply this around comments too. Values, directives,
 hidden interiors, common-region joins and retained prefixes keep their breaks,

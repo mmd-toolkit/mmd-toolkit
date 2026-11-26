@@ -233,15 +233,15 @@ ishikawa
 
 ### Blank lines
 
-Ordinary blank runs collapse to one, keeping visual grouping without arbitrary
-runs; plain body-edge blanks disappear, including after leading common comments
-or directive-only lines, because blank lines change no node and no parent in
-Ishikawa. Prettier prints no blank line at the start of a text and at most one
-between items. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
-the same form for leading blank lines and ordinary interior blank runs. A blank
-after a diagram comment is that comment's separating gap, not a plain body-edge
-blank, so it stays. A blank separating a diagram comment from the next item,
-including a directive, lies inside the body.
+Ordinary blank runs collapse to one; plain body-edge blanks disappear, including
+after leading common comments or directive-only lines, because blank lines
+change no node and no parent in Ishikawa. Prettier prints no blank line at the
+start of a text and at most one between items.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same form
+for leading blank lines and ordinary interior blank runs. A blank after a
+diagram comment is that comment's separating gap, not a plain body-edge blank,
+so it stays. A blank separating a diagram comment from the next item, including
+a directive, lies inside the body.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) retains one such
 interior blank, as Prettier does between items.
 
@@ -314,8 +314,8 @@ ishikawa
 
 ### Comments
 
-Standalone comments align with the next node, or the last node at EOF, to show
-their association; comments before the header stand at column one.
+Standalone comments align with the next node, or the last node at EOF; comments
+before the header stand at column one.
 
 [fixture: ishikawa/comments/comments-align] [fixture:
 ishikawa/comments/comment-on-separate-line]
@@ -363,8 +363,8 @@ ishikawa
 
 ### Standalone directives
 
-Standalone directives keep their text and order and align like comments, showing
-their association without interpreting embedded data.
+Standalone directives keep their text and order and align like comments, without
+interpreting embedded data.
 
 [fixture: ishikawa/standalone-directives/directives-align]
 

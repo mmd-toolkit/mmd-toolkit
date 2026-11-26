@@ -12,8 +12,7 @@ preserved text and differences from mermaid.js.
 ### Header
 
 Print `radar-beta` at column one and put an ordinary first statement on the next
-line so the heading is easy to find. Where a statement stands is no place of
-rule 1, so
+line. Where a statement stands is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the first statement its line, as [pie](./pie.md#header),
 [packet](./packet.md#header), [architecture](./architecture.md#header),
@@ -158,9 +157,8 @@ radar-beta
 
 ### Statements one per line
 
-Print each ordinary axis, curve, options or common statement on its own line to
-expose the authored statement units. Where a statement stands is no place of
-rule 1, so
+Print each ordinary axis, curve, options or common statement on its own line.
+Where a statement stands is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [er](./er.md#statements-one-per-line),
 [gantt](./gantt.md#statements-one-per-line), and
@@ -255,10 +253,10 @@ brackets (`f( a )` is printed `f(a)` in its table) and none before the `[`
 an architecture diagram as the example of the `[` of an index), and
 [architecture](./architecture.md#declaration-spacing) and [er](./er.md#entities)
 print the brackets of a label touching their name (`service a  [ A ]` is printed
-`service a[A]`, and `A  [ "x" ]` is printed `A["x"]`). This makes the label read
-with its name. Keep absent labels distinct from empty quoted labels: removing an
-empty label changes the ID fallback (see [Quotes](#quotes)). Quote interiors are
-values, not component spacing, and hidden/global boundaries take precedence.
+`service a[A]`, and `A  [ "x" ]` is printed `A["x"]`). Keep absent labels
+distinct from empty quoted labels: removing an empty label changes the ID
+fallback (see [Quotes](#quotes)). Quote interiors are values, not component
+spacing, and hidden/global boundaries take precedence.
 
 [fixture: radar/labels/axis-double-brackets]
 
@@ -3497,8 +3495,8 @@ counts reads `accDescr {a%%literal}` as `a%%literal` and `accDescr: a%%literal`
 as `a` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 For blocks that keep their braces, separate the keyword and opening brace with
-one space so the block boundary is clear. Prettier prints one space between a
-keyword and the `{` of a block (`class A{}` is printed `class A {}`), as
+one space. Prettier prints one space between a keyword and the `{` of a block
+(`class A{}` is printed `class A {}`), as
 [Description block indentation](./compatibility.md#description-block-indentation)
 says, and [flowchart](./flowchart.md#multi-line-values),
 [class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
@@ -3992,10 +3990,9 @@ radar-beta
 
 Keep at most one ordinary ASCII blank line between statements or trivia, and
 remove ordinary document/body/header-edge blanks. Whitespace-only lines become
-empty. This retains grouping without excess space.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the empty
-lines: Prettier prints a run of empty lines as one and drops the empty lines at
-the start and at the end of a file or of a block in code, and
+empty. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+empty lines: Prettier prints a run of empty lines as one and drops the empty
+lines at the start and at the end of a file or of a block in code, and
 [gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines),
 [pie](./pie.md#blank-lines), and [sankey](./sankey.md#blank-lines) print a run
 of empty lines as one and drop the empty lines at the start and at the end of a

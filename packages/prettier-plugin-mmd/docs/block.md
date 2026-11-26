@@ -26,13 +26,11 @@ statements of a composite one level deeper than its `block:` line, with `end` at
 the level of `block:`. A level is what Prettier's `useTabs` and `tabWidth`
 options say: two spaces by default. The indentation written in the input is not
 kept: whitespace at the start of a line is nothing to mermaid.js, so the printer
-chooses it from the structure alone, and every text has one form. The nesting
-shows where a composite starts and ends, which `block:` and `end` alone would
-not once composites nest deeply, and it is how the documentation of mermaid.js
-writes them, as the other diagrams nest their blocks (see
-[Indentation](./flowchart.md#indentation) in the flowchart rules). The header,
-and a comment line before it, stand at the first column, also where whitespace
-was written before them.
+chooses it from the structure alone, and every text has one form. The
+documentation of mermaid.js writes them this way, as the other diagrams nest
+their blocks (see [Indentation](./flowchart.md#indentation) in the flowchart
+rules). The header, and a comment line before it, stand at the first column,
+also where whitespace was written before them.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/composite-body-one-level-deeper-end-at-the-level-of-block] [fixture:
@@ -93,8 +91,8 @@ break, and `G` become `block: G`. A directive in that gap stands after the space
 and touches the node (see [Directives](#directives)). The first statement after
 the head, and the statement after `end`, go to lines of their own, also where
 the composite was written on one line (`block:G a b end`), so that every
-composite is laid out in the same way and the indentation shows its body. `end`
-stands on a line of its own, at the level of its `block:`.
+composite is laid out in the same way. `end` stands on a line of its own, at the
+level of its `block:`.
 
 [fixture: composites/space-after-the-colon] [fixture:
 composites/tab-after-the-colon] [fixture:
@@ -166,12 +164,10 @@ block-beta
 Most diagrams stand each statement on a line of its own. A block diagram does
 not, because a run of nodes and `space` blocks on one line is a row of the grid
 that a `columns` statement sets, and the documentation of mermaid.js writes them
-so (`a b c`, `a["A label"] b:2 c:2 d`, `Start(("Start")) space:2`). Putting each
-node on a line of its own would hide the rows, and the number of columns would
-have to be counted again from the `columns` statement. No rule of
+so (`a b c`, `a["A label"] b:2 c:2 d`, `Start(("Start")) space:2`). No rule of
 [How the printed form is decided](./printed-form.md) gives this form: rule 2
-gives the form of the other diagram types, a statement on a line of its own,
-which hides the rows. The released form stays until it is decided (see
+gives the form of the other diagram types, a statement on a line of its own. The
+released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: rows/documentation-row-with-widths] [fixture: rows/space-in-a-row]
@@ -273,9 +269,8 @@ block-beta
 
 A run of empty lines becomes one empty line, and there is none at the start of
 the text, none between the header and the first statement, and none at the end
-of the text. A blank line is not held in the Db, and one empty line shows it at
-the least cost, as Prettier does in code (see
-[Blank lines](./flowchart.md#blank-lines)).
+of the text. A blank line is not held in the Db. Prettier prints the same empty
+lines in code (see [Blank lines](./flowchart.md#blank-lines)).
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the empty
 lines: Prettier prints a run of empty lines as one and drops the empty lines at
 the start and at the end of a file or of a block in JavaScript and CSS, and
@@ -432,14 +427,13 @@ block-beta
 ### Shapes
 
 An id and the shape after it touch (`A("x")`, `B[["y"]]`), also where whitespace
-was written between them (`A ("x")`): mermaid.js reads the whitespace between an
-id and an opening alike, so the form is a choice, and touching shows that the id
-and its shape are one node, so that `A ("x") B` is not read as three. It is how
-the documentation of mermaid.js writes shapes. The `:` of a width touches what
-is before it and what follows (`A:3`, `B["b"]:2`). Every version that counts
-rejects whitespace after it (`A: 3`, `A : 3`), and Prettier prints no colon with
-a space on one side only, so a space before it (`A :3`, which they read the
-same) is not printed either (see
+was written between them (`A ("x")`, `A ("x") B`): mermaid.js reads the
+whitespace between an id and an opening alike, so the form is a choice. It is
+how the documentation of mermaid.js writes shapes. The `:` of a width touches
+what is before it and what follows (`A:3`, `B["b"]:2`). Every version that
+counts rejects whitespace after it (`A: 3`, `A : 3`), and Prettier prints no
+colon with a space on one side only, so a space before it (`A :3`, which they
+read the same) is not printed either (see
 [Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
 The `:` of `space:2` must touch.
 
@@ -617,23 +611,22 @@ The arrow of an edge has one space before it and one after it, and so has the
 label of a link with one (`A --> B`, `A -- "x" --> B`), also where it was
 written touching (`A-->B`, `I--xJ`) or with more whitespace. mermaid.js reads
 the same edge with or without the whitespace around an arrow, so the form is a
-choice: it is how its documentation writes edges, and a space between an arrow
-and the id after it shows where a marker ends and the id starts (`I --x J`,
-where `I--xJ` hides it); an id that ends in `x` or `o` stays apart from the
-arrow after it in the same way (`A x --x B`, `Ao --> B`). The line of an arrow
-is printed in its shortest form, also after the label of a link: `--->` is
-`-->`, `-----` is `---`, `<--->` is `<-->`, `-..->` is `-.->`, and `====>` is
-`==>`. The length of the line is not in the Db, and the versions that count draw
-the same figure from the shorter line (the versions that do not read a thick
-line reject both). The documentation of mermaid.js writes the arrow `-->` nine
-times and `--` once (the opening of the label of a link, `A-- "X" -->B`), and
-never a longer line of that kind (`--->`) (see
-[The length of an arrow](./compatibility.md#the-length-of-an-arrow)), so rule 3
-gives the shortest form for it ([A spelling](./printed-form.md#3-a-spelling)).
-It writes no other kind of line (`---`, `-.->`, `==>`, `<-->`, `--x`, `--o`,
-`~~~`, `-.-`) at all, so no rule gives the length of the lines that the
-formatter shortens (`-----`, `-..->`, `====>`, `<--->`, `-..-`): the shortest
-form, which the released version prints, stays until it is decided (see
+choice: it is how its documentation writes edges (`I --x J`); an id that ends in
+`x` or `o` stays apart from the arrow after it in the same way (`A x --x B`,
+`Ao --> B`). The line of an arrow is printed in its shortest form, also after
+the label of a link: `--->` is `-->`, `-----` is `---`, `<--->` is `<-->`,
+`-..->` is `-.->`, and `====>` is `==>`. The length of the line is not in the
+Db, and the versions that count draw the same figure from the shorter line (the
+versions that do not read a thick line reject both). The documentation of
+mermaid.js writes the arrow `-->` nine times and `--` once (the opening of the
+label of a link, `A-- "X" -->B`), and never a longer line of that kind (`--->`)
+(see [The length of an arrow](./compatibility.md#the-length-of-an-arrow)), so
+rule 3 gives the shortest form for it
+([A spelling](./printed-form.md#3-a-spelling)). It writes no other kind of line
+(`---`, `-.->`, `==>`, `<-->`, `--x`, `--o`, `~~~`, `-.-`) at all, so no rule
+gives the length of the lines that the formatter shortens (`-----`, `-..->`,
+`====>`, `<--->`, `-..-`): the shortest form, which the released version prints,
+stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 A line that starts with `<` is shortened whatever it ends in, since the versions
 that count draw it the same: `<---x` is `<--x`, and `<====` is `<===`. A line
@@ -1428,8 +1421,8 @@ An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. Put one space between the
-keyword and opener, including originally touching tokens, to distinguish the
-keyword from its body: `accDescr{  }` becomes `accDescr {}`.
+keyword and opener, including originally touching tokens: `accDescr{  }` becomes
+`accDescr {}`.
 
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test: block
 Unicode and tab interiors]

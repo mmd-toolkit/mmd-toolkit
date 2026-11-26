@@ -12,10 +12,10 @@ from mermaid.js.
 
 ### Header
 
-Put the header at column one and an ordinary first statement on the next line,
-making the heading easy to find. The keyword is printed `treemap`, also where it
-was written `treemap-beta`: every version of mermaid.js that counts and has the
-diagram reads both names and draws them the same (see
+Put the header at column one and an ordinary first statement on the next line.
+The keyword is printed `treemap`, also where it was written `treemap-beta`:
+every version of mermaid.js that counts and has the diagram reads both names and
+draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Add no
 colon: [rule 3](./printed-form.md#3-a-spelling) gives the header without one, as
 the examples in the documentation of mermaid.js write all 8 headers of the
@@ -424,11 +424,10 @@ the same gap before a non-null style. Plain maximal separator whitespace may
 cross blank lines; join it even when the literal looks like another row or class
 definition. The AST already owns that text as style. Keep the line breaks in
 separator gaps containing comments/directives and align their standalone trivia
-and style continuation one level inside `classDef`, so the style remains visibly
-attached to its definition. The maximal separator discards this indentation; the
-style value itself is unchanged. Inline native comments that already supply an
-indentation run and semicolon-protected segments of a statement over several
-lines retain their existing columns.
+and style continuation one level inside `classDef`. The maximal separator
+discards this indentation; the style value itself is unchanged. Inline native
+comments that already supply an indentation run and semicolon-protected segments
+of a statement over several lines retain their existing columns.
 
 [fixture: treemap/style-gaps/spaces]
 
@@ -1288,10 +1287,9 @@ treemap
 ### Comments
 
 Align standalone comment lines with the next statement, or the last statement at
-EOF, to show their association, as in [ishikawa](./ishikawa.md#comments),
-[kanban](./kanban.md#comments) and [mindmap](./mindmap.md#comments). This
-applies whether the comment was shallower or deeper than that statement,
-including before a dedent.
+EOF, as in [ishikawa](./ishikawa.md#comments), [kanban](./kanban.md#comments)
+and [mindmap](./mindmap.md#comments). This applies whether the comment was
+shallower or deeper than that statement, including before a dedent.
 
 [fixture: treemap/comments/aligned-depths] [fixture:
 treemap/comments/standalone] [fixture: treemap/comments/aligned-final]
