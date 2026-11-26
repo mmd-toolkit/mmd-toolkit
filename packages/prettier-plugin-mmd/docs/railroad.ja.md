@@ -828,8 +828,11 @@ railroad-peg-beta
 `printWidth` や元の空白による改行には依存しません。
 文法の階層を一貫して示すためです。
 末尾コンマは加えません。
-固定した版の mermaid.js は、後ろに引数がない IR 呼出しのコンマを拒否するので、
+対象にする版の mermaid.js は、後ろに引数がない IR 呼出しのコンマを拒否するので、
 複数行の呼出しにも末尾コンマを加えません。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [corpus fixture: railroad/ir-choice-trailing-comma]
 

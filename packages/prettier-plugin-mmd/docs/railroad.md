@@ -793,9 +793,10 @@ Put the arguments of `sequence`, `choice`, `optional`, `oneOrMore` and
 the closing parenthesis at the call's level. Apply this to every nested call,
 including short and singleton calls, independently of `printWidth` and authored
 padding line breaks. This consistently shows the grammar hierarchy. Add no
-trailing commas. The pinned mermaid.js rejects a comma with no argument after it
-in an IR call, so multiline calls end their last argument without a trailing
-comma.
+trailing commas. The versions of mermaid.js that count reject a comma with no
+argument after it in an IR call, so multiline calls end their last argument
+without a trailing comma (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: railroad/ir-choice-trailing-comma]
 
