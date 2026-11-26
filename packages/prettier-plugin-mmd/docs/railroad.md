@@ -1409,13 +1409,18 @@ railroad-peg-beta
 
 ### Comments
 
-Standalone comments use one body step, or column one before the header. Outside
-ordinary IR calls, inline comments keep their side and their line. An inline
-comment that touches stays touching. Preserve marks, text, tails, block
-continuation columns and source order. A line comment leaves its following
-operand or terminator on the next line. For the terminator of an ABNF rule,
-every version of mermaid.js that counts rejects `r="comment"; note ;`, since the
-comment takes the terminator (see
+Standalone comments use one body step, or column one before the header.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this place: a comment line stands at the level of the statements around it in a
+[flowchart](./flowchart.md#comments), since a comment belongs to no statement,
+and before the header at column one in [gantt](./gantt.md#comments),
+[requirement](./requirement.md#comments), [block](./block.md#comments), and
+[journey](./journey.md#comments). Outside ordinary IR calls, inline comments
+keep their side and their line. An inline comment that touches stays touching.
+Preserve marks, text, tails, block continuation columns and source order. A line
+comment leaves its following operand or terminator on the next line. For the
+terminator of an ABNF rule, every version of mermaid.js that counts rejects
+`r="comment"; note ;`, since the comment takes the terminator (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Every dialect has `%%`; IR also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;`
 line comments, and PEG `#` line comments. Bare ABNF `;` is punctuation; `//` is
@@ -1508,6 +1513,8 @@ railroad-beta
 [fixture: railroad/comments/ir-closer]
 
 [fixture: railroad/comments/ir-positions]
+
+[fixture: railroad/comments/ir-indented-comments]
 
 [fixture: railroad/comments/peg-bare]
 
