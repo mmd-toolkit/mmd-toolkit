@@ -846,13 +846,14 @@ kanban
 A standalone comment is a comment line (`%% note`), a line of `%%` alone, or a
 line `%%{ }%%`. It is printed at the column of the statement after it, at the
 end of the board at the column of the last statement, and before the header at
-the first column; its mark and its text are kept as written. This shows which
-statement the comment is about, as in [mindmap](./mindmap.md#comments). In
-`kanban`, `%% c1`, ` S`, `       %% c2`, `   A`, `%% c3`, the comments stand
-with 2, 4, and 4 characters of indentation, those of `S` and `A`. A comment line
-inside a multi-line label or data block is removed by mermaid.js and stays on
-its authored line, with eligible data-block margins following
-[Data blocks](#data-blocks).
+the first column; its mark and its text are kept as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. In `kanban`, `%% c1`, ` S`,
+`       %% c2`, `   A`, `%% c3`, the comments stand with 2, 4, and 4 characters
+of indentation, those of `S` and `A`. A comment line inside a multi-line label
+or data block is removed by mermaid.js and stays on its authored line, with
+eligible data-block margins following [Data blocks](#data-blocks).
 
 [fixture: data-blocks/indented-comment-line]
 
@@ -1352,14 +1353,9 @@ the `---` lines are kept as written, as in the other diagram types (see
 YAML, one whose `---` lines are indented, one that holds a `<` which may start
 an HTML tag, and one whose formatted YAML would hold a `---` line stay as
 written. Whitespace after the closing `---` stays too. A comment or a directive
-between the frontmatter and the header stays, at the first column, as a comment
-line before the header does in [gantt](./gantt.md#comments),
-[requirement](./requirement.md#comments), [block](./block.md#comments), and
-[journey](./journey.md#comments), and a directive before the header does in
-[block](./block.md#directives)
-([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)); the
-board after it is formatted as usual. YAML formatting does not reach a data
-block; only its eligible margins move (see [Data blocks](#data-blocks)).
+between the frontmatter and the header stays, at the first column; the board
+after it is formatted as usual. YAML formatting does not reach a data block;
+only its eligible margins move (see [Data blocks](#data-blocks)).
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/frontmatter-malformed] [fixture:

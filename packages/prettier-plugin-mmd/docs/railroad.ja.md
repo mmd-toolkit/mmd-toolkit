@@ -1499,11 +1499,6 @@ railroad-peg-beta
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 図の本文の中の独立したコメント行の深さを与えます。
 Prettier がブロックの中の行をそう印字するためです。
-見出しの前の第1列は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
-見出しの前のコメント行は、[gantt](./gantt.ja.md#コメント)、
-[requirement](./requirement.ja.md#コメント)、[block](./block.ja.md#コメント)、
-[journey](./journey.ja.md#コメント)でも第1列に置きます。
 通常の IR 呼出し以外では、行内のコメントは左右の位置と行を変えません。
 接する行内コメントは接したまま残します。
 印、内容、末尾空白、ブロックの継続列、順序を保ちます。
@@ -1806,14 +1801,7 @@ mermaid.js はコメント行を取り除いて、
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-この配置は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
-[radar](./radar.ja.md#global-directives)、
-[packet](./packet.ja.md#global-directives)、
-[wardley](./wardley.ja.md#global-directive) も、
-整形が分ける単位の隙間のディレクティブを同じように置きます。
-ただし、
-ほかの規則が配置を書かれたまま残す所（保護された `style` や `classDef`
-の行など）は別です。
+保護された `style` や `classDef` の行などは、配置を書かれたまま残します。
 通常の独立したディレクティブを本文で1段字下げします。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 図の本文の中の独立したディレクティブ行の深さを与えます。

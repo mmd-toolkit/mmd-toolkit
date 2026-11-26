@@ -31,7 +31,6 @@ Prettier がブロックの中の行をそう印字するためです。
 どのテキストも 1 つの形になります。
 文法は文の字下げを禁じていません。
 ヘッダーと、その前のコメント行は 1 列目に置きます。
-コメント行の理由は、[コメント](#コメント)を参照してください。
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/written-indentation-dropped]
@@ -889,8 +888,7 @@ mermaid.js が複数行にわたって読む文は、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
 [journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
-その前の空白を残し、文の後ろの部分と、
-その間のコメントやディレクティブの行を 1 段深く置きます。
+その前の空白を残します。
 ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
 動かすと mermaid.js がテキストを拒否する所などです）。
 
@@ -1059,10 +1057,6 @@ quadrantChart
 Prettier がブロックの中の行をそう印字するためです。
 最後の文の後のコメント行は、その後ろに残ります。
 ヘッダーより前のコメント行は 1 列目に置きます。
-ヘッダーより前のコメント行の 1 列目は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
-[gantt](./gantt.ja.md#コメント)、[requirement](./requirement.ja.md#コメント)、
-[block](./block.ja.md#コメント)も、そこに置きます。
 title、アクセシビリティのテキスト、説明ブロック、文字列の中の `%%` は、
 その文字です。
 点の角括弧の中の `%%` は、入力を拒否させます。

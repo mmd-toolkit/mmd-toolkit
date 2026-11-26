@@ -10,13 +10,13 @@ limits are in [compatibility.md](./compatibility.md).
 
 ### Header
 
-Print `architecture-beta` at column one and move an ordinary first statement
-below it, as [sequence](./sequence.md#statements-one-per-line) and
+Print `architecture-beta` at column one. Move an ordinary first statement below
+it, as [sequence](./sequence.md#statements-one-per-line) and
 [ER](./er.md#statements-one-per-line) diagrams move a statement written on the
 line of their header;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this form. Keep empty bodies. Hidden boundaries and protected header/body
-segments take precedence; never invent a glued keyword.
+the first statement its line. Keep empty bodies. Hidden boundaries and protected
+header/body segments take precedence; never invent a glued keyword.
 
 [fixture: architecture/header/header-empty]
 
@@ -4068,14 +4068,8 @@ Keep Root directive content, order and ownership. Within a printed line, place a
 directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
-contact is broken. Rule 1 names no mark for a directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [gantt](./gantt.md#directives) and
-[journey](./journey.md#directives) move a directive in the gap of units that
-formatting splits with the following unit, keep its right-side contact or
-separation, and break its left contact, where no other rule keeps the layout as
-written. Ordinary standalone starts align one body step in; multiline interiors
-and EOF-reaching endings stay written.
+contact is broken. Ordinary standalone starts align one body step in; multiline
+interiors and EOF-reaching endings stay written.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
 directive line inside a block one level deeper than the line that opens it, as
 Prettier prints the lines inside a block. Common removal joins surrounding text,

@@ -251,6 +251,9 @@ The table also names the pinned version where it needs the kept form.
 | [class](./class.md#member-bodies)                                                                                                               | `class A { }`                                                                                                                                                                | `class A {}`                                                                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 reject the other form                                                                                                    | [fixture: class/member-bodies/empty-unified]                                                                                                                          |
 | [class](./class.md#member-bodies)                                                                                                               | `class C:::c { }`                                                                                                                                                            | `class C:::c {}`                                                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject the other form                                                                                                     | [fixture: class/member-bodies/empty-unified]                                                                                                                          |
 | [class](./class.md#kept-as-written)                                                                                                             | the header `classDiagram-v2`                                                                                                                                                 | the header `classDiagram`                                                        | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0 writes another `aria-roledescription` and other marker ids                                                                          | [fixture: class/indentation/header-v2-kept]                                                                                                                           |
+| [class](./class.md#indentation)                                                                                                                 | `namespace Box`, U+2028, a comment line, and `{`                                                                                                                             | a line break in place of U+2028                                                  | none                                                                 | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 reject the other form                                                                           | [test: class: ls-comment-in-namespace-opening]                                                                                                                        |
+| [class](./class.md#multi-line-statements)                                                                                                       | `class A`, U+2028, a comment line, and `B`                                                                                                                                   | a line break in place of U+2028                                                  | none                                                                 | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 read the class `A` instead of `AB`                                                              | [test: class: ls-comment-in-class-statement]                                                                                                                          |
+| [class](./class.md#multi-line-statements)                                                                                                       | `A --> B`, U+2029, a comment line, and `: x`                                                                                                                                 | a line break in place of U+2029                                                  | none                                                                 | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 reject the other form                                                                           | [test: class: ps-comment-in-relation-statement]                                                                                                                       |
 | [cynefin](./cynefin.md#header)                                                                                                                  | `%%{%%{wrap}%%init: {"label":"style:#keep"}}%% cynefin-beta:;complex 'Kept colon'`                                                                                           | the same input with `cynefin-beta;`                                              | [3](./printed-form.md#3-a-spelling)                                  | 12.0.0 and 12.3.0 reject the header without the colon                                                                                      | [fixture: cynefin/header/colon-semicolon-kept]                                                                                                                        |
 | [cynefin](./cynefin.md#header)                                                                                                                  | `cynefin-beta:%%{x y`, a line break, and `complex "A"`                                                                                                                       | `cynefin-beta%%{x y`, a line break, and `complex "A"`                            | [3](./printed-form.md#3-a-spelling)                                  | 11.16.1, 11.17.2, 12.0.0 and 12.3.0 reject the header without the colon                                                                    | [fixture: cynefin/header/colon-unclosed-directive-kept]                                                                                                               |
 | [cynefin](./cynefin.md#retained-prefix)                                                                                                         | one space and LF before `---`, `title: IgnoredByLeadingLf`, `---`                                                                                                            | the same prefix without the leading space and LF                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.16.1, 11.17.2, 12.0.0 and 12.3.0 draw a title only for the other form; 12.3.0 changes Db `title`                                        | [fixture: cynefin/retained-prefix/prefix-leading-lf]                                                                                                                  |
@@ -6381,21 +6384,12 @@ the start or at the end of the printed line. See
 
 Ordinary comments and directives between structural parts retain their required
 line breaks without freezing the parts' columns. Continuations and intervening
-standalone trivia use one indentation level inside the statement. Rule 1 gives
-no form here, since these are lines of a statement and no lines inside a block,
-the only lines whose start its table names
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [requirement](./requirement.md#fields),
-[sequence](./sequence.md#multi-line-statements),
-[flowchart](./flowchart.md#multi-line-statements), and
-[xychart](./xychart.md#multi-line-statements) put the continuations and the
-intervening comment lines of a statement one level deeper than the statement,
-where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text, and
-the like). Keep each first gap-line tail, including whitespace needed before LF,
-and keep value and directive interiors whole. Joining comment regions, semicolon
-protections and diagram-specific value boundaries still take precedence.
+standalone trivia use one indentation level inside the statement. Other rules
+keep the layout as written where the Db holds the text with its whitespace,
+where moving a line makes mermaid.js reject the text, and the like. Keep each
+first gap-line tail, including whitespace needed before LF, and keep value and
+directive interiors whole. Joining comment regions, semicolon protections and
+diagram-specific value boundaries still take precedence.
 
 This applies to class and state statements, ER statements, requirement headers,
 fields and statements, and sequence statements other than trivia-separated
@@ -7132,16 +7126,10 @@ what it takes (`Note` and `right of Bob`, `create` and `participant Carol`,
 [fixture: sequence/multi-line-statements/joined] [fixture:
 sequence/multi-line-statements/more-lines-joined]
 
-One with a comment or a directive keeps its line breaks and aligns structural
-continuations. Rule 1 gives no form here, since these are lines of a statement
-and no lines inside a block, the only lines whose start its table names
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [requirement](./requirement.md#fields) and
-[flowchart](./flowchart.md#multi-line-statements) put the comment and directive
-lines of a statement one level deeper than the statement. The whitespace before
-the first line break of each gap is retained because it can join the lines for
-the lexer.
+One with a comment or a directive keeps its line breaks; structural
+continuations and intervening comment and directive lines stand one level inside
+the statement. The whitespace before the first line break of each gap is
+retained because it can join the lines for the lexer.
 
 [fixture: sequence/multi-line-statements/comment-inside-kept]
 

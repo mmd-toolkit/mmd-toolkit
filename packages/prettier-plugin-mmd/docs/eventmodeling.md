@@ -16,12 +16,12 @@ data boundaries constrain the line and indentation plan before it is printed.
 ### Header
 
 Keep `eventmodeling` at column one and move an ordinary first statement to the
-next line, making the header easy to find. The column of the header and the line
-that a statement stands on are no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [wardley](./wardley.md#header), [cynefin](./cynefin.md#header),
-[architecture](./architecture.md#header), and [packet](./packet.md#header) print
-the header at column one and an ordinary first statement on the next line.
+next line, making the header easy to find. The line that a statement stands on
+is no place of rule 1, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the first statement its line: [wardley](./wardley.md#header),
+[cynefin](./cynefin.md#header), [architecture](./architecture.md#header), and
+[packet](./packet.md#header) print an ordinary first statement on the next line.
 Hidden forms, retained prefixes and protected lines use their shared rules: when
 the header line is kept, its first statement stays on that line. This gives
 diagram types the same treatment. A first common statement retains its original
@@ -485,15 +485,13 @@ resetframe 02 command Beta
 ### Declarations and notes
 
 A declaration or note header split by a comment or directive keeps the trivia
-and the line completing the header one level inside its keyword, as for a GWT
-header: that is the depth that rule 2 gives to the later lines of a statement
-and to the comment or directive lines between them, and the line break next to
-the comment or directive stays, for the reasons under [Long lines](#long-lines).
-Where the data-body rules allow margin changes, put the body one further level
-inside that opening line. Keep the written order, value continuations and
-required hidden boundaries. The closer still stays at column one, since every
-version of mermaid.js that counts rejects it indented (see
-[Data blocks](#data-blocks)).
+and the line completing the header one level inside its keyword. The line break
+next to the comment or directive stays, for the reasons under
+[Long lines](#long-lines). Where the data-body rules allow margin changes, put
+the body one further level inside that opening line. Keep the written order,
+value continuations and required hidden boundaries. The closer still stays at
+column one, since every version of mermaid.js that counts rejects it indented
+(see [Data blocks](#data-blocks)).
 
 [fixture: eventmodeling/declarations-and-notes/header-completion-comments]
 
@@ -569,12 +567,10 @@ entity Shop.Buy
 ### Gwt clauses and items
 
 A GWT header continued after a comment or directive uses ordinary continuation
-indentation: the trivia and source-frame line stand one level inside `gwt`, as
-rule 2 gives the later lines of a statement that depth (see
-[Long lines](#long-lines)). Keep their written order and comment form. Clause
-keywords still use one level and items two, for the reason under
-[Indentation](#indentation); the source-frame line is not a new top-level
-statement.
+indentation: the trivia and source-frame line stand one level inside `gwt`. Keep
+their written order and comment form. Clause keywords still use one level and
+items two, for the reason under [Indentation](#indentation); the source-frame
+line is not a new top-level statement.
 
 [fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
 [fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
@@ -1278,10 +1274,7 @@ adjustment in [Data blocks](#data-blocks), since in a `data` block that a frame
 reads the Db holds them as a part of the value. Boundaries needed for metadata
 or a required `title` take precedence. Slash comments are not moved before the
 header, where detection would reject them. A comment line before the header
-stands at column one. A line before the header is no line inside a block of rule
-1, so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#comments),
-[timeline](./timeline.md#comments), and [c4](./c4.md#comments) print it so.
+stands at column one.
 
 [test: an em space before a `//` comment after a statement of an eventmodeling
 diagram] [test: a sequence diagram keeps U+2029 before a comment that a
@@ -1500,17 +1493,13 @@ eventmodeling/frontmatter-extra-whitespace-line-boundary]
 Use the shared directive placement: on the same printed line place a directive
 as under [Directives](./flowchart.md#directives). When statements, clauses or
 items split into lines, attach an intervening directive to the following unit,
-retaining its right-side contact or separation. Rule 1 names no mark for a
-directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#directives),
-[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-print such a gap in the same way. Keep content, order, multiline interiors,
-positions inside values and unfinished EOF endings. Standalone starts align with
-the owning body. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts
-a directive line at the level of the lines around it, as Prettier prints every
-line inside a block at one level, whatever it holds. Between the clauses and
-items of a GWT, which are parts of its statement and no lines inside a block,
+retaining its right-side contact or separation. Keep content, order, multiline
+interiors, positions inside values and unfinished EOF endings. Standalone starts
+align with the owning body.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a directive line
+at the level of the lines around it, as Prettier prints every line inside a
+block at one level, whatever it holds. Between the clauses and items of a GWT,
+which are parts of its statement and no lines inside a block,
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#directives) puts a directive on a line of its
 own at the level of the statement after it. Common boundaries retain the full

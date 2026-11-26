@@ -32,13 +32,7 @@ line is nothing to mermaid.js, so the printer chooses it from the structure
 alone, and every text has one form. The nesting shows where a composite starts
 and ends, which `block:` and `end` alone would not once composites nest deeply.
 The header, and a comment line before it, stand at the first column, also where
-whitespace was written before them. A gap of a kind that Prettier does not have
-takes the form that the other diagram types print for it
-([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)), and
-every diagram type prints its header and the comment lines before it at the
-first column: the Indentation of [Gantt](./gantt.md#indentation) and of
-[user journey](./journey.md#indentation) and the Comments of
-[ER](./er.md#comments) say so.
+whitespace was written before them.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/composite-body-one-level-deeper-end-at-the-level-of-block] [fixture:
@@ -492,21 +486,19 @@ first direction, before a `,`, and before the `)`, a comment line or a directive
 line stays where it is written, at column one or indented, and the next line is
 not indented, since the whitespace there is in the Db (see above); after a `,`,
 where the whitespace is in no direction, the comment line or the directive line
-and the next line stand one level deeper, as
-[flowchart](./flowchart.md#multi-line-statements) and
-[xychart](./xychart.md#multi-line-statements) put the continuations of a
-statement one level deeper. A directive on the line of the direction stays
-touching or separated as written after the `(`, before a `,`, and before the
-`)`, since the whitespace there is in the Db (`(right %%{x}%%, down)` and
-`(right%%{x}%%, down)` stay). After a `,` the gap is printed as without the
-directive, and the directive stands after its space and touches the unit that
-follows it, as under [Directives](#directives): `(right,  %%{x}%%  down)` and
-`(right,%%{x}%%down)` are printed `(right, %%{x}%%down)`. Where the gap holds a
-U+2028 or U+2029, it stays as written, a directive in it included: `(right,`,
-U+2028, and ` %%{x}%% down)` stay. Where a line break follows a directive after
-a `,`, the whitespace before it stays as written and the next line stands one
-level deeper: `(right,  %%{x}%%` and a line break stay. A run of spaces or tabs
-before the directive stays too.
+and the next line stand one level deeper. A directive on the line of the
+direction stays touching or separated as written after the `(`, before a `,`,
+and before the `)`, since the whitespace there is in the Db
+(`(right %%{x}%%, down)` and `(right%%{x}%%, down)` stay). After a `,` the gap
+is printed as without the directive, and the directive stands after its space
+and touches the unit that follows it, as under [Directives](#directives):
+`(right,  %%{x}%%  down)` and `(right,%%{x}%%down)` are printed
+`(right, %%{x}%%down)`. Where the gap holds a U+2028 or U+2029, it stays as
+written, a directive in it included: `(right,`, U+2028, and ` %%{x}%% down)`
+stay. Where a line break follows a directive after a `,`, the whitespace before
+it stays as written and the next line stands one level deeper:
+`(right,  %%{x}%%` and a line break stay. A run of spaces or tabs before the
+directive stays too.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [fixture:
@@ -1379,14 +1371,8 @@ directives/directive-after-columns] [fixture: directives/directive-after-end]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
-break its left contact. Rule 1 names no mark for a directive between two units,
-so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#directives),
-[gantt](./gantt.md#directives), and [journey](./journey.md#directives) move a
-directive in the gap of units that formatting splits with the following unit,
-keep its right-side contact or separation, and break its left contact, where no
-other rule keeps the layout as written (a directive that is not closed after a
-statement).
+break its left contact. A directive that is not closed after a statement keeps
+its layout as written.
 
 [fixture: block/directives/directive-after-columns] [fixture:
 block/directives/directive-after-columns-right-touching] [fixture:

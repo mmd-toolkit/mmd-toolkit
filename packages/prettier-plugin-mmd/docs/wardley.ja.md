@@ -15,7 +15,7 @@
 見出し wardley-beta は原綴のまま第 1 列に置き、
 普通の最初の文を次の行へ移します。
 図種を見つけやすくするためです。
-見出しの列と、文をどの行に置くかは、規則 1 の場所ではないので、
+文をどの行に置くかは、規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [architecture](./architecture.ja.md#header)、[cynefin](./cynefin.ja.md#header)、
 [radar](./radar.ja.md#header)、[treemap](./treemap.ja.md#header)も、
@@ -3164,16 +3164,7 @@ wardley-beta
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#ディレクティブ)、
-[flowchart](./flowchart.ja.md#ディレクティブ)、
-[journey](./journey.ja.md#ディレクティブ)も、
-この隙間を同じに印字します（flowchart は `A%%{init: {}}%%-->B` を
-`A %%{init: {}}%%--> B` に、
-sequence は `A->>%%{init: {}}%%B: x` を `A ->> %%{init: {}}%%B: x` に印字し、
-ここでは `component%%{wrap}%%Glued` を `component %%{wrap}%%Glued`
-に印字します）。
+`component%%{wrap}%%Glued` は `component %%{wrap}%%Glued` と印字します。
 普通の独立行は本文の段に揃えます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 図の本文の中の独立したディレクティブ行の深さを与えます。
@@ -3231,11 +3222,6 @@ wardley-beta
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 図の本文の中の独立したコメント行の深さを与えます。
 Prettier がブロックの中の行をそう印字するためです。
-見出しの前のコメントの桁は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#コメント)、[xychart](./xychart.ja.md#コメント)、
-[radar](./radar.ja.md#comments)、[pie](./pie.ja.md#comments)も、
-それを第 1 列に印字します。
 行内コメントは同じ行に残します。
 接するコメントは接したまま残します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、

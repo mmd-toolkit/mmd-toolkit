@@ -14,8 +14,7 @@ records preserved text and differences from mermaid.js.
 
 Print the authored wardley-beta header at column one and move an ordinary first
 statement below it. This makes the diagram type easy to find; add no colon. The
-column of the header and the line that a statement stands on are no place of
-rule 1, so
+line that a statement stands on is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [architecture](./architecture.md#header),
 [cynefin](./cynefin.md#header), [radar](./radar.md#header), and
@@ -3982,26 +3981,19 @@ Keep Root directive source, order and ownership. Within a printed line, place a
 directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
-contact is broken. Rule 1 names no mark for a directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#directives),
-[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-print such a gap in the same way (`A%%{init: {}}%%-->B` is printed
-`A %%{init: {}}%%--> B` in a flowchart, `A->>%%{init: {}}%%B: x` is printed
-`A ->> %%{init: {}}%%B: x` in a sequence diagram, and `component%%{wrap}%%Glued`
-is printed `component %%{wrap}%%Glued` here). Ordinary standalone directives
-align with their body.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
-standalone directive line inside the diagram body, as Prettier prints the lines
+contact is broken. `component%%{wrap}%%Glued` is printed
+`component %%{wrap}%%Glued`. Ordinary standalone directives align with their
+body. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth
+of a standalone directive line inside the diagram body, as Prettier prints the
+lines inside a block. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+puts a directive line between two pipeline children of the same depth at their
+level, as Prettier prints a comment line between two lines of the same depth
 inside a block. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts
-a directive line between two pipeline children of the same depth at their level,
-as Prettier prints a comment line between two lines of the same depth inside a
-block. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a
-standalone directive line at the start or the end of a pipeline at the level of
-its children, as Prettier prints the lines inside a block; multiline interiors
-and EOF-reaching unfinished endings remain written. Do not format their JSON or
-reorder them: common removal joins surrounding text and can change acceptance or
-values. Native hidden directives remain separate nodes.
+a standalone directive line at the start or the end of a pipeline at the level
+of its children, as Prettier prints the lines inside a block; multiline
+interiors and EOF-reaching unfinished endings remain written. Do not format
+their JSON or reorder them: common removal joins surrounding text and can change
+acceptance or values. Native hidden directives remain separate nodes.
 
 [fixture: wardley/global-directives/header-to-body]
 
@@ -4043,12 +4035,8 @@ wardley-beta
 Align ordinary standalone comments with the containing body and prefix comments
 at column one. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
 the depth of a standalone comment line inside the diagram body, as Prettier
-prints the lines inside a block.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the column of a comment before the header: [flowchart](./flowchart.md#comments),
-[xychart](./xychart.md#comments), [radar](./radar.md#comments), and
-[pie](./pie.md#comments) print it at column one. Inline comments keep their
-line. A comment that touches stays touching.
+prints the lines inside a block. Inline comments keep their line. A comment that
+touches stays touching.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. Preserve marks, text and trailing padding;

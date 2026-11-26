@@ -441,14 +441,14 @@ info showInfo
 
 ### Comments
 
-Preheader comments start at column one, ordinary standalone body comments one
-step in, and inline comments on their line.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
-standalone comment line inside the diagram body, as Prettier prints the lines
-inside a block. A run of spaces and tabs before an inline comment becomes one
-space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
-space before a comment that stands after something on its line, as Prettier
-prints `x = 1;   // c` as `x = 1; // c`.
+Ordinary standalone body comments start one step in, and inline comments stay on
+their line. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+depth of a standalone comment line inside the diagram body, as Prettier prints
+the lines inside a block. Preheader comments start at column one. A run of
+spaces and tabs before an inline comment becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 A comment that touches what precedes it stays touching. Preserve marks, contents
 and trailing spaces. Native comments end at physical LF, keeping LS/PS. A bare

@@ -1970,10 +1970,9 @@ not a transition, and the printed text shows it.
 multi-line-statements/classdef-takes-next-line]
 
 A statement with a comment or directive keeps its line breaks, while structural
-continuations and intervening trivia stand one level deeper, as in a sequence
-diagram (see [Multi-line statements](./sequence.md#multi-line-statements)).
-Whitespace inside other values remains unchanged. Multiline note paragraph
-margins follow the limited [Notes](#notes) rule.
+continuations and intervening trivia stand one level deeper. Whitespace inside
+other values remains unchanged. Multiline note paragraph margins follow the
+limited [Notes](#notes) rule.
 
 [fixture: notes/payment-prose]
 

@@ -73,6 +73,10 @@ namespace またはメンバー本体を開く行を、
 U+2028 または U+2029 の後のコメント領域が分ける場合は、
 書かれた行と空白を保ちます。
 mermaid.js が、除いたコメントの前後の文字を結合するためです。
+その文字を改行にすると、対象にする版はどれも、その開く行を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: class: ls-comment-in-namespace-opening]
 [test: class: ps-comment-in-member-opening]
@@ -344,11 +348,6 @@ mermaid.js の文書の例 4 件は、本体なしと本体ありで `class Anim
 
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 は、そのまま残します。
-規則 1 の表に、これを含む間隔の印はないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#行区切り文字) と
-[timeline](./timeline.ja.md#行区切り文字) も、
-これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 before the `:::` of a class]
 [test: U+2029 after the `:::` of a class]
@@ -961,6 +960,10 @@ classDiagram
 
 通常のメソッドでは、括弧の直前と内側の外周の空白を除き、
 空でない戻り値型の前に空白を 1 つ置きます。
+これらの隙間は[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+詳しくは
+[class のラベルとメンバーの行](./compatibility.ja.md#class-のラベルとメンバーの行)
+を参照してください。
 フィールドの中の空白とタブの連なりは、空白 1 つで印字します。
 可視性記号の後の空白 1 つは、名前の一部なので残します。
 注釈類、無視される文字、物理・Unicode の改行、
@@ -1714,12 +1717,18 @@ class 図では、改行は文を終えます。
 [corpus fixture: class/lex-direction-line-value-next-line]
 
 コメントかディレクティブの隣の改行は残し、
-構造の続きの行と間の注釈を 1
-段深く置きます（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+構造の続きの行と間の注釈を 1 段深く置きます。
 
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 
 値の中の空白は変えません。
+ノートのテキストの中の空白の連なりは、
+Db のノートの一部です（`note "a %%{init: {}}%% b"` のテキストは、`a`、
+空白 2 つ、`b`）。
+それを変えることは、整形が Db に起こしてよい変化のどの種類にも当たりません。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
 各隙間の最初の改行の前の空白は保ちます。
 コメントで結合される領域では、文全体を原文のまま残します。
 `;` があるだけでは、複数行に書かれた文をつなぐ妨げにはなりません。
@@ -1735,6 +1744,7 @@ class では文の区切りに `;` を使えず、
 [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/comment-inside-title-kept]
+[corpus fixture: class/lex-directive-in-string-spaces]
 
 U+2028 か U+2029 の後のコメント行を含む文は、結合される領域です。
 mermaid.js はそのコメント行を除き、
@@ -1742,6 +1752,11 @@ mermaid.js はそのコメント行を除き、
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照）、その文は、
 各部分の間隔と後の行のインデントも含めて書かれたまま残します。
+その文字を改行にすると、対象にする版はどれも、`class A`、U+2028、コメント行、
+`B` を `AB` ではなくクラス `A` と読み、ラベルが次の行に立つ関係を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: class: ls-comment-in-class-statement]
 [test: class: ps-comment-in-relation-statement]
@@ -1886,6 +1901,9 @@ classDiagram
 すでに空の内側は空のままです。
 キーワードと開始括弧の間には空白を 1 つ置きます。
 `accDescr{  }` は `accDescr {}` にします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がどちらも与えます。
+Prettier は、何も持たない括弧の内側に何も置かず（`x = { }` は `x = {};`）、
+ブロックを開く `{` の前に空白を 1 つ置きます（`class A{}` は `class A {}`）。
 
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: class Unicode and tab interiors]

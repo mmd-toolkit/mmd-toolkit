@@ -1436,17 +1436,12 @@ railroad-peg-beta
 Standalone comments use one body step, or column one before the header.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
 standalone comment line inside the diagram body, as Prettier prints the lines
-inside a block, and
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the first column before the header, where a comment line stands in
-[gantt](./gantt.md#comments), [requirement](./requirement.md#comments),
-[block](./block.md#comments), and [journey](./journey.md#comments). Outside
-ordinary IR calls, inline comments keep their side and their line. An inline
-comment that touches stays touching. Preserve marks, text, tails, block
-continuation columns and source order. A line comment leaves its following
-operand or terminator on the next line. For the terminator of an ABNF rule,
-every version of mermaid.js that counts rejects `r="comment"; note ;`, since the
-comment takes the terminator (see
+inside a block. Outside ordinary IR calls, inline comments keep their side and
+their line. An inline comment that touches stays touching. Preserve marks, text,
+tails, block continuation columns and source order. A line comment leaves its
+following operand or terminator on the next line. For the terminator of an ABNF
+rule, every version of mermaid.js that counts rejects `r="comment"; note ;`,
+since the comment takes the terminator (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Every dialect has `%%`; IR also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;`
 line comments, and PEG `#` line comments. Bare ABNF `;` is punctuation; `//` is
@@ -1728,14 +1723,9 @@ Print every Root directive from its source span once at its owner position.
 Outside ordinary IR call gaps, place a directive within a printed line as under
 [Directives](./flowchart.md#directives). When formatting splits units that were
 on the same line, a directive in their gap moves with the following unit: its
-right boundary stays touching or separated, while its left contact is broken.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this placement, as [radar](./radar.md#global-directives),
-[packet](./packet.md#global-directives), and
-[wardley](./wardley.md#global-directives) place a directive in the gap of units
-that formatting splits, where no other rule keeps the layout as written (a
-protected `style` or `classDef` line, and the like). Use one body step for
-ordinary standalone directives.
+right boundary stays touching or separated, while its left contact is broken. A
+protected `style` or `classDef` line, and the like, keeps its layout as written.
+Use one body step for ordinary standalone directives.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
 standalone directive line inside the diagram body, as Prettier prints the lines
 inside a block. Do not format their contents as JSON or collect them before the

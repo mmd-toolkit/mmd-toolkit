@@ -467,17 +467,9 @@ before a later event] [test: U+2029 inside a period before a later event]
 
 Comment lines and directive lines between event lines align with the next event
 colon. When the colons use ordinary continuation indentation, these lines use
-that indentation too. Rule 1 gives no form here, since these are lines of a
-statement and no lines inside a block, the only lines whose start its table
-names ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [requirement](./requirement.md#fields) and
-[sequence](./sequence.md#multi-line-statements) put the intervening comment and
-directive lines of a statement at the level of its continuation lines, which
-here stand at the column of the colon, where no other rule keeps the layout as
-written (where the Db holds the text with its whitespace, where moving a line
-makes mermaid.js reject the text, and the like). A run of empty lines inside the
-statement becomes one.
+that indentation too. Other rules keep the layout as written where the Db holds
+the text with its whitespace, where moving a line makes mermaid.js reject the
+text, and the like. A run of empty lines inside the statement becomes one.
 
 [fixture: periods-and-events/comment-lines-inside] [fixture:
 periods-and-events/empty-lines-inside] [fixture:
@@ -1237,12 +1229,11 @@ directive interiors. Rule 1 names no mark for a line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the later parts of
-a statement and the comment and directive lines between them one level deeper,
-where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text, and
-the like). Joining comment regions keep their original layout; semicolon
-protection follows the joining decision below.
+comment or a directive and the whitespace before it, where no other rule keeps
+the layout as written (where the Db holds the text with its whitespace, where
+moving a line makes mermaid.js reject the text, and the like). Joining comment
+regions keep their original layout; semicolon protection follows the joining
+decision below.
 
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
@@ -1475,10 +1466,7 @@ Prettier prints the lines inside a block.
 
 A comment line before the header stands at the first column, and one at the end
 of the text stays on a line of its own, with the line break added.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-these places, as a [Gantt chart](./gantt.md#comments) prints a comment before
-the header and a comment at the end of the text in them, and
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the line break,
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the line break,
 as Prettier ends a text with one line break.
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]

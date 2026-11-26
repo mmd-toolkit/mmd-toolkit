@@ -1755,11 +1755,6 @@ Prettier がブロックの中のコメント行をそう印字するためで�
 
 ヘッダーより前のコメント行は 1 桁目に置き、テキストの末尾のコメント行は、
 改行を足して自分の行に残します。
-[quadrant](./quadrant.ja.md#コメント) と [ishikawa](./ishikawa.ja.md#comments)
-の図も、ヘッダーより前のコメントを 1 桁目に置き、末尾のコメントを、
-最後の文の後の独立した行に残します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-ヘッダー前と末尾のコメントにも、この配置を与えます。
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 

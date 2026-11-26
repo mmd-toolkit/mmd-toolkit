@@ -2017,19 +2017,11 @@ intervening comment or directive;
 a flowchart the same breaks. Keep the previous
 [Multi-line statements](#multi-line-statements) layout: continuation lines,
 including comment and directive lines, stand one level deeper than the keyword;
-the comment/directive text and the authored statement breaks remain. Rule 1
-gives no form here, since these are lines of a statement and no lines inside a
-block, the only lines whose start its table names
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [requirement](./requirement.md#fields) and
-[sequence](./sequence.md#multi-line-statements) put the continuation lines and
-the intervening comment lines of a statement one level deeper than its first
-line, where no other rule keeps the layout as written (where the Db holds the
-text with its whitespace, where moving a line makes mermaid.js reject the text,
-and the like). Flowchart skips a comment after the colon to read the later
-value. This preserves the existing continuation rule when ordinary joining does
-not apply.
+the comment/directive text and the authored statement breaks remain. Other rules
+keep the layout as written where the Db holds the text with its whitespace,
+where moving a line makes mermaid.js reject the text, and the like. Flowchart
+skips a comment after the colon to read the later value. This preserves the
+existing continuation rule when ordinary joining does not apply.
 
 [fixture: accessibility-lines/next-line-comment-kept] [fixture:
 accessibility-lines/description-comment-continuation] [fixture:
@@ -2205,16 +2197,9 @@ instead, because there a line break counts only after whitespace.
 multi-line-statements/label-over-lines] [fixture:
 multi-line-statements/directive-inside]
 
-Comment lines inside it stay inside it, at the level of its later lines. Rule 1
-gives no form here, since these are lines of a statement and no lines inside a
-block, the only lines whose start its table names
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [requirement](./requirement.md#fields) and
-[sequence](./sequence.md#multi-line-statements) put the comment lines of a
-statement at the level of its later lines, where no other rule keeps the layout
-as written (where the Db holds the text with its whitespace, where moving a line
-makes mermaid.js reject the text, and the like).
+Comment lines inside it stay inside it, at the level of its later lines. Other
+rules keep the layout as written where the Db holds the text with its
+whitespace, where moving a line makes mermaid.js reject the text, and the like.
 
 [fixture: multi-line-statements/several-comments-inside]
 

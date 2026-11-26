@@ -66,7 +66,9 @@ indentation/written-indentation-dropped]
 
 A namespace or member-body opening split by a comment region after U+2028 or
 U+2029 keeps its written lines and spacing: mermaid.js joins the text on either
-side of the removed comment.
+side of the removed comment. With a line break in place of the character, every
+version that counts rejects the opening (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: class: ls-comment-in-namespace-opening] [test: class:
 ps-comment-in-member-opening]
@@ -325,11 +327,7 @@ the form; the four examples of its documentation write
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
 A directive in the gap is placed as under [Directives](#directives), and a
-U+2028 or U+2029 stays where it is. Rule 1 names no mark for a gap that holds
-one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+U+2028 or U+2029 stays where it is.
 
 [test: U+2028 before the `:::` of a class] [test: U+2029 after the `:::` of a
 class]
@@ -898,11 +896,13 @@ classDiagram
 ### Member lines
 
 For an ordinary method, remove padding before and just inside its parentheses,
-and put one space before a nonempty return type. A run of spaces and tabs inside
-a field is printed as one space, and the one space after a visibility mark
-stays, since it is part of the name. Methods with trivia, ignored text, physical
-or Unicode line separators, or a protected semicolon line retain their complete
-source.
+and put one space before a nonempty return type.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these gaps (see
+[Class labels and member lines](./compatibility.md#class-labels-and-member-lines)).
+A run of spaces and tabs inside a field is printed as one space, and the one
+space after a visibility mark stays, since it is part of the name. Methods with
+trivia, ignored text, physical or Unicode line separators, or a protected
+semicolon line retain their complete source.
 
 [fixture: member-lines/method-padding] [fixture:
 member-lines/method-values-and-classifiers-runs-collapsed] [fixture:
@@ -1631,32 +1631,41 @@ multi-line-statements/empty-line-inside-joined] [corpus fixture:
 class/lex-direction-line-value-next-line]
 
 A line break next to a comment or a directive stays, while structural
-continuations and intervening trivia stand one level deeper, as in a sequence
-diagram (see [Multi-line statements](./sequence.md#multi-line-statements)).
+continuations and intervening trivia stand one level deeper.
 
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 
-Whitespace inside values remains unchanged. The whitespace before the first line
-break of each gap is retained; joining regions keep the whole statement as
-written. A `;` does not keep a statement over several lines from being joined:
-no `;` separates statements in a class diagram, and the first line of such a
-statement holds only its keyword, so joining its lines cannot change which `;`
-the line rule ignores. The colon after `accTitle` or `accDescr` gives a key its
-value, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) joins an
-ordinary next-line value with one space after that colon. A `;` inside the value
-remains part of it.
+Whitespace inside values remains unchanged: a run of spaces inside the text of a
+note is part of the note in the Db (`note "a %%{init: {}}%% b"` has the text
+`a`, two spaces, and `b`), and a change of it is no kind of change of the Db
+that formatting may make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
+The whitespace before the first line break of each gap is retained; joining
+regions keep the whole statement as written. A `;` does not keep a statement
+over several lines from being joined: no `;` separates statements in a class
+diagram, and the first line of such a statement holds only its keyword, so
+joining its lines cannot change which `;` the line rule ignores. The colon after
+`accTitle` or `accDescr` gives a key its value, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) joins an ordinary
+next-line value with one space after that colon. A `;` inside the value remains
+part of it.
 
 [fixture: multi-line-statements/semicolon-value-joined] [fixture:
 multi-line-statements/comment-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
-multi-line-statements/comment-inside-title-kept]
+multi-line-statements/comment-inside-title-kept] [corpus fixture:
+class/lex-directive-in-string-spaces]
 
 A statement with a comment line after U+2028 or U+2029 inside it is a joining
 region: mermaid.js removes the comment line and reads the text on both sides as
 one line (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
 so the statement is kept as written, with the spacing of its parts and the
-indentation of its later lines.
+indentation of its later lines. With a line break in place of the character,
+`class A`, U+2028, a comment line, and `B` is the class `A` instead of `AB`, and
+a relation whose label stands on the next line is rejected, in every version
+that counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: class: ls-comment-in-class-statement] [test: class:
 ps-comment-in-relation-statement]
@@ -1798,6 +1807,10 @@ The whitespace-only interior of a description block, including tabs, line breaks
 and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. The keyword and opening brace
 have one space between them: `accDescr{  }` becomes `accDescr {}`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: Prettier
+prints braces that hold nothing with nothing inside (`x = { }` is printed
+`x = {};`) and one space before the `{` that opens a block (`class A{}` is
+printed `class A {}`).
 
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test: class
 Unicode and tab interiors]

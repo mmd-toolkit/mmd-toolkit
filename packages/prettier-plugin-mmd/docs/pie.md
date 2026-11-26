@@ -9,8 +9,7 @@ output reparsing. Invisible-character examples are escaped test cases.
 
 ### Header
 
-Reuse [XY chart header/body layout](./xychart.md#header-and-orientation): an
-exact lower-case `pie` starts at column one;
+An exact lower-case `pie` starts at column one;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `pie` and a written `showData`, as Prettier prints `return  x` as
 `return x;`. An ordinary inline first statement moves below it. Hidden

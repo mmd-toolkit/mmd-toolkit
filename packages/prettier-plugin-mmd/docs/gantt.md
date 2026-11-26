@@ -1699,11 +1699,6 @@ directives/levels-around-sections]
 
 A comment line before the header stands at the first column, and one at the end
 of the text stays on a line of its own, with the line break added.
-[Quadrant](./quadrant.md#comments) and [ishikawa](./ishikawa.md#comments)
-diagrams place a comment before the header at column one and keep a final
-comment on its own line after the last statement;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt comments the same boundary positions.
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
