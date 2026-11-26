@@ -79,8 +79,12 @@ agentflow-beta
 
 Indentation is set from the AST, while authored columns do not determine
 membership. Use one configured step below the header and each flow/global, align
-end with its opener, and give connectors no body. A composite
-[state](./state.md#indentation) puts `}` at the level of its opening line;
+end with its opener, and give connectors no body.
+[Sequence](./sequence.md#indentation) and [state](./state.md#indentation)
+diagrams put the statements after the header one level deeper than the header;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+agentflow statements the same level. A composite [state](./state.md#indentation)
+puts `}` at the level of its opening line;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the same alignment to the closing `end` of a flow or global. `useTabs` uses one
 tab per level. Agentflow uses the shared significant indentation width: even
