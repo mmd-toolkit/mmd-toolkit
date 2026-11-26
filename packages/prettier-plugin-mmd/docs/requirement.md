@@ -891,15 +891,9 @@ statements-one-per-line/after-closing-brace] [fixture:
 statements-one-per-line/after-string-name] [fixture:
 statements-one-per-line/empty-description-blocks]
 
-A directive between two statements stands with the statement after it. Rule 1
-names no mark for a directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#directives),
-[gantt](./gantt.md#directives), and [journey](./journey.md#directives) move a
-directive in the gap of units that formatting splits with the following unit,
-keep its right-side contact or separation, and break its left contact, where no
-other rule keeps the layout as written (a directive that is not closed after a
-statement, and the like).
+A directive between two statements stands with the statement after it: its
+right-side contact or separation stays, and its left contact is broken. A
+directive that is not closed after a statement keeps its layout as written.
 
 [fixture: statements-one-per-line/directive-after-statement] [fixture:
 statements-one-per-line/directive-after-statement-right-touching] [fixture:
