@@ -376,7 +376,7 @@ mermaid.js はコロンの後に 1 文字を要求します。
 [fixture: task-data/whitespace-only-data]
 [fixture: task-data/whitespace-only-data-then-comment]
 
-データに、改行しない空白、U+3000、U+2028、U+2029 など、
+空白だけのデータに、改行しない空白、U+3000、U+2028、U+2029 など、
 空白とタブ以外の空白文字がある行も、その文字の隣の空白とタブを含めて、
 書かれたまま印字します。
 

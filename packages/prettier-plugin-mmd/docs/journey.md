@@ -364,9 +364,9 @@ whitespace is read together with it.
 [fixture: task-data/whitespace-only-data] [fixture:
 task-data/whitespace-only-data-then-comment]
 
-A line whose data holds a whitespace character that is no space or tab, such as
-a no-break space, U+3000, U+2028, or U+2029, is printed as written too, the
-spaces and tabs beside that character included.
+Data of whitespace only that holds a whitespace character that is no space or
+tab, such as a no-break space, U+3000, U+2028, or U+2029, keeps its line as
+written too, the spaces and tabs beside that character included.
 
 [test: U+00A0 as the entire data of a journey task] [test: U+2028 as the entire
 data of a journey task] [test: U+2029 as the entire data of a journey task]
