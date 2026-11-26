@@ -464,6 +464,9 @@ mermaid.js はリンクテキスト `a}`、改行、` b` を読み、`click A ca
     `id-run` の単位。
 
     [fixture: flowchart/lex-keyword-inside-id-run]
+    [fixture: flowchart/gram-percent-token-glued-after-acc-descr-block]
+    [fixture: flowchart/gram-comment-looking-text-after-acc-descr-block]
+    [fixture: flowchart/gram-swimlane-comment-looking-text-after-acc-descr-block]
 
 22. `-`: `-` の単位。
 

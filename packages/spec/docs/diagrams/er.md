@@ -190,7 +190,8 @@ comment region of the string.
 [fixture: er/comment-line] [fixture: er/lex-block-comment-line] [fixture:
 er/lex-subgraph-comment-line] [fixture: er/tokens-comment-line-in-role-string]
 [fixture: er/tokens-comment-line-in-comment-string] [fixture:
-er/tokens-comment-line-in-backquoted-word]
+er/tokens-comment-line-in-backquoted-word] [fixture:
+er/lex-comment-looking-text-after-acc-descr-block]
 
 A comment line that holds the closing quote of a string takes it with it, and
 the string is then not closed: `A ||--o{ B : "x`, a line break, and `%% c"` is
