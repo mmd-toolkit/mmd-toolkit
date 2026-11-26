@@ -1917,7 +1917,9 @@ statement, and the lexer reads the whitespace and the line breaks after it as
 whitespace (the specification's
 [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context),
 rule 2). So `Alice ->>`, a space, a line break, and `Bob: hi` is printed as
-`Alice ->> Bob: hi`.
+`Alice ->> Bob: hi`. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the one space where the line broke, as Prettier prints `x = a +`, a line
+break, and `b;` as `x = a + b;`.
 
 [fixture: multi-line-statements/joined] [fixture:
 multi-line-statements/more-lines-joined]

@@ -1950,6 +1950,9 @@ sequenceDiagram
 [文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈) の規則 2）。
 そのため、`Alice ->>`、空白、改行、`Bob: hi` は、
 `Alice ->> Bob: hi` と印字します。
+改行のあった所の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は、`x = a +`、改行、`b;` を `x = a + b;` と印字します。
 
 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/more-lines-joined]
