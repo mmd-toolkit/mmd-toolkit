@@ -7211,9 +7211,7 @@ sequence 図で対象にする版のすべてで同じに描かれました。
 ## 複数行の sequence の文
 
 sequence 図では、改行の前に空白があると、文は次の行に続きます。
-そうした文は 1 行にまとめて印字し、改行のあった所には、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える空白 1 つを置きます。
-詳しくは [複数行の文](./sequence.ja.md#複数行の文) を参照してください。
+そうした文は 1 行にまとめて印字します。
 
 [fixture: sequence/multi-line-statements/joined]
 
