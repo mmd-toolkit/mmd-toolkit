@@ -1725,15 +1725,17 @@ another rule keeps as written does not move:
 - a line inside a value or a hidden form, whose contents stay as said below;
 - the line after a hidden form, whose gap stays as written (see
   [Hidden forms](#hidden-forms));
-- a line inside a directive over several lines, and the line after a directive
-  that is not closed, which goes on the line of the directive; where that line
-  holds a statement, the lines of the statement with the directive stay too,
-  since the line keeps its statements together (see
+- a line inside a directive over several lines (see
+  [Global directives](#global-directives));
+- the lines of a statement with a directive that is not closed and takes the
+  line break after its argument, and the line that it joins to the statement:
+  the joined line is printed as written, with the statement on it (see
   [Global directives](#global-directives));
 - a line that a block comment goes on to (see [Comments](#comments));
-- the lines of a statement with a `;` that the line rule ignores and, on its
-  line after it, a U+2028 or U+2029, or another `;` with only whitespace or
-  directives between them: such a statement is printed as written (see
+- the lines of a statement with a `;` that the line rule ignores, where a U+2028
+  or U+2029 follows that `;` on its line, or where only whitespace or directives
+  stand between that `;` and another `;` before it: such a statement is printed
+  as written (see
   [A line that a `;` ends](./compatibility.md#a-line-that-a--ends));
 - a line that holds a `;` before any U+2028 or U+2029 on it, in a statement
   whose lines, joined with one space or with nothing, could change which `;` the
