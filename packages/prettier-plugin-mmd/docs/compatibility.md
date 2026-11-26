@@ -153,15 +153,16 @@ a reading of the source, not a drawing.
 
 A form that the rules of [How the printed form is decided](./printed-form.md)
 would give is not printed where one of the
-[versions that count](#versions-of-mermaidjs-that-count) rejects it or draws it
-differently. This table lists each such form: the form that stays as written,
-the form that the rules would print, the rule that would give it, the versions
-that count for its diagram type and need the kept form, and a fixture. Where the
-rules give no other form, the column of the form that the rules would print
-holds the other form that was run instead, and the rule column says none. The
-diagram column links to the rules of the diagram type, which give the reason of
-the kept form; for a form that every diagram type keeps, it says every diagram
-type and links to the shared rule.
+[versions that count](#versions-of-mermaidjs-that-count) rejects it, draws it
+differently, or reads it differently, changing the Db in a way that no kind of
+exception allows. This table lists each such form: the form that stays as
+written, the form that the rules would print, the rule that would give it, the
+versions that count for its diagram type and need the kept form, and a fixture.
+Where the rules give no other form, the column of the form that the rules would
+print holds the other form that was run instead, and the rule column says none.
+The diagram column links to the rules of the diagram type, which give the reason
+of the kept form; for a form that every diagram type keeps, it says every
+diagram type and links to the shared rule.
 
 A row is a rule that
 [How the printed form is decided](./printed-form.md#the-versions-of-mermaidjs-that-count)
