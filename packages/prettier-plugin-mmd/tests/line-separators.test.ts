@@ -42446,43 +42446,43 @@ const commentEndsOtherTextExamples: readonly {
   {
     name: "runs before a comment that ends the label of a loop of a sequence diagram",
     input: "sequenceDiagram\nloop A  b  %% c\nA->>B: x\nend\n",
-    output: "sequenceDiagram\n  loop A b %% c\n    A ->> B: x\n  end\n",
+    output: "sequenceDiagram\n  loop A  b  %% c\n    A ->> B: x\n  end\n",
   },
   {
     name: "runs before a comment that ends the label of an alt and an else of a sequence diagram",
     input:
       "sequenceDiagram\nalt A  b  %% c\nA->>B: x\nelse C  d  %% c\nA->>B: y\nend\n",
     output:
-      "sequenceDiagram\n  alt A b %% c\n    A ->> B: x\n  else C d %% c\n    A ->> B: y\n  end\n",
+      "sequenceDiagram\n  alt A  b  %% c\n    A ->> B: x\n  else C  d  %% c\n    A ->> B: y\n  end\n",
   },
   {
     name: "runs before a comment that ends the label of an opt of a sequence diagram",
     input: "sequenceDiagram\nopt A  b  %% c\nA->>B: x\nend\n",
-    output: "sequenceDiagram\n  opt A b %% c\n    A ->> B: x\n  end\n",
+    output: "sequenceDiagram\n  opt A  b  %% c\n    A ->> B: x\n  end\n",
   },
   {
     name: "runs before a comment that ends the label of a par and an and of a sequence diagram",
     input:
       "sequenceDiagram\npar A  b  %% c\nA->>B: x\nand C  d  %% c\nA->>B: y\nend\n",
     output:
-      "sequenceDiagram\n  par A b %% c\n    A ->> B: x\n  and C d %% c\n    A ->> B: y\n  end\n",
+      "sequenceDiagram\n  par A  b  %% c\n    A ->> B: x\n  and C  d  %% c\n    A ->> B: y\n  end\n",
   },
   {
     name: "runs before a comment that ends the label of a critical of a sequence diagram",
     input: "sequenceDiagram\ncritical A  b  %% c\nA->>B: x\nend\n",
-    output: "sequenceDiagram\n  critical A b %% c\n    A ->> B: x\n  end\n",
+    output: "sequenceDiagram\n  critical A  b  %% c\n    A ->> B: x\n  end\n",
   },
   {
     name: "runs before a comment that ends the label of an option of a sequence diagram",
     input:
       "sequenceDiagram\ncritical C  d\nA->>B: x\noption A  b  %% c\nA->>B: y\nend\n",
     output:
-      "sequenceDiagram\n  critical C d\n    A ->> B: x\n  option A b %% c\n    A ->> B: y\n  end\n",
+      "sequenceDiagram\n  critical C  d\n    A ->> B: x\n  option A  b  %% c\n    A ->> B: y\n  end\n",
   },
   {
     name: "runs before a comment that ends the label of a break of a sequence diagram",
     input: "sequenceDiagram\nbreak A  b  %% c\nA->>B: x\nend\n",
-    output: "sequenceDiagram\n  break A b %% c\n    A ->> B: x\n  end\n",
+    output: "sequenceDiagram\n  break A  b  %% c\n    A ->> B: x\n  end\n",
   },
   {
     name: "runs before a comment that ends the label of a rect of a sequence diagram",
@@ -42836,22 +42836,22 @@ const directiveAtTheStartExamples: readonly (readonly [
   [
     "runs after a directive at the start of the label of a loop of a sequence diagram",
     "sequenceDiagram\nloop %%{x}%% A  b\nA->>B: x\nend\n",
-    "sequenceDiagram\n  loop %%{x}%%A b\n    A ->> B: x\n  end\n",
+    "sequenceDiagram\n  loop %%{x}%%A  b\n    A ->> B: x\n  end\n",
   ],
   [
     "runs after a directive at the start of the label of an alt and an else of a sequence diagram",
     "sequenceDiagram\nalt %%{x}%% A  b\nA->>B: x\nelse C  d  %% c\nA->>B: y\nend\n",
-    "sequenceDiagram\n  alt %%{x}%%A b\n    A ->> B: x\n  else C d %% c\n    A ->> B: y\n  end\n",
+    "sequenceDiagram\n  alt %%{x}%%A  b\n    A ->> B: x\n  else C  d  %% c\n    A ->> B: y\n  end\n",
   ],
   [
     "runs after a directive at the start of the label of an opt of a sequence diagram",
     "sequenceDiagram\nopt %%{x}%% A  b\nA->>B: x\nend\n",
-    "sequenceDiagram\n  opt %%{x}%%A b\n    A ->> B: x\n  end\n",
+    "sequenceDiagram\n  opt %%{x}%%A  b\n    A ->> B: x\n  end\n",
   ],
   [
     "runs after a directive at the start of the label of a par and an and of a sequence diagram",
     "sequenceDiagram\npar %%{x}%% A  b\nA->>B: x\nand C  d  %% c\nA->>B: y\nend\n",
-    "sequenceDiagram\n  par %%{x}%%A b\n    A ->> B: x\n  and C d %% c\n    A ->> B: y\n  end\n",
+    "sequenceDiagram\n  par %%{x}%%A  b\n    A ->> B: x\n  and C  d  %% c\n    A ->> B: y\n  end\n",
   ],
   [
     "runs after a directive at the start of the label of a rect of a sequence diagram",
@@ -42866,32 +42866,32 @@ const directiveAtTheStartExamples: readonly (readonly [
   [
     "runs after a directive at the start of the label of a critical of a sequence diagram",
     "sequenceDiagram\ncritical %%{x}%% A  b\nA->>B: x\nend\n",
-    "sequenceDiagram\n  critical %%{x}%%A b\n    A ->> B: x\n  end\n",
+    "sequenceDiagram\n  critical %%{x}%%A  b\n    A ->> B: x\n  end\n",
   ],
   [
     "runs after a directive at the start of the label of an option of a sequence diagram",
     "sequenceDiagram\ncritical x\nA->>B: x\noption %%{x}%% A  b\nA->>B: y\nend\n",
-    "sequenceDiagram\n  critical x\n    A ->> B: x\n  option %%{x}%%A b\n    A ->> B: y\n  end\n",
+    "sequenceDiagram\n  critical x\n    A ->> B: x\n  option %%{x}%%A  b\n    A ->> B: y\n  end\n",
   ],
   [
     "runs after a directive at the start of the label of a break of a sequence diagram",
     "sequenceDiagram\nbreak %%{x}%% A  b\nA->>B: x\nend\n",
-    "sequenceDiagram\n  break %%{x}%%A b\n    A ->> B: x\n  end\n",
+    "sequenceDiagram\n  break %%{x}%%A  b\n    A ->> B: x\n  end\n",
   ],
   [
     "runs after a directive at the start of the label of a critical of a sequence diagram",
     "sequenceDiagram\ncritical %%{x}%% A  b\nA->>B: x\nend\n",
-    "sequenceDiagram\n  critical %%{x}%%A b\n    A ->> B: x\n  end\n",
+    "sequenceDiagram\n  critical %%{x}%%A  b\n    A ->> B: x\n  end\n",
   ],
   [
     "runs after a directive at the start of the label of an option of a sequence diagram",
     "sequenceDiagram\ncritical x\nA->>B: x\noption %%{x}%% A  b\nA->>B: y\nend\n",
-    "sequenceDiagram\n  critical x\n    A ->> B: x\n  option %%{x}%%A b\n    A ->> B: y\n  end\n",
+    "sequenceDiagram\n  critical x\n    A ->> B: x\n  option %%{x}%%A  b\n    A ->> B: y\n  end\n",
   ],
   [
     "runs after a directive at the start of the label of a break of a sequence diagram",
     "sequenceDiagram\nbreak %%{x}%% A  b\nA->>B: x\nend\n",
-    "sequenceDiagram\n  break %%{x}%%A b\n    A ->> B: x\n  end\n",
+    "sequenceDiagram\n  break %%{x}%%A  b\n    A ->> B: x\n  end\n",
   ],
   [
     "runs after a directive at the start of the name after as of a participant of a sequence diagram",

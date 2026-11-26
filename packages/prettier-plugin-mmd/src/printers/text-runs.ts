@@ -25,6 +25,7 @@ import { writtenWithRespellings } from "./spelling.ts"
 import {
   blankTextSlots,
   c4ArgumentFields,
+  blockLabelSlots,
   c4NamedTextFields,
   c4TextFields,
   textSlots,
@@ -161,6 +162,23 @@ export function collapseLabelRuns(label: string, bracketed: boolean): string {
 }
 
 /**
+ * The label of a block of a sequence diagram with each run of spaces and tabs
+ * replaced by one space, except a run that holds two spaces or more, which
+ * stays as written: 10.9.8 measures such a label space by space and does not
+ * draw it where nothing but tabs stands between two spaces, while it draws the
+ * label with one space there (docs/sequence.md, Whitespace between tokens).
+ */
+export function collapseBlockLabelRuns(label: string): string {
+  const characters = [...label]
+  return replaceRuns(
+    characters,
+    (start, end) =>
+      characters.slice(start, end).filter((character) => character === " ")
+        .length >= 2,
+  )
+}
+
+/**
  * The atom of a text with its runs of spaces and tabs printed as one space,
  * or the atom itself where it has none, or where the text is nothing but
  * spaces and tabs, or where the text stays as written (see
@@ -169,7 +187,8 @@ export function collapseLabelRuns(label: string, bracketed: boolean): string {
  * planned layout keeps it, with the runs of its text printed as one space.
  * `label` tells that the atom is the label of a group, a service, or an edge of
  * an architecture diagram, with its brackets, whose words are drawn one by one
- * (see `collapseLabelRuns`).
+ * (see `collapseLabelRuns`), and `blockLabel` that it is the label of a block
+ * of a sequence diagram (see `collapseBlockLabelRuns`).
  */
 export function collapsedRunsAtom(
   source: Source,
@@ -177,6 +196,7 @@ export function collapsedRunsAtom(
   options: {
     readonly printsBlankAsOne?: boolean
     readonly label?: boolean
+    readonly blockLabel?: boolean
   } = {},
 ): Atom {
   const text = writtenWithRespellings(source, atom.start, atom.end)
@@ -192,7 +212,9 @@ export function collapsedRunsAtom(
     atom.doc ?? text,
     options.label === true
       ? (part) => collapseLabelRuns(part, true)
-      : collapseRuns,
+      : options.blockLabel === true
+        ? collapseBlockLabelRuns
+        : collapseRuns,
   )
   return doc === (atom.doc ?? text) ? atom : { ...atom, doc }
 }
@@ -289,6 +311,8 @@ interface FoundText {
    * draws word by word.
    */
   readonly label?: boolean
+  /** Whether the text is the label of a block of a sequence diagram. */
+  readonly blockLabel?: boolean
 }
 
 interface Texts {
@@ -304,6 +328,12 @@ interface Texts {
    * runs of spaces and tabs between words may stay (see `collapseLabelRuns`).
    */
   readonly labels: ReadonlySet<number>
+  /**
+   * The starts of the ranges of the labels of the blocks of a sequence
+   * diagram, whose runs of two spaces or more stay (see
+   * `collapseBlockLabelRuns`).
+   */
+  readonly blockLabels: ReadonlySet<number>
 }
 
 const textsOfSource = new WeakMap<Source, Texts>()
@@ -311,7 +341,8 @@ const textsOfSource = new WeakMap<Source, Texts>()
 /**
  * The texts of the tree that `textSlots` and `blankTextSlots` list: of two
  * nested texts, the outer one, and none over several lines, whose lines keep
- * their columns.
+ * their columns. A text below a field of `blockLabelSlots` is the label of a
+ * block of a sequence diagram.
  */
 function findTexts(source: Source): Texts {
   let texts = textsOfSource.get(source)
@@ -322,7 +353,8 @@ function findTexts(source: Source): Texts {
     const ranges: Range[] = []
     const blanks = new Set<number>()
     const labels = new Set<number>()
-    for (const { range, blank, label } of found) {
+    const blockLabels = new Set<number>()
+    for (const { range, blank, label, blockLabel } of found) {
       if (
         (ranges.length === 0 || range[0] >= ranges[ranges.length - 1][1]) &&
         !source.text.slice(range[0], range[1]).includes("\n")
@@ -330,9 +362,10 @@ function findTexts(source: Source): Texts {
         ranges.push(range)
         if (blank) blanks.add(range[0])
         if (label === true) labels.add(range[0])
+        if (blockLabel === true) blockLabels.add(range[0])
       }
     }
-    texts = { ranges, blanks, labels }
+    texts = { ranges, blanks, labels, blockLabels }
     textsOfSource.set(source, texts)
   }
   return texts
@@ -477,8 +510,17 @@ function subgraphId(
     : textRead(source, ...name.range).trim()
 }
 
-/** Records the ranges of the texts below `node` in the fields of the slots. */
-function collectTexts(source: Source, node: Node, found: FoundText[]): void {
+/**
+ * Records the ranges of the texts below `node` in the fields of the slots;
+ * `blockLabel` tells that `node` lies in the label of a block of a sequence
+ * diagram.
+ */
+function collectTexts(
+  source: Source,
+  node: Node,
+  found: FoundText[],
+  blockLabel = false,
+): void {
   if (
     node.type === "FlowchartSubgraphStatement" ||
     node.type === "AgentflowFlowStatement"
@@ -494,7 +536,9 @@ function collectTexts(source: Source, node: Node, found: FoundText[]): void {
   }
   const fields = textSlots[node.type] ?? []
   const blankFields = blankTextSlots[node.type] ?? []
+  const labelFields = blockLabelSlots[node.type] ?? []
   for (const key of visitorKeys[node.type]) {
+    const inBlockLabel = blockLabel || labelFields.includes(key)
     const value = (node as unknown as Record<string, unknown>)[key]
     for (const child of Array.isArray(value) ? value : [value]) {
       if (child === null || child === undefined) continue
@@ -504,10 +548,11 @@ function collectTexts(source: Source, node: Node, found: FoundText[]): void {
           range: item.range,
           blank: false,
           label: item.type === "ArchitectureLabel",
+          blockLabel: inBlockLabel,
         })
       else if (blankFields.includes(key))
         found.push({ range: item.range, blank: true })
-      collectTexts(source, item, found)
+      collectTexts(source, item, found, inBlockLabel)
     }
   }
 }
@@ -516,20 +561,22 @@ function collectTexts(source: Source, node: Node, found: FoundText[]): void {
  * Whether the printer writes the runs of spaces and tabs of the text at
  * `[start, end)` as one space: the text lies in a text of `textSlots`, or of
  * the C4 and subgraph texts, and does not stay as written (see
- * `staysAsWritten`). A text of `blankTextSlots` keeps its inner runs. A
- * decision about the text, such as whether it is read the same without quotes,
- * is about the text as it is printed.
+ * `staysAsWritten`). A text of `blankTextSlots` keeps its inner runs, and the
+ * label of a block of a sequence diagram its runs of two spaces or more (see
+ * `collapseBlockLabelRuns`). A decision about the text, such as whether it is
+ * read the same without quotes, is about the text as it is printed.
  */
 export function printsRunsAsOne(
   source: Source,
   start: number,
   end: number,
 ): boolean {
-  const { ranges, blanks } = findTexts(source)
+  const { ranges, blanks, blockLabels } = findTexts(source)
   const text = findCoveringRange(ranges, start, end)
   return (
     text !== undefined &&
     !blanks.has(text[0]) &&
+    !blockLabels.has(text[0]) &&
     !staysAsWritten(source, start, end)
   )
 }
@@ -543,7 +590,7 @@ export function collapseTextAtoms(
   source: Source,
   atoms: readonly Atom[],
 ): readonly Atom[] {
-  const { ranges, blanks, labels } = findTexts(source)
+  const { ranges, blanks, labels, blockLabels } = findTexts(source)
   if (ranges.length === 0) return atoms
   return atoms.map((atom) => {
     const text = findCoveringRange(ranges, atom.start, atom.end)
@@ -552,6 +599,7 @@ export function collapseTextAtoms(
       : collapsedRunsAtom(source, atom, {
           printsBlankAsOne: blanks.has(text[0]),
           label: labels.has(text[0]),
+          blockLabel: blockLabels.has(text[0]),
         })
   })
 }

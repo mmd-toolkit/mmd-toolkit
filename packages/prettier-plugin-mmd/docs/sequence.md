@@ -438,11 +438,17 @@ a description after `as` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 while the whitespace in the JSON of `links` and `properties` is part of the
 value, and is kept. A text with a `<` or a diagram that holds `white-space`
-stays as written there too.
+stays as written there too. In the label of a `loop`, `alt`, `else`, `opt`,
+`par`, `par_over`, `and`, `critical`, `option`, or `break`, a run that holds two
+spaces or more stays as written: 10.9.8 reads such a label, but stops with an
+error when it draws it, and draws the label with one space there (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A run of tabs, or of tabs and one space, is printed as one space there too.
 
 [fixture: whitespace-between-tokens/values-runs-collapsed] [fixture:
 whitespace-between-tokens/values-of-other-statements-runs-collapsed] [fixture:
-whitespace-between-tokens/html-tag-runs-kept]
+whitespace-between-tokens/html-tag-runs-kept] [fixture:
+whitespace-between-tokens/block-label-runs-kept]
 
 The text of a `box` is kept as a whole: when its first word is no colour,
 mermaid.js takes the whole text as the name of the box.
@@ -570,7 +576,7 @@ sequenceDiagram
     participant C
   end
   links A: {"a": "b"}
-  loop every minute
+  loop every  minute
     A ->> B: z
   end
 ```

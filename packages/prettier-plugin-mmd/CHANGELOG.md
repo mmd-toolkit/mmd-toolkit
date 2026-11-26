@@ -991,6 +991,10 @@
   or with a comment, a directive, or a U+2028 or U+2029, and a text with a `<` or
   in a diagram that holds `white-space`.
 
+  > **NOTE:**\
+  > Overturned in the next release: in `sequence`, a run of two or more spaces
+  > in the label of a block such as `loop` stays as written, as in `loop A  b`.
+
 - [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space between the `##` of a `treeview` description and its text:
   `R ##   note` and `R ##note` become `R ## note`.
 

@@ -450,10 +450,20 @@ sequenceDiagram
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `links` と `properties` の JSON の中の空白は、値の一部なので残します。
 ここでも、`<` を含むテキストや `white-space` を含む図は、書かれたまま残します。
+`loop`、`alt`、`else`、`opt`、`par`、`par_over`、`and`、`critical`、`option`、
+`break` のラベルでは、空白を 2 つ以上含む連なりは書かれたまま残します。
+10.9.8 はそのようなラベルを読みますが、描くときにエラーで止まり、
+その所を空白 1 つにしたラベルは描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+これらのラベルでも、タブだけの連なりや、
+タブと空白 1 つの連なりは空白 1 つで印字します。
 
 [fixture: whitespace-between-tokens/values-runs-collapsed]
 [fixture: whitespace-between-tokens/values-of-other-statements-runs-collapsed]
 [fixture: whitespace-between-tokens/html-tag-runs-kept]
+[fixture: whitespace-between-tokens/block-label-runs-kept]
 
 `box` のテキストは全体を残します。
 最初の語が色でないとき、mermaid.js はテキスト全体を box の名前にするからです。
@@ -589,7 +599,7 @@ sequenceDiagram
     participant C
   end
   links A: {"a": "b"}
-  loop every minute
+  loop every  minute
     A ->> B: z
   end
 ```

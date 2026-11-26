@@ -114,6 +114,21 @@ export const textSlots: TextSlots = {
 }
 
 /**
+ * The fields that hold the label of a block of a sequence diagram, by the type
+ * of the node that has the field: the text slot below it keeps a run of two
+ * spaces or more (see `collapseBlockLabelRuns`). A section holds the label of
+ * `alt`, `else`, `par`, `par_over`, `and`, `critical`, and `option`; `rect`
+ * holds a color, and `box` a text that 10.9.8 draws with any run
+ * (docs/sequence.md, Whitespace between tokens).
+ */
+export const blockLabelSlots: TextSlots = {
+  SequenceLoopStatement: ["text"],
+  SequenceOptStatement: ["text"],
+  SequenceBreakStatement: ["text"],
+  SequenceSection: ["text"],
+}
+
+/**
  * The fields where a text of spaces and tabs only is printed as one space: the
  * grammar rejects the empty text there, and mermaid.js reads the same empty
  * text for any number of them (docs/compatibility.md, Runs of whitespace in a
