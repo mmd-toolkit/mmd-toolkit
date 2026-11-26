@@ -5399,10 +5399,11 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   両方の形の説明が `a` になり、ブロックをコロンの形で印字します。
   ER、flowchart、swimlane、ユースケースの図では、
   `}` の後の `%%` はコメントではなく、`accDescr {a} %% c` は拒否されます。
-  ER とユースケースの図は、`c` がなくても `%%` そのものを拒否します。
+  ER とユースケースの図は、`%%` そのものを拒否します。
   flowchart と swimlane の図は、`%%` を名前として `%%` という頂点に読み、
-  空白の後の 2 つ目の名前 `c` を拒否します（`accDescr {a} %%c` は受理され、
-  頂点は `%%c` です）。
+  空白の後の 2 つ目の名前 `c` を拒否します。
+  `accDescr {a} %%` と `accDescr {a} %%c` は受理され、
+  頂点は `%%` と `%%c` です。
   class の図は、後ろにコメントのあるブロックの後に文が続くと、
   空行やコメント行をはさんでも拒否します。
   コメントが、その文に要る改行まで取り込むためです。
@@ -5425,6 +5426,11 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   [fixture: flowchart/statements-one-per-line/percent-token-after-block-and-directive-kept]
   [fixture: flowchart/statements-one-per-line/glued-percent-token-kept]
   [corpus fixture: usecase/comment-after-accdescr]
+  [corpus fixture: er/lex-comment-looking-text-after-acc-descr-block]
+  [corpus fixture: flowchart/gram-comment-looking-text-after-acc-descr-block]
+  [corpus fixture: flowchart/gram-swimlane-comment-looking-text-after-acc-descr-block]
+  [corpus fixture: flowchart/lex-percent-pair-vertex-after-acc-descr-block]
+  [corpus fixture: flowchart/lex-swimlane-percent-pair-vertex-after-acc-descr-block]
 
 - 同じ行の `}` の後にその図種固有のコメントが続く場合です。
   ABNF 図では `; c`、EBNF 図では `(* c *)` と `/* c */`、PEG 図では `# c`、
