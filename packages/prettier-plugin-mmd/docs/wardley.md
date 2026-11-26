@@ -4021,16 +4021,12 @@ wardley-beta
 ### Comments
 
 Align ordinary standalone comments with the containing body and prefix comments
-at column one.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the column of a comment before the header: [flowchart](./flowchart.md#comments),
-[xychart](./xychart.md#comments), [radar](./radar.md#comments), and
-[pie](./pie.md#comments) print it at column one. Inline comments keep their
-line. A comment that touches stays touching.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-before a comment that stands after something on its line, as Prettier prints
-`x = 1;   // c` as `x = 1; // c`. Preserve marks, text and trailing padding;
-pipeline comments use child depth. The start of a line is no place of rule 1, so
+at column one. Inline comments keep their line. A comment that touches stays
+touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space before a comment that stands after something on its line, as Prettier
+prints `x = 1;   // c` as `x = 1; // c`. Preserve marks, text and trailing
+padding; pipeline comments use child depth. The start of a line is no place of
+rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#comments) and
 [timeline](./timeline.md#comments) stand a comment on a line of its own at the

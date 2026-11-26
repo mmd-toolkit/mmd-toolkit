@@ -4015,15 +4015,15 @@ Align ordinary standalone comments one body step in, or column one before the
 header. Rule 1 gives no form here, since the start of a line is no place that
 its table names ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [flowchart](./flowchart.md#comments) and [wardley](./wardley.md#comments)
-align a comment on a line of its own with the body in the same way. Inline
-comments keep their line. A comment that touches stays touching.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-before a comment that stands after something on its line, as Prettier prints
-`x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing padding
-for attachment. Native comments end at LF/CR and keep LS/PS as content. Earlier
-values own enclosed percent text; common lines stop at it. Removed common
-regions keep complete source and continuation columns.
+the body alignment, as [flowchart](./flowchart.md#comments) and
+[wardley](./wardley.md#comments) align a comment on a line of its own with the
+body in the same way. Inline comments keep their line. A comment that touches
+stays touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+one space before a comment that stands after something on its line, as Prettier
+prints `x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing
+padding for attachment. Native comments end at LF/CR and keep LS/PS as content.
+Earlier values own enclosed percent text; common lines stop at it. Removed
+common regions keep complete source and continuation columns.
 
 [fixture: architecture/comments/comment-attachments] [fixture:
 architecture/comments/inline-gap-run-before-comment]

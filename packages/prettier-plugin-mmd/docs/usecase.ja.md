@@ -1445,13 +1445,14 @@ usecase-beta
 ### Comments
 
 [コメント](./class.ja.md#コメント)を再利用します。
-周囲の文、境界の `end` の前では宣言に揃え、ヘッダー前では先頭列に置きます。
+周囲の文、境界の `end` の前では宣言に揃えます。
 末尾の水平空白を含むコメント全体を保ちます。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [block](./block.ja.md#コメント) と [er](./er.ja.md#コメント)も、
 コメントを宣言や周りの文と同じ段に置きます。
+ヘッダー前のコメントは先頭列に置きます。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 [test: usecase: terminal-comment-tab]

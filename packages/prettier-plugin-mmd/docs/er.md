@@ -536,17 +536,10 @@ er/gram-attribute-split-lines] [corpus fixture: er/gram-name-then-key-next-line]
 An attribute with a comment line or a directive between its parts keeps its line
 breaks. Later structural parts and standalone trivia stand one level inside the
 attribute, also in a subgraph; type, name and quoted-comment interiors stay as
-written, since the Db holds them as written. Rule 1 names no mark for a line
-break next to a comment line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [block](./block.md#multi-line-statements),
-[sequence](./sequence.md#multi-line-statements), and
-[flowchart](./flowchart.md#accessibility-lines) put the later parts of a
-statement and the standalone trivia one continuation level inside the statement,
-where no other rule keeps the layout as written (an attribute that holds a
-comment region that joins two of its lines stays as written whole, see below).
-The line breaks next to the comment line or the directive stay for the reason
-given under [Multi-line statements](#multi-line-statements).
+written, since the Db holds them as written. An attribute that holds a comment
+region that joins two of its lines stays as written whole (see below). The line
+breaks next to the comment line or the directive stay for the reason given under
+[Multi-line statements](#multi-line-statements).
 
 [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
@@ -1900,8 +1893,8 @@ on the next line (rule 2).
 er/lex-direction-value-next-line]
 
 A direction line with a directive or comment keeps its line breaks and indents
-structural continuations one level deeper, for the reason given under
-[Multi-line statements](#multi-line-statements).
+structural continuations one level deeper. The line breaks stay for the reason
+given under [Multi-line statements](#multi-line-statements).
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -2390,9 +2383,7 @@ a comment line at the level of the statements around it.
 [fixture: comments/kept] [fixture: comments/in-blocks] [fixture:
 comments/last-in-body] [fixture: comments/text-kept]
 
-A comment line before the header stands at the first column, as in
-[gantt](./gantt.md#comments), [requirement](./requirement.md#comments),
-[block](./block.md#comments), and [journey](./journey.md#comments) (rule 2).
+A comment line before the header stands at the first column.
 
 [fixture: comments/before-header]
 
@@ -3343,33 +3334,32 @@ no mark for a line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the later parts of
-a statement and the comment and directive lines between them one level deeper,
-where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text). A
-joining region keeps the line that it joins as written (see below). A line break
-stays where joining it, with one space or with nothing, could change which `;`
-the line rule ignores, and where a `;` ends the last line; any other line break
-is joined as usual, also in a statement that holds a `;`. A statement that keeps
-a line break prints a run of spaces, tabs, no-break spaces, and U+3000 after a
-comma between two styles, and a run of spaces and tabs before it, as one space,
-on the first line and on the lines after it. A vertical tab, a form feed, and
-every other wide space (U+1680, U+2000 to U+200A, U+202F, U+205F, and U+FEFF)
-after a comma are printed as one space too, and so are a vertical tab and a form
-feed before it. The statement keeps a run at the end of a line, a run around the
-colon of a style, a run inside the text of a style, and a wide space (a no-break
-space, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, or U+FEFF) or a U+2028
-before a comma as written, with its color. Its colors are printed as under
-[Colors](#colors) where a comma follows the color, also after whitespace and a
-line break, and for the last color of the statement where no `;` follows it on
-its line. A color that characters follow after whitespace stays as written, as
-under Colors, and so does a color that a `;` touches (`#ABC;`, `#ABC;;`, and
-`#ABC; ;`) and a color that a wide space other than the vertical tab and the
-form feed, a U+2028, or a U+2029 separates from the `;`. A color that a space, a
-tab, a vertical tab, or a form feed separates from the `;` is printed as under
-Colors where no comment region follows it on its line: where one does, the color
-stays as written, since the U+2028 or U+2029 that the text of the style keeps
-after the color makes it a word that the character touches (see
+comment or a directive and the whitespace before it, where no other rule keeps
+the layout as written (where the Db holds the text with its whitespace, where
+moving a line makes mermaid.js reject the text). A joining region keeps the line
+that it joins as written (see below). A line break stays where joining it, with
+one space or with nothing, could change which `;` the line rule ignores, and
+where a `;` ends the last line; any other line break is joined as usual, also in
+a statement that holds a `;`. A statement that keeps a line break prints a run
+of spaces, tabs, no-break spaces, and U+3000 after a comma between two styles,
+and a run of spaces and tabs before it, as one space, on the first line and on
+the lines after it. A vertical tab, a form feed, and every other wide space
+(U+1680, U+2000 to U+200A, U+202F, U+205F, and U+FEFF) after a comma are printed
+as one space too, and so are a vertical tab and a form feed before it. The
+statement keeps a run at the end of a line, a run around the colon of a style, a
+run inside the text of a style, and a wide space (a no-break space, U+1680,
+U+2000 to U+200A, U+202F, U+205F, U+3000, or U+FEFF) or a U+2028 before a comma
+as written, with its color. Its colors are printed as under [Colors](#colors)
+where a comma follows the color, also after whitespace and a line break, and for
+the last color of the statement where no `;` follows it on its line. A color
+that characters follow after whitespace stays as written, as under Colors, and
+so does a color that a `;` touches (`#ABC;`, `#ABC;;`, and `#ABC; ;`) and a
+color that a wide space other than the vertical tab and the form feed, a U+2028,
+or a U+2029 separates from the `;`. A color that a space, a tab, a vertical tab,
+or a form feed separates from the `;` is printed as under Colors where no
+comment region follows it on its line: where one does, the color stays as
+written, since the U+2028 or U+2029 that the text of the style keeps after the
+color makes it a word that the character touches (see
 [Attribute spacing](#attribute-spacing)).
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:

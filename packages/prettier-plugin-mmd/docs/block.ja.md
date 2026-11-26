@@ -36,10 +36,9 @@ mermaid.js の文書もそう書き、
 ヘッダーと、その前のコメント行は、前に空白が書かれていても 1 列目に置きます。
 Prettier にない種類の隙間は、ほかの図種が印字する形にします。
 これが[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
-どの図種も、ヘッダーとその前のコメント行を 1 列目に印字します。
+どの図種も、ヘッダーを 1 列目に印字します。
 [Gantt](./gantt.ja.md#インデント)のインデント、
-[ユーザージャーニー](./journey.ja.md#インデント)のインデント、
-[ER](./er.ja.md#コメント)のコメントがそう書いています。
+[ユーザージャーニー](./journey.ja.md#インデント)のインデントがそう書いています。
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/composite-body-one-level-deeper-end-at-the-level-of-block]
@@ -525,8 +524,6 @@ mermaid.js は向きの後の空白と、
 そこの空白は Db にあるからです（上を参照）。
 `,` の後では、そこの空白はどの方向にも入らないので、
 コメント行やディレクティブの行と次の行を 1 段深く置きます。
-[flowchart](./flowchart.ja.md#複数行の文)と
-[xychart](./xychart.ja.md#複数行の文)も、文の続きを 1 段深く置きます。
 方向の行にあるディレクティブは、`(` の後、`,` の前、`)` の前では、
 そこの空白が Db にあるので、接しているか離れているかを書かれたまま残します。
 `(right %%{x}%%, down)` と `(right%%{x}%%, down)` はそのままです。
@@ -1295,7 +1292,8 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 ヘッダーより前のコメント行は 1 列目に置きます。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表は行頭を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+文の間での揃え方を与えます。
 [state](./state.ja.md#コメント) と [flowchart](./flowchart.ja.md#コメント) も、
 コメント行を周りの文と同じ段に置きます。
 composite ブロックの `end` の前のコメント行は、

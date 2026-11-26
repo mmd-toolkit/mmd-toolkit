@@ -485,15 +485,13 @@ resetframe 02 command Beta
 ### Declarations and notes
 
 A declaration or note header split by a comment or directive keeps the trivia
-and the line completing the header one level inside its keyword, as for a GWT
-header: that is the depth that rule 2 gives to the later lines of a statement
-and to the comment or directive lines between them, and the line break next to
-the comment or directive stays, for the reasons under [Long lines](#long-lines).
-Where the data-body rules allow margin changes, put the body one further level
-inside that opening line. Keep the written order, value continuations and
-required hidden boundaries. The closer still stays at column one, since every
-version of mermaid.js that counts rejects it indented (see
-[Data blocks](#data-blocks)).
+and the line completing the header one level inside its keyword. The line break
+next to the comment or directive stays, for the reasons under
+[Long lines](#long-lines). Where the data-body rules allow margin changes, put
+the body one further level inside that opening line. Keep the written order,
+value continuations and required hidden boundaries. The closer still stays at
+column one, since every version of mermaid.js that counts rejects it indented
+(see [Data blocks](#data-blocks)).
 
 [fixture: eventmodeling/declarations-and-notes/header-completion-comments]
 
@@ -569,12 +567,10 @@ entity Shop.Buy
 ### Gwt clauses and items
 
 A GWT header continued after a comment or directive uses ordinary continuation
-indentation: the trivia and source-frame line stand one level inside `gwt`, as
-rule 2 gives the later lines of a statement that depth (see
-[Long lines](#long-lines)). Keep their written order and comment form. Clause
-keywords still use one level and items two, for the reason under
-[Indentation](#indentation); the source-frame line is not a new top-level
-statement.
+indentation: the trivia and source-frame line stand one level inside `gwt`. Keep
+their written order and comment form. Clause keywords still use one level and
+items two, for the reason under [Indentation](#indentation); the source-frame
+line is not a new top-level statement.
 
 [fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
 [fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
@@ -1279,10 +1275,7 @@ adjustment in [Data blocks](#data-blocks), since in a `data` block that a frame
 reads the Db holds them as a part of the value. Boundaries needed for metadata
 or a required `title` take precedence. Slash comments are not moved before the
 header, where detection would reject them. A comment line before the header
-stands at column one. The start of a line is no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#comments),
-[timeline](./timeline.md#comments), and [c4](./c4.md#comments) print it so.
+stands at column one.
 
 [test: an em space before a `//` comment after a statement of an eventmodeling
 diagram] [test: a sequence diagram keeps U+2029 before a comment that a

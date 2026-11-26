@@ -806,14 +806,13 @@ directive interiors. Rule 1 names no mark for a line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [timeline](./timeline.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the later parts of
-a statement and the comment and directive lines between them one level deeper,
-where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text, and
-the like). Joining comment regions keep their original layout. A `;` does not
-keep a statement over several lines from being joined: no `;` separates
-statements in a journey, and the first line of such a statement holds only its
-keyword, so joining its lines cannot change which `;` the line rule ignores.
+comment or a directive and the whitespace before it, where no other rule keeps
+the layout as written (where the Db holds the text with its whitespace, where
+moving a line makes mermaid.js reject the text, and the like). Joining comment
+regions keep their original layout. A `;` does not keep a statement over several
+lines from being joined: no `;` separates statements in a journey, and the first
+line of such a statement holds only its keyword, so joining its lines cannot
+change which `;` the line rule ignores.
 
 [fixture: multi-line-statements/semicolon-value-joined] [fixture:
 multi-line-statements/accessibility-trivia-continuations]

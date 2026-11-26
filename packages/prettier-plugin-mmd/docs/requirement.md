@@ -229,10 +229,7 @@ after one space. The colon is the colon of a key: the line gives the field its
 one value (step 2 of
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). Comments or
 directives keep their line breaks; structural continuations and intervening
-trivia stand one level inside the field. The reason is the one under
-[Multi-line statements](#multi-line-statements): rule 2 puts the later parts of
-a statement and the trivia lines between them one level deeper than the
-statement.
+trivia stand one level inside the field.
 
 [fixture: fields/comment-and-directive-continuations] [fixture:
 fields/colon-touches-keyword] [fixture: fields/spaces-around-colon-and-value]
@@ -684,10 +681,7 @@ rejects a directive inside a unit.
 [fixture: styles-and-classes/class-name-with-directive-kept]
 
 A line break next to a comment line stays, while the comment and structural
-continuations stand one level deeper. The reason is the one under
-[Multi-line statements](#multi-line-statements): rule 2 puts the later parts of
-a statement and the trivia lines between them one level deeper than the
-statement.
+continuations stand one level deeper.
 
 [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
@@ -821,12 +815,9 @@ between `direction` and its value, as Prettier prints `return  x` as
 [fixture: direction/value-on-next-line-joined]
 
 A direction line with a directive or comment keeps its line breaks and indents
-structural continuations one level deeper. The reason is the one under
-[Multi-line statements](#multi-line-statements): rule 2 puts the later parts of
-a statement and the trivia lines between them one level deeper than the
-statement. A directive between two units stands after the space of the ordinary
-gap and touches the unit that follows it, as under
-[flowchart](./flowchart.md#directives).
+structural continuations one level deeper. A directive between two units stands
+after the space of the ordinary gap and touches the unit that follows it, as
+under [flowchart](./flowchart.md#directives).
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -1256,9 +1247,9 @@ decides, one case at a time. With a comment line before the colon,
 [journey](./journey.md#multi-line-statements),
 [quadrant](./quadrant.md#multi-line-statements), and
 [timeline](./timeline.md#multi-line-statements) keep the line breaks of an
-`accDescr` and put the comment, the colon, and the text one level deeper. With a
-comment line before the text, the same three do so for an `accTitle`, and so
-does [flowchart](./flowchart.md#accessibility-lines).
+`accDescr`. With a comment line before the text, the same three keep the line
+breaks of an `accTitle`, and so does
+[flowchart](./flowchart.md#accessibility-lines).
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [fixture:
@@ -1711,8 +1702,8 @@ name the start of a line
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [c4](./c4.md#comments) and [quadrant](./quadrant.md#comments) align a
 standalone comment with the following statement, or with the last statement at
-the end of the text, and put one before the header at column one, and
-[c4](./c4.md#indentation) aligns one in a body with the statements around it.
+the end of the text, and [c4](./c4.md#indentation) aligns one in a body with the
+statements around it.
 
 [fixture: comments/lines-at-statement-level] [fixture:
 comments/single-mark-lines-kept]
