@@ -1,0 +1,17 @@
+sequenceDiagram
+title T   %% t
+accTitle: A   %% a
+accDescr: D %% d
+participant P as Al %% p
+box red B %% b
+participant Q
+end
+loop L %% l
+P->>Q: m   %% m
+Note over P: n %% n
+end
+alt x %% x
+P->>Q: y
+else z %% z
+P->>Q: w
+end

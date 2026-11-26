@@ -1205,6 +1205,18 @@ comments/kept] [corpus fixture: sequence/lex-percent-comment-takes-number]
 comments/after-last-statement-without-line-break] [fixture:
 comments/block-end-comment-without-line-break]
 
+In the text of a message, a note, a `title`, an `accTitle:` or `accDescr:` line,
+the label of a block (`loop`, `alt`, `else`, `opt`, `par`, `and`, `critical`,
+`option`, `break`), the text of a `box`, and the description after `as`, `%%` is
+a character of the text, not a comment, and is kept with it: `A->>B: x %% c` is
+the message `x %% c`. A run of whitespace before it is a run inside the text,
+printed as
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+gives: `A->>B: x   %% c` is printed `A ->> B: x %% c`, and the run in an
+`accTitle:` line stays.
+
+[fixture: comments/percent-in-texts-kept]
+
 Input
 ([comments/kept-input.mmd](../tests/fixtures/sequence/comments/kept-input.mmd)):
 

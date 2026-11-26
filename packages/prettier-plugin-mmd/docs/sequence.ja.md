@@ -1263,6 +1263,19 @@ ID と `accTitle` の値に属する空白は書かれたまま残します。
 [fixture: comments/after-last-statement-without-line-break]
 [fixture: comments/block-end-comment-without-line-break]
 
+メッセージ、ノート、`title`、`accTitle:` と `accDescr:` の行、
+ブロックのラベル（`loop`、`alt`、`else`、`opt`、`par`、`and`、`critical`、
+`option`、`break`）、`box` のテキスト、`as` の後の説明の中の `%%` は、
+コメントではなくテキストの文字で、テキストと一緒に残します。
+`A->>B: x %% c` は、メッセージ `x %% c` です。
+その前の空白の連なりはテキストの中の連なりで、
+[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+のとおりに印字します。
+`A->>B: x   %% c` は `A ->> B: x %% c` と印字し、
+`accTitle:` の行の連なりは残します。
+
+[fixture: comments/percent-in-texts-kept]
+
 入力
 ([comments/kept-input.mmd](../tests/fixtures/sequence/comments/kept-input.mmd)):
 
