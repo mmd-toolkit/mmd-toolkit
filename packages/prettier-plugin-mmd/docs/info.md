@@ -9,8 +9,9 @@ Invisible characters and physical CR examples are escaped test cases.
 
 ### Header
 
-Print exact `info` at column one and a written `showInfo` after one space. Join
-ordinary whitespace and line breaks before the flag;
+Print exact `info` at column one and a written `showInfo` after one space. A
+header at column one is easier to find than an indented one. Join ordinary
+whitespace and line breaks before the flag;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `info` and its flag, as Prettier prints `return  x` as `return x;`;
 never add or remove the flag. Comments, global directives, hidden forms and
@@ -590,9 +591,8 @@ info
 ### Blank lines
 
 Collapse ordinary internal ASCII blank runs to one and remove ordinary
-document/body edge blanks, preserving visible grouping without excess space.
-Prettier prints at most one blank line between statements and none at the start
-or end of a text or block, so
+document/body edge blanks. Prettier prints at most one blank line between
+statements and none at the start or end of a text or block, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives ordinary ASCII
 blank lines the same limits. Apply this around comments too. Values, directives,
 hidden interiors, common-region joins and retained prefixes keep their breaks,
@@ -601,8 +601,7 @@ spare LF only when a following statement needs it. At the document end use one
 configured final newline; directly after the header remove blank lines, since
 the header needs no EOL before its first statement. Elsewhere apply the ordinary
 blank-line rules after the spare LF: collapse a run to one blank line and clear
-whitespace-only lines. The spare LF meets the grammar; later blanks express
-grouping, just as after comments.
+whitespace-only lines. The spare LF meets the grammar.
 
 A hidden boundary or semicolon protection can keep a statement on the header's
 line; the gap after that statement's hidden suffix still lies between

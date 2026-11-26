@@ -27,7 +27,7 @@ written in the input is not kept: whitespace at the start of a line is nothing
 to mermaid.js, so the printer chooses it from the structure alone, and every
 text has one form. Nothing in the grammar forbids indenting a statement (unlike
 a sankey diagram). The header, and a comment line before it, stand at the first
-column.
+column. A header at the first column is easier to find than an indented one.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/written-indentation-dropped] [fixture:
@@ -183,9 +183,9 @@ xychart
 
 A run of empty lines becomes one empty line, and there is none between the
 header and the first statement, and none at the end of the text. A blank line is
-not held in the Db, and one empty line shows it at the least cost, as Prettier
-does in code (see [Blank lines](./flowchart.md#blank-lines)). Prettier leaves no
-blank line at the start of a text or a block, or at the end of a text;
+not held in the Db. Prettier prints the same empty lines in code (see
+[Blank lines](./flowchart.md#blank-lines)). Prettier leaves no blank line at the
+start of a text or a block, or at the end of a text;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore leaves none
 before the header, between the header and the first statement, or after the last
 statement.

@@ -52,6 +52,7 @@ Prettier がブロックの中の行を印字する形です。
 [fixture: indentation/written-indentation-dropped]
 
 ヘッダーは、前に空白が書かれていても 1 列目に置きます。
+1 列目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 
 [fixture: indentation/header-leading-whitespace]
 

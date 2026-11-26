@@ -21,7 +21,8 @@ The header stands at column one and is printed `ishikawa`, in lower case and
 without `-beta`, whatever case and name it was written in: `IsHiKaWa-BeTa` and
 `ISHIKAWA` become `ishikawa`. Every version of mermaid.js that counts and has
 the diagram reads the names in any case and draws them the same (see
-[The names of a header](./compatibility.md#the-names-of-a-header)).
+[The names of a header](./compatibility.md#the-names-of-a-header)). A header at
+column one is easier to find than an indented one.
 
 [fixture: ishikawa/header/header-column] [fixture:
 ishikawa/header/header-stable] [fixture:
@@ -233,15 +234,15 @@ ishikawa
 
 ### Blank lines
 
-Ordinary blank runs collapse to one, keeping visual grouping without arbitrary
-runs; plain body-edge blanks disappear, including after leading common comments
-or directive-only lines, because blank lines change no node and no parent in
-Ishikawa. Prettier prints no blank line at the start of a text and at most one
-between items. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
-the same form for leading blank lines and ordinary interior blank runs. A blank
-after a diagram comment is that comment's separating gap, not a plain body-edge
-blank, so it stays. A blank separating a diagram comment from the next item,
-including a directive, lies inside the body.
+Ordinary blank runs collapse to one; plain body-edge blanks disappear, including
+after leading common comments or directive-only lines, because blank lines
+change no node and no parent in Ishikawa. Prettier prints no blank line at the
+start of a text and at most one between items.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same form
+for leading blank lines and ordinary interior blank runs. A blank after a
+diagram comment is that comment's separating gap, not a plain body-edge blank,
+so it stays. A blank separating a diagram comment from the next item, including
+a directive, lies inside the body.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) retains one such
 interior blank, as Prettier does between items.
 

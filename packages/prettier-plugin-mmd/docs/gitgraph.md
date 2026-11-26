@@ -94,14 +94,14 @@ gitGraph
 
 ### Indentation
 
-Put the header at column one.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary body
-statements, standalone comments and global directives one configured step below
-it, as Prettier prints the lines inside a block. The flat history has no extra
-level after branch. `tabWidth: 0` gives zero spaces; `useTabs` gives one tab
-even at width zero, because gitgraph columns have no grammatical meaning. This
-does not alter other value continuation columns, hidden closers or protected
-segments.
+Put the header at column one. A header at column one is easier to find than an
+indented one. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts
+ordinary body statements, standalone comments and global directives one
+configured step below the header, as Prettier prints the lines inside a block.
+The flat history has no extra level after branch. `tabWidth: 0` gives zero
+spaces; `useTabs` gives one tab even at width zero, because gitgraph columns
+have no grammatical meaning. This does not alter other value continuation
+columns, hidden closers or protected segments.
 
 [fixture: gitgraph/indentation/indent-two] [fixture:
 gitgraph/indentation/indent-four] [fixture: gitgraph/indentation/indent-zero]
@@ -146,9 +146,9 @@ gitGraph
 ### Blank lines
 
 Collapse ordinary blank runs to one blank line and remove ordinary document/body
-edge blanks, retaining visible grouping around comments too. Prettier keeps at
-most one blank line between items and none at the start or end of a block or the
-text, treating lines of spaces and tabs as blank lines.
+edge blanks, including around comments. Prettier keeps at most one blank line
+between items and none at the start or end of a block or the text, treating
+lines of spaces and tabs as blank lines.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same form
 to ordinary blank lines, including those beside comments. Quoted values,
 description blocks, directive/hidden interiors and retained prefixes keep their
@@ -158,7 +158,7 @@ it. At the document end use one configured final newline; directly after the
 header remove blank lines, since the header needs no EOL before its first
 statement. Elsewhere apply the ordinary blank-line rules after the spare LF:
 collapse a run to one blank line and clear whitespace-only lines. The spare LF
-meets the grammar; later blanks express grouping, just as after comments.
+meets the grammar.
 
 A hidden boundary or semicolon protection can keep a statement on the header's
 line; the gap after that statement's hidden suffix still lies between

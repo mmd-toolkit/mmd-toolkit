@@ -126,6 +126,12 @@ space before it: `subgraph S [t]` is printed `subgraph S[t]` in a flowchart, and
 `service a (server) [A]` is printed `service a(server)[A]` in an architecture
 diagram. A `(` that opens a call and a `{` that opens a block keep their rows.
 
+The `-` that joins the start and the end of a range of numbers (`0-15` in a
+packet diagram) is no mark between two things: it makes one range of the two
+numbers, and it has no whitespace on either side. With a space on each side, as
+the row of another mark between two things would print it, `0 - 15` reads as a
+subtraction, while `0-15` reads as one range.
+
 A comment stands after the last thing of its line, and Prettier prints one space
 between them, whatever whitespace was written (`x = 1;// c` is printed
 `x = 1; // c`). Where adding the space changes how mermaid.js reads the text,

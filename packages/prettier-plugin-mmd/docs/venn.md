@@ -229,10 +229,9 @@ venn-beta
 
 ### Blank lines
 
-Ordinary blank runs collapse to one and body-edge blanks disappear, retaining
-grouping without excess space. Prettier prints at most one ordinary blank line
-between items and none at the start or end of a block or the text in JavaScript,
-CSS, YAML, and Markdown;
+Ordinary blank runs collapse to one and body-edge blanks disappear. Prettier
+prints at most one ordinary blank line between items and none at the start or
+end of a block or the text in JavaScript, CSS, YAML, and Markdown;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives ordinary Venn
 blank lines the same form. Value blanks and protected diagram-comment gaps
 remain: an empty line and a nonempty space/tab-only line before an unindented

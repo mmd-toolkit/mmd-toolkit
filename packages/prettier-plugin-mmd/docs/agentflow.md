@@ -1352,14 +1352,13 @@ agentflow-beta TB
 
 ### Blank lines
 
-Reuse [Blank lines](./flowchart.md#blank-lines): one blank groups statements;
-more add nothing. Collapse ordinary and whitespace-only runs to one and drop
-document/body-edge blanks, including inside flows/globals. Preserve blanks
-inside values, metadata and directives. An empty line inside a quoted label is
-part of that label in mermaid.js's Db, so removing the line changes the label
-text. Agentflow comments leave LF and do not consume following blanks; no
-blank-line-pairing divergence applies. Default size branches override ordinary
-blank layout.
+Reuse [Blank lines](./flowchart.md#blank-lines). Collapse ordinary and
+whitespace-only runs to one and drop document/body-edge blanks, including inside
+flows/globals. Preserve blanks inside values, metadata and directives. An empty
+line inside a quoted label is part of that label in mermaid.js's Db, so removing
+the line changes the label text. Agentflow comments leave LF and do not consume
+following blanks; no blank-line-pairing divergence applies. Default size
+branches override ordinary blank layout.
 
 [corpus fixture: agentflow/lex-brace-string-keeps-blank-line]
 

@@ -24,6 +24,7 @@ mermaid.js は各入力とその出力を同じ Db として読みます。
 同じに描くからです。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
 を参照してください。
+1 列目の見出しは、字下げした見出しより見つけやすくなります。
 
 [fixture: ishikawa/header/header-column]
 [fixture: ishikawa/header/header-stable]
@@ -240,7 +241,7 @@ ishikawa
 
 ### Blank lines
 
-普通の空行の連続は 1 つにして、余分な連続を除き、まとまりを残します。
+普通の空行の連続は 1 つにします。
 本文の端の普通の空行は除きます。
 先頭の共通コメントやディレクティブだけの行の後も同じです。
 空行は Ishikawa の節点も親も変えないためです。

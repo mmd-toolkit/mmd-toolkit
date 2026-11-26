@@ -47,7 +47,7 @@ was indented with.
 [fixture: indentation/written-indentation-dropped]
 
 The header stands at the first column, also where whitespace was written before
-it.
+it. A header at the first column is easier to find than an indented one.
 
 [fixture: indentation/header-leading-whitespace]
 

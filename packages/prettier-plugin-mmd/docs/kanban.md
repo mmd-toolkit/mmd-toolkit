@@ -177,18 +177,18 @@ kanban
 
 ### Header
 
-The header `kanban` stands at the first column. Text after `kanban` on the
-header line is read as a node line, with the whitespace between as its
-indentation: in `kanban   S[x]` the node `S[x]` is the first node, and so a
-section. The printer moves it to a line of its own and indents it as any
-section: `kanban`, a line break, and `  S[x]`. The same holds when the node
-touches the header, as in `kanban[S]` or `kanban-x` (`  [S]`, `  -x`).
-Everything after `kanban` moves with it, a `%%` that is text of the node
-included (`kanban S %% literal` prints `  S %% literal` on its line). A header
-line that holds a directive keeps it with the node (see
-[Directives](#directives)), and one that holds a `;` is no exception: the word
-`kanban` holds nothing that the line rule reads, so the node moves with its `;`
-(`kanban S;T` prints `kanban` and `  S;T`; see
+The header `kanban` stands at the first column. A header at the first column is
+easier to find than an indented one. Text after `kanban` on the header line is
+read as a node line, with the whitespace between as its indentation: in
+`kanban   S[x]` the node `S[x]` is the first node, and so a section. The printer
+moves it to a line of its own and indents it as any section: `kanban`, a line
+break, and `  S[x]`. The same holds when the node touches the header, as in
+`kanban[S]` or `kanban-x` (`  [S]`, `  -x`). Everything after `kanban` moves
+with it, a `%%` that is text of the node included (`kanban S %% literal` prints
+`  S %% literal` on its line). A header line that holds a directive keeps it
+with the node (see [Directives](#directives)), and one that holds a `;` is no
+exception: the word `kanban` holds nothing that the line rule reads, so the node
+moves with its `;` (`kanban S;T` prints `kanban` and `  S;T`; see
 [Line rule and kept lines](#line-rule-and-kept-lines)).
 
 [fixture: header/inline-count] [fixture: header/header-column] [fixture:
@@ -846,7 +846,9 @@ kanban
 A standalone comment is a comment line (`%% note`), a line of `%%` alone, or a
 line `%%{ }%%`. It is printed at the column of the statement after it, at the
 end of the board at the column of the last statement, and before the header at
-the first column; its mark and its text are kept as written.
+the first column; its mark and its text are kept as written. In the body this
+shows which statement the comment is about, as in
+[mindmap](./mindmap.md#comments).
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
 comment line inside a block one level deeper than the line that opens it, as
 Prettier prints the lines inside a block. In `kanban`, `%% c1`, ` S`,

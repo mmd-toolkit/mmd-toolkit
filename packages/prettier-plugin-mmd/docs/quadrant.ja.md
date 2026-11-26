@@ -31,6 +31,7 @@ Prettier がブロックの中の行をそう印字するためです。
 どのテキストも 1 つの形になります。
 文法は文の字下げを禁じていません。
 ヘッダーと、その前のコメント行は 1 列目に置きます。
+1 列目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/written-indentation-dropped]

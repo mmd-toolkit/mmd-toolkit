@@ -12,9 +12,10 @@ output reparsing. Invisible-character examples are escaped test cases.
 An exact lower-case `pie` starts at column one;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `pie` and a written `showData`, as Prettier prints `return  x` as
-`return x;`. An ordinary inline first statement moves below it. Hidden
-predecessors of the flag retain their position and consumed breaks; moving them
-would end the flag opportunity.
+`return x;`. An ordinary inline first statement moves below it. A header at
+column one is easier to find than an indented one. Hidden predecessors of the
+flag retain their position and consumed breaks; moving them would end the flag
+opportunity.
 
 [fixture: pie/header/header-space] [fixture: pie/header/header-absent] [fixture:
 pie/header/flag-hidden-yaml] [fixture: pie/header/flag-hidden-directive]
@@ -759,9 +760,8 @@ spare LF only when a following statement needs it. At the document end use one
 configured final newline; directly after the header remove blank lines, since
 the header needs no EOL before its first statement. Elsewhere apply the ordinary
 blank-line rules after the spare LF: collapse a run to one blank line and clear
-whitespace-only lines. The spare LF meets the grammar; later blanks express
-grouping, just as after comments. Prettier treats a line containing only spaces
-and tabs as a blank line, so
+whitespace-only lines. The spare LF meets the grammar. Prettier treats a line
+containing only spaces and tabs as a blank line, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) clears those spaces
 and tabs and leaves at most one ordinary blank line after the required spare LF.
 Unicode-only invalid body lines remain corpus failures.

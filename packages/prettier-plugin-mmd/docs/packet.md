@@ -11,10 +11,11 @@ escaped fixed tests.
 ### Header
 
 Keep the authored `packet` or `packet-beta` keyword at column one. Move an
-ordinary first statement below it, as in the other diagram types. Only `packet`
-requires a following boundary; never create a glued spelling. Hidden boundaries
-and protected header/body groups take precedence. Keep the authored synonym:
-some versions that count read `packet-beta` only (see
+ordinary first statement below it, as in the other diagram types. A header at
+column one is easier to find than an indented one. Only `packet` requires a
+following boundary; never create a glued spelling. Hidden boundaries and
+protected header/body groups take precedence. Keep the authored synonym: some
+versions that count read `packet-beta` only (see
 [The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
@@ -145,10 +146,12 @@ packet
 ### Range dash
 
 Print ordinary range gaps with no spaces, as `0-15`, so the numeric range reads
-as one visual unit. Preserve global trivia and hidden boundaries instead of
-tightening them: a consumed LF is not an ordinary space. For
-`0%%{!left}%% -%%{!right}%% 2:"Hidden dash"`, the space before `-` stays, since
-some of the versions of mermaid.js that count reject
+as one visual unit. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+puts no whitespace beside the `-` that joins the start and the end of a range of
+numbers, since `0 - 15` reads as a subtraction. Preserve global trivia and
+hidden boundaries instead of tightening them: a consumed LF is not an ordinary
+space. For `0%%{!left}%% -%%{!right}%% 2:"Hidden dash"`, the space before `-`
+stays, since some of the versions of mermaid.js that count reject
 `0%%{!left}%%-%%{!right}%%2:"Hidden dash"` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
@@ -828,19 +831,18 @@ packet
 ### Blank lines
 
 Collapse ordinary internal ASCII blank runs to one blank line and remove
-ordinary document/body edge blanks, also around comments, for visible grouping
-without excess space. Prettier prints at most one blank line between items and
-none at block edges in JavaScript, CSS, YAML and Markdown, so
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the ordinary
-blank-line form. The LF consumed by a hidden form is a separate grammatical
-boundary. Keep value, block, directive and hidden interiors, common-region joins
-and retained prefixes: those breaks belong to content or source roles. After a
-hidden form consumes LF, keep one spare LF only when a following statement needs
-it. At the document end use one configured final newline; directly after the
-header remove blank lines, since the header needs no EOL before its first
-statement. Elsewhere apply the ordinary blank-line rules after the spare LF:
-collapse a run to one blank line and clear whitespace-only lines. The spare LF
-meets the grammar; later blanks express grouping, just as after comments.
+ordinary document/body edge blanks, also around comments. Prettier prints at
+most one blank line between items and none at block edges in JavaScript, CSS,
+YAML and Markdown, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the ordinary blank-line form. The LF consumed by a hidden form is a
+separate grammatical boundary. Keep value, block, directive and hidden
+interiors, common-region joins and retained prefixes: those breaks belong to
+content or source roles. After a hidden form consumes LF, keep one spare LF only
+when a following statement needs it. At the document end use one configured
+final newline; directly after the header remove blank lines, since the header
+needs no EOL before its first statement. Elsewhere apply the ordinary blank-line
+rules after the spare LF: collapse a run to one blank line and clear
+whitespace-only lines. The spare LF meets the grammar.
 
 A hidden boundary or semicolon protection can keep a statement on the header's
 line; the gap after that statement's hidden suffix still lies between

@@ -32,7 +32,8 @@ line is nothing to mermaid.js, so the printer chooses it from the structure
 alone, and every text has one form. The nesting shows where a composite starts
 and ends, which `block:` and `end` alone would not once composites nest deeply.
 The header, and a comment line before it, stand at the first column, also where
-whitespace was written before them.
+whitespace was written before them. A header at the first column is easier to
+find than an indented one.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/composite-body-one-level-deeper-end-at-the-level-of-block] [fixture:
@@ -275,9 +276,8 @@ block-beta
 
 A run of empty lines becomes one empty line, and there is none at the start of
 the text, none between the header and the first statement, and none at the end
-of the text. A blank line is not held in the Db, and one empty line shows it at
-the least cost, as Prettier does in code (see
-[Blank lines](./flowchart.md#blank-lines)).
+of the text. A blank line is not held in the Db. Prettier prints the same empty
+lines in code (see [Blank lines](./flowchart.md#blank-lines)).
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the empty
 lines: Prettier prints a run of empty lines as one and drops the empty lines at
 the start and at the end of a file or of a block in JavaScript and CSS, and

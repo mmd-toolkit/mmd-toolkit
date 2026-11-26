@@ -4002,10 +4002,9 @@ radar-beta
 
 Keep at most one ordinary ASCII blank line between statements or trivia, and
 remove ordinary document/body/header-edge blanks. Whitespace-only lines become
-empty. This retains grouping without excess space.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the empty
-lines: Prettier prints a run of empty lines as one and drops the empty lines at
-the start and at the end of a file or of a block in code, and
+empty. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+empty lines: Prettier prints a run of empty lines as one and drops the empty
+lines at the start and at the end of a file or of a block in code, and
 [gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines),
 [pie](./pie.md#blank-lines), and [sankey](./sankey.md#blank-lines) print a run
 of empty lines as one and drop the empty lines at the start and at the end of a
