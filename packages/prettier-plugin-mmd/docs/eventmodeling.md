@@ -1726,11 +1726,14 @@ another rule keeps as written does not move:
 - the line after a hidden form, whose gap stays as written (see
   [Hidden forms](#hidden-forms));
 - a line inside a directive over several lines, and the line after a directive
-  that is not closed, which goes on the line of the directive (see
+  that is not closed, which goes on the line of the directive; where that line
+  holds a statement, the lines of the statement with the directive stay too,
+  since the line keeps its statements together (see
   [Global directives](#global-directives));
 - a line that a block comment goes on to (see [Comments](#comments));
-- the lines of a statement with a `;` that the line rule ignores and, after it
-  on its line, a U+2028 or U+2029, which is printed as written (see
+- the lines of a statement with a `;` that the line rule ignores and, on its
+  line after it, a U+2028 or U+2029, or another `;` with only whitespace or
+  directives between them: such a statement is printed as written (see
   [A line that a `;` ends](./compatibility.md#a-line-that-a--ends));
 - a line that holds a `;` before any U+2028 or U+2029 on it, in a statement
   whose lines, joined with one space or with nothing, could change which `;` the
@@ -1763,6 +1766,14 @@ one level deeper] [fixture:
 eventmodeling/declarations-and-notes/header-inline-multiline-directive]
 [fixture:
 eventmodeling/global-directives/description-block-end-line-with-unclosed-directive-kept]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-an-unclosed-directive-kept]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-a-closed-directive-deeper]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-adjacent-semicolons-kept]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-semicolons-apart-deeper]
 [test: a later line whose `;` comes before U+2028 in an eventmodeling statement
 that joining could change stays where it is written] [test: an eventmodeling
 statement with a `;` that the line rule ignores and U+2028 after it is printed
