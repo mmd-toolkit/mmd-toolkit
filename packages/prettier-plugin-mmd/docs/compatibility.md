@@ -5374,11 +5374,15 @@ block holds, or would not be read as the block is:
   `accDescr: a %% c` has the description `a %% c`, while the block
   `accDescr {a} %% c` has `a`. In the other diagram types that end the text of
   the form with the colon before a `%%` (the next but one sentence), both forms
-  have `a`, and the block is printed in the form with the colon. An ER,
-  flowchart, swimlane, or use case diagram rejects a block with a comment after
-  it, and so does a class diagram where a statement follows the block, also
-  after an empty line or a comment line: the comment takes the line break that
-  the statement needs.
+  have `a`, and the block is printed in the form with the colon. In an ER,
+  flowchart, swimlane, or use case diagram, a `%%` after the `}` is no comment,
+  and `accDescr {a} %% c` is rejected: an ER or a use case diagram rejects the
+  `%%` itself, also without the `c`, and a flowchart or a swimlane diagram reads
+  the `%%` as a name, the vertex `%%`, and rejects the second name `c` after it
+  (`accDescr {a} %%c` is accepted, with the vertex `%%c`). A class diagram
+  rejects a block with a comment after it where a statement follows the block,
+  also after an empty line or a comment line: the comment takes the line break
+  that the statement needs.
 
   [fixture: agentflow/accessibility/block-then-comment-kept] [fixture:
   c4/statements-one-per-line/description-comment-adjacency] [fixture:
@@ -5394,8 +5398,10 @@ block holds, or would not be read as the block is:
   pie/description-blocks/block-then-comment] [fixture:
   pie/description-blocks/block-trailing-comment] [fixture:
   gitgraph/title-and-common-values/block-then-comment-kept] [fixture:
-  info/comments/comments-inline] [corpus fixture:
-  usecase/comment-after-accdescr]
+  info/comments/comments-inline] [fixture:
+  flowchart/statements-one-per-line/percent-token-after-block-and-directive-kept]
+  [fixture: flowchart/statements-one-per-line/glued-percent-token-kept] [corpus
+  fixture: usecase/comment-after-accdescr]
 
 - A comment of the diagram type's own kind follows the `}` on its line, in an
   ABNF diagram (`; c`), an EBNF diagram (`(* c *)` and `/* c */`), a PEG diagram

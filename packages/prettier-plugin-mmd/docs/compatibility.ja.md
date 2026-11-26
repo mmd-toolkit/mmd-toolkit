@@ -5397,9 +5397,13 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   ブロック `accDescr {a} %% c` の説明は `a` です。
   コロンの形の本文を `%%` の前で終える図種（後述）では、
   両方の形の説明が `a` になり、ブロックをコロンの形で印字します。
-  ER、flowchart、swimlane、ユースケースの図は、
-  後ろにコメントがあるブロックを拒否します。
-  class の図も、ブロックの後に文が続くと、
+  ER、flowchart、swimlane、ユースケースの図では、
+  `}` の後の `%%` はコメントではなく、`accDescr {a} %% c` は拒否されます。
+  ER とユースケースの図は、`c` がなくても `%%` そのものを拒否します。
+  flowchart と swimlane の図は、`%%` を名前として `%%` という頂点に読み、
+  空白の後の 2 つ目の名前 `c` を拒否します（`accDescr {a} %%c` は受理され、
+  頂点は `%%c` です）。
+  class の図は、後ろにコメントのあるブロックの後に文が続くと、
   空行やコメント行をはさんでも拒否します。
   コメントが、その文に要る改行まで取り込むためです。
 
@@ -5418,6 +5422,8 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   [fixture: pie/description-blocks/block-trailing-comment]
   [fixture: gitgraph/title-and-common-values/block-then-comment-kept]
   [fixture: info/comments/comments-inline]
+  [fixture: flowchart/statements-one-per-line/percent-token-after-block-and-directive-kept]
+  [fixture: flowchart/statements-one-per-line/glued-percent-token-kept]
   [corpus fixture: usecase/comment-after-accdescr]
 
 - 同じ行の `}` の後にその図種固有のコメントが続く場合です。
