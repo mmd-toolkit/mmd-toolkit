@@ -1432,6 +1432,9 @@ Prettier は JavaScript、CSS、YAML の行末の空白とタブを落とすの�
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
 文の前後の空行とコメント行は、通常の配置に従います。
+空行の連なりは多くとも 1 つにします。
+これは[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+コメント行は[コメント](#コメント)のとおりに置きます。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
 
@@ -1511,6 +1514,11 @@ style の文脈の改行の後で続きます。
 [どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
 を参照してください。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
+関係の `-` の後で、そのような改行の前にある空白は必要です。
+それがない `a -`、改行、`satisfies -> b` は、対象にする版のどれもが拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 コメントで結合される領域では、文全体を原文のまま残します。
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
@@ -1519,6 +1527,7 @@ style の文脈の改行の後で続きます。
 
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]
+[fixture: multi-line-statements/relation-dash-space-kept]
 [fixture: multi-line-statements/header-directive-continuation]
 [fixture: fields/comment-and-directive-continuations]
 [fixture: multi-line-statements/comment-line-inside-kept]
@@ -1598,6 +1607,10 @@ requirementDiagram
 文の中の 2 つのトークンの間の空白は 1 つの空白にし、
 接しているトークンは接したままにします。
 空の説明ブロックの波括弧がそうです。
+取るものの前に置くキーワードの後の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は `return  x;` を `return x;` と印字し、
+`style  r` は `style r` と印字します。
 説明ブロックの開始波括弧の前には空白 1 つを置き、
 空の波括弧の中には空白を置きません。
 `accDescr {}` と印字するこの形を、
