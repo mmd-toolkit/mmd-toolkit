@@ -189,8 +189,10 @@ For equivalent exterior whitespace,
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `title` and its value, as Prettier prints `return  x` as `return x;`.
 Print `title`, one space, and a trimmed nonempty value; a
-null/empty/whitespace-only value prints bare `title`. Print a run of spaces and
-tabs inside the value as one space (see
+null/empty/whitespace-only value prints bare `title`, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) leaves no whitespace
+at the end of a line. Print a run of spaces and tabs inside the value as one
+space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and preserve quotes and backslashes, and all repeated assignments, including
 frontmatter fallback. The quotes and backslashes in a title are literal title
@@ -308,17 +310,21 @@ and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip, and some of the versions of mermaid.js that count draw different text
 for `accTitle: A B` than for `accTitle: A   B` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Quotes and line-form braces remain text; repeated assignments and percent
-comment attachment remain. The pinned grammar never joins next-line values,
-including after blank/comment/directive gaps, because its composite line forms
-stop at physical EOL, but the oldest version that counts does: its lexer takes
-the whitespace after the `:` of an empty `accTitle:` or `accDescr:` for the line
-breaks too, and reads the next statement, after the blank lines and the comments
-and directives that mermaid.js removes first, as the value. That statement stays
-as written (`"A":1` is not printed `"A": 1`), as does the whitespace before a
-`%%` that follows an `accTitle` value, which that version reads as part of the
-title (`accTitle: Value   %% note`), and before a `%%{` that no word character
-follows after its whitespace, such as `%%{}%%`, which it reads as text too
+Quotes and line-form braces remain text: they are characters of the value that
+mermaid.js keeps in the Db (`accDescr: { A }` has the description `{ A }`), and
+removing them is no kind of change of the Db that formatting may make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
+Repeated assignments and percent comment attachment remain. The pinned grammar
+never joins next-line values, including after blank/comment/directive gaps,
+because its composite line forms stop at physical EOL, but the oldest version
+that counts does: its lexer takes the whitespace after the `:` of an empty
+`accTitle:` or `accDescr:` for the line breaks too, and reads the next
+statement, after the blank lines and the comments and directives that mermaid.js
+removes first, as the value. That statement stays as written (`"A":1` is not
+printed `"A": 1`), as does the whitespace before a `%%` that follows an
+`accTitle` value, which that version reads as part of the title
+(`accTitle: Value   %% note`), and before a `%%{` that no word character follows
+after its whitespace, such as `%%{}%%`, which it reads as text too
 (`accTitle: Value   %%{}%%`), and so does a whitespace character that is no
 space or tab, one of those named in [Title](#title), before a `%%` or such a
 `%%{` that follows an `accDescr` value, which that version draws as a part of
@@ -378,7 +384,8 @@ pie chart] [test: a no-break space and spaces before a comment after the
 accDescr line of a pie chart] [test: a no-break space before a directive and two
 spaces before a comment after the accDescr line of a pie chart] [test: a
 no-break space before a comment after the accDescr line, with no line break at
-the end of a pie chart]
+the end of a pie chart] [corpus fixture: pie/review-common-quotes-backslashes]
+[corpus fixture: pie/review-block-brace-colon-priority]
 
 The same holds for an `accTitle:` or an `accDescr:` line: a value that ends at a
 U+2028 or U+2029, a comment region after it, and a line of `%%` and nothing else

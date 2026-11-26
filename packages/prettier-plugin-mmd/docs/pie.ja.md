@@ -206,6 +206,7 @@ pie showData
 Prettier が `return  x` を `return x;` と印字するためです。
 `title` の後は空白1つと両端を除いた空でない値にし、
 `null`・空・空白だけなら `title` だけにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、行末に空白を置きません。
 値の中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 引用符、バックスラッシュ、
@@ -337,7 +338,13 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-引用符・行形式の波括弧は文字として残し、
+引用符・行形式の波括弧は文字として残します。
+それらは mermaid.js が Db に持つ値の文字で（`accDescr: { A }` の説明は
+`{ A }`）、それを除くことは、
+整形が Db に起こしてよい変化のどの種類にも当たりません。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
 重複代入とパーセントコメントの接続も保ちます。
 固定した文法の行形式は物理的な EOL で終わるため、
 空行・コメント・ディレクティブを挟んでも次行の値を結合しません。
@@ -410,6 +417,8 @@ U+2029 があるときを除きます。
 [test: a no-break space and spaces before a comment after the accDescr line of a pie chart]
 [test: a no-break space before a directive and two spaces before a comment after the accDescr line of a pie chart]
 [test: a no-break space before a comment after the accDescr line, with no line break at the end of a pie chart]
+[corpus fixture: pie/review-common-quotes-backslashes]
+[corpus fixture: pie/review-block-brace-colon-priority]
 
 `accTitle:` と `accDescr:` の行も同じです。
 U+2028 か U+2029 で値が終わり、コメントの領域が続き、
