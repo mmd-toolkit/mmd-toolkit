@@ -37,6 +37,11 @@ mermaid.js の読み方を保ち、Db が同じ複数の形から選ぶ場合は
   複数の行規則の区間にまたがることがあります。
   図コメントを Unicode 区切りで切ると、内容が図の構文として現れたり、
   行規則が選ぶセミコロンが変わったりするためです。
+  端にかかる値は全体を保ちます。
+  `"style:#x;` と ` value"` の間の改行のようなその文字は、
+  mermaid.js が Db に持つ名前だからです。
+
+  [fixture: line-rule-and-kept-lines/crossing-multiline-value]
 
 入出力の例は固定の整形フィクスチャへリンクします。
 エスケープ表記の `\n` は LF、`\r` は CR、`\t` はタブ、
@@ -185,7 +190,10 @@ venn-beta
 
 ### Statements one per line
 
-通常の完結した文は、見渡しやすいように 1 行ずつにします。
+通常の完結した文は 1 行ずつにします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの形を与えます。
+[flowchart](./flowchart.ja.md#1-行に-1-文) と [ER 図](./er.ja.md#1-行に-1-文)
+も、各文をそれぞれの行に印字します。
 宣言と同じ行に続く style、対象つき text、title は同じ行に保ちます。
 分けると行頭の文が暗黙モードを解除するためです。
 同じ行の宣言の列は分けられます。
@@ -303,11 +311,7 @@ venn-beta
 ### Comments
 
 単独のコメントは次の文にそろえ、末尾では最後の文にそろえます。
-[規則 1](./printed-form.ja.md#1-記号の横の空白)により、本文の文がすべて `set`、
-`union`、`style`、`title` のとき、単独のコメント行は、
-ヘッダーより 1 段深く置きます。
-最初の文の前と最後の文の後も同じです。
-Prettier がブロックの中の行をそう印字するためです。
+その段の理由は、[Indentation](#indentation) を参照してください。
 接する後続コメントは接したまま残します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
 同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
@@ -404,7 +408,10 @@ text A, "B" item
 
 ### Labels
 
-角括弧ラベルは名前か text の id に接し、短い接尾部にします。
+角括弧ラベルは名前か text の id に接します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
+名前のラベルを開く角括弧は名前に接し、
+Prettier は `x [ 0 ];` を `x[0];` と印字します。
 内部の全ての文字を保ちますが、mermaid.js が除く、括弧に接する空白、タブ、
 改行しない空白は除き、[引用符](#quotes)のとおりに引用符つきで印字します。
 `set A[ L ]` は `set A["L"]` になります。
@@ -736,6 +743,9 @@ venn-beta
 そこにあった空白の代わりに置きます。
 ディレクティブの内容とその後の空白は、書かれたまま残します。
 `rgb(1,%%{x}%%  2,3)` は `rgb(1, %%{x}%%  2, 3)` と印字します。
+コンマの後の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は `f(a,b)` を `f(a, b);` と印字します。
 
 [fixture: style-properties/word-run-directive-parenthesis-kept]
 
@@ -1084,12 +1094,8 @@ venn-beta
 
 ### Directives
 
-単独のディレクティブは近くの文にそろえます。
-[規則 1](./printed-form.ja.md#1-記号の横の空白)により、本文の文がすべて `set`、
-`union`、`style`、`title` のとき、単独のディレクティブ行は、
-ヘッダーより 1 段深く置きます。
-最初の文の前と最後の文の後も同じです。
-Prettier がブロックの中の行をそう印字するためです。
+単独のディレクティブは近くの文にそろえます（[Indentation](#indentation)
+を参照）。
 行内のディレクティブは行、順序、内容を保ち、隙間の中では、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 先頭のディレクティブは暗黙と明示の text を分ける、
@@ -1203,6 +1209,13 @@ Prettier はこの行末の空白とタブを除くので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、同じ形を与えます。
 名前、色、style の文字列、
 コメントとディレクティブ内の空白は書かれたテキストとして保ちます。
+名前と style の文字列の中の空白は、
+mermaid.js が Db に持つ値の一部です（`set " A "` は、
+`A` の前後に空白のある集合）。
+それを変えることは、整形が Db に起こしてよい変化のどの種類にも当たりません。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
 ラベルや title の値の中の空白とタブの連なりは空白 1 つにして印字し、
 タイトルの末尾の空白は除きます（[Title](#title)、
 [同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
@@ -1214,6 +1227,7 @@ Prettier はこの行末の空白とタブを除くので、
 [fixture: venn/trailing-whitespace/trailing-comment]
 [fixture: venn/trailing-whitespace/trailing-exterior]
 [fixture: venn/trailing-whitespace/trailing-in-values]
+[corpus fixture: venn/db-quoted-padding]
 
 入力 `"venn-beta \nset A \n"` は `"venn-beta\nset A\n"` になり、
 `title T  ` は `title T` と印字します。

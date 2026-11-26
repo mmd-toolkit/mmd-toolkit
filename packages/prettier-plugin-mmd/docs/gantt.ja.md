@@ -760,10 +760,18 @@ gantt
 mermaid.js はそれらを Db に残しますが、それらがなくても同じ図を描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `dateFormat   YYYY-MM-DD  ` は `dateFormat YYYY-MM-DD` と印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+取るものの前に置くキーワードの後の空白 1 つと、
+行末に空白を置かない形を与えます。
+Prettier は `return  x;` と空白 3 つを `return x;` と印字します。
 
 [fixture: settings/format-padding-dropped]
 
 半角空白とタブだけの日付書式は、書かれたままにします。
+後ろに何もない `dateFormat` は、対象にする版のどれもが拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: settings/format-blank-kept]
 
@@ -845,6 +853,10 @@ gantt
 Db はそれらを持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `title   Plan  ` は `title Plan` と印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+取るものの前に置くキーワードの後の空白 1 つと、
+行末に空白を置かない形を与えます。
+Prettier は `return  x;` と空白 3 つを `return x;` と印字します。
 中の空白とタブの連なりも空白 1 つで印字するので、
 `title Plan  of   work` は `title Plan of work` と印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
@@ -853,6 +865,10 @@ Db はそれらを持ちますが、図では描かれません。
 除くとそうならないからです。
 `section A` の後の `section  A` は、そのまま残します。
 半角空白とタブだけのタイトルは、書かれたままにします。
+後ろに何もない `title` は、対象にする版のどれもが拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: titles-and-sections/title-padding-dropped]
 [fixture: titles-and-sections/title-blank-kept]
@@ -930,6 +946,9 @@ gantt
 項目の区切りは書かれたままにします。
 `,` は前の項目に接し、後ろに空白 1 つを置き、
 空白だけで区切られた項目は空白 1 つで区切ります。
+この空白は[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は `f(a,b)` を `f(a, b);` と、
+`margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 Db はどの区切りでも同じで、区切りの種類は書かれたまま保ちます。
 
 [fixture: lists/separators-as-written] [fixture: lists/dates-and-days]
@@ -1511,12 +1530,21 @@ click 文などの注釈類行を整形する文では、改行を空白 1 つ�
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+click 文では、この改行がリンク先を保ちます。
+`click style`、改行、`href "x:#y;#z"` は、task `style` を、
+`#y;` が符号化されたままのテキストにリンクします。
+同じ文を 1 行にすると、`x:#y#z` にリンクします。
+対象にする版はどれも同じです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 最終行の別の文にある `;` も、同じ判定をします。
 物理行を結ぶコメント領域とリスト区切りの U+FEFF も、元の配置を保ちます。
 
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
+[fixture: multi-line-statements/semicolon-joining-changes-link-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 
