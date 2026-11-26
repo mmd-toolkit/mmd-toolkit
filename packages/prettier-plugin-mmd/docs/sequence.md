@@ -163,7 +163,11 @@ sequenceDiagram
 An empty description block, `accDescr {}`, is a statement of its own, also in a
 `box`, where it may stand among the participants: a statement written after it
 on its line, or the `end` of the box, moves to a line of its own, and mermaid.js
-reads the same box.
+reads the same box. A statement after an empty `accDescr {}` stands on its own
+line, as in [flowchart](./flowchart.md#statements-one-per-line) and
+[XY chart](./xychart.md#statements-one-per-line) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this gap between statements.
 
 [fixture: statements-one-per-line/empty-description-block-in-box] [fixture:
 statements-one-per-line/empty-description-block-moves-next-statement] [fixture:
@@ -203,7 +207,13 @@ statements-one-per-line/autonumber-two-directives-kept]
 
 The statements that follow such a `;` on its line, and the `end` of a block,
 stand on lines of their own: `autonumber %%{wrap}%%; A->>B: x; B->>A: y` is
-printed as `autonumber %%{wrap}%%;`, `A ->> B: x`, and `B ->> A: y`.
+printed as `autonumber %%{wrap}%%;`, `A ->> B: x`, and `B ->> A: y`. Statements
+that follow the kept `;` stand on their own lines, as in
+[flowchart](./flowchart.md#statements-one-per-line) and
+[XY chart](./xychart.md#statements-one-per-line) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this separation. A block's `end` takes its own line, and the directive and its
+required `;` stay with their statement.
 
 [fixture:
 statements-one-per-line/autonumber-directive-semicolon-then-statements-split]
@@ -266,7 +276,9 @@ sequenceDiagram
 ### Blank lines
 
 As in a flowchart: a run of empty lines becomes one, and empty lines at the
-start and the end of a block are dropped.
+start and the end of a block are dropped. Prettier treats a line of whitespace
+only as a blank line; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+therefore prints it empty and keeps at most one blank line between statements.
 
 [fixture: blank-lines/collapsed] [fixture:
 blank-lines/around-comments-and-directives] [fixture:
@@ -317,14 +329,16 @@ whitespace-between-tokens/tabs-collapsed]
 
 A wrap prefix, `wrap:` or `nowrap:`, is separated from its text by one space,
 also where they touched: `A->>B:wrap:x` is printed `A ->> B: wrap: x`, and so is
-the text of a note or of the alias of a participant. The text after the keyword
-of a block or a section (`loop`, `alt`, `else`, `opt`, `par`, `and`, `critical`,
-`option`, `break`, `rect`, `box`) stands after one space too: `loop$$x$$` is
-printed `loop $$x$$`, and `par-:<>,;# comment` is printed `par -:<>,;# comment`.
-The whitespace is not in the Db;
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
-between a block or section keyword and its text, as Prettier prints `return  x`
-as `return x;`.
+the text of a note or of the alias of a participant. Prettier puts one space
+after a colon before a value, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same space
+after `wrap:` and `nowrap:`. The text after the keyword of a block or a section
+(`loop`, `alt`, `else`, `opt`, `par`, `and`, `critical`, `option`, `break`,
+`rect`, `box`) stands after one space too: `loop$$x$$` is printed `loop $$x$$`,
+and `par-:<>,;# comment` is printed `par -:<>,;# comment`. The whitespace is not
+in the Db; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space between a block or section keyword and its text, as Prettier prints
+`return  x` as `return x;`.
 
 [fixture: whitespace-between-tokens/wrap-text-spaced] [fixture:
 whitespace-between-tokens/block-text-touching-spaced]
@@ -491,10 +505,11 @@ block, the block, and that gap before the comment stay as written, and the block
 is not padded: `participant A   @{ x }` and `actor B@{x}` stay, and so does the
 whitespace before the `%%` in `participant C@{ y }   %% c`. This reason holds
 for a `participant`: with one space before the `%%`, the older versions that
-count draw another name. The whitespace before the `%%` of an `actor`, and
-before the `%%` of a participant that `create` makes, stays as written too,
-though no version that counts draws another figure for it. After the block, a
-`#` comment stands after one space.
+count draw another name. The same holds for an `actor` and for a participant
+that `create` makes: with one space before the `%%`, the SVG of those versions
+holds another name, in the `name` attribute and in the label, though the pixels
+are the same, so the whitespace before their `%%` stays as written too. After
+the block, a `#` comment stands after one space.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. mermaid.js removes the directives before it
@@ -663,7 +678,10 @@ colors/box-close-paren-padding-kept] [fixture: colors/box-comma-padding-kept]
 colors/functions-beside-comments-and-directives]
 
 A directive within a channel is removed before the function is recognized, and
-stays as written while the commas take their ordinary spacing. See
+stays as written while the commas take their ordinary spacing. Prettier puts one
+space after each comma in a call, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the commas of a
+color function the same gap when a directive stands in a channel. See
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
 for the versions that were run and the Db.
 
@@ -882,7 +900,10 @@ sequenceDiagram
 
 A message whose source is an id that whitespace after it would make another unit
 keeps its arrow touching on both sides, unless a `()` follows the id:
-`1() ->> B` and `title() ->> B` are spaced, since the `()` ends the id.
+`1() ->> B` and `title() ->> B` are spaced, since the `()` ends the id. Prettier
+puts one space on each side of an infix operator, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the arrow those
+gaps when `()` ends the source id.
 
 [fixture: arrow-spacing/central-connection-after-number-or-title]
 
@@ -977,7 +998,10 @@ accepted by every version that counts, and the text without the spaces is
 rejected by some of them. A space or a tab right after the `:` is the character
 that such a version needs, so the line is printed as usual and the rest is left
 out: `A->>B: %%{init: {}}%%` followed by two spaces is printed
-`A ->> B: %%{init: {}}%%`.
+`A ->> B: %%{init: {}}%%`. The space immediately after `:` already supplies the
+character that mermaid.js needs. The spaces and tabs after the directive are
+then line-end whitespace, which Prettier removes;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form.
 
 [fixture: colons/directive-then-whitespace-kept] [test: U+00A0 as the entire
 text of a message] [test: U+3000 as the entire text of a note] [test: U+FEFF as
@@ -1026,7 +1050,8 @@ sequenceDiagram
 as written, except for the spaces and tabs at its start and at its end:
 `title   My diagram  ` is printed `title My diagram`, and a run of spaces and
 tabs inside the text is printed as one space too. The `accDescr` follows, and
-the `accTitle` stays as written, since the browser shows it as a tooltip (see
+the `accTitle` stays as written: the browser shows it as a tooltip, and a run of
+spaces in it is part of the `accTitle` in the Db and in the SVG (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 
 [fixture: title/accessibility-runs-collapsed] [fixture:
@@ -1067,7 +1092,10 @@ it: `accDescr {style:#x} title x;` followed by two spaces is printed
 where the line holds another `;` of its own, such as the one of an entity
 (`#35;`) or one before it: the statements stay on their line, and without this
 `;` the line rule would ignore the other one. `A->>B: style:#x;; title x;`
-followed by two spaces is printed `A ->> B: style:#x;; title x;`.
+followed by two spaces is printed `A ->> B: style:#x;; title x;`. Removing
+spaces and tabs after the retained `;` changes neither the title nor which `;`
+the line rule ignores. Prettier removes line-end whitespace, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form.
 
 [fixture: title/trailing-whitespace-dropped] [fixture:
 title/semicolon-after-whitespace-dropped] [fixture:
@@ -1278,10 +1306,15 @@ statements-one-per-line/autonumber-percent-comment-entity-trigger-in-other-state
 The name of the entity is read as mermaid.js reads it, without a directive in
 it: `x #a%%{init: {}}%%;` ends in the entity `#a;`, and `x #a%%{init: {}}%%b;`
 in `#ab;`, so those lines stay together, while `x #%%{init: {}}%%;` ends in
-`#;`, which is no entity, and the line is split. The line of a divider of a
-block (`else`, `and`, `option`) and the line of the `end` that closes a block
-are decided in the same way, since each of them stands on a line of its own once
-the statements are printed.
+`#;`, which is no entity, and the line is split. When removing a directive from
+a `#` comment leaves no entity, the statements take separate lines, as in
+[flowchart](./flowchart.md#statements-one-per-line) and
+[XY chart](./xychart.md#statements-one-per-line) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this separation. The comment and its directive stay with the message. The line
+of a divider of a block (`else`, `and`, `option`) and the line of the `end` that
+closes a block are decided in the same way, since each of them stands on a line
+of its own once the statements are printed.
 
 [fixture:
 statements-one-per-line/message-comment-entity-split-by-directive-trigger-in-other-statement]
@@ -1663,7 +1696,8 @@ characters as escapes too (see
 
 - At the end of a title, where they are characters of the text and no spaces or
   tabs: the spaces after one are left out with the other spaces and tabs at the
-  end of the title, and the spaces before it stay.
+  end of the title, and the spaces before it stay, since fewer of them make
+  another title in the Db and another SVG.
 
   [test: U+2028 and spaces at the end of a title]
 
@@ -1735,10 +1769,10 @@ sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment]
 
 ### Directives
 
-As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive within a printed line is placed as in a
-flowchart: the gap is printed as without the directive, and the directive stands
-after its space and touches the unit that follows it.
+A directive on a line of its own stands at the level of the statements around
+it, and a directive within a printed line is placed as in a flowchart: the gap
+is printed as without the directive, and the directive stands after its space
+and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/section-edges-kept] [fixture:
 directives/whitespace-on-each-side] [fixture: directives/touching-kept]
@@ -1914,9 +1948,14 @@ Blocks on one line follow
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 Align the lines of an `accDescr { ... }` body one step inside its statement,
-with a separate `}` at the statement's level, as in
-[flowchart's top-level descriptions](./flowchart.md#multi-line-values). Mermaid
-discards this indentation from the description.
+with a separate `}` at the statement's level. mermaid.js discards the
+indentation after a line feed from the description. Mermaid.js records spaces at
+the end of an internal description line as part of the description in the Db,
+and every version of mermaid.js that counts puts another description text in the
+SVG without them, so those spaces stay as written (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[corpus fixture: sequence/db-acc-descr-block-blank-lines]
 
 [fixture: multi-line-values/description-and-data-indented] [fixture:
 multi-line-values/accdescr-block-closing-brace-after-text] [fixture:
@@ -1924,8 +1963,8 @@ multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:
 multi-line-values/data-block-in-block-indented]
 
 A block without text, whose lines are only comment lines, holds no value: its
-comment lines stand one level deeper than the `accDescr`, as comment lines
-inside a statement do, and its `}` at the level of the `accDescr`.
+comment lines stand one level deeper than the `accDescr`, and its separate `}`
+at the level of the `accDescr`.
 
 [fixture: multi-line-values/accdescr-block-comment-only] [fixture:
 multi-line-values/accdescr-block-without-text-kept]
@@ -1934,7 +1973,12 @@ A description block that the text ends, as in `accDescr {` with no `}` after it,
 is accepted by mermaid.js (see
 [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context)),
 and its body lines stand one level inside the statement as in a closed block; no
-`}` is added.
+`}` is added. An unfinished description block sets an empty description in the
+mermaid.js Db even when its body contains text; closing it would set the
+description from that text, so no `}` is added.
+
+[corpus fixture: sequence/db-acc-descr-block-unclosed] [corpus fixture:
+sequence/db-acc-descr-block-after-message]
 
 [fixture: multi-line-values/accdescr-block-unclosed-indented]
 
@@ -1982,7 +2026,9 @@ multi-line-values/data-zero-width-kept]
 
 Comments, directives, blank lines and empty description blocks around the data
 keep their own rules. CRLF and CR follow `endOfLine`; Unicode separators inside
-values remain characters.
+values remain characters: with a line feed in the place of the U+2028 in
+`participant A@{ "type":`, U+2028, `"queue" }`, some of the versions that count
+reject the block.
 
 [fixture: multi-line-values/data-surrounding-trivia] [test: data blocks:
 sequence U+2028] [test: data blocks: sequence CR]
