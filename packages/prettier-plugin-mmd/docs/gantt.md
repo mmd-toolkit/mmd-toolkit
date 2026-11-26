@@ -390,17 +390,19 @@ task-data/colon-column-use-tabs]
 
 The sections with padding whose colons are all in one and the same column go on
 sharing a column: it is one space after the longest of their longest names, so
-that only the excess whitespace goes. Each section on its own would put its
-colons in a column of its own, so the column of the colons would move at every
-section, where the author had kept it in one place across the sections, and the
-chart would read worse after formatting than before it. The column is counted
-from the start of the names, since the printer indents the tasks of every
-section alike, and that is the column the colons stand in once the chart is
-printed. A section whose colons are not all in one column is on its own, with
-the column of its longest name. A section whose names are all followed by one
-space, with its colons in the column of a group, counts for the longest name of
-the group and is not changed. The tasks before the first `section` stand one
-level less deep, so they are a section of their own that shares nothing.
+that only the excess whitespace goes. Each section on its own would move the
+column of the colons at every section, where the author kept it in one place:
+the example of the documentation of mermaid.js lines up the colons of three
+sections after `Completed task in the critical line`, and on their own the
+colons of the two later sections would stand three columns to the left of those
+of the first, so the chart would read worse after formatting than before it. The
+column is counted from the start of the names, since the printer indents the
+tasks of every section alike, and that is the column the colons stand in once
+the chart is printed. A section whose colons are not all in one column is on its
+own, with the column of its longest name. A section whose names are all followed
+by one space, with its colons in the column of a group, counts for the longest
+name of the group and is not changed. The tasks before the first `section` stand
+one level less deep, so they are a section of their own that shares nothing.
 
 [fixture: task-data/colon-column-sections-share-one-column] [fixture:
 task-data/colon-column-one-task-sections] [fixture:
@@ -409,7 +411,8 @@ task-data/colon-column-sections-in-one-column-and-others] [fixture:
 task-data/colon-column-sections-not-sharing] [fixture:
 task-data/colon-column-sections-in-different-columns] [fixture:
 task-data/colon-column-before-first-section] [fixture:
-task-data/colon-column-sections-and-preamble]
+task-data/colon-column-sections-and-preamble] [corpus fixture:
+gantt/docs-syntax-gantt-b854a6f4]
 
 A section with a task whose line a comment line after U+2028 or U+2029 joins to
 the next line, which the printer prints as written, is on its own where the
@@ -445,13 +448,12 @@ line, and a section with padding after it]
 The colons stay where they are in these cases. A section in which no name has
 more than one space before its colon is left: no colon moves, and a name that
 touches its colon gets its one space as above. A section is left where the
-aligned lines would be longer than `printWidth` and longer than they are, since
-one long name would push every colon of the section far right. A chart that
-holds `white-space` is left, with its names that touch their colons, since the
-CSS of the chart may draw the whitespace at the end of a name, and the figure
-then depends on it. A section where a name holds a tab is left too, since a tab
-reaches the next tab stop of the editor, and no width that Prettier counts lines
-the colons up.
+aligned lines would be longer than `printWidth` and longer than they are. A
+chart that holds `white-space` is left, with its names that touch their colons,
+since the CSS of the chart may draw the whitespace at the end of a name, and the
+figure then depends on it. A section where a name holds a tab is left too, since
+a tab reaches the next tab stop of the editor, and no width that Prettier counts
+lines the colons up.
 
 [fixture: task-data/colon-column-tab-in-name-kept] [fixture:
 task-data/colon-column-single-space-kept] [fixture:
