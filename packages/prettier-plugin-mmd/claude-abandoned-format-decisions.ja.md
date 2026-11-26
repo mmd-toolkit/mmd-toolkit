@@ -1065,7 +1065,7 @@ vennである。
 
 ### D38. 値の文字として読まれる空白をそろえるか
 
-299件の形があり、図種はagentflow、architecture、block、c4、class、cynefin、er、
+304件の形があり、図種はagentflow、architecture、block、c4、class、cynefin、er、
 eventmodeling、flowchart、gantt、gitgraph、info、ishikawa、journey、kanban、
 mindmap、packet、pie、quadrant、radar、railroad、requirement、sankey、sequence、
 state、swimlane、timeline、treemap、treeview、usecase、venn、wardley、
@@ -1137,6 +1137,7 @@ xychartである。
 | er | [属性の空白（er.ja.md）](./docs/er.ja.md#属性の空白) 「スタイルの中の空白は書かれたままです」 | `erDiagram\nstyle A border:1px  solid\u2028%% c\nA\n` |
 | er | [スタイルとクラス（er.ja.md）](./docs/er.ja.md#スタイルとクラス) 「`:` で始まるスタイルも、ほかのスタイルと同じく、」 | `erDiagram\nA\nstyle A : red  blue\n` |
 | er | [スタイルとクラス（er.ja.md）](./docs/er.ja.md#スタイルとクラス) 「`style A :  red   x` は」 | `erDiagram\nA\nstyle A :  red   x\n` |
+| er | [複数行の文（er.ja.md）](./docs/er.ja.md#複数行の文) 「値の中の空白と、各隙間の最初の改行の前の空白は保ちます。」 | `erDiagram\nA {\nstring\n%% c\nname \"Alpha  Beta\"\n}\n` |
 | eventmodeling                                                                                                                                     | [Common boundaries（eventmodeling.ja.md）](./docs/eventmodeling.ja.md#common-boundaries) 「`accTitle` の設定関数が一部の前置空白を落としても」                                                                                                            | `eventmodeling   accTitle: A`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | eventmodeling                                                                                                                                     | [Title（eventmodeling.ja.md）](./docs/eventmodeling.ja.md#title) 「title の前置空白、1 個の区切り、本文、末尾テキストを」 「比較要約は図の title を除くため、比較 Db が等しく」                                                                           | `eventmodeling title  'Heading'  \ntf 01 evt Alpha`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | eventmodeling                                                                                                                                     | [Accessibility lines（eventmodeling.ja.md）](./docs/eventmodeling.ja.md#accessibility-lines) 「行の値の LS・PS は内容のままです。」                                                                                                                       | `eventmodeling accDescr: A\u2028B\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -1214,6 +1215,7 @@ xychartである。
 | gantt | [空白で決まる Gantt 図の行（compatibility.ja.md）](./docs/compatibility.ja.md#空白で決まる-gantt-図の行) 「タスクのデータの項目の中の空白、項目の数、タグの大文字小文字。」 | `gantt\nA : a1, 1d\nB : after   a1, 1d\n` |
 | gantt | [同じに描かれるキーワードの後のテキスト（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト) 「タイトルの中の空白とタブの連なりは、ディレクティブが接していても、」 | `gantt\ntitle %%{x}%% Alpha  Beta\nA : 1d\n` |
 | gantt | [同じに描かれるキーワードの後のテキスト（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト) 「改行を含み、テキストを終えるディレクティブは、」 | `gantt\ntitle Alpha  Beta %%{init: {\n}}%%\nA : 1d\n` |
+| gantt | [同じに描かれるキーワードの後のテキスト（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト) 「単語の間にディレクティブがあるタイトルは連なりを書かれたままにします。」 | `gantt\ntitle Alpha  %%{x}%%  Beta\nA : 1d\n` |
 | info                                                                                                                                              | [Description blocks（info.ja.md）](./docs/info.ja.md#description-blocks) 「改行と内部の空行は保ちます。」                                                                                                                                                 | `info\naccDescr {\nx\n\ny  \n}`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | info | [Title（info.ja.md）](./docs/info.ja.md#title) 「値の中の空白とタブの連なりは、空白 1 つにして印字します。」 | `info\ntitle Alpha   Beta\n` |
 | info | [Accessibility lines（info.ja.md）](./docs/info.ja.md#accessibility-lines) 「非空値は外端の空白を除き、空白1個の後に置きます。」 | `info\naccTitle:  \u00a0Access\u3000  \n` |
@@ -1238,11 +1240,13 @@ xychartである。
 | ishikawa | [Trailing whitespace（ishikawa.ja.md）](./docs/ishikawa.ja.md#trailing-whitespace) 「`A;b  %%{z}%%  ` は」 | `ishikawa\nA;  b  %%{z}%%  \n` |
 | ishikawa | [Node text（ishikawa.ja.md）](./docs/ishikawa.ja.md#node-text) 「節点テキストは、末尾の空白とタブを除き、」 | `ishikawa\nA  b\n` |
 | ishikawa | [Node text（ishikawa.ja.md）](./docs/ishikawa.ja.md#node-text) 「ディレクティブの前にテキストがあり、」 | `ishikawa\nA %%{x}%% b  c\n` |
+| ishikawa | [Trailing whitespace（ishikawa.ja.md）](./docs/ishikawa.ja.md#trailing-whitespace) 「空白かタブでそのディレクティブから隔てた後ろのディレクティブが」 | `ishikawa\nA  b %%{init: {\n}}%% %%{x}%%\n` |
 | journey | [空白で決まる journey の行（compatibility.ja.md）](./docs/compatibility.ja.md#空白で決まる-journey-の行) 「桁をそろえない節の説明のコロンの前の空白と、」 | `journey\nsection S\nAlpha Beta  : 5: Me\n` |
 | journey | [空白で決まる journey の行（compatibility.ja.md）](./docs/compatibility.ja.md#空白で決まる-journey-の行) 「人の中の空白と、人の数。」 | `journey\nTask: 5: Alpha  Beta\n` |
 | journey | [タスクのデータ（journey.ja.md）](./docs/journey.ja.md#タスクのデータ) 「そのため `Make tea : 5: Me` は」 | `journey\nMake tea : 5: Me\n` |
 | journey | [タイトルとセクション（journey.ja.md）](./docs/journey.ja.md#タイトルとセクション) 「値は、先頭と末尾の空白とタブを除いて印字します。」 | `journey\ntitle My trip  \n` |
 | journey | [アクセシビリティの文（journey.ja.md）](./docs/journey.ja.md#アクセシビリティの文) 「テキストの中の空白とタブの連なりは、空白 1 つで印字します。」 | `journey\naccDescr: A  B\n` |
+| journey | [行区切り文字（journey.ja.md）](./docs/journey.ja.md#行区切り文字) 「タイトルの末尾では、U+2028 と U+2029 は空白やタブではなく」 | `journey\ntitle T  \u2028  \n` |
 | kanban | [アイコンとクラス（kanban.ja.md）](./docs/kanban.ja.md#アイコンとクラス) 「アイコンとクラスの両端の空白とタブは落とします。」 | `kanban\n S\n   A\n ::: hot \n` |
 | kanban | [アイコンとクラス（kanban.ja.md）](./docs/kanban.ja.md#アイコンとクラス) 「落とすのは空白とタブだけで、」 | `kanban\n S\n   A\n :::  \u00a0\n` |
 | kanban | [空白文字（kanban.ja.md）](./docs/kanban.ja.md#空白文字) 「ラベル、アイコン、データブロック、裸の id、クラスの中では、テキストの文字で、」 | `kanban\n S\n   A@{ticket: X\u00a0Y}\n` |
@@ -1286,6 +1290,7 @@ xychartである。
 | quadrant | [キーワードとテキスト（quadrant.ja.md）](./docs/quadrant.ja.md#キーワードとテキスト) 「文字列とその後の単語は、間の空白を保ちます。」 | `quadrantChart\nquadrant-1 \"a\"  b\n` |
 | quadrant | [title とアクセシビリティの文（quadrant.ja.md）](./docs/quadrant.ja.md#title-とアクセシビリティの文) 「中の空白とタブの連なりは空白 1 つにして印字します。」 | `quadrantChart\ntitle A  B\n` |
 | quadrant | [title とアクセシビリティの文（quadrant.ja.md）](./docs/quadrant.ja.md#title-とアクセシビリティの文) 「`accDescr` のテキストの中の空白とタブの連なりは、空白 1 つに」 | `quadrantChart\naccDescr: A  B\n` |
+| quadrant | [複数行の値（quadrant.ja.md）](./docs/quadrant.ja.md#複数行の値) 「文字列の改行と空白は値の一部なので、原文どおり保ちます。」 | `quadrantChart\nx-axis \"a\n   b\"\nquadrant-1 A\n` |
 | radar                                                                                                                                             | [Blank lines（radar.ja.md）](./docs/radar.ja.md#blank-lines) 「隠れた形に必要な LF には先に共有の境界規則を適用します。」                                                                                                                                 | `radar-beta\naxis North[\"one\n\n\nlast\"]\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | radar | [radar の原文の群と hidden 境界（compatibility.ja.md）](./docs/compatibility.ja.md#radar-の原文の群と-hidden-境界) 「ラベルの `StringLiteral` は空・空白だけの文字列、」 | `radar-beta\naxis A[\"Alpha  Beta\"]\ncurve c{1}\n` |
 | radar | [Title（radar.ja.md）](./docs/radar.ja.md#title) 「ただし、値の中の空白とタブの連なりは空白 1 つにして印字します。」 | `radar-beta\ntitle A  B\naxis a\ncurve c{1}\n` |
@@ -2826,7 +2831,7 @@ xychartである。
 
 ### 版か表の行のない理由が書かれている
 
-29件の形は、図種の規則に理由の文があるが、mermaid.js の版を挙げていないか、
+30件の形は、図種の規則に理由の文があるが、mermaid.js の版を挙げていないか、
 [対象にする版の mermaid.js のために残す形][versions]の表に行がない。
 その図種の PR が足りないほう（版か行）を書くと、この節を出る。
 対象にする版で走らせて違いがなければ、「まだ決めていない形」の節へ移る。
@@ -2844,6 +2849,7 @@ xychartである。
 | flowchart | [ラベルの内側の空白（flowchart.ja.md）](./docs/flowchart.ja.md#ラベルの内側の空白) 「ラベルの中の空白は保ちます。」, [同じに描かれるテキスト中の空白の連なり（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれるテキスト中の空白の連なり) 「mermaid.js が HTML として描くラベル。」 | `flowchart TD\nA[Alpha  Beta]\n` |
 | flowchart | [subgraph のヘッダー（flowchart.ja.md）](./docs/flowchart.ja.md#subgraph-のヘッダー) 「markdown 文字列や swimlane 図でも同じで、」 | `flowchart TD\nsubgraph \"`Alpha  Beta`\"\nA\nend\n` |
 | flowchart | [同じに描かれるテキスト中の空白の連なり（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれるテキスト中の空白の連なり) 「flowchart の subgraph と agentflow 図の `flow` の題のうち、」 | `flowchart TD\nsubgraph S[\"`Alpha  Beta`\"]\nA\nend\n` |
+| gitgraph | [Authored values（gitgraph.ja.md）](./docs/gitgraph.ja.md#authored-values) 「文字列と参照の両端・内部の空白、タブ、物理改行、Unicode、」 | `gitGraph\ncommit id:\"Alpha  Beta\"\n` |
 | journey | [タスクのデータ（journey.ja.md）](./docs/journey.ja.md#タスクのデータ) 「score と人は書かれたまま印字します。」 | `journey\nTask: 5: First  Last\n` |
 | mindmap | [同じに描かれる mindmap のテキスト（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれる-mindmap-のテキスト) 「テキストの中の空白は残します。」 | `mindmap\nAlpha  Beta\n` |
 | mindmap | [ノードのテキスト（mindmap.ja.md）](./docs/mindmap.ja.md#ノードのテキスト) 「ノードのテキストの中の空白は残します。」 | `mindmap\n First  Last\n` |
