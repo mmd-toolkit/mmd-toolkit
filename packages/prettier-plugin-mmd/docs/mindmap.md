@@ -21,12 +21,7 @@ With spaces, one configured indentation level is at least one character, even
 with `tabWidth: 0`; `useTabs` still supplies a tab. Formatting must not change
 the Db, and one character is the smallest width that keeps the indentation's
 reading. The root uses this configured level; each other node keeps its written
-character difference from the root. A line that a comment line after U+2028 or
-U+2029 joins to the line before it, which mermaid.js reads as one line with it,
-keeps its indentation as written, with what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: mindmap/indentation/comment-region-keeps-a-joined-line]
+character difference from the root.
 
 [fixture: mindmap/indentation/tab-width-0] [fixture:
 mindmap/indentation/tab-width-0-kept] [fixture:
@@ -163,13 +158,7 @@ is the whitespace after the header, which is none for `mindmap((x))`. It is
 printed on a line of its own, one level deeper than the header, and the nodes
 below it keep their steps beyond the root (see [Indentation](#indentation)): the
 Db is the same, and the root stands as the statements of the other diagram types
-do after the header, which move to a line of their own too. A line that a
-comment line after U+2028 or U+2029 joins to the line before it, which
-mermaid.js reads as one line with it, keeps its indentation as written, with
-what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: mindmap/root-on-header-line/comment-region-keeps-a-joined-line]
+do after the header, which move to a line of their own too.
 
 [fixture: root-on-header-line/moved-to-its-own-line] [fixture:
 root-on-header-line/shape-glued-to-the-header] [fixture:

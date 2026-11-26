@@ -707,13 +707,7 @@ A block on one line follows
 In a block with a text over several lines, indent the body one level inside the
 statement and align a separate `}` with the statement: mermaid.js discards
 indentation after LF from the description. A block that is not closed makes the
-input rejected, so it is not printed. A line that a comment line after U+2028 or
-U+2029 joins to the line before it, which mermaid.js reads as one line with it,
-keeps its indentation as written, with what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test:
-quadrant/titles-and-accessibility-statements/comment-region-keeps-a-joined-description-line]
+input rejected, so it is not printed.
 
 [fixture: titles-and-accessibility-statements/block-lines-kept] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
@@ -803,14 +797,7 @@ decides, as [xychart](./xychart.md#empty-description-blocks) and
 of a block with a directive or comment line. It stands on a line of its own,
 also after the header and after another statement, where the grammar takes it:
 mermaid.js reads it as nothing wherever it stands, and the grammar takes it
-where a statement starts and after the last unit of a statement. A line that a
-comment line after U+2028 or U+2029 joins to the line before it, which
-mermaid.js reads as one line with it, keeps its indentation as written, with
-what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test:
-quadrant/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+where a statement starts and after the last unit of a statement.
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:

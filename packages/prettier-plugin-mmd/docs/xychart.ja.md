@@ -30,14 +30,6 @@ fixture の置き方と確かめ方は、
 mermaid.js の文書も、ヘッダーの後の文を 1 段深く書き、
 ほかの図も同じです（flowchart の[字下げ](./flowchart.ja.md#字下げ)を参照）。
 ヘッダーと、その前のコメント行は 1 列目に置きます。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上の文とともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: xychart/indentation/comment-region-keeps-a-joined-statement-line]
 
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/written-indentation-dropped]
@@ -743,14 +735,6 @@ mermaid.js が説明から LF 後の字下げを除くためです。
 mermaid.js はそのブロックのテキストを読まず、印字が `}` を足すと、
 ブロックが説明になってしまうからです（テキストの最後の `accDescr {` と、
 `abc` の説明は Db では空で、`}` を足すと `abc` になります）。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: xychart/accessibility-statements/comment-region-keeps-a-joined-description-line]
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
@@ -857,14 +841,6 @@ Prettier は中身のない `{}` の内側に、空白を置きません。
 テキストの最後で閉じていないブロックは、
 `}` を足さずに `accDescr {` と印字します（詳しくは、
 [アクセシビリティの文](#アクセシビリティの文)を参照）。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: xychart/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]

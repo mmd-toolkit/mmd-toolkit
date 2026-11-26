@@ -24,13 +24,7 @@ the tasks, click statements, settings, and every other statement. The `section`
 itself stands at the first level. The tree of a Gantt chart is flat, with no
 block of statements, so the level of a statement is decided by its place among
 the others. The tasks of a section stand inside it, as the documentation of
-mermaid.js writes them in a Gantt chart and in a user journey. A line that a
-comment line after U+2028 or U+2029 joins to the line before it, which
-mermaid.js reads as one line with it, keeps its indentation as written, with the
-statements on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: gantt/indentation/comment-region-keeps-a-joined-statement-line]
+mermaid.js writes them in a Gantt chart and in a user journey.
 
 [fixture: indentation/sections-and-tasks-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
@@ -1316,13 +1310,7 @@ indentation after LF from the description.
 [flowcharts](./flowchart.md#multi-line-values) align the separate closing brace
 of a description block with its statement;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt description blocks the same closing brace position. A line that a comment
-line after U+2028 or U+2029 joins to the line before it, which mermaid.js reads
-as one line with it, keeps its indentation as written, with what stands on it
-(see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: gantt/accessibility-statements/comment-region-keeps-a-joined-line]
+Gantt description blocks the same closing brace position.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]

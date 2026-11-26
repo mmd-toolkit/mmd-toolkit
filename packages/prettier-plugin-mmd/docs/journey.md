@@ -24,12 +24,7 @@ the tasks, and every other statement. The `section` itself stands at the first
 level. The tree of a user journey is flat, with no block of statements, so the
 level of a statement is decided by its place among the others. The tasks of a
 section stand inside it, as the documentation of mermaid.js writes them, and as
-in a Gantt chart. A line that a comment line after U+2028 or U+2029 joins to the
-line before it, which mermaid.js reads as one line with it, keeps its
-indentation as written, with the statements on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: journey/indentation/comment-region-keeps-a-joined-statement-line]
+in a Gantt chart.
 
 [fixture: indentation/sections-and-tasks-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
@@ -657,12 +652,7 @@ A block on one line follows
 
 In a block with a text over several lines, indent the body one level inside the
 statement and align a separate `}` with the statement: mermaid.js discards
-indentation after LF from the description. A line that a comment line after
-U+2028 or U+2029 joins to the line before it, which mermaid.js reads as one line
-with it, keeps its indentation as written, with what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: journey/accessibility-statements/comment-region-keeps-a-joined-line]
+indentation after LF from the description.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]

@@ -84,12 +84,7 @@ written indentation carries nothing that a reader of the Db keeps, and the
 printer chooses it: a section stands one step deeper than the header, and an
 item two steps deeper, whatever the item's depth was. `kanban`, `      S`,
 `          A`, `             B`, and `      T` print `S` and `T` with 2 spaces,
-and `A` and `B` with 4. A line that a comment line after U+2028 or U+2029 joins
-to the line before it, which mermaid.js reads as one line with it, keeps its
-indentation as written, with what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: kanban/indentation/comment-region-keeps-a-joined-line]
+and `A` and `B` with 4.
 
 [fixture: indentation/sections-and-items] [fixture:
 indentation/written-indentation-dropped] [fixture:
@@ -194,13 +189,7 @@ line that holds a directive keeps it with the node (see
 [Directives](#directives)), and one that holds a `;` is no exception: the word
 `kanban` holds nothing that the line rule reads, so the node moves with its `;`
 (`kanban S;T` prints `kanban` and `  S;T`; see
-[Line rule and kept lines](#line-rule-and-kept-lines)). A line that a comment
-line after U+2028 or U+2029 joins to the line before it, which mermaid.js reads
-as one line with it, keeps its indentation as written, with what stands on it
-(see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: kanban/header/comment-region-keeps-a-joined-line]
+[Line rule and kept lines](#line-rule-and-kept-lines)).
 
 [fixture: header/inline-count] [fixture: header/header-column] [fixture:
 header/header-touching-shape] [fixture: header/header-touching-dash] [fixture:
@@ -247,13 +236,7 @@ nest items under other items, merge, sort, or join nodes: two sections with the
 same id stay two sections, items at any depth are printed at the one depth of an
 item, and a last line that is shallower than the first section is printed as an
 item (see [Indentation](#indentation)). Nesting items under other items,
-merging, sorting, or joining would change the board that mermaid.js builds. A
-line that a comment line after U+2028 or U+2029 joins to the line before it,
-which mermaid.js reads as one line with it, keeps its indentation as written,
-with what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: kanban/nodes-one-per-line/comment-region-keeps-a-joined-line]
+merging, sorting, or joining would change the board that mermaid.js builds.
 
 [fixture: nodes-one-per-line/flat-order] [fixture:
 nodes-one-per-line/deeper-to-regular-items] [fixture:

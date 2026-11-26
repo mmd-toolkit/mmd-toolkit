@@ -93,14 +93,6 @@ Db は、ノードごとに、セクションかどうかと、どのセクシ�
 2 段深く置きます。
 `kanban`、`      S`、`          A`、`             B`、`      T` は、
 `S` と `T` を空白 2 つで、`A` と `B` を空白 4 つで印字します。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: kanban/indentation/comment-region-keeps-a-joined-line]
 
 [fixture: indentation/sections-and-items]
 [fixture: indentation/written-indentation-dropped]
@@ -210,14 +202,6 @@ kanban
 単語 `kanban` には行の規則が読むものがないので、
 ノードは `;` と一緒に動きます（`kanban S;T` は、`kanban` と `  S;T` になります。
 詳しくは、[行の規則と保つ行](#行の規則と保つ行)を参照）。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: kanban/header/comment-region-keeps-a-joined-line]
 
 [fixture: header/inline-count] [fixture: header/header-column]
 [fixture: header/header-touching-shape] [fixture: header/header-touching-dash]
@@ -268,14 +252,6 @@ kanban
 項目として印字します（[インデント](#インデント) を参照）。
 項目を他の項目の子にすること、まとめ、並べ替え、つなぐことは、
 mermaid.js が作るボードを変えるからです。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: kanban/nodes-one-per-line/comment-region-keeps-a-joined-line]
 
 [fixture: nodes-one-per-line/flat-order]
 [fixture: nodes-one-per-line/deeper-to-regular-items]

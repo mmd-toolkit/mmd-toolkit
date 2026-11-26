@@ -28,13 +28,7 @@ Nothing in the grammar forbids indenting a statement (unlike a sankey diagram),
 and the documentation of mermaid.js writes the statements one level deeper than
 the header, as the other diagrams do (see
 [Indentation](./flowchart.md#indentation) in the flowchart rules). The header,
-and a comment line before it, stand at the first column. A line that a comment
-line after U+2028 or U+2029 joins to the line before it, which mermaid.js reads
-as one line with it, keeps its indentation as written, with the statements on it
-(see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: xychart/indentation/comment-region-keeps-a-joined-statement-line]
+and a comment line before it, stand at the first column.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/written-indentation-dropped] [fixture:
@@ -701,13 +695,7 @@ indentation after LF from the description. A block that is not closed runs to
 the end of the text without adding a `}`: mermaid.js reads no text for it, and a
 `}` that the printer wrote would make the block a description (`accDescr {` and
 `abc` at the end of the text have an empty description in the Db, and the same
-with a `}` have `abc`). A line that a comment line after U+2028 or U+2029 joins
-to the line before it, which mermaid.js reads as one line with it, keeps its
-indentation as written, with what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test:
-xychart/accessibility-statements/comment-region-keeps-a-joined-description-line]
+with a `}` have `abc`).
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
@@ -810,14 +798,7 @@ A block with a directive or comment line keeps its contents and line breaks,
 with standalone trivia one level inside and its closer at statement level. It
 stands on a line of its own, also after the header and after another statement.
 A block that is not closed, at the end of the text, is printed as `accDescr {`
-with no `}`, as in [Accessibility statements](#accessibility-statements). A line
-that a comment line after U+2028 or U+2029 joins to the line before it, which
-mermaid.js reads as one line with it, keeps its indentation as written, with
-what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test:
-xychart/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+with no `}`, as in [Accessibility statements](#accessibility-statements).
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:

@@ -7865,7 +7865,12 @@ formatter keeps the whitespace and the line breaks of such a line as written,
 from its first line to its end, with the statements that stand on it: it does
 not format the whitespace between them, and it does not indent the lines after
 the comment line. This is one rule for every statement, block opening, and
-header, with two exceptions. An eventmodeling diagram prints the U+2028 or
+header, with three exceptions. An agentflow diagram below the default size,
+whose comments mermaid.js keeps (see
+[Agentflow values, comments, and the default size boundary](#agentflow-values-comments-and-the-default-size-boundary)),
+joins no lines there: it prints the U+2028 or U+2029 before the comment line as
+one space, but in a value, where it stays, and the line after the comment line
+stands at its ordinary depth. An eventmodeling diagram prints the U+2028 or
 U+2029 before the comment line as one space, but in the value of a `title`, an
 `accTitle`, or an `accDescr`, where it stays (see
 [Comments](./eventmodeling.md#comments)), and stands the line after the comment
@@ -7892,6 +7897,65 @@ eventmodeling/statements-one-per-line/comment-region-joined-statement-at-the-sta
 [test: U+2028 before a `%%` comment after the text of the title of the header
 line of an eventmodeling diagram stays as written] [test: U+2028 before a
 comment line and a directive] [test: U+2028 after a comment on the header line]
+
+[test: block/shapes/comment-region-keeps-the-directions-of-a-block-arrow] [test:
+er/accessibility-statements/comment-region-keeps-the-text-line] [test:
+block/indentation/comment-region-keeps-a-joined-statement-line] [test:
+block/indentation/comment-region-keeps-a-joined-line-in-a-composite] [test:
+er/indentation/comment-region-keeps-a-joined-statement-line] [test:
+er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph] [test:
+c4/indentation/comment-region-keeps-a-joined-statement-line] [test:
+class/indentation/comment-region-keeps-a-joined-statement-line] [test:
+class/member-bodies/comment-region-keeps-a-joined-member-line] [test:
+class/whitespace-between-tokens/comment-region-keeps-a-joined-name-line] [test:
+class/empty-description-blocks/comment-region-keeps-a-joined-member-line] [test:
+flowchart/indentation/comment-region-keeps-a-joined-statement-line] [test:
+flowchart/direction/comment-region-keeps-a-joined-direction-statement] [test:
+flowchart/subgraph-header/comment-region-keeps-a-joined-header-line] [test:
+swimlane/indentation/comment-region-keeps-a-joined-statement-line] [test:
+gantt/indentation/comment-region-keeps-a-joined-statement-line] [test:
+gantt/accessibility-statements/comment-region-keeps-a-joined-line] [test:
+ishikawa/indentation/comment-region-keeps-a-joined-line] [test:
+ishikawa/root-on-header-line/comment-region-keeps-a-joined-line] [test:
+ishikawa/root-indentation/comment-region-keeps-a-joined-line] [test:
+journey/indentation/comment-region-keeps-a-joined-statement-line] [test:
+journey/accessibility-statements/comment-region-keeps-a-joined-line] [test:
+kanban/indentation/comment-region-keeps-a-joined-line] [test:
+kanban/header/comment-region-keeps-a-joined-line] [test:
+kanban/nodes-one-per-line/comment-region-keeps-a-joined-line] [test:
+mindmap/indentation/comment-region-keeps-a-joined-line] [test:
+mindmap/root-on-header-line/comment-region-keeps-a-joined-line] [test:
+quadrant/titles-and-accessibility-statements/comment-region-keeps-a-joined-description-line]
+[test:
+quadrant/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+[test: requirement/indentation/comment-region-keeps-a-joined-statement-line]
+[test: requirement/bodies/comment-region-keeps-a-joined-opening-line] [test:
+requirement/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+[test:
+requirement/accessibility-statements/comment-region-keeps-a-joined-text-line]
+[test: sequence/indentation/comment-region-keeps-a-joined-line-in-a-block]
+[test: state/indentation/comment-region-keeps-a-joined-line-in-a-composite]
+[test: state/composite-states/comment-region-keeps-a-joined-opening-line] [test:
+timeline/indentation/comment-region-keeps-a-joined-statement-line] [test:
+timeline/periods-and-events/comment-region-keeps-a-joined-event-line] [test:
+timeline/event-statements/comment-region-keeps-a-joined-peer-event-line] [test:
+timeline/header-and-direction/comment-region-keeps-a-joined-event-line-after-the-header]
+[test:
+timeline/accessibility-statements/comment-region-keeps-a-joined-description-line]
+[test: treeview/indentation/comment-region-keeps-a-joined-node-line] [test:
+treeview/carried-indentation/comment-region-keeps-a-joined-node-line] [test:
+xychart/indentation/comment-region-keeps-a-joined-statement-line] [test:
+xychart/accessibility-statements/comment-region-keeps-a-joined-description-line]
+[test:
+xychart/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+[test: an agentflow diagram below the default size puts the line after a comment
+line after U+2028 at its ordinary depth] [test: an agentflow diagram keeps
+U+2028 before a comment line in the body of a description block] [test: an
+eventmodeling diagram keeps U+2028 before a comment line in the value of
+accTitle on the header line] [test: an eventmodeling diagram keeps U+2028 before
+a comment line in the value of accDescr on the header line] [test: a mindmap
+puts a comment line after U+2028 that ends a comment of the header on a line of
+its own]
 
 A line that a `;` of its text keeps together, as `title T;` or the text of a
 kanban section `S[x;]`, is printed as written with the comment line after a

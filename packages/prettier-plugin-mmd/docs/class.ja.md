@@ -23,14 +23,6 @@ fixture の置き方と確かめ方は、
 ### 字下げ
 
 ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上の文とともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: class/indentation/comment-region-keeps-a-joined-statement-line]
 
 [fixture: indentation/written-indentation-dropped]
 [fixture: indentation/header-v2-kept]
@@ -118,14 +110,6 @@ classDiagram
 `{` の前の空白 1 つは、mermaid.js の文書の書き方です。
 ただし、行の `}` の前にディレクティブがあるときは、
 書かれたまま残します（`%%{init: {}}%% }`）。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: class/member-bodies/comment-region-keeps-a-joined-member-line]
 
 [fixture: member-bodies/directive-on-closing-brace-line-kept]
 [fixture: member-bodies/split]
@@ -398,14 +382,6 @@ U+2028 と U+2029 は、そのまま残します。
 [fixture: whitespace-between-tokens/tabs-collapsed]
 
 クラス名だけの行は何も宣言しませんが、周りの文と同じ段に残します。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: class/whitespace-between-tokens/comment-region-keeps-a-joined-name-line]
 
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
@@ -1908,14 +1884,6 @@ classDiagram
 そうした行は、文を一緒に残します。
 その行に本体を持つクラスは、ほかのクラスと同じように印字し、
 メンバーは 1 段深く、`}` はその行と同じ段に置きます。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: class/empty-description-blocks/comment-region-keeps-a-joined-member-line]
 
 [fixture: empty-description-blocks/before-class-with-body-indented]
 [fixture: empty-description-blocks/kept-with-statement]

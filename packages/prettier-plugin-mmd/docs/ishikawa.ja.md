@@ -85,14 +85,6 @@ ishikawa
 どの節も、その前にあるそれより浅い最も近い節より深く、根まで同じで、
 見出しの行にある根は、見出しとテキストの間の空白を字下げとします。
 そうした字下げは、書かれた幅を持ち込まずに、同じ順序付きの木を作ります。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: ishikawa/indentation/comment-region-keeps-a-joined-line]
 
 [fixture: ishikawa/indentation/indent-flatten-unsafe]
 [fixture: ishikawa/indentation/indent-sibling-causes]
@@ -188,14 +180,6 @@ Db が変わります。
 これは、書かれた字下げが入れ子だけで木を示すときです（[字下げ](#indentation)）。
 見出しと根の間の空白より深くない原因があるときは、根は見出しの行に残り、
 原因は書かれた字下げを残します。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: ishikawa/root-on-header-line/comment-region-keeps-a-joined-line]
 
 [fixture: ishikawa/root-on-header-line/header-root-irregular-kept]
 [fixture: ishikawa/root-on-header-line/header-root-directive-irregular-kept]
@@ -227,14 +211,6 @@ ishikawa
 入力の根がすべての原因より深くても浅くても同じです。
 根の字下げは親を決めないため、1 列目でも Db は同じですが、
 他の印字処理の本文の約束に揃えます。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: ishikawa/root-indentation/comment-region-keeps-a-joined-line]
 
 [fixture: ishikawa/root-indentation/root-alone]
 [fixture: ishikawa/root-indentation/root-deeper]

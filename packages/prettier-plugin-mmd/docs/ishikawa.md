@@ -81,12 +81,7 @@ the written indentation shows the tree by nesting alone: each node is deeper
 than the nearest node before it that is less deep, up to the root, and a root on
 the line of the header has the whitespace between the header and its text as its
 indentation. Such an indentation reproduces the same ordered tree without
-importing written widths. A line that a comment line after U+2028 or U+2029
-joins to the line before it, which mermaid.js reads as one line with it, keeps
-its indentation as written, with what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: ishikawa/indentation/comment-region-keeps-a-joined-line]
+importing written widths.
 
 [fixture: ishikawa/indentation/indent-flatten-unsafe] [fixture:
 ishikawa/indentation/indent-sibling-causes] [fixture:
@@ -168,12 +163,7 @@ glued punctuation, fallback suffixes, percent text and semicolons, where the
 written indentation shows the tree by nesting alone (see
 [Indentation](#indentation)); where a cause is not deeper than the whitespace
 between the header and the root, the root stays on the line of the header and
-the causes keep their indentation. A line that a comment line after U+2028 or
-U+2029 joins to the line before it, which mermaid.js reads as one line with it,
-keeps its indentation as written, with what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: ishikawa/root-on-header-line/comment-region-keeps-a-joined-line]
+the causes keep their indentation.
 
 [fixture: ishikawa/root-on-header-line/header-root-irregular-kept] [fixture:
 ishikawa/root-on-header-line/header-root-directive-irregular-kept]
@@ -213,12 +203,7 @@ ishikawa
 An ordinary root stands one configured positive step below the header, even when
 its source indentation was deeper or shallower than all causes. Root indentation
 chooses no parent, so column one would be Db-equal; the chosen step follows the
-body convention of the other printers. A line that a comment line after U+2028
-or U+2029 joins to the line before it, which mermaid.js reads as one line with
-it, keeps its indentation as written, with what stands on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: ishikawa/root-indentation/comment-region-keeps-a-joined-line]
+body convention of the other printers.
 
 [fixture: ishikawa/root-indentation/root-alone] [fixture:
 ishikawa/root-indentation/root-deeper] [fixture:

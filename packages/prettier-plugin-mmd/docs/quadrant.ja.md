@@ -737,14 +737,6 @@ Db はどちらの連なりも保持します。
 独立した `}` は文と同じ段に置きます。
 mermaid.js が説明から LF 後の字下げを除くためです。
 閉じていないブロックは拒否されるので、印字しません。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: quadrant/titles-and-accessibility-statements/comment-region-keeps-a-joined-description-line]
 
 [fixture: titles-and-accessibility-statements/block-lines-kept]
 [fixture: titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
@@ -835,14 +827,6 @@ quadrantChart
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文の始まりと、文の最後の単位の後です。
 mermaid.js は、どこにあってもトークンのないものとして読みます。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: quadrant/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]
