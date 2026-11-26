@@ -929,6 +929,12 @@ agentflow-beta TB
 Mermaidが捨てる通常の裸のラベルの外側空白を取り除きます。
 内部と引用形式・Markdown 形式のラベルの文字は保ちます。
 空白とタブだけのラベルは、空白 1 つに印字します。
+引用符のラベルの中の空白の連なりも保ちます。
+mermaid.js はそれを頂点のテキストに持ち、折り返すほど長いラベルは、
+連なりを空白 1 つより広く描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 先頭のスラッシュ、逆スラッシュ、ダッシュ、引用符、
 最初の語にある@によって別の構文になるときは、両端に空白1つを残します。
 詳しくは
@@ -977,7 +983,8 @@ Db はラベルのテキストをそのまま持ちます。
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
-[fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
+[fixture: labels/quoted-label-space-run-kept] [fixture: labels/labels-tilde]
+[fixture: labels/labels-trim-sensitive-unsafe]
 [fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
 [fixture: labels/label-comment-ends-label]
 [fixture: labels/label-comment-ends-label-spaces-and-comment-lines]
