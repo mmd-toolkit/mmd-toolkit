@@ -1143,6 +1143,10 @@ whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. The ordinary keyword/opener gap
 uses one space: `accDescr{  }` becomes `accDescr {}`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: Prettier
+prints braces that hold nothing with nothing inside (`x = { }` is printed
+`x = {};`) and one space before the `{` that opens a block (`class A{}` is
+printed `class A {}`).
 
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test: timeline
 Unicode and tab interiors] [fixture:
@@ -1468,6 +1472,11 @@ statement after it.
 
 A comment line before the header stands at the first column, and one at the end
 of the text stays on a line of its own, with the line break added.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+these places, as a [Gantt chart](./gantt.md#comments) prints a comment before
+the header and a comment at the end of the text in them, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the line break,
+as Prettier ends a text with one line break.
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
