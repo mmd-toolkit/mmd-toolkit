@@ -307,7 +307,7 @@ wardley、xychartである。
 
 ### D17. 書かれたセミコロンを残すか、取り除くか
 
-77件の形があり、図種はagentflow、block、class、cynefin、er、eventmodeling、
+76件の形があり、図種はagentflow、block、class、cynefin、er、eventmodeling、
 flowchart、gantt、gitgraph、journey、mindmap、quadrant、radar、requirement、
 sequence、state、swimlane、treemap、treeview、usecase、venn、wardley、
 xychartである。
@@ -352,7 +352,6 @@ xychartである。
 | gantt                                             | [1 行に 1 文（gantt.ja.md）](./docs/gantt.ja.md#1-行に-1-文) 「そのため、そのような行の文はその行に残し、文の間の空白はほかと同じに整形し、」                                               | `gantt\naccDescr { style:#x } a : 1d;\n`                                                                                                                                            |
 | gitgraph                                          | [Option colons（gitgraph.ja.md）](./docs/gitgraph.ja.md#option-colons) 「語とコロンの間の注釈は、 大域的なディレクティブや選ばれたセミコロンも含めて残します。」                            | `gitGraph\ncommit msg:\"style:#x\"id;:\"A\"\n`                                                                                                                                      |
 | journey                                           | [1 行に 1 文（journey.ja.md）](./docs/journey.ja.md#1-行に-1-文) 「そのため、そのような行の文はその行に残し、」                                                                             | `journey\naccDescr {style:#x} A;B: 5\n`                                                                                                                                             |
-| mindmap                                           | [セミコロン（kanban.ja.md）](./docs/kanban.ja.md#セミコロン) （文なし）                                                                                                                     | `mindmap\n  root\n    style:#a ;[x]\n`                                                                                                                                              |
 | mindmap                                           | [行区切り文字（mindmap.ja.md）](./docs/mindmap.ja.md#行区切り文字) 「行の規則が無視する ; はコメントの末尾に残り、」                                                                        | `mindmap\n  root\n    a[x] %% style:#x;\u2028    b\n`                                                                                                                               |
 | quadrant                                          | [複数行の文（quadrant.ja.md）](./docs/quadrant.ja.md#複数行の文) 「コメント行の後の行にある、行の規則が無視する `;`（`st」                                                                  | `quadrantChart\nclassDef a\u2028%% c\nstyle color:#f00;\n`                                                                                                                          |
 | quadrant                                          | [1 行 1 文（quadrant.ja.md）](./docs/quadrant.ja.md#1-行-1-文) 「; は、改行と同じに文を終わらせます。」                                                                                     | `quadrantChart\nx-axis L; quadrant-1 A\n`                                                                                                                                           |
