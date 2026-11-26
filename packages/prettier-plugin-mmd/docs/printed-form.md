@@ -249,11 +249,16 @@ of its diagram type.
 
 - The tasks of a section of a Gantt chart are rows of a name and its data. The
   printer puts the colons of a section in one column where its names were
-  written with padding before their colons. [Task data](./gantt.md#task-data)
-  defines when it does, and the sections that it leaves as written.
+  written with padding before their colons, a form decided under
+  [rule 4](#4-where-none-of-these-rules-gives-a-form) (see
+  [Forms decided under rule 4](#forms-decided-under-rule-4)).
+  [Task data](./gantt.md#task-data) defines when it does, and the sections that
+  it leaves as written.
 - The padding that lines the colons of a timeline or of a user journey up stays
   as written. [Periods and events](./timeline.md#periods-and-events) and
-  [Task data](./journey.md#task-data) define it.
+  [Task data](./journey.md#task-data) define it. In a timeline it is a form
+  decided under [rule 4](#4-where-none-of-these-rules-gives-a-form) (see
+  [Forms decided under rule 4](#forms-decided-under-rule-4)).
 
 Another way of lining lines up is decided as under
 [4](#4-where-none-of-these-rules-gives-a-form).
@@ -272,6 +277,20 @@ the lists that stay without the space.
 Where mermaid.js rejects the space after a colon, none is printed before it
 either, since Prettier prints no colon with a space before it alone: the width
 of a block is printed `a:2`, also where `a :2` was written.
+
+In a flowchart, a swimlane diagram, and an agentflow diagram, where mermaid.js
+reads a label otherwise without the whitespace at its start, or rejects it (a
+label that is no string in quotes and starts with `/`, `\`, `-`, or `"`, or
+whose first word holds a `@`; see
+[Label inner whitespace](./flowchart.md#label-inner-whitespace)), one space
+stands inside each end of the label, in every shape and in the text between `|`:
+`A[ /x/]` is printed `A[ /x/ ]`. Rule 1 puts no space inside brackets, so it
+would leave the space that mermaid.js needs alone at the start, where it reads
+as a slip; with one at the end too, the label shows that the space is meant. The
+user chose this form, which corrects the form of rule 1, as AGENTS.md (item 4)
+says of a rule whose form reads worse than another form that draws the same. No
+space stands before the closing `?]` or `=]` of a slanted shape, where
+mermaid.js would read the space and the `?` or `=` as text.
 
 ### A text that the tree holds whole
 
@@ -318,9 +337,10 @@ to these rules, and printed after that.
 
 ### Forms decided under rule 4
 
-These forms were decided as AGENTS.md (item 4) says, for a flowchart and a
-swimlane diagram, where none of rules 1 to 3 gives a form. The document of the
-diagram type says where each one applies and where it does not.
+These forms were decided as AGENTS.md (item 4) says, where none of rules 1 to 3
+gives a form. An item that names no diagram type was decided for a flowchart and
+a swimlane diagram. The document of the diagram type says where each one applies
+and where it does not.
 
 - Each statement stands on a line of its own: statements written on one line and
   separated by `;` are split into lines.
@@ -331,6 +351,14 @@ diagram type says where each one applies and where it does not.
   arrows, or text between `|` after the arrow.
 - With `useTabs`, a statement that holds a data block (`@{ … }`) of several
   lines is printed as written.
+- In a flowchart, an agentflow diagram, and a kanban board, a data block
+  (`@{ … }`) on one line whose line is wider than `printWidth` prints on several
+  lines, one entry on each, where the lines read better than the one line.
+- In a timeline, the padding that lines the colons of periods up stays as
+  written: `A    : x` above `Long : y` keeps its spaces.
+- In a Gantt chart, the colons of the tasks of a section stand in one column,
+  one space after its longest name, where a name of the section was written with
+  padding before its colon.
 
 ## The versions of mermaid.js that count
 

@@ -164,10 +164,12 @@ headings with a title in
 are written so, and the Db is the same for both forms. The whitespace inside the
 brackets of the title is dropped, so `[ T ]` is printed `[T]` and `["x" ]` is
 printed `["x"]`, as in flowchart; Agentflow has no reason to choose a different
-form. One space stays where the title would be read otherwise (`[ /x/ ]` and
-`[ x@ ]`). A directive at an edge of the title touches the bracket and the
-title, as the gap has no space: `flow F[ %%{x}%% T ]` is printed
-`flow F[%%{x}%%T]`, and `flow G[ T %%{x}%% ]` is printed `flow G[T%%{x}%%]`.
+form. One space stays inside each end where the title would be read otherwise
+(`[ /x/ ]` and `[ x@ ]`; see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
+A directive at an edge of the title touches the bracket and the title, as the
+gap has no space: `flow F[ %%{x}%% T ]` is printed `flow F[%%{x}%%T]`, and
+`flow G[ T %%{x}%% ]` is printed `flow G[T%%{x}%%]`.
 
 [fixture: names-and-headings/heading-title-directive-at-edge]
 
@@ -918,10 +920,11 @@ Reuse [Label inner whitespace](./flowchart.md#label-inner-whitespace): Mermaid
 discards ordinary bare exterior padding, whereas internal and quoted/markdown
 label text stays, and a label of spaces and tabs only is printed as one space.
 Keep one leading/trailing space for slash, backslash, dash, quote characters,
-and when `@` in the first word would make it read as an edge id; put no space
-before slanted ?]/=] closers. For a slash label, `A[ /x/ ]` keeps its spaces,
-since every version of mermaid.js that counts reads `A[/x/]` as a slanted vertex
-labelled `x` instead of a square vertex labelled `/x/` (see
+and when `@` in the first word would make it read as an edge id (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace));
+put no space before slanted ?]/=] closers. For a slash label, `A[ /x/ ]` keeps
+its spaces, since every version of mermaid.js that counts reads `A[/x/]` as a
+slanted vertex labelled `x` instead of a square vertex labelled `/x/` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Agentflow label comments are different where the label goes on after the line
 break of the comment: the spaces and tabs before the comment are label content
@@ -1049,7 +1052,9 @@ versions of mermaid.js that count read `A@{%%{init: {}}%%x: 1}` with metadata
 key `x` and value `1` instead of key `x:1` and value `null` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Where its line is too long it prints on lines, one entry on each, under the
-conditions listed there.
+conditions listed there, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)).
 
 [fixture: metadata-blocks/long-split] [fixture: metadata-blocks/one-line-padded]
 [fixture: metadata-blocks/one-line-space-only-padded] [fixture:
@@ -1863,8 +1868,10 @@ Reuse [Chains](./flowchart.md#chains) and
 [Line wrapping](./flowchart.md#line-wrapping): author-chosen statement
 boundaries stay, and `printWidth` never redistributes links. Keep long lines,
 except that a data block on one line whose line is wider than `printWidth`
-prints on lines under the conditions of [Metadata blocks](#metadata-blocks);
-keep explicit split statements, repetitions and source order. Agentflow routing,
+prints on lines under the conditions of [Metadata blocks](#metadata-blocks), a
+form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form); keep
+explicit split statements, repetitions and source order. Agentflow routing,
 generated ids and completion-order containers make that order observable. Domain
 shapes, numeric/prototype operands, entities, HTML and diagnostic-related
 spelling remain authored even when a Db-normalized alternative exists.

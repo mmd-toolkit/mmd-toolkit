@@ -204,7 +204,10 @@ journey
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the body are dropped, as in the other diagram types.
+end of the body are dropped, as in the other diagram types. Prettier removes
+blank lines at the start of the text, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes blank lines
+before the header.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
 
@@ -213,7 +216,10 @@ The empty lines around comment lines are handled in the same way.
 [fixture: blank-lines/around-comment-lines]
 
 Empty lines around a `section` are kept, as one, at the level of the lines next
-to them.
+to them. Prettier reduces a run of blank lines inside the text to one and
+removes blank lines at its end, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives those forms
+around a `section`.
 
 [fixture: blank-lines/around-sections]
 
@@ -317,7 +323,10 @@ task-data/keywords-inside]
 
 A score or a person stands after one space, after a colon and after a comma
 alike; a colon and a comma touch what is before them. Whitespace around them is
-not in the Db, and is not kept. The space is written only before a value, and a
+not in the Db, and is not kept. Prettier prints a comma with no space before it
+and one space after it, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+spacing between people's names. The space is written only before a value, and a
 colon after the score touches it: of the colons that the examples in the
 documentation of mermaid.js write with a space after them, none has a space
 before it (10 colons; step 3 of
@@ -488,8 +497,11 @@ keyword and its value (Prettier prints `return  x` as `return x;`), and the
 value without the spaces and tabs at its start or at its end, which the Db keeps
 and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   My trip  ` is printed `title My trip`. The name of a `section` is
-printed as written, the whitespace at its start and at its end included: two
+`title   My trip  ` is printed `title My trip`. The spaces and tabs at the end
+of the value stand at the end of the line, where
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives none, as
+Prettier removes spaces and tabs at the end of a line. The name of a `section`
+is printed as written, the whitespace at its start and at its end included: two
 sections whose names differ by it are drawn apart, and would not be once it is
 left out. A title of spaces and tabs only stays as written. For `title` followed
 by two spaces, a tab, and a space, every version of mermaid.js that counts
@@ -848,7 +860,15 @@ T
 
 Keep the text and line breaks of an `accDescr` block, and align its body lines
 one step inside the statement, as described in
-[Accessibility statements](#accessibility-statements).
+[Accessibility statements](#accessibility-statements). Spaces before an internal
+LF in an `accDescr` block remain in the Db, while mermaid.js discards
+indentation after LF. Removing those spaces entirely changes the description
+beyond the permitted replacement of a run by one space, and every version that
+counts puts another description text in the SVG without them, so they stay (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[corpus fixture: journey/db-acc-descr-block-spaces-before-line-feed] [fixture:
+multi-line-values/description-block-inner-line-trailing-spaces-kept]
 
 [fixture: multi-line-values/description-block-lines-kept]
 
@@ -933,7 +953,10 @@ Prettier prints the lines inside a block.
 [fixture: comments/levels-around-sections]
 
 A comment line before the header stands at the first column, and one at the end
-of the text stays on a line of its own, with the line break added.
+of the text stays on a line of its own, with the line break added. Prettier ends
+the text with one line break, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the single line
+break after the final comment.
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
@@ -945,11 +968,17 @@ before a comment that stands after something on its line, as Prettier prints
 the Db after a `section`, where the whitespace before the comment is part of the
 value; after a `title` that whitespace is left out like the other spaces and
 tabs at the end of a title (see [Titles and sections](#titles-and-sections)).
-One rule keeps the comment on its line in both, as in a Gantt chart.
+One rule keeps the comment on its line in both, as in a Gantt chart. A one-line
+block followed by a hash comment stays a block: in the colon form of `accDescr`,
+mermaid.js reads the `#` and its comment after the colon as part of the
+accessible description, which changes the Db and the description in the SVG of
+every version that counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
-[fixture: comments/after-header-percent] [fixture: comments/after-statement]
-[fixture: comments/after-statement-glued] [fixture:
+[fixture: comments/one-line-description-block-then-hash-comment-kept] [fixture:
+comments/after-header-percent] [fixture: comments/after-statement] [fixture:
+comments/after-statement-glued] [fixture:
 comments/after-statement-under-a-section]
 
 After a `section`, the whitespace before the `#` is part of the value, and
@@ -1167,7 +1196,12 @@ accTitle]
 
 At the end of a title, U+2028 and U+2029 are characters of the text and no
 spaces or tabs: the spaces after one are left out with the other whitespace at
-the end of the title, and the spaces before it stay.
+the end of the title, and the spaces before it stay. A space before U+2028 or
+U+2029 belongs to the title text in the Db; the permitted
+[changes at its ends](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
+do not cover removing it, so it stays.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes spaces and
+tabs after the separator at the end of the line.
 
 [test: U+2028 and spaces at the end of a journey title]
 
@@ -1190,8 +1224,14 @@ U+00A0 and U+FEFF are whitespace to the lexer between units, and characters of a
 text. Where the lexer reads one whitespace character, such as the separator
 after a keyword, a space stands for it; around the score and the people of a
 task they are dropped like spaces; and before the colon of a task, the
-description keeps them. The examples are written as strings, in which `\u00a0`
-is U+00A0 and `\ufeff` is U+FEFF.
+description keeps them. U+00A0 and U+FEFF before the first colon of a task
+belong to its description in the Db. The
+[drawing exception](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
+covers only spaces and tabs there, so these characters stay as written. The
+examples are written as strings, in which `\u00a0` is U+00A0 and `\ufeff` is
+U+FEFF.
+
+[corpus fixture: journey/lex-task-text-nbsp]
 
 [test: U+00A0 after a title keyword] [test: U+00A0 around the score of a task]
 [test: U+00A0 around the people of a task] [test: U+00A0 before the second colon
