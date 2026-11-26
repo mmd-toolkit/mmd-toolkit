@@ -735,10 +735,15 @@ the value: mermaid.js keeps them in the Db, but draws the same figure without
 them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 `dateFormat   YYYY-MM-DD  ` is printed `dateFormat YYYY-MM-DD`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+after a keyword before what it takes and none at the end of a line, as Prettier
+prints `return  x;` and three spaces as `return x;`.
 
 [fixture: settings/format-padding-dropped]
 
-A date format of spaces and tabs only stays as written.
+A date format of spaces and tabs only stays as written: every version that
+counts rejects `dateFormat` with nothing after it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: settings/format-blank-kept]
 
@@ -820,14 +825,19 @@ A `title` is printed as the settings are: one space after the keyword, and the
 value without the spaces and tabs at its start or at its end, which the Db keeps
 and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   Plan  ` is printed `title Plan`, and a run of spaces and tabs inside it
-is printed as one space, so `title Plan  of   work` is printed
+`title   Plan  ` is printed `title Plan`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+after a keyword before what it takes and none at the end of a line, as Prettier
+prints `return  x;` and three spaces as `return x;`. A run of spaces and tabs
+inside the title is printed as one space, so `title Plan  of   work` is printed
 `title Plan of work` (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 The name of a `section` is printed as written, the whitespace at its start and
 at its end included: two sections whose names differ by it are drawn apart, and
 would not be once it is left out. `section  A` after `section A` stays so. A
-title of spaces and tabs only stays as written.
+title of spaces and tabs only stays as written. Every version that counts
+rejects `title` with nothing after it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: titles-and-sections/title-padding-dropped] [fixture:
 titles-and-sections/title-blank-kept] [fixture:
@@ -904,7 +914,10 @@ one space, however much whitespace was written there.
 
 The items keep their separators: a `,` touches the item before it and is
 followed by one space, and items that are separated by whitespace only are
-separated by one space. The Db is the same for every separator, and the kind of
+separated by one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this spacing,
+as Prettier prints `f(a,b)` as `f(a, b);` and `margin: 1px    2px;` as
+`margin: 1px 2px;`. The Db is the same for every separator, and the kind of
 separator is kept as written.
 
 [fixture: lists/separators-as-written] [fixture: lists/dates-and-days]
@@ -1469,13 +1482,19 @@ layout: their value padding is part of the Db. In a statement that formats its
 trivia lines, such as a click statement, a line break stays where joining it,
 with one space or with nothing, could change which `;` the line rule ignores,
 and where a `;` ends the last line; any other line break is joined as usual,
-also in a statement that holds a `;`. The same decision applies to a `;` in
-another statement on its final line. A joining comment region or a U+FEFF list
-separator also keeps the original layout.
+also in a statement that holds a `;`. In a click statement, such a line break
+keeps the link: `click style`, a line break, and `href "x:#y;#z"` link a task
+`style` to a text in which `#y;` stays encoded, while the statement on one line
+links it to `x:#y#z`, in every version that counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The same decision applies to a `;` in another statement on its final line. A
+joining comment region or a U+FEFF list separator also keeps the original
+layout.
 
 [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
 multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/semicolon-joining-changes-kept] [fixture:
+multi-line-statements/semicolon-joining-changes-link-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept]
 
