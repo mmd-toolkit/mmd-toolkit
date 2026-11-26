@@ -318,8 +318,14 @@ tf 01 evt Alpha ->> 02 ->> 001
 
 ### Data references
 
-データの参照の前は普通の空白 1 個、内側は `[[D]]` と詰め、
-Prettier が入れ子の角括弧に印字する形です。
+データの参照の前は普通の空白 1 個、内側は `[[D]]` と詰めます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がどちらも与えます。
+データの参照はフレームのほかの部品に続く値なので、
+続けて並ぶ値と同じく空白 1 つを置きます（`margin: 1px    2px;` は
+`margin: 1px 2px;` と印字します）。
+Prettier は、
+入れ子の角括弧の内側にも空白を置きません（`f([[ D ]])` は `f([[D]]);`
+と印字します）。
 部品間の普通の改行も詰めます。
 `[[title]]` なら前置空白付きの title composite も作りません。
 部品の間の改行が置き換わる空白 1 個は、規則 2 が与える形です。
@@ -328,6 +334,8 @@ Prettier が入れ子の角括弧に印字する形です。
 参照は識別子を 1 つだけ持ち、ドットと別の区間を付けた形は拒否されます。
 
 [fixture: eventmodeling/data-references/reference-padded]
+
+[fixture: eventmodeling/data-references/reference-gap-collapsed]
 
 [fixture: eventmodeling/data-references/reference-component-lines]
 

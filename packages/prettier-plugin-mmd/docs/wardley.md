@@ -234,8 +234,10 @@ name of a component is its id in the Db, and a pipeline finds its component by
 the exact id, so a name with another run of whitespace is another name: the Db
 holds the id with the whitespace as written, and mermaid.js rejects a pipeline
 whose name differs from its component's by a tab for a space. The figures differ
-too for two components whose names differ by a run (see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+too for two components whose names differ by a run: every version of mermaid.js
+that counts draws two components where the names keep their runs, and one where
+the runs become alike (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A string of a name between `'` is printed between `"` unless its text holds a
 `'`, a `"`, a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or
 `<` (see
@@ -254,7 +256,8 @@ wardley/gram-reference-same-whitespace]
 Collapsing name whitespace or trimming string contents changes the Db, and a
 requoting that needs another escape interpretation is not made.
 
-[fixture: wardley/names-and-quotes/name-spaces]
+[fixture: wardley/names-and-quotes/name-spaces] [fixture:
+wardley/names-and-quotes/names-differing-by-a-run]
 
 [fixture: wardley/names-and-quotes/name-parenthesis-ampersand]
 
@@ -686,9 +689,12 @@ wardley-beta
 ### Evolution
 
 Attach @ on both sides and put one ordinary space around / and each stage arrow
-->. Preserve optional boundaries, second names, empty quoted names and source
-stage order. The annotation mark is tight and the alternatives are separated,
-without filling missing values; bare title retains Name boundaries.
+->. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space
+around `/` and `->`, each a mark between two things, as under [Links](#links):
+Prettier prints `x = a/b` as `x = a / b;`. Preserve optional boundaries, second
+names, empty quoted names and source stage order. The annotation mark is tight
+and the alternatives are separated, without filling missing values; bare title
+retains Name boundaries.
 
 [fixture: wardley/evolution/stage-all-gaps]
 
@@ -4131,6 +4137,9 @@ comments, directives, hidden interiors, required closer padding and protected
 stretches. Trimming every physical line can change the Db or reject a
 whitespace-only link label in every version of mermaid.js that counts (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A space or a tab at the end of a line inside a quoted note stays: mermaid.js
+holds it in the text of the note, and no kind of exception allows that change of
+the Db, although the note is drawn the same (see the same table).
 
 [fixture: wardley/trailing-whitespace/trailing-exterior]
 
@@ -4246,11 +4255,15 @@ wardley-beta
 
 ### Multiline values
 
-Do not wrap at printWidth. Keep physical string and flow contents, continuation
-columns and interior blank lines. Description bodies use the shared indentation
-above. Visible LF between ordinary statement components can reject the input,
-and reindenting value continuations changes the Db. Long component/evolution
-statements stay unwrapped; description openers and closers use Accessibility.
+Do not wrap at printWidth, as a flowchart does not:
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the form that [Line wrapping](./flowchart.md#line-wrapping) decides under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form). Keep
+physical string and flow contents, continuation columns and interior blank
+lines. Description bodies use the shared indentation above. Visible LF between
+ordinary statement components can reject the input, and reindenting value
+continuations changes the Db. Long component/evolution statements stay
+unwrapped; description openers and closers use Accessibility.
 
 [fixture: wardley/multiline-values/long-component]
 

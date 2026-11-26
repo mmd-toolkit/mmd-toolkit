@@ -44184,3 +44184,98 @@ describe("a line that a `;` keeps together, with a comment line after a line sep
     },
   )
 })
+
+/**
+ * The exceptions to the rule for a line that a comment line after U+2028 or
+ * U+2029 joins (docs/compatibility.md, A comment line after U+2028 or U+2029):
+ * an agentflow diagram below the default size keeps its comments and joins no
+ * lines, an eventmodeling diagram keeps the separator in the value of an
+ * accessibility statement, and a mindmap puts a comment line after a separator
+ * that ends a comment of the header on a line of its own.
+ */
+describe("the exceptions to the rule for a line that a comment line after a line separator joins", () => {
+  it("an agentflow diagram below the default size puts the line after a comment line after U+2028 at its ordinary depth", async () => {
+    await expectKept(
+      "agentflow-beta TB\nA\u2028%% c\n       B\n",
+      "agentflow-beta TB\n  A %% c\n  B\n",
+    )
+  })
+  it("an agentflow diagram keeps U+2028 before a comment line in the body of a description block", async () => {
+    await expectKept(
+      "agentflow-beta\naccDescr {\nx\u2028%% c\n       y\n}\n",
+      "agentflow-beta\n  accDescr {\n    x\u2028%% c\n    y\n  }\n",
+    )
+  })
+  it("an eventmodeling diagram keeps U+2028 before a comment line in the value of accTitle on the header line", async () => {
+    await expectKept(
+      "eventmodeling accTitle: T\u2028%% c\ntf 01 evt Alpha\n",
+      "eventmodeling accTitle: T\u2028%% c\ntf 01 evt Alpha\n",
+    )
+  })
+  it("an eventmodeling diagram keeps U+2028 before a comment line in the value of accDescr on the header line", async () => {
+    await expectKept(
+      "eventmodeling accDescr: T\u2028%% c\ntf 01 evt Alpha\n",
+      "eventmodeling accDescr: T\u2028%% c\ntf 01 evt Alpha\n",
+    )
+  })
+  it("a mindmap puts a comment line after U+2028 that ends a comment of the header on a line of its own", async () => {
+    await expectKept(
+      "mindmap %% c\u2028%% d\n   root\n",
+      "mindmap %% c\n  %% d\n  root\n",
+    )
+  })
+  it("an agentflow diagram keeps U+2029 before a comment line in the body of a description block", async () => {
+    await expectKept(
+      "agentflow-beta\naccDescr {\nx\u2029%% c\n       y\n}\n",
+      "agentflow-beta\n  accDescr {\n    x\u2029%% c\n    y\n  }\n",
+    )
+  })
+  it("an eventmodeling diagram keeps U+2029 before a comment line in the value of accTitle on the header line", async () => {
+    await expectKept(
+      "eventmodeling accTitle: T\u2029%% c\ntf 01 evt Alpha\n",
+      "eventmodeling accTitle: T\u2029%% c\ntf 01 evt Alpha\n",
+    )
+  })
+  it("an eventmodeling diagram keeps U+2029 before a comment line in the value of accDescr on the header line", async () => {
+    await expectKept(
+      "eventmodeling accDescr: T\u2029%% c\ntf 01 evt Alpha\n",
+      "eventmodeling accDescr: T\u2029%% c\ntf 01 evt Alpha\n",
+    )
+  })
+  it("a mindmap puts a comment line after U+2029 that ends a comment of the header on a line of its own", async () => {
+    await expectKept(
+      "mindmap %% c\u2029%% d\n   root\n",
+      "mindmap %% c\n  %% d\n  root\n",
+    )
+  })
+  it("a mindmap puts each comment line after U+2028 that ends a comment of the header on a line of its own", async () => {
+    await expectKept(
+      "mindmap %% c\u2028%% d\n%% e\n   root\n",
+      "mindmap %% c\n  %% d\n  %% e\n  root\n",
+    )
+  })
+  it("a mindmap puts a comment line after U+2028 that ends a comment after a node on a line of its own", async () => {
+    await expectKept(
+      "mindmap\nR[x]%% c\u2028%% d\n   C\n",
+      "mindmap\n  R[x]%% c\n      %% d\n      C\n",
+    )
+  })
+  it("a mindmap puts a comment line after U+2029 that ends a comment after a node on a line of its own", async () => {
+    await expectKept(
+      "mindmap\nR[x]%% c\u2029%% d\n   C\n",
+      "mindmap\n  R[x]%% c\n      %% d\n      C\n",
+    )
+  })
+  it("a mindmap keeps a line that a comment line after U+2029 joins where the separator ends no diagram comment", async () => {
+    await expectKept(
+      "mindmap\nroot\n  a\u2029%% c\n     b\n",
+      "mindmap\n  root\n    a\u2029%% c\n     b\n",
+    )
+  })
+  it("a mindmap keeps a line that a comment line after U+2028 joins after a node text that holds %%", async () => {
+    await expectKept(
+      "mindmap\nroot\n  a %% c\u2028%% d\n     b\n",
+      "mindmap\n  root\n    a %% c\u2028%% d\n     b\n",
+    )
+  })
+})

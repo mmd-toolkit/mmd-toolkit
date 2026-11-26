@@ -59,14 +59,7 @@ was indented with.
 An exception is an `accTitle` or `accDescr` statement that holds a direction,
 which keeps the first column, since the lexer reads it as a title or a
 description at the first column and as a direction line after an indentation
-(see [Accessibility statements](#accessibility-statements)). A line that a
-comment line after U+2028 or U+2029 joins to the line before it, which
-mermaid.js reads as one line with it, keeps its indentation as written, with the
-statements on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: er/indentation/comment-region-keeps-a-joined-statement-line] [test:
-er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph]
+(see [Accessibility statements](#accessibility-statements)).
 
 Input
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -524,6 +517,10 @@ attribute-spacing/backquoted-word-runs-collapsed]
 
 An attribute written over several lines is printed on one, since the attribute
 block is read without regard to line breaks.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between its type, its name, its keys, and its comment, as between values that
+follow one another, also where a line break was written: Prettier prints
+`margin: 1px`, a line break, and `2px;` in CSS as `margin: 1px 2px;`.
 
 [fixture: attribute-spacing/over-lines-joined] [corpus fixture:
 er/gram-attribute-split-lines] [corpus fixture: er/gram-name-then-key-next-line]
@@ -2137,15 +2134,12 @@ key (the title and the description of a diagram in
 `accTitle: text`: no whitespace before the colon and one space after it, also
 where the colon or the text was written on a later line; where a comment line
 stands before the text, the line breaks stay and the comment and the text stand
-one level deeper, as said above. A statement that holds a comment region that
-joins two of its lines stays as written instead (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+one level deeper, as said above.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [corpus fixture:
 er/lex-acc-title-line-feed-after-colon] [fixture:
-multi-line-statements/acc-colon-and-brace-joined] [test:
-er/accessibility-statements/comment-region-keeps-the-text-line]
+multi-line-statements/acc-colon-and-brace-joined]
 
 Later text lines of an ordinary `accDescr { ... }` block stand one level inside
 its statement, replacing only ASCII spaces and tabs immediately after LF. The
@@ -2160,9 +2154,12 @@ spaces, a line break, and `y` give another accDescr than `x`, a line break, and
 of the last line of text is dropped where the closer stands on a line of its
 own, and is printed as one space where the closer follows it on that line.
 Inside a subgraph, keep the original body columns because the raw description
-also participates in its membership reading; there a line of whitespace only
-stays as written, and the whitespace at the end of the last line of text is
-dropped, or printed as one space before a closer on that line, as above.
+also participates in its membership reading: mermaid.js reads the lines, with
+their columns, as a node of the subgraph, so aligning them changes the Db (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
+there a line of whitespace only stays as written, and the whitespace at the end
+of the last line of text is dropped, or printed as one space before a closer on
+that line, as above.
 
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
@@ -3800,8 +3797,11 @@ attribute name]
 An entity header, a subgraph header, or a class definition with a comment line
 after U+2028 or U+2029 keeps the whitespace and the line breaks of that span as
 written: mermaid.js removes the comment line and its preceding whitespace,
-joining the continuation to the text before the separator. The colors of a class
-definition on it are printed as under [Colors](#colors).
+joining the continuation to the text before the separator. With a line feed in
+place of the separator, the continuation stands on a line of its own, and the
+versions of mermaid.js that count reject the text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The colors of a class definition on it are printed as under [Colors](#colors).
 
 [test: a comment line after U+2028 in an ER entity header] [test: a comment line
 after U+2029 in an ER entity header] [test: a comment line after U+2028 in an ER

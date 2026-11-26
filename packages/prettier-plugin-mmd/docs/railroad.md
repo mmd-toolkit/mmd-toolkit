@@ -796,9 +796,10 @@ Put the arguments of `sequence`, `choice`, `optional`, `oneOrMore` and
 the closing parenthesis at the call's level. Apply this to every nested call,
 including short and singleton calls, independently of `printWidth` and authored
 padding line breaks. This consistently shows the grammar hierarchy. Add no
-trailing commas. The pinned mermaid.js rejects a comma with no argument after it
-in an IR call, so multiline calls end their last argument without a trailing
-comma.
+trailing commas. The versions of mermaid.js that count reject a comma with no
+argument after it in an IR call, so multiline calls end their last argument
+without a trailing comma (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: railroad/ir-choice-trailing-comma]
 
@@ -1427,12 +1428,17 @@ railroad-peg-beta
 Standalone comments use one body step, or column one before the header.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
 standalone comment line inside the diagram body, as Prettier prints the lines
-inside a block. Outside ordinary IR calls, inline comments keep their side and
-their line. An inline comment that touches stays touching. Preserve marks, text,
-tails, block continuation columns and source order. A line comment leaves its
-following operand or terminator on the next line. For the terminator of an ABNF
-rule, every version of mermaid.js that counts rejects `r="comment"; note ;`,
-since the comment takes the terminator (see
+inside a block, and
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the first column before the header, where a comment line stands in
+[gantt](./gantt.md#comments), [requirement](./requirement.md#comments),
+[block](./block.md#comments), and [journey](./journey.md#comments). Outside
+ordinary IR calls, inline comments keep their side and their line. An inline
+comment that touches stays touching. Preserve marks, text, tails, block
+continuation columns and source order. A line comment leaves its following
+operand or terminator on the next line. For the terminator of an ABNF rule,
+every version of mermaid.js that counts rejects `r="comment"; note ;`, since the
+comment takes the terminator (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Every dialect has `%%`; IR also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;`
 line comments, and PEG `#` line comments. Bare ABNF `;` is punctuation; `//` is
@@ -1525,6 +1531,8 @@ railroad-beta
 [fixture: railroad/comments/ir-closer]
 
 [fixture: railroad/comments/ir-positions]
+
+[fixture: railroad/comments/ir-indented-comments]
 
 [fixture: railroad/comments/peg-bare]
 

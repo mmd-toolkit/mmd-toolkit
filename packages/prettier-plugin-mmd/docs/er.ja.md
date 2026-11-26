@@ -61,15 +61,6 @@ subgraph の中でも同じです。
 字句解析器は、1 桁目ではそれをタイトルか説明として読み、
 字下げの後では direction
 の行として読むためです（[アクセシビリティの文](#アクセシビリティの文)を参照）。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上の文とともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: er/indentation/comment-region-keeps-a-joined-statement-line]
-[test: er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph]
 
 入力
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -506,6 +497,11 @@ Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字し�
 
 複数行に書かれた属性は 1 行に印字します。
 属性ブロックは改行に関係なく読まれるからです。
+型、名前、キー、コメントの間には、改行が書かれていても空白 1 つを置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+続けて並ぶ値の間にそう置くからです。
+Prettier は CSS の `margin: 1px`、改行、
+`2px;` を `margin: 1px 2px;` と印字します。
 
 [fixture: attribute-spacing/over-lines-joined]
 [corpus fixture: er/gram-attribute-split-lines]
@@ -2131,10 +2127,6 @@ Db は両端の空白を持たないからです。
 コロンやテキストが後の行に書かれていても同じです。
 テキストの前にコメント行があるときは、上のとおり、改行を残し、
 コメントとテキストを 1 段深く置きます。
-ただし、2 つの行を結ぶコメント領域を含む文は、書かれたまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の、図のタイトルと説明の行を参照してください。
@@ -2143,7 +2135,6 @@ Db は両端の空白を持たないからです。
 [fixture: accessibility-statements/text-with-comment-line-kept]
 [corpus fixture: er/lex-acc-title-line-feed-after-colon]
 [fixture: multi-line-statements/acc-colon-and-brace-joined]
-[test: er/accessibility-statements/comment-region-keeps-the-text-line]
 
 通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
@@ -2162,6 +2153,11 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 subgraph 内では、生の説明がその所属の読みにも使われるため、
 本文の元の列を保ちます。
+mermaid.js はその行を列ごと subgraph の節点として読むので、
+そろえると Db が変わります。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 そこでは空白だけの行は書かれたまま残し、最後のテキスト行の行末の空白は、
 上と同じく落とすか、同じ行に閉じ括弧が続くときは空白 1 つで印字します。
 
@@ -3598,6 +3594,11 @@ U+2028 や U+2029 の後にコメント行がある範囲は、
 クラス定義の色は[色](#色)と同じに印字します。
 mermaid.js がコメント行とその前の空白を除き、
 後続の行を区切り文字の前のテキストにつなぐためです。
+区切り文字を改行にすると、後続の行が独立した行になり、
+数える版の mermaid.js はそのテキストを拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: a comment line after U+2028 in an ER entity header]
 [test: a comment line after U+2029 in an ER entity header]

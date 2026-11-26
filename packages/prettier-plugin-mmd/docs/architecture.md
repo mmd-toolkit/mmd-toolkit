@@ -392,7 +392,10 @@ Preserve bracket interiors, except the spaces, tabs, and no-break spaces next to
 the brackets of the title of a group or a service and of the label of an arrow
 (see [Arrow labels](#arrow-labels)): mermaid.js trims them, so
 `group a(cloud)[ API ]` is printed `group a(cloud)[API]` and
-`service s(server)["x" ]` is printed `service s(server)["x"]`.
+`service s(server)["x" ]` is printed `service s(server)["x"]`. For the spaces
+and tabs, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
+form, as Prettier prints no whitespace inside brackets (`f( a )` is printed
+`f(a);`).
 
 [fixture: label-content/title-edge-whitespace-dropped]
 
@@ -448,9 +451,17 @@ figure is the same (see
 [fixture: label-content/bare-padding]
 
 Whitespace-only and quoted-empty content, escapes, HTML, entities and
-hidden-looking text stay: the Db can distinguish these values, and a title with
-a comment or a directive stays as written. Physical CR/CRLF alone follow the
-shared host policy.
+hidden-looking text stay. mermaid.js keeps an escape, HTML, an entity, a U+2028
+or U+2029, and hidden-looking text in the value that it reads, apart from the
+escape of a quote and the quotes of an HTML attribute (`["A\"B\q\n"]` has the
+title `A"B\q\n`, `[<b>Service</b>]` the title `<b>Service</b>`, and `[%%{}%%]`
+the title `%%{}%%`), so another spelling changes that value. A label of
+whitespace only is printed with one space, and an empty label in quotes keeps
+its quotes. Neither is printed empty, since versions of mermaid.js that count
+reject an empty label without quotes (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A title with a comment or a directive stays as written. Physical CR/CRLF alone
+follow the shared host policy.
 
 [fixture: architecture/label-content/bare-padding]
 
@@ -473,6 +484,14 @@ shared host policy.
 [corpus fixture: architecture/lex-title-bare-trailing-backslash]
 
 [corpus fixture: architecture/line-ls-ps-values]
+
+[corpus fixture: architecture/hidden-directive-inside-values]
+
+[corpus fixture: architecture/html-all-fields]
+
+[corpus fixture: architecture/style-entity-semicolons]
+
+[corpus fixture: architecture/html-label-authored-quotes]
 
 [corpus fixture: architecture/space-unicode-values]
 
@@ -4349,7 +4368,10 @@ differently when a nested `config` value is no longer nested (see
 [Frontmatter](./compatibility.md#frontmatter)). If textBeforeHeader is present,
 retain the complete prefix, including leading LF, comments, passed bare trivia,
 second-scan forms and real/hidden order: cleanup could promote ignored YAML into
-effective data.
+effective data. Without the line feed before a `---` block of invalid YAML, the
+versions of mermaid.js that count read the block as frontmatter and reject the
+text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: architecture/frontmatter-yaml/frontmatter-delimiter-padding-kept]
 
