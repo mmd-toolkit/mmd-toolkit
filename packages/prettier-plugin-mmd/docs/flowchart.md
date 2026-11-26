@@ -1897,8 +1897,7 @@ A chain of links stays on one line, as written.
 
 [fixture: chains/labelled-links-kept]
 
-It is not split into one link per line: where the author splits statements and
-links is kept, as with long lines and statements written over several lines.
+It is not split into one link per line.
 
 [fixture: chains/split-after-semicolon]
 
@@ -1932,8 +1931,6 @@ except that a data block `@{ … }` on one line whose line is wider than
 [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form).
 
 [fixture: line-wrapping/print-width-ignored]
-
-Where else a line is broken is the author's choice, as with chains.
 
 Input
 ([line-wrapping/long-line-kept-input.mmd](../tests/fixtures/flowchart/line-wrapping/long-line-kept-input.mmd)):
@@ -2182,12 +2179,10 @@ flowchart LR
 A statement written over several lines keeps its line breaks, except ordinary
 accessibility colon lines and closed empty description blocks without trivia,
 which join under [Accessibility lines](#accessibility-lines). Each later line of
-other statements stands one level deeper than the first. Where the author breaks
-a statement is the author's choice, as with chains and long lines, and a line
-break between tokens needs no whitespace at the end of the line, which the
-printer never writes; a sequence diagram, a class diagram, and a state diagram
-join such lines instead, because there a line break counts only after
-whitespace.
+other statements stands one level deeper than the first. A line break between
+tokens needs no whitespace at the end of the line, which the printer never
+writes; a sequence diagram, a class diagram, and a state diagram join such lines
+instead, because there a line break counts only after whitespace.
 
 [fixture: multi-line-statements/continuation-in-subgraph] [fixture:
 multi-line-statements/label-over-lines] [fixture:

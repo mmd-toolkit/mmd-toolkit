@@ -1958,7 +1958,6 @@ flowchart LR
 [fixture: chains/labelled-links-kept]
 
 1 辺 1 行には分けません。
-長い行や複数行に書かれた文と同じく、書き手が文や辺を区切った位置を保ちます。
 
 [fixture: chains/split-after-semicolon]
 
@@ -1992,8 +1991,6 @@ Prettier の `printWidth` オプションにかかわらず、行を折り返し
 [規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
 
 [fixture: line-wrapping/print-width-ignored]
-
-それ以外で行をどこで分けるかは、連鎖と同じく書き手が決めます。
 
 入力
 ([line-wrapping/long-line-kept-input.mmd](../tests/fixtures/flowchart/line-wrapping/long-line-kept-input.mmd)):
@@ -2244,7 +2241,6 @@ flowchart LR
 通常のアクセシビリティのコロン行と、注釈類のない閉じた空の説明ブロックは、
 [アクセシビリティの行](#アクセシビリティの行)に従い行をつなぎます。
 それ以外の複数行の文は改行を保ち、2行目以降を1行目より1段深く置きます。
-文をどこで折るかは、連鎖や長い行と同じく書き手の選択です。
 トークンの間の改行は、印字が書かない行末の空白を要しません。
 sequence、class、state は、そこでは改行が空白の後でだけ数えられるので、
 行をつなぎます。

@@ -323,7 +323,7 @@ block-beta
 
 The header, `block-beta` or `block`, is printed as written: mermaid.js reads
 them as the same diagram type, but some versions that count detect `block-beta`
-only, so the spelling is the author's (see
+only, and the examples of the documentation of mermaid.js write `block` (see
 [The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The whitespace before it is dropped (see [Indentation](#indentation)), and a
