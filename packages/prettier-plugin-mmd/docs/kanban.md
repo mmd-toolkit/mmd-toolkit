@@ -431,11 +431,12 @@ A decoration line decorates the node line written last before it, whatever its
 indentation, so its indentation is no part of the Db. The printer puts every
 decoration line at the column of the node line it decorates, as the
 documentation of mermaid.js writes them and as in
-[mindmap](./mindmap.md#decorations). In ` S`, `   A`, and `::icon(x)` at the
-first column, the icon decorates `A` and is printed with 4 characters of
-indentation, those of an item; after a node line that is shallower than the
-first node, which is an item too, the icon follows that node (`    S`, `  A`,
-and ` ::icon(x)` print `A` and the icon with 4 characters).
+[mindmap](./mindmap.md#decorations), so that the attachment shows. In ` S`,
+`   A`, and `::icon(x)` at the first column, the icon decorates `A` and is
+printed with 4 characters of indentation, those of an item; after a node line
+that is shallower than the first node, which is an item too, the icon follows
+that node (`    S`, `  A`, and ` ::icon(x)` print `A` and the icon with 4
+characters).
 
 [fixture: icons-and-classes/aligned] [fixture:
 icons-and-classes/decorations-align] [fixture:
@@ -842,12 +843,13 @@ kanban
 A standalone comment is a comment line (`%% note`), a line of `%%` alone, or a
 line `%%{ }%%`. It is printed at the column of the statement after it, at the
 end of the board at the column of the last statement, and before the header at
-the first column; its mark and its text are kept as written. In `kanban`,
-`%% c1`, ` S`, `       %% c2`, `   A`, `%% c3`, the comments stand with 2, 4,
-and 4 characters of indentation, those of `S` and `A`. A comment line inside a
-multi-line label or data block is removed by mermaid.js and stays on its
-authored line, with eligible data-block margins following
-[Data blocks](#data-blocks).
+the first column; its mark and its text are kept as written. In the body this
+shows which statement the comment is about, as in
+[mindmap](./mindmap.md#comments). In `kanban`, `%% c1`, ` S`, `       %% c2`,
+`   A`, `%% c3`, the comments stand with 2, 4, and 4 characters of indentation,
+those of `S` and `A`. A comment line inside a multi-line label or data block is
+removed by mermaid.js and stays on its authored line, with eligible data-block
+margins following [Data blocks](#data-blocks).
 
 [fixture: data-blocks/indented-comment-line]
 

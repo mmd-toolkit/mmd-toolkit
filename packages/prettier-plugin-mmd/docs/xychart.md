@@ -252,8 +252,8 @@ header-and-orientation/directive-line-between-the-header-and-the-orientation-kep
 The orientation stands on the line of its header, after one space. mermaid.js
 reads it after whitespace of any kind and also after whitespace and a line
 break; the line break is whitespace to the lexer, so the orientation goes to the
-header's line, and no whitespace is left at the end of a line (see
-[Multi-line statements](#multi-line-statements)).
+header's line, and no whitespace is left at the end of a line that nobody sees
+(see [Multi-line statements](#multi-line-statements)).
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between the header and its orientation, as between a keyword and what it takes
 (Prettier prints `return  x` as `return x;`). The orientation is printed as
@@ -855,10 +855,12 @@ where the line break is whitespace to the lexer: a line break after whitespace,
 in a text, between a title and its brackets, in the categories, the values, a
 range, around the label, and after `accTitle:` and `accDescr:`. The line break
 is replaced by one space, and the whitespace at the end of the line goes with
-it. The same rule joins the lines of a statement in the other diagrams (see
-[Multi-line statements](./sequence.md#multi-line-statements)). A long line is
-not wrapped, either: a line break inside the brackets needs whitespace before
-it.
+it. A line that ends in whitespace is invisible, and a statement that goes on to
+the next line because of it is easy to miss, so the printer does not keep it;
+the same rule joins the lines of a statement in the other diagrams (see
+[Multi-line statements](./sequence.md#multi-line-statements)). For this reason a
+long line is not wrapped, either: a line break inside the brackets needs
+whitespace before it that nobody sees.
 
 [fixture: multi-line-statements/title-over-lines-joined] [fixture:
 multi-line-statements/axis-title-and-band-joined] [fixture:

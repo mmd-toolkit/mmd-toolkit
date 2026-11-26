@@ -83,7 +83,7 @@ reads; moving only the authored characters' columns would leave a `├` on a las
 child or a `│` where no sibling follows. Preserve the mode and the reading of
 enclosed box forms, using the body-retention conditions in Branch prefixes.
 Common statement prefixes are removed and ordinary common statements use column
-one.
+one, so they do not appear as children.
 
 Box characters inside a comment line do not select box mode; in indentation mode
 that comment aligns with the following statement.
@@ -1658,9 +1658,9 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 Print ordinary class components as `:::Name` and icon components as
 `icon(reference)`, including `icon()` and `icon(:file)`. Keep class/reference
-spelling. Icon-internal whitespace is not grammar. Classes in
-[kanban](./kanban.md#icons-and-classes) diagrams have no spaces or tabs between
-`:::` and the class name, so
+spelling. Compact marker padding groups the class visually; icon-internal
+whitespace is not grammar. Classes in [kanban](./kanban.md#icons-and-classes)
+diagrams have no spaces or tabs between `:::` and the class name, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 treeView the same compact class marker. Trivia between complete components
 retains its boundaries.
@@ -2421,12 +2421,13 @@ compaction, retain the `;` and use the empty block layout.
 description-blocks/block-ignored-semicolon-interior]
 
 For blocks that keep their braces, put one space between `accDescr` and `{`,
-even when originally touching. Prettier puts one space before the brace that
-opens a block, so plain whitespace between `accDescr` and `{` becomes one space
-under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark). Join plain
-opener whitespace, align ordinary body lines one step inside the statement,
-preserve trivia contents, and align separate closers with the statement. Mermaid
-discards indentation after LF from the description. The body uses the configured
+even when originally touching, to distinguish the keyword from its body.
+Prettier puts one space before the brace that opens a block, so plain whitespace
+between `accDescr` and `{` becomes one space under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark). Join plain opener
+whitespace, align ordinary body lines one step inside the statement, preserve
+trivia contents, and align separate closers with the statement. Mermaid discards
+indentation after LF from the description. The body uses the configured
 indentation, including tabs and the positive minimum step at width zero. In box
 mode remove ordinary keyword/opener prefixes and place the common statement at
 column one, while keeping the body's authored columns: indenting a plain
@@ -2584,10 +2585,11 @@ treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
 ### Comments
 
 In indentation mode, align standalone comment lines with the next statement, or
-the last statement at EOF, as in [ishikawa](./ishikawa.md#comments),
-[kanban](./kanban.md#comments) and [mindmap](./mindmap.md#comments). A comment
-may move deeper or shallower, including before a dedent; successive comments
-share the target column even across blank lines.
+the last statement at EOF, to show their association, as in
+[ishikawa](./ishikawa.md#comments), [kanban](./kanban.md#comments) and
+[mindmap](./mindmap.md#comments). A comment may move deeper or shallower,
+including before a dedent; successive comments share the target column even
+across blank lines.
 
 [fixture: treeview/comments/comment-standalone-aligned] [fixture:
 treeview/comments/aligned-depths] [fixture: treeview/comments/aligned-final]

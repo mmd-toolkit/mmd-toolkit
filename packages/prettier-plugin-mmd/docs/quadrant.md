@@ -69,7 +69,8 @@ quadrantChart
 Each statement stands on a line of its own. mermaid.js rejects two statements on
 one line unless a `;` separates them, but the header may be followed on its line
 by a statement, and a statement may be followed by an empty description block,
-so these go to lines of their own, as in the other diagrams (see
+so these go to lines of their own, because a line of two statements is harder to
+read, as in the other diagrams (see
 [Statements one per line](./flowchart.md#statements-one-per-line)). A `;` ends a
 statement as a line feed does and separates nothing once the statements are on
 lines of their own, so it is dropped, also where it stands first, twice in a
@@ -257,7 +258,9 @@ one: `x-axisL --> R` is printed `x-axis L --> R`, `quadrant-3C` is printed
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between a keyword and its text, as Prettier prints `return  x` as `return x;`:
 `x-axisL --> R` and `x-axis L --> R` are the same axis, and `quadrant-10 A` is
-the quadrant 1 with the text `0 A`, the same as `quadrant-1 0 A`.
+the quadrant 1 with the text `0 A`, the same as `quadrant-1 0 A`, which the
+printed space shows. A space marks where the text starts, which a keyword glued
+to its text hides.
 
 [fixture: keywords-and-texts/title-spaces] [fixture:
 keywords-and-texts/title-tab] [fixture: keywords-and-texts/axis-keyword-spaces]
@@ -337,9 +340,12 @@ The arrow of an axis has one space before it and one after it:
 `x-axis Low Reach --> High Reach`, also where it was written touching
 (`Low Reach-->High Reach`) or with more whitespace. mermaid.js reads the arrow
 the same with or without the whitespace around it, so the form is a choice: one
-space is the form that its documentation uses. The arrow is printed `-->`
-whatever its length (`--->` is `-->`): the length is not in the Db, an axis with
-no second text holds the same text with `--->` and with `-->`, and the
+space is the form that its documentation uses, and it shows where the first text
+ends, which the whitespace inside the texts (see
+[Keywords and texts](#keywords-and-texts)) would otherwise hide. The arrow is
+printed `-->` whatever its length (`--->` is `-->`): the length is not in the
+Db, an axis with no second text holds the same text with `--->` and with `-->`,
+and the
 [versions that count for quadrant charts](./compatibility.md#versions-of-mermaidjs-that-count)
 draw the same figure. The documentation of mermaid.js writes `-->` six times and
 no longer arrow.
@@ -833,8 +839,10 @@ A statement that mermaid.js reads over several lines is printed on one line
 where the line break is whitespace to the lexer: inside a point, around its `:`,
 after its `[`, around its comma, and before its `]`, and after `accTitle:` and
 `accDescr:`. The line break is replaced by one space, and the whitespace at the
-end of the line goes with it. The same rule joins the lines of a statement in
-the other diagrams (see
+end of the line goes with it. A line that ends in whitespace is invisible, and a
+statement that goes on to the next line because of it is easy to miss, so the
+printer does not keep it; the same rule joins the lines of a statement in the
+other diagrams (see
 [Multi-line statements](./xychart.md#multi-line-statements)).
 
 [fixture: multi-line-statements/point-over-lines-joined] [fixture:

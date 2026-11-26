@@ -14,6 +14,7 @@
 
 見出し wardley-beta は原綴のまま第 1 列に置き、
 普通の最初の文を次の行へ移します。
+図種を見つけやすくするためです。
 文が置かれる位置（行頭）は規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [architecture](./architecture.ja.md#header)、[cynefin](./cynefin.ja.md#header)、

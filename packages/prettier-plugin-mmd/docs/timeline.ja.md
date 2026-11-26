@@ -653,7 +653,7 @@ event の文の前の空行も同じ隙間なので、
 [fixture: event-statements/empty-lines-before]
 
 period の event と同じく、各 event は書かれた行に残します。
-後ろの event 行も文の字下げで始めます。
+後ろの event 行も文の字下げで始め、同列の event が入れ子に見えないようにします。
 event の間のコメント行と指令の行も、同じ字下げを使います。
 section の中でも同じです。
 

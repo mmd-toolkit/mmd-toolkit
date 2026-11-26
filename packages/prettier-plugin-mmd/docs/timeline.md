@@ -639,9 +639,9 @@ event-statements/directive-line-before] [fixture:
 event-statements/empty-lines-before]
 
 As for a period, each event stays on the line on which it was written. Later
-event lines use the statement's indentation. Comment lines and directive lines
-between those events use the same indentation. This also applies within a
-section.
+event lines use the statement's indentation, so peer events do not look nested.
+Comment lines and directive lines between those events use the same indentation.
+This also applies within a section.
 
 [fixture: event-statements/several-events] [fixture:
 event-statements/events-of-an-event-statement-on-the-line] [fixture:

@@ -15,11 +15,11 @@ records preserved text and differences from mermaid.js.
 ### Header
 
 Print the authored header at column one and put an ordinary first statement on
-the next line. IR keeps `railroad-beta`, EBNF `railroad-ebnf-beta`, ABNF
-`railroad-abnf-beta`, and PEG `railroad-peg-beta`. Add no colon or flags.
-mermaid.js reads each of the four names in this spelling only: it rejects the
-name without `-beta`, with `-beta` in another case, and in capitals, so no other
-spelling is printed (see
+the next line, making the dialect easy to find. IR keeps `railroad-beta`, EBNF
+`railroad-ebnf-beta`, ABNF `railroad-abnf-beta`, and PEG `railroad-peg-beta`.
+Add no colon or flags. mermaid.js reads each of the four names in this spelling
+only: it rejects the name without `-beta`, with `-beta` in another case, and in
+capitals, so no other spelling is printed (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Hidden
 forms, global trivia and protected semicolon segments retain their shared
 boundaries; an empty body stays empty. Rule 1 names no mark for the line that
@@ -205,15 +205,16 @@ railroad-peg-beta
 ### Statements one per line
 
 Print each ordinary rule on its own line and attach its required final `;`
-without an ordinary preceding space. Prettier prints each statement of the
-languages it formats on a line of its own (`a(); b()` in JavaScript becomes two
-lines), as [flowchart](./flowchart.md#statements-one-per-line) says, and the 14
-railroad examples in the documentation of mermaid.js write one statement on each
-line (a rule may span lines). Rule 1 gives the `;` that ends a rule: its table
-has the row of a `;` that ends a statement, which Prettier prints without
-whitespace before it (`a ;` is printed `a;`). The 14 examples write ` ;` with a
-space before it, which does not change this, since rule 3 decides spellings and
-rule 1 decides the whitespace beside a mark. All four dialects require the last
+without an ordinary preceding space. This exposes rule boundaries without
+changing their syntax. Prettier prints each statement of the languages it
+formats on a line of its own (`a(); b()` in JavaScript becomes two lines), as
+[flowchart](./flowchart.md#statements-one-per-line) says, and the 14 railroad
+examples in the documentation of mermaid.js write one statement on each line (a
+rule may span lines). Rule 1 gives the `;` that ends a rule: its table has the
+row of a `;` that ends a statement, which Prettier prints without whitespace
+before it (`a ;` is printed `a;`). The 14 examples write ` ;` with a space
+before it, which does not change this, since rule 3 decides spellings and rule 1
+decides the whitespace beside a mark. All four dialects require the last
 terminator too. ABNF terminators must be followed immediately by LF or EOF:
 `; note` is a comment and cannot replace a terminator. Keep such a comment and
 the real terminator on their original sides of the line break. Shared semicolon
@@ -535,8 +536,8 @@ railroad-peg-beta
 ### Predicates
 
 PEG predicates print `&expr` and `!expr`, retaining the entire suffix operand.
-Keep groups, postfixes and nested predicates inside groups. The Db label is not
-a replacement expression.
+Keep groups, postfixes and nested predicates inside groups. Tight prefix spacing
+shows the operand; the Db label is not a replacement expression.
 
 [fixture: railroad/predicates/peg-nested]
 
@@ -793,9 +794,10 @@ Put the arguments of `sequence`, `choice`, `optional`, `oneOrMore` and
 `zeroOrMore` on later lines, one level deeper and one argument per line, with
 the closing parenthesis at the call's level. Apply this to every nested call,
 including short and singleton calls, independently of `printWidth` and authored
-padding line breaks. Add no trailing commas. The versions of mermaid.js that
-count reject a comma with no argument after it in an IR call, so multiline calls
-end their last argument without a trailing comma (see
+padding line breaks. This consistently shows the grammar hierarchy. Add no
+trailing commas. The versions of mermaid.js that count reject a comma with no
+argument after it in an IR call, so multiline calls end their last argument
+without a trailing comma (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: railroad/ir-choice-trailing-comma]

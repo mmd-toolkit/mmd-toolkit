@@ -499,6 +499,7 @@ mermaid.js はこれらを独立したトークンとして読み、
 mermaid.js は語をつなぐので、`fill #f00` と `fill#f00` は同じスタイルです。
 接する語は、ほかの隙間と同じように接したままです。
 [ディレクティブ](#ディレクティブ)を参照してください。
+語をつなぐと、どこで語が終わるかが見えなくなるからです。
 
 [fixture: whitespace-between-tokens/style-words-comma-spaced]
 [fixture: whitespace-between-tokens/style-words-as-written]

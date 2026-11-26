@@ -10338,18 +10338,18 @@ railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
 Ordinary composite IR calls always use nested argument lines, independently of
-`printWidth` and authored padding line breaks. Values remain whole and trailing
-commas are not added. Plain `terminal`, `nonterminal` and `special` calls keep
-their quoted values compact; a comment, global directive or native hidden form
-at a call boundary makes a leaf call multiline too. Call gaps use canonical
-outside spaces while preserving trivia contents, internal contacts and written
-trivia line breaks. Native hidden forms remain complete opaque items, including
-global directives inside them, while the grammar around them receives structural
-indentation. After a line break following a constructor, both parentheses use
-continuation indentation, with their arguments one level deeper. Semicolons
-inside values do not prevent this layout; lines containing `style` or `classDef`
-and ignored semicolons retain their protected layout. EBNF, ABNF and PEG keep
-their flat layout.
+`printWidth` and authored padding line breaks, to show the grammar hierarchy.
+Values remain whole and trailing commas are not added. Plain `terminal`,
+`nonterminal` and `special` calls keep their quoted values compact; a comment,
+global directive or native hidden form at a call boundary makes a leaf call
+multiline too. Call gaps use canonical outside spaces while preserving trivia
+contents, internal contacts and written trivia line breaks. Native hidden forms
+remain complete opaque items, including global directives inside them, while the
+grammar around them receives structural indentation. After a line break
+following a constructor, both parentheses use continuation indentation, with
+their arguments one level deeper. Semicolons inside values do not prevent this
+layout; lines containing `style` or `classDef` and ignored semicolons retain
+their protected layout. EBNF, ABNF and PEG keep their flat layout.
 
 [fixture: railroad/comments/ir-leaf-value-comments] [fixture:
 railroad/comments/ir-leaf-boundary-comments] [fixture:

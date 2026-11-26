@@ -47,9 +47,9 @@ those denote characters, not backslashes in a diagram. See
 
 ### Header
 
-The exact `venn-beta` header stands at column one; ordinary header-line
-statements move to body lines, while attached fragments, directives and kept
-parts retain their relations.
+The exact `venn-beta` header stands at column one so the diagram is easy to
+find; ordinary header-line statements move to body lines, while attached
+fragments, directives and kept parts retain their relations.
 
 [corpus fixture: venn/header-before-comment] [corpus fixture:
 venn/header-before-directive] [corpus fixture:

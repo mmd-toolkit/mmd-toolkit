@@ -279,12 +279,12 @@ cynefin-beta
 
 ### Arrow spacing
 
-Use from --> to with one ordinary space on each side of the whole arrow. The
-arrow stands between two domain names, so
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) treats it as a mark
-between two things and prints one space on each side. Never split the arrow or
-wrap its components. Hidden named gaps and global directive contact keep their
-source boundaries.
+Use from --> to with one ordinary space on each side of the whole arrow,
+distinguishing it from the fixed endpoint words. The arrow stands between two
+domain names, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+treats it as a mark between two things and prints one space on each side. Never
+split the arrow or wrap its components. Hidden named gaps and global directive
+contact keep their source boundaries.
 
 [fixture: cynefin/arrow-spacing/arrow-bare]
 
@@ -306,9 +306,10 @@ cynefin-beta
 
 ### Label colon
 
-Use to : "label" with one ordinary space before and after the colon. The label
-belongs to the transition and not to its endpoint, so the examples in the
-documentation of mermaid.js decide the whitespace before the colon (step 3 of
+Use to : "label" with one ordinary space before and after the colon, separating
+the label from its endpoint. The label belongs to the transition and not to its
+endpoint, so the examples in the documentation of mermaid.js decide the
+whitespace before the colon (step 3 of
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): all 4 that
 write a space after the colon write a space before it (counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).

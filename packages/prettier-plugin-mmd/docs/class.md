@@ -458,7 +458,8 @@ as tokens of their own: `style A bold ,italic` is printed
 `style A fill #f00`. Whether whitespace stands between two words stays as
 written: mermaid.js joins the words, so `fill #f00` and `fill#f00` are the same
 style, and a word that touches the next stays touching, as a gap does elsewhere
-(see [Directives](#directives)).
+(see [Directives](#directives)); joining the words would hide where one word
+ends.
 
 [fixture: whitespace-between-tokens/style-words-comma-spaced] [fixture:
 whitespace-between-tokens/style-words-as-written] [fixture:

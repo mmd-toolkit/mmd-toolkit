@@ -35,7 +35,7 @@ mermaid.jsの読みが違うからと結果を戻しません。
 ### Header
 
 見出しを第1列に置きます。
-
+見出しを見つけやすくするためです。
 flowchart の見出しと異なり、見出しの方向 `TD` は `TB` と印字します。
 mermaid.js の文書の例では、`TB` は 10 回、`TD` は 0 回使われているためです。
 （[ヘッダーの向き](./compatibility.ja.md#ヘッダーの向き)を参照）。
@@ -1726,7 +1726,7 @@ U+2028 と U+2029 は、[行の保持](./agentflow.ja.md#kept-lines) のとお�
 [複数行の値](./flowchart.ja.md#複数行の値)を再利用します。
 文字と注釈類のない通常の閉じたブロックの内側は、空白や空行があっても`{}`です。
 外側の語と波括弧の隙間は、元が接していても空白 1 個にします。
-`accDescr {}` と印字します。
+語と本文の開始を見分けやすくするためで、`accDescr {}` と印字します。
 
 [fixture: accessibility/empty-block-touching-keyword]
 

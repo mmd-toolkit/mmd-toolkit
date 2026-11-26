@@ -314,8 +314,8 @@ ishikawa
 
 ### Comments
 
-Standalone comments align with the next node, or the last node at EOF; comments
-before the header stand at column one.
+Standalone comments align with the next node, or the last node at EOF, to show
+their association; comments before the header stand at column one.
 
 [fixture: ishikawa/comments/comments-align] [fixture:
 ishikawa/comments/comment-on-separate-line]
@@ -363,8 +363,8 @@ ishikawa
 
 ### Standalone directives
 
-Standalone directives keep their text and order and align like comments, without
-interpreting embedded data.
+Standalone directives keep their text and order and align like comments, showing
+their association without interpreting embedded data.
 
 [fixture: ishikawa/standalone-directives/directives-align]
 

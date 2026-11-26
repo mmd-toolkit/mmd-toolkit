@@ -16,7 +16,8 @@ data boundaries constrain the line and indentation plan before it is printed.
 ### Header
 
 Keep `eventmodeling` at column one and move an ordinary first statement to the
-next line. Where a statement stands is no place of rule 1, so
+next line, making the header easy to find. Where a statement stands is no place
+of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the first statement its line: [wardley](./wardley.md#header),
 [cynefin](./cynefin.md#header), [architecture](./architecture.md#header), and
@@ -81,10 +82,10 @@ stand at column one too, since every version that counts rejects them indented
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 The pinned Mermaid requires `data` and `note` block closers at column one; the
-formatter aligns their headers there and keeps peer statements at the same
-level. Reconsider this choice if the pinned Mermaid later accepts whitespace
-before block closers, checking that raw body values and rendering remain
-unchanged.
+formatter aligns their headers there and keeps peer statements at the same level
+to avoid suggesting a hierarchy. Reconsider this choice if the pinned Mermaid
+later accepts whitespace before block closers, checking that raw body values and
+rendering remain unchanged.
 
 GWT clauses use one configured step and items two. The start of a line is no
 place of rule 1, so
@@ -581,9 +582,10 @@ line stays on that line: `given evt A %%{{tail}}%%` stays on one line.
 eventmodeling/gwt-clauses-and-items/clause-after-header-directive-with-tail-directive]
 
 Put `gwt 99` at column one, each clause keyword one step deeper and every item
-another step deeper, for the reason under [Indentation](#indentation). No
-closing punctuation is added. Keep required given/then, optional when, item
-order, repetition and type words. Ordinary item components use one space, as
+another step deeper, for the reason under [Indentation](#indentation). This
+shows the authored clause/item relationship without inventing closing
+punctuation. Keep required given/then, optional when, item order, repetition and
+type words. Ordinary item components use one space, as
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between a keyword and what it takes (Prettier prints `return  x` as
 `return x;`). Required `title` boundaries, hidden forms, trivia and protected

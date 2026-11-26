@@ -774,8 +774,8 @@ erDiagram
 ### Statements one per line
 
 Nothing separates two statements of an ER diagram, and mermaid.js reads
-statements that follow one another on a line.
-[flowchart](./flowchart.md#statements-one-per-line),
+statements that follow one another on a line. A line of two statements is hard
+to read, and [flowchart](./flowchart.md#statements-one-per-line),
 [sequence](./sequence.md#statements-one-per-line), and
 [state](./state.md#statements-one-per-line) diagrams print one statement on a
 line too;
@@ -1960,15 +1960,15 @@ and in one without: `stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`,
 and `4px    wide` becomes `4px wide`. Whether whitespace stands between two
 words stays as written: `fill #f00` and `fill#f00` are kept apart, since a word
 that touches the next stays touching, as a gap does elsewhere (see
-[Directives](#directives)). Mermaid concatenates the native style units whatever
-whitespace separates them: `stroke-dasharray: 5 5` still means
-`stroke-dasharray:55`, so the Db does not change. For example,
-`fill   : navy, stroke  : black` becomes `fill: navy, stroke: black`. A header
-or exterior line break that ordinarily joins does not delay this spacing until
-another formatting. Style interiors containing line separators, owned trivia,
-and statements with a kept semicolon on their physical line retain the existing
-style layout. The keywords `style` and `classDef` keep the case in which they
-are written (see
+[Directives](#directives)), and joining the words would hide where one word
+ends. Mermaid concatenates the native style units whatever whitespace separates
+them: `stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does
+not change. For example, `fill   : navy, stroke  : black` becomes
+`fill: navy, stroke: black`. A header or exterior line break that ordinarily
+joins does not delay this spacing until another formatting. Style interiors
+containing line separators, owned trivia, and statements with a kept semicolon
+on their physical line retain the existing style layout. The keywords `style`
+and `classDef` keep the case in which they are written (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case)).
 
 [fixture: styles-and-classes/style-unit-padding] [fixture:

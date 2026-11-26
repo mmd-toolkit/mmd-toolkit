@@ -729,7 +729,7 @@ erDiagram
 
 ER 図の 2 つの文を区切るものはなく、
 mermaid.js は 1 行に続けて書かれた文も読みます。
-各文は行に単独で置きます。
+1 行に 2 つの文があると読みにくいため、各文は行に単独で置きます。
 [flowchart](./flowchart.ja.md#1-行に-1-文)、
 [sequence](./sequence.ja.md#1-行に-1-文)、
 [state](./state.ja.md#1-行に-1-文) の図も、1 行に 1 つの文を印字します。
@@ -1948,6 +1948,7 @@ Prettier が CSS の `margin: 1px    2px` を `margin: 1px 2px`
 ほかの隙間と同じように、接する語は接したままです。
 そのため、`fill #f00` と `fill#f00` は区別して残します。
 [ディレクティブ](#ディレクティブ)を参照してください。
+語をつなぐと、どこで語が終わるかが見えなくなるからです。
 Mermaid は、区切る空白にかかわらずスタイルの単位をつなげて読むため、
 `stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` で、Db は変わりません。
 `fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。

@@ -126,7 +126,8 @@ architecture-beta title t service a; junction j
 Use one space between the keyword and ID.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between the keyword and its ID, as Prettier prints `return  x` as `return x;`.
-Print `group g(cloud)[G]`, `service a(server)[A]` and `service a[A]`.
+Print `group g(cloud)[G]`, `service a(server)[A]` and `service a[A]`: touching
+parentheses and brackets make the attached parts read as one node.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the touching
 `(` and `[`: Prettier prints no whitespace before the `(` of a call and none
 before the `[` of an index (`f (a) [0]` is printed `f(a)[0];`).
@@ -534,17 +535,17 @@ architecture-beta
 ### Arrow lines
 
 Keep the line and its optional markers together, with one ordinary space on each
-side: `a:R <-- L:b`, `a:T --> B:b`, `a:R <--> L:b`.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space on
-each side: the line with its markers is a mark between two things, as the `-->`
-of a flowchart is, and Prettier prints a mark between two things with one space
-on each side (the row of rule 1 for another mark between two things: `A-->B` in
-a flowchart is printed `A --> B`, and `A<-->B` and `A---B` are printed
-`A <--> B` and `A --- B`). Keep both actual marker characters, including `>--<`;
-their presence flags do not specify their glyphs. The Db of the pinned version
-gives `>--<` and `<-->` the same flags, and the versions that were run read and
-draw both alike, so no reason keeps the reversed glyph, and its row is in the
-list (D02). No-marker lines use the same spaces.
+side: `a:R <-- L:b`, `a:T --> B:b`, `a:R <--> L:b`. This separates the line from
+the ports. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+space on each side: the line with its markers is a mark between two things, as
+the `-->` of a flowchart is, and Prettier prints a mark between two things with
+one space on each side (the row of rule 1 for another mark between two things:
+`A-->B` in a flowchart is printed `A --> B`, and `A<-->B` and `A---B` are
+printed `A <--> B` and `A --- B`). Keep both actual marker characters, including
+`>--<`; their presence flags do not specify their glyphs. The Db of the pinned
+version gives `>--<` and `<-->` the same flags, and the versions that were run
+read and draw both alike, so no reason keeps the reversed glyph, and its row is
+in the list (D02). No-marker lines use the same spaces.
 
 [fixture: architecture/arrow-lines/arrow-both-markers]
 
@@ -574,7 +575,8 @@ architecture-beta
 
 ### Arrow labels
 
-Print labelled lines as `a:R <-[label]-> L:b`. Remove the ordinary exterior
+Print labelled lines as `a:R <-[label]-> L:b`: the single dashes, whole
+bracketed label and markers form one visual unit. Remove the ordinary exterior
 gaps, and the spaces, tabs, and no-break spaces next to the brackets of the
 label, as for the title of a group or a service (see
 [Label content](#label-content)): `a:R -[ Label ]- L:b` is printed
@@ -616,9 +618,9 @@ architecture-beta
 
 ### Group modifiers
 
-Attach the authored `{group}` to its endpoint, as `a{group}:R`. Keep its fixed
-interior and both authored presence flags, even on ungrouped nodes; do not
-substitute resolved group IDs.
+Attach the authored `{group}` to its endpoint, as `a{group}:R`. This makes the
+modifier read with its ID. Keep its fixed interior and both authored presence
+flags, even on ungrouped nodes; do not substitute resolved group IDs.
 
 [fixture: architecture/group-modifiers/modifier-touch]
 
@@ -3820,8 +3822,9 @@ architecture-beta
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, separate the keyword and opening brace with
-one space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
-space: Prettier prints one space between a keyword and the `{` of its block
+one space so the block boundary is clear.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the space:
+Prettier prints one space between a keyword and the `{` of its block
 (`try  { a }` is printed with `try {`, and `else   { z }` with `else {`).
 Whitespace-only interiors become `{}` because no text needs surrounding space.
 Plain opener whitespace can join; real trivia keeps its break.

@@ -48,9 +48,9 @@ usecase/div-comment-preheader-bare]
 
 ### Header
 
-Put exact lower-case `usecase-beta` at column one and place the body below it.
-Exterior ASCII spaces/tabs disappear; direction remains a separate statement.
-Trailing ASCII spaces and tabs disappear under
+Put exact lower-case `usecase-beta` at column one and place the body below it,
+so the diagram starts visibly. Exterior ASCII spaces/tabs disappear; direction
+remains a separate statement. Trailing ASCII spaces and tabs disappear under
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) because they are at
 the end of the header line. A header alone is accepted and gains the ordinary
 final newline; case, stable-header and inline-body failures follow the shared
@@ -164,7 +164,8 @@ usecase-beta
 `actor`, as Prettier prints `return  x` as `return x;`. Reuse
 [ER's compact entity layout](./er.md#entities) for tight id/shape delimiters and
 metadata/class suffixes, no exterior ASCII label padding, and comma-space
-between actor items. Stereotype spacing follows
+between actor items, which shows the separate actor occurrences that one `actor`
+keyword introduces. Stereotype spacing follows
 [its class-based rule](#stereotypes). Keep explicit ids, ellipse/rectangle
 spelling, markdown labels, suffix order and every declaration/reference
 occurrence; a name and a label are printed in the form that the examples use

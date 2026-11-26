@@ -323,6 +323,7 @@ ishikawa
 ### Comments
 
 独立したコメントは次の節点に、末尾では最後の節点に揃えます。
+節点との関係を示すためです。
 見出しより前のコメントは 1 列目に置きます。
 
 [fixture: ishikawa/comments/comments-align]
@@ -370,8 +371,8 @@ ishikawa
 
 ### Standalone directives
 
-独立したディレクティブは、埋め込みデータを解釈せず、内容と順序を保ち、
-コメントと同じように揃えます。
+独立したディレクティブは内容と順序を保ち、コメントと同じように揃えます。
+埋め込みデータを解釈せず、節点との関係を示すためです。
 
 [fixture: ishikawa/standalone-directives/directives-align]
 

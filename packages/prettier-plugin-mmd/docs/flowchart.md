@@ -2077,8 +2077,8 @@ flowchart unicode-gaps] [test: graph accessibility: flowchart unicode-values]
 
 A closed description block with no text or trivia prints its interior as `{}`,
 including when its braces contained spaces or blank lines. The exterior
-keyword-to-brace gap prints one space, even when the tokens originally touched:
-`accDescr {}`.
+keyword-to-brace gap prints one space, even when the tokens originally touched,
+so the keyword and body opener remain distinct: `accDescr {}`.
 
 [fixture: accessibility-lines/empty-block-touching-keyword]
 
@@ -3996,7 +3996,8 @@ each.
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
 
 The YAML is kept as written when Prettier cannot read it, and when the `---`
-lines are indented: the `---` lines are kept as written. It is also kept as
+lines are indented: the `---` lines are kept as written, and a body at the first
+column between indented `---` lines would look broken. It is also kept as
 written when a line of the formatted YAML is a `---` line, which would end the
 frontmatter early: Prettier prints `--- !!map` after a `%YAML` directive as
 `---` and `!!map` on two lines. It is also kept as written when it contains a

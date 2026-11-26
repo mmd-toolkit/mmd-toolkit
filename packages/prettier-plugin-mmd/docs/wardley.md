@@ -13,8 +13,9 @@ records preserved text and differences from mermaid.js.
 ### Header
 
 Print the authored wardley-beta header at column one and move an ordinary first
-statement below it. Add no colon. Where a statement stands is no place of rule
-1, so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+statement below it. This makes the diagram type easy to find; add no colon.
+Where a statement stands is no place of rule 1, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [architecture](./architecture.md#header),
 [cynefin](./cynefin.md#header), [radar](./radar.md#header), and
 [treemap](./treemap.md#header) print the header on a line of its own and an
