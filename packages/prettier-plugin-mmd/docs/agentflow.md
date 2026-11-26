@@ -921,7 +921,11 @@ agentflow-beta TB
 
 Reuse [Label inner whitespace](./flowchart.md#label-inner-whitespace): Mermaid
 discards ordinary bare exterior padding, whereas internal and quoted/markdown
-label text stays, and a label of spaces and tabs only is printed as one space.
+label text stays, and a label of spaces and tabs only is printed as one space. A
+run of spaces inside a quoted label stays: mermaid.js holds it in the text of
+the vertex, and a label long enough to wrap is drawn with the run wider than one
+space (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Keep one leading/trailing space for slash, backslash, dash, quote characters,
 and when `@` in the first word would make it read as an edge id (see
 [Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace));
@@ -959,10 +963,10 @@ a change of the text that no rule of this document defines.
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
-[fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
-[fixture: labels/slash-label-padding-kept] [fixture:
-labels/label-comment-ends-label] [fixture:
-labels/label-comment-ends-label-spaces-and-comment-lines] [fixture:
+[fixture: labels/quoted-label-space-run-kept] [fixture: labels/labels-tilde]
+[fixture: labels/labels-trim-sensitive-unsafe] [fixture:
+labels/slash-label-padding-kept] [fixture: labels/label-comment-ends-label]
+[fixture: labels/label-comment-ends-label-spaces-and-comment-lines] [fixture:
 labels/label-comment-semicolon-ends-label] [fixture:
 labels/label-comment-semicolon-label-goes-on] [test: agentflow: a no-break space
 before a comment that ends the label of a vertex] [test: agentflow: U+3000
