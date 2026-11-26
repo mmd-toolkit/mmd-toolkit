@@ -532,6 +532,10 @@ attribute-spacing/backquoted-word-runs-collapsed]
 
 An attribute written over several lines is printed on one, since the attribute
 block is read without regard to line breaks.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between its type, its name, its keys, and its comment, as between values that
+follow one another, also where a line break was written: Prettier prints
+`margin: 1px`, a line break, and `2px;` in CSS as `margin: 1px 2px;`.
 
 [fixture: attribute-spacing/over-lines-joined] [corpus fixture:
 er/gram-attribute-split-lines] [corpus fixture: er/gram-name-then-key-next-line]
@@ -2164,9 +2168,12 @@ spaces, a line break, and `y` give another accDescr than `x`, a line break, and
 of the last line of text is dropped where the closer stands on a line of its
 own, and is printed as one space where the closer follows it on that line.
 Inside a subgraph, keep the original body columns because the raw description
-also participates in its membership reading; there a line of whitespace only
-stays as written, and the whitespace at the end of the last line of text is
-dropped, or printed as one space before a closer on that line, as above.
+also participates in its membership reading: mermaid.js reads the lines, with
+their columns, as a node of the subgraph, so aligning them changes the Db (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
+there a line of whitespace only stays as written, and the whitespace at the end
+of the last line of text is dropped, or printed as one space before a closer on
+that line, as above.
 
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
