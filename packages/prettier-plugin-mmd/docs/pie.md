@@ -12,9 +12,9 @@ output reparsing. Invisible-character examples are escaped test cases.
 An exact lower-case `pie` starts at column one;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `pie` and a written `showData`, as Prettier prints `return  x` as
-`return x;`. A header at column one is easier to find than an indented one. An
-ordinary inline first statement moves below it. Hidden predecessors of the flag
-retain their position and consumed breaks; moving them would end the flag
+`return x;`. An ordinary inline first statement moves below it. A header at
+column one is easier to find than an indented one. Hidden predecessors of the
+flag retain their position and consumed breaks; moving them would end the flag
 opportunity.
 
 [fixture: pie/header/header-space] [fixture: pie/header/header-absent] [fixture:

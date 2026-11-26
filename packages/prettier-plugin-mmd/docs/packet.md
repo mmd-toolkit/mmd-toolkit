@@ -10,9 +10,9 @@ escaped fixed tests.
 
 ### Header
 
-Keep the authored `packet` or `packet-beta` keyword at column one. A header at
-column one is easier to find than an indented one. Move an ordinary first
-statement below it, as in the other diagram types. Only `packet` requires a
+Keep the authored `packet` or `packet-beta` keyword at column one. Move an
+ordinary first statement below it, as in the other diagram types. A header at
+column one is easier to find than an indented one. Only `packet` requires a
 following boundary; never create a glued spelling. Hidden boundaries and
 protected header/body groups take precedence. Keep the authored synonym: some
 versions that count read `packet-beta` only (see
@@ -145,9 +145,7 @@ packet
 ### Range dash
 
 Print ordinary range gaps with no spaces, as `0-15`, so the numeric range reads
-as one visual unit. Rule 1 gives no form here: the `-` joins the start and the
-end of a range, a mark that the languages of Prettier do not have, and not the
-`-` of a subtraction. `0 - 15` reads as a subtraction, while `0-15` reads as one
+as one visual unit. `0 - 15` reads as a subtraction, while `0-15` reads as one
 range. The examples in the documentation of the pinned mermaid.js write all 20
 ranges without spaces too. Preserve global trivia and hidden boundaries instead
 of tightening them: a consumed LF is not an ordinary space. For
