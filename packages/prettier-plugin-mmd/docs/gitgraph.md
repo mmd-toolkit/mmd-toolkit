@@ -11,14 +11,17 @@ cases.
 ### Header
 
 Keep the exact `gitGraph` word and the authored direction, which changes the Db.
-Print ordinary gaps as `gitGraph LR:` or `gitGraph`; an ordinary inline first
-statement moves below the header. The colon of a header without a direction is
-left out, as the documentation of mermaid.js writes it (30 headers without it, 2
-with it): `gitGraph:` is printed `gitGraph`, and every version that counts reads
-and draws the two forms the same. The colon after a direction stays, since
-mermaid.js rejects `gitGraph LR` without it. So does a colon that a directive
-precedes, since a version that counts rejects such a header without the colon
-when a statement follows on the next line, and accepts it with the colon (see
+Print ordinary gaps as `gitGraph LR:` or `gitGraph`, with the one space between
+a keyword and what it takes that
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives (Prettier
+prints `return  x;` as `return x;`); an ordinary inline first statement moves
+below the header. The colon of a header without a direction is left out, as the
+documentation of mermaid.js writes it (30 headers without it, 2 with it):
+`gitGraph:` is printed `gitGraph`, and every version that counts reads and draws
+the two forms the same. The colon after a direction stays, since mermaid.js
+rejects `gitGraph LR` without it. So does a colon that a directive precedes,
+since a version that counts rejects such a header without the colon when a
+statement follows on the next line, and accepts it with the colon (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The directive stands after the space that the gap has without it, which is none
@@ -354,11 +357,15 @@ gitGraph
 
 Keep string/reference padding, internal spaces, tabs, physical lines, Unicode,
 case, escapes, HTML and entities. Empty values remain leaves. These spellings
-can change identity, lookup and tag values; do not reconstruct them from
-converted Db values or decode escapes as JavaScript. Physical CR conversion is
-handled separately by the host.
+can change identity, lookup and tag values: two commits whose ids differ only by
+a run of spaces are two commits, and with the run printed as one space every
+version that counts draws one (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Do not reconstruct them from converted Db values or decode escapes as
+JavaScript. Physical CR conversion is handled separately by the host.
 
 [fixture: gitgraph/authored-values/inner-padding-change] [fixture:
+gitgraph/authored-values/ids-differing-by-a-run-kept] [fixture:
 gitgraph/authored-values/inner-runs-change] [fixture:
 gitgraph/authored-values/inner-case-change] [fixture:
 gitgraph/authored-values/inner-escape-spelling] [corpus fixture:
@@ -940,9 +947,13 @@ gitGraph
 Reuse the shared host line-ending policy: normalize physical CR/CRLF to LF and
 emit configured endOfLine, including within values, blocks and hidden forms.
 Preserve LS/PS/NBSP/BOM in content; only common line-value edges trim common
-whitespace. Plain block-opener whitespace can join. Structural non-ASCII
-separators stay rejected. A leading BOM follows Prettier host handling, not a
-byte-identity guarantee.
+whitespace. Such a character is part of the value that mermaid.js keeps in the
+Db, so that an id with a U+FEFF names another commit than the id without it, and
+a change of it is no kind of change of the Db that formatting may make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
+Plain block-opener whitespace can join. Structural non-ASCII separators stay
+rejected. A leading BOM follows Prettier host handling, not a byte-identity
+guarantee.
 
 [test: gitgraph/line-terminators-and-unicode/eol-cr] [test:
 gitgraph/line-terminators-and-unicode/eol-crlf] [test:
