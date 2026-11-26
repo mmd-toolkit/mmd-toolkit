@@ -319,11 +319,7 @@ the form; the four examples of its documentation write
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
 A directive in the gap is placed as under [Directives](#directives), and a
-U+2028 or U+2029 stays where it is. Rule 1 names no mark for a gap that holds
-one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+U+2028 or U+2029 stays where it is.
 
 [test: U+2028 before the `:::` of a class] [test: U+2029 after the `:::` of a
 class]
