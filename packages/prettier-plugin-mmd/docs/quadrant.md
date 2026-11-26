@@ -31,7 +31,6 @@ Nothing in the grammar forbids indenting a statement, and the documentation of
 mermaid.js writes the statements one level deeper than the header, as the other
 diagrams do (see [Indentation](./flowchart.md#indentation) in the flowchart
 rules). The header, and a comment line before it, stand at the first column.
-[Comments](#comments) gives the reason for the comment line.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/written-indentation-dropped] [fixture:
@@ -859,11 +858,9 @@ line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the later parts of
-a statement and the comment and directive lines between them one level deeper,
-where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text, and
-the like).
+comment or a directive and the whitespace before it, where no other rule keeps
+the layout as written (where the Db holds the text with its whitespace, where
+moving a line makes mermaid.js reject the text, and the like).
 
 [fixture: multi-line-statements/point-trivia-with-multiline-label] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
@@ -1019,12 +1016,9 @@ A comment starts with `%%` where a unit starts and runs to the end of the line.
 A comment on a line of its own stands at the level of the statement after it,
 and its text and its mark are kept as written: a comment line after the last
 statement stays after it, and one before the header stands at the first column.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the first column of a comment line before the header, as
-[gantt](./gantt.md#comments), [requirement](./requirement.md#comments), and
-[block](./block.md#comments) put one there. A `%%` inside a title, an
-accessibility text, a description block, or a string is a character of it, and
-inside the brackets of a point it makes the input rejected.
+A `%%` inside a title, an accessibility text, a description block, or a string
+is a character of it, and inside the brackets of a point it makes the input
+rejected.
 
 [fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
 comments/comment-line-at-the-end] [fixture:

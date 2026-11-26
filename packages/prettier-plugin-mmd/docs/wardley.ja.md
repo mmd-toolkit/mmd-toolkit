@@ -3197,11 +3197,6 @@ wardley-beta
 ### コメント
 
 普通の独立コメントは所属する本文の段、見出し前は第 1 列に揃えます。
-見出しの前のコメントの桁は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#コメント)、[xychart](./xychart.ja.md#コメント)、
-[radar](./radar.ja.md#comments)、[pie](./pie.ja.md#comments)も、
-それを第 1 列に印字します。
 行内コメントは同じ行に残します。
 接するコメントは接したまま残します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、

@@ -6392,20 +6392,12 @@ the start or at the end of the printed line. See
 
 Ordinary comments and directives between structural parts retain their required
 line breaks without freezing the parts' columns. Continuations and intervening
-standalone trivia use one indentation level inside the statement. Rule 1 gives
-no form here, since its table does not name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [requirement](./requirement.md#fields),
-[sequence](./sequence.md#multi-line-statements),
-[flowchart](./flowchart.md#multi-line-statements), and
-[xychart](./xychart.md#multi-line-statements) put the continuations and the
-intervening comment lines of a statement one level deeper than the statement,
-where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text, and
-the like). Keep each first gap-line tail, including whitespace needed before LF,
-and keep value and directive interiors whole. Joining comment regions, semicolon
-protections and diagram-specific value boundaries still take precedence.
+standalone trivia use one indentation level inside the statement. Other rules
+keep the layout as written where the Db holds the text with its whitespace,
+where moving a line makes mermaid.js reject the text, and the like. Keep each
+first gap-line tail, including whitespace needed before LF, and keep value and
+directive interiors whole. Joining comment regions, semicolon protections and
+diagram-specific value boundaries still take precedence.
 
 This applies to class and state statements, ER statements, requirement headers,
 fields and statements, and sequence statements other than trivia-separated
@@ -7137,15 +7129,10 @@ what it takes (`Note` and `right of Bob`, `create` and `participant Carol`,
 [fixture: sequence/multi-line-statements/joined] [fixture:
 sequence/multi-line-statements/more-lines-joined]
 
-One with a comment or a directive keeps its line breaks and aligns structural
-continuations. Rule 1 gives no form here, since its table does not name the
-start of a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [requirement](./requirement.md#fields) and
-[flowchart](./flowchart.md#multi-line-statements) put the comment and directive
-lines of a statement one level deeper than the statement. The whitespace before
-the first line break of each gap is retained because it can join the lines for
-the lexer.
+One with a comment or a directive keeps its line breaks; structural
+continuations and intervening comment and directive lines stand one level inside
+the statement. The whitespace before the first line break of each gap is
+retained because it can join the lines for the lexer.
 
 [fixture: sequence/multi-line-statements/comment-inside-kept]
 

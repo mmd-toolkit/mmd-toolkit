@@ -677,9 +677,6 @@ mindmap
 [fixture: comments/only-comments]
 
 ヘッダーの前のコメント行は 1 桁目に置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの位置を与えます。
-[gantt](./gantt.ja.md#コメント)、[requirement](./requirement.ja.md#コメント)、
-[block](./block.ja.md#コメント)も、ヘッダーの前のコメント行を 1 列目に置きます。
 
 [fixture: comments/before-the-header]
 

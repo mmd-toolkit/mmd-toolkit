@@ -434,9 +434,9 @@ info showInfo
 ### Comments
 
 Use [shared comment placement](./pie.md#comments) to keep attachment and source:
-preheader comments start at column one, ordinary standalone body comments one
-step in, and inline comments on their line. A run of spaces and tabs before an
-inline comment becomes one space.
+ordinary standalone body comments start one step in, and inline comments stay on
+their line. Preheader comments start at column one. A run of spaces and tabs
+before an inline comment becomes one space.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.

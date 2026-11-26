@@ -1700,8 +1700,7 @@ class 図では、改行は文を終えます。
 [corpus fixture: class/lex-direction-line-value-next-line]
 
 コメントかディレクティブの隣の改行は残し、
-構造の続きの行と間の注釈を 1
-段深く置きます（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+構造の続きの行と間の注釈を 1 段深く置きます。
 
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 
