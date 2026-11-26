@@ -1456,7 +1456,13 @@ kanban
 HTML タグを始めうる `<` を含むもの、
 整形した YAML が `---` の行を含むことになるものは、書かれたまま残します。
 閉じの `---` の後の空白も残します。
-フロントマターとヘッダーの間のコメントやディレクティブは残し、
+フロントマターとヘッダーの間のコメントやディレクティブは残し、1 桁目に置きます。
+ヘッダーより前のコメント行は、[gantt](./gantt.ja.md#コメント)、
+[requirement](./requirement.ja.md#コメント)、[block](./block.ja.md#コメント)、
+[journey](./journey.ja.md#コメント)でも 1 桁目に置きます。
+ヘッダーより前のディレクティブも、
+[block](./block.ja.md#指令)では 1 桁目に置きます。
+どちらも[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)によります。
 その後のボードは通常どおり整形します。
 YAML の整形はデータブロックには及ばず、対象となる余白だけを動かします。
 [データブロック](#データブロック)を参照してください。
@@ -1468,6 +1474,7 @@ YAML の整形はデータブロックには及ばず、対象となる余白だ
 [fixture: frontmatter-yaml/delimiter-line-kept]
 [test: kanban: closing-delimiter-whitespace-kept]
 [fixture: frontmatter-yaml/comment-and-directive]
+[fixture: frontmatter-yaml/comment-and-directive-indented]
 
 入力
 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/kanban/frontmatter-yaml/formatted-input.mmd)):
