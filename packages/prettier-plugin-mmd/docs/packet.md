@@ -446,14 +446,13 @@ removing it changes the description. Ordinary description body and standalone
 comment lines align one level inside the statement, since the Db removes
 indentation after LF. Keep line breaks and interior blank lines, and the
 whitespace at the end of each line of text except the last one: mermaid.js keeps
-the line breaks in the description, and a blank line between two lines is one at
-most, as [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives; a
-line of whitespace only becomes an empty line. The whitespace at the end of the
-last line of text is dropped where the closer stands on a line of its own, and
-is printed as one space where the closer follows it on that line. A separate
-closer aligns with the statement. Directives and shared removed comment regions
-keep their complete source. Quotes, backslashes and hidden-looking text do not
-protect the first closing brace.
+the line breaks in the description, and a line of whitespace only becomes an
+empty line. A run of blank lines between two lines of text stays as written. The
+whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. A separate closer aligns with the statement. Directives
+and shared removed comment regions keep their complete source. Quotes,
+backslashes and hidden-looking text do not protect the first closing brace.
 
 [corpus fixture: packet/common-block-bare]
 
@@ -464,6 +463,8 @@ description-blocks/block-trailing-whitespace] [fixture:
 description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: packet/description-blocks/description-columns]
+
+[fixture: packet/description-blocks/blank-line-run-kept]
 
 [fixture: packet/description-blocks/description-trivia]
 

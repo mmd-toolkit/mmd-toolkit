@@ -477,8 +477,7 @@ mermaid.js の Db に説明の文字列として記録されます。
 Db で LF 後の字下げが取り除かれるためです。
 改行と内部の空行は保ちます。
 mermaid.js は説明の中の改行を保ちます。
-2 つの行の間の空行は、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えるとおり多くとも 1 つです。
+2 つのテキスト行の間の空行の連なりは、書かれたまま残します。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
@@ -497,6 +496,8 @@ mermaid.js は説明の中の改行を保ちます。
 [fixture: description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: packet/description-blocks/description-columns]
+
+[fixture: packet/description-blocks/blank-line-run-kept]
 
 [fixture: packet/description-blocks/description-trivia]
 
