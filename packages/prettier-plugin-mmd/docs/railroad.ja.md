@@ -1779,14 +1779,7 @@ mermaid.js はコメント行を取り除いて、
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-この配置は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
-[radar](./radar.ja.md#global-directives)、
-[packet](./packet.ja.md#global-directives)、
-[wardley](./wardley.ja.md#global-directive) も、
-整形が分ける単位の隙間のディレクティブを同じように置きます。
-ただし、
-ほかの規則が配置を書かれたまま残す所（保護された `style` や `classDef`
-の行など）は別です。
+保護された `style` や `classDef` の行などは、配置を書かれたまま残します。
 通常の独立したディレクティブを本文で1段字下げします。
 通常の独立したディレクティブは、
 [info](./info.ja.md#global-directives) と

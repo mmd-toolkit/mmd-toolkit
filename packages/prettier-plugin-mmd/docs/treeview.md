@@ -1280,19 +1280,14 @@ Keep the existing body-retention conditions for selected or unselected
 semicolons and unsafe LS/PS-leading values. Comment regions held inside a value
 stay in that value while an intervening directive before it takes the separate
 line. In indentation mode keep the existing placement of a leading directive
-with its node. In indentation mode, rule 1 names no mark for a directive between
-two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#directives), [er](./er.md#directives),
-and [gantt](./gantt.md#directives) move a directive in the gap of units that
-formatting splits with the following unit, keep its right-side contact or
-separation, and break its left contact, where no other rule keeps the layout as
-written. In box mode a directive that leaves a split gap stands alone on a line
-at column one, and does not touch the prefix of the next unit as rule 2 would
-put it: a prefix that crosses a directive makes the whole body retained as
-written under [Branch prefixes](#branch-prefixes), and later passes would no
-longer redraw the tree. With a space between the directive and the prefix,
-mermaid.js draws another figure.
+with its node. In indentation mode, a directive in the gap of units that
+formatting splits moves with the following unit, keeps its right-side contact or
+separation, and breaks its left contact. In box mode a directive that leaves a
+split gap stands alone on a line at column one, and does not touch the prefix of
+the next unit as in indentation mode: a prefix that crosses a directive makes
+the whole body retained as written under [Branch prefixes](#branch-prefixes),
+and later passes would no longer redraw the tree. With a space between the
+directive and the prefix, mermaid.js draws another figure.
 
 [fixture:
 treeview/statements-one-per-line/review159-split-directive-selected-semicolon]

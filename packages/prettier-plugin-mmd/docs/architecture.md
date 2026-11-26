@@ -4057,15 +4057,9 @@ Keep Root directive content, order and ownership. Within a printed line, place a
 directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
-contact is broken. Rule 1 names no mark for a directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [gantt](./gantt.md#directives) and
-[journey](./journey.md#directives) move a directive in the gap of units that
-formatting splits with the following unit, keep its right-side contact or
-separation, and break its left contact, where no other rule keeps the layout as
-written. Ordinary standalone starts align one body step in; multiline interiors
-and EOF-reaching endings stay written. A directive on a line of its own stands
-at the level of the statements around it, as in
+contact is broken. Ordinary standalone starts align one body step in; multiline
+interiors and EOF-reaching endings stay written. A directive on a line of its
+own stands at the level of the statements around it, as in
 [flowchart](./flowchart.md#directives), [sequence](./sequence.md#directives),
 and [gantt](./gantt.md#directives). Common removal joins surrounding text, so
 deleting component-boundary whitespace can reject a declaration. Preserve

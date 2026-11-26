@@ -1707,16 +1707,12 @@ Print every Root directive from its source span once at its owner position.
 Outside ordinary IR call gaps, place a directive within a printed line as under
 [Directives](./flowchart.md#directives). When formatting splits units that were
 on the same line, a directive in their gap moves with the following unit: its
-right boundary stays touching or separated, while its left contact is broken.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this placement, as [radar](./radar.md#global-directives),
-[packet](./packet.md#global-directives), and
-[wardley](./wardley.md#global-directives) place a directive in the gap of units
-that formatting splits, where no other rule keeps the layout as written (a
-protected `style` or `classDef` line, and the like). Use one body step for
-ordinary standalone directives. An ordinary standalone directive has one body
-step of indentation in [info](./info.md#global-directives) and
-[packet](./packet.md#global-directives) diagrams too;
+right boundary stays touching or separated, while its left contact is broken. A
+protected `style` or `classDef` line, and the like, keeps its layout as written.
+Use one body step for ordinary standalone directives. An ordinary standalone
+directive has one body step of indentation in
+[info](./info.md#global-directives) and [packet](./packet.md#global-directives)
+diagrams too;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 this depth. Do not format their contents as JSON or collect them before the
 header. Uniform added spaces can change strings, repeat components, numeric

@@ -3967,16 +3967,10 @@ Keep Root directive source, order and ownership. Within a printed line, place a
 directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
-contact is broken. Rule 1 names no mark for a directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#directives),
-[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-print such a gap in the same way (`A%%{init: {}}%%-->B` is printed
-`A %%{init: {}}%%--> B` in a flowchart, `A->>%%{init: {}}%%B: x` is printed
-`A ->> %%{init: {}}%%B: x` in a sequence diagram, and `component%%{wrap}%%Glued`
-is printed `component %%{wrap}%%Glued` here). Ordinary standalone directives
-align with their body, as [flowchart](./flowchart.md#directives) stands a
-directive on a line of its own at the level of the statements around it
+contact is broken. `component%%{wrap}%%Glued` is printed
+`component %%{wrap}%%Glued`. Ordinary standalone directives align with their
+body, as [flowchart](./flowchart.md#directives) stands a directive on a line of
+its own at the level of the statements around it
 ([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have));
 multiline interiors and EOF-reaching unfinished endings remain written. Do not
 format their JSON or reorder them: common removal joins surrounding text and can

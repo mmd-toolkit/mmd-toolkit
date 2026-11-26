@@ -459,6 +459,9 @@ Prettier が `class A{}` を `class A {}` と印字するのと同じです。
 開始記号前の除去対象のコメント領域を `accDescr` の横へ移すと、
 図固有のコメントになり、mermaid.js がキーワードと `{` の間で受理しないため、
 コメント領域を独立した行に保ちます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 囲む文字列がないため、空白だけの内側は `{}` にします。
 Prettier は空のオブジェクトや配列の内側に空白を置かないため、
 空白だけの説明本文も `{}` になり、
@@ -470,6 +473,8 @@ mermaid.js の Db に説明の文字列として記録されます。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
 改行と内部の空行は保ちます。
+mermaid.js は説明の中の改行を保ちます。
+2 つのテキスト行の間の空行の連なりは、書かれたまま残します。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
@@ -488,6 +493,8 @@ Db で LF 後の字下げが取り除かれるためです。
 [fixture: description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: packet/description-blocks/description-columns]
+
+[fixture: packet/description-blocks/blank-line-run-kept]
 
 [fixture: packet/description-blocks/description-trivia]
 
@@ -706,6 +713,11 @@ opaque count
 見出しとの接触と可視 EOL 後の本文の形を保ちます。
 任意・複数行の本文、後ろで有効になる閉じ、複数の形、
 大域的な処理による分断も保ちます。
+文の最後の隠れた形の後の空白は、次の行に別の文が続くときに残します。
+その空白がないと、隠れた形が改行を取り、対象にする版は次の文を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 接着した無効な閉じや未閉じの形は図固有の `Comment` のままの場合があります。
 境界の追加はその分類を変え得るためです。
 
