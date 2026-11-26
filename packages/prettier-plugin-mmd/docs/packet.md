@@ -145,11 +145,12 @@ packet
 ### Range dash
 
 Print ordinary range gaps with no spaces, as `0-15`, so the numeric range reads
-as one visual unit. `0 - 15` reads as a subtraction, while `0-15` reads as one
-range. Preserve global trivia and hidden boundaries instead of tightening them:
-a consumed LF is not an ordinary space. For
-`0%%{!left}%% -%%{!right}%% 2:"Hidden dash"`, the space before `-` stays, since
-some of the versions of mermaid.js that count reject
+as one visual unit. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+puts no whitespace beside the `-` that joins the start and the end of a range of
+numbers, since `0 - 15` reads as a subtraction. Preserve global trivia and
+hidden boundaries instead of tightening them: a consumed LF is not an ordinary
+space. For `0%%{!left}%% -%%{!right}%% 2:"Hidden dash"`, the space before `-`
+stays, since some of the versions of mermaid.js that count reject
 `0%%{!left}%%-%%{!right}%%2:"Hidden dash"` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
