@@ -660,11 +660,10 @@ cynefin-beta
 
 Print every CynefinIgnoredText once from its source span at its AST owner:
 retained prefix, body, domain-name suffix, item prefix/suffix, transition named
-gap or common suffix. Its value omits common removals, so reconstructing it
-would lose source. Opening lines align with their containing body; interiors and
-closers keep their columns. Item-leading forms and the following label align at
-item depth after retained LF. Keep whole matches, later qualifying closers,
-separate matches and fallback comments.
+gap or common suffix. Its value omits common removals. Opening lines align with
+their containing body; interiors and closers keep their columns. Item-leading
+forms and the following label align at item depth after retained LF. Keep whole
+matches, later qualifying closers, separate matches and fallback comments.
 
 [fixture: cynefin/hidden-forms/hidden-domain-name]
 
@@ -985,13 +984,13 @@ cynefin-beta
 
 Keep at most one ordinary ASCII blank line between statements, items or trivia,
 and remove document/body edge blanks. Whitespace-only lines become empty. This
-retains authored grouping without excess space. Prettier collapses ordinary
-blank-line runs to one empty line and removes blank lines at block and text
-edges. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
-form to ordinary blank lines between statements, items or trivia and at
-document/body edges. Values, descriptions, hidden/directive interiors, retained
-prefixes, joining regions, semicolon protection and required hidden LF keep
-their own rules.
+avoids excess space. Prettier collapses ordinary blank-line runs to one empty
+line and removes blank lines at block and text edges.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same form
+to ordinary blank lines between statements, items or trivia and at document/body
+edges. Values, descriptions, hidden/directive interiors, retained prefixes,
+joining regions, semicolon protection and required hidden LF keep their own
+rules.
 
 [fixture: cynefin/blank-lines/blanks-between-items]
 

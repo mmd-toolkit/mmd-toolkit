@@ -510,8 +510,7 @@ tabs inside a tilde word or a backquoted word is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and the text of a comment is kept, since the Db holds the type, the name, and
 the comment of an attribute as written. Rule 1 does not decide the inside of a
-tilde word or a backquoted word, since the tree holds each as one token with its
-whitespace inside
+tilde word or a backquoted word
 ([A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 one space, as [class](./class.md#member-lines) prints a run of spaces and tabs

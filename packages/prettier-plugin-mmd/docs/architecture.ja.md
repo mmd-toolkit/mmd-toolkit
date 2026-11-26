@@ -246,8 +246,8 @@ architecture-beta
 継続行も保持します。
 ただし、テキストの中の空白とタブの連なりは、
 空白 1 つにして印字します（[ラベルの内容](#label-content)を参照）。
+両端の空白を除いたりエスケープを復号したりすると、Db が変わりえます。
 `singleQuote` では書き換えません。
-両端の空白の除去や復号は Db を変え得るためです。
 
 [fixture: architecture/text-icons/double-quote]
 

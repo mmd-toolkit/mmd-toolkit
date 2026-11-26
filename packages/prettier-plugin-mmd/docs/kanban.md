@@ -520,9 +520,8 @@ kanban
 
 A data block `@{ ... }` is embedded text that mermaid.js reads as YAML for the
 properties of a node, such as `ticket` and `assigned`. The printer keeps it
-opaque, with its delimiters and its content retained (the tree holds its body
-whole, so the colon of a key stays as written: `A@{ ticket : MC-1 }` keeps the
-space before its colon; see
+opaque, with its delimiters and its content retained (the colon of a key stays
+as written: `A@{ ticket : MC-1 }` keeps the space before its colon; see
 [A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
 apart from the uniform indentation below, the spaces at the ends of a block on
 one line, and the printing of a block on one line on lines where its line is too
@@ -1278,8 +1277,9 @@ A `;` is a character of text in a kanban board: no `;` separates statements.
 alone is a node, and `:::c;d` has a `;` in the class. The printer keeps every
 `;`, the ones that the line rule of mermaid.js ignores included (see
 [Line rule and kept lines](#line-rule-and-kept-lines)); dropping one, or
-splitting a line at it, would change a written text or its reading. A `;` right
-after a shape is not part of the shape and is rejected (`S[x];`).
+splitting a line at it, would change the text that the Db holds or which `;` the
+line rule ignores. A `;` right after a shape is not part of the shape and is
+rejected (`S[x];`).
 
 [fixture: semicolons/values] [fixture: semicolons/semicolon-remove]
 

@@ -299,9 +299,8 @@ packet
 
 Print the written unsigned digits of start/end/count rather than
 NumericLiteral.value. Preserve zero, precision-losing integers and overflow
-digits. Rounded doubles can lose spelling or print rejected exponent/Infinity
-syntax. Invalid leading-zero, decimal, signed or exponent inputs remain corpus
-failures.
+digits. Rounded doubles can print rejected exponent/Infinity syntax. Invalid
+leading-zero, decimal, signed or exponent inputs remain corpus failures.
 
 [fixture: packet/numbers/number-zero]
 

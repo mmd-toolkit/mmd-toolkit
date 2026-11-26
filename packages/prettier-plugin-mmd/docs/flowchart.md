@@ -2321,11 +2321,11 @@ cb
 ### Data blocks
 
 Keep each `@{ ... }` attached to its vertex, without formatting its YAML or
-changing its keys and values. The tree holds the body of a block whole, as one
-text that mermaid.js reads as YAML, so the whitespace beside the marks inside it
-is not decided by the rules of
-[How the printed form is decided](./printed-form.md): the colon of a key stays
-as written (`A@{ shape : circle }` keeps the space before its colon; see
+changing its keys and values. The body of a block is one text that mermaid.js
+reads as YAML, so the whitespace beside the marks inside it is not decided by
+the rules of [How the printed form is decided](./printed-form.md): the colon of
+a key stays as written (`A@{ shape : circle }` keeps the space before its colon;
+see
 [A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
 Three things change: the ends of a block on one line, the margin of an eligible
 multiline block, and a block on one line whose line is too long, which prints on

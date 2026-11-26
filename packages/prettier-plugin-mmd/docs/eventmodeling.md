@@ -450,10 +450,10 @@ entity Root.Child
 ### Authored spellings
 
 Retain the authored short or long frame keyword, all nine entity-type words and
-every digit-string spelling. Although changing a frame keyword alias can leave
-the comparison Db equal, it loses the chosen form. Entity-type aliases remain in
-the Db, and `1`, `01` and `001` name different frames, so neither alias
-conversion nor numeric normalization is appropriate.
+every digit-string spelling. A frame keyword alias is kept even where changing
+it leaves the comparison Db equal. Entity-type aliases remain in the Db, and
+`1`, `01` and `001` name different frames, so neither alias conversion nor
+numeric normalization is appropriate.
 
 [fixture: eventmodeling/authored-spellings/alias-retained]
 

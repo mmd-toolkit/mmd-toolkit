@@ -556,8 +556,8 @@ railroad-peg-beta
 ABNF retains every count and star as written, including leading zeroes, exact
 counts, omitted lower or upper bounds, zero, optional bounds and large integers.
 Compact only the ordinary gap between a complete repeat and its primary. Do not
-fill omitted bounds or replace the repeat with an optional group: Db equality
-does not justify losing the chosen form or reprinting rounded numbers.
+fill omitted bounds or replace the repeat with an optional group. Db equality
+does not justify reprinting rounded numbers.
 
 [fixture: railroad/repeats/abnf-large]
 

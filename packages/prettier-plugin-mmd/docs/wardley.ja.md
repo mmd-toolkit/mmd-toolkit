@@ -3258,7 +3258,7 @@ wardley-beta
 普通の ASCII 空行は文と注釈の間で最大 1 行にします。
 文書と本文の端の余分な空行と、空白だけの余白は落とします。
 pipeline の端も必須の可視 LF を残して空行を除きます。
-作者のまとまりを 1 行で示す選択です。
+余分な間隔を増やしません。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
 [flowchart](./flowchart.ja.md#空行)、[pie](./pie.ja.md#blank-lines)、
 [radar](./radar.ja.md#blank-lines)は、空行の連なりを 1 行にし、

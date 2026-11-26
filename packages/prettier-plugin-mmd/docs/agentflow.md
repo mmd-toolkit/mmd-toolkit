@@ -773,13 +773,12 @@ agentflow-beta TB
 
 Reuse [Arrow spacing](./flowchart.md#arrow-spacing): one exterior space on each
 side of an arrow; an edge id touches its @ and arrow. Keep directive touching
-and exact dash/dot counts, including counts beyond the Db cap: below the cap a
+and exact dash/dot counts, including counts beyond the Db cap. Below the cap a
 shorter or longer arrow is another arrow (`A---->B` printed as `A --> B` is read
-differently), and beyond the cap the Db is the same but the tree keeps the
-written length, and a Db-equal capped arrow is not shortened. Agentflow has only
-sequence `-->`, failure `--x`, and reference `-.-`, with their extensions.
-Reference length counts dots. A following x may be vertex text; no unsupported
-arrow family is introduced.
+differently); beyond the cap the Db is the same, and a Db-equal capped arrow is
+not shortened. Agentflow has only sequence `-->`, failure `--x`, and reference
+`-.-`, with their extensions. Reference length counts dots. A following x may be
+vertex text; no unsupported arrow family is introduced.
 
 [fixture: arrows/arrow-cap-spelling] [fixture:
 arrows/arrow-length-change-unsafe] [fixture: arrows/arrow-lengths] [fixture:
@@ -951,10 +950,9 @@ tabs after the `;` stay: `A[x  %% c;` and two spaces, a line break, and `]`
 print `A[x %% c;`, the two spaces, and `]` one level deeper. Where the label
 goes on after the line break of such a comment, both spaces before it stay.
 Tildes remain content. Shape spellings, entities and HTML remain authored. The
-text of a label is a text that the tree holds whole (see
-[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
-and the Db keeps it, so an entity stays as written: `&amp;` is not printed `&`,
-a change of the text that no rule of this document defines.
+Db keeps the text of a label, so an entity stays as written: `&amp;` is not
+printed `&`, a change of the text that no rule of this document defines (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
@@ -2272,10 +2270,9 @@ description/string/markdown/call in textBeforeUrl/textBeforeTooltip with its
 exact source gaps, including either side of href. It has no prefix field before
 a callback name or target. The single whitespace characters required before
 tooltips and targets stay written; terminal empty descriptions are following
-statements. The erased prefixes are kept because the specification accepts them
-and the tree holds them in textBeforeUrl/textBeforeTooltip, so dropping one
-would lose written text; flowchart's rule for the reserved word `click`, which
-rejects such input, does not apply to Agentflow.
+statements. The erased prefixes are kept; the specification accepts them, and
+flowchart's rule for the reserved word `click`, which rejects such input, does
+not apply to Agentflow.
 
 [corpus fixture: agentflow/gram-url-tooltip-whitespace-only]
 

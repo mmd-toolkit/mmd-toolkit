@@ -242,8 +242,8 @@ architecture-beta
 Keep each StringLiteral source span, including single/double quotes, opposite
 quotes, empty text, escapes, padding and physical continuation lines, except
 that a run of spaces and tabs inside the text is printed as one space (see
-[Label content](#label-content)). `singleQuote` does not rewrite it: trimming or
-decoding can change the Db.
+[Label content](#label-content)); trimming the padding or decoding the escapes
+can change the Db. `singleQuote` does not rewrite it.
 
 [fixture: architecture/text-icons/double-quote]
 

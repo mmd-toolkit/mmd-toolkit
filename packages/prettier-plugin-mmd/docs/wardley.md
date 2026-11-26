@@ -4070,13 +4070,12 @@ wardley-beta
 
 Keep at most one ordinary ASCII blank line between statements or trivia,
 dropping excess document/body edge blanks and whitespace-only padding. Pipeline
-edge blanks disappear while mandatory visible LF remains. This keeps authored
-grouping without excess space.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the empty
-lines: Prettier keeps one blank line where a run of them stands in JavaScript,
-CSS, and YAML, and drops the blank lines at the start and the end of a file in
-all three, and at the start and the end of a block in JavaScript and CSS;
-[flowchart](./flowchart.md#blank-lines), [pie](./pie.md#blank-lines), and
+edge blanks disappear while mandatory visible LF remains. This avoids excess
+space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+empty lines: Prettier keeps one blank line where a run of them stands in
+JavaScript, CSS, and YAML, and drops the blank lines at the start and the end of
+a file in all three, and at the start and the end of a block in JavaScript and
+CSS; [flowchart](./flowchart.md#blank-lines), [pie](./pie.md#blank-lines), and
 [radar](./radar.md#blank-lines) print them so: a run of empty lines as one, and
 none at the start or the end of a body. Values, hidden/directive interiors,
 retained prefixes, protected stretches and required hidden LF use their own
