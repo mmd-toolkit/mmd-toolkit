@@ -126,6 +126,10 @@ dropped: mermaid.js reads a `;` as it reads a line break.
 
 A statement written on the line of the header, or after `end` on its line, moves
 to a line of its own.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this, as a statement on the header's line or after the end of a block moves to a
+line of its own in a [flowchart](./flowchart.md#statements-one-per-line) and in
+an [ER diagram](./er.md#statements-one-per-line).
 
 [fixture: statements-one-per-line/split]
 
@@ -1962,6 +1966,10 @@ The whitespace-only interior of a description block, including tabs, line breaks
 and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. The keyword and opening brace
 have one space between them: `accDescr{  }` becomes `accDescr {}`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: Prettier
+prints braces that hold nothing with nothing inside (`x = { }` is printed
+`x = {};`) and one space before the `{` that opens a block (`class A{}` is
+printed `class A {}`).
 
 [fixture: multi-line-values/empty-whitespace-interiors] [test: sequence Unicode
 and tab interiors]
@@ -2011,16 +2019,23 @@ sequence/db-acc-descr-block-after-message]
 For participant and actor data blocks, apply
 [Data blocks](./flowchart.md#data-blocks) only when exactly one body line holds
 text. Move that line one level inside the statement and align a separate `}`
-with the statement; a closer after text stays with that line. This applies at
-the top level and inside `loop`, except with `useTabs`, where the statement is
-printed as written (see [Data blocks](./flowchart.md#data-blocks)), unless the
-statement is not at the depth of the first thing on its line: the header of a
-`box` or a block, as in `box Aqua G; participant A@{ … }`, a section keyword, as
-in `else z; participant P@{ … }`, or a statement inside the box or block before
-an `end`, as in `participant B; end; participant A@{ … }`. The written
-indentation is then that of that thing, and the statement is printed with the
-usual indentation, the lines of its block moving with it. So is a statement on a
-line that starts with anything else than the things listed under
+with the statement; a closer after text stays with that line.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this layout, as [Data blocks](./flowchart.md#data-blocks) of a flowchart print
+the body and the closer of a block so. This applies at the top level and inside
+`loop`, except with `useTabs`, where the statement is printed as written, a form
+decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Data blocks](./flowchart.md#data-blocks)), unless the statement is not at the
+depth of the first thing on its line: the header of a `box` or a block, as in
+`box Aqua G; participant A@{ … }`, a section keyword, as in
+`else z; participant P@{ … }`, or a statement inside the box or block before an
+`end`, as in `participant B; end; participant A@{ … }`. The written indentation
+is then that of that thing, and the statement is printed with the usual
+indentation, the lines of its block moving with it: the form decided under rule
+4 keeps the indentation that a statement is written with, and such a statement
+is written with none of its own. So is a statement on a line that starts with
+anything else than the things listed under
 [Data blocks](./flowchart.md#data-blocks), such as the rest of a directive that
 runs over lines. A statement after an `end` that comes first is at the depth of
 the line and is printed as written.

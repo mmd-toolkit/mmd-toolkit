@@ -126,6 +126,10 @@ mermaid.js は `;` を改行と同じに読むからです。
 [fixture: statements-one-per-line/semicolons-dropped]
 
 ヘッダーの行や、`end` の後に同じ行で書かれた文は、それぞれの行に移します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの形を与えます。
+[flowchart](./flowchart.ja.md#1-行に-1-文)と
+[ER 図](./er.ja.md#1-行に-1-文)でも、ヘッダーの行やブロックの終わりの後の文は、
+それぞれの行に移ります。
 
 [fixture: statements-one-per-line/split]
 
@@ -1995,6 +1999,9 @@ sequenceDiagram
 すでに空の内側は空のままです。
 キーワードと開始括弧の間には空白を 1 つ置きます。
 `accDescr{  }` は `accDescr {}` にします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がどちらも与えます。
+Prettier は、何も持たない括弧の内側に何も置かず（`x = { }` は `x = {};`）、
+ブロックを開く `{` の前に空白を 1 つ置きます（`class A{}` は `class A {}`）。
 
 [fixture: multi-line-values/empty-whitespace-interiors]
 [test: sequence Unicode and tab interiors]
@@ -2046,9 +2053,14 @@ participant と actor のデータブロックには、
 [データブロック](./flowchart.ja.md#データブロック)を適用します。
 その行を文の 1 段内側に動かし、単独行の `}` は文の段に揃えます。
 本文の後の閉じ括弧はその行と一緒に動かします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの配置を与えます。
+flowchart の[データブロック](./flowchart.ja.md#データブロック)も、
+ブロックの本文と閉じ括弧をそう印字します。
 トップレベルと `loop` 内で適用しますが、`useTabs` のときは、
-文を書かれたまま印字します（詳しくは、
-[データブロック](./flowchart.ja.md#データブロック)を参照）。
+文を書かれたまま印字します。
+これは、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+詳しくは、[データブロック](./flowchart.ja.md#データブロック)を参照してください。
 ただし、文が、その行の最初にあるものと同じ深さでない場合は別です。
 `box Aqua G; participant A@{ … }` のように `box`
 やブロックの見出しが先にある場合、
@@ -2057,6 +2069,8 @@ participant と actor のデータブロックには、
 box やブロックの中の文が `end` の前にある場合が当たります。
 書かれた字下げはその先にあるもののものなので、文は通常の字下げで印字し、
 ブロックの行も文と一緒に動かします。
+規則 4 で決めた形は、文が書かれた字下げを残すものですが、
+この文には自分の字下げがないからです。
 複数行にわたるディレクティブの残りなど、
 [データブロック](./flowchart.ja.md#データブロック)
 の節に挙げたもの以外で始まる行の文も同じです。
