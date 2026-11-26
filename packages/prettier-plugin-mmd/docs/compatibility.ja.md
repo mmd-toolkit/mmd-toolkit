@@ -8144,10 +8144,32 @@ mermaid.js がこう読む行は、ソースの何行にもまたがります。
 整形は、その行の空白と改行を、最初の行から終わりまで、その上にある文ごと、
 書かれたまま残します。
 文の間の空白は整形せず、コメント行の後の行も字下げしません。
-これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則です。
-例外は mindmap です。
-mindmap は、ノードのコメント行を、ノードの段の自分の行に置きます。
-[行区切り文字](./mindmap.ja.md#行区切り文字)を参照してください。
+これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則で、
+例外は 3 つです。
+agentflow 図をふつうの配置で印字するときは、図は既定の大きさより小さく、
+mermaid.js がコメントを残すので、そこで行は結ばれません。
+詳しくは [Default size branches](./agentflow.ja.md#default-size-branches)
+を参照してください。
+コメント行の前の U+2028 か U+2029 は空白 1 つにして印字し、値の中では残し、
+コメント行の後の行はふつうの段に置きます。
+詳しくは
+[Agentflowの値、コメント、既定のサイズ境界](#agentflowの値コメント既定のサイズ境界)
+を参照してください。
+eventmodeling 図をふつうの配置で印字するときは、
+コメント行の前の U+2028 か U+2029 を、空白 1 つにして印字します。
+詳しくは [Default size branches](./eventmodeling.ja.md#default-size-branches)
+を参照してください。
+ただし、`title`、`accTitle`、`accDescr` の値の中では残します。
+詳しくは [Comments](./eventmodeling.ja.md#comments) を参照してください。
+コメント行の後の行は、前の文の続きなら、文の後続の行と同じく 1 段深く置き、
+文を始めるなら、文の段に置きます。
+詳しくは [Long lines](./eventmodeling.ja.md#long-lines) を参照してください。
+mindmap では、U+2028 か U+2029 が、
+ノードかヘッダーの後の図のコメントを終えるとき、その後のコメント行と、
+それに続くコメント行を、それぞれ自分の行に置き、ノードの行はその後に続きます。
+詳しくは [行区切り文字](./mindmap.ja.md#行区切り文字) を参照してください。
+それ以外では、`%%` がノードのテキストの文字であるときも含め、
+mindmap もこの規則に従います。
 そのようなコメント行が途中で切る図のコメントも、
 書かれたまま印字します（[行区切り](./sequence.ja.md#行区切り)を参照）。
 領域が名前の中にあるときも同じです。
@@ -8159,6 +8181,75 @@ ER 図では、そのような行にある実体のブロックだけは、
 ほかの実体と同じに置きます。
 ただし `}` が、そのようなコメント行が始まる行にあるときは、
 書かれたまま残ります（[ER](./er.ja.md#複数行の文)を参照）。
+
+[test: mindmap/line-separators/comment-region-continuation-kept]
+[test: eventmodeling/long-lines/comment-region-continuation-one-level-deeper]
+[test: eventmodeling/statements-one-per-line/comment-region-joined-statement-at-the-statement-level]
+[test: U+2028 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2028 before a comment line and a directive]
+[test: U+2028 after a comment on the header line]
+
+[test: block/shapes/comment-region-keeps-the-directions-of-a-block-arrow]
+[test: er/accessibility-statements/comment-region-keeps-the-text-line]
+[test: block/indentation/comment-region-keeps-a-joined-statement-line]
+[test: block/indentation/comment-region-keeps-a-joined-line-in-a-composite]
+[test: er/indentation/comment-region-keeps-a-joined-statement-line]
+[test: er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph]
+[test: c4/indentation/comment-region-keeps-a-joined-statement-line]
+[test: class/indentation/comment-region-keeps-a-joined-statement-line]
+[test: class/member-bodies/comment-region-keeps-a-joined-member-line]
+[test: class/whitespace-between-tokens/comment-region-keeps-a-joined-name-line]
+[test: class/empty-description-blocks/comment-region-keeps-a-joined-member-line]
+[test: flowchart/indentation/comment-region-keeps-a-joined-statement-line]
+[test: flowchart/direction/comment-region-keeps-a-joined-direction-statement]
+[test: flowchart/subgraph-header/comment-region-keeps-a-joined-header-line]
+[test: swimlane/indentation/comment-region-keeps-a-joined-statement-line]
+[test: gantt/indentation/comment-region-keeps-a-joined-statement-line]
+[test: gantt/accessibility-statements/comment-region-keeps-a-joined-line]
+[test: ishikawa/indentation/comment-region-keeps-a-joined-line]
+[test: ishikawa/root-on-header-line/comment-region-keeps-a-joined-line]
+[test: ishikawa/root-indentation/comment-region-keeps-a-joined-line]
+[test: journey/indentation/comment-region-keeps-a-joined-statement-line]
+[test: journey/accessibility-statements/comment-region-keeps-a-joined-line]
+[test: kanban/indentation/comment-region-keeps-a-joined-line]
+[test: kanban/header/comment-region-keeps-a-joined-line]
+[test: kanban/nodes-one-per-line/comment-region-keeps-a-joined-line]
+[test: mindmap/indentation/comment-region-keeps-a-joined-line]
+[test: mindmap/root-on-header-line/comment-region-keeps-a-joined-line]
+[test: quadrant/titles-and-accessibility-statements/comment-region-keeps-a-joined-description-line]
+[test: quadrant/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+[test: requirement/indentation/comment-region-keeps-a-joined-statement-line]
+[test: requirement/bodies/comment-region-keeps-a-joined-opening-line]
+[test: requirement/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+[test: requirement/accessibility-statements/comment-region-keeps-a-joined-text-line]
+[test: sequence/indentation/comment-region-keeps-a-joined-line-in-a-block]
+[test: state/indentation/comment-region-keeps-a-joined-line-in-a-composite]
+[test: state/composite-states/comment-region-keeps-a-joined-opening-line]
+[test: timeline/indentation/comment-region-keeps-a-joined-statement-line]
+[test: timeline/periods-and-events/comment-region-keeps-a-joined-event-line]
+[test: timeline/event-statements/comment-region-keeps-a-joined-peer-event-line]
+[test: timeline/header-and-direction/comment-region-keeps-a-joined-event-line-after-the-header]
+[test: timeline/accessibility-statements/comment-region-keeps-a-joined-description-line]
+[test: treeview/indentation/comment-region-keeps-a-joined-node-line]
+[test: treeview/carried-indentation/comment-region-keeps-a-joined-node-line]
+[test: xychart/indentation/comment-region-keeps-a-joined-statement-line]
+[test: xychart/accessibility-statements/comment-region-keeps-a-joined-description-line]
+[test: xychart/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+[test: an agentflow diagram below the default size puts the line after a comment line after U+2028 at its ordinary depth]
+[test: an agentflow diagram keeps U+2028 before a comment line in the body of a description block]
+[test: an eventmodeling diagram keeps U+2028 before a comment line in the value of accTitle on the header line]
+[test: an eventmodeling diagram keeps U+2028 before a comment line in the value of accDescr on the header line]
+[test: a mindmap puts a comment line after U+2028 that ends a comment of the header on a line of its own]
+[test: an agentflow diagram keeps U+2029 before a comment line in the body of a description block]
+[test: an eventmodeling diagram keeps U+2029 before a comment line in the value of accTitle on the header line]
+[test: an eventmodeling diagram keeps U+2029 before a comment line in the value of accDescr on the header line]
+[test: a mindmap puts a comment line after U+2029 that ends a comment of the header on a line of its own]
+[test: a mindmap puts each comment line after U+2028 that ends a comment of the header on a line of its own]
+[test: a mindmap puts a comment line after U+2028 that ends a comment after a node on a line of its own]
+[test: a mindmap puts a comment line after U+2029 that ends a comment after a node on a line of its own]
+[test: a mindmap keeps a line that a comment line after U+2029 joins where the separator ends no diagram comment]
+[test: a mindmap keeps a line that a comment line after U+2028 joins after a node text that holds %%]
+
 `;` がテキストの文字として行を一緒に残す行は、たとえば `title T;` や、
 kanban の section のテキスト `S[x;]` で、U+2028 か U+2029 の後のコメント行ごと、
 書かれたまま印字します。

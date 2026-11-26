@@ -71,15 +71,6 @@ subgraph の中でも同じです。
 字句解析器は、1 桁目ではそれをタイトルか説明として読み、
 字下げの後では direction
 の行として読むためです（[アクセシビリティの文](#アクセシビリティの文)を参照）。
-U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
-mermaid.js が前の行と 1 行に読むので、その上の文とともに、
-書かれた字下げのまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-
-[test: er/indentation/comment-region-keeps-a-joined-statement-line]
-[test: er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph]
 
 入力
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -2143,10 +2134,6 @@ Db は両端の空白を持たないからです。
 コロンやテキストが後の行に書かれていても同じです。
 テキストの前にコメント行があるときは、上のとおり、改行を残し、
 コメントとテキストを 1 段深く置きます。
-ただし、2 つの行を結ぶコメント領域を含む文は、書かれたまま残します。
-詳しくは
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の、図のタイトルと説明の行を参照してください。
@@ -2155,7 +2142,6 @@ Db は両端の空白を持たないからです。
 [fixture: accessibility-statements/text-with-comment-line-kept]
 [corpus fixture: er/lex-acc-title-line-feed-after-colon]
 [fixture: multi-line-statements/acc-colon-and-brace-joined]
-[test: er/accessibility-statements/comment-region-keeps-the-text-line]
 
 通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。

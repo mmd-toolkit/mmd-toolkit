@@ -67,14 +67,7 @@ was indented with.
 An exception is an `accTitle` or `accDescr` statement that holds a direction,
 which keeps the first column, since the lexer reads it as a title or a
 description at the first column and as a direction line after an indentation
-(see [Accessibility statements](#accessibility-statements)). A line that a
-comment line after U+2028 or U+2029 joins to the line before it, which
-mermaid.js reads as one line with it, keeps its indentation as written, with the
-statements on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-
-[test: er/indentation/comment-region-keeps-a-joined-statement-line] [test:
-er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph]
+(see [Accessibility statements](#accessibility-statements)).
 
 Input
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -2145,15 +2138,12 @@ key (the title and the description of a diagram in
 `accTitle: text`: no whitespace before the colon and one space after it, also
 where the colon or the text was written on a later line; where a comment line
 stands before the text, the line breaks stay and the comment and the text stand
-one level deeper, as said above. A statement that holds a comment region that
-joins two of its lines stays as written instead (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+one level deeper, as said above.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [corpus fixture:
 er/lex-acc-title-line-feed-after-colon] [fixture:
-multi-line-statements/acc-colon-and-brace-joined] [test:
-er/accessibility-statements/comment-region-keeps-the-text-line]
+multi-line-statements/acc-colon-and-brace-joined]
 
 Later text lines of an ordinary `accDescr { ... }` block stand one level inside
 its statement, replacing only ASCII spaces and tabs immediately after LF. The

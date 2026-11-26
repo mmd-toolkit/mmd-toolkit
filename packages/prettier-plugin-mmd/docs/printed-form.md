@@ -281,6 +281,12 @@ text is defined in the document of its diagram type.
 A gap of a kind that Prettier does not have takes the form that the other
 diagram types print for the same kind of gap.
 
+Where a statement stands is a gap of this kind, and the document of each diagram
+type gives it in its sentences on indentation. These sentences do not apply to a
+line that a comment line after U+2028 or U+2029 joins to the line before it:
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)
+gives what is printed there, for every diagram type.
+
 ## 3. A spelling
 
 A spelling (the case of a keyword, the quotes of a string, the digits of a
