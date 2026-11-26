@@ -505,6 +505,11 @@ Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字し�
 
 複数行に書かれた属性は 1 行に印字します。
 属性ブロックは改行に関係なく読まれるからです。
+型、名前、キー、コメントの間には、改行が書かれていても空白 1 つを置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+続けて並ぶ値の間にそう置くからです。
+Prettier は CSS の `margin: 1px`、改行、
+`2px;` を `margin: 1px 2px;` と印字します。
 
 [fixture: attribute-spacing/over-lines-joined]
 [corpus fixture: er/gram-attribute-split-lines]

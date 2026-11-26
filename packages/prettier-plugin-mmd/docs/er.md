@@ -523,6 +523,10 @@ attribute-spacing/backquoted-word-runs-collapsed]
 
 An attribute written over several lines is printed on one, since the attribute
 block is read without regard to line breaks.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between its type, its name, its keys, and its comment, as between values that
+follow one another, also where a line break was written: Prettier prints
+`margin: 1px`, a line break, and `2px;` in CSS as `margin: 1px 2px;`.
 
 [fixture: attribute-spacing/over-lines-joined] [corpus fixture:
 er/gram-attribute-split-lines] [corpus fixture: er/gram-name-then-key-next-line]
