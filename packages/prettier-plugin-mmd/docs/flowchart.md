@@ -2808,7 +2808,8 @@ its raw text is also stored among the subgraph's members.
 
 The `}` of the block stands at the level of the `accDescr` it closes.
 
-[fixture: multi-line-values/accdescr-block-kept]
+[fixture: multi-line-values/accdescr-block-kept] [fixture:
+multi-line-values/accdescr-block-closing-brace-aligned]
 
 Comment contents inside such a block are kept, with their columns following the
 same top-level or subgraph rule.
@@ -3921,11 +3922,15 @@ before a comment that stands after something on its line, as Prettier prints
 A no-break space before the comment is no part of such a run, and it stays. CSS
 does not read it as whitespace, and mermaid.js keeps it, with the comment, in
 the value of the last style, so that the line without it has another style in
-the Db: `fill:red`, a no-break space, and ` %% c` against `fill:red %% c`. The
-tests compare styles without their spaces and tabs at the end only, so that is a
-change of the Db that no kind of exception allows. The figure is the same:
-10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 draw both lines alike, since the
-value with the comment is no color and the browser drops the whole declaration.
+the Db: `fill:red`, a no-break space, and ` %% c` against `fill:red %% c`. No
+kind of exception for a style covers a no-break space: the nearest one, a run of
+spaces, tabs, and form feeds before a `%%` comment, which the tests compare as
+one space (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)),
+has none in it, so removing it is a change of the Db that no kind of exception
+allows. The figure is the same: 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 draw
+both lines alike, since the value with the comment is no color and the browser
+drops the whole declaration.
 
 [test: keeps a no-break space before a comment at the end of a flowchart style]
 
