@@ -3459,8 +3459,9 @@ drawn, for a text of each row and each character named above, with the versions
 that count for its diagram type, and the SVG was the same without the generated
 ids and the whitespace in text nodes. A version that rejects the written text
 rejects the printed text too, but for a run of spaces in the label of a `loop`,
-`alt`, `opt`, `par`, `critical`, `option`, or `break`, which 10.9.8 rejects and
-draws as printed.
+`alt`, `else`, `opt`, `par`, `and`, `critical`, `option`, or `break`: 10.9.8
+reads such a text but stops with an error when it draws it, and draws the
+printed text.
 
 mermaid.js keeps the runs in the Db. The renderers put these texts into `text`
 elements of the SVG, whose whitespace the browser collapses
