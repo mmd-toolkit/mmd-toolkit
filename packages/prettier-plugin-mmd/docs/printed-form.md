@@ -263,8 +263,9 @@ number, the direction of a header) takes the form that the examples in the
 documentation of the pinned mermaid.js use at least twice as often as any other:
 `"CUSTOMER" ||--o{ "ORDER" : places` in an ER diagram is printed
 `CUSTOMER ||--o{ ORDER : places`. Where no form is used that often, or the
-examples use none, this rule gives no form, and the spelling is decided as under
-[4](#4-where-none-of-these-rules-gives-a-form).
+examples use none, rule 3 gives no form, and the spelling is kept as written
+until a form is decided under
+[rule 4](#4-where-none-of-these-rules-gives-a-form).
 
 The name of a header with and without `-beta` is an exception. Where every
 version that counts and has the diagram type reads both names and draws them the
@@ -282,6 +283,22 @@ that name.
 Where none of these rules gives a form, it is not decided yet which form reads
 best. The form is decided as AGENTS.md (item 4) says, added to these rules, and
 printed after that.
+
+### Forms decided under rule 4
+
+These forms were decided as AGENTS.md (item 4) says, for a flowchart and a
+swimlane diagram, where none of rules 1 to 3 gives a form. The document of the
+diagram type says where each one applies and where it does not.
+
+- Each statement stands on a line of its own: statements written on one line and
+  separated by `;` are split into lines.
+- A `;` that ends a statement is dropped, and so is a `;` that stands alone at
+  the top level.
+- A line is not wrapped, whatever Prettier's `printWidth` option says.
+- In a flowchart, a link label keeps the form it is written in: text between two
+  arrows, or text between `|` after the arrow.
+- With `useTabs`, a statement that holds a data block (`@{ … }`) of several
+  lines is printed as written.
 
 ## The versions of mermaid.js that count
 
