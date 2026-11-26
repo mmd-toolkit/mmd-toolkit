@@ -3552,6 +3552,76 @@ mermaid.js は、その両側の空白を合わせて字下げとして読み、
 [test: the member line of a class diagram without the directive at its start]
 [test: the label of a relation of a class diagram without the directive at its start]
 
+次の表のセルでは、ディレクティブを外しても、
+ディレクティブのないテキストを印字した行にはならず、
+上の理由はその形を与えません。
+そこで印字する行は、ディレクティブの後の空白、
+その後のノーブレークスペースか U+2028、テキストの中の連なりのどれかを残し、
+ディレクティブのないテキストの行は、それを残さないからです。
+
+| テキスト                                                                                                                                                                                      | 列                                                                    |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| pie chart、radar chart、packet diagram、architecture diagram、gitGraph、cynefin diagram、treemap、treeView、info diagram の `title`                                                           | U+2028、空白をはさんだ 2 つのディレクティブ                           |
+| Wardley map と railroad diagram の `title`                                                                                                                                                    | U+2028、空白をはさんだ 2 つのディレクティブ、`;` を含むディレクティブ |
+| quadrant chart、Gantt chart、user journey、timeline の `title`、quadrant chart の象限のラベル、軸のラベル、軸の右端のラベル                                                                   | 改行を含むディレクティブ                                              |
+| sequence diagram の `title`                                                                                                                                                                   | U+2028 のほかのすべての列                                             |
+| Venn diagram と C4 diagram の `title`、ishikawa diagram の `accDescr:` の行、Wardley map のリンクのテキスト                                                                                   | U+2028 のほかのすべての列                                             |
+| pie chart、gitGraph、radar chart、packet diagram、architecture diagram、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、use case diagram の `accDescr:` の行 | すべての列                                                            |
+| mindmap のノードのテキスト                                                                                                                                                                    | タブ、ノーブレークスペース、U+2028                                    |
+| flowchart と agentflow diagram の `accDescr:` の行                                                                                                                                            | U+2028                                                                |
+| class diagram の本体のメンバー                                                                                                                                                                | 何もなしと、接する 2 つのディレクティブのほかのすべての列             |
+| class diagram のメンバーの行                                                                                                                                                                  | `;` を含むディレクティブ                                              |
+
+[test: the title of a pie chart that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of a pie chart that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a Wardley map that starts with a directive and a U+2028, and the same text without the directive]
+[test: the title of a Wardley map that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a Wardley map that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the title of a quadrant chart that starts with a directive that holds a line break, and the same text without the directive]
+[test: the title of a Gantt chart that starts with a directive that holds a line break, and the same text without the directive]
+[test: the label of a quadrant of a quadrant chart that starts with a directive that holds a line break, and the same text without the directive]
+[test: the title of a sequence diagram that starts with a directive and a space, and the same text without the directive]
+[test: the title of a sequence diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: the title of a sequence diagram that starts with a directive and a tab, and the same text without the directive]
+[test: the title of a sequence diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: the title of a sequence diagram that starts with a directive and nothing, and the same text without the directive]
+[test: the title of a sequence diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a sequence diagram that starts with two directives that touch, and the same text without the directive]
+[test: the title of a sequence diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: the title of a sequence diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the title of a Venn diagram that starts with a directive and a space, and the same text without the directive]
+[test: the title of a Venn diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: the title of a Venn diagram that starts with a directive and a tab, and the same text without the directive]
+[test: the title of a Venn diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: the title of a Venn diagram that starts with a directive and nothing, and the same text without the directive]
+[test: the title of a Venn diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: the title of a Venn diagram that starts with two directives that touch, and the same text without the directive]
+[test: the title of a Venn diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: the title of a Venn diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the accDescr line of a pie chart that starts with a directive and a space, and the same text without the directive]
+[test: the accDescr line of a pie chart that starts with a directive and two spaces, and the same text without the directive]
+[test: the accDescr line of a pie chart that starts with a directive and a tab, and the same text without the directive]
+[test: the accDescr line of a pie chart that starts with a directive and a no-break space, and the same text without the directive]
+[test: the accDescr line of a pie chart that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a pie chart that starts with a directive and nothing, and the same text without the directive]
+[test: the accDescr line of a pie chart that starts with two directives with a space between them, and the same text without the directive]
+[test: the accDescr line of a pie chart that starts with two directives that touch, and the same text without the directive]
+[test: the accDescr line of a pie chart that starts with a directive that holds a line break, and the same text without the directive]
+[test: the accDescr line of a pie chart that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: the text of a mindmap node that starts with a directive and a tab, and the same text without the directive]
+[test: the text of a mindmap node that starts with a directive and a no-break space, and the same text without the directive]
+[test: the text of a mindmap node that starts with a directive and a U+2028, and the same text without the directive]
+[test: the accDescr line of a flowchart that starts with a directive and a U+2028, and the same text without the directive]
+[test: a member in the body of a class diagram that starts with a directive and a space, and the same text without the directive]
+[test: a member in the body of a class diagram that starts with a directive and two spaces, and the same text without the directive]
+[test: a member in the body of a class diagram that starts with a directive and a tab, and the same text without the directive]
+[test: a member in the body of a class diagram that starts with a directive and a no-break space, and the same text without the directive]
+[test: a member in the body of a class diagram that starts with a directive and a U+2028, and the same text without the directive]
+[test: a member in the body of a class diagram that starts with two directives with a space between them, and the same text without the directive]
+[test: a member in the body of a class diagram that starts with a directive that holds a line break, and the same text without the directive]
+[test: a member in the body of a class diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+[test: a member line of a class diagram that starts with a directive that holds a semicolon, and the same text without the directive]
+
 書かれたテキストと、書かれたままではないセルの印字したテキストを、
 各行のテキスト 1 つと上に挙げた各文字について、その図種で数える版で描き、
 SVG は、生成された id とテキストノードの空白を除いて同じでした。

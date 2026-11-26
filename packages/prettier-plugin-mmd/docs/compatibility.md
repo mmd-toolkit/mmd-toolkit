@@ -3484,6 +3484,107 @@ directive at its start] [test: the member line of a class diagram without the
 directive at its start] [test: the label of a relation of a class diagram
 without the directive at its start]
 
+Taking the directive out does not leave the line of the text without the
+directive in the cells that the table below names, and the reason above does not
+give their form: the line printed there keeps the whitespace after the
+directive, a no-break space or a U+2028 after it, or a run inside the text, and
+the line of the text without the directive does not.
+
+| Texts                                                                                                                                                                                                                           | Columns                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| the `title` of a pie chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram, a treemap, a treeView, and an info diagram                                                                 | a U+2028; two directives with a space between them                               |
+| the `title` of a Wardley map and a railroad diagram                                                                                                                                                                             | a U+2028; two directives with a space between them; a directive that holds a `;` |
+| the `title` of a quadrant chart, a Gantt chart, a user journey, and a timeline; the label of a quadrant, of an axis, and of the right end of an axis of a quadrant chart                                                        | a directive that holds a line break                                              |
+| the `title` of a sequence diagram                                                                                                                                                                                               | every column but a U+2028                                                        |
+| the `title` of a Venn diagram and a C4 diagram; the `accDescr:` line of an ishikawa diagram; the link text of a Wardley map                                                                                                     | every column but a U+2028                                                        |
+| the `accDescr:` line of a pie chart, a gitGraph, a radar chart, a packet diagram, an architecture diagram, a cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, a railroad diagram, and a use case diagram | every column                                                                     |
+| the text of a mindmap node                                                                                                                                                                                                      | a tab; a no-break space; a U+2028                                                |
+| the `accDescr:` line of a flowchart and an agentflow diagram                                                                                                                                                                    | a U+2028                                                                         |
+| a member in the body of a class diagram                                                                                                                                                                                         | every column but nothing and two directives that touch                           |
+| a member line of a class diagram                                                                                                                                                                                                | a directive that holds a `;`                                                     |
+
+[test: the title of a pie chart that starts with a directive and a U+2028, and
+the same text without the directive] [test: the title of a pie chart that starts
+with two directives with a space between them, and the same text without the
+directive] [test: the title of a Wardley map that starts with a directive and a
+U+2028, and the same text without the directive] [test: the title of a Wardley
+map that starts with two directives with a space between them, and the same text
+without the directive] [test: the title of a Wardley map that starts with a
+directive that holds a semicolon, and the same text without the directive]
+[test: the title of a quadrant chart that starts with a directive that holds a
+line break, and the same text without the directive] [test: the title of a Gantt
+chart that starts with a directive that holds a line break, and the same text
+without the directive] [test: the label of a quadrant of a quadrant chart that
+starts with a directive that holds a line break, and the same text without the
+directive] [test: the title of a sequence diagram that starts with a directive
+and a space, and the same text without the directive] [test: the title of a
+sequence diagram that starts with a directive and two spaces, and the same text
+without the directive] [test: the title of a sequence diagram that starts with a
+directive and a tab, and the same text without the directive] [test: the title
+of a sequence diagram that starts with a directive and a no-break space, and the
+same text without the directive] [test: the title of a sequence diagram that
+starts with a directive and nothing, and the same text without the directive]
+[test: the title of a sequence diagram that starts with two directives with a
+space between them, and the same text without the directive] [test: the title of
+a sequence diagram that starts with two directives that touch, and the same text
+without the directive] [test: the title of a sequence diagram that starts with a
+directive that holds a line break, and the same text without the directive]
+[test: the title of a sequence diagram that starts with a directive that holds a
+semicolon, and the same text without the directive] [test: the title of a Venn
+diagram that starts with a directive and a space, and the same text without the
+directive] [test: the title of a Venn diagram that starts with a directive and
+two spaces, and the same text without the directive] [test: the title of a Venn
+diagram that starts with a directive and a tab, and the same text without the
+directive] [test: the title of a Venn diagram that starts with a directive and a
+no-break space, and the same text without the directive] [test: the title of a
+Venn diagram that starts with a directive and nothing, and the same text without
+the directive] [test: the title of a Venn diagram that starts with two
+directives with a space between them, and the same text without the directive]
+[test: the title of a Venn diagram that starts with two directives that touch,
+and the same text without the directive] [test: the title of a Venn diagram that
+starts with a directive that holds a line break, and the same text without the
+directive] [test: the title of a Venn diagram that starts with a directive that
+holds a semicolon, and the same text without the directive] [test: the accDescr
+line of a pie chart that starts with a directive and a space, and the same text
+without the directive] [test: the accDescr line of a pie chart that starts with
+a directive and two spaces, and the same text without the directive] [test: the
+accDescr line of a pie chart that starts with a directive and a tab, and the
+same text without the directive] [test: the accDescr line of a pie chart that
+starts with a directive and a no-break space, and the same text without the
+directive] [test: the accDescr line of a pie chart that starts with a directive
+and a U+2028, and the same text without the directive] [test: the accDescr line
+of a pie chart that starts with a directive and nothing, and the same text
+without the directive] [test: the accDescr line of a pie chart that starts with
+two directives with a space between them, and the same text without the
+directive] [test: the accDescr line of a pie chart that starts with two
+directives that touch, and the same text without the directive] [test: the
+accDescr line of a pie chart that starts with a directive that holds a line
+break, and the same text without the directive] [test: the accDescr line of a
+pie chart that starts with a directive that holds a semicolon, and the same text
+without the directive] [test: the text of a mindmap node that starts with a
+directive and a tab, and the same text without the directive] [test: the text of
+a mindmap node that starts with a directive and a no-break space, and the same
+text without the directive] [test: the text of a mindmap node that starts with a
+directive and a U+2028, and the same text without the directive] [test: the
+accDescr line of a flowchart that starts with a directive and a U+2028, and the
+same text without the directive] [test: a member in the body of a class diagram
+that starts with a directive and a space, and the same text without the
+directive] [test: a member in the body of a class diagram that starts with a
+directive and two spaces, and the same text without the directive] [test: a
+member in the body of a class diagram that starts with a directive and a tab,
+and the same text without the directive] [test: a member in the body of a class
+diagram that starts with a directive and a no-break space, and the same text
+without the directive] [test: a member in the body of a class diagram that
+starts with a directive and a U+2028, and the same text without the directive]
+[test: a member in the body of a class diagram that starts with two directives
+with a space between them, and the same text without the directive] [test: a
+member in the body of a class diagram that starts with a directive that holds a
+line break, and the same text without the directive] [test: a member in the body
+of a class diagram that starts with a directive that holds a semicolon, and the
+same text without the directive] [test: a member line of a class diagram that
+starts with a directive that holds a semicolon, and the same text without the
+directive]
+
 The written text and the printed text of each cell that is not as written were
 drawn, for a text of each row and each character named above, with the versions
 that count for its diagram type, and the SVG was the same without the generated
