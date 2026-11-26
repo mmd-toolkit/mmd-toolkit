@@ -4232,11 +4232,15 @@ wardley-beta
 
 ### Multiline values
 
-Do not wrap at printWidth. Keep physical string and flow contents, continuation
-columns and interior blank lines. Description bodies use the shared indentation
-above. Visible LF between ordinary statement components can reject the input,
-and reindenting value continuations changes the Db. Long component/evolution
-statements stay unwrapped; description openers and closers use Accessibility.
+Do not wrap at printWidth, as a flowchart does not:
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the form that [Line wrapping](./flowchart.md#line-wrapping) decides under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form). Keep
+physical string and flow contents, continuation columns and interior blank
+lines. Description bodies use the shared indentation above. Visible LF between
+ordinary statement components can reject the input, and reindenting value
+continuations changes the Db. Long component/evolution statements stay
+unwrapped; description openers and closers use Accessibility.
 
 [fixture: wardley/multiline-values/long-component]
 
