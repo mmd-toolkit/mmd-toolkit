@@ -2126,6 +2126,8 @@ Db は両端の空白を持たないからです。
 コロンやテキストが後の行に書かれていても同じです。
 テキストの前にコメント行があるときは、上のとおり、改行を残し、
 コメントとテキストを 1 段深く置きます。
+ただし、2 つの行を結ぶコメント領域を含む文は、
+書かれたまま残します（[複数行の文](#複数行の文)を参照）。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の、図のタイトルと説明の行を参照してください。
@@ -2134,6 +2136,7 @@ Db は両端の空白を持たないからです。
 [fixture: accessibility-statements/text-with-comment-line-kept]
 [corpus fixture: er/lex-acc-title-line-feed-after-colon]
 [fixture: multi-line-statements/acc-colon-and-brace-joined]
+[test: er/accessibility-statements/comment-region-keeps-the-text-line]
 
 通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。

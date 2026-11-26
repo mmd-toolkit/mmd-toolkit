@@ -2133,12 +2133,15 @@ key (the title and the description of a diagram in
 `accTitle: text`: no whitespace before the colon and one space after it, also
 where the colon or the text was written on a later line; where a comment line
 stands before the text, the line breaks stay and the comment and the text stand
-one level deeper, as said above.
+one level deeper, as said above. A statement that holds a comment region that
+joins two of its lines stays as written instead (see
+[Multi-line statements](#multi-line-statements)).
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [corpus fixture:
 er/lex-acc-title-line-feed-after-colon] [fixture:
-multi-line-statements/acc-colon-and-brace-joined]
+multi-line-statements/acc-colon-and-brace-joined] [test:
+er/accessibility-statements/comment-region-keeps-the-text-line]
 
 Later text lines of an ordinary `accDescr { ... }` block stand one level inside
 its statement, replacing only ASCII spaces and tabs immediately after LF. The

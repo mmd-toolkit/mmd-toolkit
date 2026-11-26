@@ -1720,18 +1720,28 @@ decides, as [sequence](./sequence.md#multi-line-statements),
 lines of a statement and the comment or directive lines between them stand one
 level deeper than the statement, and the `}` that closes a block whose `{`
 stands on a later line stands at the level of the statement. A later line that
-another rule keeps as written does not move: a line inside a value or a hidden
-form, whose contents stay as said below; the line after a hidden form, whose gap
-stays as written (see [Hidden forms](#hidden-forms)); a line that a block
-comment goes on to (see [Comments](#comments)); and a line that holds a `;`
-before any U+2028 or U+2029 on it, in a statement whose lines, joined with one
-space or with nothing, could change which `;` the line rule ignores, since such
-a statement keeps the text of each segment up to its last kept `;` (see
-[Semicolons](#semicolons)). Only GWT's decided clause/item layout adds
-structural splits. Values, hidden forms, metadata and protected boundaries
-retain their contents, apart from the limited block-body margin in
-[Data blocks](#data-blocks). Avoiding width-dependent choices keeps those
-lexical boundaries explicit and never inserts a forbidden LF into inline data.
+another rule keeps as written does not move:
+
+- a line inside a value or a hidden form, whose contents stay as said below;
+- the line after a hidden form, whose gap stays as written (see
+  [Hidden forms](#hidden-forms));
+- a line inside a directive over several lines, and the line after a directive
+  that is not closed, which goes on the line of the directive (see
+  [Global directives](#global-directives));
+- a line that a block comment goes on to (see [Comments](#comments));
+- the lines of a statement with a `;` that the line rule ignores and, after it
+  on its line, a U+2028 or U+2029, which is printed as written (see
+  [A line that a `;` ends](./compatibility.md#a-line-that-a--ends));
+- a line that holds a `;` before any U+2028 or U+2029 on it, in a statement
+  whose lines, joined with one space or with nothing, could change which `;` the
+  line rule ignores, since such a statement keeps the text of each segment up to
+  its last kept `;` (see [Semicolons](#semicolons)).
+
+Only GWT's decided clause/item layout adds structural splits. Values, hidden
+forms, metadata and protected boundaries retain their contents, apart from the
+limited block-body margin in [Data blocks](#data-blocks). Avoiding
+width-dependent choices keeps those lexical boundaries explicit and never
+inserts a forbidden LF into inline data.
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap] [fixture:
 eventmodeling/long-lines/break-next-to-comment] [fixture:
@@ -1749,7 +1759,14 @@ eventmodeling/long-lines/later-line-after-a-joined-semicolon-stretch-deeper]
 [test: a later line after a `%%` comment after U+2028 inside a statement of an
 eventmodeling diagram stands one level deeper] [test: a later line whose `;`
 follows U+2028 in an eventmodeling statement that joining could change stands
-one level deeper]
+one level deeper] [fixture:
+eventmodeling/declarations-and-notes/header-inline-multiline-directive]
+[fixture:
+eventmodeling/global-directives/description-block-end-line-with-unclosed-directive-kept]
+[test: a later line whose `;` comes before U+2028 in an eventmodeling statement
+that joining could change stays where it is written] [test: an eventmodeling
+statement with a `;` that the line rule ignores and U+2028 after it is printed
+as written]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 

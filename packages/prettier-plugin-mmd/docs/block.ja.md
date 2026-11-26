@@ -528,6 +528,8 @@ mermaid.js は向きの後の空白と、
 コメント行やディレクティブの行と次の行を 1 段深く置きます。
 [flowchart](./flowchart.ja.md#複数行の文)と
 [xychart](./xychart.ja.md#複数行の文)も、文の続きを 1 段深く置きます。
+ただし、2 つの行を結ぶコメント領域を含む文は、
+書かれたまま残します（[複数行の文](#複数行の文)を参照）。
 方向の行にあるディレクティブは、`(` の後、`,` の前、`)` の前では、
 そこの空白が Db にあるので、接しているか離れているかを書かれたまま残します。
 `(right %%{x}%%, down)` と `(right%%{x}%%, down)` はそのままです。
@@ -562,6 +564,7 @@ mermaid.js は向きの後の空白と、
 [fixture: shapes/block-arrow-directive-before-closing-parenthesis]
 [fixture: shapes/block-arrow-directive-after-comma]
 [fixture: shapes/block-arrow-directive-after-comma-at-the-end-of-the-line]
+[test: block/shapes/comment-region-keeps-the-directions-of-a-block-arrow]
 [test: U+2028 and a directive after the comma between the directions of a block arrow, a space after the U+2028 and after the directive]
 [test: U+2028 and a directive after the comma between the directions of a block arrow, nothing around the directive]
 [test: U+2029 and a directive after the comma between the directions of a block arrow, a space after the U+2029 and after the directive]

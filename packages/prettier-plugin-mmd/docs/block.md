@@ -494,18 +494,21 @@ where the whitespace is in no direction, the comment line or the directive line
 and the next line stand one level deeper, as
 [flowchart](./flowchart.md#multi-line-statements) and
 [xychart](./xychart.md#multi-line-statements) put the continuations of a
-statement one level deeper. A directive on the line of the direction stays
-touching or separated as written after the `(`, before a `,`, and before the
-`)`, since the whitespace there is in the Db (`(right %%{x}%%, down)` and
-`(right%%{x}%%, down)` stay). After a `,` the gap is printed as without the
-directive, and the directive stands after its space and touches the unit that
-follows it, as under [Directives](#directives): `(right,  %%{x}%%  down)` and
-`(right,%%{x}%%down)` are printed `(right, %%{x}%%down)`. Where the gap holds a
-U+2028 or U+2029, it stays as written, a directive in it included: `(right,`,
-U+2028, and ` %%{x}%% down)` stay. Where a line break follows a directive after
-a `,`, the whitespace before it stays as written and the next line stands one
-level deeper: `(right,  %%{x}%%` and a line break stay. A run of spaces or tabs
-before the directive stays too.
+statement one level deeper. A statement that holds a comment region that joins
+two of its lines stays as written instead (see
+[Multi-line statements](#multi-line-statements)). A directive on the line of the
+direction stays touching or separated as written after the `(`, before a `,`,
+and before the `)`, since the whitespace there is in the Db
+(`(right %%{x}%%, down)` and `(right%%{x}%%, down)` stay). After a `,` the gap
+is printed as without the directive, and the directive stands after its space
+and touches the unit that follows it, as under [Directives](#directives):
+`(right,  %%{x}%%  down)` and `(right,%%{x}%%down)` are printed
+`(right, %%{x}%%down)`. Where the gap holds a U+2028 or U+2029, it stays as
+written, a directive in it included: `(right,`, U+2028, and ` %%{x}%% down)`
+stay. Where a line break follows a directive after a `,`, the whitespace before
+it stays as written and the next line stands one level deeper:
+`(right,  %%{x}%%` and a line break stay. A run of spaces or tabs before the
+directive stays too.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [fixture:
@@ -525,7 +528,8 @@ shapes/block-arrow-closing-directive-line-indented] [fixture:
 shapes/block-arrow-directive-after-open-parenthesis] [fixture:
 shapes/block-arrow-directive-before-closing-parenthesis] [fixture:
 shapes/block-arrow-directive-after-comma] [fixture:
-shapes/block-arrow-directive-after-comma-at-the-end-of-the-line] [test: U+2028
+shapes/block-arrow-directive-after-comma-at-the-end-of-the-line] [test:
+block/shapes/comment-region-keeps-the-directions-of-a-block-arrow] [test: U+2028
 and a directive after the comma between the directions of a block arrow, a space
 after the U+2028 and after the directive] [test: U+2028 and a directive after
 the comma between the directions of a block arrow, nothing around the directive]

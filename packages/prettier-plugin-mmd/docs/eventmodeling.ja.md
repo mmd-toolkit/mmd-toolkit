@@ -1758,14 +1758,25 @@ entity Shop.Buy
 文より 1 段深く置きます。
 `{` が後の行にあるブロックを閉じる `}` は、文の段に置きます。
 ほかの規則が書かれたまま残す後続の行は、動かしません。
-値や隠れた形の中の行は、下のとおり中身を保ちます。
-隠れた形の後の行も、
-その前の隙間を書かれたまま残します（[Hidden forms](#hidden-forms)を参照）。
-ブロックコメントが続く行（[Comments](#comments)を参照）もそうです。
-行を空白 1 つか何も挟まずにつなぐと、行の規則が無視する `;` が変わりうる文では、
-U+2028 や U+2029 より前に `;` を含む行も同じです。
-そのような文は、各区間の頭から最後の保つ `;` までを、
-書かれたまま残すからです（[Semicolons](#semicolons)を参照）。
+次の行がそれです。
+
+- 値や隠れた形の中の行。
+  中身は下のとおり保ちます。
+- 隠れた形の後の行。
+  その前の隙間を書かれたまま残します（[Hidden forms](#hidden-forms)を参照）。
+- 複数行のディレクティブの中の行と、閉じていないディレクティブの後の行。
+  後者は、ディレクティブの行に続きます。
+  詳しくは [Global directives](#global-directives) を参照してください。
+- ブロックコメントが続く行（[Comments](#comments)を参照）。
+- 行の規則が無視する `;` と、その後に同じ行の U+2028 か U+2029 を持つ文の行。
+  その文は書かれたまま印字します。
+  詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)
+  を参照してください。
+- 行を空白 1 つか何も挟まずにつなぐと、行の規則が無視する `;` が変わりうる文で、
+  U+2028 や U+2029 があればそれより前に、なければ行のどこかに `;` を含む行。
+  そのような文は、各区間の頭から最後の保つ `;` までを、
+  書かれたまま残すからです（[Semicolons](#semicolons)を参照）。
+
 構造上の分割を加えるのは決定済みの GWT 節・項目配置です。
 値、隠れた形、メタデータ、保護境界の内容は、
 [データブロック](#data-blocks) の限定的な本文の余白の変更を除いて保ちます。
@@ -1785,6 +1796,10 @@ U+2028 や U+2029 より前に `;` を含む行も同じです。
 [fixture: eventmodeling/long-lines/later-line-after-a-joined-semicolon-stretch-deeper]
 [test: a later line after a `%%` comment after U+2028 inside a statement of an eventmodeling diagram stands one level deeper]
 [test: a later line whose `;` follows U+2028 in an eventmodeling statement that joining could change stands one level deeper]
+[fixture: eventmodeling/declarations-and-notes/header-inline-multiline-directive]
+[fixture: eventmodeling/global-directives/description-block-end-line-with-unclosed-directive-kept]
+[test: a later line whose `;` comes before U+2028 in an eventmodeling statement that joining could change stays where it is written]
+[test: an eventmodeling statement with a `;` that the line rule ignores and U+2028 after it is printed as written]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 

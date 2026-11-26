@@ -10239,12 +10239,14 @@ describe("the whitespace beside a comment of an eventmodeling diagram", () => {
 })
 
 /**
- * A `%%` comment after U+2028 inside a statement of an eventmodeling diagram
- * joins the line after it to its line in mermaid.js, and no rule keeps that
- * line as written: it stands one level deeper, as any later line of a
- * statement (docs/eventmodeling.md, Long lines).
+ * The later lines of an eventmodeling statement where a U+2028 decides whether
+ * a rule keeps them as written: a line that a `%%` comment after U+2028 joins,
+ * and a line whose `;` follows U+2028, stand one level deeper; a line whose `;`
+ * comes before U+2028 in a statement that joining could change, and a
+ * statement with a `;` that the line rule ignores and U+2028 after it, stay as
+ * written (docs/eventmodeling.md, Long lines).
  */
-describe("the later line after a joining comment region of an eventmodeling diagram", () => {
+describe("the later lines of an eventmodeling statement with a U+2028", () => {
   it("a later line after a `%%` comment after U+2028 inside a statement of an eventmodeling diagram stands one level deeper", async () => {
     await expectKept(
       "eventmodeling\ntf 01\u2028%% c\nevt Alpha\n",
@@ -10255,6 +10257,18 @@ describe("the later line after a joining comment region of an eventmodeling diag
     await expectKept(
       "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/\nAlpha\u2028/*#y;*/ ->> 02\n",
       "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/\n  Alpha\u2028/*#y;*/ ->> 02\n",
+    )
+  })
+  it("a later line whose `;` comes before U+2028 in an eventmodeling statement that joining could change stays where it is written", async () => {
+    await expectKept(
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/ Alpha\u2028/*y*/ ->> 02\n",
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/ Alpha /*y*/ ->> 02\n",
+    )
+  })
+  it("an eventmodeling statement with a `;` that the line rule ignores and U+2028 after it is printed as written", async () => {
+    await expectKept(
+      'eventmodeling\ntf 01\n   evt\n%% c\n   Alpha "style:#x" ;\u2028\n',
+      'eventmodeling\ntf 01\n   evt\n%% c\n   Alpha "style:#x" ;\u2028\n',
     )
   })
 })

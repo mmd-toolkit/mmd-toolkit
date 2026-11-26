@@ -19,6 +19,16 @@ describe("structural trivia boundaries", () => {
         "erDiagram\n  A {\n    int\n%% ordinary\n a\u2028%% joined\n PK\n  }\n",
     },
     {
+      name: "block/shapes/comment-region-keeps-the-directions-of-a-block-arrow",
+      input: 'block-beta\na<["x"]>(right,\u2028%% c\n   down)\n',
+      output: 'block-beta\n  a<["x"]>(right,\u2028%% c\n   down)\n',
+    },
+    {
+      name: "er/accessibility-statements/comment-region-keeps-the-text-line",
+      input: "erDiagram\naccTitle:\u2028%% c\n   T\n",
+      output: "erDiagram\n  accTitle:\u2028%% c\n   T\n",
+    },
+    {
       name: "requirement/relationship-spacing/comment-region-continuation-kept",
       input: "requirementDiagram\na - satisfies \u2029%% c\n -> b\n",
       output: "requirementDiagram\n  a - satisfies \u2029%% c\n -> b\n",
