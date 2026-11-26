@@ -13,6 +13,9 @@ English version: [gitgraph.md](./gitgraph.md)
 正確な `gitGraph` と書かれた方向を保持します。
 方向は Db に影響します。
 通常の隙間は `gitGraph LR:` または `gitGraph` とし、
+キーワードと取るものの間の空白 1
+つは[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます（Prettier は
+`return  x;` を `return x;` と印字します）。
 見出し上の最初の文を次行へ移します。
 方向のない見出しのコロンは、mermaid.js の文書の書き方に合わせて除きます。
 文書は、コロンのない見出しを 30 回、コロンつきを 2 回書いています。
@@ -383,10 +386,16 @@ gitGraph
 HTML、entity を保持します。
 空値も leaf のままです。
 これらは同一性・参照による検索・tag の値に影響します。
+id が空白の連なりだけ違う 2 つの commit は 2 つで、連なりを空白 1 つにすると、
+対象にする版はどれも 1 つしか描きません。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 変換後の Db から再構築せず、エスケープを JavaScript として解釈しません。
 物理 CR の変換は別途埋め込み先が行います。
 
 [fixture: gitgraph/authored-values/inner-padding-change]
+[fixture: gitgraph/authored-values/ids-differing-by-a-run-kept]
 [fixture: gitgraph/authored-values/inner-runs-change]
 [fixture: gitgraph/authored-values/inner-case-change]
 [fixture: gitgraph/authored-values/inner-escape-spelling]
@@ -563,6 +572,10 @@ Prettier は、
 Db で LF 後の字下げが取り除かれるためです。
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
+対象にする版のうち最も古いものは、その空白を図の説明に入れます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
@@ -969,6 +982,12 @@ gitGraph
 物理 CR/CRLF を LF にして `endOfLine` で出力します。
 値・ブロック・隠れた形の内部も同じです。
 内容の LS/PS/NBSP/BOM は保持し、共通の行値の外端からだけ共通空白を除きます。
+その文字は mermaid.js が Db に持つ値の一部で、U+FEFF を持つ id は、
+持たない id とは別の commit を指します。
+それを変えることは、整形が Db に起こしてよい変化のどの種類にも当たりません。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
 通常のブロック開始記号の空白は結合できます。
 構造上の非 ASCII 区切りは拒否を保ちます。
 先頭 BOM は埋め込み先の Prettierの扱いに従い、バイト同一は保証しません。
