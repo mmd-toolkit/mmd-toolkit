@@ -459,9 +459,9 @@ or U+2029, and hidden-looking text in the value that it reads, apart from the
 escape of a quote and the quotes of an HTML attribute (`["A\"B\q\n"]` has the
 title `A"B\q\n`, `[<b>Service</b>]` the title `<b>Service</b>`, and `[%%{}%%]`
 the title `%%{}%%`), so another spelling changes that value. A label of
-whitespace only keeps one space, and an empty label in quotes keeps its quotes,
-since versions of mermaid.js that count reject an empty label without quotes
-(see
+whitespace only is printed with one space, and an empty label in quotes keeps
+its quotes. Neither is printed empty, since versions of mermaid.js that count
+reject an empty label without quotes (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A title with a comment or a directive stays as written. Physical CR/CRLF alone
 follow the shared host policy.
