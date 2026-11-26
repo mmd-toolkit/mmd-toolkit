@@ -5056,6 +5056,51 @@ const journeyWhitespaceExamples: readonly (readonly [
     "journey\n  Task:\u2029\n",
   ],
   [
+    "U+00A0 followed by spaces as the entire data of a journey task",
+    "journey\nA:\u00a0   \n",
+    "journey\n  A:\u00a0   \n",
+  ],
+  [
+    "a space followed by U+00A0 as the entire data of a journey task",
+    "journey\nA: \u00a0\n",
+    "journey\n  A: \u00a0\n",
+  ],
+  [
+    "U+3000 followed by spaces as the entire data of a journey task",
+    "journey\nA:\u3000  \n",
+    "journey\n  A:\u3000  \n",
+  ],
+  [
+    "U+FEFF followed by spaces as the entire data of a journey task",
+    "journey\nA:\ufeff  \n",
+    "journey\n  A:\ufeff  \n",
+  ],
+  [
+    "U+2028 followed by spaces as the entire data of a journey task",
+    "journey\nA:\u2028  \n",
+    "journey\n  A:\u2028  \n",
+  ],
+  [
+    "a tab followed by U+00A0 as the entire data of a journey task",
+    "journey\nA:\t\u00a0\n",
+    "journey\n  A:\t\u00a0\n",
+  ],
+  [
+    "U+00A0 followed by a comment in the data of a journey task",
+    "journey\nA:\u00a0 # c\n",
+    "journey\n  A:\u00a0 # c\n",
+  ],
+  [
+    "U+00A0 and spaces as the data of a journey task at the end of the text",
+    "journey\nA:\u00a0  ",
+    "journey\n  A:\u00a0  \n",
+  ],
+  [
+    "U+00A0 and spaces as the data of a journey task before another task",
+    "journey\nA:\u00a0  \nB: 5\n",
+    "journey\n  A:\u00a0  \n  B: 5\n",
+  ],
+  [
     "U+00A0 before the colon of a task",
     "journey\nA\u00a0: 5\nB : 2\n",
     "journey\n  A\u00a0: 5\n  B: 2\n",
