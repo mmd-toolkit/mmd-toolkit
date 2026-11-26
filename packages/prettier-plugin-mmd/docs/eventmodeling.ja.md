@@ -1754,13 +1754,36 @@ entity Shop.Buy
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
 [journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
-ただし、ほかの規則が配置を書かれたまま残す所は別です。
-物理行を結ぶコメント領域と、`;` を含む行がそれです。
 文の後続の行と、その間のコメントやディレクティブの行は、
 文より 1 段深く置きます。
-ただし、ほかの規則が配置を書かれたまま残す所は別です。
-物理行を結ぶコメント領域と、`;` を含む行がそれです。
 `{` が後の行にあるブロックを閉じる `}` は、文の段に置きます。
+ほかの規則が書かれたまま残す後続の行は、動かしません。
+次の行がそれです。
+
+- 値や隠れた形の中の行です。
+  中身は下のとおり保ちます。
+- 隠れた形の後の行です。
+  その前の隙間を書かれたまま残します（[Hidden forms](#hidden-forms)を参照）。
+  ただし、GWT の項目を始める行と、最初より後の GWT の節を始める行は、
+  決まった GWT の配置に動きます。
+- 複数行のディレクティブの中の行です。
+  詳しくは [Global directives](#global-directives) を参照してください。
+- 閉じておらず、引数の後の改行を取り込むディレクティブを持つ文の行と、
+  そのディレクティブが文に結ぶ行です。
+  結ばれた行は、その上の文とともに書かれたまま印字します。
+  詳しくは [Global directives](#global-directives) を参照してください。
+- ブロックコメントが続く行です（[Comments](#comments)を参照）。
+- 行の規則が無視する `;` を持つ文で、
+  同じ行でその `;` の後に U+2028 か U+2029 があるか、
+  その `;` の前に空白やディレクティブだけを挟んで別の `;` があるものの行です。
+  そのような文は書かれたまま印字します。
+  詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)
+  を参照してください。
+- 行を空白 1 つか何も挟まずにつなぐと、行の規則が無視する `;` が変わりうる文で、
+  U+2028 や U+2029 があればそれより前に、なければ行のどこかに `;` を含む行です。
+  そのような文は、各区間の頭から最後の保つ `;` までを、
+  書かれたまま残すからです（[Semicolons](#semicolons)を参照）。
+
 構造上の分割を加えるのは決定済みの GWT 節・項目配置です。
 値、隠れた形、メタデータ、保護境界の内容は、
 [データブロック](#data-blocks) の限定的な本文の余白の変更を除いて保ちます。
@@ -1771,6 +1794,32 @@ entity Shop.Buy
 [fixture: eventmodeling/long-lines/break-next-to-directive]
 [fixture: eventmodeling/long-lines/break-next-to-percent-comment]
 [fixture: eventmodeling/comments/block-opener-on-a-later-line-after-a-comment-line]
+
+[fixture: eventmodeling/description-blocks/description-opener-newline-unchanged]
+[fixture: eventmodeling/hidden-forms/hidden-frame-required-gaps]
+[fixture: eventmodeling/hidden-forms/header-inline-gwt-item-directive]
+[fixture: eventmodeling/hidden-forms/hidden-optional-owners]
+[fixture: eventmodeling/hidden-forms/gwt-required-source-and-given-hidden-gaps]
+[fixture: eventmodeling/hidden-forms/hidden-gwt-clause-item-owners]
+[fixture: eventmodeling/declarations-and-notes/entity-slash-comment-over-lines]
+[fixture: eventmodeling/long-lines/later-line-of-a-joined-semicolon-stretch-kept]
+[fixture: eventmodeling/long-lines/later-line-holding-a-semicolon-deeper]
+[fixture: eventmodeling/long-lines/later-line-after-a-joined-semicolon-stretch-deeper]
+[test: a later line after a `%%` comment after U+2028 inside a statement of an eventmodeling diagram stands one level deeper]
+[test: a later line whose `;` follows U+2028 in an eventmodeling statement that joining could change stands one level deeper]
+[fixture: eventmodeling/declarations-and-notes/header-inline-multiline-directive]
+[fixture: eventmodeling/global-directives/description-block-end-line-with-unclosed-directive-kept]
+[fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-an-unclosed-directive-kept]
+[fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-a-closed-directive-deeper]
+[fixture: eventmodeling/long-lines/later-lines-before-an-unclosed-directive-and-a-semicolon-deeper]
+[fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-adjacent-semicolons-kept]
+[fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-spaced-semicolons-kept]
+[fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-a-directive-between-semicolons-kept]
+[fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-semicolons-apart-deeper]
+[test: a later line whose `;` comes before U+2028 in an eventmodeling statement that joining could change stays where it is written]
+[test: an eventmodeling statement with a `;` that the line rule ignores and U+2028 after it is printed as written]
+[test: an eventmodeling statement with a `;` that the line rule ignores and U+2029 after it is printed as written]
+[test: a later line whose `;` comes before U+2029 in an eventmodeling statement that joining could change stays where it is written]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 

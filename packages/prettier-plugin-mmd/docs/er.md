@@ -64,10 +64,17 @@ was indented with.
 
 [fixture: indentation/written-indentation-dropped]
 
-The one exception is an `accTitle` or `accDescr` statement that holds a
-direction, which keeps the first column, since the lexer reads it as a title or
-a description at the first column and as a direction line after an indentation
-(see [Accessibility statements](#accessibility-statements)).
+An exception is an `accTitle` or `accDescr` statement that holds a direction,
+which keeps the first column, since the lexer reads it as a title or a
+description at the first column and as a direction line after an indentation
+(see [Accessibility statements](#accessibility-statements)). A line that a
+comment line after U+2028 or U+2029 joins to the line before it, which
+mermaid.js reads as one line with it, keeps its indentation as written, with the
+statements on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: er/indentation/comment-region-keeps-a-joined-statement-line] [test:
+er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph]
 
 Input
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -113,9 +120,12 @@ print the `{` of a body after one space on the line of its opener, also where it
 was written touching it, and [class](./class.md#member-bodies),
 [requirement](./requirement.md#indentation), and [state](./state.md#indentation)
 put the members one level deeper on lines of their own and the `}` on a line of
-its own at the level of the opener.
+its own at the level of the opener. An attribute that holds a comment region
+that joins two of its lines stays as written whole (see
+[Attribute spacing](#attribute-spacing)).
 
-[fixture: attribute-blocks/opening-brace-after-one-space] [fixture:
+[fixture: attribute-blocks/opening-brace-after-one-space] [test:
+er/attribute-blocks/comment-region-keeps-the-joined-attributes] [fixture:
 attribute-blocks/split]
 
 A block written on one line, or with its first attribute on the line of the `{`
@@ -536,10 +546,10 @@ decides, as [block](./block.md#multi-line-statements),
 [sequence](./sequence.md#multi-line-statements), and
 [flowchart](./flowchart.md#accessibility-lines) put the later parts of a
 statement and the standalone trivia one continuation level inside the statement,
-where no other rule keeps the layout as written (a comment region that joins
-physical lines, a line that holds a `;`). The line breaks next to the comment
-line or the directive stay for the reason given under
-[Multi-line statements](#multi-line-statements).
+where no other rule keeps the layout as written (an attribute that holds a
+comment region that joins two of its lines stays as written whole, see below).
+The line breaks next to the comment line or the directive stay for the reason
+given under [Multi-line statements](#multi-line-statements).
 
 [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
@@ -583,7 +593,8 @@ region follows it on its line. The whitespace inside the styles stays as written
 (`style A fill:#F00,   stroke:#ABC`, U+2028, and `%% c` keep the run after the
 comma).
 
-[test: er/attribute-spacing/comment-region-continuation-kept] [test: ER the
+[test: er/attribute-spacing/comment-region-continuation-kept] [test:
+er/attribute-spacing/comment-region-keeps-the-whole-attribute] [test: ER the
 quotes of the names of a relationship on a line that a comment line after U+2028
 joins] [test: ER the quotes of the label of a relationship on a line that a
 comment line after U+2028 joins] [test: ER the quotes of the alias of an entity
@@ -2130,12 +2141,15 @@ key (the title and the description of a diagram in
 `accTitle: text`: no whitespace before the colon and one space after it, also
 where the colon or the text was written on a later line; where a comment line
 stands before the text, the line breaks stay and the comment and the text stand
-one level deeper, as said above.
+one level deeper, as said above. A statement that holds a comment region that
+joins two of its lines stays as written instead (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [corpus fixture:
 er/lex-acc-title-line-feed-after-colon] [fixture:
-multi-line-statements/acc-colon-and-brace-joined]
+multi-line-statements/acc-colon-and-brace-joined] [test:
+er/accessibility-statements/comment-region-keeps-the-text-line]
 
 Later text lines of an ordinary `accDescr { ... }` block stand one level inside
 its statement, replacing only ASCII spaces and tabs immediately after LF. The
