@@ -200,10 +200,9 @@ direction 行はそれより前へは届きません。
 [fixture: statements-one-per-line/word-before-ignored-semicolon]
 
 文はそれぞれ 1 行に置きます。
-Prettier が整形する言語の文を 1 行ずつ印字するのと同じで（JavaScript の
-`a(); b()` は 2 行になります）、mermaid.js の文書も、
-文をそう書いているからです。
-flowchart の例の文の 257 行に、2 つの文を持つ行はありません。
+この形は、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 文を区切る `;` と改行は、どちらも mermaid.js にとって文の終わりなので、
 行に分けても Db も図も変わりません。
 
@@ -517,6 +516,9 @@ flowchart LR
 
 文の終わりの `;` は取り除き、
 トップレベルでそれだけで置かれた `;` も取り除きます。
+この形は、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 
 [fixture: semicolons/alone-between-empty-lines-removed]
 [fixture: semicolons/alone-between-comments-removed]
@@ -1898,8 +1900,12 @@ flowchart LR
 
 辺のラベルは、書かれた形を保ちます。
 2 つの矢印の間のテキストか、矢印の後の `|` の間のテキストです。
-mermaid.js の文書の例は前者を 14 回、後者を 8 回使い、2 倍にはならないためです。
-（[リンクのラベル](./compatibility.ja.md#リンクのラベル)を参照）。
+mermaid.js の文書の例は前者を 14 回、後者を 8 回使い、2 倍にはならないので、
+[規則 3](./printed-form.ja.md#3-綴り)は形を与えません。
+[リンクのラベル](./compatibility.ja.md#リンクのラベル)を参照してください。
+書かれた形を残すのは、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 
 [fixture: link-label-form/other-link-kinds-kept]
 [fixture: link-label-form/flowchart-header-both-forms-kept]
@@ -1973,6 +1979,9 @@ flowchart LR
 ### 折り返し
 
 Prettier の `printWidth` オプションにかかわらず、行を折り返しません。
+この形は、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 ただし、1 行に書いたデータブロック `@{ … }` は、その行が `printWidth` より広く、
 [データブロック](#データブロック)の条件を満たすときに、複数行で印字します。
 
@@ -2687,8 +2696,11 @@ flowchart LR
   [fixture: data-blocks/separate-single-line-block-kept]
   [fixture: data-blocks/edge-adjacent-single-line-kept]
 
-`useTabs` では、複数行のブロックを持つ文は、
+`useTabs` では、複数行のデータブロック（`@{ … }`）を持つ文は、
 最初の行の字下げも含めて書かれたまま印字します。
+この形は、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 mermaid.js はブロックの行の前のタブを拒否するので、
 ブロックの行は空白で字下げし、タブの幅が特定の値のときだけ正しくそろいます。
 ブロックの行を元の位置に残して、ノードの行だけを文の深さまで字下げすると、
@@ -3985,6 +3997,8 @@ flowchart LR
 [test: style trailing NBSP taken by an unclosed directive]
 
 `style`、`classDef`、`linkStyle` の文の末尾の空白とタブは取り除きます。
+行末に空白やタブを置かない Prettier と同じく、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
 ただし、図がそれらに左右される所では残します。
 下の段落と図種の文書が名前を挙げている文がそれです。
 最後のスタイルを終えるバックスラッシュの後の空白かタブは、1 文字として残し、

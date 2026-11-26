@@ -193,12 +193,11 @@ word.
 
 [fixture: statements-one-per-line/word-before-ignored-semicolon]
 
-Each statement stands on a line of its own, as Prettier prints the statements of
-the languages it formats (`a(); b()` in JavaScript becomes two lines), and as
-the documentation of mermaid.js writes them: none of the 257 lines of statements
-in its flowchart examples holds two. A `;` that separates two statements and a
-line break both end a statement for mermaid.js, so the split changes neither the
-Db nor the figure.
+Each statement stands on a line of its own, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). A
+`;` that separates two statements and a line break both end a statement for
+mermaid.js, so the split changes neither the Db nor the figure.
 
 [fixture:
 statements-one-per-line/compat-empty-description-block-after-statement]
@@ -508,7 +507,9 @@ flowchart LR
 ### Semicolons
 
 A `;` at the end of a statement is dropped, and so is a `;` that stands alone at
-the top level.
+the top level, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)).
 
 [fixture: semicolons/alone-between-empty-lines-removed] [fixture:
 semicolons/alone-between-comments-removed] [fixture:
@@ -1843,8 +1844,12 @@ flowchart LR
 
 A link label keeps the form it is written in: text between two arrows, or text
 between `|` after the arrow. The examples in the documentation of mermaid.js use
-the first form 14 times and the second 8 times, which is not twice as often (see
-[The label of a link](./compatibility.md#the-label-of-a-link)).
+the first form 14 times and the second 8 times, which is not twice as often, so
+[rule 3](./printed-form.md#3-a-spelling) gives no form (see
+[The label of a link](./compatibility.md#the-label-of-a-link)); keeping the
+written form is a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)).
 
 [fixture: link-label-form/other-link-kinds-kept] [fixture:
 link-label-form/flowchart-header-both-forms-kept]
@@ -1915,9 +1920,13 @@ flowchart LR
 
 ### Line wrapping
 
-Lines are not wrapped, whatever Prettier's `printWidth` option says, except that
-a data block `@{ … }` on one line whose line is wider than `printWidth` prints
-on several lines under the conditions of [Data blocks](#data-blocks).
+Lines are not wrapped, whatever Prettier's `printWidth` option says, a form
+decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)),
+except that a data block `@{ … }` on one line whose line is wider than
+`printWidth` prints on several lines under the conditions of
+[Data blocks](#data-blocks).
 
 [fixture: line-wrapping/print-width-ignored]
 
@@ -2606,19 +2615,22 @@ written:
   data-blocks/separate-single-line-block-kept] [fixture:
   data-blocks/edge-adjacent-single-line-kept]
 
-With `useTabs`, a statement that holds a block of several lines is printed as
-written, the indentation of its first line included. mermaid.js rejects a tab
-before the lines of a block, so they are indented with spaces, which stand right
-for one width of a tab only. A node line alone, indented to the depth of the
-statement while the lines stay where they are, would stand right of the content
-and the `}` of the block wherever the author wrote them no deeper than the node
-line, and the block would read inside out. The statement stays where the author
-put it, which may be shallower than the statements around it, as it was in the
-input, and a block that the author has aligned with the node stays aligned.
-mermaid.js accepts a tab before a `}` alone on its line, but that line is the
-last line of the block text, which a scalar that keeps its empty lines (`|+`,
-`>+`) reads, and a tab there changes the value, so the printer sets no tab
-there.
+With `useTabs`, a statement that holds a data block (`@{ … }`) of several lines
+is printed as written, the indentation of its first line included, a form
+decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)).
+mermaid.js rejects a tab before the lines of a block, so they are indented with
+spaces, which stand right for one width of a tab only. A node line alone,
+indented to the depth of the statement while the lines stay where they are,
+would stand right of the content and the `}` of the block wherever the author
+wrote them no deeper than the node line, and the block would read inside out.
+The statement stays where the author put it, which may be shallower than the
+statements around it, as it was in the input, and a block that the author has
+aligned with the node stays aligned. mermaid.js accepts a tab before a `}` alone
+on its line, but that line is the last line of the block text, which a scalar
+that keeps its empty lines (`|+`, `>+`) reads, and a tab there changes the
+value, so the printer sets no tab there.
 
 [fixture: data-blocks/tab-statement-space-body] [fixture:
 data-blocks/tab-statement-aligned-body-kept] [fixture:
@@ -3856,12 +3868,13 @@ suffix; it does not prevent ordinary style spacing.
 [test: style trailing NBSP taken by an unclosed directive]
 
 Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
-are dropped, except where the figure depends on them, in the statements that the
-paragraphs below and the document of the diagram type name: a space or a tab
-after a backslash that ends the last style stays as one character, and a style
-of whitespace only stays as written. At the end of a style, a backslash escapes
-only the first character after it, leaving any further spaces and tabs as
-unescaped line-end whitespace.
+are dropped, as [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+at the end of a line, where Prettier prints no spaces or tabs, except where the
+figure depends on them, in the statements that the paragraphs below and the
+document of the diagram type name: a space or a tab after a backslash that ends
+the last style stays as one character, and a style of whitespace only stays as
+written. At the end of a style, a backslash escapes only the first character
+after it, leaving any further spaces and tabs as unescaped line-end whitespace.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes those
 remaining spaces and tabs, as Prettier does at line ends.
 

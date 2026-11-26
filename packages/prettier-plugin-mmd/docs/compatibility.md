@@ -4606,16 +4606,21 @@ gitgraph/header/header-bt]
 ### The label of a link
 
 A label can be written between two arrows (`-- text -->`) or between `|` after
-the arrow (`-->|text|`), and mermaid.js reads both the same. The form is the one
-that the examples of the diagram type use at least twice as often as the other:
-an agentflow diagram has 2 links of the first form and none of the second, so
-its label is printed between the arrows, for the arrows `-->` and `--x`, which
-it reads in the first form; a swimlane diagram has none of the first form and 12
-of the second, so its label is printed between `|`, for the eight arrows of a
+the arrow (`-->|text|`), and mermaid.js reads both the same.
+[Rule 3](./printed-form.md#3-a-spelling) gives the form: the one that the
+examples of the diagram type use at least twice as often as the other: an
+agentflow diagram has 2 links of the first form and none of the second, so its
+label is printed between the arrows, for the arrows `-->` and `--x`, which it
+reads in the first form; a swimlane diagram has none of the first form and 12 of
+the second, so its label is printed between `|`, for the eight arrows of a
 flowchart; a flowchart has 14 of the first form and 8 of the second, which is
-not twice as often, and stays as written. The label must be plain text (letters,
-digits, spaces, `_`, `,`, `?`, and `!`); a label with a `|` or a `%%`, a string,
-a Markdown label, a label of blanks only, and an empty label stay as written.
+not twice as often, so rule 3 gives no form there, and the label stays as
+written, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). The
+label must be plain text (letters, digits, spaces, `_`, `,`, `?`, and `!`); a
+label with a `|` or a `%%`, a string, a Markdown label, a label of blanks only,
+and an empty label stay as written.
 
 [fixture: agentflow/edge-labels/pipes-to-arrows] [fixture:
 agentflow/edge-labels/blank-pipe-label-kept] [fixture:
@@ -6323,11 +6328,14 @@ The line rule of mermaid.js (the specification's
 applies to a line of the text as a whole, whatever statement holds the trigger
 and whatever statement holds the `;`: `accDescr {style:#x} accTitle:;` is a line
 whose `;` is ignored because of the `style:#x` of the description block. A `;`
-that ends its line is dropped, as one that separates statements is. But where
-the statement that holds it goes on after the line with a value of its own, as
-`accTitle:` and `T` on the next line do, the `;` is not at the end of its
-statement, and the printer does not drop it: the line stays together, with the
-trigger and the `;` on it, so that no statement per line, and no description
+that ends its line is dropped, as one that separates statements is, a form
+decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). But
+where the statement that holds it goes on after the line with a value of its
+own, as `accTitle:` and `T` on the next line do, the `;` is not at the end of
+its statement, and the printer does not drop it: the line stays together, with
+the trigger and the `;` on it, so that no statement per line, and no description
 block in the form of the colon, parts the `;` from its trigger, and the value is
 joined or kept as the statement is printed otherwise. A body of statements after
 the line of a block, and the word that closes a statement (`end`), are no such
