@@ -527,18 +527,22 @@ their gaps. Prettier prints one space before the `{` that opens a block
 (`class A{}` is printed `class A {}`), so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that space,
 also where the block holds text. A separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block. Ordinary
-description body and standalone comment lines align one level inside it: the Db
-removes indentation after LF. Keep line breaks and interior blank lines, and the
-whitespace at the end of each line of text except the last one; a line of
-whitespace only becomes an empty line. The whitespace at the end of the last
-line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. Directives and
-shared removed comment regions keep their complete source. Whitespace-only
-interiors print `{}` because there is no text for interior whitespace to
-surround; tabs, line breaks and Unicode whitespace follow the same rule.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. Ordinary description body and standalone comment lines align
+one level inside it: the Db removes indentation after LF. Keep line breaks and
+interior blank lines, and the whitespace at the end of each line of text except
+the last one; a line of whitespace only becomes an empty line. The whitespace at
+the end of the last line of text is dropped where the closer stands on a line of
+its own, and is printed as one space where the closer follows it on that line.
+Directives and shared removed comment regions keep their complete source.
+Whitespace-only interiors print `{}` because there is no text for interior
+whitespace to surround; tabs, line breaks and Unicode whitespace follow the same
+rule.
+
+[fixture: gitgraph/title-and-common-values/brace-on-a-later-line]
 
 [fixture: title-and-common-values/block-touching-with-text-fixed] [fixture:
 title-and-common-values/empty-whitespace-interiors] [test: gitgraph Unicode and

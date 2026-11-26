@@ -1055,9 +1055,13 @@ railroad-peg-beta
 を変えるためです。
 説明ブロックの本文の字下げ、外端は共有の説明規則に従います。
 独立した行の `}` は文と同じ段に置きます。
-`{` が `accDescr` の行にあるときは、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この深さを与えます。
+閉じる行を `{` のある行と同じ段に置く形で、
+Prettier がブロックを閉じる行を印字する形です。
+`{` のある行は、`accDescr` の行か、
+`{` の前にコメントかディレクティブがあるときは、文と同じ段の後の行です。
+
+[fixture: railroad/description-blocks/brace-on-a-later-line]
 
 [fixture: railroad/multiline-values/abnf-columns]
 
@@ -1386,9 +1390,13 @@ Db で LF 後の字下げが取り除かれるためです。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 独立した行の `}` は文と同じ段に置きます。
-`{` が `accDescr` の行にあるときは、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この深さを与えます。
+閉じる行を `{` のある行と同じ段に置く形で、
+Prettier がブロックを閉じる行を印字する形です。
+`{` のある行は、`accDescr` の行か、
+`{` の前にコメントかディレクティブがあるときは、文と同じ段の後の行です。
+
+[fixture: railroad/description-blocks/brace-on-a-later-line]
 
 [fixture: railroad/description-blocks/abnf-lines]
 [fixture: railroad/description-blocks/ebnf-lines]

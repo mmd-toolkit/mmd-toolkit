@@ -2907,9 +2907,13 @@ Wardley はそのような行を書かれたままにするからです。
 空白だけの内部は、囲むテキストがないため `{}` にします。
 キーワードと開始括弧の間が空白だけなら同じ行にまとめます。
 独立した行の `}` は文と同じ段に置きます。
-`{` が `accDescr` の行にあるときは、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この深さを与えます。
+閉じる行を `{` のある行と同じ段に置く形で、
+Prettier がブロックを閉じる行を印字する形です。
+`{` のある行は、`accDescr` の行か、
+`{` の前にコメントかディレクティブがあるときは、文と同じ段の後の行です。
+
+[fixture: wardley/accessibility/brace-on-a-later-line]
 
 [fixture: wardley/accessibility/description-empty]
 
@@ -2944,9 +2948,10 @@ Db で LF 後の字下げが取り除かれるためです。
 ブロックの内側に 1 段深く置きます。
 `}` は `accDescr` と同じ段に置きます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
-開始の `{` が文と同じ行にある場合に、
 Prettier がブロックの閉じ行を開始行と同じ段に印字するのと同じく、
 この閉じ行の段を与えます。
+`{` のある行は、文の行か、`{` の前にコメントかディレクティブがあるときは、
+文と同じ段の後の行です。
 ディレクティブのあるブロックの内側は、どの規則も与えません。
 [flowchart](./flowchart.ja.md#複数行の値)、
 [xychart](./xychart.ja.md#空の説明ブロック)、
@@ -2956,6 +2961,8 @@ Prettier がブロックの閉じ行を開始行と同じ段に印字するの�
 詳しくは
 [どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
 を参照してください。
+
+[fixture: wardley/accessibility/brace-on-a-later-line]
 
 [fixture: wardley/accessibility/description-closer]
 [fixture: wardley/accessibility/description-comment-only]

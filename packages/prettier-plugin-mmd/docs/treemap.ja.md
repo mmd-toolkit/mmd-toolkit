@@ -1175,13 +1175,17 @@ Mermaid が説明から LF 後の字下げを除くためです。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 別行の開始記号は文の列にそろえます。
 独立した行の `}` は文と同じ段に置きます。
-`{` が `accDescr` の行にあるときは、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この深さを与えます。
+閉じる行を `{` のある行と同じ段に置く形で、
+Prettier がブロックを閉じる行を印字する形です。
+`{` のある行は、`accDescr` の行か、
+`{` の前にコメントかディレクティブがあるときは、文と同じ段の後の行です。
 最初の `}` がブロックを閉じます。
 字下げして書かれていないブロックは行頭に置いて印字し、
 本文はその 1 段内側に置きます。
 詳しくは [タイトル](#title) を参照してください。
+
+[fixture: treemap/description-blocks/brace-on-a-later-line]
 
 [fixture: treemap/description-blocks/block-touching-with-text-fixed]
 [fixture: treemap/description-blocks/empty]

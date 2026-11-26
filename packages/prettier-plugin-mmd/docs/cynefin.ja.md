@@ -638,9 +638,11 @@ Prettier が `class A{}` を `class A {}` と印字するのと同じです。
 空白の結合も規則 1 が与え、Prettier は `class A`、改行、
 `{}` も `class A {}` と印字します。
 独立した行の `}` は文と同じ段に置きます。
-`{` が `accDescr` の行にあるときは、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この深さを与えます。
+閉じる行を `{` のある行と同じ段に置く形で、
+Prettier がブロックを閉じる行を印字する形です。
+`{` のある行は、`accDescr` の行か、
+`{` の前にコメントかディレクティブがあるときは、文と同じ段の後の行です。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 改行と内部の空行は保ちます。
 mermaid.js は説明本文の改行を Db に記録するので、
@@ -652,6 +654,8 @@ mermaid.js は説明本文の改行を Db に記録するので、
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 空ブロック内のコメント・ディレクティブは共有の配置を保ちます。
 値内の図固有の形に見える文字も値のままにします。
+
+[fixture: cynefin/description-blocks/brace-on-a-later-line]
 
 [corpus fixture: cynefin/line-block-values]
 
@@ -1253,9 +1257,13 @@ flowchart も折り返しません（[折り返し](./flowchart.ja.md#折り返�
 折り返し直しや字下げの変更で Db が変わることがあり、
 遷移部品の折り返しは拒否を招くことがあります。
 独立した行の `}` は文と同じ段に置きます。
-`{` が `accDescr` の行にあるときは、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この深さを与えます。
+閉じる行を `{` のある行と同じ段に置く形で、
+Prettier がブロックを閉じる行を印字する形です。
+`{` のある行は、`accDescr` の行か、
+`{` の前にコメントかディレクティブがあるときは、文と同じ段の後の行です。
+
+[fixture: cynefin/description-blocks/brace-on-a-later-line]
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
 

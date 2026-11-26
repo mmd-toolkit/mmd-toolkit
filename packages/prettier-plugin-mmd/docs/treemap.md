@@ -1163,11 +1163,15 @@ inside the statement while retaining internal blank lines. Mermaid discards
 indentation after LF from the description. The body uses the configured
 indentation, including tabs and the positive minimum step at width zero. Align a
 separate opener with its statement. A separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block. The first `}`
-still closes the block. A block that was not written indented is printed at the
-start of its line, with its body one step inside it (see [Title](#title)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. The first `}` still closes the block. A block that was not
+written indented is printed at the start of its line, with its body one step
+inside it (see [Title](#title)).
+
+[fixture: treemap/description-blocks/brace-on-a-later-line]
 
 [fixture: treemap/description-blocks/block-touching-with-text-fixed] [fixture:
 treemap/description-blocks/empty]

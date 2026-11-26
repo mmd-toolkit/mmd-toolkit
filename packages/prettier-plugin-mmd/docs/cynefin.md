@@ -613,18 +613,22 @@ space between the keyword and the opening brace, as Prettier prints `class A{}`
 as `class A {}`. Join plain opener whitespace, as Prettier prints `class A`, a
 line break, and `{}` as `class A {}` too. A separate `}` aligns with its
 statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
-depth when the `{` stands on the `accDescr` line: it puts the closing line at
-the level of the opening line, as Prettier prints the closing line of a block.
-Ordinary description body and standalone comment lines align one level inside
-it. Keep line breaks and interior blank lines, and the whitespace at the end of
-each line of text except the last one; a line of whitespace only becomes an
-empty line. A block description's line breaks form part of its value in
-mermaid.js, so joining description lines with spaces changes the Db. The
-whitespace at the end of the last line of text is dropped where the closer
-stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Directives and shared removed comment regions keep
-their complete source. Comments/directives inside empty blocks retain their
-shared layout. Native-looking text inside a value remains value text.
+depth: it puts the closing line at the level of the line that holds the `{`, as
+Prettier prints the closing line of a block, and that line is the `accDescr`
+line or, where a comment or a directive stands before the `{`, a later line at
+the level of the statement. Ordinary description body and standalone comment
+lines align one level inside it. Keep line breaks and interior blank lines, and
+the whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. A block description's line breaks form
+part of its value in mermaid.js, so joining description lines with spaces
+changes the Db. The whitespace at the end of the last line of text is dropped
+where the closer stands on a line of its own, and is printed as one space where
+the closer follows it on that line. Directives and shared removed comment
+regions keep their complete source. Comments/directives inside empty blocks
+retain their shared layout. Native-looking text inside a value remains value
+text.
+
+[fixture: cynefin/description-blocks/brace-on-a-later-line]
 
 [corpus fixture: cynefin/line-block-values]
 
@@ -1199,9 +1203,13 @@ domain/item splitting, retain physical string and transition-label contents,
 continuation columns and interior blanks. Description bodies use the shared
 indentation above. Reflow or reindentation can change the Db, and wrapping
 transition components can reject. A separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement.
+
+[fixture: cynefin/description-blocks/brace-on-a-later-line]
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
 

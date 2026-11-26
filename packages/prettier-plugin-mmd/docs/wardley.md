@@ -3735,9 +3735,13 @@ In a block that keeps its braces, separate the keyword and `{` by one ordinary
 space even when written touching, compact whitespace-only interiors to `{}`
 because there is no text for the whitespace to surround, join plain opener
 whitespace. A separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement.
+
+[fixture: wardley/accessibility/brace-on-a-later-line]
 
 [fixture: wardley/accessibility/description-empty]
 
@@ -3769,9 +3773,10 @@ boundary comment lines, as [flowchart](./flowchart.md#multi-line-values) keeps
 the comment lines of a block without text and puts them one level inside the
 block. A separate `}` stands at the level of the `accDescr`.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
-level where the opening `{` stands on the statement's line, as Prettier prints
-the closing line at the level of the line that opens a block. No rule gives the
-interior of a block that holds a directive:
+level, as Prettier prints the closing line at the level of the line that opens a
+block: the line that holds the `{` is the statement's line or, where a comment
+or a directive stands before the `{`, a later line at the level of the
+statement. No rule gives the interior of a block that holds a directive:
 [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
@@ -3779,6 +3784,8 @@ breaks, but their documents give that form no reason, and it is a question of
 the list of undecided forms (D34), so their printing is no decided form, and the
 released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+
+[fixture: wardley/accessibility/brace-on-a-later-line]
 
 [fixture: wardley/accessibility/description-closer] [fixture:
 wardley/accessibility/description-comment-only] [fixture:

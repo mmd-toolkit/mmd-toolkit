@@ -2815,9 +2815,10 @@ treeview、wardley は、文と同じ段に置きます。
 ブロックの内側に 1 段深く置きます。
 `}` は `accDescr` と同じ段に置きます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
-開始の `{` が文と同じ行にある場合に、
 Prettier がブロックの閉じ行を開始行と同じ段に印字するのと同じく、
 この閉じ行の段を与えます。
+`{` のある行は、文の行か、`{` の前にコメントかディレクティブがあるときは、
+文と同じ段の後の行です。
 ディレクティブのあるブロックの内側は、どの規則も与えません。
 [flowchart](./flowchart.ja.md#複数行の値)、
 [xychart](./xychart.ja.md#空の説明ブロック)、
@@ -2854,9 +2855,12 @@ flowchart、sequence、state、gantt、journey、timeline、pie、radar のそ�
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 独立する閉じは文の位置に揃え、最初の閉じ波括弧が値を終える規則も保ちます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
-開始の `{` が文と同じ行にある場合に、
 Prettier がブロックの閉じ行を開始行と同じ段に印字するのと同じく、
 この閉じ行の段を与えます。
+`{` のある行は、文の行か、`{` の前にコメントかディレクティブがあるときは、
+文と同じ段の後の行です。
+
+[fixture: architecture/description-blocks/brace-on-a-later-line]
 
 [fixture: architecture/description-blocks/asymmetric]
 [fixture: architecture/description-blocks/directive-line-between-keyword-and-brace]

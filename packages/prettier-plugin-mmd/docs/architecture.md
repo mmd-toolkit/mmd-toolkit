@@ -3894,9 +3894,10 @@ only comment lines, rule 2 decides the depth of those boundary comment lines, as
 without text and puts them one level inside the block. A separate `}` stands at
 the level of the `accDescr`.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
-level where the opening `{` stands on the statement's line, as Prettier prints
-the closing line at the level of the line that opens a block. No rule gives the
-interior of a block that holds a directive:
+level, as Prettier prints the closing line at the level of the line that opens a
+block: the line that holds the `{` is the statement's line or, where a comment
+or a directive stands before the `{`, a later line at the level of the
+statement. No rule gives the interior of a block that holds a directive:
 [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
@@ -3928,8 +3929,12 @@ decided (see
 Directives and shared removed comment regions keep their complete source. A
 separate closer aligns with the statement; the first closing brace still ends
 the value. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
-closer that level where the opening `{` stands on the statement's line, as
-Prettier prints the closing line at the level of the line that opens a block.
+closer that level, as Prettier prints the closing line at the level of the line
+that opens a block: the line that holds the `{` is the statement's line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement.
+
+[fixture: architecture/description-blocks/brace-on-a-later-line]
 
 [fixture: architecture/description-blocks/asymmetric] [fixture:
 architecture/description-blocks/directive-line-between-keyword-and-brace]

@@ -442,14 +442,15 @@ whitespace. Prettier prints empty braces without interior whitespace, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives `{}` for a
 description block whose interior contains only whitespace. Keep comment-only
 blocks with comments one level inside. A separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block. In
-`accDescr {%% c` followed by `}` or `D}` on the next line, `%% c` stays after
-`{` as description text, since moving it to its own line one level inside the
-block, with `D` and `}` also on separate lines in the second case, makes
-mermaid.js read it as a comment, leaving the description empty or just `D`,
-respectively (see
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. In `accDescr {%% c` followed by `}` or `D}` on the next line,
+`%% c` stays after `{` as description text, since moving it to its own line one
+level inside the block, with `D` and `}` also on separate lines in the second
+case, makes mermaid.js read it as a comment, leaving the description empty or
+just `D`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
 statement. Keep line breaks and interior blank lines, and the whitespace at the
@@ -462,12 +463,15 @@ A line of whitespace only becomes an empty line. The whitespace at the end of
 the last line of text is dropped where the closer stands on a line of its own,
 and is printed as one space where the closer follows it on that line. A separate
 `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block. Directives and
-shared removed comment regions keep their complete source. Trivia-bearing
-interiors keep their trivia. The first closing brace still closes the block,
-even inside quote/backslash/hidden-looking text.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. Directives and shared removed comment regions keep their
+complete source. Trivia-bearing interiors keep their trivia. The first closing
+brace still closes the block, even inside quote/backslash/hidden-looking text.
+
+[fixture: pie/description-blocks/brace-on-a-later-line]
 
 [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:

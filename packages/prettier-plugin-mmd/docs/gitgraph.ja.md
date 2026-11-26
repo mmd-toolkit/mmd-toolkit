@@ -561,9 +561,11 @@ Prettier は、
 と印字する）ので、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 中身のあるブロックでもこの空白を与えます。
 独立した行の `}` は文と同じ段に置きます。
-`{` が `accDescr` の行にあるときは、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この深さを与えます。
+閉じる行を `{` のある行と同じ段に置く形で、
+Prettier がブロックを閉じる行を印字する形です。
+`{` のある行は、`accDescr` の行か、
+`{` の前にコメントかディレクティブがあるときは、文と同じ段の後の行です。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
 改行と内部の空行は保ちます。
@@ -574,6 +576,8 @@ Db で LF 後の字下げが取り除かれるためです。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 空白だけの内側は、囲む空白を要する本文がないため `{}` と印字します。
 タブ、改行、Unicode の空白も同じです。
+
+[fixture: gitgraph/title-and-common-values/brace-on-a-later-line]
 
 [fixture: title-and-common-values/block-touching-with-text-fixed]
 [fixture: title-and-common-values/empty-whitespace-interiors]

@@ -3533,9 +3533,10 @@ the depth of those boundary comment lines, as
 without text and puts them one level inside the block. A separate `}` stands at
 the level of the `accDescr`.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
-level where the opening `{` stands on the statement's line, as Prettier prints
-the closing line at the level of the line that opens a block. No rule gives the
-interior of a block that holds a directive:
+level, as Prettier prints the closing line at the level of the line that opens a
+block: the line that holds the `{` is the statement's line or, where a comment
+or a directive stands before the `{`, a later line at the level of the
+statement. No rule gives the interior of a block that holds a directive:
 [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
@@ -3552,10 +3553,13 @@ line of text is dropped where the closer stands on a line of its own, and is
 printed as one space where the closer follows it on that line. Align a separate
 opener or closer with the statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
-level where the opening `{` stands on the statement's line, as Prettier prints
-the closing line at the level of the line that opens a block. Directives and
-shared removed comment regions keep their complete source. The first closing
-brace still ends the value.
+level, as Prettier prints the closing line at the level of the line that opens a
+block: the line that holds the `{` is the statement's line or, where a comment
+or a directive stands before the `{`, a later line at the level of the
+statement. Directives and shared removed comment regions keep their complete
+source. The first closing brace still ends the value.
+
+[fixture: radar/description-blocks/brace-on-a-later-line]
 
 [fixture: radar/description-blocks/block-touching-with-text-fixed] [fixture:
 radar/description-blocks/block-empty-fixed] [fixture:

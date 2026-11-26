@@ -226,9 +226,11 @@ Prettier は空の波括弧の内側を詰めて印字するので、
 空白だけの説明ブロックに `{}` の形を与えます。
 コメントだけのブロックではコメントを1段内側に置きます。
 独立した行の `}` は文と同じ段に置きます。
-`{` が `accDescr` の行にあるときは、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この深さを与えます。
+閉じる行を `{` のある行と同じ段に置く形で、
+Prettier がブロックを閉じる行を印字する形です。
+`{` のある行は、`accDescr` の行か、
+`{` の前にコメントかディレクティブがあるときは、文と同じ段の後の行です。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db に LF 後の字下げが残らないためです。
 改行と内部の空行は保ちます。
@@ -238,6 +240,8 @@ Db に LF 後の字下げが残らないためです。
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 引用符とバックスラッシュは最初の閉じ波括弧を保護しません。
+
+[fixture: info/description-blocks/brace-on-a-later-line]
 
 [fixture: info/description-blocks/block-gap-presence]
 [fixture: description-blocks/block-trailing-whitespace-closer-on-the-text-line]
