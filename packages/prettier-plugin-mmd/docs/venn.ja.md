@@ -41,6 +41,8 @@ mermaid.js の読み方を保ち、Db が同じ複数の形から選ぶ場合は
   `"style:#x;` と ` value"` の間の改行のようなその文字は、
   mermaid.js が Db に持つ名前だからです。
 
+  [fixture: line-rule-and-kept-lines/crossing-multiline-value]
+
 入出力の例は固定の整形フィクスチャへリンクします。
 エスケープ表記の `\n` は LF、`\r` は CR、`\t` はタブ、
 `\u2028` と `\u2029` は Unicode 区切りを表します。
@@ -134,10 +136,6 @@ mermaid.js は `set`、`union`、`style`、`title` の前の字下げを読み�
 モードが有効な間は正の字下げが暗黙の構文を選び、入れ子は表しません。
 宣言がモードを有効にし、後の通常の行頭の文が解除し、次の宣言が再び有効にします。
 文の前のコメント行とディレクティブの行は、その文と同じ位置に置きます。
-Venn 図の木は平らなので、その行の次の文が段を決めます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)は、
-[Gantt チャート](./gantt.ja.md#コメント)の形を与えます。
-Gantt チャートも、section の前と task の前のコメント行を同じように置きます。
 
 [fixture: venn/indentation/ordinary-statements-stand-one-step-deep]
 [fixture: venn/indentation/explicit-text-stays-at-the-header]
@@ -303,10 +301,6 @@ venn-beta
 ### Comments
 
 単独のコメントは次の文にそろえ、末尾では最後の文にそろえます。
-Venn 図の木は平らなので、コメント行の次の文が、末尾では最後の文が、
-その段を決めます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)は、
-[Gantt チャート](./gantt.ja.md#コメント)と同じこの形を与えます。
 接する後続コメントは接したまま残します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
 同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。

@@ -36,6 +36,8 @@ Some words used below:
   kept whole: its characters, such as the line break between `"style:#x;` and
   ` value"`, are the name that mermaid.js keeps in the Db.
 
+  [fixture: line-rule-and-kept-lines/crossing-multiline-value]
+
 Input/output examples link to fixed formatting fixtures. In escaped strings,
 `\n` is LF, `\r` CR, `\t` a tab, and `\u2028`/`\u2029` the Unicode separators;
 those denote characters, not backslashes in a diagram. See
@@ -124,11 +126,7 @@ its reading, and the one form does not depend on the mode. Positive indentation
 selects implicit syntax while mode is enabled; it expresses no nesting. A
 declaration enables mode, a later ordinary line-start statement clears it, and
 another declaration enables it again. The comment and directive lines before a
-statement stand at its level: the tree of a Venn diagram is flat, so the
-statement after the line decides its level, and
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the form of a [Gantt chart](./gantt.md#comments), which places a comment line
-before a section and before a task in the same way.
+statement stand at its level.
 
 [fixture: venn/indentation/ordinary-statements-stand-one-step-deep] [fixture:
 venn/indentation/explicit-text-stays-at-the-header] [fixture:
@@ -284,11 +282,7 @@ venn-beta
 
 ### Comments
 
-Standalone comments align with the next statement, or the last statement at EOF:
-the tree of a Venn diagram is flat, so the statement after a comment line, or
-the last statement for one at the end of the text, decides its level, and
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the form of a [Gantt chart](./gantt.md#comments), which places comment lines so.
+Standalone comments align with the next statement, or the last statement at EOF.
 A trailing comment that touches stays touching.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
