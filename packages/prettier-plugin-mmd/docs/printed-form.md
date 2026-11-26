@@ -60,29 +60,30 @@ place: the end of a line, the end of the text, and blank lines. The table gives
 what Prettier prints for each kind, and a text that the formatter prints in the
 same way. The texts of Prettier are JavaScript where no language is named.
 
-| Mark or place                            | Prettier                                                             | Whitespace                                                                         | Written                                                    | Printed                       |
-| ---------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------- |
-| A comma                                  | `f(a,b)` is printed `f(a, b);`                                       | none before, one space after                                                       | `class A,B c` in an ER diagram                             | `class A, B c`                |
-| A `=` that gives a name its value        | `function f(a=1) {}` is printed `function f(a = 1) {}`               | one space on each side                                                             | `Person(a, "A", $link="x")` in a C4 diagram                | `Person(a, "A", $link = "x")` |
-| The colon of a key                       | `x = {a : 1}` is printed `x = { a: 1 };`                             | none before, one space after                                                       | `"Dogs" : 386` in a pie chart                              | `"Dogs": 386`                 |
-| A colon between two things               | `y = c ? d:e` is printed `y = c ? d : e;`                            | one space on each side                                                             | `s1 --> s2: go` in a state diagram                         | `s1 --> s2 : go`              |
-| A colon inside a name                    | the selector `a:hover` of CSS stays `a:hover`                        | none on either side                                                                | `a : R -- L : b` in an architecture diagram                | `a:R -- L:b`                  |
-| Another mark between two things          | `x = a+b` is printed `x = a + b;`                                    | one space on each side                                                             | `A-->B` in a flowchart                                     | `A --> B`                     |
-| A keyword between two things             | `x = a  in   b;` is printed `x = a in b;`                            | one space on each side                                                             | `service a(server)[A]in   g` in an architecture diagram    | `service a(server)[A] in g`   |
-| A keyword before what it takes           | `return  x;` is printed `return x;`                                  | one space between                                                                  | `title    Pets` in a pie chart                             | `title Pets`                  |
-| Values that follow one another           | `margin: 1px    2px;` in CSS is printed `margin: 1px 2px;`           | one space between                                                                  | `anchor Coord   [0.3, 0.6]` in a Wardley map               | `anchor Coord [0.3, 0.6]`     |
-| The dot of a member access               | `x = a . b;` is printed `x = a.b;`                                   | none on either side                                                                | `tf 01 evt Shop . Buy` in an event modeling diagram        | `tf 01 evt Shop.Buy`          |
-| Parentheses and square brackets          | `f( a )` is printed `f(a);`                                          | none inside                                                                        | `A( text )` in a flowchart                                 | `A(text)`                     |
-| A `;` that ends a statement              | `a ;` is printed `a;`                                                | none before                                                                        | `r="a" ;` in a railroad diagram                            | `r = "a";`                    |
-| The `(` of a call                        | `f (a)` is printed `f(a);`                                           | none before                                                                        | `terminal ("x")` in a railroad diagram                     | `terminal("x")`               |
-| The `[` of an index                      | `x [ 0 ];` is printed `x[0];`                                        | none before                                                                        | `service a (server) [A]` in an architecture diagram        | `service a(server)[A]`        |
-| The `{` that opens a block               | `class A{}` is printed `class A {}`                                  | one space before                                                                   | `A   {` in an ER diagram                                   | `A {`                         |
-| Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                               | one space inside                                                                   | `A@{shape: rect}` in a flowchart                           | `A@{ shape: rect }`           |
-| Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                              | none inside                                                                        | `x-axis [ jan, feb ]` in an XY chart                       | `x-axis [jan, feb]`           |
-| Braces that hold nothing                 | `x = { }` is printed `x = {};`                                       | none inside                                                                        | `accDescr { }` in a Gantt chart                            | `accDescr {}`                 |
-| The end of a line                        | `a = 1;` and three spaces is printed `a = 1;`                        | none                                                                               | `radar-beta` and three spaces in a radar chart             | `radar-beta`                  |
-| The end of the text                      | `a = 1;` and two blank lines is printed `a = 1;` and one line break  | one line break, no blank line                                                      | `A --> B` and two blank lines at the end of a flowchart    | `A --> B` and one line break  |
-| Blank lines                              | `a();`, three blank lines, and `b();` is printed with one blank line | one blank line at most between two things, none at the start or the end of a block | `A --> B`, three blank lines, and `B --> C` in a flowchart | the same with one blank line  |
+| Mark or place                            | Prettier                                                                                 | Whitespace                                                                         | Written                                                    | Printed                       |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------- |
+| A comma                                  | `f(a,b)` is printed `f(a, b);`                                                           | none before, one space after                                                       | `class A,B c` in an ER diagram                             | `class A, B c`                |
+| A `=` that gives a name its value        | `function f(a=1) {}` is printed `function f(a = 1) {}`                                   | one space on each side                                                             | `Person(a, "A", $link="x")` in a C4 diagram                | `Person(a, "A", $link = "x")` |
+| The colon of a key                       | `x = {a : 1}` is printed `x = { a: 1 };`                                                 | none before, one space after                                                       | `"Dogs" : 386` in a pie chart                              | `"Dogs": 386`                 |
+| A colon between two things               | `y = c ? d:e` is printed `y = c ? d : e;`                                                | one space on each side                                                             | `s1 --> s2: go` in a state diagram                         | `s1 --> s2 : go`              |
+| A colon inside a name                    | the selector `a:hover` of CSS stays `a:hover`                                            | none on either side                                                                | `a : R -- L : b` in an architecture diagram                | `a:R -- L:b`                  |
+| Another mark between two things          | `x = a+b` is printed `x = a + b;`                                                        | one space on each side                                                             | `A-->B` in a flowchart                                     | `A --> B`                     |
+| A keyword between two things             | `x = a  in   b;` is printed `x = a in b;`                                                | one space on each side                                                             | `service a(server)[A]in   g` in an architecture diagram    | `service a(server)[A] in g`   |
+| A keyword before what it takes           | `return  x;` is printed `return x;`                                                      | one space between                                                                  | `title    Pets` in a pie chart                             | `title Pets`                  |
+| Values that follow one another           | `margin: 1px    2px;` in CSS is printed `margin: 1px 2px;`                               | one space between                                                                  | `anchor Coord   [0.3, 0.6]` in a Wardley map               | `anchor Coord [0.3, 0.6]`     |
+| The dot of a member access               | `x = a . b;` is printed `x = a.b;`                                                       | none on either side                                                                | `tf 01 evt Shop . Buy` in an event modeling diagram        | `tf 01 evt Shop.Buy`          |
+| Parentheses and square brackets          | `f( a )` is printed `f(a);`                                                              | none inside                                                                        | `A( text )` in a flowchart                                 | `A(text)`                     |
+| A `;` that ends a statement              | `a ;` is printed `a;`                                                                    | none before                                                                        | `r="a" ;` in a railroad diagram                            | `r = "a";`                    |
+| A comment after something on its line    | `x = 1;   // c` is printed `x = 1; // c`, and `a: 1   # c` in YAML is printed `a: 1 # c` | one space before                                                                   | `title A B   %% c` in an XY chart                          | `title A B %% c`              |
+| The `(` of a call                        | `f (a)` is printed `f(a);`                                                               | none before                                                                        | `terminal ("x")` in a railroad diagram                     | `terminal("x")`               |
+| The `[` of an index                      | `x [ 0 ];` is printed `x[0];`                                                            | none before                                                                        | `service a (server) [A]` in an architecture diagram        | `service a(server)[A]`        |
+| The `{` that opens a block               | `class A{}` is printed `class A {}`                                                      | one space before                                                                   | `A   {` in an ER diagram                                   | `A {`                         |
+| Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                                                   | one space inside                                                                   | `A@{shape: rect}` in a flowchart                           | `A@{ shape: rect }`           |
+| Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                                                  | none inside                                                                        | `x-axis [ jan, feb ]` in an XY chart                       | `x-axis [jan, feb]`           |
+| Braces that hold nothing                 | `x = { }` is printed `x = {};`                                                           | none inside                                                                        | `accDescr { }` in a Gantt chart                            | `accDescr {}`                 |
+| The end of a line                        | `a = 1;` and three spaces is printed `a = 1;`                                            | none                                                                               | `radar-beta` and three spaces in a radar chart             | `radar-beta`                  |
+| The end of the text                      | `a = 1;` and two blank lines is printed `a = 1;` and one line break                      | one line break, no blank line                                                      | `A --> B` and two blank lines at the end of a flowchart    | `A --> B` and one line break  |
+| Blank lines                              | `a();`, three blank lines, and `b();` is printed with one blank line                     | one blank line at most between two things, none at the start or the end of a block | `A --> B`, three blank lines, and `B --> C` in a flowchart | the same with one blank line  |
 
 The first two kinds of braces are the object and the array of Prettier, and the
 third is either of them with nothing in it.
@@ -104,6 +105,14 @@ touches the name, as the `[` of an index touches what it indexes and has no
 space before it: `subgraph S [t]` is printed `subgraph S[t]` in a flowchart, and
 `service a (server) [A]` is printed `service a(server)[A]` in an architecture
 diagram. A `(` that opens a call and a `{` that opens a block keep their rows.
+
+A comment stands after the last thing of its line, and Prettier prints one space
+between them, whatever whitespace was written (`x = 1;// c` is printed
+`x = 1; // c`). Where adding the space changes how mermaid.js reads the text,
+the comment stays touching, and the document of the diagram type gives that
+fact: in an XY chart, mermaid.js reads a `%%` that touches a unit of one
+character together with that character, so `title A B%% c` has the title `A` and
+`title A B %% c` has the title `AB`.
 
 The end of a line, the end of the text, and blank lines are the same in
 JavaScript, CSS, YAML, and Markdown, and a line of whitespace only is a blank
@@ -219,11 +228,16 @@ of its diagram type, by the rules of this document.
 
 - The tasks of a section of a Gantt chart are rows of a name and its data. The
   printer puts the colons of a section in one column where its names were
-  written with padding before their colons. [Task data](./gantt.md#task-data)
-  defines when it does, and the sections that it leaves as written.
+  written with padding before their colons, a form decided under
+  [rule 4](#4-where-none-of-these-rules-gives-a-form) (see
+  [Forms decided under rule 4](#forms-decided-under-rule-4)).
+  [Task data](./gantt.md#task-data) defines when it does, and the sections that
+  it leaves as written.
 - The padding that lines the colons of a timeline or of a user journey up stays
   as written. [Periods and events](./timeline.md#periods-and-events) and
-  [Task data](./journey.md#task-data) define it.
+  [Task data](./journey.md#task-data) define it. In a timeline it is a form
+  decided under [rule 4](#4-where-none-of-these-rules-gives-a-form) (see
+  [Forms decided under rule 4](#forms-decided-under-rule-4)).
 
 Another way of lining lines up is decided as under
 [4](#4-where-none-of-these-rules-gives-a-form).
@@ -242,6 +256,20 @@ the lists that stay without the space.
 Where mermaid.js rejects the space after a colon, none is printed before it
 either, since Prettier prints no colon with a space before it alone: the width
 of a block is printed `a:2`, also where `a :2` was written.
+
+In a flowchart, a swimlane diagram, and an agentflow diagram, where mermaid.js
+reads a label otherwise without the whitespace at its start, or rejects it (a
+label that is no string in quotes and starts with `/`, `\`, `-`, or `"`, or
+whose first word holds a `@`; see
+[Label inner whitespace](./flowchart.md#label-inner-whitespace)), one space
+stands inside each end of the label, in every shape and in the text between `|`:
+`A[ /x/]` is printed `A[ /x/ ]`. Rule 1 puts no space inside brackets, so it
+would leave the space that mermaid.js needs alone at the start, where it reads
+as a slip; with one at the end too, the label shows that the space is meant.
+This form corrects the form of rule 1, as AGENTS.md (item 4) says of a rule
+whose form reads worse than another form that draws the same. No space stands
+before the closing `?]` or `=]` of a slanted shape, where mermaid.js would read
+the space and the `?` or `=` as text.
 
 ### A text that the tree holds whole
 
@@ -278,6 +306,26 @@ documentation write these four without it since
 `block-beta` stays as written, because some of the versions that count read only
 that name.
 
+A tree of a treeView diagram written with box-drawing characters is another
+exception. Of the 13 tree diagrams in the documentation of mermaid.js, 10 are
+written with indentation, so rule 3 gives the indentation form. A tree written
+with box-drawing characters is printed with them instead, redrawn from the tree
+that mermaid.js reads, except where its body stays as written (see
+[Branch prefixes](./treeview.md#branch-prefixes)). The characters themselves
+show the structure on each line: `├` that a sibling follows, `└` the last child,
+and `│` that the siblings of an upper level go on. With indentation, that a node
+is the last child, or that the siblings of an upper level go on, shows only in
+the columns of the lines below it. Each of these characters is drawn anew where
+the tree has it, so that the drawing says what mermaid.js reads (see
+[Modes](./treeview.md#modes)); keeping the written characters and moving only
+their columns would leave a `├` on a last child or a `│` where no sibling goes
+on. This form corrects the form of rule 3, as AGENTS.md (item 4) says of a rule
+whose form reads worse than another form that draws the same. It does not reach
+a tree written with indentation, which rule 3 prints with indentation: not every
+such tree has a box form, since mermaid.js rejects, in a box diagram, an
+indented line that goes on without a branch prefix, such as the second line of a
+name in quotes or an annotation on a line of its own.
+
 ## 4. Where none of these rules gives a form
 
 Where none of these rules gives a form, it is not decided yet which form reads
@@ -286,9 +334,10 @@ printed after that.
 
 ### Forms decided under rule 4
 
-These forms were decided as AGENTS.md (item 4) says, for a flowchart and a
-swimlane diagram, where none of rules 1 to 3 gives a form. The document of the
-diagram type says where each one applies and where it does not.
+These forms were decided as AGENTS.md (item 4) says, where none of rules 1 to 3
+gives a form. An item that names no diagram type was decided for a flowchart and
+a swimlane diagram. The document of the diagram type says where each one applies
+and where it does not.
 
 - Each statement stands on a line of its own: statements written on one line and
   separated by `;` are split into lines.
@@ -299,6 +348,14 @@ diagram type says where each one applies and where it does not.
   arrows, or text between `|` after the arrow.
 - With `useTabs`, a statement that holds a data block (`@{ … }`) of several
   lines is printed as written.
+- In a flowchart, an agentflow diagram, and a kanban board, a data block
+  (`@{ … }`) on one line whose line is wider than `printWidth` prints on several
+  lines, one entry on each, where the lines read better than the one line.
+- In a timeline, the padding that lines the colons of periods up stays as
+  written: `A    : x` above `Long : y` keeps its spaces.
+- In a Gantt chart, the colons of the tasks of a section stand in one column,
+  one space after its longest name, where a name of the section was written with
+  padding before its colon.
 
 ## The versions of mermaid.js that count
 
@@ -336,6 +393,13 @@ of a check may say with how many versions, and with which, a text was drawn,
 since nothing changes there when a version stops counting. When the pinned
 version is raised and none of the versions of a row counts any longer, the rule
 is taken out, and the form is the one that the rules above give.
+
+A version that reads the written form but stops with an error when it draws it,
+and draws the form that would be printed, does not count for that form. The
+formatted text is opened in that version too, and formatting takes nothing from
+what it draws there, so it gives no reason to keep the written form. The runs of
+spaces in the label of a block of a sequence diagram are such a form (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 
 The CHANGELOG.md of mermaid.js, or the history of its grammar, shows which
 version added or changed a form.

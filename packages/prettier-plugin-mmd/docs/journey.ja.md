@@ -202,6 +202,9 @@ journey
 ### 空行
 
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+Prettier は、テキストの先頭の空行を落とします。
+ヘッダーの前の空行を落とす形も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 他の図種と同じ規則です。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
@@ -211,6 +214,9 @@ journey
 [fixture: blank-lines/around-comment-lines]
 
 `section` の周りの空行は、1 つにして、隣の行と同じ段で残します。
+Prettier は、テキスト内の連続する空行を 1 つにし、末尾の空行を落とします。
+`section` の周りの空行を同じに扱う形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: blank-lines/around-sections]
 
@@ -320,6 +326,9 @@ mermaid.js の文書の例は、このコロンを説明に接して書きます
 score と人は、コロンの後でも `,` の後でも、空白 1 つの後に置き、
 コロンと `,` は前の値に接します。
 それらの周りの空白は Db に入らないので、残しません。
+Prettier は、`,` の前に空白を置かず、後ろに空白 1 つを置きます。
+人の名前の間の `,` も同じに印字する形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 空白は値の前にだけ置きます。
 スコアの後のコロンは、前に空白を置きません。
 mermaid.js の文書の例で、コロンの後に空白を置いて書かれたコロン 10 件のうち、
@@ -359,20 +368,33 @@ score の書き方は作者のもので、mermaid.js は数として読み、
 空白だけのデータは、空の score で人のいないタスクで、
 mermaid.js はコロンの後に 1 文字を要求します。
 `A: ` はタスクで、`A:` は拒否されます。
-そのため、コロンの後に空白 1 文字（書かれた最初の 1 文字）を残し、
-残りは落とします。
+そのため、データが空白とタブだけのときは、
+コロンの後にその 1 文字（書かれた最初の 1 文字）を残し、残りは落とします。
 行の続きにコメントなどの文字があるときは、空白がそれらと一緒に読まれるので、
 行を書かれたまま印字します。
 
 [fixture: task-data/whitespace-only-data]
 [fixture: task-data/whitespace-only-data-then-comment]
 
-タスクの部分の間のディレクティブは、
-その位置に残します（[ディレクティブ](#ディレクティブ) を参照）。
+空白だけのデータに、改行しない空白、U+3000、U+2028、U+2029 など、
+空白とタブ以外の空白文字がある行も、その文字の隣の空白とタブを含めて、
+書かれたまま印字します。
 
 [test: U+00A0 as the entire data of a journey task]
 [test: U+2028 as the entire data of a journey task]
 [test: U+2029 as the entire data of a journey task]
+[test: U+00A0 followed by spaces as the entire data of a journey task]
+[test: a space followed by U+00A0 as the entire data of a journey task]
+[test: U+3000 followed by spaces as the entire data of a journey task]
+[test: U+FEFF followed by spaces as the entire data of a journey task]
+[test: U+2028 followed by spaces as the entire data of a journey task]
+[test: a tab followed by U+00A0 as the entire data of a journey task]
+[test: U+00A0 followed by a comment in the data of a journey task]
+[test: U+00A0 and spaces as the data of a journey task at the end of the text]
+[test: U+00A0 and spaces as the data of a journey task before another task]
+
+タスクの部分の間のディレクティブは、
+その位置に残します（[ディレクティブ](#ディレクティブ) を参照）。
 
 入力
 ([task-data/people-comma-spacing-input.mmd](../tests/fixtures/journey/task-data/people-comma-spacing-input.mmd)):
@@ -497,6 +519,9 @@ Prettier が `return  x` を `return x;` と印字するためです。
 Db はそれらを持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `title   My trip  ` は `title My trip` と印字します。
+値の末尾の空白とタブは行末にあり、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+Prettier が行末の空白とタブを落とすのと同じく、そこに何も置きません。
 `section` の名前は、先頭と末尾の空白も含めて書かれたまま印字します。
 その空白で名前が異なる 2 つのセクションは別々に描かれ、
 除くとそうならないからです。
@@ -535,6 +560,9 @@ Db はそれらを持ちますが、図では描かれません。
 `title` では、タイトルのほかの末尾の空白とタブと同じく除き、
 `#` の前に空白 1 つを置きます。
 `section` では残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前を、空白 1 つにします。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 
 [fixture: titles-and-sections/title-hash-gap-one-space-section-kept]
 
@@ -855,6 +883,16 @@ T
 
 `accDescr` ブロックの本文と改行は保ち、
 [アクセシビリティの文](#アクセシビリティの文)に従って文より 1 段深くそろえます。
+`accDescr` ブロックでは、内部の LF 前の空白を mermaid.js が Db に保ち、
+LF 後の字下げを除きます。
+LF 前の空白をすべて除くと、連なりを空白 1 つにする範囲を超えて、
+Db の説明が変わり、対象にするどの版も別の説明の文字を SVG に入れるので、
+その空白は残します（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
+
+[corpus fixture: journey/db-acc-descr-block-spaces-before-line-feed]
+[fixture: multi-line-values/description-block-inner-line-trailing-spaces-kept]
 
 [fixture: multi-line-values/description-block-lines-kept]
 
@@ -946,18 +984,32 @@ journey
 
 ヘッダーより前のコメント行は 1 桁目に置き、テキストの末尾のコメント行は、
 改行を足して自分の行に残します。
+Prettier は、テキストの末尾に改行 1 つを置きます。
+最後のコメントの後に改行 1 つを置く形も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
-文やヘッダーの後ろのコメントは、書かれたとおり行に残します。
-空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
+文やヘッダーの後ろのコメントは、同じ行に残します。
+接するコメントは接したまま残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 行を分けると、
 `section` の後では Db が変わります（`#` の前の空白が値の一部だからです）。
 `title` の後では、その空白をタイトルのほかの末尾の空白とタブと同じく除きます。
 詳しくは [タイトルとセクション](#タイトルとセクション) を参照してください。
 どちらでも、コメントは文の行に残す 1 つの規則にして、Gantt 図と同じにします。
+`#` のコメントが後ろにある 1 行の `accDescr` ブロックは、
+ブロックのまま残します。
+コロンの形の `accDescr` では、
+mermaid.js が後ろの `#` とコメントも説明として読み、Db も、
+対象にするどの版の SVG の説明も変わるからです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
+[fixture: comments/one-line-description-block-then-hash-comment-kept]
 [fixture: comments/after-header-percent] [fixture: comments/after-statement]
 [fixture: comments/after-statement-glued]
 [fixture: comments/after-statement-under-a-section]
@@ -1175,6 +1227,11 @@ U+2028 と U+2029 は、journey の単位の間の空白であり、
 
 タイトルの末尾では、U+2028 と U+2029 は空白やタブではなくテキストの文字なので、
 その後の空白はタイトル末尾のほかの空白と一緒に除き、前の空白は残します。
+U+2028 や U+2029 の前の空白は、Db が持つタイトルの内部にあり、
+[両端の空白の変更](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+の範囲に入らないので、残します。
+区切り文字の後で行末にある空白とタブを落とす形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [test: U+2028 and spaces at the end of a journey title]
 
@@ -1198,7 +1255,12 @@ U+00A0 と U+FEFF は、字句解析器にとって単位の間の空白であ�
 字句解析器が空白 1 文字を読む所（キーワードの後の区切りなど）には、
 空白 1 つを置き、タスクの score と人の周りでは空白と同じに落とし、
 タスクのコロンの前では説明が保ちます。
+タスクの最初のコロンの前にある U+00A0 と U+FEFF は、Db が持つ説明の一部です。
+[描画の例外](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+が対象にするのは、空白とタブだけなので、これらの文字は書かれたまま残します。
 例は文字列で書かれていて、`\u00a0` は U+00A0、`\ufeff` は U+FEFF です。
+
+[corpus fixture: journey/lex-task-text-nbsp]
 
 [test: U+00A0 after a title keyword] [test: U+00A0 around the score of a task]
 [test: U+00A0 around the people of a task]

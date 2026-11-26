@@ -384,9 +384,12 @@ stateDiagram-v2
 
 ### Statements one per line
 
-Each statement stands on a line of its own, as in the other diagram types.
-Nothing separates statements in a state diagram, and statements written on one
-line, as in `A --> B C --> D`, are moved to lines of their own.
+Each statement stands on a line of its own, as in
+[flowchart](./flowchart.md#statements-one-per-line) and
+[sequence](./sequence.md#statements-one-per-line) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form. Nothing separates statements in a state diagram, and statements
+written on one line, as in `A --> B C --> D`, are moved to lines of their own.
 
 [fixture: statements-one-per-line/states] [fixture:
 statements-one-per-line/split-then-comment] [fixture:
@@ -605,6 +608,10 @@ A run of spaces, tabs, and form feeds between the last style and a `%%` comment
 on the same line of a `classDef` is printed as one space, unless the line stays
 as written for another reason; the `style` keeps a form feed there (see
 [Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 [test: prints a form feed before a comment as one space] [test: keeps a form
 feed before a comment where a version that counts reads the text as words]
@@ -1499,13 +1506,11 @@ state comments the same form.
 [fixture: comments/kept] [fixture: comments/text-kept] [fixture:
 comments/before-closing-brace]
 
-A comment after a statement stays on its line, and whether whitespace is written
-before its mark is kept. A trailing comment in
-[requirement](./requirement.md#comments) and [C4](./c4.md#comments) stays on its
-statement's line, with one space where a horizontal gap was written and none
-where its mark touches.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same trailing-comment form here.
+A comment after a statement stays on its line. A comment that touches a
+statement stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 [fixture: comments/kept] [fixture: comments/hash-after-statement-kept] [fixture:
 comments/after-brace-kept] [fixture: statements-one-per-line/split-then-comment]
@@ -2231,13 +2236,12 @@ diagram or the input would be rejected:
 Some text is kept as written by choice, because the Db is the same either way:
 the case of the keywords that the table under
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
-does not list, and whether whitespace is written before the mark of a comment
-after a statement, a run of it being printed as one space (see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+does not list.
+
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
+
+A comment that touches a statement stays touching.
 
 [fixture: comments/mark-run-one-space]
-
-The second is kept because mermaid.js reads a comment by what touches it in the
-places of the known divergences (`comment-takes-character`,
-`percent-brace-after-unit`), and one rule is simpler than a list of those
-places.

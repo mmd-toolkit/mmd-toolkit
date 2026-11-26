@@ -527,12 +527,10 @@ mermaid.js がその位置でブロック形式のマッピングの行を拒否
 `%%` の前を空白 1 つにすると、それらの版の SVG は、
 `name` 属性とラベルに別の名前を持ちます。
 画素は同じですが、`%%` の前の空白は書かれたまま残します。
-ブロックの後の `#` コメントは通常のコメントなので、前は空白 1 つにします。
-参加者のデータブロックに続く `#` コメントの前では、
-空白とタブの連続を空白 1 つにします。
-[pie](./pie.ja.md#comments) と [XY チャート](./xychart.ja.md#コメント) の図も、
-行内コメントの前を同じにするので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+ブロックの後の `#` コメントは、前を空白 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前を、空白 1 つにします。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 mermaid.js は名前を読む前にディレクティブを除きます。
 そのため、名前はその空白の中のディレクティブの上を越えて続きます。
 閉じていないディレクティブでも同じで、ディレクティブの両側の空白が残ります。
@@ -1241,25 +1239,18 @@ sequenceDiagram
 [fixture: comments/text-whitespace-kept]
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
-文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
-規則 1 は、コメントの前の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[requirement](./requirement.ja.md#コメント)、[c4](./c4.ja.md#コメント)、
-[journey](./journey.ja.md#コメント)も、接するコメントは接したまま残します。
-ほかの規則が空白を書かれたまま残す所は別で、どの図の文書も、
-その所を自分の節で挙げています。
-この図では、`autonumber 5%% c` のように、空白が、
-対象にする版の mermaid.js のすべてで意味を持ちます。
+文の後のコメントはその行に残します。
+接するコメントは接したまま残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+`autonumber 5` の後の `%%` の前では空白が読みを決めます。
+mermaid.js は `autonumber 5%% c` を数値 5 なしで読みます。
 詳しくは [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 を参照してください。
-印の前の空白の連なりは、空白 1 つで印字します。
-詳しくは
-[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
-を参照してください。
-ただし、ほかの規則が空白を書かれたまま残す所は別です。
-たとえば、ID の後、ある版が名前の一部として読む参加者のデータブロックの後の、
-`%%` コメントの前、`accTitle` の値の後では、空白が ID、ブロック、
-値に属するので、書かれたまま残します。
+ID と `accTitle` の値に属する空白は書かれたまま残します。
+ある版が名前の一部として読む参加者のデータブロックの後の、
+`%%` コメントの前の空白も書かれたまま残します。
 詳しくは [トークンの間の空白](#トークンの間の空白) を参照してください。
 
 [fixture: comments/mark-run-one-space]
@@ -1273,6 +1264,37 @@ sequenceDiagram
 [fixture: comments/mark-whitespace-kept]
 [fixture: comments/after-last-statement-without-line-break]
 [fixture: comments/block-end-comment-without-line-break]
+
+メッセージ、ノート、`title`、`accTitle:` と `accDescr:` の行、
+ブロックのラベル（`loop`、`alt`、`else`、`opt`、`par`、`and`、`critical`、
+`option`、`break`）、`box` のテキスト、`as` の後の説明の中の `%%` は、
+コメントではなくテキストの文字で、テキストと一緒に残します。
+`A->>B: x %% c` は、メッセージ `x %% c` です。
+テキストの文字ではない `%%` は 2 種類あります。
+閉じたディレクティブ `%%{…}%%` は、mermaid.js がテキストを読む前に取り除きます。
+`A->>B: x%%{init: {}}%%y` は、
+メッセージ `xy` です（[ディレクティブ](#ディレクティブ)を参照）。
+U+2028 または U+2029 の直後に始まるコメント行は、mermaid.js が取り除き、
+その前のテキストとその後の行をつなぎます（[行区切り](#行区切り)を参照）。
+テキストの文字と `%%` の間の空白の連なりはテキストの中の連なりで、
+[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+のとおりに印字します。
+`A->>B: x   %% c` は `A ->> B: x %% c` と印字し、
+`accTitle:` の行の連なりは残します。
+テキストが `%%` で始まるとき、その前の空白は、
+同じ種類のほかのテキストの前と同じように印字します。
+メッセージ、ノート、`accTitle:` または `accDescr:` の行の `:` の後は、
+[コロン](#コロン)のとおりで、`title`、ブロック、
+`box` のテキストや `as` の後の説明の前は、
+[タイトル](#タイトル)と[トークンの間の空白](#トークンの間の空白)のとおりです。
+`A->>B:   %% c` は `A ->> B: %% c` と印字し、
+`loop   %% c` は `loop %% c` と印字します。
+
+[fixture: comments/percent-in-texts-kept] [fixture: directives/touching-kept]
+[fixture: title/title-between-words-directive-gap-kept]
+[test: a `%%` comment line after U+2028, which joins the next line]
+[fixture: colons/whitespace-only-text]
+[fixture: comments/percent-at-text-start-spaced]
 
 入力
 ([comments/kept-input.mmd](../tests/fixtures/sequence/comments/kept-input.mmd)):
@@ -2148,13 +2170,14 @@ sequenceDiagram
 - キーワードと本文の間に注釈があるタイトル。
 - セミコロン行かコメントで結合される領域の保護対象の文。
 - 注釈を含む隙間の最初の改行の前の空白。
-- 文の後のコメントの印の前に、空白が書かれているかどうかと、
+- `autonumber 5` の後の `%%` コメントの前に空白があるかどうかと、
   コメントとその後のコメント行の間の U+2028 か U+2029。
 - 矢印。
 
 次のテキストは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
 表にないキーワードの大文字小文字です。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-上に挙げたコメントの印の前に空白があるかどうかは、選択ではなく、
-規則 2 が与えます（[コメント](#コメント)を参照）。
-`autonumber 5` のような文の後では、mermaid.js の読みも決めます。
+コメントの前の空白は [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+詳しくは [コメント](#コメント)を参照してください。
+接するコメントは接したまま残します。
+`autonumber 5` の後の `%%` の前では空白が mermaid.js の読みも決めます。

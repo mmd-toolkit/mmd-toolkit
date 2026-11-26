@@ -113,7 +113,10 @@ Gantt 図には文を区切るものがなく（`diagrams/gantt.md`、図と文�
 `inclusiveEndDates`、日つきの `weekday` と `weekend`、`accDescr` ブロック、
 click 文の後ろには、同じ行に次の文を続けられます。
 これらの後ろの文は、それぞれの行に移します。
-ほかの図種も 1 行に 1 つの文を印字します。
+[flowchart](./flowchart.ja.md#1-行に-1-文)、
+[sequence](./sequence.ja.md#1-行に-1-文)、
+[state](./state.ja.md#1-行に-1-文) の図も 1 行に 1 つの文を印字します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 
 [fixture: statements-one-per-line/header-then-statement]
 [fixture: statements-one-per-line/header-then-task]
@@ -384,6 +387,8 @@ mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度
 コロンの前に桁そろえの空白（空白が 2 文字以上かタブ）があるときは、
 コロンがすでに 1 つの桁にそろっているかどうかによらず、
 セクションのコロンを最長の名前の後に空白 1 つを置いた所にそろえます。
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 桁は、どの名前の後にも空白が 1 つ残る最小の桁で、
 それより後ろの空白は何も運ばないので、その桁は残しません。
 作者は長い名前を足し、ほかの名前の空白を整形に任せられます。
@@ -397,6 +402,13 @@ mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度
 
 桁そろえの空白があり、コロンがすべて同じ 1 つの桁にあるセクションどうしは、
 桁を共有し続けます。
+セクションごとにそろえると、
+作者がセクションをまたいで 1 つの桁にそろえたコロンが、
+セクションを移るたびに別の桁へ動き、整形する前より読みにくくなるためです。
+mermaid.js の文書の例は、3 つのセクションのコロンを、
+`Completed task in the critical line` の後の 1 つの桁にそろえています。
+セクションごとにそろえると、後の 2 つのセクションのコロンは、
+最初のセクションのコロンより 3 桁左に並びます。
 それぞれの最長の名前の中で最も長い名前の後に空白 1 つを置いた桁にし、
 余分な空白だけを除きます。
 桁は名前の先頭から数えます。
@@ -418,6 +430,7 @@ mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度
 [fixture: task-data/colon-column-sections-in-different-columns]
 [fixture: task-data/colon-column-before-first-section]
 [fixture: task-data/colon-column-sections-and-preamble]
+[corpus fixture: gantt/docs-syntax-gantt-b854a6f4]
 
 U+2028 か U+2029 の後のコメント行が次の行につなぐタスクの行を、
 書かれたまま印字するタスクがあるセクションは、
@@ -443,11 +456,11 @@ U+2028 か U+2029 の後のコメント行が次の行につなぐタスクの�
 [test: Gantt: a task that a comment after U+2028 joins to the next line, under a title with an ignored semicolon]
 [test: Gantt: a task that a comment that ends in a semicolon after U+2028 joins to the next line, and a section with padding after it]
 
-次の場合は、コロンを動かすと図が変わりうるので、コロンをその位置に残します。
+次の場合は、コロンをその位置に残します。
 どの名前もコロンの前の空白が 1 つ以下のセクションは、どのコロンも動かさず、
 コロンに接する名前にだけ上の空白 1 つを置きます。
 そろえた行が `printWidth` より長く、元の行よりも長くなるセクションは、
-長い名前 1 つがすべてのコロンを大きく右に押すので、そのままにします。
+そのままにします。
 `white-space` を含む図は、図の CSS が名前の末尾の空白を描くことがあり、
 そのときは空白で図が変わるので、コロンに接する名前も含めて、そのままにします。
 名前の中にタブがあるセクションも、そのままにします。
@@ -1760,14 +1773,13 @@ mermaid.js は、その `%%{` を、前の空白が 1 文字か、
 
 [fixture: comments/directive-in-percent-brace-marker]
 
-文やヘッダーの後ろのコメントは、書かれたとおり行に残します。
-空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
-接している文のコメントは mermaid.js が別に読むことがあるからです。
-[architecture](./architecture.ja.md#comments) と
-[cynefin](./cynefin.ja.md#comments) の図も、
-同じ行のコメントの前に空白やタブがあれば、空白 1 つにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-同じ行のコメントの前にも、この隙間を与えます。
+文やヘッダーの後ろのコメントは、その行に残します。
+空白が書かれていれば空白 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前を、空白 1 つにします。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+接するコメントは接したままにします。
+文に接するコメントを mermaid.js が別に読むことがあるためです。
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-keyword-statement]

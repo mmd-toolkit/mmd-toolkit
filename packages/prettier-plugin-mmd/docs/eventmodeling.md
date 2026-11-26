@@ -339,10 +339,12 @@ between the parts of the tag itself stay tight, whichever whitespace they hold
 U+2028, or a U+2029 (see [Comments](#comments)) before a comment inside the tag,
 right after the opening backtick, after a comment inside the tag, and before and
 after a comment that follows the tag also becomes one space; each of these
-places has a row for a no-break space, U+3000, U+2028, and U+2029. No rule gives
-that form: no other diagram type has a type tag, and the printers that
-[Comments](#comments) cites print these characters before a comment differently.
-The released form stays until it is decided (see
+places has a row for a no-break space, U+3000, U+2028, and U+2029. Before a
+comment, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+one space for a wide space, as under [Comments](#comments). After a comment, and
+for U+2028 and U+2029, no rule gives that form: no other diagram type has a type
+tag, and the printers that [Comments](#comments) cites print these characters
+before a comment differently. The released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
@@ -750,11 +752,14 @@ the margin exception below alone changes. The closing brace stays at column one.
 `eventmodeling tf 01 evt Alpha [[D]] data D {`, `x` and `}` stay, since every
 version of mermaid.js that counts rejects `}` indented by two spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The other diagram types would indent the `}` (see [Indentation](#indentation)).
-Preserve apparent statements, text containing braces and an adjacent
-closing-looking line when the block's body-present rule reads through it to a
-later closer, since in a `data` block that a frame reads they are characters of
-the value that the Db holds for the frame.
+As [sequence](./sequence.md#indentation) and [state](./state.md#indentation) put
+the statements after the header one level deeper than the header and a closing
+line at the level of the line that opens its block,
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) would
+indent the `}` by two spaces. Preserve apparent statements, text containing
+braces and an adjacent closing-looking line when the block's body-present rule
+reads through it to a later closer, since in a `data` block that a frame reads
+they are characters of the value that the Db holds for the frame.
 
 [fixture: eventmodeling/data-blocks/body-whitespace-kept] [fixture:
 eventmodeling/data-blocks/block-closer-indent-unsafe]
@@ -1224,37 +1229,39 @@ statements around it, and [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), [block](./block.md#comments),
 [quadrant](./quadrant.md#comments), and [gantt](./gantt.md#comments) at the
 level of the statement after it, which is the same level in the flat body of an
-eventmodeling diagram. Within a printed line, a comment that touches stays
-touching, and a run of spaces and tabs before it becomes one space, except in
-the title, the accTitle, and the accDescr of the header line and of a frame
-statement, where the run before a comment mark after the text belongs to the
-value (see [Title](#title)). Rule 1 names no mark before a comment, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments) after a message and
-[journey](./journey.md#comments) and [timeline](./timeline.md#comments) after
-their header print a comment in the same way, where no other rule keeps the
-whitespace as written; each of them names those cases in its own sections or in
-[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
-(whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). A wide space, a U+2028, or a U+2029 before
-a comment becomes one space, except in the title, the accTitle, and the accDescr
-of the header line and of a frame statement, where it belongs to the value and
-stays as written (see [Title](#title)). A wide space is one of U+000B, U+000C,
-U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF; each of
-them has a row after a frame statement at the end of the text, and a no-break
-space, U+3000, U+2028, and U+2029 have a row at each of the other places: where
-a statement follows the comment, and after the header line, a GWT header, a GWT
-item, a clause keyword, a data declaration, a note declaration, an entity
-declaration, a data reference, an inline body, a source reference, and the
-closing brace of a block. mermaid.js rejects U+0085, U+180E, and U+200B before a
-comment after a frame statement at the end of the text with a lexer error, so
-the parser rejects them there too. The printers above print these characters
-otherwise: sequence keeps a no-break space or U+3000 after a message as written,
-and journey and timeline print them after their header as one space; before
-U+2028 or U+2029, sequence, journey, and timeline keep the line as written where
-a statement follows the comment and put the comment on a line of its own where
-the text ends. So no rule gives the form of these characters, and the form that
-the released version prints, one space, stays until it is decided (see
+eventmodeling diagram. Within a printed line, a run of spaces and tabs before a
+comment becomes one space, except in the title, the accTitle, and the accDescr
+of the header line and of a frame statement, where the run before a comment mark
+after the text belongs to the value (see [Title](#title)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
+
+A comment that touches what precedes it stays touching. A wide space, a U+2028,
+or a U+2029 before a comment becomes one space, except in the title, the
+accTitle, and the accDescr of the header line and of a frame statement, where it
+belongs to the value and stays as written (see [Title](#title)). Outside these
+values, the lexer of mermaid.js reads a wide space before a comment as
+whitespace between units (see
+[Native hidden forms and comments](../../spec/docs/diagrams/eventmodeling.md#native-hidden-forms-and-comments)),
+and so does JavaScript, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+before a comment that stands after something on its line. A wide space is one of
+U+000B, U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and
+U+FEFF; each of them has a row after a frame statement at the end of the text,
+and a no-break space, U+3000, U+2028, and U+2029 have a row at each of the other
+places: where a statement follows the comment, and after the header line, a GWT
+header, a GWT item, a clause keyword, a data declaration, a note declaration, an
+entity declaration, a data reference, an inline body, a source reference, and
+the closing brace of a block. mermaid.js rejects U+0085, U+180E, and U+200B
+before a comment after a frame statement at the end of the text with a lexer
+error, so the parser rejects them there too. JavaScript reads U+2028 and U+2029
+as line terminators, not as whitespace, so rule 1 gives no form for them, and
+the printers above print them otherwise: before U+2028 or U+2029, sequence,
+journey, and timeline keep the line as written where a statement follows the
+comment and put the comment on a line of its own where the text ends. So no rule
+gives the form of U+2028 and U+2029 before a comment, and the form that the
+released version prints, one space, stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 When units split into separate lines, attach intervening inline comments to the
 following unit, in the same direction as directives. Use this shared placement
@@ -1576,7 +1583,6 @@ remain authored. A `title` that follows
 one, since every version of mermaid.js that counts rejects it indented by two
 spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The other diagram types would indent it (see [Indentation](#indentation)).
 Required identifier and common-value padding takes precedence over structural
 indentation. The leading space of ` accDescr: style:#x;` after
 `eventmodeling data D {`, `x` and `}` stays, since every version of mermaid.js
@@ -1712,21 +1718,16 @@ decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep such a line break, where no
 other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`). The start of a line is no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#multi-line-statements),
-[sequence](./sequence.md#multi-line-statements), and
-[xychart](./xychart.md#multi-line-statements) stand the later lines of a
-statement and the comment or directive lines between them one level deeper than
-the statement, where no other rule keeps the layout as written (a comment region
-that joins physical lines, a line that holds a `;`) and except for the `}` that
-closes a block whose `{` stands on a later line, which stands at the level of
-the statement, as the `}` of an entity block does in
-[ER](./er.md#attribute-blocks). Only GWT's decided clause/item layout adds
-structural splits. Values, hidden forms, metadata and protected boundaries
-retain their contents, apart from the limited block-body margin in
-[Data blocks](#data-blocks). Avoiding width-dependent choices keeps those
-lexical boundaries explicit and never inserts a forbidden LF into inline data.
+lines, a line that holds a `;`). The later lines of a statement and the comment
+or directive lines between them stand one level deeper than the statement, where
+no other rule keeps the layout as written (a comment region that joins physical
+lines, a line that holds a `;`), and the `}` that closes a block whose `{`
+stands on a later line stands at the level of the statement. Only GWT's decided
+clause/item layout adds structural splits. Values, hidden forms, metadata and
+protected boundaries retain their contents, apart from the limited block-body
+margin in [Data blocks](#data-blocks). Avoiding width-dependent choices keeps
+those lexical boundaries explicit and never inserts a forbidden LF into inline
+data.
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap] [fixture:
 eventmodeling/long-lines/break-next-to-comment] [fixture:

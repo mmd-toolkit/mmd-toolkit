@@ -548,8 +548,10 @@ A block on one line is printed with one space inside each end, as in
 [Data blocks](./flowchart.md#data-blocks): `A@{ticket: X}` becomes
 `A@{ ticket: X }`. Where its line is too long it prints on lines, one entry on
 each, under the conditions listed there, which a node text that fills the line
-before the block does not meet. The block stays as written in the cases listed
-there.
+before the block does not meet, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). The
+block stays as written in the cases listed there.
 
 [fixture: data-blocks/long-split] [fixture:
 data-blocks/long-prefix-too-long-kept] [fixture: data-blocks/one-line-padded]
@@ -903,22 +905,18 @@ ls-in-comment-line-indentation] [test: kanban:
 ps-before-comment-line-mark-card-shape]
 
 A diagram comment after the header, a shape, an icon, or a data block stays on
-its line: it touches where it touches, and a run of spaces and tabs before it
-becomes one space. Rule 1 names no mark before a comment, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
-comment after a statement in the same way, where no other rule keeps the
-whitespace as written; each of them names those cases in its own sections or in
-[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
-(whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). `S[x]   %% c` prints `S[x] %% c`, and
-`A[y]%% d` is not changed. After a bare id, in a label, and in a class, `%%` is
-a character of the text (`S %% x`, `A[%% y]`, `:::c %% z`), and a line that
-starts with `#` or with a single `%` is node text; the printer does not touch
-these. A comment line is removed with the text up to the line feed, and a U+2028
-or a U+2029 on it does not end it: the text after the separator is part of the
-removed comment, and the printer keeps it there.
+its line. A run of spaces and tabs before it becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. `S[x]   %% c` prints `S[x] %% c`.
+
+A comment that touches what precedes it stays touching. `A[y]%% d` is not
+changed. After a bare id, in a label, and in a class, `%%` is a character of the
+text (`S %% x`, `A[%% y]`, `:::c %% z`), and a line that starts with `#` or with
+a single `%` is node text; the printer does not touch these. A comment line is
+removed with the text up to the line feed, and a U+2028 or a U+2029 on it does
+not end it: the text after the separator is part of the removed comment, and the
+printer keeps it there.
 
 [fixture: comments/inline] [fixture: comments/header-comment-gap] [fixture:
 comments/comment-after-data-gap] [fixture: comments/comment-after-icon-gap]
@@ -1417,7 +1415,8 @@ line breaks and contents with only the eligible uniform margin change.
 their lines, since a bare node cannot be wrapped without becoming other nodes,
 and a value is text. A data block on one line is the exception: where its line
 is wider than `printWidth`, it prints on lines under the conditions of
-[Data blocks](#data-blocks).
+[Data blocks](#data-blocks), a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form).
 
 [fixture: multi-line-values/long-line-kept] [fixture:
 multi-line-values/small-print-width]

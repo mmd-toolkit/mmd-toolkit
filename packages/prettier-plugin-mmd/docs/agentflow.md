@@ -79,8 +79,12 @@ agentflow-beta
 
 Indentation is set from the AST, while authored columns do not determine
 membership. Use one configured step below the header and each flow/global, align
-end with its opener, and give connectors no body. A composite
-[state](./state.md#indentation) puts `}` at the level of its opening line;
+end with its opener, and give connectors no body.
+[Sequence](./sequence.md#indentation) and [state](./state.md#indentation)
+diagrams put the statements after the header one level deeper than the header;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+agentflow statements the same level. A composite [state](./state.md#indentation)
+puts `}` at the level of its opening line;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the same alignment to the closing `end` of a flow or global. `useTabs` uses one
 tab per level. Agentflow uses the shared significant indentation width: even
@@ -163,10 +167,12 @@ headings with a title in
 are written so, and the Db is the same for both forms. The whitespace inside the
 brackets of the title is dropped, so `[ T ]` is printed `[T]` and `["x" ]` is
 printed `["x"]`, as in flowchart; Agentflow has no reason to choose a different
-form. One space stays where the title would be read otherwise (`[ /x/ ]` and
-`[ x@ ]`). A directive at an edge of the title touches the bracket and the
-title, as the gap has no space: `flow F[ %%{x}%% T ]` is printed
-`flow F[%%{x}%%T]`, and `flow G[ T %%{x}%% ]` is printed `flow G[T%%{x}%%]`.
+form. One space stays inside each end where the title would be read otherwise
+(`[ /x/ ]` and `[ x@ ]`; see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
+A directive at an edge of the title touches the bracket and the title, as the
+gap has no space: `flow F[ %%{x}%% T ]` is printed `flow F[%%{x}%%T]`, and
+`flow G[ T %%{x}%% ]` is printed `flow G[T%%{x}%%]`.
 
 [fixture: names-and-headings/heading-title-directive-at-edge]
 
@@ -866,14 +872,16 @@ pipe follows the line break of the comment (`A -->|x  %% c`, a line break, and
 `| B`), the label ends before the comment: a run of whitespace before the
 comment, spaces, tabs, and the other whitespace of the specification (a no-break
 space, U+3000, U+2003, U+2028, and U+2029 among it), alone or mixed, is printed
-as one space, a comment that touches stays touching, and the closing pipe stands
-on a line of its own, one level deeper than the arrow (`A -->|x %% c` and
-`    | B`). Where the comment holds a `;`, the characters before it are printed
-as one space in the same way, and the spaces and tabs after the `;` stay as
-well: `A -->|x  %% c;` and two spaces, a line break, and `| B` print
-`A -->|x %% c;`, the two spaces, and `| B` one level deeper. Where the label
-goes on after the line break of the comment, the spaces and tabs before the
-comment stay.
+as one space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+one space before a comment that stands after something on its line, as Prettier
+prints `x = 1;   // c` as `x = 1; // c`. A comment that touches stays touching.
+The closing pipe stands on a line of its own, one level deeper than the arrow
+(`A -->|x %% c` and `    | B`). Where the comment holds a `;`, the characters
+before it are printed as one space in the same way, and the spaces and tabs
+after the `;` stay as well: `A -->|x  %% c;` and two spaces, a line break, and
+`| B` print `A -->|x %% c;`, the two spaces, and `| B` one level deeper. Where
+the label goes on after the line break of the comment, the spaces and tabs
+before the comment stay.
 
 [fixture: edge-labels/label-comment-ends-label] [fixture:
 edge-labels/label-comment-semicolon-ends-label] [fixture:
@@ -915,10 +923,11 @@ Reuse [Label inner whitespace](./flowchart.md#label-inner-whitespace): Mermaid
 discards ordinary bare exterior padding, whereas internal and quoted/markdown
 label text stays, and a label of spaces and tabs only is printed as one space.
 Keep one leading/trailing space for slash, backslash, dash, quote characters,
-and when `@` in the first word would make it read as an edge id; put no space
-before slanted ?]/=] closers. For a slash label, `A[ /x/ ]` keeps its spaces,
-since every version of mermaid.js that counts reads `A[/x/]` as a slanted vertex
-labelled `x` instead of a square vertex labelled `/x/` (see
+and when `@` in the first word would make it read as an edge id (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace));
+put no space before slanted ?]/=] closers. For a slash label, `A[ /x/ ]` keeps
+its spaces, since every version of mermaid.js that counts reads `A[/x/]` as a
+slanted vertex labelled `x` instead of a square vertex labelled `/x/` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Agentflow label comments are different where the label goes on after the line
 break of the comment: the spaces and tabs before the comment are label content
@@ -930,8 +939,11 @@ ends before the comment (the text of `A[x  %% c`, a line break, and `]` is `x`
 in the Db, and it is also with another whitespace character of the specification
 in place of the spaces, a no-break space, U+3000, U+2003, U+2028, and U+2029
 among them), so a run of whitespace before the comment, of one kind of character
-or of several, is printed as one space, a comment that touches stays touching, a
-bare label is printed in quotes (see
+or of several, is printed as one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. A comment that touches stays touching. A bare
+label is printed in quotes (see
 [Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)),
 and the closing bracket stands on a line of its own, one level deeper than the
 vertex. Where the comment holds a `;`, the label is not quoted, the characters
@@ -1043,7 +1055,9 @@ versions of mermaid.js that count read `A@{%%{init: {}}%%x: 1}` with metadata
 key `x` and value `1` instead of key `x:1` and value `null` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Where its line is too long it prints on lines, one entry on each, under the
-conditions listed there.
+conditions listed there, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)).
 
 [fixture: metadata-blocks/long-split] [fixture: metadata-blocks/one-line-padded]
 [fixture: metadata-blocks/one-line-space-only-padded] [fixture:
@@ -1390,11 +1404,13 @@ comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 comments/trailing-comment-semicolon-trailing-whitespace-statements] [fixture:
 comments/trailing-comment-semicolon-trailing-whitespace-header-and-lines]
 
-A harmless trailing-comment gap becomes one space. Agentflow recognizes real
-comments after semicolons and description closers; ordinary separator semicolons
-before them can drop. At normal size comments continue through LS/PS until
-LF/EOF, and a percent pair inside an already-started id is id text. Label-side
-padding stays under Labels.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Agentflow recognizes real comments after
+semicolons and description closers; ordinary separator semicolons before them
+can drop. At normal size comments continue through LS/PS until LF/EOF, and a
+percent pair inside an already-started id is id text. Label-side padding stays
+under Labels.
 
 [fixture: comments/comment-label] [fixture:
 comments/comment-label-spaces-unsafe]
@@ -1843,8 +1859,10 @@ Reuse [Chains](./flowchart.md#chains) and
 [Line wrapping](./flowchart.md#line-wrapping): author-chosen statement
 boundaries stay, and `printWidth` never redistributes links. Keep long lines,
 except that a data block on one line whose line is wider than `printWidth`
-prints on lines under the conditions of [Metadata blocks](#metadata-blocks);
-keep explicit split statements, repetitions and source order. Agentflow routing,
+prints on lines under the conditions of [Metadata blocks](#metadata-blocks), a
+form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form); keep
+explicit split statements, repetitions and source order. Agentflow routing,
 generated ids and completion-order containers make that order observable. Domain
 shapes, numeric/prototype operands, entities, HTML and diagnostic-related
 spelling remain authored even when a Db-normalized alternative exists.

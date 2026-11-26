@@ -112,8 +112,13 @@ Each statement stands on a line of its own. Nothing separates statements in a
 Gantt chart (diagrams/gantt.md, Diagram and statements), and the header,
 `inclusiveEndDates`, a `weekday` or `weekend` statement with its day, an
 `accDescr` block, and a click statement are followed on their line by the next
-statement: the statement after any of them goes to a line of its own. The other
-diagram types print one statement on a line too.
+statement: the statement after any of them goes to a line of its own.
+[Flowchart](./flowchart.md#statements-one-per-line),
+[sequence](./sequence.md#statements-one-per-line), and
+[state](./state.md#statements-one-per-line) diagrams print one statement on a
+line too;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form.
 
 [fixture: statements-one-per-line/header-then-statement] [fixture:
 statements-one-per-line/header-then-task] [fixture:
@@ -374,12 +379,14 @@ U+2028 before the colon of a task] [test: U+00A0 before the colon of a task]
 
 Where a name of a section has padding before its colon (more than one whitespace
 character, or a tab), the printer puts the colons of the section one space after
-its longest name, whether the colons were in one column or not. The column is
-the narrowest that leaves one space after every name, and whitespace beyond it
-carries nothing, so it does not stay; the author can add a longer name and let
-the printer pad the others. The width of a name is the width Prettier gives a
-text, so a full-width character counts 2, and the whitespace that is set is
-spaces, which replace a tab.
+its longest name, whether the colons were in one column or not, a form decided
+under [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). The
+column is the narrowest that leaves one space after every name, and whitespace
+beyond it carries nothing, so it does not stay; the author can add a longer name
+and let the printer pad the others. The width of a name is the width Prettier
+gives a text, so a full-width character counts 2, and the whitespace that is set
+is spaces, which replace a tab.
 
 [fixture: task-data/colon-column-new-longest-name] [fixture:
 task-data/description-padding-tightened] [fixture:
@@ -388,14 +395,19 @@ task-data/colon-column-use-tabs]
 
 The sections with padding whose colons are all in one and the same column go on
 sharing a column: it is one space after the longest of their longest names, so
-that only the excess whitespace goes. The column is counted from the start of
-the names, since the printer indents the tasks of every section alike, and that
-is the column the colons stand in once the chart is printed. A section whose
-colons are not all in one column is on its own, with the column of its longest
-name. A section whose names are all followed by one space, with its colons in
-the column of a group, counts for the longest name of the group and is not
-changed. The tasks before the first `section` stand one level less deep, so they
-are a section of their own that shares nothing.
+that only the excess whitespace goes. Each section on its own would move the
+column of the colons at every section, where the author kept it in one place:
+the example of the documentation of mermaid.js lines up the colons of three
+sections after `Completed task in the critical line`, and on their own the
+colons of the two later sections would stand three columns to the left of those
+of the first, so the chart would read worse after formatting than before it. The
+column is counted from the start of the names, since the printer indents the
+tasks of every section alike, and that is the column the colons stand in once
+the chart is printed. A section whose colons are not all in one column is on its
+own, with the column of its longest name. A section whose names are all followed
+by one space, with its colons in the column of a group, counts for the longest
+name of the group and is not changed. The tasks before the first `section` stand
+one level less deep, so they are a section of their own that shares nothing.
 
 [fixture: task-data/colon-column-sections-share-one-column] [fixture:
 task-data/colon-column-one-task-sections] [fixture:
@@ -404,7 +416,8 @@ task-data/colon-column-sections-in-one-column-and-others] [fixture:
 task-data/colon-column-sections-not-sharing] [fixture:
 task-data/colon-column-sections-in-different-columns] [fixture:
 task-data/colon-column-before-first-section] [fixture:
-task-data/colon-column-sections-and-preamble]
+task-data/colon-column-sections-and-preamble] [corpus fixture:
+gantt/docs-syntax-gantt-b854a6f4]
 
 A section with a task whose line a comment line after U+2028 or U+2029 joins to
 the next line, which the printer prints as written, is on its own where the
@@ -437,16 +450,15 @@ joins to the next line, under a title with an ignored semicolon] [test: Gantt: a
 task that a comment that ends in a semicolon after U+2028 joins to the next
 line, and a section with padding after it]
 
-The colons stay where they are in these cases, since moving them could change
-the figure. A section in which no name has more than one space before its colon
-is left: no colon moves, and a name that touches its colon gets its one space as
-above. A section is left where the aligned lines would be longer than
-`printWidth` and longer than they are, since one long name would push every
-colon of the section far right. A chart that holds `white-space` is left, with
-its names that touch their colons, since the CSS of the chart may draw the
-whitespace at the end of a name, and the figure then depends on it. A section
-where a name holds a tab is left too, since a tab reaches the next tab stop of
-the editor, and no width that Prettier counts lines the colons up.
+The colons stay where they are in these cases. A section in which no name has
+more than one space before its colon is left: no colon moves, and a name that
+touches its colon gets its one space as above. A section is left where the
+aligned lines would be longer than `printWidth` and longer than they are. A
+chart that holds `white-space` is left, with its names that touch their colons,
+since the CSS of the chart may draw the whitespace at the end of a name, and the
+figure then depends on it. A section where a name holds a tab is left too, since
+a tab reaches the next tab stop of the editor, and no width that Prettier counts
+lines the colons up.
 
 [fixture: task-data/colon-column-tab-in-name-kept] [fixture:
 task-data/colon-column-single-space-kept] [fixture:
@@ -1718,14 +1730,12 @@ kept as written.
 
 [fixture: comments/directive-in-percent-brace-marker]
 
-A comment after a statement, or after the header, stays on the line, as written:
-one space stands before it where whitespace was written, and none where it
-touches, since the comment of a statement that touches it is read otherwise by
-mermaid.js. [Architecture](./architecture.md#comments) and
-[cynefin](./cynefin.md#comments) diagrams print one space before an inline
-comment where spaces or tabs were written;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt inline comments the same gap.
+A comment after a statement, or after the header, stays on the line. Where
+whitespace was written, it becomes one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. A comment that touches stays touching, since
+mermaid.js reads a comment that touches its statement differently.
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-keyword-statement] [fixture:
