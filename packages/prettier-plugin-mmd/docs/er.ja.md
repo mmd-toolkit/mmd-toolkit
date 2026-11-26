@@ -56,10 +56,20 @@ subgraph の中でも同じです。
 
 [fixture: indentation/written-indentation-dropped]
 
-例外は、direction を含む `accTitle` と `accDescr` の文で、1 桁目を保ちます。
+例外の 1 つは、direction を含む `accTitle` と `accDescr` の文で、
+1 桁目を保ちます。
 字句解析器は、1 桁目ではそれをタイトルか説明として読み、
 字下げの後では direction
 の行として読むためです（[アクセシビリティの文](#アクセシビリティの文)を参照）。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上の文とともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: er/indentation/comment-region-keeps-a-joined-statement-line]
+[test: er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph]
 
 入力
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -107,8 +117,11 @@ Prettier がブロックの中の行と閉じる行をその深さに印字す�
 [class](./class.ja.md#メンバーの本体)、[requirement](./requirement.ja.md#本体)、
 [state](./state.ja.md#複合状態)が、本体の `{` を、
 `{` が名前に接して書かれていても、開く行に空白 1 つの後に置くためです。
+2 つの行を結ぶコメント領域を含む属性は、
+全体を書かれたまま残します（[属性の空白](#属性の空白)を参照）。
 
 [fixture: attribute-blocks/opening-brace-after-one-space]
+[test: er/attribute-blocks/comment-region-keeps-the-joined-attributes]
 [fixture: attribute-blocks/split]
 
 1 行に書かれたブロックや、最初の属性が `{` の行に、
@@ -508,8 +521,8 @@ Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字し�
 [block](./block.ja.md#複数行の文)、[sequence](./sequence.ja.md#複数行の文)、
 [flowchart](./flowchart.ja.md#アクセシビリティの行) も、
 文の後続部分と独立した注釈類を、文の内側に継続の 1 段字下げで置きます。
-ただし、ほかの規則が配置を書かれたまま残す所は別です（物理行を結ぶコメント領域、
-`;` を含む行です）。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+2 つの行を結ぶコメント領域を含む属性は、全体を書かれたまま残します（下を参照）。
 コメント行やディレクティブの隣の改行が残る理由は、
 [複数行の文](#複数行の文)に書いてあります。
 
@@ -561,6 +574,7 @@ U+2029 が色を `;` から離すときも、書かれたまま残します。
 U+2028、`%% c` は、コンマの後の連なりを残します）。
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
+[test: er/attribute-spacing/comment-region-keeps-the-whole-attribute]
 [test: a color before a comma in a style on a line that a comment line after U+2028 joins with the next line]
 [test: a color before a comma in a class definition on a line that a comment line after U+2029 joins with the next line]
 [test: the last color of a style that the line after a comment line after U+2028 goes on with]
@@ -2117,6 +2131,10 @@ Db は両端の空白を持たないからです。
 コロンやテキストが後の行に書かれていても同じです。
 テキストの前にコメント行があるときは、上のとおり、改行を残し、
 コメントとテキストを 1 段深く置きます。
+ただし、2 つの行を結ぶコメント領域を含む文は、書かれたまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の、図のタイトルと説明の行を参照してください。
@@ -2125,6 +2143,7 @@ Db は両端の空白を持たないからです。
 [fixture: accessibility-statements/text-with-comment-line-kept]
 [corpus fixture: er/lex-acc-title-line-feed-after-colon]
 [fixture: multi-line-statements/acc-colon-and-brace-joined]
+[test: er/accessibility-statements/comment-region-keeps-the-text-line]
 
 通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。

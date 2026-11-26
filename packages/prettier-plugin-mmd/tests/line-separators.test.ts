@@ -10238,6 +10238,53 @@ describe("the whitespace beside a comment of an eventmodeling diagram", () => {
   )
 })
 
+/**
+ * The later lines of an eventmodeling statement where a U+2028 decides whether
+ * a rule keeps them as written: a line that a `%%` comment after U+2028 joins,
+ * and a line whose `;` follows U+2028, stand one level deeper; a line whose `;`
+ * comes before U+2028 in a statement that joining could change, and a
+ * statement with a `;` that the line rule ignores and U+2028 after it, stay as
+ * written (docs/eventmodeling.md, Long lines).
+ */
+describe("the later lines of an eventmodeling statement with a U+2028 or U+2029", () => {
+  it("a later line after a `%%` comment after U+2028 inside a statement of an eventmodeling diagram stands one level deeper", async () => {
+    await expectKept(
+      "eventmodeling\ntf 01\u2028%% c\nevt Alpha\n",
+      "eventmodeling\ntf 01 %% c\n  evt Alpha\n",
+    )
+  })
+  it("a later line whose `;` follows U+2028 in an eventmodeling statement that joining could change stands one level deeper", async () => {
+    await expectKept(
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/\nAlpha\u2028/*#y;*/ ->> 02\n",
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/\n  Alpha\u2028/*#y;*/ ->> 02\n",
+    )
+  })
+  it("a later line whose `;` comes before U+2028 in an eventmodeling statement that joining could change stays where it is written", async () => {
+    await expectKept(
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/ Alpha\u2028/*y*/ ->> 02\n",
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/ Alpha /*y*/ ->> 02\n",
+    )
+  })
+  it("an eventmodeling statement with a `;` that the line rule ignores and U+2028 after it is printed as written", async () => {
+    await expectKept(
+      'eventmodeling\ntf 01\n   evt\n%% c\n   Alpha "style:#x" ;\u2028\n',
+      'eventmodeling\ntf 01\n   evt\n%% c\n   Alpha "style:#x" ;\u2028\n',
+    )
+  })
+  it("an eventmodeling statement with a `;` that the line rule ignores and U+2029 after it is printed as written", async () => {
+    await expectKept(
+      'eventmodeling\ntf 01\n   evt\n%% c\n   Alpha "style:#x" ;\u2029\n',
+      'eventmodeling\ntf 01\n   evt\n%% c\n   Alpha "style:#x" ;\u2029\n',
+    )
+  })
+  it("a later line whose `;` comes before U+2029 in an eventmodeling statement that joining could change stays where it is written", async () => {
+    await expectKept(
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/ Alpha\u2029/*y*/ ->> 02\n",
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/ Alpha /*y*/ ->> 02\n",
+    )
+  })
+})
+
 /** The printers that docs/eventmodeling.md, Comments, cites: where they print the characters before a comment otherwise. */
 const commentGapPrecedentExamples: readonly (readonly [
   string,
