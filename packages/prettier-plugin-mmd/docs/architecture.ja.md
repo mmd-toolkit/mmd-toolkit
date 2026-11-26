@@ -413,6 +413,10 @@ architecture-beta
 mermaid.js が両端の空白を除くからです。
 `group a(cloud)[ API ]` は `group a(cloud)[API]` に、
 `service s(server)["x" ]` は `service s(server)["x"]` になります。
+空白とタブについては、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
+Prettier は、括弧の内側に空白を置かないからです。
+`f( a )` は `f(a);` と印字します。
 
 [fixture: label-content/title-edge-whitespace-dropped]
 
@@ -471,7 +475,19 @@ mermaid.js が両端の空白を除くからです。
 
 空白だけの値、引用符付きの空値、エスケープ、HTML、entity、
 隠れた形に見える文字は保ちます。
-Db がこれらを区別するためです。
+mermaid.js は、エスケープ、HTML、entity、U+2028 と U+2029、
+隠れた形に見える文字を、読む値に持ちます。
+引用符のエスケープと、HTML の属性の引用符は別です。
+`["A\"B\q\n"]` のタイトルは `A"B\q\n`、
+`[<b>Service</b>]` のタイトルは `<b>Service</b>`、
+`[%%{}%%]` のタイトルは `%%{}%%` です。
+ほかの綴りにすると、その値が変わります。
+空白だけのラベルは空白 1 つで印字し、引用符付きの空のラベルは引用符を残します。
+どちらも空にはしません。
+数える版の mermaid.js が、引用符のない空のラベルを拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 コメントやディレクティブのあるタイトルも、そのままです。
 物理 CR・CRLF だけは共有の埋め込み先方針に従います。
 
@@ -496,6 +512,14 @@ Db がこれらを区別するためです。
 [corpus fixture: architecture/lex-title-bare-trailing-backslash]
 
 [corpus fixture: architecture/line-ls-ps-values]
+
+[corpus fixture: architecture/hidden-directive-inside-values]
+
+[corpus fixture: architecture/html-all-fields]
+
+[corpus fixture: architecture/style-entity-semicolons]
+
+[corpus fixture: architecture/html-label-authored-quotes]
 
 [corpus fixture: architecture/space-unicode-values]
 
@@ -3278,6 +3302,11 @@ YAML は `tabWidth` 0 でも共有の正の最小字下げ幅を使います。
 `textBeforeHeader` があれば、先頭 LF、コメント、通過した単独行の注釈類、
 再走査で読む形、実際の形と隠れた形の順番を含む前置部分全体を保ちます。
 整理すると無視された YAML が有効な data に変わり得るためです。
+不正な YAML の `---` の塊の前の LF を除くと、
+数える版の mermaid.js は塊をフロントマターとして読み、テキストを拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: architecture/frontmatter-yaml/frontmatter-delimiter-padding-kept]
 
