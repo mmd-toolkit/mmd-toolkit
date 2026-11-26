@@ -1224,11 +1224,13 @@ removes, joining the text before it to the line after it (see
 text and the `%%` is a run inside the text, printed as
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
 gives: `A->>B: x   %% c` is printed `A ->> B: x %% c`, and the run in an
-`accTitle:` line stays. Where the text starts with `%%`, the whitespace before
-it is printed as before any other text of its kind: after the `:` of a message,
-a note, or an `accTitle:` or `accDescr:` line as under [Colons](#colons), and
-before the text of a `title`, a block, a `box`, or the description after `as` as
-under [Title](#title) and
+`accTitle:` line stays, as does a run of two spaces or more in the label of a
+`loop` or of another block that
+[Whitespace between tokens](#whitespace-between-tokens) names. Where the text
+starts with `%%`, the whitespace before it is printed as before any other text
+of its kind: after the `:` of a message, a note, or an `accTitle:` or
+`accDescr:` line as under [Colons](#colons), and before the text of a `title`, a
+block, a `box`, or the description after `as` as under [Title](#title) and
 [Whitespace between tokens](#whitespace-between-tokens): `A->>B:   %% c` is
 printed `A ->> B: %% c`, and `loop   %% c` is printed `loop %% c`.
 
