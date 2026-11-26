@@ -3920,11 +3920,12 @@ before a comment that stands after something on its line, as Prettier prints
 
 A no-break space before the comment is no part of such a run, and it stays. CSS
 does not read it as whitespace, and mermaid.js keeps it, with the comment, in
-the value of the last style. `style A fill:red`, a no-break space, and ` %% c`,
-and the same line without the no-break space, were drawn with 10.9.8, 11.7.0,
-11.17.2, 12.0.0, and 12.3.0: the pixels were the same, but the SVG differed in
-the text of the `style` attribute, which AGENTS.md compares, since a no-break
-space is no whitespace that the drawing ignores.
+the value of the last style, so that the line without it has another style in
+the Db: `fill:red`, a no-break space, and ` %% c` against `fill:red %% c`. The
+tests compare styles without their spaces and tabs at the end only, so that is a
+change of the Db that no kind of exception allows. The figure is the same:
+10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 draw both lines alike, since the
+value with the comment is no color and the browser drops the whole declaration.
 
 [test: keeps a no-break space before a comment at the end of a flowchart style]
 
