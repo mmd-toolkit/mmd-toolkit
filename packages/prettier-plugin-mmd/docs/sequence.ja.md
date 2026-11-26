@@ -1279,13 +1279,20 @@ U+2028 または U+2029 の直後に始まるコメント行は、mermaid.js が
 のとおりに印字します。
 `A->>B: x   %% c` は `A ->> B: x %% c` と印字し、
 `accTitle:` の行の連なりは残します。
-テキストが `%%` で始まるとき、その前の空白は `:` の後の間隔で、
-[コロン](#コロン)のとおりに印字します。
+テキストが `%%` で始まるとき、その前の空白は、
+同じ種類のほかのテキストの前と同じように印字します。
+メッセージ、ノート、`accTitle:` または `accDescr:` の行の `:` の後は、
+[コロン](#コロン)のとおりで、`title`、ブロック、
+`box` のテキストや `as` の後の説明の前は、
+[タイトル](#タイトル)と[トークンの間の空白](#トークンの間の空白)のとおりです。
+`A->>B:   %% c` は `A ->> B: %% c` と印字し、
+`loop   %% c` は `loop %% c` と印字します。
 
 [fixture: comments/percent-in-texts-kept] [fixture: directives/touching-kept]
 [fixture: title/title-between-words-directive-gap-kept]
 [test: a `%%` comment line after U+2028, which joins the next line]
 [fixture: colons/whitespace-only-text]
+[fixture: comments/percent-at-text-start-spaced]
 
 入力
 ([comments/kept-input.mmd](../tests/fixtures/sequence/comments/kept-input.mmd)):

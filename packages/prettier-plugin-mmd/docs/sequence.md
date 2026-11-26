@@ -1219,12 +1219,17 @@ text and the `%%` is a run inside the text, printed as
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
 gives: `A->>B: x   %% c` is printed `A ->> B: x %% c`, and the run in an
 `accTitle:` line stays. Where the text starts with `%%`, the whitespace before
-it is the gap after the `:`, printed as under [Colons](#colons).
+it is printed as before any other text of its kind: after the `:` of a message,
+a note, or an `accTitle:` or `accDescr:` line as under [Colons](#colons), and
+before the text of a `title`, a block, a `box`, or the description after `as` as
+under [Title](#title) and
+[Whitespace between tokens](#whitespace-between-tokens): `A->>B:   %% c` is
+printed `A ->> B: %% c`, and `loop   %% c` is printed `loop %% c`.
 
 [fixture: comments/percent-in-texts-kept] [fixture: directives/touching-kept]
 [fixture: title/title-between-words-directive-gap-kept] [test: a `%%` comment
 line after U+2028, which joins the next line] [fixture:
-colons/whitespace-only-text]
+colons/whitespace-only-text] [fixture: comments/percent-at-text-start-spaced]
 
 Input
 ([comments/kept-input.mmd](../tests/fixtures/sequence/comments/kept-input.mmd)):
