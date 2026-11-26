@@ -24,7 +24,7 @@ fixture の置き方と確かめ方は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ヘッダーの後の文はヘッダーより 1 段深く、複合状態の文は開く行より 1 段深く、
 閉じる `}` は開く行と同じ段に置きます。
-Prettier が ブロックの中の行と閉じる行をその深さに印字するためです。
+Prettier がブロックの中の行と閉じる行をその深さに印字するためです。
 
 [fixture: indentation/composite-states]
 
@@ -73,8 +73,13 @@ stateDiagram-v2
 注釈を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 本文はさらに 1 段深く置きます。
-Prettier が ブロックの中の行をそう印字するためです。
+Prettier がブロックの中の行をそう印字するためです。
 その行をまたぐ値や保護された原文の境界は変えません。
+引用符で囲んだ別名の説明は、内側の改行と余白を Db に含みます。
+それらを変えると保存された説明が変わるので、注釈を挟んで見出しが続く場合も、
+書かれたまま残します。
+
+[corpus fixture: state/lex-string-line-separator-then-comment-line]
 
 [fixture: composite-states/header-completion-after-comment]
 [fixture: composite-states/multiline-alias-label-kept]
@@ -109,6 +114,10 @@ Prettier が ブロックの中の行をそう印字するためです。
 
 `state A { B --> C }` のように 1 行に書かれた本体は行に分け、区切りの `--` は、
 周りの文と同じ段に、行に単独で置きます。
+[requirement](./requirement.ja.md#本体) の本体は、空でない内容と閉じる `}` を、
+それぞれ別の行に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+1 行に書かれた複合状態の本体にも、この形を与えます。
 
 [fixture: composite-states/split]
 [fixture: composite-states/split-several-statements]
@@ -209,6 +218,8 @@ mermaid.js が無視する、`{` の前の `state` も、書かれたまま残�
 
 名前のない `state` は、mermaid.js が受理して何も読まない独立した文なので、
 周りの文と同じ段に印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この段を与えます。
+Prettier は、ブロックの中の行を、何を持つ行でも同じ段に印字するためです。
 
 [fixture: composite-states/state-keyword-alone]
 [corpus fixture: state/lex-state-keyword-alone]
@@ -633,10 +644,14 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 コンマの前後の空白を書かれたままにします。
 `style A fill:rgb(1,2,3)` と `style A fill:a,b,c` は、`:` の後の空白を除いて、
 そのまま印字します。
-mermaid.js 10.9.8 は、state 図に `style` 文を持たず、そのような行を、状態と、
+対象にする版のうち最も古い mermaid.js は、state 図に `style` 文を持たず、
+そのような行を、状態と、
 その 1 つの説明として読みます（`a,b,c` は状態 `fill` の説明です）。
 説明はそのまま描かれるので、コンマの後の空白はテキストを変えます。
-2 つ目の `:` がある行は、10.9.8 が拒否します。
+2 つ目の `:` がある行は、
+その版が拒否します（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 
 [fixture: whitespace-between-tokens/style-color-function-commas-kept]
 [fixture: whitespace-between-tokens/style-description-commas-kept]
@@ -646,6 +661,9 @@ mermaid.js 10.9.8 は、state 図に `style` 文を持たず、そのような�
 バックスラッシュの後で `:` の前にある空白は、
 除くと `:` がエスケープされるので残します。
 その空白の後ろの空白は除きます。
+名前の末尾でエスケープされた空白は、名前の一部なので残します。
+キーの `:` の前の余分な空白は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が除きます。
 
 [fixture: whitespace-between-tokens/style-backslash-before-comma]
 
@@ -701,6 +719,10 @@ Db が書かれたまま保つからです。
 `:` で始まるスタイルと、バックスラッシュと空白の後に `:` があるスタイルも、
 ほかのスタイルと同じく、`:` の後ろに空白を 1 つ置き、
 語と語の間の連続は空白 1 つで印字します。
+空でない名前がエスケープした空白で終わるときの `:` はキーのコロンなので、
+値が空でなければ、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+その後ろに空白を 1 つ置きます。
+
 `style A :  red   x` は `style A : red x` と印字します。
 
 [fixture: whitespace-between-tokens/style-colon-first-run-spaced]
@@ -738,6 +760,9 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 `class A,` と次の行の `B c` は `class A, B c` になります。
 `,` の前にディレクティブがあっても同じで、
 `,` の後ろの id は空白 1 つの後に置きます。
+一覧の `,` の後の改行は、その後ろの隙間に当たるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が空白 1 つの形を与えます。
+`,` の前のディレクティブは、書かれた順序を保ち、その隙間を変えません。
 
 [fixture: whitespace-between-tokens/class-ids-line-break-and-directive]
 
@@ -826,6 +851,9 @@ stateDiagram-v2
 
 遷移の矢印の前後には、空白を 1 つずつ置きます。
 `A-->B` は `A --> B` になります。
+Prettier は 2 つの被演算子の間の演算子に、前後 1 つずつの空白を置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+遷移の両端の間の矢印にもこの形を与えます。
 
 [fixture: arrow-spacing/spaced] [fixture: arrow-spacing/tabs-around-arrow]
 
@@ -857,7 +885,8 @@ stateDiagram-v2
 `scale -->B` は scale 文の始まりになり、
 対象にする版の mermaid.js のすべてが拒否するからです。
 `classDef`、`class`、`note`、`stateDiagram` でも、同じ形を拒否します。
-`style --> B` は 11.7.0 以降が拒否し、`state --> B` は別の文として描かれます。
+`style --> B` は対象にする版のうち後の版が拒否し、
+`state --> B` は別の文として描かれます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -899,6 +928,10 @@ stateDiagram-v2
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
+図に 1 つのタイトルか説明を与える行なので、
+`accTitle` と `accDescr` の `:` はキーのコロンです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、前は空白なし、
+後は空白 1 つの形を与えます。
 
 [fixture: descriptions-and-labels/acc-text-runs-collapsed]
 [fixture: descriptions-and-labels/acc-block-runs-collapsed]
@@ -1041,6 +1074,8 @@ ASCII 以外の文字を含むノートも書かれたままにします。
 
 `note left of A:h` では、`:` と `h` が mermaid.js の捨てる 2 文字なので、
 ノートに本文はなく、`h` の後の空白は削除します。
+`note left of A:h` は、mermaid.js が `:` と `h` を捨てて、本文が空になるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が末尾の空白とタブを除きます。
 
 [fixture: notes/one-character-text-kept]
 [corpus fixture: state/lex-note-colon-then-one-character]
@@ -1048,6 +1083,14 @@ ASCII 以外の文字を含むノートも書かれたままにします。
 id の前の空白は空白 1 つにします。
 `note left of%%x A` のように位置の直後にある、mermaid.js が読まないテキストは、
 位置に接したまま残します。
+ノートの位置から id までの通常の隙間は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)に従って空白 1 つにします。
+mermaid.js は位置に接した `%%x` を無視して次の id を読みますが、
+前に空白を入れると、id が空になり、この 1 行のノートを拒否します。
+そのため、無視されるテキストは位置に接したまま残します。
+
+[corpus fixture: state/lex-note-id-ignored-percent-after-position]
+[corpus fixture: state/lex-note-id-percent-after-space]
 
 [fixture: notes/kept]
 
@@ -1071,6 +1114,7 @@ mermaid.js がこれらのラベルに使う Markdown パーサー Marked でノ
 見出しが 1 行に収まり、本文がその次の行から始まり、
 `end note` が行頭の字下げに続くノートでは、単一の段落の内容がある各行を、
 ノートより 1 段深くそろえます。
+下記の描画の確認が、この余白変更でノートを保てる範囲を示します。
 行頭の ASCII 空白を本文の字下げに置き換えます。
 内容がある最初の行だけは、Mermaid が取り除く行頭のタブも対象です。
 後続行の余白にタブがある本文は、この段落の規則から外します。
@@ -1116,6 +1160,7 @@ Marked が段落の文字どおりの続きとして読む記号の行も、対�
 
 この段落の規則に当てはまらない本文では、最初の物理行が空でなく、
 字下げが ASCII 空白とタブだけなら、その行だけをそろえます。
+Mermaid は先頭行の余白を除きますが、後続行の余白は描画に影響する場合があります。
 整列できる段落と同じく、設定された本文の段を使います。
 保護する後続行から別の字下げを推測しません。
 後続の余白は本文のテキストの一部で、描画に影響する場合があるためです。
@@ -1221,7 +1266,7 @@ Mermaid がブロックの原文を文字どおりに表示する場合は、
 その余白も表示されるためです。
 たとえば空行後の空白を 2 個から 4 個に増やすと、
 表示されていた 3 つの段落が別の配置に変わります。
-10.9.8 は別のテキストを、11.7.0 以降は別の構造を描きます。
+対象にする版のうち最も古い版は別のテキストを、後の版は別の構造を描きます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -1245,6 +1290,13 @@ Markdown の強制改行なので、その末尾空白と後続行は原文を�
 条件を満たす先頭行の余白だけをそろえます。
 最後以外の本文行の末尾の空白 1 個と、最後の本文行の末尾の空白は、
 本文の余白をそろえる場合も保ちます。
+mermaid.js は仕様のとおり、本文の両端の空白だけを除くので、
+ノート内部の改行の前の空白 1 個は、Db の本文に含まれます。
+末尾のこの空白を除くと、許可された段落の行頭変更の範囲外で、
+Db の本文が変わるので残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: notes/prose-trailing-spaces] [fixture: notes/prose-one-trailing-space]
 
@@ -1255,7 +1307,7 @@ Mermaid は本文内部の改行の後にある行頭空白を、元の `notes[]
 両端の空行や空白だけの行も含みます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 `end note` はノートと同じ段に置きます。
-Prettier が ブロックの中の行をそう印字するためです。
+Prettier がブロックの中の行をそう印字するためです。
 見出しの id の後の空白は落とします。
 その行のコメントやディレクティブの後の空白は、書かれたまま残します。
 
@@ -1277,7 +1329,7 @@ Mermaid が余白を除くのはその行だけです。
 後の行の余白は本文の一部なので、書かれたまま残し、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 `end note` はノートと同じ段に置きます。
-Prettier が ブロックの中の行をそう印字するためです。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: notes/over-lines-text-on-id-line-kept]
 
@@ -1308,6 +1360,9 @@ Db と画素が同じであることを確かめました。
 `note "t"as N` と `note "t" asN` は `note "t" as N` と印字します。
 mermaid.js はこの 3 つの書き方を同じに読み、
 別名の定義の `as` と id も同じ形で印字します（[別名](#別名)を参照）。
+浮遊ノートの `as` は、引用符で囲む本文と id の間にあるキーワードです。
+Prettier が 2 つのものの間のキーワードに置く空白と同じく、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が前後に空白 1 つを与えます。
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
 規則 1 の表に、これを含む間隔の印はないので、
@@ -1396,6 +1451,9 @@ stateDiagram-v2
 別名の定義の文字列、`as`、id の間は、接して書かれていても、空白 1 つにします。
 mermaid.js は `"d"as A` を `"d" as A` と同じに読み Db が同じなので、
 文の語を 1 つの形で離します（`asA` は `as` ではありません）。
+Prettier は 2 つのものの間のキーワードを、前後 1 つずつの空白で離します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+別名の `as` にもこの形を与えます。
 
 [fixture: aliases/second-description-kept] [fixture: aliases/tabs-between-parts]
 [fixture: aliases/id-kept]
@@ -1418,6 +1476,13 @@ mermaid.js は、それを両端の空白ごと読むので、
 ただし、行のディレクティブのどれかに `;`、U+2028、U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 `state "d" as A : x   %%{x}%%  ` は `state "d" as A : x %%{x}%%` と印字します。
+[pie](./pie.ja.md#title) のタイトルや、
+[timeline](./timeline.ja.md#period-と-event) のイベントの後では、
+末尾のディレクティブの前に空白かタブがあれば、空白 1 つにします。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+別名の 2 つ目の説明にもこの隙間を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+最後のディレクティブの後の行末の空白とタブを除きます。
 空白とタブだけの説明と、`;` を含む説明は、書かれたままにします。
 `state "d" as A :` の後の空白 3 つからなる 2 つ目の説明は残します。
 その空白を除くと、対象にする版の mermaid.js のうちいくつかが、
@@ -1503,7 +1568,11 @@ stateDiagram-v2
 本文は書かれたまま残します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
-Prettier が ブロックの中のコメント行をそう印字するためです。
+Prettier がブロックの中のコメント行をそう印字するためです。
+[class](./class.ja.md#コメント) と [sequence](./sequence.ja.md#コメント)
+の図は、行に単独のコメントの本文で、先頭と語の間の隙間を書かれたまま残します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+state 図にもこの形を与えます。
 
 [fixture: comments/kept] [fixture: comments/text-kept]
 [fixture: comments/before-closing-brace]
@@ -1561,7 +1630,7 @@ stateDiagram-v2
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ブロックの中の単独のディレクティブ行は、
 そのブロックを開く行より 1 段深く置きます。
-Prettier が ブロックの中の行をそう印字するためです。
+Prettier がブロックの中の行をそう印字するためです。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
@@ -1573,11 +1642,6 @@ Prettier が ブロックの中の行をそう印字するためです。
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#ディレクティブ)、
-[flowchart](./flowchart.ja.md#ディレクティブ)、
-[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 
 [fixture: state/directives/split-directive-gap]
 
@@ -1625,8 +1689,10 @@ state 図の `style`、`classDef` 文のスタイルの色が対象です。
 最初のスタイルの後のスタイルに `:` がない `style` 文は、
 色を書かれたままにします（`style A fill:#ABC` は `style A fill: #ABC`
 と印字します）。
-mermaid.js 10.9.8 が、その行を、状態の説明として、
-テキストのまま描くからです（[トークンの間の空白](#トークンの間の空白)を参照）。
+対象にする版のうち最も古い mermaid.js が、その行を、状態の説明として、
+テキストのまま描くからです（[トークンの間の空白](#トークンの間の空白)と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 `classDef` 文は、上記の色の規則に従います。
 
 [fixture: colors/style-read-as-description-kept]
@@ -1729,13 +1795,12 @@ stateDiagram-v2
 
 ### 複数行の値
 
-[flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
 `accDescr { ... }` の本文行は文より 1 段深くそろえます。
 独立した行の `}` は文と同じ段に置きます。
 `{` が `accDescr` の行にあるときは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
-Mermaid が説明からこの字下げを除くためです。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+mermaid.js は説明から行送り後の字下げを除きます。
 
 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/accdescr-block-single-line]
@@ -1750,6 +1815,8 @@ Unicode の空白だけの内側も同じです。
 空白で囲む本文がないので、Db が同じ形の選択は、
 [flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
 agentflow、usecase に合わせます。
+説明ブロック `accDescr` の開始括弧は、キーワードの後に置くので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が前の空白 1 つを与えます。
 前の説明は Db に残ります。
 
 [fixture: multi-line-values/empty-description-interiors]
@@ -1757,12 +1824,6 @@ agentflow、usecase に合わせます。
 
 コメントやディレクティブがあるブロックの内容と改行は保ち、
 閉じられていないブロックは開いたままにします。
-説明ブロックの `{` と `}` の間の行は、
-規則 1 の「ブロックの中の行」の対象ではないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[xychart](./xychart.ja.md#空の説明ブロック) と
-[quadrant](./quadrant.ja.md#空の説明ブロック) も、
-ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 
 [fixture: multi-line-values/empty-description-trivia-kept]
 [corpus fixture: state/lex-acc-descr-block-unclosed]
@@ -1777,6 +1838,11 @@ agentflow、usecase に合わせます。
 [fixture: notes/payment-prose]
 
 複数行に書かれた独立したノートの本文は、書かれたまま残します。
+mermaid.js は仕様のとおり、独立したノートの内部の改行と余白を、
+Db の本文に含めます。
+行を結ぶか字下げを変えると、保存された本文が変わり、
+ブロックノートの余白の例外も、引用符内の本文には及ばないので、
+書かれたまま残します。
 
 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/floating-note-empty-line-kept]
@@ -1831,6 +1897,8 @@ stateDiagram-v2
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
 削除する `;` の直前の空白も一緒に削除します。
+スタイルの終端を削除すると、直前の空白とタブは行末に残るので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)に従って除きます。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
 
@@ -1860,8 +1928,25 @@ mermaid.js は各スタイルの最初の `;` を取り除くためです。
 
 `classDef c fill:red;;`、`classDef c ;`、
 `style A fill : #f00;` は条件を満たさないので残します。
+`classDef c ;` では、mermaid.js が、存在するスタイルの最初の `;` を除き、
+Db に空のスタイルを 1 つ残します。
+元の `;` を除くと、その項目が Db からなくなるので、`;` を残します。
+`style A fill : #f00;` では、
+mermaid.js が `#` と `;` をエスケープされた文字として読むので、
+Db のスタイルも描画も、`style A fill : #f00` とは違います。
+この `;` も残します。
+`style A fill: #f00;` も同じで、対象にするどの版も、`;` を除くと別の図を描き、
+Db も別のスタイルを持ちます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
+[corpus fixture: state/db-classdef-semicolon-in-each-part]
+[corpus fixture: state/db-classdef-comma-only]
+[corpus fixture: state/lex-classdef-without-styles]
 
 [fixture: semicolons-at-the-end-of-a-style-statement/style-text-kept]
+[fixture: semicolons-at-the-end-of-a-style-statement/style-hash-after-colon-kept]
 
 `style A` のようにスタイルのない文には、削除する `;` がなく、
 空白は通常の配置に従います。
@@ -2109,6 +2194,7 @@ stateDiagram-v2
 U+2028 か U+2029 を含む行は、書かれたまま残します。
 別名の 2 つ目の説明も、その文字の後の空白も含めて残します。
 `state "d" as A : x`、空白 2 つ、U+2028、空白 2 つは、書かれたまま残します。
+区切り文字を除くと、状態の説明が Db で変わり、状態の描画も変わります。
 
 [test: a second description of an alias with spaces after a U+2028]
 
@@ -2122,9 +2208,14 @@ U+2028 か U+2029 を含む行は、書かれたまま残します。
 それを開く行に持つ composite の文は、その文字を残し、
 本体はほかの本体と同じように印字します。
 `state a b`、U+2028、`{` は、文字を残して本体の文を字下げします。
+`state a b` と `{` の間の U+2028 を空白に変えると、
+mermaid.js は波括弧の前に 2 つの語を読み、状態名を拒否します。
+そのため、区切り文字は残し、本体には通常の字下げの規則を使います。
 閉じる行にあるときも同じです。
 `state A {`、本体の行 `B`、U+2028 が後ろにある `}` では、
 `}` の後ろの空白を文字ごと書かれたまま残し、本体は字下げします。
+
+[corpus fixture: state/lex-state-two-names-body]
 
 [test: U+2028 before the brace of a composite statement]
 [test: U+2028 on the closing line of a composite statement]
@@ -2160,7 +2251,7 @@ state 図では、mermaid.js が擬似状態の印、方向の行、
 `{` の前の 2 つ目の名前を探す範囲を、これらの文字が区切るからです。
 `state a`、U+2028、`b <<fork>>` は名前 `a` とフォーク `b` ですが、
 U+2028 の代わりに空白を置くと、フォーク `a b` になり、
-12.3.0 の Db では id とラベルも違い、対象にする版のすべてで描画は同じです。
+Db では id とラベルも違い、対象にする版のすべてで描画は同じです。
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 

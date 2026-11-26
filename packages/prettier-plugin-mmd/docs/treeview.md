@@ -16,8 +16,12 @@ the Markdown host in fences. See [compatibility](./compatibility.md).
 
 Put `treeView-beta` at column one and ordinary body items on following lines.
 This gives the header its own line without repairing trailing header padding,
-inline names or rejected spellings. Empty bodies stay empty; attached directives
-retain their boundary.
+inline names or rejected spellings. The header stands at column one and ordinary
+body items follow on later lines in [kanban](./kanban.md#header) and
+[C4](./c4.md#header) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+treeView the same layout. Empty bodies stay empty; attached directives retain
+their boundary.
 
 [fixture: treeview/header/header-leading]
 
@@ -286,7 +290,10 @@ treeview/statements-one-per-line/review159-box-quoted-unprefixed-leading-ps]
 [fixture: treeview/branch-prefixes/box-redraw-nested-mixed-weights]
 
 A branch whose name is a `;` alone is a node: nothing follows its prefix, and
-the prefix is drawn like any other.
+the prefix is drawn like any other. The treeview specification reads the `;`
+after a branch prefix as the node's bare name. Removing its only branch prefix
+would move that node to the top level and change the Db tree, so the prefix
+remains.
 
 [fixture: treeview/branch-prefixes/branch-semicolon-name]
 
@@ -747,10 +754,14 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 ### Indentation
 
 In indentation mode read the forest from AST children, including file parents.
-Print roots at one configured step and children one step beyond their parent. A
-space step is `max(1, tabWidth)`; useTabs uses one tab. This selects a uniform
-Db-equivalent width even for a deep first node, later shallower roots, irregular
-increments, duplicate names and empty names.
+Print roots at one configured step and children one step beyond their parent.
+Sections and items stand one configured level below the header and one more
+below a section in [kanban](./kanban.md#indentation) diagrams. Under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
+treeView roots and children take those positions. A space step is
+`max(1, tabWidth)`; useTabs uses one tab. This selects a uniform Db-equivalent
+width even for a deep first node, later shallower roots, irregular increments,
+duplicate names and empty names.
 
 [fixture: treeview/indentation/indent-irregular]
 
@@ -1429,7 +1440,11 @@ treeView-beta
 ### Annotation lines
 
 In indentation mode keep later-line annotations separate and align them with
-their owner, retaining positive leading whitespace. In box mode move a
+their owner, retaining positive leading whitespace. Separate decoration lines
+stand at their owner's column in [kanban](./kanban.md#icons-and-classes)
+diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+indentation-mode annotations the same alignment. In box mode move a
 branch-prefixed annotation onto its owner's line, in source order with one
 separating space, only when no earlier description and no intervening comment,
 directive, selected semicolon or comment region prevents it. Retain the whole
@@ -1635,8 +1650,11 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 Print ordinary class components as `:::Name` and icon components as
 `icon(reference)`, including `icon()` and `icon(:file)`. Keep class/reference
 spelling. Compact marker padding groups the class visually; icon-internal
-whitespace is not grammar. Trivia between complete components retains its
-boundaries.
+whitespace is not grammar. Classes in [kanban](./kanban.md#icons-and-classes)
+diagrams have no spaces or tabs between `:::` and the class name, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+treeView the same compact class marker. Trivia between complete components
+retains its boundaries.
 
 [fixture: treeview/annotation-components/class-post-marker]
 
@@ -1682,8 +1700,16 @@ and tabs there were many, or none: `##   text` and `##text` are printed
 figure. The spaces and tabs at the end of the description go for the same reason
 (see [Trailing whitespace](#trailing-whitespace)). Keep the rest of the
 description literal, including whitespace-only text, LS/PS, percent text and
-apparent annotation syntax. Null stays null. Internal whitespace changes can
+apparent annotation syntax. The spaces and tabs at the end of a description are
+trimmed by mermaid.js without changing the figure, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) selects a line
+without that tail. Percent text and annotation-looking text after `##` belong to
+the description in the Db; treating them as separate comments or annotations
+changes that description. Null stays null. Internal whitespace changes can
 change the description. The gap before `##` follows Annotation gaps.
+
+[corpus fixture: treeview/tail-description-comment] [corpus fixture:
+treeview/db-description-absorbs-annotations]
 
 [fixture: treeview/descriptions/description-padding] [fixture:
 treeview/descriptions/description-touches-marker]
@@ -1720,9 +1746,15 @@ Keep complete bare-name and StringLiteral source spans: empty names,
 backslashes, internal whitespace, the whitespace inside quotes, HTML/entity
 spelling and directory slashes; only the spaces and tabs at the end of a bare
 name at the end of a line go (see [Trailing whitespace](#trailing-whitespace)).
-For a bare name, `A   B` stays instead of `A B`, since some of the versions of
-mermaid.js that count give the two forms different names in the Db and draw them
-differently (see
+Empty quoted names are Db nodes, and literal backslashes, whitespace inside
+quotes, HTML and entity spellings remain in node names; removing or rewriting
+them changes the Db. A bare name's final slash selects a directory, so dropping
+it selects a file. Under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), spaces and tabs at
+the end of a bare name's line are removed, where mermaid.js already trims them
+without changing the figure. For a bare name, `A   B` stays instead of `A B`,
+since some of the versions of mermaid.js that count give the two forms different
+names in the Db and draw them differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
@@ -1732,6 +1764,11 @@ name and file/directory type. A name in quotes keeps its quotes, though the
 examples write 58 names without quotes and 8 in quotes: some versions that count
 read a name in quotes only (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[corpus fixture: treeview/db-empty-names] [corpus fixture:
+treeview/db-quote-conversion] [corpus fixture: treeview/db-quoted-space] [corpus
+fixture: treeview/html-double] [corpus fixture: treeview/entity-double] [corpus
+fixture: treeview/db-directory-trailing-space]
 
 [fixture: treeview/names/quoted-name-kept] [fixture:
 treeview/names/single-quote-sensitive-kept] [fixture:
@@ -1991,12 +2028,13 @@ here.
 
 A U+2028 or a U+2029 before the last directive, or between it and a comment,
 ends the line for what follows the title where a comment follows it: the line
-after the title is not indented (`title T\u2028%%{x}%%%% c` and the node `R`
-under it are printed as they are, `R` at column one). Where nothing, an empty
-line, or a comment line follows the title and the text ends, the directive and
-the comment that follow a U+2028 or a U+2029 before the directive are printed on
-a line of their own, and the whitespace around that U+2028 or U+2029 is left out
-(a U+0085 before it is no whitespace and stays at the end of the title line;
+after the title is not indented, as the comment takes it in
+(`title T\u2028%%{x}%%%% c` and the line `R` under it, which is no node, are
+printed as they are, `R` at column one). Where nothing, an empty line, or a
+comment line follows the title and the text ends, the directive and the comment
+that follow a U+2028 or a U+2029 before the directive are printed on a line of
+their own, and the whitespace around that U+2028 or U+2029 is left out (a U+0085
+before it is no whitespace and stays at the end of the title line;
 `title T\u2028%%{x}%%%% c` is printed `title T` and `%%{x}%%%% c` on the next
 line); a second U+2028 or U+2029 between the directive and the comment puts the
 comment on a line of its own after the directive (`title T`, a U+2028,
@@ -2007,21 +2045,26 @@ nothing after the line, the whitespace after it is printed as the paragraph on
 that run says. A U+0085 after the first U+2028 or U+2029, outside the directives
 and up to the comment, keeps the line as written (with nothing after the line,
 the run between the directive and the comment is printed as that paragraph
-says). For a title line with a directive and a comment after it, with a
-statement directly after the title or after a comment line, with a line of
-spaces after it (with nothing after the line of spaces, or then a statement),
-with a line of a directive with nothing after it, or with a line of a directive
-after a space (with nothing after it, or then a statement), the title stays as
-written, the whitespace between the directive and the comment included. Other
-sequences of lines between the title and the next statement are not given, and
-one region of them has forms that no rule gives: where an empty line, or a line
-of a directive that stands alone at the first column, lies between the next
-statement and a title, an `accTitle:` line, or an `accDescr:` line that holds a
-U+2028 or a U+2029 with a directive and a comment, the whitespace around the
-separators and between the directive and the comment is printed in forms that
-depend on each character beside each separator, and an `accDescr:` line differs
-from the other two. The forms that the released version prints stay until they
-are decided (see
+says). The specification treats U+0085 after a title's first U+2028 or U+2029,
+outside directives and before the comment, as text rather than whitespace.
+Splitting that line would move U+0085 to the start of a node line: some of the
+versions that count reject that text, the others draw another figure, and the Db
+gains a node, so the title line stays as written (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+For a title line with a directive and a comment after it, with a statement
+directly after the title or after a comment line, with a line of spaces after it
+(with nothing after the line of spaces, or then a statement), with a line of a
+directive with nothing after it, or with a line of a directive after a space
+(with nothing after it, or then a statement), the title stays as written, the
+whitespace between the directive and the comment included. Other sequences of
+lines between the title and the next statement are not given, and one region of
+them has forms that no rule gives: where an empty line, or a line of a directive
+that stands alone at the first column, lies between the next statement and a
+title, an `accTitle:` line, or an `accDescr:` line that holds a U+2028 or a
+U+2029 with a directive and a comment, the whitespace around the separators and
+between the directive and the comment is printed in forms that depend on each
+character beside each separator, and an `accDescr:` line differs from the other
+two. The forms that the released version prints stay until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 Where the last directive holds a line break or a `;` (`%%{init: {`, a line
@@ -2204,15 +2247,22 @@ treeView-beta
 
 Use shared `accTitle: value` and `accDescr: value`: colon touching the keyword,
 one space before trimmed nonempty values, no trailing space for empty values.
-Print a run of spaces and tabs inside the value of an `accDescr` as one space
-(see
+The colon gives the diagram its one accessibility title or description, so it
+touches the keyword and has one space before a nonempty value. An empty value
+ends at the colon without line-end whitespace. Under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), these are the forms
+of a key's colon and a line end. Print a run of spaces and tabs inside the value
+of an `accDescr` as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 but not that of an `accTitle`, which the browser shows as a tooltip, and retain
 brace-looking line values and trivia boundaries. The common converter permits
-these equivalent outer gaps. Never borrow text from the next line. Where only
-directives follow the text of an `accTitle:` or `accDescr:` line, they are
-printed as after the text of a title, unless a directive of the line holds a
-line break, a `;`, a U+2028, or a U+2029 (see
+these equivalent outer gaps. An `accDescr` run of spaces and tabs becomes one
+space. The Db retains spaces and tabs inside `accTitle`, so collapsing them
+changes the title. Braces after `accDescr:` are description characters, so
+reading them as block delimiters removes them from the Db. Never borrow text
+from the next line. Where only directives follow the text of an `accTitle:` or
+`accDescr:` line, they are printed as after the text of a title, unless a
+directive of the line holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
@@ -2222,10 +2272,16 @@ and
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. A comment that touches the last directive
 stays touching: `accDescr: T  %%{x}%%%% c` is printed `accDescr: T %%{x}%%%% c`.
-The table of [Title](#title) gives the other forms of these lines. They are
-printed as a title is, but for a value that starts with one directive and holds
-text after it, which stays as written (`accTitle: %%{x}%%  T  ` is not changed);
-the gap after the colon stays.
+In the ordinary `accTitle:` and `accDescr:` forms that end with a directive,
+only line-end spaces and tabs follow it, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) selects their
+removal. The table of [Title](#title) gives the other forms of these lines. They
+are printed as a title is, but for a value that starts with one directive and
+holds text after it, which stays as written (`accTitle: %%{x}%%  T  ` is not
+changed); the gap after the colon stays.
+
+[corpus fixture: treeview/space-acctitle-tab] [corpus fixture:
+treeview/common-colon-block-priority]
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [test:
 treeview/accessibility-lines/acctitle-directive-end-two-spaces] [test:
@@ -2351,27 +2407,26 @@ compaction, retain the `;` and use the empty block layout.
 description-blocks/block-ignored-semicolon-interior]
 
 For blocks that keep their braces, put one space between `accDescr` and `{`,
-even when originally touching, to distinguish the keyword from its body. Join
-plain opener whitespace, align ordinary body lines one step inside the
-statement, and preserve trivia contents. A separate `}` aligns with its
-statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
-depth when the `{` stands on the `accDescr` line: it puts the closing line at
-the level of the opening line, as Prettier prints the closing line of a block.
-The lines of the description's body text are outside the "Lines inside a block"
-row of rule 1. Mermaid discards indentation after LF from the description. The
-body uses the configured indentation, including tabs and the positive minimum
-step at width zero. In box mode remove ordinary keyword/opener prefixes and
-place the common statement at column one, while keeping the body's authored
-columns: indenting a plain physical line can make box syntax reject it.
-Value-owned box geometry still keeps its complete brace span. The first
-effective `}` remains the closer. Unsafe removal follows Branch prefixes,
-including common-value tabs. A sole mode selector in the opener gap keeps just
-that gap, as described in Decorations. The whitespace before the `}` is no text.
-The `}` stays aligned with the statement in every pass, also after a comment
-line. A separate `}` aligns with its statement.
+even when originally touching, to distinguish the keyword from its body.
+Prettier puts one space before the brace that opens a block, so plain whitespace
+between `accDescr` and `{` becomes one space under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark). Join plain opener
+whitespace, align ordinary body lines one step inside the statement, and
+preserve trivia contents. A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
 the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block.
+the opening line, as Prettier prints the closing line of a block. The lines of
+the description's body text are outside the "Lines inside a block" row of
+rule 1. Mermaid discards indentation after LF from the description. The body
+uses the configured indentation, including tabs and the positive minimum step at
+width zero. In box mode remove ordinary keyword/opener prefixes and place the
+common statement at column one, while keeping the body's authored columns:
+indenting a plain physical line can make box syntax reject it. Value-owned box
+geometry still keeps its complete brace span. The first effective `}` remains
+the closer. Unsafe removal follows Branch prefixes, including common-value tabs.
+A sole mode selector in the opener gap keeps just that gap, as described in
+Decorations. The whitespace before the `}` is no text, so the `}` stays aligned
+with the statement in every pass, also after a comment line.
 
 [fixture: treeview/description-blocks/block-comment-line-after-the-text]
 
@@ -2805,8 +2860,11 @@ semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 Treeview has no grammatical semicolon and style/classDef words alone do not
 freeze a line. Draw a safe outer box head around protected content, while
-protected interiors and value columns remain written. Retain the whole body when
-protected source row boundaries constrain parentage or when another Branch
+protected interiors and value columns remain written. The columns of the
+continuation lines of a quoted name are part of the name: moving the column of
+an enclosed branch changes the name in the Db (`one\n            style:#x` and
+`one\n        style:#x` are two names) and the figure. Retain the whole body
+when protected source row boundaries constrain parentage or when another Branch
 prefixes condition applies. These protections compose with unchanged value-owned
 prefixes on the same line or elsewhere in the diagram; they are not permission
 to discard a semicolon or partially redraw an unsafe body.
@@ -2909,9 +2967,12 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 
 Keep at most one ordinary ASCII blank line between items and remove edge blanks,
 after relocating meaningful indentation runs and replacing outer decoration.
-This gives bounded separation while preserving parentage. Keep value, directive
-and comment-region interiors unchanged; Unicode-only names are not ordinary
-blank lines. Body-retained diagrams keep their source boundaries.
+This gives bounded separation while preserving parentage. Prettier keeps at most
+one ordinary blank line between items and removes blank lines at the edges;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives treeView the
+same form after meaningful indentation runs move. Keep value, directive and
+comment-region interiors unchanged; Unicode-only names are not ordinary blank
+lines. Body-retained diagrams keep their source boundaries.
 
 [fixture: treeview/blank-lines/blank-collapse]
 
@@ -3109,16 +3170,25 @@ lines]
 
 At the end of a name or a description, U+2028 and U+2029 are characters of the
 text and no spaces or tabs: the spaces after one are left out, and the spaces
-before it stay.
+before it stay. A name retains U+2028 and U+2029 and the spaces before them as
+characters in the Db, so removing them changes the name. Under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), only the spaces and
+tabs after the separator at the end of the line are removed.
+
+[corpus fixture: treeview/boundary-bare-ls] [corpus fixture:
+treeview/boundary-bare-ps] [corpus fixture: treeview/db-bare-internal-space]
 
 [test: treeview/trailing-whitespace/spaces-after-trailing-line-separator] [test:
 treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
 
 Move structural carried runs once. Common line values use shared outer trimming;
 a branch-line tail already excluded from the value is removed rather than
-carried. Adding a branch that would newly trim an owned tail retains the body.
-This avoids confusing value text with structural padding; significant fixture
-tails are not shown in code blocks.
+carried. A branch-line tail lies outside both the value and the indentation
+carried to the next node, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes it as
+whitespace at the end of the line. Adding a branch that would newly trim an
+owned tail retains the body. This avoids confusing value text with structural
+padding; significant fixture tails are not shown in code blocks.
 
 [fixture: treeview/trailing-whitespace/trailing-bare-dropped]
 
@@ -3271,8 +3341,12 @@ treeView-beta
 Use shared host EOL handling: CR and CRLF reach the printer as LF, and output
 follows endOfLine, including in quotes, blocks and directives. Keep LS/PS as
 value or native-comment characters and Unicode spaces as authored text rather
-than ASCII indentation. The host removes/restores a leading BOM with the shared
-frontmatter limitation.
+than ASCII indentation. Unicode spaces in a bare name stay as written because
+mermaid.js reads them as name characters in its Db. Replacing them with ASCII
+indentation changes the name and can change the parent. The host
+removes/restores a leading BOM with the shared frontmatter limitation.
+
+[corpus fixture: treeview/space-indent-nbsp]
 
 [test: treeview/line-terminators-and-unicode/eol-cr-structure]
 
@@ -3356,11 +3430,21 @@ treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive
 
 Keep every authored node, name, annotation, common assignment and shared trivia
 in source order, including duplicates, empty values and overwritten assignments.
-Redraw only structural box forms and relocate eligible prefixed annotations and
-their decoration as described above. Preserve arbitrary prefix text and
-value-owned box spellings; the normalized Db is not a source-text replacement.
-Structural weight, dash count, sibling marks and ordinary outer decoration are
-deliberately reselected to show the read forest.
+Repeated names stay in source order because mermaid.js creates a separate Db
+node for each occurrence; dropping a duplicate removes a node. An empty final
+common assignment suppresses the earlier value, so it stays even though its
+value is empty. A line containing only `│` does not select box mode: mermaid.js
+reads it as a node in indentation mode, so dropping the line removes that node
+from the Db. Redraw only structural box forms and relocate eligible prefixed
+annotations and their decoration as described above. Preserve arbitrary prefix
+text and value-owned box spellings; the normalized Db is not a source-text
+replacement. Structural weight, dash count, sibling marks and ordinary outer
+decoration are deliberately reselected to show the read forest.
+
+[corpus fixture: treeview/db-duplicate-names] [corpus fixture:
+treeview/common-repeat-empty]
+
+[corpus fixture: treeview/box-decoration-only]
 
 [fixture: treeview/source-order/source-duplicate]
 
@@ -3555,28 +3639,32 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 End ordinary accepted input with one configured newline, including empty bodies,
 nodes, common forms, closed blocks and comments. Preserve value tails.
 Unfinished EOF directives and protected/source-kept endings follow shared
-exceptions. Prettier prints no whitespace at the end of a line, so
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form for
-the end of a text that has an open directive: [c4](./c4.md#final-newline) and
-[ishikawa](./ishikawa.md#final-newline) print an open directive on a line of its
-own without the whitespace after its last character, as treeView does here
-(kanban, which drops only spaces and tabs after the open directive on the line
-of a card, is no precedent for the other whitespace), so treeView reads an open
-directive up to its last character that is no whitespace on a line of its own,
-on the line after a brace description block, and on the line of a node (a quoted
-name or a bare name), of a description (`## d`), of an icon, of a title, of an
-`accTitle:` or `accDescr:` line, of a class after `:::`, and of a node in box
-mode. After a quoted name or after a class the directive has to touch it:
-written after a space it is rejected. U+2028, U+2029, U+0085, U+180E, and U+200B
-are no whitespace here. The whitespace after that character is dropped: U+0009
-to U+000D (the tab, LF, the vertical tab, the form feed, and CR), U+0020,
-U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF, and with
-them the empty lines. One line break ends the text; nothing is added only where
-the text ends right after the character and it is no U+2028 or U+2029.
-`%%{unfinished` and two spaces print `%%{unfinished` and a line break,
-`%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line break, and
-`"R"%%{unfinished` and two spaces print `"R"%%{unfinished` and a line break.
-Rejected unused indentation runs are not trimmed into accepted input.
+exceptions. Prettier removes the spaces and tabs at the end of a line in
+JavaScript, CSS, YAML, and Markdown, and YAML keeps every other whitespace
+character there, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the removal of the spaces and tabs after the last character of an open
+directive. TreeView reads an open directive up to its last character that is no
+whitespace on a line of its own, on the line after a brace description block,
+and on the line of a node (a quoted name or a bare name), of a description
+(`## d`), of an icon, of a title, of an `accTitle:` or `accDescr:` line, of a
+class after `:::`, and of a node in box mode. After a quoted name or after a
+class the directive has to touch it: written after a space it is rejected.
+U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace here. The
+whitespace after that character is dropped: U+0009 to U+000D (the tab, LF, the
+vertical tab, the form feed, and CR), U+0020, U+00A0, U+1680, U+2000 to U+200A,
+U+202F, U+205F, U+3000, and U+FEFF, and with them the empty lines. One line
+break ends the text; nothing is added only where the text ends right after the
+character and it is no U+2028 or U+2029. Prettier ends a file with one line
+break, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+final line break that follows an unfinished directive once its trailing
+whitespace is removed. `%%{unfinished` and two spaces print `%%{unfinished` and
+a line break, `%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a
+line break, and `"R"%%{unfinished` and two spaces print `"R"%%{unfinished` and a
+line break. Prettier ends a file with one line break, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the final line
+break after an unfinished directive that ends in U+2028 or U+2029, and after one
+that touches a quoted node name. Rejected unused indentation runs are not
+trimmed into accepted input.
 
 [fixture: treeview/final-newline/eof-node] [fixture:
 treeview/final-newline/eof-open-directive] [fixture:
@@ -3703,11 +3791,14 @@ setting.
 ### Markdown fences
 
 Apply the same rules to dedented payloads; the Markdown host supplies fence,
-list and quote columns. Do not add host columns to value continuations. Test
-host output/idempotence separately from the payload Db. The host can trim
-padding on the final code line, limiting authored-byte preservation; quoted
-interior padding stays inside the quotes. Rejected fences follow the host route,
-which can also trim source padding.
+list and quote columns. Do not add host columns to value continuations. The
+columns of the continuation lines of a quoted name are part of the name in the
+Db, and the figures differ with them: `"first\n last"` and `"first\n   last"`
+are two names, so a host column added there would change the name. Test host
+output/idempotence separately from the payload Db. The host can trim padding on
+the final code line, limiting authored-byte preservation; quoted interior
+padding stays inside the quotes. Rejected fences follow the host route, which
+can also trim source padding.
 
 [test: treeview Markdown: top-level]
 

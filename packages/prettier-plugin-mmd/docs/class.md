@@ -4,9 +4,11 @@ Japanese version: [class.ja.md](./class.ja.md)
 
 How prettier-plugin-mmd formats a class diagram. Each rule below keeps what
 mermaid.js reads from the diagram; where a change would alter it, the text is
-kept as written, and the rule says where. Where a rule is the same as in a
-flowchart, it says so, and the reason is in the
-[rules for flowcharts](./flowchart.md).
+kept as written, and the rule says where. Except where an unclosed backquoted
+name continues to the end of the text, the text ends with one line break and no
+blank line. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+ending that Prettier prints. Where a rule is the same as in a flowchart, it says
+so, and the reason is in the [rules for flowcharts](./flowchart.md).
 
 Each rule below shows its formatting with examples: the text before formatting,
 and the text that the plugin prints. The examples are the fixtures that the
@@ -382,7 +384,11 @@ space after the keyword, `link A"u""t"` is printed `link A "u" "t"`,
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between a keyword and what it takes, as Prettier prints `return  x` as
 `return x;`, and between values that follow one another, as Prettier prints CSS
-`margin: 1px    2px;` as `margin: 1px 2px;`.
+`margin: 1px    2px;` as `margin: 1px 2px;`. The string after `note` and the
+backquoted name after `class` or `namespace` are what those keywords take, so
+each keyword has one space after it. The keyword `call` stands between a click
+target and its callback, so it has one space on each side.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both forms.
 
 [fixture: whitespace-between-tokens/note-and-name-strings-touching-spaced]
 [fixture: whitespace-between-tokens/link-strings-touching-spaced] [fixture:
@@ -486,9 +492,11 @@ style of the statement, and a style with whitespace before it, are not read so,
 with a gap between the name and the `:` or without it: `style A color :red` is
 printed `style A color: red`. Nor is a style that follows a `,` directly and has
 such a gap: it is printed with whitespace before it,
-`style A fill:#f00,color :red` as `style A fill: #f00, color: red`.
-`style A fill:#f00,color:white` is printed `style A fill: #f00,color: white`
-(see
+`style A fill:#f00,color :red` as `style A fill: #f00, color: red`. The first
+colon of a style gives a property its value, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts no whitespace
+before that colon and one space after it. `style A fill:#f00,color:white` is
+printed `style A fill: #f00,color: white` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -536,7 +544,10 @@ whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted
 [fixture: whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-colon-and-comma-spaced]
 
-A U+2028 or U+2029 among the styles keeps the statement as written.
+A U+2028 or U+2029 among the styles keeps the statement as written: mermaid.js
+keeps the character in the style, CSS does not read it as whitespace, and every
+version that counts draws another figure when it is left out (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: U+2028 before the comma of a class style statement]
 
@@ -806,10 +817,11 @@ The label in brackets of a class or a namespace has nothing between the name and
 the `[`, and nothing between the brackets and the string: `namespace Auth ["x"]`
 is printed `namespace Auth["x"]`, `namespace Auth[ "x" ]` is printed
 `namespace Auth["x"]`, and `class A["x" ]` is printed `class A["x"]`. mermaid.js
-reads every spelling as the same label, and its documentation writes the `[`
-touching the name
-([`namespace Auth["Authentication Service"]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L404)),
-as a flowchart subgraph and an agentflow heading print it.
+reads every spelling as the same label.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives a bracket that
+opens the label of a name no space before it, as the `[` of an index touches
+what it indexes, and the padding outside the label string lies inside square
+brackets, so rule 1 removes it.
 
 [fixture: labels/bracket-touches-name]
 
@@ -1235,6 +1247,11 @@ A color is a `#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the
 value of a style; it is never shortened, and a text that is no color stays as
 written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+The exception for hexadecimal colors changes only their case. Shortening a color
+or changing text that is not a color changes the style text in mermaid.js's Db
+outside that exception, so those characters stay as written.
+
+[corpus fixture: class/db-style-spaces]
 
 [fixture: colors/colors-in-lower-case] [fixture:
 class/colors/color-directive-after-digits-kept] [fixture:
@@ -1454,8 +1471,17 @@ separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
 the `{` stands on the `accDescr` line: it puts the closing line at the level of
 the opening line, as Prettier prints the closing line of a block. Mermaid
-discards this indentation from the description. A string, a backquoted name, and
-a generic type written over several lines are kept as written too.
+discards this indentation from the description. In an `accDescr` body,
+mermaid.js keeps spaces and tabs after text and before an interior line break in
+the description's Db text, so they stay as written. A string, a backquoted name,
+and a generic type written over several lines are kept as written too. Line
+feeds and indentation inside a note string or a backquoted class name are part
+of the note text or class name in mermaid.js's Db. Joining or reindenting those
+lines changes that text, so they stay as written.
+
+[corpus fixture: class/lex-string-multi-line]
+
+[corpus fixture: class/db-acc-descr-block-collapse]
 
 [fixture: multi-line-values/kept] [fixture:
 multi-line-values/block-text-on-opening-line-spaced] [fixture:
@@ -1594,7 +1620,10 @@ An ordinary statement written over several lines is printed on one line. In a
 class diagram, a line break ends a statement except after `direction`, where the
 value may be on the next line, and after the `:` of `accTitle` and `accDescr`,
 where the text may be: so `direction`, a line break, and `LR` is printed as
-`direction LR`.
+`direction LR`. The colon after `accTitle` or `accDescr` gives a key its value,
+and `direction` is a keyword before the value it takes.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space after
+each, joining ordinary next-line values onto the keyword's line.
 
 [fixture: multi-line-statements/joined] [fixture:
 multi-line-statements/acc-descr-joined] [fixture:
@@ -1612,7 +1641,10 @@ break of each gap is retained; joining regions keep the whole statement as
 written. A `;` does not keep a statement over several lines from being joined:
 no `;` separates statements in a class diagram, and the first line of such a
 statement holds only its keyword, so joining its lines cannot change which `;`
-the line rule ignores.
+the line rule ignores. The colon after `accTitle` or `accDescr` gives a key its
+value, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) joins an
+ordinary next-line value with one space after that colon. A `;` inside the value
+remains part of it.
 
 [fixture: multi-line-statements/semicolon-value-joined] [fixture:
 multi-line-statements/comment-inside-kept] [fixture:
@@ -1905,7 +1937,10 @@ because changing it would change the diagram or the input would be rejected:
 
 - a backquoted name that is not closed, to the end of the text;
 
-- the spelling of the header, `classDiagram` or `classDiagram-v2`.
+- the spelling of the header, `classDiagram` or `classDiagram-v2`: one of the
+  versions that count writes another `aria-roledescription` and other marker ids
+  for the one than for the other (see
+  [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
   [fixture: indentation/header-v2-kept]
 

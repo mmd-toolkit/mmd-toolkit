@@ -176,7 +176,9 @@ The table also names the pinned version where it needs the kept form.
 | [agentflow](./agentflow.md#metadata-blocks)                                                                                                     | `A@{%%{init: {}}%%x:1}`                                                                                                                                                      | `A@{%%{init: {}}%%x: 1}`                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.3.0 builds metadata key `x` with value `1` instead of key `x:1` with value `null`                                              | [fixture: agentflow/metadata-blocks/block-directive-colon-kept]                                                                                                       |
 | [agentflow](./agentflow.md#trailing-whitespace)                                                                                                 | a quoted vertex label with `before`, a comment-looking line, and `after` at 50000 UTF-16 units                                                                               | the same diagram with two spaces before `A`                           | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.0.0 and 12.3.0 draw different text and geometry; 12.3.0 changes vertex text in the Db                                          | [fixture: agentflow/default-size-branches/size-preserving-to-fallback-unsafe]                                                                                         |
 | [agentflow](./agentflow.md#final-newline)                                                                                                       | `style A` followed by two spaces at EOF                                                                                                                                      | `style A` at EOF                                                      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.0.0 and 12.3.0 reject the form without trailing spaces                                                                         | [fixture: agentflow/final-newline/final-empty-style-spaces]                                                                                                           |
+| [agentflow](./agentflow.md#click-statements)                                                                                                    | `click A call ()href click "/u"`, with the `href` touching the `)` of a blank call                                                                                           | `click A call () href click "/u"`                                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.0.0 and 12.3.0 reject the form with a space                                                                                    | [fixture: agentflow/click-statements/blank-call-then-href-kept]                                                                                                       |
 | [architecture](./architecture.md#hidden-boundaries)                                                                                             | `service space_suffix%%{}%%` with a space before LF and a next service                                                                                                       | the same lines without that space                                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.7.0, 11.17.2, 12.0.0, 12.3.0 reject the form without the space                                                                 | [fixture: architecture/hidden-boundaries/suffix-space]                                                                                                                |
+| [architecture](./architecture.md#quotes)                                                                                                        | `service s[""]`, an empty label in quotes                                                                                                                                    | `service s[]`                                                         | [3](./printed-form.md#3-a-spelling)                                  | 11.17.2, 12.0.0 and 12.3.0 reject an empty label without quotes                                                                   | [fixture: architecture/label-content/quoted-empty]                                                                                                                    |
 | [block](./block.md#header)                                                                                                                      | `block-beta`                                                                                                                                                                 | `block`                                                               | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 reject `block`                                                                                                  | [fixture: block/header/block-beta-kept]                                                                                                                               |
 | [sankey](./sankey.md#header)                                                                                                                    | `sankey-beta`                                                                                                                                                                | `sankey`                                                              | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 reject `sankey`                                                                                                 | [fixture: sankey/header/sankey-beta]                                                                                                                                  |
 | [xychart](./xychart.md#header-and-orientation)                                                                                                  | `xychart-beta`                                                                                                                                                               | `xychart`                                                             | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 reject `xychart`                                                                                                | [fixture: xychart/header-and-orientation/beta-header-kept]                                                                                                            |
@@ -194,6 +196,7 @@ The table also names the pinned version where it needs the kept form.
 | [state](./state.md#statements-one-per-line)                                                                                                     | a statement of the top level starting with a `%` word (`%a b`, `%a --> b c`), with a later statement that starts without it                                                  | the `%` statement and the rest on lines of their own                  | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 and 11.7.0 read the rest of the line as a comment                                                                          | [fixture: state/statements-one-per-line/percent-word-then-text-kept]                                                                                                  |
 | [state](./state.md#statements-one-per-line)                                                                                                     | a click statement with a `:` (`click A href "a:b" accDescr {}`), with another statement after it on its line                                                                 | the click and the statement on lines of their own                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the `:` as the start of a description that runs to the end of the line                                               | [fixture: state/statements-one-per-line/split]                                                                                                                        |
 | [state](./state.md#semicolons-at-the-end-of-a-style-statement)                                                                                  | `style A fill:red;`, the `;` that ends a `style` that has no `#`                                                                                                             | `style A fill: red`, the `;` dropped                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 reads the `;` as a state of its own                                                                                        | [fixture: state/semicolons-at-the-end-of-a-style-statement/style-text-terminators]                                                                                    |
+| [state](./state.md#semicolons-at-the-end-of-a-style-statement)                                                                                  | `style A fill: #f00;`, the `;` that ends a `style` whose `#` follows a space                                                                                                 | `style A fill: #f00`, the `;` dropped                                 | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 draw another figure; 12.3.0 changes the Db `states`                                    | [fixture: state/semicolons-at-the-end-of-a-style-statement/style-hash-after-colon-kept]                                                                               |
 | [state](./state.md#colors)                                                                                                                      | `style A fill:#ABC`, the color of a `style` that has no second `:`                                                                                                           | `style A fill: #abc`                                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 draws the line as text, with `#ABC` as the description of a state                                                          | [fixture: state/colors/style-read-as-description-kept]                                                                                                                |
 | [state](./state.md#whitespace-between-tokens)                                                                                                   | `style A fill:rgb(1,2,3)`, the commas of a `style` that has no second `:`                                                                                                    | `style A fill: rgb(1, 2, 3)`                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws the line as text, with `rgb(1,2,3)` as the description of a state                                                    | [fixture: state/whitespace-between-tokens/style-color-function-commas-kept]                                                                                           |
 | [state](./state.md#arrow-spacing)                                                                                                               | `scale-->B` (likewise `classDef`, `class`, `note`, `stateDiagram`); `A:::state-->B` (likewise `scale`, `classDef`, `class`, `note`, `stateDiagram`)                          | `scale --> B`; `A:::state --> B`                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject the other form                                                                                            | [fixture: state/arrow-spacing/touching-before-keyword-kept] [fixture: state/arrow-spacing/compat-keyword-ids-transition]                                              |
@@ -204,6 +207,7 @@ The table also names the pinned version where it needs the kept form.
 | [state](./state.md#whitespace-between-tokens)                                                                                                   | `style A fill:#f00;;`                                                                                                                                                        | `style A fill: #f00;;`                                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 draws different structure and style                                                                                        | [fixture: state/whitespace-between-tokens/class-ids-with-ignored-semicolon]                                                                                           |
 | [state](./state.md#aliases)                                                                                                                     | `state "d" as A :` followed by three spaces                                                                                                                                  | `state "d" as A :` with nothing after the `:`                         | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.17.2, 12.0.0 and 12.3.0 draw different structure                                                                               | [fixture: state/aliases/second-description-blank-kept]                                                                                                                |
 | [state](./state.md#aliases)                                                                                                                     | the second description of a state with an alias, with a no-break space at its end                                                                                            | the description without it                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 draw different geometry; 12.3.0 changes the end of the description in the Db                                     | [test: a no-break space at the end of the second description of a state with an alias]                                                                                |
+| [state](./state.md#notes)                                                                                                                       | one space at the end of an inner line of a note                                                                                                                              | the space left out                                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.3.0 changes the Db's notes                                                                                                     | [fixture: state/notes/prose-one-trailing-space]                                                                                                                       |
 | [flowchart, swimlane](./flowchart.md#label-inner-whitespace)                                                                                    | `A[ user@example.com ]`                                                                                                                                                      | `A[user@example.com]`                                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | flowchart: 11.7.0, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the tight form                                | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept]                                                                                           |
 | [flowchart, swimlane](./flowchart.md#arrow-spacing)                                                                                             | `A@{ shape: circle }e1@--> B`                                                                                                                                                | `A@{ shape: circle } e1@--> B`                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | flowchart: 11.7.0, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the form with a space                         | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]                                                                                                   |
 | [flowchart](./flowchart.md#whitespace-between-tokens)                                                                                           | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`                                                                                                    | `style A fill: #f00, color: white`                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 takes the label colour from a style that starts with `color:` or `text-align:`                                             | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]                                                                                              |
@@ -216,16 +220,20 @@ The table also names the pinned version where it needs the kept form.
 | [flowchart](./flowchart.md#style-trailing-whitespace)                                                                                           | `style A fill:red,%%{init: {}}%% `                                                                                                                                           | the same line without its trailing space                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject it                                                                                                        | [fixture: flowchart/style-trailing-whitespace/whitespace-only-value-after-directive-kept]                                                                             |
 | [flowchart](./flowchart.md#indentation)                                                                                                         | `accTitle: t;direction TB` unindented                                                                                                                                        | `accTitle: t;direction TB` indented                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 read a different accessibility title in a text of `A-->B` and this line only                                     | [fixture: flowchart/indentation/direction-text-kept]                                                                                                                  |
 | [flowchart](./flowchart.md#accessibility-lines)                                                                                                 | `accTitle : direction LR` unindented                                                                                                                                         | `accTitle : direction LR` indented                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 read a different accessibility title                                                                             | [fixture: flowchart/accessibility-lines/zero-width]                                                                                                                   |
+| [flowchart](./flowchart.md#accessibility-lines)                                                                                                 | `accTitle:direction`, a comment line, and `TB` on three lines                                                                                                                | `accTitle: direction TB` and the comment line after it                | none                                                                 | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 draw another figure; 12.3.0 changes the Db `accTitle` and `vertices`                   | [fixture: flowchart/accessibility-lines/direction-text-after-comment-kept]                                                                                            |
 | [flowchart](./flowchart.md#style-trailing-whitespace)                                                                                           | `linkStyle default stroke-width:4px\ `, then `linkStyle 0 stroke:#0f0`                                                                                                       | the same without the space                                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.7.0 draws a different style                                                                                                    | [fixture: flowchart/style-trailing-whitespace/link-style-backslash-at-end-kept]                                                                                       |
+| [flowchart](./flowchart.md#whitespace-between-tokens)                                                                                           | a U+2028 or U+2029 between the value of a `style` and the `,` after it                                                                                                       | no whitespace before the comma                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws the form without the U+2028 or the U+2029 differently                                                                | [test: U+2028 between the value of a flowchart style and its comma] [test: U+2029 between the value of a flowchart style and its comma]                               |
 | [swimlane](./flowchart.md#link-label-form)                                                                                                      | `I -- left\|right --> J` in a swimlane diagram                                                                                                                               | `I -->\|left\|right\| J`                                              | [3](./printed-form.md#3-a-spelling)                                  | 11.16.1 to 12.3.0 reject the other form                                                                                           | [fixture: flowchart/link-label-form/swimlane-arrows-to-pipes]                                                                                                         |
 | [class](./class.md#whitespace-between-tokens)                                                                                                   | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`                                                                                                    | `style A fill: #f00, color: white`                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 takes the label colour and alignment from a style that starts with `color:` or `text-align:`                               | [fixture: class/whitespace-between-tokens/style-color-touching-kept]                                                                                                  |
 | [class](./class.md#member-lines)                                                                                                                | `+<tab>int x`, the tab after the mark of an attribute                                                                                                                        | `+int x`                                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the tab as part of the name                                                                                          | [fixture: class/member-lines/visibility-tab-kept]                                                                                                                     |
 | [class](./class.md#whitespace-between-tokens)                                                                                                   | `style A fill:#f00 %%{x}%% ,color:white`                                                                                                                                     | `style A fill: #f00 %%{x}%%, color: white`                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws different styles                                                                                                     | [fixture: class/whitespace-between-tokens/style-comma-beside-directive-kept]                                                                                          |
+| [class](./class.md#whitespace-between-tokens)                                                                                                   | `style A fill: red`, U+2028, `, stroke: blue`                                                                                                                                | `style A fill: red, stroke: blue`                                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw another figure; 12.3.0 changes the Db's classes                                                             | [test: U+2028 before the comma of a class style statement]                                                                                                            |
 | [class](./class.md#member-lines)                                                                                                                | `<< y z >>` in a body                                                                                                                                                        | `<<y z>>`                                                             | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 draw different text and geometry; 12.3.0 changes the Db's `classes[0].annotations[0]`                            | [fixture: class/member-lines/runs-collapsed]                                                                                                                          |
 | [class](./class.md#member-lines)                                                                                                                | `+foo(a , b) int$`                                                                                                                                                           | `+foo(a, b) int$`                                                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw different text and geometry                                                                                 | [fixture: class/member-lines/runs-collapsed]                                                                                                                          |
 | [class](./class.md#comments)                                                                                                                    | `classDiagram accDescr {} %% c`, a line of two spaces, then `class A`                                                                                                        | the same with an empty line                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject the empty-line form                                                                                       | [fixture: class/comments/whitespace-line-after-header-comment-kept]                                                                                                   |
 | [class](./class.md#member-bodies)                                                                                                               | `class A { }`                                                                                                                                                                | `class A {}`                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 reject the other form                                                                                           | [fixture: class/member-bodies/empty-unified]                                                                                                                          |
 | [class](./class.md#member-bodies)                                                                                                               | `class C:::c { }`                                                                                                                                                            | `class C:::c {}`                                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject the other form                                                                                            | [fixture: class/member-bodies/empty-unified]                                                                                                                          |
+| [class](./class.md#kept-as-written)                                                                                                             | the header `classDiagram-v2`                                                                                                                                                 | the header `classDiagram`                                             | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0 writes another `aria-roledescription` and other marker ids                                                                 | [fixture: class/indentation/header-v2-kept]                                                                                                                           |
 | [cynefin](./cynefin.md#header)                                                                                                                  | `%%{%%{wrap}%%init: {"label":"style:#keep"}}%% cynefin-beta:;complex 'Kept colon'`                                                                                           | the same input with `cynefin-beta;`                                   | [3](./printed-form.md#3-a-spelling)                                  | 12.0.0 and 12.3.0 reject the header without the colon                                                                             | [fixture: cynefin/header/colon-semicolon-kept]                                                                                                                        |
 | [cynefin](./cynefin.md#header)                                                                                                                  | `cynefin-beta:%%{x y`, a line break, and `complex "A"`                                                                                                                       | `cynefin-beta%%{x y`, a line break, and `complex "A"`                 | [3](./printed-form.md#3-a-spelling)                                  | 11.16.1, 11.17.2, 12.0.0 and 12.3.0 reject the header without the colon                                                           | [fixture: cynefin/header/colon-unclosed-directive-kept]                                                                                                               |
 | [cynefin](./cynefin.md#retained-prefix)                                                                                                         | one space and LF before `---`, `title: IgnoredByLeadingLf`, `---`                                                                                                            | the same prefix without the leading space and LF                      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1, 11.17.2, 12.0.0 and 12.3.0 draw a title only for the other form; 12.3.0 changes Db `title`                               | [fixture: cynefin/retained-prefix/prefix-leading-lf]                                                                                                                  |
@@ -243,14 +251,18 @@ The table also names the pinned version where it needs the kept form.
 | [C4](./c4.md#description-blocks)                                                                                                                | `accDescr {`, `direction LR`, and `}` on separate lines                                                                                                                      | `accDescr: direction LR`                                              | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 reject the other form                                                                                            | [fixture: c4/description-blocks/acc-block-direction-keep]                                                                                                             |
 | [C4](./c4.md#title-and-accdescription)                                                                                                          | a title with a no-break space or U+3000 at its start or end                                                                                                                  | the title without them                                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 draw different text; 12.3.0 changes the end of the title in the Db                                               | [test: a no-break space and U+3000 at both ends of the title of a C4 diagram]                                                                                         |
 | [C4](./c4.md#title-and-accdescription)                                                                                                          | an `accDescription` with a no-break space at its end                                                                                                                         | the description without it                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 draw different text; 12.3.0 changes the end of the description in the Db                                         | [test: a no-break space at the end of the accDescription of a C4 diagram]                                                                                             |
+| [C4](./c4.md#trailing-whitespace)                                                                                                               | `Person(a, "A") %% c`, a line of two spaces, and `Person(b, "B")`                                                                                                            | the same with an empty line in place of the line of two spaces        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 reject the empty line                                                                  | [corpus fixture: c4/lex-comment-between-spaces-recovery]                                                                                                              |
 | [block](./block.md#columns-and-space)                                                                                                           | `space:2`                                                                                                                                                                    | `space: 2`                                                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject `space: 2`                                                                                                | [fixture: block/columns-and-space/space-width-touching]                                                                                                               |
 | [block](./block.md#styles)                                                                                                                      | `class A,B c1`                                                                                                                                                               | `class A, B c1`                                                       | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw different classes; 12.3.0 changes `B`'s `classes` in the Db                                                 | [fixture: block/styles/class-ids-as-written]                                                                                                                          |
+| [requirement](./requirement.md#colors)                                                                                                          | `style r fill: #ABCDE, stroke: #ABCDEF1`, words that are no color                                                                                                            | `style r fill: #abcde, stroke: #abcdef1`                              | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0, 11.17.2, 12.0.0, 12.3.0 write another style text in the SVG; 12.3.0 changes the Db                                        | [fixture: requirement/colors/words-that-are-not-colors-as-written]                                                                                                    |
 | [sequence](./sequence.md#colons)                                                                                                                | `A->>B: ` (one whitespace character after the `:`)                                                                                                                           | `A->>B:`                                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects a `:` with nothing after it                                                                                        | [fixture: sequence/colons/whitespace-only-text]                                                                                                                       |
 | [sequence](./sequence.md#colons)                                                                                                                | `A->>B:%%{init: {}}%%` and two spaces, or a no-break space after the `:`                                                                                                     | the line without the whitespace                                       | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects the line without the whitespace                                                                                    | [fixture: sequence/colons/directive-then-whitespace-kept]                                                                                                             |
 | [sequence](./sequence.md#arrow-spacing)                                                                                                         | `A () ->> () B`                                                                                                                                                              | `A() ->> ()B`                                                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read `()` as part of a name                                                                                     | [fixture: sequence/arrow-spacing/parentheses-touching]                                                                                                                |
 | [sequence](./sequence.md#arrow-spacing)                                                                                                         | `A<<->>B` printed `A<<->> B`                                                                                                                                                 | `A <<->> B`                                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the `<<` as part of the name before it                                                                               | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]                                                                                                 |
 | [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `participant A @{ x }`, a data block without `:`, `,`, `;`, or `>`                                                                                                           | `participant A@{ x }`                                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read the block as a part of the name of the participant, with the whitespace                                    | [fixture: sequence/whitespace-between-tokens/data-block-name-gap-before-kept]                                                                                         |
 | [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `participant A@{ x } %% c`, a data block without `:`, `,`, `;`, or `>`, and no alias                                                                                         | `participant A@{ x } %% c`                                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read the block and the gap as a part of the name                                                                | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                                        |
+| [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `actor B@{ y }`, a tab, and `%% d`, a data block without `:`, `,`, `;`, or `>`                                                                                               | `actor B@{ y } %% d`                                                  | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read the block and the gap as a part of the name                                                                | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                                        |
+| [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `create participant C@{x}`, three spaces, and `%% c`, a data block without `:`, `,`, `;`, or `>`, and no alias                                                               | `create participant C@{x} %% c`                                       | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read the block and the gap as a part of the name                                                                | [fixture: sequence/whitespace-between-tokens/data-block-name-created-comment-gap-kept]                                                                                |
 | [sequence](./sequence.md#colors)                                                                                                                | `rect rgb(191 ,223 ,255)`                                                                                                                                                    | `rect rgb(191, 223, 255)`                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.3.0 changes `messages[0].message`                                                                                              | [fixture: sequence/colors/function-padding-kept]                                                                                                                      |
 | [sequence](./sequence.md#colors)                                                                                                                | `rect rgb( 1 ,2,3 )`                                                                                                                                                         | `rect rgb(1, 2, 3)`                                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw another `fill` attribute                                                                                    | [fixture: sequence/colors/rect-leading-and-comma-padding-kept]                                                                                                        |
 | [sequence](./sequence.md#colors)                                                                                                                | `rect rgb( 1,2,3)` and `rect rgb(1,2,3 )`                                                                                                                                    | `rect rgb(1, 2, 3)`                                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw another `fill` attribute                                                                                    | [fixture: sequence/colors/rect-open-paren-padding-kept] [fixture: sequence/colors/rect-close-paren-padding-kept]                                                      |
@@ -262,6 +274,7 @@ The table also names the pinned version where it needs the kept form.
 | [sequence](./sequence.md#comments)                                                                                                              | `accDescr {style:#x} end #a;`, a space and a tab, then an `else` line                                                                                                        | `accDescr: style:#x`, then `end #a;` before the `else` line           | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 reject the form with `end` on its own line                                                                       | [fixture: sequence/statements-one-per-line/end-comment-ignored-semicolon-trailing-whitespace-before-a-divider]                                                        |
 | [sequence](./sequence.md#comments)                                                                                                              | `accDescr {style:#x}else x#a;`                                                                                                                                               | `accDescr: style:#x`, then `else x#a;` on its own line                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 change divider text; 12.3.0 changes `messages[2].message`                                                        | [fixture: sequence/statements-one-per-line/else-touching-description-block-with-trigger-entity]                                                                       |
 | [sequence](./sequence.md#title)                                                                                                                 | a title with a no-break space or U+3000 at its start or end                                                                                                                  | the title without them                                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 draw different text; 12.3.0 changes the end of the title in the Db                                               | [test: a no-break space and U+3000 at both ends of the title of a sequence diagram]                                                                                   |
+| [sequence](./sequence.md#multi-line-values)                                                                                                     | the spaces at the end of an inner line of an `accDescr` block                                                                                                                | the spaces and tabs left out                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 put another description text in the SVG; 12.3.0 changes the Db                        | [corpus fixture: sequence/db-acc-descr-block-blank-lines]                                                                                                             |
 | [gitGraph](./gitgraph.md#header)                                                                                                                | `gitGraph %%{x}%%:` printed `gitGraph%%{x}%%:`                                                                                                                               | `gitGraph %%{x}%%`                                                    | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 rejects the header without the colon after a directive                                                                     | [fixture: gitgraph/header/header-directive-before-colon-kept]                                                                                                         |
 | [gitGraph](./gitgraph.md#references)                                                                                                            | `branch "Merge"`, `branch "lr-x"`                                                                                                                                            | `branch Merge`, `branch lr-x`                                         | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 reads the keywords in any case, and `lr-x` as `lr` and `-x`                                                                | [fixture: gitgraph/references/names-that-need-quotes]                                                                                                                 |
 | [info](./info.md#description-blocks)                                                                                                            | `accDescr`, `%% c`, `{D}` on successive lines                                                                                                                                | `accDescr %% c`, then `{D}` on the next line                          | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0, 11.17.2, 12.0.0 and 12.3.0 reject the two-line form                                                                       | [fixture: info/description-blocks/block-opener-comment]                                                                                                               |
@@ -282,10 +295,12 @@ The table also names the pinned version where it needs the kept form.
 | [pie](./pie.md#description-blocks)                                                                                                              | `accDescr`, `%% c`, `{D}` on separate lines                                                                                                                                  | `accDescr %% c`, then `{D}` on the next line                          | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 reject the other form                                                                                            | [fixture: pie/description-blocks/opener-comment-break-kept]                                                                                                           |
 | [pie](./pie.md#description-blocks)                                                                                                              | `accDescr {%% c`, then `}` on the next line                                                                                                                                  | `%% c` on its own line one level inside the block                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 draw different text and structure; 12.3.0 changes Db.accDescr                                                    | [fixture: pie/description-blocks/opener-comment-only-kept]                                                                                                            |
 | [pie](./pie.md#description-blocks)                                                                                                              | `accDescr {%% c`, then `D}` on the next line                                                                                                                                 | `%% c` and `D` on their own lines one level inside; separate `}`      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 draw different description text; 12.3.0 changes Db.accDescr                                                      | [fixture: pie/description-blocks/opener-comment-with-text-kept]                                                                                                       |
+| [pie](./pie.md#description-blocks)                                                                                                              | the spaces and tabs at the end of a line of text before the last one in an `accDescr` block                                                                                  | the spaces and tabs left out                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws them in the description of the figure                                                                                | [fixture: description-blocks/block-trailing-whitespace]                                                                                                               |
 | [pie](./pie.md#directives-and-semicolons)                                                                                                       | `accDescr {style:#x;y}`                                                                                                                                                      | `accDescr {style: #x;y}`                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw different description text; 12.3.0 changes Db.accDescr                                                      | [fixture: pie/directives-and-semicolons/block-style-colon-gap-kept]                                                                                                   |
 | [quadrant](./quadrant.md#multi-line-statements)                                                                                                 | `style \n: [0.2, 0.7]; title x:#y;`                                                                                                                                          | ` style: [0.2, 0.7]; title x:#y;`                                     | [1, 2](./printed-form.md#what-decides-a-form)                        | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 draw different title text                                                              | [fixture: quadrant/multi-line-statements/semicolon-joining-changes-kept]                                                                                              |
 | [quadrant](./quadrant.md#multi-line-statements)                                                                                                 | `classDef A\u2028%% c\nBar color: #ff0000`                                                                                                                                   | ` classDef A\u2028%% c\n Bar color: #ff0000`                          | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.17.2, 12.0.0 and 12.3.0 reject the rule's form                                                                                 | [test: a comment line after U+2028 inside the name of a class]                                                                                                        |
 | [quadrant](./quadrant.md#whitespace-characters)                                                                                                 | `quadrant-1 a\u00a0b`                                                                                                                                                        | ` quadrant-1 a b`                                                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 draw different text                                                                    | [test: U+00A0 between the words of a text]                                                                                                                            |
+| [quadrant](./quadrant.md#multi-line-values)                                                                                                     | the spaces at the end of an inner line of an `accDescr` block                                                                                                                | the spaces left out                                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 put another description text in the SVG; 12.3.0 changes the Db                        | [fixture: multi-line-values/description-block-inner-line-trailing-spaces-kept]                                                                                        |
 | [railroad](./railroad.md#semicolons)                                                                                                            | ABNF `style=(":"`, then a line break and `)%%{!#}%% ;`                                                                                                                       | `style=(":")%%{!#}%% ;`                                               | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 reject the other form                                                                                           | [fixture: railroad/semicolons/abnf-style-group-newline]                                                                                                               |
 | [railroad](./railroad.md#semicolons)                                                                                                            | PEG `r<-("sty%%{wrap}%%le:"`, then a line break and `)%%{!#}%% ;`                                                                                                            | `r<-("sty%%{wrap}%%le:")%%{!#}%% ;`                                   | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 reject the other form                                                                                           | [fixture: railroad/semicolons/peg-directive-split-style]                                                                                                              |
 | [railroad](./railroad.md#comments)                                                                                                              | ABNF `r="comment"; note`, then `;` on the next line                                                                                                                          | `r="comment"; note ;`                                                 | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 reject the other form                                                                                           | [fixture: railroad/comments/abnf-before-terminator]                                                                                                                   |
@@ -293,19 +308,24 @@ The table also names the pinned version where it needs the kept form.
 | [railroad](./railroad.md#accessibility-lines)                                                                                                   | `accTitle:`, a line break, and `r=terminal("x");` (likewise `accDescr:`)                                                                                                     | `accTitle: r=terminal("x");`                                          | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 draw another figure; 12.3.0 changes the Db                                                                      | [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]                                                                                                      |
 | [radar](./radar.md#header)                                                                                                                      | `radar-beta%%{wrap}%%:axis North`                                                                                                                                            | `radar-beta%%{wrap}%%axis North`                                      | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0, 11.17.2, 12.0.0, 12.3.0 reject the form without `:`                                                                       | [fixture: radar/header/header-global-colon]                                                                                                                           |
 | [radar](./radar.md#header)                                                                                                                      | `radar-beta:%%{x y`, a line break, and `axis North`                                                                                                                          | `radar-beta%%{x y`, a line break, and `axis North`                    | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0, 11.17.2, 12.0.0, 12.3.0 reject the form without `:`                                                                       | [fixture: radar/header/colon-unclosed-directive-kept]                                                                                                                 |
+| [radar](./radar.md#header)                                                                                                                      | `radar-beta:---` before a hidden YAML block, so that the colon touches its `---`                                                                                             | `radar-beta---` before the block                                      | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0, 11.17.2, 12.0.0, 12.3.0 reject the form without `:`                                                                       | [fixture: radar/header/colon-yaml-kept]                                                                                                                               |
 | [radar](./radar.md#multi-line-statements)                                                                                                       | the entry lines of `curve c["style:#a"]` before `} title tail;`                                                                                                              | the entry lines joined as `curve c["style:#a"]{ 1 } title tail;`      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0, 11.17.2, 12.0.0, 12.3.0 draw different title text; 12.3.0 changes Db `.title`                                             | [fixture: radar/multi-line-statements/semicolon-terminal-line]                                                                                                        |
 | [radar](./radar.md#hidden-forms)                                                                                                                | body YAML with `not: [yaml` and closing `---` at column one                                                                                                                  | the interior and closing `---` indented two spaces                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0, 11.17.2, 12.0.0, 12.3.0 reject the indented form                                                                          | [fixture: radar/hidden-forms/yaml-body-opaque]                                                                                                                        |
 | [radar](./radar.md#named-entries)                                                                                                               | `curve c{accTitle 1, accDescr 2}`                                                                                                                                            | `curve c{accTitle: 1, accDescr 2}`                                    | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0 to 12.3.0 reject the other form                                                                                            | [fixture: radar/named-entries/accessibility-identifiers]                                                                                                              |
+| [radar](./radar.md#hidden-boundaries)                                                                                                           | `accTitle: T%%{!s}%%` with a space before the line break and a next statement                                                                                                | the same lines without that space                                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.17.2 and 12.3.0 reject the form without the space                                                                              | [fixture: radar/hidden-boundaries/hidden-acctitle-space]                                                                                                              |
 | [timeline](./timeline.md#header-and-direction)                                                                                                  | `timeline td`; `timeline TD title T`                                                                                                                                         | `timeline TD`; the text on a line of its own                          | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 read the words as a period                                                                                      | [fixture: timeline/header-and-direction/direction-case-kept]                                                                                                          |
 | [timeline](./timeline.md#header-and-direction)                                                                                                  | `timeline TD accDescr {alpha} Phase : done`, and `accDescr {%%{init: {}}%%alpha}`, a description block that starts on the line of the header                                 | `accDescr: alpha`; `Phase : done` on a line of its own                | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 read the line as the text of a period                                                                           | [fixture: timeline/header-and-direction/description-block-then-period-on-the-header-line-kept]                                                                        |
+| [timeline](./timeline.md#header-and-direction)                                                                                                  | `timeline TD accDescr{x}`, a description block that touches its `{` on the line of the header                                                                                | `timeline TD accDescr {x}`                                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 draw another figure                                                                                             | [fixture: timeline/header-and-direction/description-block-touching-on-the-header-line-kept]                                                                           |
 | [timeline](./timeline.md#header-and-direction)                                                                                                  | a whitespace character that is no space or tab (U+00A0, U+2003, and so on) in the line of the header                                                                         | one space                                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 draw the character                                                                                              | [test: U+00A0 between the direction and a text on the header line]                                                                                                    |
 | [timeline](./timeline.md#titles-and-sections)                                                                                                   | `title`, two spaces or a line break and an indentation, `# c`                                                                                                                | `title # c`                                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads them as a title of whitespace and a comment                                                                          | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]                                                                                                  |
 | [timeline](./timeline.md#titles-and-sections)                                                                                                   | `title` followed by two spaces, a tab and a space                                                                                                                            | `title` with nothing after it                                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw the other form differently                                                                                  | [fixture: timeline/titles-and-sections/title-blank-kept]                                                                                                              |
 | [timeline](./timeline.md#comments)                                                                                                              | `accDescr {a} %% c`                                                                                                                                                          | `accDescr: a %% c`                                                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.3.0 reads `a %% c` instead of `a` in the Db's `accDescr`                                                                       | [fixture: timeline/comments/block-then-percent-comment-kept]                                                                                                          |
 | [timeline](./timeline.md#titles-and-sections)                                                                                                   | a title with a no-break space or U+3000 at its start or end                                                                                                                  | the title without them                                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 draw different text; 12.3.0 changes the end of the title in the Db                                               | [test: a no-break space and U+3000 at both ends of the title of a timeline diagram]                                                                                   |
-| [gantt](./gantt.md#lists)                                                                                                                       | `includes`, two spaces, and `%%{init: {}}%%`                                                                                                                                 | `includes`, one space, and the directive                              | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 reject the other form                                                                                            | [fixture: gantt/lists/whitespace-only-then-directive]                                                                                                                 |
+| [gantt](./gantt.md#lists)                                                                                                                       | `includes`, two spaces, and `%%{init: {}}%%`                                                                                                                                 | `includes`, one space, and the directive                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject the other form                                                                                            | [fixture: gantt/lists/whitespace-only-then-directive]                                                                                                                 |
 | [gantt](./gantt.md#titles-and-sections)                                                                                                         | a title with a no-break space or U+3000 at its start or end                                                                                                                  | the title without them                                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 draw different text; 12.3.0 changes the end of the title in the Db                                               | [test: a no-break space and U+3000 at both ends of the title of a gantt diagram]                                                                                      |
 | [gantt](./gantt.md#settings)                                                                                                                    | an `axisFormat` with a no-break space at its end                                                                                                                             | the format without it                                                 | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 draw different text; 12.3.0 changes the end of the format in the Db                                              | [test: a no-break space at the end of the axis format of a gantt diagram]                                                                                             |
+| [gantt](./gantt.md#multi-line-values)                                                                                                           | `accDescr {`, a line `x` and two spaces, an empty line, and a line `y`, then `}`                                                                                             | the line `x` without the two spaces                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 put another description text in the SVG; 12.3.0 changes the Db                        | [fixture: gantt/multi-line-values/description-line-trailing-spaces-kept]                                                                                              |
+| [gantt](./gantt.md#accessibility-statements)                                                                                                    | `accDescr {d}%c`, a block on one line with a single `%` after its `}`                                                                                                        | `accDescr: d%c`                                                       | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 put another description text in the SVG; 12.3.0 changes the Db                        | [fixture: gantt/accessibility-statements/block-then-percent-kept]                                                                                                     |
 | [ER](./er.md#whitespace-between-tokens)                                                                                                         | `class-A a`                                                                                                                                                                  | `class -A a`                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects the form with a space                                                                                              | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                               |
 | [ER](./er.md#whitespace-between-tokens)                                                                                                         | `subgraph-x`, `end-x`                                                                                                                                                        | `subgraph -x`; `end` and `-x` on a line of its own                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects the form with a space; 11.7.0 draws it differently                                                                 | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                              |
 | [ER](./er.md#direction)                                                                                                                         | `DIRECTION lr`                                                                                                                                                               | `direction LR`                                                        | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 reads the line as entities                                                                                                 | [fixture: er/direction/case-kept]                                                                                                                                     |
@@ -318,6 +338,8 @@ The table also names the pinned version where it needs the kept form.
 | [ER](./er.md#statements-one-per-line)                                                                                                           | `"Alpha"`, a whitespace character that is no space or tab (U+2028, U+2029, U+00A0, ...), and `{ int x }`, an alias, a CSS class, or a relationship                           | `Alpha`, and the statement of the character on a line of its own      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 and 11.7.0 read the character as whitespace, and reject a line that starts with it before the rest                         | [test: U+2028 and an attribute block after a name in quotes] [test: U+00A0 in place of the separator: U+2028 and an attribute block after a name in quotes]           |
 | [ER](./er.md#statements-one-per-line)                                                                                                           | an attribute with a pair of `~` after another attribute on its line (`int a List~int~ b`)                                                                                    | one attribute on each line                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the line up to the second `~` as the type of its first attribute                                                     | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]                                                                                                |
 | [ER](./er.md#attribute-blocks)                                                                                                                  | an empty block over several lines on a line that stays as written, after a `~` in an attribute block (`T { int a List~int~ b } A {`, a line break, `}`, and more text)       | `{ }` after the `{`, with the rest of the closing line                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 does not draw a line that holds a `~` of an attribute and a long text after it                                             | [fixture: er/attribute-blocks/written-line-tilde-line-closing-remainder]                                                                                              |
+| [ER](./er.md#statements-one-per-line)                                                                                                           | `"B"` in quotes on a line after `end` and a U+2028                                                                                                                           | `B`                                                                   | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0 draws the name without quotes differently                                                                                  | [test: a name in quotes after the end of an ER subgraph and a U+2028]                                                                                                 |
+| [ER](./er.md#entities)                                                                                                                          | `"-a"` and `"12"` in quotes, as the left name of a relationship (`"-a" \|\|--o{ B : x`)                                                                                      | `-a` and `12`                                                         | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 rejects a name without quotes that starts with `-` or is a number                                                          | [fixture: er/entities/name-dash-start-in-quotes-kept] [fixture: er/entities/name-number-in-quotes-kept]                                                               |
 | [eventmodeling](./eventmodeling.md#header)                                                                                                      | `eventmodeling title Heading`                                                                                                                                                | `title Heading` on the next line                                      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                                           | [fixture: eventmodeling/header/title-on-header-line-kept]                                                                                                             |
 | [eventmodeling](./eventmodeling.md#header)                                                                                                      | `eventmodeling accTitle: Heading`                                                                                                                                            | `accTitle: Heading` on the next line                                  | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                                           | [fixture: eventmodeling/header/acctitle-on-header-line-kept]                                                                                                          |
 | [eventmodeling](./eventmodeling.md#header)                                                                                                      | `eventmodeling accDescr: Description`                                                                                                                                        | `accDescr: Description` on the next line                              | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                                           | [fixture: eventmodeling/header/accdescr-on-header-line-kept]                                                                                                          |
@@ -352,6 +374,7 @@ The table also names the pinned version where it needs the kept form.
 | [Wardley](./wardley.md#flows)                                                                                                                   | `Alpha+' F G\n\q '>Beta`                                                                                                                                                     | `Alpha+ ' F G\n\q ' >Beta`                                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.14.0 to 12.3.0 reject the other form                                                                                           | [fixture: wardley/flows/flow-padding-escapes]                                                                                                                         |
 | [treeView](./treeview.md#names)                                                                                                                 | `"name"` in quotes                                                                                                                                                           | `name`                                                                | [3](./printed-form.md#3-a-spelling)                                  | 11.14.0 reads a name in quotes only                                                                                               | [fixture: treeview/names/quoted-name-kept]                                                                                                                            |
 | [treeView](./treeview.md#names)                                                                                                                 | `A B`                                                                                                                                                                        | `A B`                                                                 | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.17.2, 12.0.0, 12.3.0 draw different style and viewBox; 12.3.0 changes `nodes[0].name`                                          | [fixture: treeview/names/name-bare-internal]                                                                                                                          |
+| [treeView](./treeview.md#title)                                                                                                                 | `title T`, U+2028, U+0085, and `%%{x}%%%% c` on one line                                                                                                                     | `title T` and a line that starts with U+0085                          | none                                                                 | 11.14.0 rejects the other form; 11.17.2, 12.0.0, 12.3.0 draw another figure; 12.3.0 adds a node to the Db                         | [test: treeview: a U+2028 or U+2029 and a U+0085 around the last directive of a title, with the text ending]                                                          |
 | [Venn](./venn.md#colors)                                                                                                                        | padding of `rgba( 1 ,2 ,3 ,.5 )` in `style A color:`                                                                                                                         | `rgba(1, 2, 3, .5)` in `style A color:`                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.3.0 builds a different Db `color` value                                                                                        | [fixture: venn/colors/function-padding-kept]                                                                                                                          |
 | [Venn](./venn.md#title)                                                                                                                         | `title` with two spaces, a tab and a space                                                                                                                                   | `title` with nothing after it                                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.13.0, 11.17.2, 12.0.0, and 12.3.0 reject `title` alone                                                                         | [fixture: venn/title/title-blank-kept]                                                                                                                                |
 | [Venn](./venn.md#title)                                                                                                                         | a title with a no-break space or U+3000 at its start or end                                                                                                                  | the title without them                                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.13.0 to 12.3.0 draw different text, and different geometry for a no-break space; 12.3.0 changes the end of the title in the Db | [test: a no-break space and U+3000 at both ends of the title of a Venn diagram]                                                                                       |
@@ -359,6 +382,13 @@ The table also names the pinned version where it needs the kept form.
 | [use case](./usecase.md#labels)                                                                                                                 | `B('a"b')`                                                                                                                                                                   | `B("a"b")`                                                            | [3](./printed-form.md#3-a-spelling)                                  | 12.0.0 and 12.3.0 reject the other form                                                                                           | [fixture: usecase/labels/single-quote-sensitive-kept]                                                                                                                 |
 | [use case](./usecase.md#stereotypes)                                                                                                            | `actor User <<service user>>`                                                                                                                                                | `actor User <<service user>>`                                         | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.0.0 and 12.3.0 change SVG ARIA attributes; 12.3.0 changes `actors[0].stereotype` in the Db                                     | [fixture: usecase/stereotypes/stereotype-inner-kept]                                                                                                                  |
 | [use case](./usecase.md#direction-and-accessibility)                                                                                            | `accTitle: first last`                                                                                                                                                       | `accTitle: first last`                                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.0.0 and 12.3.0 draw different title text; 12.3.0 changes `accTitle` in the Db                                                  | [fixture: usecase/direction-and-accessibility/acctitle-inner-gap-kept]                                                                                                |
+| [use case](./usecase.md#system-boundaries)                                                                                                      | `systemBoundary S[`, U+2028, and `x]`, a padding with a U+2028 in it                                                                                                         | `systemBoundary S["x"]`                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.0.0 and 12.3.0 draw another boundary title; 12.3.0 changes the Db                                                              | [test: usecase: U+2028 inside the brackets of a boundary title]                                                                                                       |
+| [use case](./usecase.md#direction-and-accessibility)                                                                                            | `accDescr {`, a line `x` and two spaces, an empty line, and a line `y`, then `}`                                                                                             | the line `x` without the two spaces                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.0.0 and 12.3.0 put another description text in the SVG; 12.3.0 changes the Db                                                  | [fixture: usecase/direction-and-accessibility/acc-descr-line-trailing-spaces-kept]                                                                                    |
+| [use case](./usecase.md#labels)                                                                                                                 | ``A("`x `")``, padding inside the backquotes of a markdown label                                                                                                             | ``A("`x`")``                                                          | none                                                                 | 12.0.0 and 12.3.0 write another label text in the SVG; 12.3.0 changes the Db                                                      | [fixture: usecase/labels/label-markdown-padding-kept]                                                                                                                 |
+| [use case](./usecase.md#labels)                                                                                                                 | `A("`, U+00A0, `hello`, U+00A0, and `")`, a no-break space at each end of a label                                                                                            | `A("hello")`                                                          | none                                                                 | 12.0.0 and 12.3.0 write another label text and another `aria-label` in the SVG; 12.3.0 changes the Db                             | [corpus fixture: usecase/lex-actor-label-unicode-padding]                                                                                                             |
+| [use case](./usecase.md#labels)                                                                                                                 | `A('a\b')`, a label with a literal backslash                                                                                                                                 | `A("ab")`                                                             | none                                                                 | 12.0.0 and 12.3.0 draw another label; 12.3.0 changes the Db `useCases`                                                            | [fixture: usecase/labels/label-backslash-kept]                                                                                                                        |
+| [use case](./usecase.md#labels)                                                                                                                 | `A("a &amp; b")`, a label with an entity                                                                                                                                     | `A("a & b")`                                                          | none                                                                 | 12.0.0 and 12.3.0 draw another label; 12.3.0 changes the Db `useCases`                                                            | [fixture: usecase/labels/label-html-entities]                                                                                                                         |
+| [use case](./usecase.md#labels)                                                                                                                 | `A("<b>x</b>")`, a label with HTML                                                                                                                                           | `A("x")`                                                              | none                                                                 | 12.0.0 and 12.3.0 draw another label; 12.3.0 changes the Db `useCases`                                                            | [fixture: usecase/labels/label-html-entities]                                                                                                                         |
 
 ## Inputs read differently from mermaid.js
 
@@ -836,10 +866,14 @@ holds one of the characters above in a class diagram, a flowchart, or an
 agentflow diagram, in a treemap where the character follows a `;`, or stands in
 the whitespace at the end of the style before or after a directive, and the line
 that holds another `;` that stays (see
-[Lines that hold a `;`](#lines-that-hold-a-)). In a treemap, spaces, tabs, and
-form feeds after a directive at the end of a `classDef` are left out too, unless
-one of the characters above is in the whitespace at the end of the style; the
-spacing inside the style on that line stays as written.
+[Lines that hold a `;`](#lines-that-hold-a-)). Spaces and tabs after a retained
+directive or an ignored final `;` are whitespace at the physical end of a line.
+Outside the lines kept as written,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them as
+Prettier does. In a treemap, spaces, tabs, and form feeds after a directive at
+the end of a `classDef` are left out too, unless one of the characters above is
+in the whitespace at the end of the style; the spacing inside the style on that
+line stays as written.
 
 [test: keeps the whitespace after a `;` and after a directive that the line rule
 removes] [test: keeps the whitespace after the character in a line that stays as
@@ -896,7 +930,9 @@ ER and requirement diagrams: no whitespace before the first `:` of a style, one
 space after it where the value is not empty, no whitespace before the `,`
 between two styles, and one space after it. `style A fill :#f00,stroke:  #333`
 is printed `style A fill: #f00, stroke: #333`. A run of spaces and tabs between
-the words of a style is printed as one space (see below).
+the words of a style is printed as one space (see below). A run of spaces and
+tabs between words of a swimlane style is printed as one space, with or without
+a `:`.
 
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
@@ -997,7 +1033,9 @@ name that ends with `stroke` keeps whether whitespace stands between it and the
 `:`, a run of whitespace becoming one space: `linkStyle 0 stroke  :#f00` is
 printed `linkStyle 0 stroke : #f00`. A `style` styles a node, and is printed in
 the one form: the pixels of `style A stroke :#f00` and `style A stroke: #f00`
-were the same.
+were the same. A node style property gives its name one value, so its colon is
+the colon of a key. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives no whitespace before that colon and one space after it.
 
 [fixture:
 flowchart/whitespace-between-tokens/link-style-stroke-before-colon-kept]
@@ -1436,20 +1474,23 @@ the nine rows named before the first table). The last event of a line of a
 timeline and the second description of a state with an alias lose the spaces and
 tabs at their end in the same way, not the whitespace at their start, which
 aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
-`state "d" as A : x   ` is printed `state "d" as A : x`. A period of a timeline,
-and an event that another colon follows, gain one space at their end where they
-end without whitespace, which stands before that colon: `2004: a: b` is printed
-`2004 : a : b`, except after the word `title` or `section` as the period, where
-a space would make the line a title or a section. The description of a task of a
-user journey loses the spaces and tabs before its first colon
-(`Make tea : 5: Me` is printed `Make tea: 5: Me`), except in a section whose
-descriptions are padded to line the colons up, and stays as written where a
-character that is no space or tab stands among them (`Make tea`, a no-break
-space, `: 5: Me`). Where spaces or tabs stand between the text of a title and a
-comment that follows it on its line, they are printed as one space, and a
-comment that touches the text stays touching. A whitespace character that is no
-space or tab and no U+2028 or U+2029, among them a no-break space, U+3000, and
-U+2003, is printed as one space by the Langium types but a pie chart
+`state "d" as A : x   ` is printed `state "d" as A : x`. The spaces and tabs
+after the last event of a timeline line or the second description of a state
+alias stand at the end of a line. Prettier prints no whitespace there, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives their removal.
+A period of a timeline, and an event that another colon follows, gain one space
+at their end where they end without whitespace, which stands before that colon:
+`2004: a: b` is printed `2004 : a : b`, except after the word `title` or
+`section` as the period, where a space would make the line a title or a section.
+The description of a task of a user journey loses the spaces and tabs before its
+first colon (`Make tea : 5: Me` is printed `Make tea: 5: Me`), except in a
+section whose descriptions are padded to line the colons up, and stays as
+written where a character that is no space or tab stands among them (`Make tea`,
+a no-break space, `: 5: Me`). Where spaces or tabs stand between the text of a
+title and a comment that follows it on its line, they are printed as one space,
+and a comment that touches the text stays touching. A whitespace character that
+is no space or tab and no U+2028 or U+2029, among them a no-break space, U+3000,
+and U+2003, is printed as one space by the Langium types but a pie chart
 (`T\u3000%% c` is printed `T %% c` in a radar chart), and stays as written in a
 quadrant chart, a Gantt chart, a user journey, a timeline, a sequence diagram, a
 Venn diagram, and a C4 diagram. The form with one space draws other text or
@@ -1484,17 +1525,31 @@ for the last event of a line of a timeline and the space that a period and an
 event before a colon gain, for the description of a task of a user journey,
 except that a task whose description holds a directive stays as written (see
 [Task data](./journey.md#task-data)), and for the second description of a state
-alias. The runs of spaces and tabs inside a date format, an axis format, or the
-value of an `accTitle:` line stay as written before the directives as they do
-without them. A whitespace character that is no space or tab, such as U+00A0 or
-U+3000, that stands before the last directive that ends the text is printed as
-one space in the title of a pie chart, a radar chart, a packet diagram, an
-architecture diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map, a
-treeView, an info diagram, and a railroad diagram, and in the `accTitle:` and
-`accDescr:` lines of a usecase diagram, where a U+2028 or a U+2029 is printed so
-too: `title T`, U+00A0, `%%{x}%%`, and a space are printed `title T %%{x}%%`. In
-the title of a Gantt chart, a user journey, a timeline, a sequence diagram, a
-Venn diagram, and a C4 diagram the character stays as written.
+alias. Trailing directives in [mindmap](./mindmap.md#directives) nodes print
+with one space where spaces or tabs preceded them and keep touching where none
+did, and so do those of [kanban](./kanban.md#trailing-whitespace) cards.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the same gaps before trailing directives here, as the mindmap does.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
+and tabs after the last directive, as at other line ends. The runs of spaces and
+tabs inside a date format, an axis format, or the value of an `accTitle:` line
+stay as written before the directives as they do without them. An axis format
+and an accessibility title retain their internal spaces and tabs in the Db after
+mermaid.js removes trailing directives. The permitted exceptions cover the axis
+format's exterior spaces and tabs and runs inside accessibility descriptions.
+Collapsing these internal runs falls outside those exceptions and changes the
+value, so they stay as written. A whitespace character that is no space or tab,
+such as U+00A0 or U+3000, that stands before the last directive that ends the
+text is printed as one space in the title of a pie chart, a radar chart, a
+packet diagram, an architecture diagram, a gitGraph, a cynefin diagram, a
+treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram, and
+in the `accTitle:` and `accDescr:` lines of a usecase diagram, where a U+2028 or
+a U+2029 is printed so too: `title T`, U+00A0, `%%{x}%%`, and a space are
+printed `title T %%{x}%%`. In the title of a Gantt chart, a user journey, a
+timeline, a sequence diagram, a Venn diagram, and a C4 diagram the character
+stays as written.
+
+[corpus fixture: gantt/db-axis-format]
 
 A no-break space, U+3000, U+2003, U+2028, and U+2029 are no spaces or tabs, and
 a title that holds a directive or a comment is not printed alike by every
@@ -1646,28 +1701,35 @@ as columns. `moved` prints the text as if the U+2028 were a line break after
 column, as it prints a line of a directive there), with one space between the
 directive and the comment where spaces stood there, and the lines after it
 printed as usual. A row without a statement is followed by the end of the text.
-The table is for one title line and for the lines after it that its first column
-writes. The title line is `title`, a space, one U+2028 or U+2029, a space or
-nothing, a directive that holds no line break, no `;`, no U+2028, and no U+2029,
-and a comment that holds no `;`, written `%%{x}%%%% c` or `%%{x}%%  %% c  `, and
-nothing else. Every other title line (a directive or text before the U+2028 or
-U+2029, two separators, a directive that holds a line break, a `;`, a U+2028, or
-a U+2029, a comment that holds a `;`, a second directive, a directive without a
-comment, a comment without a directive, other whitespace around the separator or
-the comment), a line after the title that the first column of the table does not
-write, and the other sequences of lines after the title are outside the table,
-and no form of this table is stated for them. A title of a directive without a
-comment is outside this table: the first table above states its rows
-`\u2028%%{x}%%` and `\u2029%%{x}%%`, where a statement follows the title
-directly or the text ends after it, and no other form of it that holds a U+2028
-or a U+2029. The forms that the released version prints for the others stay
-until they are decided (see
+When a Gantt chart ends after a `title` line with U+2028 before a directive and
+a comment, the separator supplies the text required after the first whitespace
+character. Moving the directive and comment to another line leaves a bare
+`title`, which mermaid.js rejects, so the separator, directive, and comment stay
+on the title line. The table is for one title line and for the lines after it
+that its first column writes. The title line is `title`, a space, one U+2028 or
+U+2029, a space or nothing, a directive that holds no line break, no `;`, no
+U+2028, and no U+2029, and a comment that holds no `;`, written `%%{x}%%%% c` or
+`%%{x}%%  %% c  `, and nothing else. Every other title line (a directive or text
+before the U+2028 or U+2029, two separators, a directive that holds a line
+break, a `;`, a U+2028, or a U+2029, a comment that holds a `;`, a second
+directive, a directive without a comment, a comment without a directive, other
+whitespace around the separator or the comment), a line after the title that the
+first column of the table does not write, and the other sequences of lines after
+the title are outside the table, and no form of this table is stated for them. A
+title of a directive without a comment is outside this table: the first table
+above states its rows `\u2028%%{x}%%` and `\u2029%%{x}%%`, where a statement
+follows the title directly or the text ends after it, and no other form of it
+that holds a U+2028 or a U+2029. The forms that the released version prints for
+the others stay until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 An info diagram rejects a statement after an empty line, a line of spaces, or a
 line of a directive (mermaid.js rejects it too), so the rows that put a
 statement there hold for the other Langium types. A treemap with spaces between
 the directive and the comment has no form in the second, the fifth, and the
 ninth row: the first pass and the second pass print the comment differently.
+
+[corpus fixture: gantt/lex-title-line-separator-comment-line-end-of-text]
+[corpus fixture: gantt/lex-title-at-end]
 
 | Follows the title                                                                       | Langium types but a treeView | treeView   | quadrant chart | the other types |
 | --------------------------------------------------------------------------------------- | ---------------------------- | ---------- | -------------- | --------------- |
@@ -1725,46 +1787,58 @@ comment that touches the text (`T%% c`).
 A U+2028 or U+2029 at the end of a title with no directive, with the spaces
 before it, is left out by the Langium types and a quadrant chart and stays in
 the other types, where a statement follows the title directly or the text ends
-after it.
+after it. In Gantt, user journey, timeline, sequence, C4, and Venn diagrams, a
+terminal U+2028 or U+2029 is part of the title value. Removing the separator
+changes that value and, in Gantt, user journey, timeline, sequence, and C4
+diagrams, changes the drawing, so the separator stays.
 
 An `accTitle:` or `accDescr:` line that holds text is printed as the next table
 gives: the Langium types as in the first table, except that a directive that
 starts the value stays with what follows it, and the other types as its last
-column (a Venn diagram has no such line). The seven rows `T %%{x}%%\u2028  `,
-`T %%{x}%%\u2029  `, `T\u2028%%{x}%%`, `T\u2028`, `T  \u2028`, `T\u2029`, and
-`T\u2028  ` of that table are for a line that a statement follows directly or
-after which the text ends, as the same rows of the first table are. A line of
-directives only is not in the table: the Langium types print it as written,
-mermaid.js rejects it in a Gantt chart, a user journey, and a timeline, and in a
-quadrant chart, a sequence diagram, and a C4 diagram the next line is its value.
-In a C4 diagram, the Db of 12.3.0 has an empty `accTitle` for an `accTitle:`
-line of directives only and the next line as the title of the diagram
-(`accTitle:` sets the title of a C4 diagram), and the next line as the
-`accDescr` for an `accDescr:` line; the formatter prints the next line as
-written, one level deeper. A line of a directive and a comment with no text is
-in the last rows of the table: the types of the last column print `%%{x}%%%% c`,
-and the Langium types keep the line as written, the written and the printed
-forms being drawn the same in every version that counts. In a quadrant chart, a
-Gantt chart, a user journey, a timeline, a sequence diagram, and a C4 diagram,
-the Db of 12.3.0 and the drawing are the same with and without a no-break space,
-U+3000, U+2003, U+2028, or U+2029 at the start or at the end of the value of
-these lines, once the directives are removed, whereas the same characters at the
-ends of the `title` of a Gantt chart, a user journey, a timeline, a sequence
-diagram, and a C4 diagram change the Db and the drawing (a form feed does not,
-as above), so the last column leaves them out at the end where the title of the
-same type keeps them. At the start, a quadrant chart, a Gantt chart, a user
-journey, a timeline, a sequence diagram, and a C4 diagram leave out every such
-character but a U+2028 and a U+2029, which stay (`\u2028T` and `\u2029T` in the
-table). The `accTitle:` line of a pie chart and of a gitGraph stays as written
-in the rows with a comment that stands after the text or after a directive,
-after two directives, or after a tab (`T  %%{x}%%  %% c  `, `T`, a no-break
-space, `%% c`, `T  %% c  `, `T`, a no-break space, `%%{x}%%%% c`,
-`T  %%{x}%%  %%{y}%%  %% c`, and `T`, a tab, U+3000, U+2003, a vertical tab, a
-form feed, or U+FEFF, `%% c`), since 10.9.8 reads the `%%` and what follows as
-part of the title and draws other text for the form of the column (see the pie
-and gitGraph row of
+column (a Venn diagram has no such line). In a quadrant chart, mermaid.js reads
+`%%` and what follows as part of an `accTitle:` or `accDescr:` value. A U+3000
+before `%%` in either value, and a tab there in `accTitle:`, therefore stay as
+written: replacing them with an ASCII space changes the Db beyond the permitted
+whitespace exceptions. The seven rows `T %%{x}%%\u2028  `, `T %%{x}%%\u2029  `,
+`T\u2028%%{x}%%`, `T\u2028`, `T  \u2028`, `T\u2029`, and `T\u2028  ` of that
+table are for a line that a statement follows directly or after which the text
+ends, as the same rows of the first table are. A line of directives only is not
+in the table: the Langium types print it as written, mermaid.js rejects it in a
+Gantt chart, a user journey, and a timeline, and in a quadrant chart, a sequence
+diagram, and a C4 diagram the next line is its value. In a C4 diagram, the Db of
+12.3.0 has an empty `accTitle` for an `accTitle:` line of directives only and
+the next line as the title of the diagram (`accTitle:` sets the title of a C4
+diagram), and the next line as the `accDescr` for an `accDescr:` line; the
+formatter prints the next line as written, one level deeper. A line of a
+directive and a comment with no text is in the last rows of the table: the types
+of the last column print `%%{x}%%%% c`, and the Langium types keep the line as
+written, the written and the printed forms being drawn the same in every version
+that counts. In a quadrant chart, a Gantt chart, a user journey, a timeline, a
+sequence diagram, and a C4 diagram, the Db of 12.3.0 and the drawing are the
+same with and without a no-break space, U+3000, U+2003, U+2028, or U+2029 at the
+start or at the end of the value of these lines, once the directives are
+removed, whereas the same characters at the ends of the `title` of a Gantt
+chart, a user journey, a timeline, a sequence diagram, and a C4 diagram change
+the Db and the drawing (a form feed does not, as above), so the last column
+leaves them out at the end where the title of the same type keeps them. At the
+start, a quadrant chart, a Gantt chart, a user journey, a timeline, a sequence
+diagram, and a C4 diagram leave out every such character but a U+2028 and a
+U+2029, which stay (`\u2028T` and `\u2029T` in the table). The `accTitle:` line
+of a pie chart and of a gitGraph stays as written in the rows with a comment
+that stands after the text or after a directive, after two directives, or after
+a tab (`T  %%{x}%%  %% c  `, `T`, a no-break space, `%% c`, `T  %% c  `, `T`, a
+no-break space, `%%{x}%%%% c`, `T  %%{x}%%  %%{y}%%  %% c`, and `T`, a tab,
+U+3000, U+2003, a vertical tab, a form feed, or U+FEFF, `%% c`), since 10.9.8
+reads the `%%` and what follows as part of the title and draws other text for
+the form of the column (see the pie and gitGraph row of
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
 and [Accessibility lines](./pie.md#accessibility-lines)).
+
+[corpus fixture: quadrant/db-grid-ideographic-acc-title] [corpus fixture:
+quadrant/db-grid-ideographic-acc-descr] [corpus fixture:
+quadrant/db-grid-tab-acc-title] [corpus fixture:
+quadrant/db-acc-title-comment-kept] [corpus fixture:
+quadrant/db-acc-descr-comment-kept]
 
 | Written after `accTitle: ` or `accDescr: ` | Langium types                                                        | quadrant, Gantt, journey, timeline, sequence, C4    |
 | ------------------------------------------ | -------------------------------------------------------------------- | --------------------------------------------------- |
@@ -2936,9 +3010,14 @@ These stay as written:
 - The arguments of a C4 statement that are not a label, a technology, a type, or
   a description (the sprite, the tags, the link), and a named attribute at
   another place than its own, which mermaid.js reads in a way that depends on
-  the place (see [Argument forms](./c4.md#argument-forms)).
+  the place (see [Argument forms](./c4.md#argument-forms)). The Db of 12.3.0
+  stores the tags and the link as written, so `a  b` and `a b` are two values in
+  it, and where `$tags` stands in the place of the label, the label text is
+  `{tags: "a  b"}` and not `{tags: "a b"}`: a run in one of these values stays.
 
-  [fixture: c4/named-attributes/named-text-places-runs-collapsed]
+  [fixture: c4/named-attributes/named-text-places-runs-collapsed] [fixture:
+  c4/argument-forms/tags-run-kept] [fixture: c4/argument-forms/link-run-kept]
+  [fixture: c4/named-attributes/label-place-run-kept]
 
 - The names that other statements refer to: two names that differ by a run are
   two things, and are one once the run is gone. A pair of such names was drawn
@@ -2980,6 +3059,13 @@ in the card row of a [kanban](./kanban.md#comments).
 | a node                                                                                                     | mindmap, treeView                                                                                                                                                                                                                                                                                                                                                                     | `A  b  %% c`                                                            | as written                                                        |
 | a card                                                                                                     | kanban                                                                                                                                                                                                                                                                                                                                                                                | `A  b  %% c`                                                            | as written                                                        |
 | the label of a relation                                                                                    | class                                                                                                                                                                                                                                                                                                                                                                                 | `A --> B : A  b  %% c`                                                  | as written                                                        |
+
+Runs of spaces and tabs inside the texts compacted in the table become one
+space. For those texts, a trailing comment keeps its line with one preceding
+space where the source has spaces or tabs, as in
+[radar charts](./radar.md#comments) and [mindmaps](./mindmap.md#comments).
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that form.
 
 [test: runs before a comment that ends the text of a pie chart] [test: runs
 before a comment that ends the text of a radar chart] [test: runs before a
@@ -3465,8 +3551,11 @@ updated, click both texts of each kind again before the exception stays.
 The text of a node of a mindmap, the text of its shape, its icon, and its class
 are printed without the spaces and tabs at their ends: `a (x)` is printed
 `a(x)`, `b[ y ]` is printed `b[y]`, `::icon( fa )` is printed `::icon(fa)`, and
-`::: big ` is printed `:::big`. The whitespace inside a text stays, since a node
-that wraps draws its runs (see
+`::: big ` is printed `:::big`. Prettier prints no padding inside brackets or
+parentheses, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+removes the spaces and tabs just inside the brackets of a mindmap shape and the
+parentheses of an icon where those margins draw the same. The whitespace inside
+a text stays, since a node that wraps draws its runs (see
 [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 A shape text that would start with a quote once its padding is gone (`a[ "x" ]`
 is a text with its quotes, `a["x"]` a string), a string, a markdown string, a
@@ -3501,11 +3590,15 @@ two nodes, drawn as before. A text that becomes a string was drawn differently.
 
 A kanban board follows the same rules for the texts of its cards, the labels of
 its columns and cards, and its icons and classes (see
-[Kanban](./kanban.md#shapes)). The id of a column is the exception: mermaid.js
-tells two columns apart by it. `todo [A]` and `todo[B]` are two columns, drawn
-apart, and with the space gone they were drawn differently. The id of a card is
-not compared, and `id1 [x]` and `id1[x]` were drawn the same, also where two
-cards got the same id by the change.
+[Kanban](./kanban.md#shapes)). Prettier prints no padding inside brackets or
+parentheses, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+removes the spaces and tabs just inside the brackets of a kanban column or card
+label and the parentheses of an icon where those margins draw the same. The id
+of a column is the exception: mermaid.js tells two columns apart by it.
+`todo [A]` and `todo[B]` are two columns, drawn apart, and with the space gone
+they were drawn differently. The id of a card is not compared, and `id1 [x]` and
+`id1[x]` were drawn the same, also where two cards got the same id by the
+change.
 
 [fixture: kanban/shapes/card-id-before-shape-dropped] [fixture:
 kanban/shapes/id-before-shape]
@@ -4419,8 +4512,13 @@ on the line goes to the next line as it does after a header without the colon.
 The colon stays where a `;`, the `---` of a hidden YAML block, or a directive
 that is not closed touches it, and where a directive that is closed stands
 between the keyword and the colon: `cynefin-beta%%{x}%%:` and
-`radar-beta%%{x}%%:` are not changed. A radar header with spaces or tabs before
-that directive, before the colon, or on both sides is printed without them:
+`radar-beta%%{x}%%:` are not changed. A bare `radar-beta` header must end before
+`%%`, specification whitespace, or the end of the text. Removing the colon
+before a touching hidden YAML block would put `---` against that bare header,
+which the versions that count reject (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)),
+so the colon stays. A radar header with spaces or tabs before that directive,
+before the colon, or on both sides is printed without them:
 `radar-beta %%{x}%%:`, `radar-beta%%{x}%% :`, and `radar-beta %%{x}%% :` are
 printed `radar-beta%%{x}%%:`, and so are the same headers with a tab for the
 space; `radar-beta %%{x}%% %%{y}%% :` is printed `radar-beta%%{x}%%%%{y}%%:`,
@@ -4514,16 +4612,21 @@ gitgraph/header/header-bt]
 ### The label of a link
 
 A label can be written between two arrows (`-- text -->`) or between `|` after
-the arrow (`-->|text|`), and mermaid.js reads both the same. The form is the one
-that the examples of the diagram type use at least twice as often as the other:
-an agentflow diagram has 2 links of the first form and none of the second, so
-its label is printed between the arrows, for the arrows `-->` and `--x`, which
-it reads in the first form; a swimlane diagram has none of the first form and 12
-of the second, so its label is printed between `|`, for the eight arrows of a
+the arrow (`-->|text|`), and mermaid.js reads both the same.
+[Rule 3](./printed-form.md#3-a-spelling) gives the form: the one that the
+examples of the diagram type use at least twice as often as the other: an
+agentflow diagram has 2 links of the first form and none of the second, so its
+label is printed between the arrows, for the arrows `-->` and `--x`, which it
+reads in the first form; a swimlane diagram has none of the first form and 12 of
+the second, so its label is printed between `|`, for the eight arrows of a
 flowchart; a flowchart has 14 of the first form and 8 of the second, which is
-not twice as often, and stays as written. The label must be plain text (letters,
-digits, spaces, `_`, `,`, `?`, and `!`); a label with a `|` or a `%%`, a string,
-a Markdown label, a label of blanks only, and an empty label stay as written.
+not twice as often, so rule 3 gives no form there, and the label stays as
+written, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). The
+label must be plain text (letters, digits, spaces, `_`, `,`, `?`, and `!`); a
+label with a `|` or a `%%`, a string, a Markdown label, a label of blanks only,
+and an empty label stay as written.
 
 [fixture: agentflow/edge-labels/pipes-to-arrows] [fixture:
 agentflow/edge-labels/blank-pipe-label-kept] [fixture:
@@ -4550,8 +4653,13 @@ as nodes and gives the description no text, and an event modeling diagram stores
 the token as it is written, so that the description is ` accDescr {a}` in one
 form and ` accDescr: a` in the other. A block with a text of one line is printed
 in the form with the colon, on a line of its own: `accDescr {a}`,
-`accDescr { a }`, and `accDescr{ a }` become `accDescr: a`. The keyword and the
-`{` can stand apart in any whitespace, a line break included, and so can the
+`accDescr { a }`, and `accDescr{ a }` become `accDescr: a`.
+[ER diagrams](./er.md#statements-one-per-line) and
+[sequence diagrams](./sequence.md#statements-one-per-line) print each statement
+on a line of its own.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a description converted to `accDescr:` the same separate line. The keyword and
+the `{` can stand apart in any whitespace, a line break included, and so can the
 text and the braces: `accDescr {`, `a`, and `}` on three lines are `accDescr: a`
 too. A `;` after the `}` is dropped like any `;` that separates statements. A
 block that starts on the line of the header of a timeline, after a direction,
@@ -4765,7 +4873,11 @@ block holds, or would not be read as the block is:
   agentflow diagram, an ER diagram, and a requirement diagram it comes after, so
   `accDescr: direction RL` is the description at the start of a line and a
   direction line when the line is indented, which the printer does for the
-  statements of a body.
+  statements of a body. Statements in an agentflow body stand one level below
+  the header, as the statements of a [class diagram](./class.md#indentation) and
+  a [Gantt chart](./gantt.md#indentation) do;
+  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+  gives this placement.
 
   [fixture: class/multi-line-values/block-direction-on-its-own-line-kept]
   [fixture: class/multi-line-values/block-brace-on-the-next-line-direction-kept]
@@ -4832,19 +4944,30 @@ block holds, or would not be read as the block is:
   railroad/description-blocks/peg-percent-comment-after-block]
 
 - The block has no text: it is printed `accDescr {}`, as
-  [Accessibility lines](./flowchart.md#accessibility-lines) says. A block that
-  holds only a directive stays a block, and the formatter prints
-  `accDescr {%%{init: {}}%% }` as `accDescr { %%{init: {}}%%}`; a directive on a
-  line of its own keeps its lines.
+  [Accessibility lines](./flowchart.md#accessibility-lines) says. In a
+  flowchart, mermaid.js leaves an earlier accessible description unchanged after
+  an empty `accDescr {}`, but an empty `accDescr:` clears it. The empty block
+  therefore keeps its block form. A block that holds only a directive stays a
+  block, and the formatter prints `accDescr {%%{init: {}}%% }` as
+  `accDescr { %%{init: {}}%%}`; a directive on a line of its own keeps its
+  lines.
 
-  [fixture: flowchart/accessibility-lines/empty-block-tight] [fixture:
-  flowchart/accessibility-lines/empty-block-spaced] [fixture:
-  flowchart/accessibility-lines/empty-block-directive-kept] [fixture:
-  flowchart/accessibility-lines/empty-block-directive-line-kept]
+[corpus fixture: flowchart/db-acc-descr-empty-block-keeps] [corpus fixture:
+flowchart/db-acc-descr-empty-replaces]
 
-- The block is not closed.
+[fixture: flowchart/accessibility-lines/empty-block-tight] [fixture:
+flowchart/accessibility-lines/empty-block-spaced] [fixture:
+flowchart/accessibility-lines/empty-block-directive-kept] [fixture:
+flowchart/accessibility-lines/empty-block-directive-line-kept]
 
-  [fixture: flowchart/accessibility-lines/block-unclosed]
+- The block is not closed. In a flowchart, mermaid.js reads an unclosed
+  `accDescr {a` as an empty accessible description in the Db. Converting it to
+  `accDescr: a` would set the description to `a`, so the unclosed block stays as
+  written.
+
+[corpus fixture: flowchart/lex-acc-descr-block-unclosed]
+
+[fixture: flowchart/accessibility-lines/block-unclosed]
 
 - The block is on a line that keeps its statements together, and a statement or
   a `;` that the diagram reads follows it on that line, including a line that
@@ -5207,7 +5330,11 @@ with a space keep them. A list of 433 names, the keywords in three cases and in
 mixed cases, alone and with the endings `-x`, `.x`, `/x`, `1`, and `_x`, was
 drawn in a `branch` with and without quotes by the versions that count for
 gitGraph, and 240 of them also in a `checkout` and in a `merge`: the quotes
-changed the drawing, or the acceptance, of exactly the names that keep them.
+changed the drawing, or the acceptance, of exactly the names that keep them. A
+`branch` statement accepts only one reference, and mermaid.js removes directives
+before reading references. Without quotes, `branch a %%{init: {}}%% b` supplies
+the two references `a` and `b` and is rejected, so the branch name keeps its
+quotes.
 
 [fixture: gitgraph/references/plain-names-without-quotes] [fixture:
 gitgraph/references/names-next-to-a-keyword-without-quotes] [fixture:
@@ -5583,18 +5710,20 @@ same in every version that has the diagram, and a text that one of them accepted
 was accepted in the other form too. So the header of a treemap diagram is
 printed `treemap`, and that of an ishikawa diagram `ishikawa`, in lower case,
 whatever name and case it was written in; `TREEMAP-BETA`, which no version
-reads, is not formatted. The exception is a root that starts with the word
-`-beta` right after the header of an ishikawa diagram, with at most directives
-between them, which mermaid.js removes before it reads the header:
-`ishikawa-beta-beta` has the header `ishikawa-beta` and the root `-beta`, and
-the header printed `ishikawa` with `-beta` on its line would be read as the
-header `ishikawa-beta` alone. So the root goes to a line of its own; where it
-stays on the line of the header, the header stays as written. The header of a
-sankey diagram with `-beta` in another case (`sankey-BETA`) stays as written.
-10.9.8 and 11.7.0 reject it, and 11.17.2, 12.0.0, and 12.3.0 read it as
-`sankey-beta`. The examples of the documentation write the header `sankey` and
-use no `sankey-beta` in any case, so [rule 3](./printed-form.md#3-a-spelling)
-gives no other form, and keeps it as written.
+reads, is not formatted. [Rule 3](./printed-form.md#3-a-spelling) gives this
+name of a header, and the lower case is the spelling that the examples of the
+documentation use. The exception is a root that starts with the word `-beta`
+right after the header of an ishikawa diagram, with at most directives between
+them, which mermaid.js removes before it reads the header: `ishikawa-beta-beta`
+has the header `ishikawa-beta` and the root `-beta`, and the header printed
+`ishikawa` with `-beta` on its line would be read as the header `ishikawa-beta`
+alone. So the root goes to a line of its own; where it stays on the line of the
+header, the header stays as written. The header of a sankey diagram with `-beta`
+in another case (`sankey-BETA`) stays as written. 10.9.8 and 11.7.0 reject it,
+and 11.17.2, 12.0.0, and 12.3.0 read it as `sankey-beta`. The examples of the
+documentation write the header `sankey` and use no `sankey-beta` in any case, so
+[rule 3](./printed-form.md#3-a-spelling) gives no other form, and keeps it as
+written.
 
 [fixture: treemap/header/beta] [fixture: ishikawa/header/header-beta] [fixture:
 ishikawa/header/header-column] [fixture:
@@ -5635,6 +5764,15 @@ are drawn at random: the same text drawn twice differs in the same way. The
 examples use `-v2` 17 times and the other 5 times.
 
 [fixture: state/header/spellings-kept]
+
+`classDiagram` and `classDiagram-v2` stay as written too. One of the versions
+that count writes another `aria-roledescription` and other marker ids for the
+one than for the other (see the row of the class diagram in
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+The examples use `classDiagram` 40 times against none of `classDiagram-v2`, so
+[rule 3](./printed-form.md#3-a-spelling) would print `classDiagram`.
+
+[fixture: class/indentation/header-v2-kept]
 
 ### What else stays as written
 
@@ -5855,7 +5993,9 @@ Both are accepted, so only the diagram shows the change. A line that holds a `;`
 other than one that separates statements or ends a statement therefore keeps its
 statements on it and its `;` where they are, whether the rule applies to it or
 not; the rule does not read the whitespace between other tokens, so that is
-formatted as usual. See
+formatted as usual. The semicolon line rule does not read the gaps beside a
+link, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+link one space on each side while the semicolons stay in place. See
 [Statements one per line](./flowchart.md#statements-one-per-line).
 
 [fixture: flowchart/statements-one-per-line/line-with-semicolon-kept] [fixture:
@@ -5933,7 +6073,14 @@ removes, and takes the statement after it (see
 comment line, nothing continues, and the `;` stays only where whitespace that is
 no space or tab stands between the character and the `;`, which the comment line
 would take with it. These statements keep the character too (see
-[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)). In a
+flowchart style, mermaid.js stores a U+2028 before the retained terminator in
+the last style's value. Removing the character changes that value outside the
+permitted trimming of trailing spaces and tabs, so the character stays with the
+terminator.
+
+[corpus fixture: flowchart/style-line-separator-semicolon-4e7b7434] [corpus
+fixture: flowchart/gram-style-semicolon-ends-statement]
 
 [fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
 [test: treemap style terminators kept after U+2028 and U+2029 before comments]
@@ -6104,7 +6251,11 @@ several lines is printed as a block, and the whitespace between the units of the
 line is formatted as usual (see [Attribute blocks](./er.md#attribute-blocks)):
 `"style:#x" ;`, U+2028, ` A {`, a line break, and `}` become `"style:#x"; `,
 U+2028, ` A { }`, and with an attribute between the braces the line ends with
-` A {`.
+` A {`. The semicolon and U+2028 or U+2029 stay where the line rule reads them,
+but ordinary spacing beside the other marks leaves those positions unchanged.
+Under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), no whitespace
+precedes the semicolon, and one space precedes the opening brace of the ER
+attribute block.
 
 [test: an empty attribute block over several lines after a semicolon that the
 line rule ignores and U+2028] [test: an attribute block over several lines after
@@ -6188,11 +6339,14 @@ The line rule of mermaid.js (the specification's
 applies to a line of the text as a whole, whatever statement holds the trigger
 and whatever statement holds the `;`: `accDescr {style:#x} accTitle:;` is a line
 whose `;` is ignored because of the `style:#x` of the description block. A `;`
-that ends its line is dropped, as one that separates statements is. But where
-the statement that holds it goes on after the line with a value of its own, as
-`accTitle:` and `T` on the next line do, the `;` is not at the end of its
-statement, and the printer does not drop it: the line stays together, with the
-trigger and the `;` on it, so that no statement per line, and no description
+that ends its line is dropped, as one that separates statements is, a form
+decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). But
+where the statement that holds it goes on after the line with a value of its
+own, as `accTitle:` and `T` on the next line do, the `;` is not at the end of
+its statement, and the printer does not drop it: the line stays together, with
+the trigger and the `;` on it, so that no statement per line, and no description
 block in the form of the colon, parts the `;` from its trigger, and the value is
 joined or kept as the statement is printed otherwise. A body of statements after
 the line of a block, and the word that closes a statement (`end`), are no such
@@ -6536,10 +6690,17 @@ Ordinary closed multiline `accDescr` bodies use the statement's continuation
 indentation, with a separate `}` at the statement's level.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
 level where the opening `{` stands on the statement's line, as Prettier prints
-the closing line at the level of the line that opens a block. Mermaid discards
-leading spaces and tabs after LF from the description. Keep the remaining text,
-line breaks, trailing whitespace and directive contents. Quoted strings and
-opaque data blocks retain their separate value-preservation rules.
+the closing line at the level of the line that opens a block. mermaid.js
+discards the indentation after a line feed from the description. Keep the
+remaining text, line breaks, trailing whitespace and directive contents. In a
+two-line `accDescr` body, mermaid.js stores the line break between the text
+lines in the description value;
+[a description after a colon](./compatibility.md#a-description-block-on-one-line)
+occupies one line. Replacing that line break with a space changes the Db outside
+the defined whitespace exceptions, so the body keeps the line break. Quoted
+strings and opaque data blocks retain their separate value-preservation rules.
+
+[corpus fixture: flowchart/db-acc-descr-block-two-lines-alone]
 
 [fixture: flowchart/multi-line-values/accdescr-block-kept]
 
@@ -6552,8 +6713,13 @@ stays, with the gap before it as under
 [Directives between tokens](#directives-between-tokens), where a run or a tab
 becomes one space; the whitespace after a directive at the end of the line is
 left out like the whitespace after the `{`, and the whitespace after a comment
-is part of the comment, so it stays. Text on the line of the `{` is spaced as
-any other token. This holds in every diagram type that has the block.
+is part of the comment, so it stays. Before reading the description, mermaid.js
+removes the directive and consumes the remaining whitespace with the opening
+brace. Spaces after an opening-line directive are therefore outside both the
+directive and the description, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes them as
+trailing line whitespace. Text on the line of the `{` is spaced as any other
+token. This holds in every diagram type that has the block.
 
 [fixture: flowchart/multi-line-values/accdescr-block-opener-whitespace-dropped]
 [fixture: flowchart/multi-line-values/accdescr-block-opener-tab-dropped]
@@ -7001,6 +7167,10 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   section whose names have padding, or of the sections that share a column, and
   one space after a name that touches its colon (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+  [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+  between a keyword and what it takes, as Prettier prints `return  x` as
+  `return x;`: a nonempty Gantt `axisFormat` or `title` value has one space
+  before it.
 
   [fixture: gantt/settings/trailing-whitespace-by-setting] [fixture:
   gantt/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
@@ -7106,6 +7276,9 @@ See [Task data](./journey.md#task-data) and
   section without padding is left out, as are the spaces and tabs at the ends of
   a `title` (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+  [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+  between a keyword and what it takes, as Prettier prints `return  x` as
+  `return x;`: a nonempty user journey `title` value has one space before it.
 
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]
@@ -7149,6 +7322,14 @@ them as they are written. See [Names](./requirement.md#names),
   is not in the Db, and is dropped, and a run inside a value, a class, or a
   string is printed as one space (see
   [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+  A requirement field's colon has one following space under
+  [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), which also removes
+  trailing spaces and tabs from unquoted values and class lines. The ID-to-class
+  gap has one space under
+  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as
+  in [flowchart](./flowchart.md#whitespace-between-tokens) and
+  [state](./state.md#whitespace-between-tokens) diagrams. Runs between words of
+  a value, a class, or a string become one space.
 
   [fixture: requirement/names/inner-whitespace-kept] [fixture:
   requirement/fields/value-inner-runs-collapsed] [fixture:
@@ -7231,6 +7412,10 @@ what the Db reads and does not repair what mermaid.js rejects. See
   [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.md)):
   the ones after the header are dropped, which makes the output accepted, and
   the ones after a diagram comment between nodes stay, as one, as in the input.
+  An internal run of blank lines becomes one blank line under
+  [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark). The gap after a
+  diagram comment between mindmap nodes is internal to the body, so one blank
+  line remains there.
 
   [fixture: mindmap/blank-lines/after-the-header-dropped] [fixture:
   mindmap/blank-lines/after-a-comment-between-nodes-kept]
@@ -7569,11 +7754,14 @@ around them. What the Db or the lexer reads stays. See
   [test: U+2028 between the words of a text] [test: U+2028 around the arrow of
   an axis]
 
-Ordinary point and class styles use `name: value`. Only ASCII spaces and tabs
-next to the first colon are normalized; the value spelling stays intact. A style
-with trivia, whitespace other than ASCII spaces and tabs, a semicolon or a
-second colon, or on a protected semicolon line, keeps its interior as written.
-The suffix after a second colon is not interpreted.
+Ordinary point and class styles use `name: value`. A style property gives its
+name one value, so its first colon is the colon of a key.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
+before that colon and one space after it. Only ASCII spaces and tabs next to the
+first colon are normalized; the value spelling stays intact. A style with
+trivia, whitespace other than ASCII spaces and tabs, a semicolon or a second
+colon, or on a protected semicolon line, keeps its interior as written. The
+suffix after a second colon is not interpreted.
 
 [fixture: quadrant/styles/style-colon-padding] [fixture:
 quadrant/styles/style-colon-tab-padding] [fixture:
@@ -8221,11 +8409,14 @@ text remains value text, and the spaces and tabs at the ends of a bare label, an
 icon, and a class text are dropped, and so are those after the bare id of a
 card, while those after the bare id of a column stay, and a bare label, an icon,
 or a class text of spaces and tabs only keeps one space (`A[ ]`) (see
-[Trailing whitespace](./kanban.md#trailing-whitespace)). Decorations align with
-their node; an inline-directive line keeps its directives and the gaps beside
-them, and the printer chooses the whitespace before the first one. A data block
-with invalid YAML is accepted by the parser as opaque text, although mermaid.js
-rejects it (known divergence
+[Trailing whitespace](./kanban.md#trailing-whitespace)). Brackets have no inner
+padding under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), so
+eligible spaces and tabs at the edges of a bare kanban label are dropped. The
+same rule removes trailing line whitespace, so exterior spaces and tabs after a
+bare card id are dropped. Decorations align with their node; an inline-directive
+line keeps its directives and the gaps beside them, and the printer chooses the
+whitespace before the first one. A data block with invalid YAML is accepted by
+the parser as opaque text, although mermaid.js rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 and the printer retains its opaque content with only eligible margin movement.
 See the [kanban rules](./kanban.md).
@@ -8401,10 +8592,14 @@ ls-kept-comment-whitespace-line] [test: venn: ps-kept-directive]
 Only accepted whitespace roles and the spellings of the section above normalize:
 ordinary ASCII gaps, configured implicit indentation and the title's consumed
 first separator. CR/CRLF use shared EOL handling; Unicode value characters
-remain, and invalid ordinary gaps remain rejected. The shared failure, Markdown,
-frontmatter and final newline paths apply. Specified token-boundary divergences
-still fail, while C4-detection and opaque-YAML divergences use the specified
-reading; raw rejection provides no raw Db.
+remain, and invalid ordinary gaps remain rejected. A U+00A0 inside a bare Venn
+label is part of its value in the Db. Replacing it with an ASCII space changes
+the recorded label, so the no-break space stays as written. The shared failure,
+Markdown, frontmatter and final newline paths apply. Specified token-boundary
+divergences still fail, while C4-detection and opaque-YAML divergences use the
+specified reading; raw rejection provides no raw Db.
+
+[corpus fixture: venn/db-grid-nbsp-label-bare]
 
 [fixture: venn/whitespace-characters/tab-gaps] [fixture:
 venn/title/title-next-line] [fixture: venn/header/div-c4-detector] [fixture:
@@ -8545,7 +8740,8 @@ without supplied effects use the shared null Db comparison and written-source
 check; the corpus uses recorded effects where available. The padding of a CSS
 declaration around its first colon follows
 [Styles that are drawn the same](#styles-that-are-drawn-the-same); the runs in a
-declaration are printed as one space as well.
+declaration are printed as one space as well. A run between the words of a
+usecase CSS declaration becomes one space.
 
 [fixture: usecase/native-metadata/metadata-inline] [fixture:
 usecase/native-metadata/metadata-blank-lines-kept] [fixture:
@@ -8689,6 +8885,11 @@ comment-region-join] [test: usecase: unicode-comment]
 
 Shared EOL, BOM, frontmatter, final-newline and Markdown handling apply.
 Accessibility exterior whitespace is trimmed in standalone files and Markdown.
+An accessibility line gives the title or description key one value, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) places the colon
+against that key and one space before a nonempty value. Prettier removes
+line-end whitespace, so spaces and tabs do not remain after the value, including
+an empty value.
 
 [fixture: usecase/final-newline/final-value-padding] [test: usecase Markdown:
 last-value-padding]
@@ -8700,7 +8901,11 @@ in one form (see
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same)) and
 retain escapes, value continuation columns, duplicates and source order. Common
 title/accessibility line edges compact like C4, but pie never joins a
-next-physical-line value. Empty labels and description blocks are real syntax.
+next-physical-line value. The colon of a pie accessibility key has no space
+before it and one space after it under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), which also removes
+the spaces and tabs at the end of the line. These ordinary gaps therefore print
+as in `accTitle: Access`. Empty labels and description blocks are real syntax.
 
 [fixture: pie/labels/label-quotes] [fixture: pie/numbers/number-spellings]
 [fixture: pie/title/title-next-trivia] [fixture:
@@ -8975,7 +9180,15 @@ prefix so ignored YAML cannot become effective frontmatter. Only safe real
 frontmatter uses guarded YAML formatting, with the shared positive minimum
 indentation. All authored semicolons remain under shared segment protection;
 removing a selected one can select another and change a label. Source order,
-repeated constraints and empty common assignments remain written.
+repeated constraints and empty common assignments remain written. In
+architecture diagrams, mermaid.js records edges and alignment constraints in
+ordered Db lists, including repeated entries, so their order and repetitions
+stay as written. Deleting an empty common assignment can change the final value,
+as [Source order](./architecture.md#source-order) describes, so such assignments
+also stay as written.
+
+[corpus fixture: architecture/db-duplicate-edges] [corpus fixture:
+architecture/db-align-forward-repeat]
 
 [fixture: architecture/hidden-forms/yaml-named-icon-title-and-parent-gaps]
 [fixture: architecture/hidden-boundaries/header-and-statement] [fixture:
@@ -9015,11 +9228,16 @@ spans that are plain decimals are printed in the shortest form, and the others
 preserve a zero at the start of the integer part, rounded precision, subnormals,
 underflow and overflow rather than printing converted double values. Option
 values remain authored: no tick cap, min/max reorder or replacement from drawing
-configuration. Label StringLiteral spans keep empty/whitespace-only text,
-escapes, HTML, entities, with a run of spaces and tabs inside a label printed as
-one space; a label between `'` is printed between `"` as under
+configuration. A radar minimum can exceed the maximum: mermaid.js accepts
+`min 10,max 1` and records `min = 10` and `max = 1` in the Db. Exchanging them
+changes the recorded options, so the bounds stay as written. Label StringLiteral
+spans keep empty/whitespace-only text, escapes, HTML, entities, with a run of
+spaces and tabs inside a label printed as one space; a label between `'` is
+printed between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same), and
 `singleQuote` is not read. Deleting an empty label changes the ID fallback.
+
+[corpus fixture: radar/db-min-above-max]
 
 [fixture: radar/source-order/declaration-order-kept] [fixture:
 radar/source-order/mixed-curve-forms] [fixture:
@@ -9829,7 +10047,14 @@ columns do not select parents. Rebuilding from the effective Db would lose
 occurrences and can change replacement or reset behavior. Strings retain escapes
 and interior columns, including empty values and native-looking text; a string
 between `'` is printed between `"` as under
-[Spellings that are drawn the same](#spellings-that-are-drawn-the-same).
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same). In a
+cynefin diagram, mermaid.js records an empty string as an item in the Db and
+hidden-looking text inside a string as part of the item's label. Removing the
+empty item or reading the string's contents as a hidden form changes the
+domain's items, so both stay as written.
+
+[corpus fixture: cynefin/db-empty-texts] [corpus fixture:
+cynefin/hidden-directive-string]
 
 [fixture: cynefin/empty-domains/empty-domain-last-reset] [fixture:
 cynefin/redeclarations/domain-repeat-order] [fixture:

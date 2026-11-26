@@ -22,7 +22,7 @@ fixture の置き方と確かめ方は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ヘッダーの後の文はヘッダーより 1 段深く、ブロックの文と `box` の参加者は、
 それを開く行より 1 段深く置き、`end` は、その行と同じ段に置きます。
-Prettier が ブロックの中の行をそう印字するためです。
+Prettier がブロックの中の行をそう印字するためです。
 ブロックは、`loop`、`alt`、`opt`、`par`、`par_over`、`critical`、`break`、
 `rect` です。
 `else`、`and`、`option` は、ブロックの 1 つの本体を閉じて次の本体を開くので、
@@ -169,6 +169,10 @@ sequenceDiagram
 `box` の中でも同じで、参加者の間に置けます。
 その後に同じ行で書かれた文や box の `end` は、それぞれの行に移し、
 mermaid.js は同じ box を読みます。
+[flowchart](./flowchart.ja.md#1-行に-1-文) と
+[XY チャート](./xychart.ja.md#1-行-1-文) の図も、空の `accDescr {}` の後の文を、
+別の行に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 
 [fixture: statements-one-per-line/empty-description-block-in-box]
 [fixture: statements-one-per-line/empty-description-block-moves-next-statement]
@@ -210,6 +214,12 @@ sequenceDiagram
 そのような `;` の後に同じ行で続く文と、ブロックの `end` は、別の行に置きます。
 `autonumber %%{wrap}%%; A->>B: x; B->>A: y` は、`autonumber %%{wrap}%%;`、
 `A ->> B: x`、`B ->> A: y` と印字します。
+残す `;` に続く文を、別の行に置く形は、
+[flowchart](./flowchart.ja.md#1-行に-1-文) と
+[XY チャート](./xychart.ja.md#1-行-1-文) の図と同じで、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+ブロックの `end` は別の行に置き、ディレクティブと必要な `;` は、
+元の文と一緒に残します。
 
 [fixture: statements-one-per-line/autonumber-directive-semicolon-then-statements-split]
 
@@ -270,6 +280,9 @@ sequenceDiagram
 
 flowchart と同じです。
 空行の連続は 1 つにし、ブロックの先頭と末尾の空行は取り除きます。
+Prettier は空白だけの行も、空行として扱います。
+その行を空にし、文の間の空行を 1 つまでにする形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: blank-lines/collapsed]
 [fixture: blank-lines/around-comments-and-directives]
@@ -324,6 +337,9 @@ flowchart と同じです。
 間に空白を 1 つ置きます。
 `A->>B:wrap:x` は `A ->> B: wrap: x` と印字し、
 ノートや参加者の別名のテキストも同じにします。
+Prettier は値の前のコロンの後に、空白を 1 つ置きます。
+折り返しの接頭辞 `wrap:` と `nowrap:` の後も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 ブロックや節のキーワード（`loop`、`alt`、`else`、`opt`、`par`、`and`、
 `critical`、`option`、`break`、`rect`、`box`）の後のテキストも、
 空白 1 つの後に置きます。
@@ -510,10 +526,12 @@ mermaid.js がその位置でブロック形式のマッピングの行を拒否
 ブロックの両端に空白は足しません。
 `participant A   @{ x }` と `actor B@{x}` はそのまま残り、
 `participant C@{ y }   %% c` の `%%` の前の空白も残ります。
-この空白に版の理由があるのは `participant` だけです。
-`%%` の前を空白 1 つにすると、対象にする版の一部は別の名前を描きます。
-`actor` の `%%` の前の空白と、`create` が作る参加者の `%%` の前の空白は、
-対象にする版に別の図を描くものがなくても、書かれたまま残します。
+この空白に版の理由があるのは `participant` です。
+`%%` の前を空白 1 つにすると、対象にする版のうち古い版は別の名前を描きます。
+`actor` と、`create` が作る参加者も同じです。
+`%%` の前を空白 1 つにすると、それらの版の SVG は、
+`name` 属性とラベルに別の名前を持ちます。
+画素は同じですが、`%%` の前の空白は書かれたまま残します。
 ブロックの後の `#` コメントは、前を空白 1 つにします。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
 同じ行の何かの後ろにあるコメントの前を、空白 1 つにします。
@@ -675,8 +693,7 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 `rect rgb( 1,2,3)` と `rect rgb(1,2,3 )` に別の `fill`
 属性を描くためです（同じ表を参照）。
 `box` でも、同じ理由で残します。
-コンマの前の空白は、12.3.0 が Db の `boxes[0].fill` を変え、
-描画は変わらないためです。
+コンマの前の空白は、Db の `boxes[0].fill` を変え、描画は変わらないためです。
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/rect-leading-and-comma-padding-kept]
@@ -689,6 +706,9 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 
 成分の中のディレクティブは、関数を認識する前に取り除かれます。
 ディレクティブは書かれたまま残し、コンマの空白には通常の規則を適用します。
+Prettier は呼び出しのコンマの後に、空白を 1 つ置きます。
+成分にディレクティブがある色関数のコンマにも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 実行した版と Db は、
 [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照してください。
 
@@ -918,6 +938,9 @@ sequenceDiagram
 ただし id の後に `()` が続くときは別で、
 `1() ->> B` と `title() ->> B` には空白を置きます。
 `()` が id を終わらせるためです。
+Prettier は二項演算子の両側に、空白を 1 つずつ置きます。
+送り元の id が `()` で終わる場合の矢印も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [fixture: arrow-spacing/central-connection-after-number-or-title]
 
@@ -1026,6 +1049,9 @@ Gantt 図の[タスク](./gantt.ja.md#タスクのデータ)と、
 行は通常どおりに印字し、残りは除きます。
 `A->>B: %%{init: {}}%%` の後に空白が 2 つ続く形は、
 `A ->> B: %%{init: {}}%%` と印字します。
+コロンの直後の空白が、mermaid.js に要る 1 文字になります。
+ディレクティブの後の空白とタブは、Prettier が取り除く行末の空白なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [fixture: colons/directive-then-whitespace-kept]
 [test: U+00A0 as the entire text of a message]
@@ -1077,8 +1103,8 @@ sequenceDiagram
 `title   My diagram  ` は `title My diagram` と印字します。
 テキストの中の空白とタブの連なりも、空白 1 つで印字します。
 `accDescr` も同じです。
-`accTitle` はブラウザがツールチップとして表示するので、
-その連なりは書かれたまま残します。
+`accTitle` はブラウザがツールチップとして表示し、
+その空白の連なりは Db にも SVG にも入るので、書かれたまま残します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 
 [fixture: title/accessibility-runs-collapsed]
@@ -1126,6 +1152,9 @@ mermaid.js はそのように読みます。
 文は行に残り、この `;` を落とすと、行の規則がもう一方の `;` を無視します。
 `A->>B: style:#x;; title x;` の後に空白が 2 つ続くときは、
 `A ->> B: style:#x;; title x;` と印字します。
+残した `;` の後の空白とタブを除いても、タイトルと無視される `;` は変わりません。
+Prettier も行末の空白を除くので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
 
 [fixture: title/trailing-whitespace-dropped]
 [fixture: title/semicolon-after-whitespace-dropped]
@@ -1208,7 +1237,7 @@ sequenceDiagram
 本文は書かれたまま残します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
-Prettier が ブロックの中のコメント行をそう印字するためです。
+Prettier がブロックの中のコメント行をそう印字するためです。
 
 [fixture: comments/kept]
 [corpus fixture: sequence/lex-single-percent-comment-line]
@@ -1333,6 +1362,12 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 `x #a%%{init: {}}%%;` は文字参照 `#a;` で、
 `x #a%%{init: {}}%%b;` は `#ab;` で終わるので、これらの行は 1 行に残します。
 `x #%%{init: {}}%%;` は `#;` で終わり、文字参照ではないので、行を分けます。
+`#` コメントのディレクティブを除いた形が、文字参照でない場合に、
+文を別々の行に置く形は、
+[flowchart](./flowchart.ja.md#1-行に-1-文) と
+[XY チャート](./xychart.ja.md#1-行-1-文) の図と同じで、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+コメントとそのディレクティブは、メッセージと一緒に残します。
 ブロックの分かれ目（`else`、`and`、`option`）の行と、
 ブロックを閉じる `end` の行も、同じに決めます。
 文を印字すると、それらも 1 行ずつになるからです。
@@ -1569,9 +1604,9 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
 を参照）。
 
 - `box` のテキストの末尾で、その前に空白があっても、そこまで。
-  テキストにこの文字がある box は、12.3.0 の Db で塗りが `transparent` になり、
+  テキストにこの文字がある box は、Db で塗りが `transparent` になり、
   なければ `box red` の塗りは `red` です。
-  描画の塗りは、10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 のすべてで違います。
+  描画の塗りは、対象にするどの版でも違います。
   規則 1 は、テキストの末尾の印を挙げていないので、
   [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
   [journey](./journey.ja.md#行区切り文字) はタイトルの末尾で、
@@ -1618,7 +1653,7 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
     `#` とそれ以降は値の一部です。
   - `title` と、テキストのある `box`。
     テキストがこの文字を含みます。
-    12.3.0 の Db の title はこの文字で終わり、
+    Db の title はこの文字で終わり、
     この文字を含む box の fill もその Db で `transparent` です。
 
   [test: a `#` comment after U+2028, which joins no lines]
@@ -1690,7 +1725,8 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
 
 - タイトルの末尾。
   空白やタブではなくテキストの文字なので、
-  その後の空白はタイトル末尾のほかの空白と一緒に除き、前の空白は残します。
+  その後の空白はタイトル末尾のほかの空白と一緒に除きます。
+  前の空白は、減らすと Db のタイトルも SVG も変わるので、残します。
 
   [test: U+2028 and spaces at the end of a title]
 
@@ -1769,7 +1805,7 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ブロックの中の単独のディレクティブ行は、
 そのブロックを開く行より 1 段深く置きます。
-Prettier が ブロックの中の行をそう印字するためです。
+Prettier がブロックの中の行をそう印字するためです。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
@@ -1951,12 +1987,18 @@ sequenceDiagram
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 `accDescr { ... }` の本文行は文より 1 段深くそろえます。
-[flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
-Mermaid が説明からこの字下げを除くためです。
 独立した行の `}` は文と同じ段に置きます。
 `{` が `accDescr` の行にあるときは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+mermaid.js は説明から行送り後の字下げを除きます。
+説明の途中の行末にある空白は、mermaid.js が説明の一部として Db に記録し、
+除くとどの対象の版も別の説明の文字を SVG に入れるため、書かれたまま残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
+[corpus fixture: sequence/db-acc-descr-block-blank-lines]
 
 [fixture: multi-line-values/description-and-data-indented]
 [fixture: multi-line-values/accdescr-block-closing-brace-after-text]
@@ -1964,11 +2006,11 @@ Prettier が ブロックを閉じる行を、そのブロックを開く行と�
 [fixture: multi-line-values/data-block-in-block-indented]
 
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
-そのコメント行は、文の中のコメント行と同じく `accDescr` より 1 段深く置きます。
+そのコメント行は、`accDescr` より 1 段深く置きます。
 独立した行の `}` は文と同じ段に置きます。
 `{` が `accDescr` の行にあるときは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: multi-line-values/accdescr-block-comment-only]
 [fixture: multi-line-values/accdescr-block-without-text-kept]
@@ -1977,6 +2019,12 @@ Prettier が ブロックを閉じる行を、そのブロックを開く行と�
 mermaid.js が受理します（詳しくは、
 [文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈)を参照）。
 その本文行は、閉じたブロックと同じく文より 1 段深く置き、`}` は足しません。
+本文に文字がある未完の説明ブロックでも、mermaid.js の Db では、
+説明が空になります。
+閉じると本文が説明の値になるため、`}` は足しません。
+
+[corpus fixture: sequence/db-acc-descr-block-unclosed]
+[corpus fixture: sequence/db-acc-descr-block-after-message]
 
 [fixture: multi-line-values/accdescr-block-unclosed-indented]
 
@@ -1987,7 +2035,7 @@ participant と actor のデータブロックには、
 本文の後の閉じ括弧はその行と一緒に動かします。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、ブロックが文の行で開くとき、
 その独立した `}` を開く行と同じ段に置きます。
-Prettier が ブロックを閉じる行を、開く行と同じ段に印字する形です。
+Prettier がブロックを閉じる行を、開く行と同じ段に印字する形です。
 トップレベルと `loop` 内で適用しますが、`useTabs` のときは、
 文を書かれたまま印字します（詳しくは、
 [データブロック](./flowchart.ja.md#データブロック)を参照）。
@@ -2035,6 +2083,8 @@ Mermaid はデータブロック全体の両端の空白を除くので、最初
 空の説明ブロックはそれぞれの規則に従います。
 CRLF と CR は `endOfLine` に従い、
 値内の Unicode の区切り文字は文字として保ちます。
+`participant A@{ "type":`、U+2028、`"queue" }` の U+2028 を改行にすると、
+対象にする版のうち、このブロックを拒否するものがあります。
 
 [fixture: multi-line-values/data-surrounding-trivia]
 [test: data blocks: sequence U+2028] [test: data blocks: sequence CR]

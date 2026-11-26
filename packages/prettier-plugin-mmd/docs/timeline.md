@@ -262,7 +262,10 @@ timeline
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the body are dropped, as in a user journey.
+end of the body are dropped, as in a user journey. Prettier removes blank lines
+at the start of a text.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same form
+before the `timeline` header.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
 
@@ -271,12 +274,16 @@ The empty lines around comment lines are handled in the same way.
 [fixture: blank-lines/around-comment-lines]
 
 Empty lines around a `section` are kept, as one, at the level of the lines next
-to them.
+to them. Prettier reduces consecutive blank lines to one.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form
+around a `section`, leaving the blank line between the same statements.
 
 [fixture: blank-lines/around-sections]
 
 Empty lines inside a period and its events are handled in the same way, and stay
-inside it.
+inside it. Prettier reduces consecutive blank lines to one.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form
+between a period and its events, leaving the blank line in the same position.
 
 [fixture: blank-lines/between-a-period-and-its-events]
 
@@ -344,10 +351,12 @@ before its colon, and the whitespace at both ends of an event beyond the one
 character after its colon: `2004 : a` and `2004: a` are different periods,
 `a :   e` has the event `  e`, and `a : e   ` the event `e   `. So the padding
 that aligns the colons of a timeline stays; `a : e   ` at the end of a line is
-printed `a : e`, and `c : g   : h` stays as written. A colon that follows a text
-without whitespace at its end gets one space before it, as the examples in the
-documentation of mermaid.js write every colon after a text (88 of them have a
-space before them, and none touches the text; counted as under
+printed `a : e`, and `c : g   : h` stays as written. Without event text after
+the colon's separator, mermaid.js rejects the event, so an event consisting only
+of spaces or tabs keeps them. A colon that follows a text without whitespace at
+its end gets one space before it, as the examples in the documentation of
+mermaid.js write every colon after a text (88 of them have a space before them,
+and none touches the text; counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)):
 `2004: Facebook: Google` is printed `2004 : Facebook : Google`. A colon that no
 whitespace follows is a character of the text and stays where it is. After a
@@ -366,6 +375,12 @@ after the last directive are still left out (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Prettier prints no spaces or tabs at a line's end, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes spaces and
+tabs after the last directive of an event line.
+
+[corpus fixture: timeline/db-event-two-spaces] [corpus fixture:
+timeline/gram-event-empty-after-colon-space]
 
 [fixture: periods-and-events/event-trailing-directive-blanks-dropped] [fixture:
 periods-and-events/event-two-directives-trailing-blanks-dropped] [fixture:
@@ -624,7 +639,10 @@ event-statements/after-empty-description-block] [fixture:
 event-statements/in-a-section]
 
 Comment lines, directive lines, and empty lines before it stand as before any
-other statement.
+other statement. Prettier reduces consecutive blank lines between statements to
+one. An event statement has the same gap before it, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one blank line
+there too.
 
 [fixture: event-statements/comment-line-before] [fixture:
 event-statements/directive-line-before] [fixture:
@@ -692,8 +710,13 @@ keyword and what it takes (Prettier prints `return  x` as `return x;`), and the
 value without the spaces and tabs at its start or at its end, which the Db keeps
 and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   History  ` is printed `title History`, and a run of spaces and tabs
-inside it is printed as one space (see
+The spaces and tabs at the end of the value stand at the end of the line, where
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives none, as
+Prettier removes spaces and tabs at the end of a line;
+[the title-margin exception](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
+permits the resulting Db changes. `title   History  ` is printed
+`title History`, and a run of spaces and tabs inside it is printed as one space
+(see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 The name of a `section` is printed as written, the whitespace at its start and
 at its end included: two sections whose names differ by it are drawn apart, and
@@ -731,7 +754,10 @@ while the others read both as the title `# c` (drawn the same; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A `#` at the start of its line is no such text to them, and both forms are the
 period `title`, so the value is joined to the keyword; and one whitespace
-character before the `#`, a space or a tab, is printed as one space.
+character before the `#`, a space or a tab, is printed as one space. Prettier
+prints `return  x` as `return x;`, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) replaces a single
+space or tab before the `#` text after `title` with one space.
 
 [fixture: titles-and-sections/title-hash-on-next-line-kept] [fixture:
 titles-and-sections/title-hash-after-padding-kept] [fixture:
@@ -891,8 +917,13 @@ in those versions, and neither `accDescr: alpha` nor a line of its own for
 and the statements after it on the line, is printed in the form above:
 `accDescr {  alpha  }` is `accDescr { alpha }`,
 `accDescr   {alpha}    accDescr {beta}` is `accDescr {alpha} accDescr {beta}`,
-and where the source has no whitespace none is printed (`accDescr{ alpha}`). A
-whitespace character that is no space or tab (a U+00A0, a U+2003, and so on)
+and where the source has no whitespace none is printed (`accDescr{ alpha}`): the
+older versions that count draw `timeline TD accDescr{x}` and
+`timeline TD accDescr {x}` as different figures, since the space becomes a part
+of the text that they draw, so the space that rule 1 gives before the `{` of a
+block is not added here (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A whitespace character that is no space or tab (a U+00A0, a U+2003, and so on)
 after the `}` of a block stays where it is, as it does in every other place of
 the line, the `}` of a block over several lines included: `accDescr {alpha}`,
 U+00A0, and `Phase : done` is printed as it is.
@@ -1178,8 +1209,12 @@ A statement that mermaid.js reads over several lines is printed on one line
 where the line break is whitespace to the lexer: after `title`, `section`,
 `accTitle:`, and `accDescr:`, around the `:` of `accTitle` and `accDescr`, and
 after the colon of an event, where the line break is the one whitespace
-character that the lexer reads after the colon. The text then goes to the line
-of the colon, with the whitespace at its start, which is part of the event.
+character that the lexer reads after the colon. Prettier puts one space between
+a keyword and what it takes, and none before and one after a key's colon.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives those gaps when
+these lines join, and one space after an event colon, leaving the event text
+beyond its separator unchanged. The text then goes to the line of the colon,
+with the whitespace at its start, which is part of the event.
 
 [fixture: multi-line-statements/value-on-next-line-joined] [fixture:
 multi-line-statements/event-text-on-next-line-keeps-its-whitespace]
@@ -1215,16 +1250,26 @@ multi-line-statements/directive-inside-kept]
 
 After the colon of an event, an indented line of only a directive is the
 whitespace that starts the event, so the event is printed on the line of the
-colon, with that whitespace, and the directive after it.
+colon, with that whitespace, and the directive after it. The indentation of a
+directive-only event line is event text beyond the colon's separator. Removing
+it leaves no event text after mermaid.js removes the directive, and mermaid.js
+rejects that form, so the whitespace stays.
+
+[corpus fixture: timeline/lex-event-line-feed-directive-line] [corpus fixture:
+timeline/lex-event-line-feed-directive-line-unindented]
 
 [fixture: multi-line-statements/directive-line-after-the-colon-is-the-text]
 
 In an accessibility statement, a line break stays where joining it, with one
 space or with nothing, could change which `;` the line rule ignores, and where a
 `;` ends the last line; any other line break is joined as usual, also in a
-statement that holds a `;`. A title, a section, a period and an event are kept
-as written when a line break of them stays: the Db keeps the whitespace at their
-start. See [Statements one per line](#statements-one-per-line).
+statement that holds a `;`. A semicolon in accessibility text is a text
+character, so it does not prevent joining where the line rule stays unchanged.
+Prettier prints one space after a key's colon, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that gap when
+the lines join. A title, a section, a period and an event are kept as written
+when a line break of them stays: the Db keeps the whitespace at their start. See
+[Statements one per line](#statements-one-per-line).
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 
@@ -1336,7 +1381,12 @@ closer at statement level.
 [fixture: multi-line-values/description-comment-only-lines] [fixture:
 multi-line-values/description-directive-only-lines]
 
-U+2028 and U+2029 within a text line remain as written.
+U+2028 and U+2029 within a text line remain as written. Inside a description,
+mermaid.js keeps U+2028 and U+2029 as characters of the Db value. Replacing
+either with LF changes the description outside the permitted whitespace
+exceptions, so both characters stay as written.
+
+[corpus fixture: timeline/lex-acc-descr-block-line-separator-inside]
 
 [test: U+2028 inside a description line] [test: U+2029 inside a description
 line]
@@ -1676,7 +1726,14 @@ between the header and a direction]
 At the end of a title and at the end of the last event of a line, U+2028 and
 U+2029 are characters of the text and no spaces or tabs: the spaces after one
 are left out with the other spaces and tabs at the end of the text, and the
-spaces before it stay.
+spaces before it stay. Prettier removes spaces and tabs at a line's end, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes those after
+U+2028 or U+2029 under
+[the end-margin exception](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same).
+Spaces before either character are inside the value and stay: changing them
+changes the Db, and
+[the whitespace-run exception](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+excludes texts containing either character.
 
 [test: U+2029 and spaces at the end of a timeline title] [test: U+2028 and
 spaces at the end of the last event of a line]
@@ -1741,9 +1798,15 @@ U+00A0, U+3000, and U+FEFF are whitespace to the lexer. Where a rule reads one
 whitespace character, such as the separator after `title` or after the colon of
 an event, a space is printed in its place; between statements and before a
 statement they are dropped; in a text, and in the whitespace before the colon of
-a period, they are characters of the text and stay. The examples are written as
-strings, in which `\u00a0` is U+00A0, `\u3000` is U+3000, and `\ufeff` is
-U+FEFF.
+a period, they are characters of the text and stay. The lexer reads exactly one
+separator character after an event colon without including it in the event text,
+so replacing it with an ASCII space leaves the Db unchanged. Prettier prints one
+space after this kind of colon, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form. The
+examples are written as strings, in which `\u00a0` is U+00A0, `\u3000` is
+U+3000, and `\ufeff` is U+FEFF.
+
+[corpus fixture: timeline/lex-event-separator-no-break-space]
 
 [test: U+00A0 as the separator after a title keyword] [test: U+00A0 as the
 separator after the colon of an event] [test: U+00A0 after the separator of an

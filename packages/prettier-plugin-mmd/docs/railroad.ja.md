@@ -120,6 +120,7 @@ Prettier がブロックの中の行をそう印字するためです。
 別行の構造的な閉じ括弧と終端は文の位置に揃えます。
 入れ子の IR 呼出しは[長い行](#長い行)の規則で引数の段を使います。
 その他の値の継続列、隠れた形の内部と保持前置部分は元の列を保ちます。
+
 セミコロンの保護区間の最初の行は、他の平坦な図種と同じく本文の1段に揃えます。
 2行目以降は保護された本文に属するため、書かれた列を保ちます。
 この配置は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
@@ -730,6 +731,15 @@ railroad-ebnf-beta
 文字列にその連なりを含む nonterminal はどの規則も参照せず、
 その文字列はほかの文字列と同じに印字します。
 
+mermaid.js は IR の空の引用引数を値として読み、空呼出しを拒否するので、
+空文字列を保ちます。
+文字列内の隠れた形やコメントに見える文字は、Db の値に属するので、
+除くと Db が変わります。
+
+[corpus fixture: railroad/ir-db-empty-strings]
+[corpus fixture: railroad/ir-error-empty-call]
+[corpus fixture: railroad/ebnf-enclosing-string-hidden]
+
 [fixture: railroad/quotes/ir-string-runs-collapsed]
 
 IR、EBNF、PEG は両方の引用符とバックスラッシュエスケープを認めます。
@@ -819,6 +829,10 @@ railroad-peg-beta
 `printWidth` や元の空白による改行には依存しません。
 文法の階層を一貫して示すためです。
 末尾コンマは加えません。
+固定した版の mermaid.js は、後ろに引数がない IR 呼出しのコンマを拒否するので、
+複数行の呼出しにも末尾コンマを加えません。
+
+[corpus fixture: railroad/ir-choice-trailing-comma]
 
 `terminal`、`nonterminal`、`special` は、
 引用値と一つのコンパクトな単位にします。
@@ -1030,7 +1044,7 @@ railroad-peg-beta
 独立した行の `}` は文と同じ段に置きます。
 `{` が `accDescr` の行にあるときは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: railroad/multiline-values/abnf-columns]
 
@@ -1101,8 +1115,13 @@ last";
 共有の共通行配置を使います。
 非空値の通常の外端の空白だけを除いて `title value` にし、
 `null` と空白だけの値は裸の `title` にします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`title` と空でない値の間に空白 1 つを与え（Prettier は `return  x` を
+`return x;` と印字する）、行末の空白とタブを除きます。
+そのため、空の値の title は `title` だけになります。
 引用符に見える内容とエスケープは保ち、
 値の中の空白とタブの連なりは空白 1 つにして印字します。
+
 次の物理行から値を取りません。
 `title`、改行、`r=terminal("x");` を `title r=terminal("x");` とつなぐと、
 規則 `r` が題のテキストになり、固定した版の Db と、
@@ -1125,6 +1144,8 @@ mermaid.js が固定した版で作る Db と、対象にする版のすべて�
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+題の最後のディレクティブの後の空白とタブは行末にあるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が除きます。
 
 [fixture: railroad/title/ir-rule-on-next-line]
 
@@ -1248,6 +1269,8 @@ railroad-peg-beta
 U+2029 があるときを除きます。
 （[改行かセミコロンを含むディレクティブ](./compatibility.ja.md#改行かセミコロンを含むディレクティブ)）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+accessibility の値の最後のディレクティブの後の空白とタブは行末にあるので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が除きます。
 
 [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]
 
@@ -1352,7 +1375,7 @@ Db で LF 後の字下げが取り除かれるためです。
 独立した行の `}` は文と同じ段に置きます。
 `{` が `accDescr` の行にあるときは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: railroad/description-blocks/abnf-lines]
 [fixture: railroad/description-blocks/ebnf-lines]
@@ -1481,6 +1504,9 @@ mermaid.js が読まないからで、
 コンマや閉じ括弧の前のコメントは引数の後ろに残します。
 行コメントの後ろのトークンは後の行に置きます。
 独立したコメント行は引数の段に順序を保って置き、空行は1つまでにします。
+Prettier は 2 つのものの間に空行を最大 1 つしか印字しません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+引数の段の独立したコメントの間の空行も、最大 1 つにします。
 構築関数と開き括弧の間のコメントは、その間に残します。
 その位置に改行があれば、両方の括弧を継続行として字下げし、
 引数をさらに1段深く置きます。
@@ -1842,6 +1868,7 @@ railroad-peg-beta
 規則、呼び出し、リスト構成要素、group、後置演算子、例外、repeat と基本式、
 先読み条件と適用先の隙間を保ちます。
 本文の開始記号は字下げできますが、内部と閉じ記号は元の列を保ちます。
+
 図固有の形の YAML や JSON を整形せず、注釈類を除いた値も使いません。
 三つの囲み記号が一つの形になる場合と、
 失敗したディレクティブ開始記号がパーセントコメントになる場合も保ちます。
@@ -2921,6 +2948,9 @@ railroad-peg-beta
 通常の連続空行を最大1行にし、文書と本文の端の空行を除きます。
 通常の空白だけの行を空にし、見出しと完結した構造の無害な ASCII 余白を除きます。
 他の平坦な図種と同じ見通しにするためです。
+Prettier は空行を空にし、行末の空白とタブを除きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、通常の空白だけの行を空にし、
+見出しと完結した構造の後の無害な ASCII の余白を除く形を与えます。
 値、コメント末尾、ディレクティブと隠れた形の内部、必要な閉じ記号余白、前置部分、
 保護区間は各規則に従います。
 ABNF の見かけの終端後の空白は無害と推測せず、
@@ -3110,8 +3140,18 @@ CRLF、CR で出力します。
 先頭 BOM は埋め込み先の除去と復元の制限に従います。
 LS、PS、NBSP、BOM は通常の図固有の隙間の空白にはしません。
 文字列、special sequence、図固有の行コメントが所有するものは保ちます。
+mermaid.js の Db は、文字列の値に U+2028、U+2029、NBSP、BOM を含めます。
+通常の空白や LF への置き換えは値を変え、
+空白とタブの連なりの例外にも含まれないため、文字列ではこれらの文字を保ちます。
 共有の共通値は、記法で定義された空白を両端から除きます。
 Unicode の区切り文字を構造上の改行へ変えず、図固有の所有関係に従うためです。
+非空の 1 行の accessibility 値では、キーのコロンの後に空白 1 つを置き、
+行末の空白とタブを除く形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+そのため、値の末尾の余白は除かれます。
+
+[corpus fixture: railroad/ebnf-line-string-values]
+[corpus fixture: railroad/ir-space-string-values]
 
 [test: railroad/line-terminators-and-unicode/ir-cr]
 
@@ -3245,6 +3285,10 @@ railroad-peg-beta
 通常の受理本文は設定した末尾改行1個で終えます。
 空本文、規則、メタデータ、コメント、閉じた隠れた形が対象です。
 ファイル末尾を揃えるためです。
+Prettier は通常の JavaScript、CSS、YAML、Markdown の末尾に、
+空行を置かず改行を 1 つ印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+通常の railroad 本文にも同じ末尾を与えます。
 EOF まで達する `Root` ディレクティブ、必要な隠れた形の余白、
 保護された末尾と前置部分は共有の例外に従います。
 ABNF の終端後に空白は加えません。

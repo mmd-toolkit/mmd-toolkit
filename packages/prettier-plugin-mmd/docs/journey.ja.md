@@ -27,7 +27,7 @@ journey の木は平らで、文のブロックがないので、文の段は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ヘッダーの後の文はヘッダーより 1 段深く、section のタスクとそのほかのどの文も、
 `section` の行より 1 段深く置きます。
-Prettier が ブロックの中の行を印字する形です。
+Prettier がブロックの中の行を印字する形です。
 
 [fixture: indentation/sections-and-tasks-nested]
 [fixture: indentation/statements-before-the-first-section]
@@ -54,7 +54,7 @@ Prettier が ブロックの中の行を印字する形です。
 独立した行の `}` は文と同じ段に置きます。
 `{` が `accDescr` の行にあるときは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -652,7 +652,7 @@ mermaid.js が説明から LF 後の字下げを除くためです。
 独立した行の `}` は文と同じ段に置きます。
 `{` が `accDescr` の行にあるときは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
-Prettier が ブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -945,7 +945,7 @@ journey
 テキストの末尾のコメントは最後の文の段です。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
-Prettier が ブロックの中のコメント行をそう印字するためです。
+Prettier がブロックの中のコメント行をそう印字するためです。
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
@@ -1025,7 +1025,7 @@ journey # c
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ブロックの中の単独のディレクティブ行は、
 そのブロックを開く行より 1 段深く置きます。
-Prettier が ブロックの中の行をそう印字するためです。
+Prettier がブロックの中の行をそう印字するためです。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。

@@ -551,6 +551,9 @@ mindmap
 空行、コメント行、図のコメントは、
 ヘッダーの後のどこにあっても Db に影響しません。
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+Prettier は、JavaScript、CSS、YAML、Markdown の先頭の空行を落とします。
+mindmap のテキストの先頭でも、ヘッダーの前の空行を落とす形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 他の図種と同じ規則です。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
@@ -1021,6 +1024,9 @@ mermaid.js は、区切り文字の後ろのコメント行を、
 コメントの後ろの空白だけの行で、他の場所の同じ行と同じに印字します。
 ディレクティブは後ろの行と同じ段に置き（[ディレクティブ](#ディレクティブ)
 を参照）、空行は 1 つの空行にします（[空行](#空行) を参照）。
+Prettier は、2 つのものの間に書かれた空行を残し、連続する空行は 1 つにします。
+区切り文字で終わる図のコメントと、後ろのノードの間に空行を 1 つ残す形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 mermaid.js はどちらの置き方も拒否します（既知の差異
 [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
 印字はそれを直しません。

@@ -543,7 +543,10 @@ mindmap
 Empty lines, comment lines, and diagram comments change nothing in the Db
 wherever they stand after the header. Runs of empty lines become one empty line,
 and empty lines at the start and the end of the body are dropped, as in the
-other diagram types.
+other diagram types. Prettier drops blank lines at the start of JavaScript, CSS,
+YAML, and Markdown, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) also drops empty
+lines at the start of a mindmap, before its header.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
 [fixture: blank-lines/before-a-comment] [fixture:
@@ -993,8 +996,11 @@ directive]
 A directive line of its own, or an empty line, after the separator is a blank
 line that follows a comment, and it stands as such lines do elsewhere: the
 directive at the level of the line after it (see [Directives](#directives)) and
-the empty line as one empty line (see [Blank lines](#blank-lines)). mermaid.js
-rejects both placings (known divergence
+the empty line as one empty line (see [Blank lines](#blank-lines)). Prettier
+keeps a written blank line between two items and collapses a longer run to one,
+so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one empty
+line between the diagram comment ended by the separator and the following node.
+mermaid.js rejects both placings (known divergence
 [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.md)),
 and the printer does not repair that.
 

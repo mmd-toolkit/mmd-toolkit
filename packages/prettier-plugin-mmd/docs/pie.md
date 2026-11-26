@@ -194,15 +194,18 @@ null/empty/whitespace-only value prints bare `title`. Print a run of spaces and
 tabs inside the value as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and preserve quotes and backslashes, and all repeated assignments, including
-frontmatter fallback. The pinned grammar never joins the next physical line into
-a title: even across blank/comment/directive gaps, a following section is a
-separate statement, and where the oldest version that counts reads it otherwise,
-the cases below say so. Protected trivia and semicolon groups take precedence. A
-whitespace character that is no space or tab (U+000B, U+000C, a no-break space,
-U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, or U+FEFF) between the text
-and a `%%` comment stays where it is, with the spaces and tabs beside it printed
-as one space each: the oldest version that counts draws it as a part of the
-title, where the later versions trim it (see
+frontmatter fallback. The quotes and backslashes in a title are literal title
+characters in the Db read by mermaid.js. Removing the quotes or decoding a
+backslash sequence would change that title, so those characters stay as written.
+The pinned grammar never joins the next physical line into a title: even across
+blank/comment/directive gaps, a following section is a separate statement, and
+where the oldest version that counts reads it otherwise, the cases below say so.
+Protected trivia and semicolon groups take precedence. A whitespace character
+that is no space or tab (U+000B, U+000C, a no-break space, U+1680, U+2000 to
+U+200A, U+202F, U+205F, U+3000, or U+FEFF) between the text and a `%%` comment
+stays where it is, with the spaces and tabs beside it printed as one space each:
+the oldest version that counts draws it as a part of the title, where the later
+versions trim it (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 `title T`, a no-break space, and `%% c` is not changed, `title T`, two spaces,
 and `%% c` print `title T %% c`, and a directive that touches the comment does
@@ -224,6 +227,8 @@ holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
+[corpus fixture: pie/title-quotes]
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 pie/title/title-trim] [fixture: pie/title/title-empty] [fixture:
@@ -422,20 +427,22 @@ pie
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-For blocks that keep their braces, reuse
-[flowchart multiline values](./flowchart.md#multi-line-values) and
-[sequence multi-line values](./sequence.md#multi-line-values), which put the
-lines of such a block one step inside its statement: indentation after LF is
-absent from the description Db. The keyword and opener use one ordinary space,
-even when written touching. Protected trivia and semicolon layouts keep their
-gaps. Plain whitespace before the opener can join, including across physical or
+For blocks that keep their braces, body lines stand one step inside the
+statement. The keyword and opener use one ordinary space, even when written
+touching. Prettier puts one space before the opening brace of a block, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one-space
+gap between `accDescr` and `{`. A gap made only of whitespace has that form even
+across line breaks. Protected trivia and semicolon layouts keep their gaps.
+Plain whitespace before the opener can join, including across physical or
 Unicode line boundaries; a real comment/directive keeps its break. The form with
 `accDescr`, `%% c`, and `{D}` on separate lines stays, since mermaid.js rejects
 the form with `accDescr %% c` and `{D}` on separate lines (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Empty whitespace-only interiors print `{}` because no text needs surrounding
-whitespace. Keep comment-only blocks with comments one level inside. A separate
-`}` aligns with its statement.
+whitespace. Prettier prints empty braces without interior whitespace, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives `{}` for a
+description block whose interior contains only whitespace. Keep comment-only
+blocks with comments one level inside. A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
 the `{` stands on the `accDescr` line: it puts the closing line at the level of
 the opening line, as Prettier prints the closing line of a block. In
@@ -446,12 +453,16 @@ mermaid.js read it as a comment, leaving the description empty or just `D`,
 respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
-statement, as the other diagram types do. Keep line breaks and interior blank
-lines, and the whitespace at the end of each line of text except the last one; a
-line of whitespace only becomes an empty line. The whitespace at the end of the
-last line of text is dropped where the closer stands on a line of its own, and
-is printed as one space where the closer follows it on that line. A separate `}`
-aligns with its statement.
+statement. Keep line breaks and interior blank lines, and the whitespace at the
+end of each line of text except the last one. The oldest version that counts
+draws the whitespace at the end of a line of text before the last one in the
+description of the figure (`<desc>x  </desc>` for `x` and two spaces), so that
+whitespace stays (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A line of whitespace only becomes an empty line. The whitespace at the end of
+the last line of text is dropped where the closer stands on a line of its own,
+and is printed as one space where the closer follows it on that line. A separate
+`}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
 the `{` stands on the `accDescr` line: it puts the closing line at the level of
 the opening line, as Prettier prints the closing line of a block. Directives and
@@ -741,16 +752,22 @@ pie title style:#a;b
 
 Reuse [shared blank grouping](./flowchart.md#blank-lines): collapse ordinary
 ASCII blank runs to one and remove ordinary document/body edge blanks,
-preserving a visible grouping choice. Values, directives, ignored interiors,
-common-region joins and complete retained prefixes keep authored blanks:
-changing these can alter source roles or promote YAML. After a hidden form
-consumes LF, keep one spare LF only when a following statement needs it. At the
-document end use one configured final newline; directly after the header remove
-blank lines, since the header needs no EOL before its first statement. Elsewhere
-apply the ordinary blank-line rules after the spare LF: collapse a run to one
-blank line and clear whitespace-only lines. The spare LF meets the grammar;
-later blanks express grouping, just as after comments. Unicode-only invalid body
-lines remain corpus failures.
+preserving a visible grouping choice. Prettier keeps at most one ordinary blank
+line between statements and none at the document or body edges, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that grouping
+for ordinary blank lines. Values, directives, ignored interiors, common-region
+joins and complete retained prefixes keep authored blanks: changing these can
+alter source roles or promote YAML. After a hidden form consumes LF, keep one
+spare LF only when a following statement needs it. At the document end use one
+configured final newline; directly after the header remove blank lines, since
+the header needs no EOL before its first statement. Elsewhere apply the ordinary
+blank-line rules after the spare LF: collapse a run to one blank line and clear
+whitespace-only lines. The spare LF meets the grammar; later blanks express
+grouping, just as after comments. Prettier treats a line containing only spaces
+and tabs as a blank line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) clears those spaces
+and tabs and leaves at most one ordinary blank line after the required spare LF.
+Unicode-only invalid body lines remain corpus failures.
 
 A hidden boundary or semicolon protection can keep a statement on the header's
 line; the gap after that statement's hidden suffix still lies between
@@ -792,8 +809,11 @@ pie
 ### Trailing whitespace
 
 Reuse [C4 exterior cleanup](./c4.md#trailing-whitespace): remove harmless ASCII
-padding after headers, numbers and completed blocks. Common line edges follow
-Title and Accessibility lines. Preserve label lines, comments, directive/ignored
+padding after headers, numbers and completed blocks. Prettier removes spaces and
+tabs at the end of an ordinary line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that cleanup
+after headers, numbers and completed blocks. Common line edges follow Title and
+Accessibility lines. Preserve label lines, comments, directive/ignored
 interiors, common-region continuations and protected semicolon text. Hidden
 closing-boundary spaces are outside the node range but can preserve required
 EOL, so they remain, including at EOF.
@@ -829,11 +849,28 @@ Reuse [flowchart value columns](./flowchart.md#multi-line-values) and
 [shared no wrapping](./flowchart.md#line-wrapping): source text is authored and
 one layout should apply independently of width. Keep physical label lines, their
 continuation columns and internal blanks; description bodies follow
-[Description blocks](#description-blocks). Do not reflow long statements at
-printWidth or wrap section components. Preserve insertion order, duplicate
-converted labels, prototype/numeric-looking keys, repeated/empty common
-assignments and zero/small slices; reconstructing the resolved Map would lose
-source occurrences or change the first value.
+[Description blocks](#description-blocks). Line breaks inside a quoted label are
+label content for mermaid.js. Keeping physical label lines and internal blank
+lines preserves that content in the Db; removing an internal blank line would
+change the label. Do not reflow long statements at printWidth or wrap section
+components. A visible line break between a slice's quoted label, colon and
+number makes mermaid.js reject the section, so these components stay together
+even when the statement exceeds `printWidth`. Preserve insertion order,
+duplicate converted labels, prototype/numeric-looking keys, repeated/empty
+common assignments and zero/small slices; reconstructing the resolved Map would
+lose source occurrences or change the first value. Prototype-looking labels name
+real slices in mermaid.js, and numeric-looking labels keep Map insertion order.
+Keeping those entries and their order preserves the sections in the Db; dropping
+entries or reordering them as object keys would change the sections or their
+order.
+
+[corpus fixture: pie/db-prototype-labels] [corpus fixture:
+pie/db-numeric-label-order]
+
+[corpus fixture: pie/gram-newline-before-colon] [corpus fixture:
+pie/gram-newline-before-number]
+
+[corpus fixture: pie/label-multiline]
 
 [fixture: pie/multiline-values-and-order/multiline-label] [fixture:
 pie/multiline-values-and-order/no-wrap] [fixture:
