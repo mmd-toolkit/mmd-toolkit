@@ -457,20 +457,17 @@ respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
 statement. Keep line breaks and interior blank lines, and the whitespace at the
-end of each line of text except the last one. The oldest version that counts
-draws the whitespace at the end of a line of text before the last one in the
-description of the figure (`<desc>x  </desc>` for `x` and two spaces), so that
-whitespace stays (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-A line of whitespace only becomes an empty line. The whitespace at the end of
-the last line of text is dropped where the closer stands on a line of its own,
-and is printed as one space where the closer follows it on that line. A separate
-`}` aligns with the statement. Directives and shared removed comment regions
-keep their complete source. Trivia-bearing interiors keep their trivia. The
-first closing brace still closes the block, even inside
-quote/backslash/hidden-looking text.
+end of each line of text except the last one. A run of blank lines between two
+lines of text stays as written. A line of whitespace only becomes an empty line.
+The whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. A separate `}` aligns with the statement. Directives
+and shared removed comment regions keep their complete source. Trivia-bearing
+interiors keep their trivia. The first closing brace still closes the block,
+even inside quote/backslash/hidden-looking text.
 
 [fixture: pie/description-blocks/block-runs] [fixture:
+pie/description-blocks/blank-line-run-kept] [fixture:
 pie/description-blocks/block-empty] [fixture:
 pie/description-blocks/block-columns] [fixture:
 pie/description-blocks/block-opener-newline] [fixture:
@@ -681,21 +678,17 @@ directives in their authored gaps, including multiline contents and EOF-reaching
 endings. Within a printed line, place a directive as under
 [Directives](./flowchart.md#directives). When formatting splits units that were
 on the same line, a directive in their gap moves with the following unit: its
-right boundary stays touching or separated, while its left contact is broken.
-Rule 1 names no mark for a directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#directives),
-[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-print such a gap in the same way. A segment that holds a kept `;` is formatted
-as anywhere else, except where formatting could change which `;` the line rule
-ignores. The rule reads a segment from the first `:` after `style` or `classDef`
-to the last `#` before its last kept `;`, with no whitespace between the `:` and
-the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
-padding inside that stretch keep whether they hold whitespace, a run becoming
-one space, and the rest of the segment follows the ordinary rules of this
-diagram. Text that no part of the layout holds stays as written. For example,
-changing `accDescr {style:#x;y}` to `accDescr {style: #x;y}` changes the
-description text mermaid.js draws (see
+right boundary stays touching or separated, while its left contact is broken. A
+segment that holds a kept `;` is formatted as anywhere else, except where
+formatting could change which `;` the line rule ignores. The rule reads a
+segment from the first `:` after `style` or `classDef` to the last `#` before
+its last kept `;`, with no whitespace between the `:` and the `#` (see
+[Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
+that stretch keep whether they hold whitespace, a run becoming one space, and
+the rest of the segment follows the ordinary rules of this diagram. Text that no
+part of the layout holds stays as written. For example, changing
+`accDescr {style:#x;y}` to `accDescr {style: #x;y}` changes the description text
+mermaid.js draws (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A statement over several lines whose lines, joined with one space or with
 nothing, could change which `;` the line rule ignores keeps the text of each

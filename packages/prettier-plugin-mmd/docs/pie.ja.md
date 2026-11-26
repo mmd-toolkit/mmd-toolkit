@@ -488,13 +488,8 @@ mermaid.js が拒否するためです（詳しくは
 を参照してください）。
 通常の後続本文と独立したコメント行は、文より 1 段内側に揃えます。
 改行と内部の空行は保ちます。
+2 つのテキスト行の間の空行の連なりは、書かれたまま残します。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
-対象にする版のうち最も古い版は、最後より前のテキスト行の行末の空白を、
-図の説明に描きます（`x` と空白 2 つなら `<desc>x  </desc>`）。
-そのため、その空白は残します。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
@@ -504,6 +499,7 @@ mermaid.js が拒否するためです（詳しくは
 引用符・バックスラッシュ・隠れた形に見える文字列でも最初の `}` が閉じます。
 
 [fixture: pie/description-blocks/block-runs]
+[fixture: pie/description-blocks/blank-line-run-kept]
 [fixture: pie/description-blocks/block-empty]
 [fixture: pie/description-blocks/block-columns]
 [fixture: pie/description-blocks/block-opener-newline]
@@ -729,11 +725,6 @@ pie
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#ディレクティブ)、
-[flowchart](./flowchart.ja.md#ディレクティブ)、
-[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
 ほかの場所と同じように整形します。
 この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
