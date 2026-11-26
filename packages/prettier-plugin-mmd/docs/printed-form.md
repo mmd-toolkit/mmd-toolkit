@@ -215,8 +215,11 @@ of its diagram type.
 
 - The tasks of a section of a Gantt chart are rows of a name and its data. The
   printer puts the colons of a section in one column where its names were
-  written with padding before their colons. [Task data](./gantt.md#task-data)
-  defines when it does, and the sections that it leaves as written.
+  written with padding before their colons, a form decided under
+  [rule 4](#4-where-none-of-these-rules-gives-a-form) (see
+  [Forms decided under rule 4](#forms-decided-under-rule-4)).
+  [Task data](./gantt.md#task-data) defines when it does, and the sections that
+  it leaves as written.
 - The padding that lines the colons of a timeline or of a user journey up stays
   as written. [Periods and events](./timeline.md#periods-and-events) and
   [Task data](./journey.md#task-data) define it.
@@ -284,9 +287,9 @@ to these rules, and printed after that.
 
 ### Forms decided under rule 4
 
-These forms were decided as AGENTS.md (item 4) says, for a flowchart and a
-swimlane diagram, where none of rules 1 to 3 gives a form. The document of the
-diagram type says where each one applies and where it does not.
+These forms were decided as AGENTS.md (item 4) says, for a flowchart, a swimlane
+diagram, and a Gantt chart, where none of rules 1 to 3 gives a form. The
+document of the diagram type says where each one applies and where it does not.
 
 - Each statement stands on a line of its own: statements written on one line and
   separated by `;` are split into lines.
@@ -297,6 +300,10 @@ diagram type says where each one applies and where it does not.
   arrows, or text between `|` after the arrow.
 - With `useTabs`, a statement that holds a data block (`@{ … }`) of several
   lines is printed as written.
+- In a Gantt chart, the colons of the tasks of a section stand in one column,
+  one space after its longest name, where a name of the section was written with
+  padding before its colon, and the sections with padding whose colons were all
+  written in one and the same column share one column.
 
 ## The versions of mermaid.js that count
 

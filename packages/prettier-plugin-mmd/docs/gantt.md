@@ -374,12 +374,14 @@ U+2028 before the colon of a task] [test: U+00A0 before the colon of a task]
 
 Where a name of a section has padding before its colon (more than one whitespace
 character, or a tab), the printer puts the colons of the section one space after
-its longest name, whether the colons were in one column or not. The column is
-the narrowest that leaves one space after every name, and whitespace beyond it
-carries nothing, so it does not stay; the author can add a longer name and let
-the printer pad the others. The width of a name is the width Prettier gives a
-text, so a full-width character counts 2, and the whitespace that is set is
-spaces, which replace a tab.
+its longest name, whether the colons were in one column or not, a form decided
+under [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). The
+column is the narrowest that leaves one space after every name, and whitespace
+beyond it carries nothing, so it does not stay; the author can add a longer name
+and let the printer pad the others. The width of a name is the width Prettier
+gives a text, so a full-width character counts 2, and the whitespace that is set
+is spaces, which replace a tab.
 
 [fixture: task-data/colon-column-new-longest-name] [fixture:
 task-data/description-padding-tightened] [fixture:
@@ -387,15 +389,18 @@ task-data/colon-column-wide-characters] [fixture:
 task-data/colon-column-use-tabs]
 
 The sections with padding whose colons are all in one and the same column go on
-sharing a column: it is one space after the longest of their longest names, so
-that only the excess whitespace goes. The column is counted from the start of
-the names, since the printer indents the tasks of every section alike, and that
-is the column the colons stand in once the chart is printed. A section whose
-colons are not all in one column is on its own, with the column of its longest
-name. A section whose names are all followed by one space, with its colons in
-the column of a group, counts for the longest name of the group and is not
-changed. The tasks before the first `section` stand one level less deep, so they
-are a section of their own that shares nothing.
+sharing a column, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)): it
+is one space after the longest of their longest names, so that only the excess
+whitespace goes. The column is counted from the start of the names, since the
+printer indents the tasks of every section alike, and that is the column the
+colons stand in once the chart is printed. A section whose colons are not all in
+one column is on its own, with the column of its longest name. A section whose
+names are all followed by one space, with its colons in the column of a group,
+counts for the longest name of the group and is not changed. The tasks before
+the first `section` stand one level less deep, so they are a section of their
+own that shares nothing.
 
 [fixture: task-data/colon-column-sections-share-one-column] [fixture:
 task-data/colon-column-one-task-sections] [fixture:
@@ -437,16 +442,16 @@ joins to the next line, under a title with an ignored semicolon] [test: Gantt: a
 task that a comment that ends in a semicolon after U+2028 joins to the next
 line, and a section with padding after it]
 
-The colons stay where they are in these cases, since moving them could change
-the figure. A section in which no name has more than one space before its colon
-is left: no colon moves, and a name that touches its colon gets its one space as
-above. A section is left where the aligned lines would be longer than
-`printWidth` and longer than they are, since one long name would push every
-colon of the section far right. A chart that holds `white-space` is left, with
-its names that touch their colons, since the CSS of the chart may draw the
-whitespace at the end of a name, and the figure then depends on it. A section
-where a name holds a tab is left too, since a tab reaches the next tab stop of
-the editor, and no width that Prettier counts lines the colons up.
+The colons stay where they are in these cases. A section in which no name has
+more than one space before its colon is left: no colon moves, and a name that
+touches its colon gets its one space as above. A section is left where the
+aligned lines would be longer than `printWidth` and longer than they are, since
+one long name would push every colon of the section far right. A chart that
+holds `white-space` is left, with its names that touch their colons, since the
+CSS of the chart may draw the whitespace at the end of a name, and the figure
+then depends on it. A section where a name holds a tab is left too, since a tab
+reaches the next tab stop of the editor, and no width that Prettier counts lines
+the colons up.
 
 [fixture: task-data/colon-column-tab-in-name-kept] [fixture:
 task-data/colon-column-single-space-kept] [fixture:
