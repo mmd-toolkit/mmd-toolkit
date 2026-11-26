@@ -1682,10 +1682,12 @@ label-inner-whitespace/leading-whitespace-run-becomes-one]
 Without the space, `A[ /x/]` would become a lean-right shape with the label `x`,
 `A( -x-)` an ellipse, and `A>x@ ]` would be rejected, because the run of an edge
 id does not stop at `>` and reads `A>x` as an edge id. Such a label then has one
-space at its end too: `A[ /x/]` becomes `A[ /x/ ]`, except before the closing
-`?]` or `=]` of a slanted shape, where mermaid.js would read the space and the
-`?` or `=` as text: `A[/ -x/?]` stays as it is. The rule is the same for every
-shape and for the text between `|`.
+space at its end too, a form that corrects rule 1 (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)):
+`A[ /x/]` becomes `A[ /x/ ]`, except before the closing `?]` or `=]` of a
+slanted shape, where mermaid.js would read the space and the `?` or `=` as text:
+`A[/ -x/?]` stays as it is. The rule is the same for every shape and for the
+text between `|`.
 
 [fixture: label-inner-whitespace/leading-whitespace-every-shape-kept] [fixture:
 label-inner-whitespace/leading-whitespace-pipe-label-kept]
@@ -1926,7 +1928,8 @@ decided under
 [Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)),
 except that a data block `@{ … }` on one line whose line is wider than
 `printWidth` prints on several lines under the conditions of
-[Data blocks](#data-blocks).
+[Data blocks](#data-blocks), also a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form).
 
 [fixture: line-wrapping/print-width-ignored]
 
@@ -2408,10 +2411,13 @@ one line CRLF] [test: data blocks: flowchart one line CR]
 A block on one line whose line is longer than `printWidth` prints on several
 lines: one entry on each line, one level inside the statement, with the `}`
 alone on a line at the column of the statement, as in a block of several lines
-that moves (see below). Prettier chooses between the two forms: the block stays
-on its line where the line fits, and where the line would still be too long up
-to the `{` (a long text of the node stands before it), the lines would not
-shorten what is too long, so the block stays.
+that moves (see below). This is a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)),
+where the lines read better than the one line. Prettier chooses between the two
+forms: the block stays on its line where the line fits, and where the line would
+still be too long up to the `{` (a long text of the node stands before it), the
+lines would not shorten what is too long, so the block stays.
 
 [fixture: data-blocks/long-split] [fixture:
 data-blocks/long-prefix-too-long-kept]
@@ -2443,10 +2449,12 @@ the spaces and tabs at their ends: only the whitespace, the line breaks and the
 
   [fixture: data-blocks/long-zero-width-kept]
 
-- the printer does not indent with tabs (`useTabs`): the lines of a split block
-  are indented with spaces, which stand right for one width of a tab only, while
-  a block on its line reads the same at every width. A block on one line stays
-  on its line;
+- the printer does not indent with tabs (`useTabs`): the statement stands after
+  tabs and the lines of a split block after spaces, so their columns move with
+  the width that an editor gives a tab, while a block on its line reads the same
+  at every width. The lines would then read worse than the one line, which the
+  form decided under rule 4 does not allow. A block on one line stays on its
+  line;
 
   [fixture: data-blocks/long-use-tabs-kept]
 
@@ -3321,7 +3329,9 @@ a shape (see [Label inner whitespace](#label-inner-whitespace)):
 `subgraph S[ T ]` is printed `subgraph S[T]`, and `subgraph S["x" ]` is printed
 `subgraph S["x"]`. mermaid.js reads both spellings as the same subgraph. One
 space stays where the title would be read otherwise, with the same rule as for a
-label: `[ /x/ ]` and `[ \x\ ]` stay, since `[/x/]` would be rejected.
+label (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)):
+`[ /x/ ]` and `[ \x\ ]` stay, since `[/x/]` would be rejected.
 
 [fixture: subgraph-header/title-padding-dropped] [fixture:
 subgraph-header/title-interior-whitespace-dropped]

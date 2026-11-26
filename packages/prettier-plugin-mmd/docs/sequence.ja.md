@@ -1273,6 +1273,37 @@ ID と `accTitle` の値に属する空白は書かれたまま残します。
 [fixture: comments/after-last-statement-without-line-break]
 [fixture: comments/block-end-comment-without-line-break]
 
+メッセージ、ノート、`title`、`accTitle:` と `accDescr:` の行、
+ブロックのラベル（`loop`、`alt`、`else`、`opt`、`par`、`and`、`critical`、
+`option`、`break`）、`box` のテキスト、`as` の後の説明の中の `%%` は、
+コメントではなくテキストの文字で、テキストと一緒に残します。
+`A->>B: x %% c` は、メッセージ `x %% c` です。
+テキストの文字ではない `%%` は 2 種類あります。
+閉じたディレクティブ `%%{…}%%` は、mermaid.js がテキストを読む前に取り除きます。
+`A->>B: x%%{init: {}}%%y` は、
+メッセージ `xy` です（[ディレクティブ](#ディレクティブ)を参照）。
+U+2028 または U+2029 の直後に始まるコメント行は、mermaid.js が取り除き、
+その前のテキストとその後の行をつなぎます（[行区切り](#行区切り)を参照）。
+テキストの文字と `%%` の間の空白の連なりはテキストの中の連なりで、
+[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+のとおりに印字します。
+`A->>B: x   %% c` は `A ->> B: x %% c` と印字し、
+`accTitle:` の行の連なりは残します。
+テキストが `%%` で始まるとき、その前の空白は、
+同じ種類のほかのテキストの前と同じように印字します。
+メッセージ、ノート、`accTitle:` または `accDescr:` の行の `:` の後は、
+[コロン](#コロン)のとおりで、`title`、ブロック、
+`box` のテキストや `as` の後の説明の前は、
+[タイトル](#タイトル)と[トークンの間の空白](#トークンの間の空白)のとおりです。
+`A->>B:   %% c` は `A ->> B: %% c` と印字し、
+`loop   %% c` は `loop %% c` と印字します。
+
+[fixture: comments/percent-in-texts-kept] [fixture: directives/touching-kept]
+[fixture: title/title-between-words-directive-gap-kept]
+[test: a `%%` comment line after U+2028, which joins the next line]
+[fixture: colons/whitespace-only-text]
+[fixture: comments/percent-at-text-start-spaced]
+
 入力
 ([comments/kept-input.mmd](../tests/fixtures/sequence/comments/kept-input.mmd)):
 
