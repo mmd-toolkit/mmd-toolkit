@@ -660,6 +660,7 @@ mermaid.js は説明本文の改行を Db に記録するので、
 [fixture: cynefin/description-blocks/description-spaced-edges]
 
 [fixture: cynefin/description-blocks/description-plain-opener-newline]
+[fixture: cynefin/description-blocks/description-plain-opener-newline-block-kept]
 
 [fixture: cynefin/description-blocks/description-multiline-columns]
 

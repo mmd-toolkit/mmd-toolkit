@@ -633,7 +633,8 @@ description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: cynefin/description-blocks/description-spaced-edges]
 
-[fixture: cynefin/description-blocks/description-plain-opener-newline]
+[fixture: cynefin/description-blocks/description-plain-opener-newline] [fixture:
+cynefin/description-blocks/description-plain-opener-newline-block-kept]
 
 [fixture: cynefin/description-blocks/description-multiline-columns]
 
