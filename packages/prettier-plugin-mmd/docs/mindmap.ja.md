@@ -299,8 +299,16 @@ Db はその空白を id の一部として持ちますが、描かれるノー�
 [fixture: node-text/space-before-a-shape-dropped]
 
 ノードのテキストの中の空白は残します。
+最大の幅に達したノードのテキストは折り返され、空白の連なりをそのまま描きます。
+折り返すかどうかはフォントと幅の設定で決まり、整形器はそれを知りません。
+11.17.2、12.0.0、12.3.0 は、連なりのある長いノードのテキストを、
+空白 1 つのときと違って描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: node-text/inner-whitespace-kept]
+[fixture: node-text/long-text-run-kept]
 
 ノードのテキストは、`]`、`:`、`#`、`"`、`%%`、`:::` を文字として含み、
 単独の `%` で始まる行はコメントではなくノードのテキストです。
@@ -669,6 +677,10 @@ mindmap
 [fixture: comments/only-comments]
 
 ヘッダーの前のコメント行は 1 桁目に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの位置を与えます。
+[gantt](./gantt.ja.md#コメント)、[requirement](./requirement.ja.md#コメント)、
+[block](./block.ja.md#コメント)、[journey](./journey.ja.md#コメント)も、
+ヘッダーの前のコメント行を 1 列目に置きます。
 
 [fixture: comments/before-the-header]
 

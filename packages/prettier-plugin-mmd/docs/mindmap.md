@@ -299,9 +299,14 @@ whitespace at its end (see
 [fixture: node-text/trailing-whitespace-dropped] [fixture:
 node-text/space-before-a-shape-dropped]
 
-The whitespace inside a node text stays.
+The whitespace inside a node text stays: a node text that reaches its maximum
+width wraps and draws its runs, and whether it does depends on the font and on
+the width setting, which the formatter does not know. 11.17.2, 12.0.0, and
+12.3.0 draw a long node text with a run otherwise than with one space (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[fixture: node-text/inner-whitespace-kept]
+[fixture: node-text/inner-whitespace-kept] [fixture:
+node-text/long-text-run-kept]
 
 A node text holds `]`, `:`, `#`, `"`, `%%`, and `:::` as characters, and a line
 that starts with a single `%` is a node text, not a comment.
@@ -660,6 +665,11 @@ comments/at-the-end] [fixture: comments/bare-and-brace-lines] [fixture:
 comments/only-comments]
 
 A comment line before the header stands at the first column.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this place, as [gantt](./gantt.md#comments),
+[requirement](./requirement.md#comments), [block](./block.md#comments), and
+[journey](./journey.md#comments) put a comment line before the header at the
+first column.
 
 [fixture: comments/before-the-header]
 
