@@ -1764,6 +1764,8 @@ entity Shop.Buy
   中身は下のとおり保ちます。
 - 隠れた形の後の行です。
   その前の隙間を書かれたまま残します（[Hidden forms](#hidden-forms)を参照）。
+  ただし、GWT の項目を始める行と、最初より後の GWT の節を始める行は、
+  決まった GWT の配置に動きます。
 - 複数行のディレクティブの中の行です。
   詳しくは [Global directives](#global-directives) を参照してください。
 - 閉じておらず、引数の後の改行を取り込むディレクティブを持つ文の行と、
@@ -1795,6 +1797,10 @@ entity Shop.Buy
 
 [fixture: eventmodeling/description-blocks/description-opener-newline-unchanged]
 [fixture: eventmodeling/hidden-forms/hidden-frame-required-gaps]
+[fixture: eventmodeling/hidden-forms/header-inline-gwt-item-directive]
+[fixture: eventmodeling/hidden-forms/hidden-optional-owners]
+[fixture: eventmodeling/hidden-forms/gwt-required-source-and-given-hidden-gaps]
+[fixture: eventmodeling/hidden-forms/hidden-gwt-clause-item-owners]
 [fixture: eventmodeling/declarations-and-notes/entity-slash-comment-over-lines]
 [fixture: eventmodeling/long-lines/later-line-of-a-joined-semicolon-stretch-kept]
 [fixture: eventmodeling/long-lines/later-line-holding-a-semicolon-deeper]
@@ -1807,9 +1813,13 @@ entity Shop.Buy
 [fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-a-closed-directive-deeper]
 [fixture: eventmodeling/long-lines/later-lines-before-an-unclosed-directive-and-a-semicolon-deeper]
 [fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-adjacent-semicolons-kept]
+[fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-spaced-semicolons-kept]
+[fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-a-directive-between-semicolons-kept]
 [fixture: eventmodeling/long-lines/later-lines-of-a-statement-with-semicolons-apart-deeper]
 [test: a later line whose `;` comes before U+2028 in an eventmodeling statement that joining could change stays where it is written]
 [test: an eventmodeling statement with a `;` that the line rule ignores and U+2028 after it is printed as written]
+[test: an eventmodeling statement with a `;` that the line rule ignores and U+2029 after it is printed as written]
+[test: a later line whose `;` comes before U+2029 in an eventmodeling statement that joining could change stays where it is written]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 

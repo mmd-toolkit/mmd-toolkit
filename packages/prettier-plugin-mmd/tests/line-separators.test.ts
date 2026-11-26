@@ -10246,7 +10246,7 @@ describe("the whitespace beside a comment of an eventmodeling diagram", () => {
  * statement with a `;` that the line rule ignores and U+2028 after it, stay as
  * written (docs/eventmodeling.md, Long lines).
  */
-describe("the later lines of an eventmodeling statement with a U+2028", () => {
+describe("the later lines of an eventmodeling statement with a U+2028 or U+2029", () => {
   it("a later line after a `%%` comment after U+2028 inside a statement of an eventmodeling diagram stands one level deeper", async () => {
     await expectKept(
       "eventmodeling\ntf 01\u2028%% c\nevt Alpha\n",
@@ -10269,6 +10269,18 @@ describe("the later lines of an eventmodeling statement with a U+2028", () => {
     await expectKept(
       'eventmodeling\ntf 01\n   evt\n%% c\n   Alpha "style:#x" ;\u2028\n',
       'eventmodeling\ntf 01\n   evt\n%% c\n   Alpha "style:#x" ;\u2028\n',
+    )
+  })
+  it("an eventmodeling statement with a `;` that the line rule ignores and U+2029 after it is printed as written", async () => {
+    await expectKept(
+      'eventmodeling\ntf 01\n   evt\n%% c\n   Alpha "style:#x" ;\u2029\n',
+      'eventmodeling\ntf 01\n   evt\n%% c\n   Alpha "style:#x" ;\u2029\n',
+    )
+  })
+  it("a later line whose `;` comes before U+2029 in an eventmodeling statement that joining could change stays where it is written", async () => {
+    await expectKept(
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/ Alpha\u2029/*y*/ ->> 02\n",
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/ Alpha /*y*/ ->> 02\n",
     )
   })
 })

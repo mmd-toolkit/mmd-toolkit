@@ -1724,7 +1724,8 @@ another rule keeps as written does not move:
 
 - a line inside a value or a hidden form, whose contents stay as said below;
 - the line after a hidden form, whose gap stays as written (see
-  [Hidden forms](#hidden-forms));
+  [Hidden forms](#hidden-forms)), but for a line that starts a GWT item, or a
+  GWT clause after the first, which moves to the decided GWT layout;
 - a line inside a directive over several lines (see
   [Global directives](#global-directives));
 - the lines of a statement with a directive that is not closed and takes the
@@ -1756,6 +1757,10 @@ eventmodeling/comments/block-opener-on-a-later-line-after-a-comment-line]
 
 [fixture: eventmodeling/description-blocks/description-opener-newline-unchanged]
 [fixture: eventmodeling/hidden-forms/hidden-frame-required-gaps] [fixture:
+eventmodeling/hidden-forms/header-inline-gwt-item-directive] [fixture:
+eventmodeling/hidden-forms/hidden-optional-owners] [fixture:
+eventmodeling/hidden-forms/gwt-required-source-and-given-hidden-gaps] [fixture:
+eventmodeling/hidden-forms/hidden-gwt-clause-item-owners] [fixture:
 eventmodeling/declarations-and-notes/entity-slash-comment-over-lines] [fixture:
 eventmodeling/long-lines/later-line-of-a-joined-semicolon-stretch-kept]
 [fixture: eventmodeling/long-lines/later-line-holding-a-semicolon-deeper]
@@ -1773,13 +1778,22 @@ eventmodeling/long-lines/later-lines-of-a-statement-with-an-unclosed-directive-k
 [fixture:
 eventmodeling/long-lines/later-lines-of-a-statement-with-a-closed-directive-deeper]
 [fixture:
+eventmodeling/long-lines/later-lines-before-an-unclosed-directive-and-a-semicolon-deeper]
+[fixture:
 eventmodeling/long-lines/later-lines-of-a-statement-with-adjacent-semicolons-kept]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-spaced-semicolons-kept]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-a-directive-between-semicolons-kept]
 [fixture:
 eventmodeling/long-lines/later-lines-of-a-statement-with-semicolons-apart-deeper]
 [test: a later line whose `;` comes before U+2028 in an eventmodeling statement
 that joining could change stays where it is written] [test: an eventmodeling
 statement with a `;` that the line rule ignores and U+2028 after it is printed
-as written]
+as written] [test: an eventmodeling statement with a `;` that the line rule
+ignores and U+2029 after it is printed as written] [test: a later line whose `;`
+comes before U+2029 in an eventmodeling statement that joining could change
+stays where it is written]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 
