@@ -287,6 +287,20 @@ documentation write these four without it since
 `block-beta` stays as written, because some of the versions that count read only
 that name.
 
+A tree of a treeView diagram written with box-drawing characters is another
+exception. Of the 13 tree diagrams in the documentation of mermaid.js, 10 are
+written with indentation, so rule 3 gives the indentation form. A tree written
+with box-drawing characters is printed with them instead, redrawn from the tree
+that mermaid.js reads: each `├`, `└`, and `│` is drawn anew where the tree has a
+following sibling, a last sibling, and an ancestor whose siblings go on, so that
+the drawing says what mermaid.js reads (see [Modes](./treeview.md#modes)). The
+user chose this form, which corrects the form of rule 3, as AGENTS.md (item 4)
+says of a rule whose form reads worse than another form that draws the same. The
+choice does not reach a tree written with indentation, which rule 3 prints with
+indentation: not every such tree has a box form, since mermaid.js rejects, in a
+box diagram, an indented line that goes on without a branch prefix, such as the
+second line of a name in quotes or an annotation on a line of its own.
+
 ## 4. Where none of these rules gives a form
 
 Where none of these rules gives a form, it is not decided yet which form reads
