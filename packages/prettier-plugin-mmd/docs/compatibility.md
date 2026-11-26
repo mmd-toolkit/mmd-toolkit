@@ -5797,8 +5797,10 @@ mermaid.js drops whitespace at the start of a label without quotes, and so does
 formatting, except where the label would then be read differently or not at all:
 the whitespace is kept, as one space, when the label starts with `/`, `\`, `-`,
 or `"`, or when its first word has a `@`, and the label then gets one space at
-its end too, except before the closing `?]` or `=]` of a slanted shape, where
-mermaid.js would read the space and the `?` or `=` as text.
+its end too (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)),
+except before the closing `?]` or `=]` of a slanted shape, where mermaid.js
+would read the space and the `?` or `=` as text.
 
 [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-before-question-end-kept]
