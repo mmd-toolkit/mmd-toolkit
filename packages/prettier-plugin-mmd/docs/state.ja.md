@@ -388,7 +388,9 @@ stateDiagram-v2
 ### 1 行に 1 文
 
 各文は 1 行に 1 つ置きます。
-ほかの図種も同じです。
+[flowchart](./flowchart.ja.md#1-行に-1-文) と
+[sequence](./sequence.ja.md#1-行に-1-文) の図も同じで、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの形を与えます。
 state 図には文を区切るものがなく、
 `A --> B C --> D` のように 1 行に書かれた文は、それぞれの行に移します。
 

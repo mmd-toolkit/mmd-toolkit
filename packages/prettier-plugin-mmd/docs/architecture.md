@@ -11,9 +11,12 @@ limits are in [compatibility.md](./compatibility.md).
 ### Header
 
 Print `architecture-beta` at column one and move an ordinary first statement
-below it, as in the other diagram types. Keep empty bodies. Hidden boundaries
-and protected header/body segments take precedence; never invent a glued
-keyword.
+below it, as [sequence](./sequence.md#statements-one-per-line) and
+[ER](./er.md#statements-one-per-line) diagrams move a statement written on the
+line of their header;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form. Keep empty bodies. Hidden boundaries and protected header/body
+segments take precedence; never invent a glued keyword.
 
 [fixture: architecture/header/header-empty]
 
@@ -87,13 +90,14 @@ architecture-beta
 
 ### Statements one per line
 
-Print ordinary statements one per line, as the other diagram types do. A common
-line value owns apparent keywords through physical EOL, so do not split it:
-every version of mermaid.js that counts rejects `architecture-beta title t`
-followed by a line break and `service a; junction j` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Semicolons are not statement separators; invalid adjacent statements and empty
-descriptions used as component gaps remain failures.
+Print ordinary statements one per line, as
+[flowchart](./flowchart.md#statements-one-per-line),
+[sequence](./sequence.md#statements-one-per-line), and
+[state](./state.md#statements-one-per-line) diagrams do;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form. A common line value owns apparent keywords through physical EOL, so
+do not split it. Semicolons are not statement separators; invalid adjacent
+statements and empty descriptions used as component gaps remain failures.
 
 [fixture: architecture/statements-one-per-line/line-value-owns-keywords]
 

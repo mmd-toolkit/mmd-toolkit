@@ -382,9 +382,12 @@ stateDiagram-v2
 
 ### Statements one per line
 
-Each statement stands on a line of its own, as in the other diagram types.
-Nothing separates statements in a state diagram, and statements written on one
-line, as in `A --> B C --> D`, are moved to lines of their own.
+Each statement stands on a line of its own, as in
+[flowchart](./flowchart.md#statements-one-per-line) and
+[sequence](./sequence.md#statements-one-per-line) diagrams;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form. Nothing separates statements in a state diagram, and statements
+written on one line, as in `A --> B C --> D`, are moved to lines of their own.
 
 [fixture: statements-one-per-line/states] [fixture:
 statements-one-per-line/split-then-comment] [fixture:

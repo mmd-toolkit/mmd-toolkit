@@ -361,19 +361,32 @@ whitespace was written, and none where it touches (see [Comments](#comments)).
 
 Data of whitespace only is a task with an empty score and no people, and
 mermaid.js needs a character after the colon: `A: ` is a task, and `A:` is
-rejected. So one whitespace character stays after the colon, the first one as
-written, and the rest is dropped. Where a comment or another character follows
-on the line, the line is printed as written, since the whitespace is read
-together with it.
+rejected. So where the data is spaces and tabs only, one of them stays after the
+colon, the first one as written, and the rest is dropped. Where a comment or
+another character follows on the line, the line is printed as written, since the
+whitespace is read together with it.
 
 [fixture: task-data/whitespace-only-data] [fixture:
 task-data/whitespace-only-data-then-comment]
 
-A directive between the parts of a task stays where it is (see
-[Directives](#directives)).
+Data of whitespace only that holds a whitespace character that is no space or
+tab, such as a no-break space, U+3000, U+2028, or U+2029, keeps its line as
+written too, the spaces and tabs beside that character included.
 
 [test: U+00A0 as the entire data of a journey task] [test: U+2028 as the entire
 data of a journey task] [test: U+2029 as the entire data of a journey task]
+[test: U+00A0 followed by spaces as the entire data of a journey task] [test: a
+space followed by U+00A0 as the entire data of a journey task] [test: U+3000
+followed by spaces as the entire data of a journey task] [test: U+FEFF followed
+by spaces as the entire data of a journey task] [test: U+2028 followed by spaces
+as the entire data of a journey task] [test: a tab followed by U+00A0 as the
+entire data of a journey task] [test: U+00A0 followed by a comment in the data
+of a journey task] [test: U+00A0 and spaces as the data of a journey task at the
+end of the text] [test: U+00A0 and spaces as the data of a journey task before
+another task]
+
+A directive between the parts of a task stays where it is (see
+[Directives](#directives)).
 
 Input
 ([task-data/people-comma-spacing-input.mmd](../tests/fixtures/journey/task-data/people-comma-spacing-input.mmd)):
