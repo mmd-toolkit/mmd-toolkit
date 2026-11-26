@@ -2717,13 +2717,8 @@ directives/unclosed-after-statement-kept]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
-break its left contact.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this placement, as [radar](./radar.md#global-directives),
-[packet](./packet.md#global-directives), and
-[wardley](./wardley.md#global-directives) place a directive in the gap of units
-that formatting splits, where no other rule keeps the layout as written (a
-directive that is not closed after a statement).
+break its left contact. A directive that is not closed after a statement keeps
+its layout as written.
 
 [fixture: er/directives/whitespace-on-both-sides]
 

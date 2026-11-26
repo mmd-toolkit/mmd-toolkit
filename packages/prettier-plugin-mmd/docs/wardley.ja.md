@@ -3149,16 +3149,7 @@ wardley-beta
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#ディレクティブ)、
-[flowchart](./flowchart.ja.md#ディレクティブ)、
-[journey](./journey.ja.md#ディレクティブ)も、
-この隙間を同じに印字します（flowchart は `A%%{init: {}}%%-->B` を
-`A %%{init: {}}%%--> B` に、
-sequence は `A->>%%{init: {}}%%B: x` を `A ->> %%{init: {}}%%B: x` に印字し、
-ここでは `component%%{wrap}%%Glued` を `component %%{wrap}%%Glued`
-に印字します）。
+`component%%{wrap}%%Glued` は `component %%{wrap}%%Glued` と印字します。
 普通の独立行は本文の段に揃えます。
 [flowchart](./flowchart.ja.md#ディレクティブ)も、単独の行のディレクティブを、
 周りの文と同じ段に置きます。
