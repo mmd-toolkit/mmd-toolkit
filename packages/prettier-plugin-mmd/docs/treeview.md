@@ -61,9 +61,10 @@ treeView-beta
 
 ### Modes
 
-Keep the original indentation or box-drawing mode. For box-drawing input this is
-the form the user chose, correcting the form of
-[rule 3](./printed-form.md#3-a-spelling). Of the 13 tree diagrams in the
+Keep the original indentation or box-drawing mode. For box-drawing input this
+form corrects the form of [rule 3](./printed-form.md#3-a-spelling): the box
+characters show on each line whether a sibling follows, the node is the last
+child, or the siblings of an upper level go on. Of the 13 tree diagrams in the
 documentation of mermaid.js, 10 are written with indentation and 3 with box
 characters, so [rule 3](./printed-form.md#3-a-spelling) gives the indentation
 form, and an input written with indentation stays in indentation mode. Some of
