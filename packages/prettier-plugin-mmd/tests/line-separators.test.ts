@@ -10238,6 +10238,21 @@ describe("the whitespace beside a comment of an eventmodeling diagram", () => {
   )
 })
 
+/**
+ * A `%%` comment after U+2028 inside a statement of an eventmodeling diagram
+ * joins the line after it to its line in mermaid.js, and no rule keeps that
+ * line as written: it stands one level deeper, as any later line of a
+ * statement (docs/eventmodeling.md, Long lines).
+ */
+describe("the later line after a joining comment region of an eventmodeling diagram", () => {
+  it("a later line after a `%%` comment after U+2028 inside a statement of an eventmodeling diagram stands one level deeper", async () => {
+    await expectKept(
+      "eventmodeling\ntf 01\u2028%% c\nevt Alpha\n",
+      "eventmodeling\ntf 01 %% c\n  evt Alpha\n",
+    )
+  })
+})
+
 /** The printers that docs/eventmodeling.md, Comments, cites: where they print the characters before a comment otherwise. */
 const commentGapPrecedentExamples: readonly (readonly [
   string,

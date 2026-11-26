@@ -537,8 +537,8 @@ decides, as [block](./block.md#multi-line-statements),
 [sequence](./sequence.md#multi-line-statements), and
 [flowchart](./flowchart.md#accessibility-lines) put the later parts of a
 statement and the standalone trivia one continuation level inside the statement,
-where no other rule keeps the layout as written (a comment region that joins
-physical lines, a line that holds a `;`). The line breaks next to the comment
+where no other rule keeps the layout as written (a line that a comment region
+joins to the line before it, see below). The line breaks next to the comment
 line or the directive stay for the reason given under
 [Multi-line statements](#multi-line-statements).
 

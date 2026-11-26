@@ -486,14 +486,13 @@ to a comment or a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep such a line break, where no
-other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`). Before the first direction, before a `,`, and
-before the `)`, a comment line or a directive line stays where it is written, at
-column one or indented, and the next line is not indented, since the whitespace
-there is in the Db (see above); after a `,`, where the whitespace is in no
-direction, the comment line or the directive line and the next line stand one
-level deeper, as [flowchart](./flowchart.md#multi-line-statements) and
+[journey](./journey.md#multi-line-statements) keep such a line break. Before the
+first direction, before a `,`, and before the `)`, a comment line or a directive
+line stays where it is written, at column one or indented, and the next line is
+not indented, since the whitespace there is in the Db (see above); after a `,`,
+where the whitespace is in no direction, the comment line or the directive line
+and the next line stand one level deeper, as
+[flowchart](./flowchart.md#multi-line-statements) and
 [xychart](./xychart.md#multi-line-statements) put the continuations of a
 statement one level deeper. A directive on the line of the direction stays
 touching or separated as written after the `(`, before a `,`, and before the

@@ -1756,9 +1756,15 @@ entity Shop.Buy
 [journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
 文の後続の行と、その間のコメントやディレクティブの行は、
 文より 1 段深く置きます。
-ただし、ほかの規則が配置を書かれたまま残す所は別です。
-物理行を結ぶコメント領域と、`;` を含む行がそれです。
 `{` が後の行にあるブロックを閉じる `}` は、文の段に置きます。
+ほかの規則が書かれたまま残す後続の行は、動かしません。
+値や隠れた形の中の行は、下のとおり中身を保ちます。
+隠れた形の後の行も、
+その前の隙間を書かれたまま残します（[Hidden forms](#hidden-forms)を参照）。
+ブロックコメントが続く行（[Comments](#comments)を参照）もそうです。
+行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる文の行も、
+同じです（[Semicolons](#semicolons)を参照）。
 構造上の分割を加えるのは決定済みの GWT 節・項目配置です。
 値、隠れた形、メタデータ、保護境界の内容は、
 [データブロック](#data-blocks) の限定的な本文の余白の変更を除いて保ちます。
@@ -1769,6 +1775,13 @@ entity Shop.Buy
 [fixture: eventmodeling/long-lines/break-next-to-directive]
 [fixture: eventmodeling/long-lines/break-next-to-percent-comment]
 [fixture: eventmodeling/comments/block-opener-on-a-later-line-after-a-comment-line]
+
+[fixture: eventmodeling/description-blocks/description-opener-newline-unchanged]
+[fixture: eventmodeling/hidden-forms/hidden-frame-required-gaps]
+[fixture: eventmodeling/declarations-and-notes/entity-slash-comment-over-lines]
+[fixture: eventmodeling/long-lines/later-line-of-a-joined-semicolon-stretch-kept]
+[fixture: eventmodeling/long-lines/later-line-holding-a-semicolon-deeper]
+[test: a later line after a `%%` comment after U+2028 inside a statement of an eventmodeling diagram stands one level deeper]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 
