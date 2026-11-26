@@ -1432,6 +1432,8 @@ run of blank lines is one blank line at most, as
 line stands as under [Comments](#comments).
 
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
+[fixture:
+semicolons-at-the-end-of-a-style-statement/blank-line-run-and-comment-line]
 
 An empty description block follows its usual layout while the style terminator
 is dropped.
@@ -1495,21 +1497,10 @@ multi-line-statements/string-continued-joined]
 
 Comments and directives keep line breaks without freezing structural columns:
 continuations and intervening trivia stand one level deeper. This applies to
-block headers, fields, relationships and other statements. Rule 1 names no mark
-for a line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the later parts of
-a statement and the comment and directive lines between them one level deeper,
-where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text, and
-the like). The line that holds the name and the `{` of a block is not one of
-those later parts: it stands at the level of its statement, and neither these
-precedents nor the other rules of
-[How the printed form is decided](./printed-form.md) give that level, so the
-form that the released version prints stays until the level is decided (see
+block headers, fields, relationships and other statements. The line that holds
+the name and the `{` of a block stands at the level of its statement. No rule of
+[How the printed form is decided](./printed-form.md) gives these levels, so the
+form that the released version prints stays until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Whitespace inside values and before the first line break of each gap stays.
 After the `-` of a relation, before such a line break, it is needed: every
