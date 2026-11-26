@@ -8135,16 +8135,20 @@ mermaid.js がこう読む行は、ソースの何行にもまたがります。
 整形は、その行の空白と改行を、最初の行から終わりまで、その上にある文ごと、
 書かれたまま残します。
 文の間の空白は整形せず、コメント行の後の行も字下げしません。
-これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則です。
-例外は eventmodeling 図です。
-eventmodeling 図は、コメント行の前の U+2028 か U+2029 を空白 1 つにして印字し、
-コメント行の後の行は、文の後続の行と同じく 1 段深く置きます。
-詳しくは [Comments](./eventmodeling.ja.md#comments) と
-[Long lines](./eventmodeling.ja.md#long-lines) を参照してください。
-mindmap もこの規則に従います。
-mindmap が自分の行に置くのは、ノードのコメントのうち、
-U+2028 か U+2029 で終わるものの後のテキストで、これはコメント行ではありません。
+これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則で、
+例外は 2 つです。
+eventmodeling 図は、コメント行の前の U+2028 か U+2029 を、
+空白 1 つにして印字します。
+ただし、`title`、`accTitle`、`accDescr` の値の中では残します。
+詳しくは [Comments](./eventmodeling.ja.md#comments) を参照してください。
+コメント行の後の行は、前の文の続きなら、文の後続の行と同じく 1 段深く置き、
+文を始めるなら、文の段に置きます。
+詳しくは [Long lines](./eventmodeling.ja.md#long-lines) を参照してください。
+mindmap では、U+2028 か U+2029 が、
+ノードかヘッダーの後の図のコメントを終えるとき、
+その後のコメント行を自分の行に置き、その次の行はノードの行になります。
 詳しくは [行区切り文字](./mindmap.ja.md#行区切り文字) を参照してください。
+それ以外では、mindmap もこの規則に従います。
 そのようなコメント行が途中で切る図のコメントも、
 書かれたまま印字します（[行区切り](./sequence.ja.md#行区切り)を参照）。
 領域が名前の中にあるときも同じです。
@@ -8159,6 +8163,10 @@ ER 図では、そのような行にある実体のブロックだけは、
 
 [test: mindmap/line-separators/comment-region-continuation-kept]
 [test: eventmodeling/long-lines/comment-region-continuation-one-level-deeper]
+[test: eventmodeling/statements-one-per-line/comment-region-joined-statement-at-the-statement-level]
+[test: U+2028 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2028 before a comment line and a directive]
+[test: U+2028 after a comment on the header line]
 
 `;` がテキストの文字として行を一緒に残す行は、たとえば `title T;` や、
 kanban の section のテキスト `S[x;]` で、U+2028 か U+2029 の後のコメント行ごと、

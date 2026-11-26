@@ -7865,15 +7865,18 @@ formatter keeps the whitespace and the line breaks of such a line as written,
 from its first line to its end, with the statements that stand on it: it does
 not format the whitespace between them, and it does not indent the lines after
 the comment line. This is one rule for every statement, block opening, and
-header, but for an eventmodeling diagram, which prints the U+2028 or U+2029
-before the comment line as one space and stands the line after the comment line
-one level deeper, as any later line of a statement (see
-[Comments](./eventmodeling.md#comments) and
-[Long lines](./eventmodeling.md#long-lines)). A mindmap follows the rule too;
-what it puts on a line of its own is the text after a comment of a node that a
-U+2028 or U+2029 ends, which is no comment line (see
-[Line separators](./mindmap.md#line-separators)). A diagram comment that such a
-comment line cuts is printed as written as well (see
+header, with two exceptions. An eventmodeling diagram prints the U+2028 or
+U+2029 before the comment line as one space, but in the value of a `title`, an
+`accTitle`, or an `accDescr`, where it stays (see
+[Comments](./eventmodeling.md#comments)), and stands the line after the comment
+line one level deeper where it goes on the statement before it, as any later
+line of a statement, and at the level of the statements where it starts a
+statement (see [Long lines](./eventmodeling.md#long-lines)). In a mindmap, where
+the U+2028 or U+2029 ends a diagram comment, after a node or after the header,
+the comment line after it stands on a line of its own, and the line after that
+is the line of a node (see [Line separators](./mindmap.md#line-separators));
+elsewhere a mindmap follows the rule. A diagram comment that such a comment line
+cuts is printed as written as well (see
 [Line separators](./sequence.md#line-separators)). The same holds where the
 region lies inside a name, in an ER diagram and in a quadrant chart. In an ER
 diagram, the block of an entity on such a line is the one part whose whitespace
@@ -7884,7 +7887,11 @@ line that holds the start of such a comment line (see
 [ER](./er.md#multi-line-statements)).
 
 [test: mindmap/line-separators/comment-region-continuation-kept] [test:
-eventmodeling/long-lines/comment-region-continuation-one-level-deeper]
+eventmodeling/long-lines/comment-region-continuation-one-level-deeper] [test:
+eventmodeling/statements-one-per-line/comment-region-joined-statement-at-the-statement-level]
+[test: U+2028 before a `%%` comment after the text of the title of the header
+line of an eventmodeling diagram stays as written] [test: U+2028 before a
+comment line and a directive] [test: U+2028 after a comment on the header line]
 
 A line that a `;` of its text keeps together, as `title T;` or the text of a
 kanban section `S[x;]`, is printed as written with the comment line after a

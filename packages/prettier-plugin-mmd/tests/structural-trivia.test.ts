@@ -1,7 +1,9 @@
 /**
  * Joining comment regions keep their raw columns inside structural statements,
- * also in a mindmap; an eventmodeling diagram prints the separator before the
- * comment line as a space and the line after it one level deeper
+ * also in a mindmap where the separator ends no diagram comment; an
+ * eventmodeling diagram prints the separator before the comment line as a space
+ * outside a title or accessibility value, and the line after it one level deeper
+ * where it goes on a statement and at the statement level where it starts one
  * (docs/compatibility.md, A comment line after U+2028 or U+2029).
  */
 import { describe, expect, it } from "vitest"
@@ -77,6 +79,11 @@ describe("structural trivia boundaries", () => {
       name: "eventmodeling/long-lines/comment-region-continuation-one-level-deeper",
       input: "eventmodeling\ntf 01 evt\u2028%% c\n   Alpha\n",
       output: "eventmodeling\ntf 01 evt %% c\n  Alpha\n",
+    },
+    {
+      name: "eventmodeling/statements-one-per-line/comment-region-joined-statement-at-the-statement-level",
+      input: "eventmodeling\ntf 01 evt Alpha\u2028%% c\n   tf 02 evt Beta\n",
+      output: "eventmodeling\ntf 01 evt Alpha %% c\ntf 02 evt Beta\n",
     },
     {
       name: "c4/indentation/comment-region-keeps-a-joined-statement-line",
