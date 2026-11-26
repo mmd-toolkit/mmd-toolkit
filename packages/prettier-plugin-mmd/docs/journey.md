@@ -1053,12 +1053,7 @@ journey # c
 A directive on a line of its own stands at the level of the statement after it,
 and a directive within a printed line is placed as in a flowchart: the gap is
 printed as without the directive, and the directive stands after its space and
-touches the unit that follows it. The tree of a user journey is flat: a section
-holds no block that ends, so the statement after the directive decides its
-level, and
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the form of a [Gantt chart](./gantt.md#directives), which places a directive
-before a section and before a task in the same way.
+touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/levels-around-sections]
 [fixture: directives/before-header] [fixture:

@@ -1080,11 +1080,6 @@ journey # c
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
-user journey の木は平らで、section は終わるブロックを持たないので、
-ディレクティブの次の文がその段を決めます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)は、
-[Gantt チャート](./gantt.ja.md#ディレクティブ)の形を与えます。
-Gantt チャートも、section の前と task の前のディレクティブを同じように置きます。
 
 [fixture: directives/kept] [fixture: directives/levels-around-sections]
 [fixture: directives/before-header]
