@@ -117,6 +117,10 @@ mermaid.js の行の規則が読む `;` がある行では、文を動かしま�
 その行がヘッダーの行であるときは、文はヘッダーの行に残ります。
 行の末尾にある、規則が無視する `;` は落とします。
 印字した行には規則が読む `;` がないので、その空白はほかと同じに整えます。
+行末の、行の規則が無視する `;` を落とした後は、
+`classDef c color: #f00` のコロンはキーのコロンです。
+その前に空白を置かず、後ろに空白 1 つを置く形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
 [fixture: statements-one-per-line/line-rule-line-kept-together]
@@ -183,6 +187,9 @@ quadrantChart
 空行は、Db に入らない書き手の選択で、
 1 つの空行がそれを最小の手間で示します（[空行](./flowchart.ja.md#空行)を参照）。
 Prettier がコードでそうするのと同じです。
+Prettier は、テキストやブロックの先頭に空行を置きません。
+ヘッダーより前と、ヘッダーと最初の文の間に空行を置かない形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: blank-lines/runs-become-one]
 [fixture: blank-lines/none-after-the-header]
@@ -218,6 +225,9 @@ quadrantChart
 mermaid.js はこの大文字小文字だけを検出するので、印字側が選ぶものはありません。
 前後の空白は落とし、
 同じ行の後ろの文は自分の行に移します（[1 行 1 文](#1-行-1-文)を参照）。
+Prettier は、行末の空白とタブを落とします。
+ヘッダー行の末尾からも空白とタブを落とす形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 
 [fixture: header/header-only] [fixture: header/trailing-whitespace-dropped]
 [fixture: header/comment-after-the-header]
@@ -244,6 +254,10 @@ quadrantChart %% c
 ### キーワードとテキスト
 
 文のキーワードとテキストは、空白 1 つで離します。
+Prettier は、キーワードとそれが取るものの間に空白 1 つを置き、
+`return  x;` を `return x;` と印字します。
+文のキーワードとテキストも、接して書かれていても空白 1 つで離す形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 空白の連なりは空白 1 つにします。
 テキストや文字列に接しているキーワードには、空白を 1 つ加えます。
 `x-axisL --> R` は `x-axis L --> R` に、`quadrant-3C` は `quadrant-3 C` に、
@@ -285,6 +299,9 @@ Prettier が `return  x` を `return x;` と印字するためです。
 2 つの単語の間のタブは空白にします。
 改ページは空白でもタブでもないので残します。
 テキストの両端の空白は、Db が落とすので落とします。
+Db は、テキストの末尾の空白とタブを落とします。
+Prettier も行末の空白とタブを落とすので、行末でそれらを落とす形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 文字列とその後の単語は、間の空白を保ちます。
 `"a" b` のテキストは `a b` で、`"a"b` のテキストは `ab` だからです。
 
@@ -679,6 +696,9 @@ quadrantChart
 テキストは行の残りで、両端の空白は落とします。
 中の空白とタブの連なりは空白 1 つにして印字します。
 テキストのない `title` は、キーワードだけを印字します。
+テキストのない `title` の後の空白とタブは、行末にあります。
+空白とタブを落としてキーワードだけにする形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 title の中の `;`、`#`、`%%`、引用符、キーワードは、そのテキストの文字です。
 
 [fixture: titles-and-accessibility-statements/title-text]
@@ -925,7 +945,13 @@ mermaid.js が複数行にわたって読む文は、
 説明本文の行は文より 1 段深くそろえます。
 Mermaid が LF 後の字下げを除くためです。
 それ以外の文字と改行は保ちます。
+`accDescr` ブロックの途中の行の行末の空白は、Db が持ち、
+除くと対象にするどの版も別の説明の文字を SVG に入れるので、残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
+[fixture: multi-line-values/description-block-inner-line-trailing-spaces-kept]
 [fixture: multi-line-values/string-with-line-breaks-kept]
 [fixture: multi-line-values/description-block-lines-kept]
 [fixture: multi-line-values/comment-line-inside-a-block-kept]
@@ -1214,6 +1240,10 @@ title、アクセシビリティのテキスト、説明ブロックのテキス
 [journey](./journey.ja.md#行区切り文字) と
 [timeline](./timeline.ja.md#行区切り文字) も、
 これを含む間隔を書かれたまま印字します。
+テキストの中の空白は、Db に入ります。
+U+2028 か U+2029 を含むテキストは、
+[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+の例外の対象外なので、内部の空白とタブを書かれたまま残します。
 
 [test: U+2028 between the words of a text]
 [test: U+2029 between the words of a text] [test: U+2028 at the end of a text]
@@ -1253,6 +1283,13 @@ SVG は同じか、両方とも拒否されました。
 アクセシビリティの文のコロンと括弧については
 [title とアクセシビリティの文](#title-とアクセシビリティの文)と
 [空の説明ブロック](#空の説明ブロック)が定めるものです。
+アクセシビリティの文は、図に 1 つの title か説明を与えるので、
+コロンはキーのコロンです。
+点の角括弧の内側とコンマの前は空白なし、コンマの後は空白 1 つで、
+アクセシビリティの文のコロンの前は空白なし、後は空白 1 つという形を、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+説明ブロックを開く波括弧の前は空白 1 つ、空の波括弧の内側は空白なしという形も、
+同じ規則が与えます。
 点の `]` の後では受理されません（[行区切り文字](#行区切り文字)を参照）。
 
 [test: U+00A0 between the words of a text]
