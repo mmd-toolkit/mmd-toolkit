@@ -5388,8 +5388,8 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   [fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-over-lines]
   [fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-on-a-kept-line]
 
-- agentflow、C4、Gantt、ユーザージャーニー、quadrant、requirement、sequence、
-  state、timeline、XY チャートの図と、
+- agentflow、C4、class、Gantt、ユーザージャーニー、quadrant、requirement、
+  sequence、state、timeline、XY チャートの図と、
   対象にする版のうち最も古い版が読む pie と gitGraph の図で、
   同じ行の `}` の後にコメントがある場合です。
   これらの図種は、コロンの形の本文の一部として `%%` を読むため、
@@ -5397,13 +5397,25 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   ブロック `accDescr {a} %% c` の説明は `a` です。
   コロンの形の本文を `%%` の前で終える図種（後述）では、
   両方の形の説明が `a` になり、ブロックをコロンの形で印字します。
-  class、ER、flowchart、swimlane、ユースケースの図は、
+  ER、flowchart、swimlane、ユースケースの図は、
   後ろにコメントがあるブロックを拒否します。
 
+  [fixture: agentflow/accessibility/block-then-comment-kept]
+  [fixture: c4/statements-one-per-line/description-comment-adjacency]
+  [fixture: class/multi-line-values/block-then-comment-kept]
+  [fixture: gantt/accessibility-statements/block-then-comment-kept]
+  [fixture: journey/accessibility-statements/block-then-comment-kept]
+  [fixture: quadrant/comments/comment-after-a-description-block]
+  [fixture: requirement/accessibility-statements/block-then-comment-kept]
   [fixture: sequence/multi-line-values/block-then-comment-kept]
+  [fixture: state/multi-line-values/block-then-comment-kept]
+  [fixture: timeline/comments/block-then-percent-comment-kept]
+  [fixture: xychart/comments/comment-after-a-description-block]
   [fixture: pie/description-blocks/block-then-comment]
   [fixture: pie/description-blocks/block-trailing-comment]
+  [fixture: gitgraph/title-and-common-values/block-then-comment-kept]
   [fixture: info/comments/comments-inline]
+  [corpus fixture: usecase/comment-after-accdescr]
 
 - 同じ行の `}` の後にその図種固有のコメントが続く場合です。
   ABNF 図では `; c`、EBNF 図では `(* c *)` と `/* c */`、PEG 図では `# c`、
