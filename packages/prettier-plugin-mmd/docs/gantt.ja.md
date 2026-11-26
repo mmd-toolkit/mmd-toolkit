@@ -1760,14 +1760,13 @@ mermaid.js は、その `%%{` を、前の空白が 1 文字か、
 
 [fixture: comments/directive-in-percent-brace-marker]
 
-文やヘッダーの後ろのコメントは、書かれたとおり行に残します。
-空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
-接している文のコメントは mermaid.js が別に読むことがあるからです。
-[architecture](./architecture.ja.md#comments) と
-[cynefin](./cynefin.ja.md#comments) の図も、
-同じ行のコメントの前に空白やタブがあれば、空白 1 つにします。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-同じ行のコメントの前にも、この隙間を与えます。
+文やヘッダーの後ろのコメントは、その行に残します。
+空白が書かれていれば空白 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前を、空白 1 つにします。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+接するコメントは接したままにします。
+文に接するコメントを mermaid.js が別に読むことがあるためです。
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-keyword-statement]

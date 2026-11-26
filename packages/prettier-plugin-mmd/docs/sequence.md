@@ -503,21 +503,18 @@ it, the whitespace inside it, and the whitespace before a `%%` comment after it,
 whatever whitespace characters it holds but a line break. So the gap before the
 block, the block, and that gap before the comment stay as written, and the block
 is not padded: `participant A   @{ x }` and `actor B@{x}` stay, and so does the
-whitespace before the `%%` in `participant C@{ y }   %% c`. The reason of the
-versions holds for a `participant`: with one space before the `%%`, the older
-versions that count draw another name. The same holds for an `actor` and for a
-participant that `create` makes: with one space before the `%%`, the SVG of
-those versions holds another name, in the `name` attribute and in the label,
-though the pixels are the same, so the whitespace before their `%%` stays as
-written too. After the block, a `#` comment is a comment like any other, and one
-space stands before it. A written run of spaces and tabs before a `#` comment
-after a participant data block becomes one space, as the gap before an inline
-comment does in [pie charts](./pie.md#comments) and
-[XY charts](./xychart.md#comments);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this gap. mermaid.js removes the directives before it reads the name, so the
-name runs over a directive in that whitespace, one that is not closed included,
-and the whitespace on both sides of it stays:
+whitespace before the `%%` in `participant C@{ y }   %% c`. This reason holds
+for a `participant`: with one space before the `%%`, the older versions that
+count draw another name. The same holds for an `actor` and for a participant
+that `create` makes: with one space before the `%%`, the SVG of those versions
+holds another name, in the `name` attribute and in the label, though the pixels
+are the same, so the whitespace before their `%%` stays as written too. After
+the block, a `#` comment stands after one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. mermaid.js removes the directives before it
+reads the name, so the name runs over a directive in that whitespace, one that
+is not closed included, and the whitespace on both sides of it stays:
 `participant B@{x}   %%{init: {}}%%   %% c`. A directive that ends the line,
 with no comment after it, is an ordinary gap, printed
 `participant E@{z} %%{init: {}}%%`. A block with one of these characters or with
@@ -1185,23 +1182,17 @@ sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
 [fixture: comments/block-edges-kept] [fixture: comments/text-whitespace-kept]
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
-A comment after a statement stays on its line, and whether whitespace is written
-before its mark is kept: rule 1 names no mark before a comment, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [requirement](./requirement.md#comments), [c4](./c4.md#comments),
-and [journey](./journey.md#comments) keep a comment that touches, where no other
-rule keeps the whitespace as written; each of them names those cases in its own
-sections. The whitespace matters in this diagram in every version of mermaid.js
-that counts, as `autonumber 5%% c` shows (see
+A comment after a statement stays on its line. A comment that touches stays
+touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
+space before a comment that stands after something on its line, as Prettier
+prints `x = 1;   // c` as `x = 1; // c`. The whitespace before a `%%` matters
+after `autonumber 5`: mermaid.js reads `autonumber 5%% c` without the number 5
+(see
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)).
-A run of whitespace before the mark is printed as one space (see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-except where another rule keeps the whitespace as written, as after an id, after
-the data block of a participant that a version reads as a part of its name,
-before a `%%` comment (see
-[Whitespace between tokens](#whitespace-between-tokens)), and after the value of
-an `accTitle`, where the whitespace belongs to the id, to the block, or to the
-value.
+Whitespace that belongs to an id or an `accTitle` value stays as written, as
+does whitespace before a `%%` comment after the data block of a participant that
+a version reads as part of its name (see
+[Whitespace between tokens](#whitespace-between-tokens)).
 
 [fixture: comments/mark-run-one-space] [fixture:
 comments/mark-touching-kept-after-each-statement] [fixture:
@@ -2110,13 +2101,14 @@ because changing it would change the diagram or the input would be rejected:
 - a title with trivia between its keyword and text;
 - a statement protected by a semicolon line or a joining comment region;
 - the whitespace before the first line break of a gap containing trivia;
-- whether whitespace is written before the mark of a comment after a statement,
-  and a U+2028 or U+2029 between a comment and a comment line after it;
+- whether whitespace is written before a `%%` comment after `autonumber 5`, and
+  a U+2028 or U+2029 between a comment and a comment line after it;
 - the arrows.
 
 Some text is kept as written by choice, because the Db is the same either way:
 the case of the keywords that the table under
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
-does not list. Whether there is whitespace before the mark of a comment, listed
-above, is not a choice: rule 2 gives it (see [Comments](#comments)), and after
-some statements, such as `autonumber 5`, it also decides what mermaid.js reads.
+does not list. The space before a comment is given by
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), as described in
+[Comments](#comments). A comment that touches stays touching. After
+`autonumber 5`, whitespace before `%%` also decides what mermaid.js reads.

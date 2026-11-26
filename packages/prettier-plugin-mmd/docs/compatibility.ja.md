@@ -280,9 +280,9 @@ ELK の配置のパッケージのどのリリースも、
 | [sequence](./sequence.ja.md#矢印の前後の空白)                                                                                         | `A () ->> () B`                                                                                                                               | `A() ->> ()B`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が `()` を名前の一部として読む                                                                     | [fixture: sequence/arrow-spacing/parentheses-touching]                                                                                                                |
 | [sequence](./sequence.ja.md#矢印の前後の空白)                                                                                         | `A<<->>B` を `A<<->> B` と印字                                                                                                                | `A <<->> B`                                      | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、前の `<<` を名前の一部として読む                                                                         | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]                                                                                                 |
 | [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持つ `participant A @{ x }`                                                                      | `participant A@{ x }`                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が、ブロックを参加者の名前の一部として、空白ごと読む                                               | [fixture: sequence/whitespace-between-tokens/data-block-name-gap-before-kept]                                                                                         |
-| [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持ち、別名のない `participant A@{ x } %% c`                                                      | `participant A@{ x } %% c`                       | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 と 11.7.0 が、ブロックと空白を名前の一部として読む                                                           | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                                        |
-| [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持つ `actor B@{ y }`、タブ、`%% d`                                                               | `actor B@{ y } %% d`                             | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 と 11.7.0 が、ブロックと空白を名前の一部として読む                                                           | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                                        |
-| [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持ち、別名のない `create participant C@{x}`、空白 3 つ、`%% c`                                   | `create participant C@{x} %% c`                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 と 11.7.0 が、ブロックと空白を名前の一部として読む                                                           | [fixture: sequence/whitespace-between-tokens/data-block-name-created-comment-gap-kept]                                                                                |
+| [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持ち、別名のない `participant A@{ x } %% c`                                                      | `participant A@{ x } %% c`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が、ブロックと空白を名前の一部として読む                                                           | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                                        |
+| [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持つ `actor B@{ y }`、タブ、`%% d`                                                               | `actor B@{ y } %% d`                             | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が、ブロックと空白を名前の一部として読む                                                           | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                                        |
+| [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持ち、別名のない `create participant C@{x}`、空白 3 つ、`%% c`                                   | `create participant C@{x} %% c`                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が、ブロックと空白を名前の一部として読む                                                           | [fixture: sequence/whitespace-between-tokens/data-block-name-created-comment-gap-kept]                                                                                |
 | [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb(191 ,223 ,255)`                                                                                                                     | `rect rgb(191, 223, 255)`                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.3.0 が `messages[0].message` を変える                                                                            | [fixture: sequence/colors/function-padding-kept]                                                                                                                      |
 | [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb( 1 ,2,3 )`                                                                                                                          | `rect rgb(1, 2, 3)`                              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が別の `fill` 属性を描く                                                                         | [fixture: sequence/colors/rect-leading-and-comma-padding-kept]                                                                                                        |
 | [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb( 1,2,3)` と `rect rgb(1,2,3 )`                                                                                                      | `rect rgb(1, 2, 3)`                              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が別の `fill` 属性を描く                                                                         | [fixture: sequence/colors/rect-open-paren-padding-kept] [fixture: sequence/colors/rect-close-paren-padding-kept]                                                      |
@@ -3130,9 +3130,17 @@ railroad 図の文字列と特殊シーケンスです。
   [fixture: requirement/names/inner-whitespace-kept]
   [fixture: state/aliases/id-kept]
 
-これらのテキストを終えるコメントがあるとき、テキストの中と、
-コメントの前の連なりは、表のとおりに印字します（`A  b  %% c` は、
-テキスト `A  b` とコメント `%% c` です）。
+表は、テキスト内の連なりの印字と、
+`%%` がコメントを始める行での直前の隙間の印字を示します。
+その行の `A  b  %% c` は、テキスト `A  b` とコメント `%% c` です。
+`%%` がテキストの文字である行では、`A  b  %% c` の全体がテキストで、
+`%%` の前の連なりもテキストの中にあります。
+たとえば、[Gantt](./gantt.ja.md#コメント) の title、
+[requirement](./requirement.ja.md#コメント) の引用符のない欄、
+[ishikawa](./ishikawa.ja.md#comments) のリテラル、
+[mindmap](./mindmap.ja.md#コメント) のノードの行、
+[treeView](./treeview.ja.md#comments) のノードの行、
+[kanban](./kanban.ja.md#コメント) のカードの行がそうです。
 
 | テキスト                                                                                          | 図種                                                                                                                                                                                                                                                                                                                                                                                  | 書かれた形                                                              | 印字                                                              |
 | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |
@@ -4768,13 +4776,17 @@ treemap の見出しにはコロンを付けません。
 
 ラベルは、2 つの矢印の間（`-- text -->`）か、
 矢印の後の `|` の間（`-->|text|`）に書け、mermaid.js は両方を同じに読みます。
-形は、その図種の例が、もう一方の 2 倍以上多く使うものにします。
+[規則 3](./printed-form.ja.md#3-綴り)が形を与えます。
+その図種の例が、もう一方の 2 倍以上多く使う形です。
 agentflow 図は最初の形のリンクが 2 つ、もう一方はないので、
 最初の形を読む矢印 `-->` と `--x` のラベルを、矢印の間に印字します。
 swimlane 図は最初の形がなく、もう一方が 12 個なので、
 flowchart の 8 種類の矢印のラベルを、`|` の間に印字します。
 flowchart は最初の形が 14 個、もう一方が 8 個で、2 倍以上ではないので、
-書かれたまま残します。
+規則 3 は形を与えず、ラベルは書かれたまま残します。
+これは
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 ラベルは、文字、数字、空白、`_`、`,`、`?`、
 `!` の通常のテキストでなければなりません。
 `|` や `%%` があるラベル、文字列、Markdown のラベル、空白だけのラベル、
@@ -6542,6 +6554,9 @@ mermaid.js の行の規則は、規則の条件となる部分と `;` がそれ�
 `accDescr {style:#x} accTitle:;` は、
 説明ブロックの `style:#x` によって `;` が無視される行です。
 行末の `;` は、文を区切るものと同じように取り除きます。
+この形は、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 しかし、`accTitle:` と次の行の `T` のように、`;` を含む文が、
 その行の後に文自身の値を持って続く場合、その `;` は文末ではないので、
 印字処理は取り除きません。

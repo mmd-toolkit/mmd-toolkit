@@ -755,6 +755,10 @@ on the same line is printed as one space, unless the line stays as written for
 another reason (see
 [Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
 
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
+
 [test: prints a form feed before a comment as one space]
 
 A backslash does not escape a `,` here: `fill:a\,b ,stroke:c` is printed

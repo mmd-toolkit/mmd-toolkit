@@ -516,7 +516,9 @@ whitespace at the end. That character ends the last style, and the form feeds
 beside it stay: the spaces and tabs after the last such character are dropped as
 at the end of any style, and a run of them before it is one space. Before a `%%`
 comment on the same line, a run of spaces, tabs, and form feeds is printed as
-one space, as in the other diagram types (see
+one space under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark),
+which gives one space before a comment that stands after something on its line,
+as Prettier prints `x = 1;   // c` as `x = 1; // c` (see
 [Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
 
 [test: leaves out a form feed at the end of a style that CSS reads as
@@ -859,8 +861,11 @@ the next line (`title`, two spaces, the character, and `%% c`, with a row after
 it) keeps the line as written, as the comment starts after the character. The
 one whitespace character after the keyword is part of the keyword to mermaid.js,
 so a title with no text ends at its keyword, and that character is a gap of the
-line like the whitespace after a title with text; the second formatting finds
-the form of the first.
+line like the whitespace after a title with text.
+
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 [fixture: title/bare-title-directive-one-space] [fixture:
 title/bare-title-directive-spaces] [fixture: title/bare-title-directive-tab]

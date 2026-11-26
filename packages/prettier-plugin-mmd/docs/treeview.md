@@ -1898,15 +1898,17 @@ and
 `title T  %%{x}%%  ` is printed `title T %%{x}%%`, and
 `title T  %%{x}%%  %%{y}%%  ` is printed `title T %%{x}%% %%{y}%%`. A comment
 after the last directive stands after one space where spaces or tabs separate
-them (`title T  %%{x}%%  %% c` is printed `title T %%{x}%% %% c`), and stays
-touching where it touches (`title T  %%{x}%%%% c` is printed
-`title T %%{x}%%%% c`); the whitespace between them is printed as the second
-table below gives (a no-break space keeps the line as written,
-`T %%{x}%%\u00a0%% c`). The other forms of a title with a directive, and the
-forms of an `accTitle:` and an `accDescr:` line (see
-[Accessibility lines](#accessibility-lines)), are printed as the table below
-gives: `%%{x}%%` and `%%{y}%%` are directives, `\u00a0` is a no-break space, and
-the other `\u` forms are the characters of that number.
+them (`title T  %%{x}%%  %% c` is printed `title T %%{x}%% %% c`).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. A comment that touches the last directive
+stays touching: `title T  %%{x}%%%% c` is printed `title T %%{x}%%%% c`. The
+whitespace between them is printed as the second table below gives (a no-break
+space keeps the line as written, `T %%{x}%%\u00a0%% c`). The other forms of a
+title with a directive, and the forms of an `accTitle:` and an `accDescr:` line
+(see [Accessibility lines](#accessibility-lines)), are printed as the table
+below gives: `%%{x}%%` and `%%{y}%%` are directives, `\u00a0` is a no-break
+space, and the other `\u` forms are the characters of that number.
 
 | Written after the keyword | `title `            | `accTitle: `        | `accDescr: `        |
 | ------------------------- | ------------------- | ------------------- | ------------------- |
@@ -2112,6 +2114,10 @@ on a line of its own after the first one, and a U+0085 after the first one keeps
 the run as written. The forms with an empty line, a comment line, a line of
 spaces, or a line of a directive after the line are not given.
 
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
+
 [test: treeview: the whitespace before the last directive, with nothing after
 it] [test: treeview: the whitespace before the last directive, with spaces after
 it] [test: treeview: the whitespace before the last directive, with a tab after
@@ -2169,8 +2175,11 @@ the next line (`title`, two spaces, the character, and `%% c`, with a row after
 it) keeps the line as written, as the comment starts after the character. The
 one whitespace character after the keyword is part of the keyword to mermaid.js,
 so a title with no text ends at its keyword, and that character is a gap of the
-line like the whitespace after a title with text; the second formatting finds
-the form of the first.
+line like the whitespace after a title with text.
+
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`.
 
 [fixture: title/bare-title-directive-one-space] [fixture:
 title/bare-title-directive-spaces] [fixture: title/bare-title-directive-tab]
@@ -2258,10 +2267,13 @@ directive of the line holds a line break, a `;`, a U+2028, or a U+2029 (see
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `accTitle: T  %%{x}%%  ` is printed `accTitle: T %%{x}%%`,
-`accDescr: T  %%{x}%%  %% c` is printed `accDescr: T %%{x}%% %% c`, and a
-comment that touches the directive stays touching (`accDescr: T  %%{x}%%%% c` is
-printed `accDescr: T %%{x}%%%% c`). In the ordinary `accTitle:` and `accDescr:`
-forms that end with a directive, only line-end spaces and tabs follow it, so
+`accDescr: T  %%{x}%%  %% c` is printed `accDescr: T %%{x}%% %% c`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. A comment that touches the last directive
+stays touching: `accDescr: T  %%{x}%%%% c` is printed `accDescr: T %%{x}%%%% c`.
+In the ordinary `accTitle:` and `accDescr:` forms that end with a directive,
+only line-end spaces and tabs follow it, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) selects their
 removal. The table of [Title](#title) gives the other forms of these lines. They
 are printed as a title is, but for a value that starts with one directive and

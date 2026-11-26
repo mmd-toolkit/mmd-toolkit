@@ -1071,15 +1071,14 @@ xychart
 [fixture: comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 文の後ろのコメントは、文の行に残します。
-前に空白が書かれていれば空白 1 つ、書かれていなければ接したままにします。
-空白がどこにあっても Db は同じですが、mermaid.js は、
-1 文字の単位に接した `%%` を、
-その文字と一緒に読みます（既知の差異 `comment-takes-character`）。
+空白が書かれていれば空白 1 つにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+同じ行の何かの後ろにあるコメントの前を、空白 1 つにします。
+Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+接するコメントは接したままにします。
+mermaid.js が 1 文字の単位に接した `%%` を、
+その文字と一緒に読むためです（既知の差異 `comment-takes-character`）。
 `title T%% c` は拒否され、`title A B%% c` の title は `A` です。
-コメントの前に必ず空白を書く規則は、そのような入力を mermaid.js が読む形を変え、
-書き手の誤りを、何も知らせずに別のチャートとして読ませます。
-印字はコメントが接しているかどうかを保ち、報告する場所はリンターの規則です。
-ほかの図も同じです（[コメント](./journey.ja.md#コメント)を参照）。
 
 [fixture: comments/comment-after-a-statement-spaced]
 [fixture: comments/comment-after-a-statement-touching]

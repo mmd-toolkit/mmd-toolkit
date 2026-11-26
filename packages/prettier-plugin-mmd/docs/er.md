@@ -501,7 +501,10 @@ in which they are written, since the Db keeps it.
 attribute-spacing/keys-case-kept]
 
 A comment stands after one space, also where it was written touching its name or
-its keys.
+its keys: the comment is a value that follows the name or the keys, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between values that follow one another, as Prettier prints the CSS
+`margin: 1px    2px;` as `margin: 1px 2px;`.
 
 [fixture: attribute-spacing/comment-one-space]
 
