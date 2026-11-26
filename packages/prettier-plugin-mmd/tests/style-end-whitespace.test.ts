@@ -490,6 +490,14 @@ describe("the whitespace at the end of a style", () => {
     }
   })
 
+  it("keeps a no-break space before a comment at the end of a flowchart style", async () => {
+    const output = "flowchart LR\n  A\n  style A fill: red\u00a0 %% c\n"
+    expect(
+      await formatMermaid("flowchart LR\nA\nstyle A fill:red\u00a0 %% c\n"),
+    ).toBe(output)
+    expect(await formatMermaid(output)).toBe(output)
+  })
+
   it("prints a form feed before a comment as one space", async () => {
     for (const [title, input, output] of beforeComment) {
       const formatted = await formatMermaid(input.replace("@", "\f"))
