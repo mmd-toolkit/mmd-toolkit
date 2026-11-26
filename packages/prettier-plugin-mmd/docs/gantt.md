@@ -445,13 +445,12 @@ line, and a section with padding after it]
 The colons stay where they are in these cases. A section in which no name has
 more than one space before its colon is left: no colon moves, and a name that
 touches its colon gets its one space as above. A section is left where the
-aligned lines would be longer than `printWidth` and longer than they are, since
-one long name would push every colon of the section far right. A chart that
-holds `white-space` is left, with its names that touch their colons, since the
-CSS of the chart may draw the whitespace at the end of a name, and the figure
-then depends on it. A section where a name holds a tab is left too, since a tab
-reaches the next tab stop of the editor, and no width that Prettier counts lines
-the colons up.
+aligned lines would be longer than `printWidth` and longer than they are. A
+chart that holds `white-space` is left, with its names that touch their colons,
+since the CSS of the chart may draw the whitespace at the end of a name, and the
+figure then depends on it. A section where a name holds a tab is left too, since
+a tab reaches the next tab stop of the editor, and no width that Prettier counts
+lines the colons up.
 
 [fixture: task-data/colon-column-tab-in-name-kept] [fixture:
 task-data/colon-column-single-space-kept] [fixture:
