@@ -1762,9 +1762,10 @@ entity Shop.Buy
 隠れた形の後の行も、
 その前の隙間を書かれたまま残します（[Hidden forms](#hidden-forms)を参照）。
 ブロックコメントが続く行（[Comments](#comments)を参照）もそうです。
-行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる文の行も、
-同じです（[Semicolons](#semicolons)を参照）。
+行を空白 1 つか何も挟まずにつなぐと、行の規則が無視する `;` が変わりうる文では、
+`;` を含む行も同じです。
+そのような文は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残すからです（[Semicolons](#semicolons)を参照）。
 構造上の分割を加えるのは決定済みの GWT 節・項目配置です。
 値、隠れた形、メタデータ、保護境界の内容は、
 [データブロック](#data-blocks) の限定的な本文の余白の変更を除いて保ちます。
@@ -1781,6 +1782,7 @@ entity Shop.Buy
 [fixture: eventmodeling/declarations-and-notes/entity-slash-comment-over-lines]
 [fixture: eventmodeling/long-lines/later-line-of-a-joined-semicolon-stretch-kept]
 [fixture: eventmodeling/long-lines/later-line-holding-a-semicolon-deeper]
+[fixture: eventmodeling/long-lines/later-line-after-a-joined-semicolon-stretch-deeper]
 [test: a later line after a `%%` comment after U+2028 inside a statement of an eventmodeling diagram stands one level deeper]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]

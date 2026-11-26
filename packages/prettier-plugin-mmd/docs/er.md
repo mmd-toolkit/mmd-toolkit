@@ -537,10 +537,10 @@ decides, as [block](./block.md#multi-line-statements),
 [sequence](./sequence.md#multi-line-statements), and
 [flowchart](./flowchart.md#accessibility-lines) put the later parts of a
 statement and the standalone trivia one continuation level inside the statement,
-where no other rule keeps the layout as written (a line that a comment region
-joins to the line before it, see below). The line breaks next to the comment
-line or the directive stay for the reason given under
-[Multi-line statements](#multi-line-statements).
+where no other rule keeps the layout as written (an attribute that holds a
+comment region that joins two of its lines stays as written whole, see below).
+The line breaks next to the comment line or the directive stay for the reason
+given under [Multi-line statements](#multi-line-statements).
 
 [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
@@ -584,7 +584,8 @@ region follows it on its line. The whitespace inside the styles stays as written
 (`style A fill:#F00,   stroke:#ABC`, U+2028, and `%% c` keep the run after the
 comma).
 
-[test: er/attribute-spacing/comment-region-continuation-kept] [test: ER the
+[test: er/attribute-spacing/comment-region-continuation-kept] [test:
+er/attribute-spacing/comment-region-keeps-the-whole-attribute] [test: ER the
 quotes of the names of a relationship on a line that a comment line after U+2028
 joins] [test: ER the quotes of the label of a relationship on a line that a
 comment line after U+2028 joins] [test: ER the quotes of the alias of an entity

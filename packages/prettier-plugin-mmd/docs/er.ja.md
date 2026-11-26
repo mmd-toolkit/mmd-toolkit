@@ -520,8 +520,8 @@ Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字し�
 [block](./block.ja.md#複数行の文)、[sequence](./sequence.ja.md#複数行の文)、
 [flowchart](./flowchart.ja.md#アクセシビリティの行) も、
 文の後続部分と独立した注釈類を、文の内側に継続の 1 段字下げで置きます。
-ただし、ほかの規則が配置を書かれたまま残す所、
-つまりコメント領域が前の行に結ぶ行は別です（下を参照）。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+2 つの行を結ぶコメント領域を含む属性は、全体を書かれたまま残します（下を参照）。
 コメント行やディレクティブの隣の改行が残る理由は、
 [複数行の文](#複数行の文)に書いてあります。
 
@@ -573,6 +573,7 @@ U+2029 が色を `;` から離すときも、書かれたまま残します。
 U+2028、`%% c` は、コンマの後の連なりを残します）。
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
+[test: er/attribute-spacing/comment-region-keeps-the-whole-attribute]
 [test: a color before a comma in a style on a line that a comment line after U+2028 joins with the next line]
 [test: a color before a comma in a class definition on a line that a comment line after U+2029 joins with the next line]
 [test: the last color of a style that the line after a comment line after U+2028 goes on with]

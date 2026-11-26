@@ -1723,13 +1723,15 @@ stands on a later line stands at the level of the statement. A later line that
 another rule keeps as written does not move: a line inside a value or a hidden
 form, whose contents stay as said below; the line after a hidden form, whose gap
 stays as written (see [Hidden forms](#hidden-forms)); a line that a block
-comment goes on to (see [Comments](#comments)); and a line of a statement whose
-lines, joined with one space or with nothing, could change which `;` the line
-rule ignores (see [Semicolons](#semicolons)). Only GWT's decided clause/item
-layout adds structural splits. Values, hidden forms, metadata and protected
-boundaries retain their contents, apart from the limited block-body margin in
-[Data blocks](#data-blocks). Avoiding width-dependent choices keeps those
-lexical boundaries explicit and never inserts a forbidden LF into inline data.
+comment goes on to (see [Comments](#comments)); and a line that holds a `;` in a
+statement whose lines, joined with one space or with nothing, could change which
+`;` the line rule ignores, since such a statement keeps the text of each segment
+up to its last kept `;` (see [Semicolons](#semicolons)). Only GWT's decided
+clause/item layout adds structural splits. Values, hidden forms, metadata and
+protected boundaries retain their contents, apart from the limited block-body
+margin in [Data blocks](#data-blocks). Avoiding width-dependent choices keeps
+those lexical boundaries explicit and never inserts a forbidden LF into inline
+data.
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap] [fixture:
 eventmodeling/long-lines/break-next-to-comment] [fixture:
@@ -1741,8 +1743,10 @@ eventmodeling/comments/block-opener-on-a-later-line-after-a-comment-line]
 [fixture: eventmodeling/hidden-forms/hidden-frame-required-gaps] [fixture:
 eventmodeling/declarations-and-notes/entity-slash-comment-over-lines] [fixture:
 eventmodeling/long-lines/later-line-of-a-joined-semicolon-stretch-kept]
-[fixture: eventmodeling/long-lines/later-line-holding-a-semicolon-deeper] [test:
-a later line after a `%%` comment after U+2028 inside a statement of an
+[fixture: eventmodeling/long-lines/later-line-holding-a-semicolon-deeper]
+[fixture:
+eventmodeling/long-lines/later-line-after-a-joined-semicolon-stretch-deeper]
+[test: a later line after a `%%` comment after U+2028 inside a statement of an
 eventmodeling diagram stands one level deeper]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
