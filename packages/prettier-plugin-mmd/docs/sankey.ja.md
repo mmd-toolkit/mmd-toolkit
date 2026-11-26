@@ -34,8 +34,11 @@ mermaid.js は引用符の前の空白を拒否するので、
 [fixture: indentation/written-indentation-dropped]
 [fixture: indentation/tab-width-4] [fixture: indentation/use-tabs]
 
-コメント行の字下げは Db に入らないので残すこともできますが、それも落として、
-すべての行を 1 列目にそろえます。
+コメント行の字下げは Db に入りません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+コメント行を周りの行と同じ段に置きます。
+Prettier がブロックの中の行を印字する形で、
+コメント行はレコードと同じ 1 列目に立ちます。
 指令の行はどの場合も 1 列目です。
 
 [fixture: indentation/comment-lines-at-the-first-column]

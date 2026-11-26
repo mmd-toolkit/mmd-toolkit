@@ -34,9 +34,11 @@ indentation/quoted-first-record-at-the-first-column] [fixture:
 indentation/written-indentation-dropped] [fixture: indentation/tab-width-4]
 [fixture: indentation/use-tabs]
 
-The indentation of a comment line is no part of the Db and could be kept, but it
-is dropped too, so that every line stands in one column, and a directive line
-stands there in any case.
+The indentation of a comment line is no part of the Db.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
+at the level of the lines around it, as Prettier prints the lines inside a
+block, so it stands at the first column with the records, where a directive line
+stands in any case.
 
 [fixture: indentation/comment-lines-at-the-first-column] [fixture:
 indentation/directive-lines-at-the-first-column]
