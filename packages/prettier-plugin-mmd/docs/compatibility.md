@@ -7878,10 +7878,11 @@ line one level deeper where it goes on the statement before it, as any later
 line of a statement, and at the level of the statements where it starts a
 statement (see [Long lines](./eventmodeling.md#long-lines)). In a mindmap, where
 the U+2028 or U+2029 ends a diagram comment, after a node or after the header,
-the comment line after it stands on a line of its own, and the line after that
-is the line of a node (see [Line separators](./mindmap.md#line-separators));
-elsewhere a mindmap follows the rule. A diagram comment that such a comment line
-cuts is printed as written as well (see
+the comment line after it and each comment line that follows stand on lines of
+their own, and the line of a node follows them (see
+[Line separators](./mindmap.md#line-separators)); elsewhere, also where `%%` is
+a character of a node text, a mindmap follows the rule. A diagram comment that
+such a comment line cuts is printed as written as well (see
 [Line separators](./sequence.md#line-separators)). The same holds where the
 region lies inside a name, in an ER diagram and in a quadrant chart. In an ER
 diagram, the block of an entity on such a line is the one part whose whitespace
@@ -7955,7 +7956,19 @@ eventmodeling diagram keeps U+2028 before a comment line in the value of
 accTitle on the header line] [test: an eventmodeling diagram keeps U+2028 before
 a comment line in the value of accDescr on the header line] [test: a mindmap
 puts a comment line after U+2028 that ends a comment of the header on a line of
-its own]
+its own] [test: an agentflow diagram keeps U+2029 before a comment line in the
+body of a description block] [test: an eventmodeling diagram keeps U+2029 before
+a comment line in the value of accTitle on the header line] [test: an
+eventmodeling diagram keeps U+2029 before a comment line in the value of
+accDescr on the header line] [test: a mindmap puts a comment line after U+2029
+that ends a comment of the header on a line of its own] [test: a mindmap puts
+each comment line after U+2028 that ends a comment of the header on a line of
+its own] [test: a mindmap puts a comment line after U+2028 that ends a comment
+after a node on a line of its own] [test: a mindmap puts a comment line after
+U+2029 that ends a comment after a node on a line of its own] [test: a mindmap
+keeps a line that a comment line after U+2029 joins where the separator ends no
+diagram comment] [test: a mindmap keeps a line that a comment line after U+2028
+joins after a node text that holds %%]
 
 A line that a `;` of its text keeps together, as `title T;` or the text of a
 kanban section `S[x;]`, is printed as written with the comment line after a

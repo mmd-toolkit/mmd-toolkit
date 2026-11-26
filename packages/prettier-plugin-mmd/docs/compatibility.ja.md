@@ -8152,10 +8152,11 @@ eventmodeling 図は、コメント行の前の U+2028 か U+2029 を、
 文を始めるなら、文の段に置きます。
 詳しくは [Long lines](./eventmodeling.ja.md#long-lines) を参照してください。
 mindmap では、U+2028 か U+2029 が、
-ノードかヘッダーの後の図のコメントを終えるとき、
-その後のコメント行を自分の行に置き、その次の行はノードの行になります。
+ノードかヘッダーの後の図のコメントを終えるとき、その後のコメント行と、
+それに続くコメント行を、それぞれ自分の行に置き、ノードの行はその後に続きます。
 詳しくは [行区切り文字](./mindmap.ja.md#行区切り文字) を参照してください。
-それ以外では、mindmap もこの規則に従います。
+それ以外では、`%%` がノードのテキストの文字であるときも含め、
+mindmap もこの規則に従います。
 そのようなコメント行が途中で切る図のコメントも、
 書かれたまま印字します（[行区切り](./sequence.ja.md#行区切り)を参照）。
 領域が名前の中にあるときも同じです。
@@ -8226,6 +8227,15 @@ ER 図では、そのような行にある実体のブロックだけは、
 [test: an eventmodeling diagram keeps U+2028 before a comment line in the value of accTitle on the header line]
 [test: an eventmodeling diagram keeps U+2028 before a comment line in the value of accDescr on the header line]
 [test: a mindmap puts a comment line after U+2028 that ends a comment of the header on a line of its own]
+[test: an agentflow diagram keeps U+2029 before a comment line in the body of a description block]
+[test: an eventmodeling diagram keeps U+2029 before a comment line in the value of accTitle on the header line]
+[test: an eventmodeling diagram keeps U+2029 before a comment line in the value of accDescr on the header line]
+[test: a mindmap puts a comment line after U+2029 that ends a comment of the header on a line of its own]
+[test: a mindmap puts each comment line after U+2028 that ends a comment of the header on a line of its own]
+[test: a mindmap puts a comment line after U+2028 that ends a comment after a node on a line of its own]
+[test: a mindmap puts a comment line after U+2029 that ends a comment after a node on a line of its own]
+[test: a mindmap keeps a line that a comment line after U+2029 joins where the separator ends no diagram comment]
+[test: a mindmap keeps a line that a comment line after U+2028 joins after a node text that holds %%]
 
 `;` がテキストの文字として行を一緒に残す行は、たとえば `title T;` や、
 kanban の section のテキスト `S[x;]` で、U+2028 か U+2029 の後のコメント行ごと、
