@@ -321,13 +321,14 @@ radar-beta
 
 In a statement without comments or directives, join entry newlines where the
 grammar reads them as whitespace: after `{`, after a comma and before `}`.
-Positional and named lists then fit on one line, as in xychart and quadrant.
-Never add a newline before a comma or inside a named entry, where mermaid.js
-rejects one. Keep newlines holding comments or Root directives; ordinary
-continuation lines and comments use two indentation steps, while a separate `}`
-aligns with its statement. A comment takes the rest of its line, so joining the
-next entry onto it would put the entry into the comment. The start of a line is
-no place of rule 1, so
+Positional and named lists then fit on one line, as in
+[xychart](./xychart.md#multi-line-statements) and
+[quadrant](./quadrant.md#multi-line-statements). Never add a newline before a
+comma or inside a named entry, where mermaid.js rejects one. Keep newlines
+holding comments or Root directives; ordinary continuation lines and comments
+use two indentation steps, while a separate `}` aligns with its statement. A
+comment takes the rest of its line, so joining the next entry onto it would put
+the entry into the comment. The start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#multi-line-statements) puts the continuation
 lines one level inside the statement, and the separate `}` stands at the level
