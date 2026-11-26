@@ -368,20 +368,33 @@ score の書き方は作者のもので、mermaid.js は数として読み、
 空白だけのデータは、空の score で人のいないタスクで、
 mermaid.js はコロンの後に 1 文字を要求します。
 `A: ` はタスクで、`A:` は拒否されます。
-そのため、コロンの後に空白 1 文字（書かれた最初の 1 文字）を残し、
-残りは落とします。
+そのため、データが空白とタブだけのときは、
+コロンの後にその 1 文字（書かれた最初の 1 文字）を残し、残りは落とします。
 行の続きにコメントなどの文字があるときは、空白がそれらと一緒に読まれるので、
 行を書かれたまま印字します。
 
 [fixture: task-data/whitespace-only-data]
 [fixture: task-data/whitespace-only-data-then-comment]
 
-タスクの部分の間のディレクティブは、
-その位置に残します（[ディレクティブ](#ディレクティブ) を参照）。
+空白だけのデータに、改行しない空白、U+3000、U+2028、U+2029 など、
+空白とタブ以外の空白文字がある行も、その文字の隣の空白とタブを含めて、
+書かれたまま印字します。
 
 [test: U+00A0 as the entire data of a journey task]
 [test: U+2028 as the entire data of a journey task]
 [test: U+2029 as the entire data of a journey task]
+[test: U+00A0 followed by spaces as the entire data of a journey task]
+[test: a space followed by U+00A0 as the entire data of a journey task]
+[test: U+3000 followed by spaces as the entire data of a journey task]
+[test: U+FEFF followed by spaces as the entire data of a journey task]
+[test: U+2028 followed by spaces as the entire data of a journey task]
+[test: a tab followed by U+00A0 as the entire data of a journey task]
+[test: U+00A0 followed by a comment in the data of a journey task]
+[test: U+00A0 and spaces as the data of a journey task at the end of the text]
+[test: U+00A0 and spaces as the data of a journey task before another task]
+
+タスクの部分の間のディレクティブは、
+その位置に残します（[ディレクティブ](#ディレクティブ) を参照）。
 
 入力
 ([task-data/people-comma-spacing-input.mmd](../tests/fixtures/journey/task-data/people-comma-spacing-input.mmd)):
