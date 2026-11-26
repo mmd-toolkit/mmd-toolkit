@@ -111,6 +111,10 @@ Each statement stands on a line of its own. Nothing separates statements in a
 user journey (diagrams/journey.md, Diagram and statements), and the header and
 an `accDescr` block are followed on their line by the next statement: the
 statement after either of them goes to a line of its own.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form, as a [flowchart](./flowchart.md#statements-one-per-line) and an
+[ER diagram](./er.md#statements-one-per-line) print each statement on a line of
+its own.
 
 [fixture: statements-one-per-line/header-then-title] [fixture:
 statements-one-per-line/header-then-task] [fixture:
@@ -344,11 +348,15 @@ empty people stay, since mermaid.js reads each as a name.
 task-data/no-people-no-score]
 
 The score and the people are printed as written: the whitespace inside a person
-is part of it in the Db. The spelling of a score is kept as written, although
-mermaid.js reads it as a number and `05` and `5` give the same Db.
+is part of it in the Db. Two people whose names differ only by a run of spaces
+are two people, and with the run printed as one space they would be one: every
+version that counts draws one person fewer in the legend (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The spelling of a score is kept as written, although mermaid.js reads it as a
+number and `05` and `5` give the same Db.
 
 [fixture: task-data/people-inner-whitespace-kept] [fixture:
-task-data/score-forms-kept]
+task-data/people-differing-by-a-run-kept] [fixture: task-data/score-forms-kept]
 
 The whitespace at the end of the data is dropped.
 
@@ -728,6 +736,10 @@ whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. The ordinary keyword/opener gap
 uses one space: `accDescr{  }` becomes `accDescr {}`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: Prettier
+prints braces that hold nothing with nothing inside (`x = { }` is printed
+`x = {};`) and one space before the `{` that opens a block (`class A{}` is
+printed `class A {}`).
 
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test: journey
 Unicode and tab interiors] [fixture:

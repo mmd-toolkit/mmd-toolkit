@@ -1435,9 +1435,14 @@ spacing.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
-Blank lines and comment lines keep their usual layout around the statement.
+Blank lines and comment lines keep their usual layout around the statement: a
+run of blank lines is one blank line at most, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives, and a comment
+line stands as under [Comments](#comments).
 
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
+[fixture:
+semicolons-at-the-end-of-a-style-statement/blank-line-run-and-comment-line]
 
 An empty description block follows its usual layout while the style terminator
 is dropped.
@@ -1501,23 +1506,16 @@ multi-line-statements/string-continued-joined]
 
 Comments and directives keep line breaks without freezing structural columns:
 continuations and intervening trivia stand one level deeper. This applies to
-block headers, fields, relationships and other statements. Rule 1 names no mark
-for a line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the later parts of
-a statement and the comment and directive lines between them one level deeper,
-where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text, and
-the like). The line that holds the name and the `{` of a block is not one of
-those later parts: it stands at the level of its statement, and neither these
-precedents nor the other rules of
-[How the printed form is decided](./printed-form.md) give that level, so the
-form that the released version prints stays until the level is decided (see
+block headers, fields, relationships and other statements. The line that holds
+the name and the `{` of a block stands at the level of its statement. No rule of
+[How the printed form is decided](./printed-form.md) gives these levels, so the
+form that the released version prints stays until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Whitespace inside values and before the first line break of each gap stays.
+After the `-` of a relation, before such a line break, it is needed: every
+version that counts rejects `a -`, a line break, and `satisfies -> b` without it
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Joining regions keep their complete source. A line break stays where joining it,
 with one space or with nothing, could change which `;` the line rule ignores,
 and where a `;` ends the last line; any other line break is joined as usual,
@@ -1525,7 +1523,8 @@ also in a statement that holds a `;`.
 
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]
-[fixture: multi-line-statements/header-directive-continuation] [fixture:
+[fixture: multi-line-statements/relation-dash-space-kept] [fixture:
+multi-line-statements/header-directive-continuation] [fixture:
 fields/comment-and-directive-continuations] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
@@ -1600,9 +1599,12 @@ requirementDiagram
 
 Where no rule above applies, a run of whitespace between two tokens of a
 statement becomes one space, and tokens that touch keep touching: the braces of
-an empty description block. The opening brace of a description block takes one
-preceding space, and empty braces take no interior whitespace under
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), giving
+an empty description block.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+after a keyword before what it takes, as Prettier prints `return  x;` as
+`return x;`: `style  r` is printed `style r`. The opening brace of a description
+block takes one preceding space, and empty braces take no interior whitespace
+under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), giving
 `accDescr {}`.
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:

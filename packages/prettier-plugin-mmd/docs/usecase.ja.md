@@ -273,6 +273,9 @@ U+2029、バッククォート、`&`、`#`、`<` を含む場合を除き、`"` 
 を参照してください。
 引用符で囲むと、閉じの引用符がその文字とコメントの間に入り、
 `%%` がラベルのテキストになって、mermaid.js が拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 そのような文字の前にあるテキストも同じです。
 コメントのある行は、次の行と合わせて読まれるので、
 引用符も含めて書かれたまま印字します。
@@ -329,6 +332,11 @@ usecase 図の `style`、`classDef` 文のスタイルの色が対象です。
 色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
 色を短くすることはなく、色でないテキストは書かれたままにします。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+色でないテキストの大文字小文字は mermaid.js が Db に持つスタイルの一部で、
+それを変えることは、整形が Db に起こしてよい変化のどの種類にも当たりません。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
 
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
@@ -433,6 +441,10 @@ use case の角括弧内のラベルは、ASCII の英字、数字、
 `"fa:user"` のようなスカラーの引用符は、固有のメタデータの文法が id、
 通常の文字列、真偽値だけを許し、コロンを引用符のない id に含められないため、
 保ちます。
+`icon:fa:user` は拒否されます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: quotes/metadata]
 
@@ -570,6 +582,10 @@ usecase-beta
 
 開始文、宣言の本文、`end` を別々の行に置きます。
 空の境界や空の引用名も同じです。
+`end` を開始文の行に置いた空の境界（`systemBoundary S end`）は拒否されます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 `end` は境界の開始文と同じ段に置きます。
 Prettier がブロックの中の行をそう印字するためです。
@@ -1047,6 +1063,9 @@ Prettier は JavaScript、CSS、YAML の行末に空白とタブを印字せず�
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
 文の前後の空行とコメント行は、通常の配置に従います。
+空行の連なりは多くとも 1 つにします。
+これは[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+コメント行は [Comments](#comments) のとおりに置きます。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
 
@@ -1417,11 +1436,17 @@ ASCII 空白とタブだけの行も通常の空行です。
 裸の固有コメントの後や、独立したディレクティブの前後も同じです。
 値、固有のメタデータ、JSON、ディレクティブ、保護された共通領域の結合は、
 それぞれの空行を保ちます。
+markdown のラベルの中の空行は、mermaid.js が Db に持つラベルの一部で、
+それを除くことは、整形が Db に起こしてよい変化のどの種類にも当たりません。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
 C4 の復帰用の隙間や Ishikawa の空行の対の規則は取り込みません。
 
 [fixture: blank-lines/blank-runs] [fixture: blank-lines/blank-boundary]
 [fixture: blank-lines/blank-comments] [fixture: blank-lines/blank-in-value]
 [fixture: blank-lines/directives-and-boundary-edges]
+[corpus fixture: usecase/comment-markdown-empty-line]
 
 入力（エスケープ表記）:
 `"usecase-beta\nsystemBoundary Box\n\nactor U\n\n\nA\n\nend"`
@@ -1603,8 +1628,20 @@ CSS 宣言のコロンの前後の余白は、
 
 引用と markdown の値、JSON、固有プロパティの文字列、コメント、
 ディレクティブ内の末尾の全文字は保ちます。
+固有のメタデータと JSON の表の文字列の末尾の文字は、
+mermaid.js が Db に持つ値の一部です（`icon:'person  '` は、
+`person` と空白 2 つのアイコン）。
+それを変えることは、整形が Db に起こしてよい変化のどの種類にも当たりません。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
+markdown のラベルは、対象にする版のためにそれを保ちます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: trailing-whitespace/trailing-values]
+[fixture: trailing-whitespace/opaque-and-metadata-lines]
 [test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]
 
 Unicode 文字を自動的に外側の水平空白とせず、空の CSS style も作りません。

@@ -246,10 +246,12 @@ follows with only whitespace, line breaks, and directives between, is not put in
 quotes: the character starts the comment (see
 [Comment lines](../../spec/docs/common.md#comment-lines)), the closing quote
 would stand between them, the `%%` would be text of the label, and mermaid.js
-rejects it. The same holds for a text that stands before such a character: the
-line that holds the comment is read with the next one, and printed as written,
-with its quotes. The same label with no comment after it is put in quotes as any
-label with that character is.
+rejects it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The same holds for a text that stands before such a character: the line that
+holds the comment is read with the next one, and printed as written, with its
+quotes. The same label with no comment after it is put in quotes as any label
+with that character is.
 
 [test: usecase: U+2028 alone in the parentheses of an actor label, before a
 comment] [test: usecase: U+2028 alone in the parentheses of an entity label,
@@ -300,6 +302,10 @@ and `classDef` statements of a use case diagram are printed so. A color is a `#`
 and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
 it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+The case of a text that is no color is part of the style that mermaid.js keeps
+in the Db, and a change of it is no kind of change of the Db that formatting may
+make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
 
 [fixture: colors/colors-in-lower-case] [fixture:
 colors/words-that-are-not-colors-as-written] [fixture:
@@ -396,7 +402,9 @@ printed `type: hollow`), and the scalar of `icon` is printed in quotes where it
 is such a word (`icon: user` is printed `icon: "user"`). A scalar that is not a
 word, such as `"fa:user"`, stays. A scalar such as `"fa:user"` keeps its quotes
 because the native metadata grammar accepts only an id, a plain string or a
-boolean; the colon cannot be part of an unquoted id.
+boolean; the colon cannot be part of an unquoted id, and `icon:fa:user` is
+rejected (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: quotes/metadata]
 
@@ -519,7 +527,9 @@ usecase-beta
 ### System boundaries
 
 Openings, declaration bodies and `end` use separate lines, including empty
-boundaries and empty quoted names.
+boundaries and empty quoted names. An empty boundary with `end` on the line of
+its opening (`systemBoundary S end`) is rejected (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts `end` at the
 level of its boundary opener, as Prettier prints the lines inside a block.
 
@@ -959,7 +969,10 @@ spacing.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
-Blank lines and comment lines keep their usual layout around the statement.
+Blank lines and comment lines keep their usual layout around the statement: a
+run of blank lines is one blank line at most, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives, and a comment
+line stands as under [Comments](#comments).
 
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
 
@@ -1314,11 +1327,16 @@ runs to one and drop diagram/boundary-edge blanks, because one blank separates
 groups and more add nothing. ASCII space/tab-only lines are ordinary blanks,
 including after native bare comments and around standalone directives. Values,
 native metadata, JSON, directives and protected common-region joins keep their
-own blank lines. No C4 recovery-gap or Ishikawa blank-pairing rule is imported.
+own blank lines. A blank line inside a markdown label is part of the label that
+mermaid.js keeps in the Db, and removing it is no kind of change of the Db that
+formatting may make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
+No C4 recovery-gap or Ishikawa blank-pairing rule is imported.
 
 [fixture: blank-lines/blank-runs] [fixture: blank-lines/blank-boundary]
 [fixture: blank-lines/blank-comments] [fixture: blank-lines/blank-in-value]
-[fixture: blank-lines/directives-and-boundary-edges]
+[fixture: blank-lines/directives-and-boundary-edges] [corpus fixture:
+usecase/comment-markdown-empty-line]
 
 Input (escaped): `"usecase-beta\nsystemBoundary Box\n\nactor U\n\n\nA\n\nend"`
 
@@ -1487,9 +1505,16 @@ boundaries normalize exterior whitespace by their sibling rules.
 [fixture: stereotypes/side-padding]
 
 Quoted/markdown values, JSON, native property strings, comments and directive
-contents keep their trailing characters.
+contents keep their trailing characters. The characters at the end of a string
+of the native metadata or of a JSON table are part of the value that mermaid.js
+keeps in the Db (`icon:'person  '` is the icon `person` and two spaces), and a
+change of them is no kind of change of the Db that formatting may make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db));
+a markdown label keeps them for the versions that count (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[fixture: trailing-whitespace/trailing-values] [test: usecase:
+[fixture: trailing-whitespace/trailing-values] [fixture:
+trailing-whitespace/opaque-and-metadata-lines] [test: usecase:
 terminal-comment-tab] [test: usecase: terminal-a11y-tab]
 
 Unicode characters are not automatically exterior HWS; no dangling null CSS

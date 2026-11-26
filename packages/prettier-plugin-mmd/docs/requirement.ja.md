@@ -1446,8 +1446,12 @@ Prettier は JavaScript、CSS、YAML の行末の空白とタブを落とすの�
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
 文の前後の空行とコメント行は、通常の配置に従います。
+空行の連なりは多くとも 1 つにします。
+これは[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+コメント行は[コメント](#コメント)のとおりに置きます。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
+[fixture: semicolons-at-the-end-of-a-style-statement/blank-line-run-and-comment-line]
 
 空の説明ブロックも通常の配置に従い、スタイルの終端は削除します。
 
@@ -1510,21 +1514,17 @@ style の文脈の改行の後で続きます。
 コメントやディレクティブがあれば改行を保ち、
 構造の続きの行と間の注釈を 1 段深く置きます。
 ブロックのヘッダー、フィールド、関係文、ほかの文も同じです。
-規則 1 は、改行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
-その前の空白を残し、文の後ろの部分と、
-その間のコメントやディレクティブの行を 1 段深く置きます。
-ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
-動かすと mermaid.js がテキストを拒否する所などです）。
-名前と `{` を持つブロックの行は、その後ろの部分に入りません。
-文と同じ段に置きます。
-この段を与える先例も規則もなく、決まるまでは公開した版の出力のままです。
+名前と `{` を持つブロックの行は、文と同じ段に置きます。
+これらの段を与える規則はなく、決まるまでは公開した版の出力のままです。
 詳しくは
 [どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
 を参照してください。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
+関係の `-` の後で、そのような改行の前にある空白は必要です。
+それがない `a -`、改行、`satisfies -> b` は、対象にする版のどれもが拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 コメントで結合される領域では、文全体を原文のまま残します。
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
@@ -1533,6 +1533,7 @@ style の文脈の改行の後で続きます。
 
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]
+[fixture: multi-line-statements/relation-dash-space-kept]
 [fixture: multi-line-statements/header-directive-continuation]
 [fixture: fields/comment-and-directive-continuations]
 [fixture: multi-line-statements/comment-line-inside-kept]
@@ -1612,6 +1613,10 @@ requirementDiagram
 文の中の 2 つのトークンの間の空白は 1 つの空白にし、
 接しているトークンは接したままにします。
 空の説明ブロックの波括弧がそうです。
+取るものの前に置くキーワードの後の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は `return  x;` を `return x;` と印字し、
+`style  r` は `style r` と印字します。
 説明ブロックの開始波括弧の前には空白 1 つを置き、
 空の波括弧の中には空白を置きません。
 `accDescr {}` と印字するこの形を、
