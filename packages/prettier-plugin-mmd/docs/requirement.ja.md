@@ -225,8 +225,6 @@ requirementDiagram
 の手順 2 を参照してください。
 コメントかディレクティブがあれば改行を残し、
 構造の続きの行と間の注釈をフィールドより 1 段深く置きます。
-理由は[複数行の文](#複数行の文)にあるものと同じです。
-規則 2 が、文の後続部分と間の注釈類の行を、文より 1 段深く置きます。
 
 [fixture: fields/comment-and-directive-continuations]
 [fixture: fields/colon-touches-keyword]
@@ -693,8 +691,6 @@ style の文脈では、単位の中のディレクティブを拒否するか�
 [fixture: styles-and-classes/class-name-with-directive-kept]
 
 コメント行の隣の改行は残し、コメントと構造の続きの行を 1 段深く置きます。
-理由は[複数行の文](#複数行の文)にあるものと同じです。
-規則 2 が、文の後続部分と間の注釈類の行を、文より 1 段深く置きます。
 
 [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
@@ -830,8 +826,6 @@ Prettier は `return  x` を `return x;` と印字します。
 
 ディレクティブやコメント行を含む方向の行は改行を残し、
 構造の続きの行を 1 段深く置きます。
-理由は[複数行の文](#複数行の文)にあるものと同じです。
-規則 2 が、文の後続部分と間の注釈類の行を、文より 1 段深く置きます。
 二つの単位の間のディレクティブは、通常の隙間の空白の後に、
 次の単位に接して置きます。
 [flowchart](./flowchart.ja.md#ディレクティブ)と同じです。
@@ -1256,9 +1250,8 @@ requirementDiagram
 場合ごとに決めます。
 コロンの前にコメント行があるときは、[journey](./journey.ja.md#複数行の文)、
 [quadrant](./quadrant.ja.md#複数行の文)、
-[timeline](./timeline.ja.md#複数行の文) が `accDescr` の改行を残し、コメント、
-コロン、テキストを 1 段深く置きます。
-テキストの前にコメント行があるときは、この 3 つの図が `accTitle` で同じ形にし、
+[timeline](./timeline.ja.md#複数行の文) が `accDescr` の改行を残します。
+テキストの前にコメント行があるときは、この 3 つの図が `accTitle` の改行を残し、
 [flowchart](./flowchart.ja.md#アクセシビリティの行) も同じです。
 
 [fixture: accessibility-statements/text-on-next-line-joined]
@@ -1712,8 +1705,7 @@ requirementdiagram
 規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [c4](./c4.ja.md#コメント) と [quadrant](./quadrant.ja.md#コメント) も、
-単独のコメントを、後ろの文か、テキストの末尾では最後の文の段に置き、
-ヘッダーの前では 1 桁目に置きます。
+単独のコメントを、後ろの文か、テキストの末尾では最後の文の段に置きます。
 本体の中では、[c4](./c4.ja.md#字下げ) も、
 単独のコメントを周りの文と同じ段に置きます。
 

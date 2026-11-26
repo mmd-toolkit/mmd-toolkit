@@ -55,8 +55,8 @@ class の未完のバッククォート名の EOF 規則は適用しません。
 
 ### Header
 
-[C4](./c4.ja.md#ヘッダー) と同じく、図の始まりを見つけやすくするため、
-正確な小文字の `usecase-beta` を先頭列に置き、本文を次の行から置きます。
+図の始まりを見つけやすくするため、正確な小文字の `usecase-beta` を先頭列に置き、
+本文を次の行から置きます。
 外側の ASCII 空白とタブを除き、方向は独立した文のままにします。
 ヘッダーの行の終わりにある ASCII の空白とタブは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により除きます。
@@ -1445,13 +1445,14 @@ usecase-beta
 ### Comments
 
 [コメント](./class.ja.md#コメント)を再利用します。
-周囲の文、境界の `end` の前では宣言に揃え、ヘッダー前では先頭列に置きます。
+周囲の文、境界の `end` の前では宣言に揃えます。
 末尾の水平空白を含むコメント全体を保ちます。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表は、行頭の空白を挙げていないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [block](./block.ja.md#コメント) と [er](./er.ja.md#コメント)も、
 コメントを宣言や周りの文と同じ段に置きます。
+ヘッダー前のコメントは先頭列に置きます。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 [test: usecase: terminal-comment-tab]

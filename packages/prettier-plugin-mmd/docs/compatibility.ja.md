@@ -6499,14 +6499,6 @@ mermaid.js の行の規則が隙間の空白を読む可能性のある所と、
 続きの行と間の独立した注釈は文より 1 段深く置きます。
 ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
 動かすと mermaid.js がテキストを拒否する所などです）。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[requirement](./requirement.ja.md#フィールド)、
-[sequence](./sequence.ja.md#複数行の文)、
-[flowchart](./flowchart.ja.md#複数行の文)、
-[xychart](./xychart.ja.md#複数行の文)も、続きの行と間の独立した注釈を、
-文より 1 段深く置きます。
 LF の前に必要な空白を含め、各隙間の最初の行末を保ち、
 値とディレクティブの内部は分割しません。
 コメントで結合される領域、セミコロンの保護、図種ごとの値の境界を優先します。
@@ -7238,15 +7230,10 @@ CSS の `margin: 1px`、改行、`2px` は `margin: 1px 2px;` になります。
 [fixture: sequence/multi-line-statements/joined]
 [fixture: sequence/multi-line-statements/more-lines-joined]
 
-コメントかディレクティブを含むものは改行を残し、構造の続きの行をそろえます。
+コメントかディレクティブを含むものは改行を残し、
+構造の続きの行と間のコメントやディレクティブの行を、文より 1 段深く置きます。
 各隙間の最初の改行の前の空白は、
 字句解析が行をつないで読む場合があるため保ちます。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[requirement](./requirement.ja.md#フィールド) と
-[flowchart](./flowchart.ja.md#複数行の文)も、
-文の途中のコメントとディレクティブの行を、文より 1 段深く置きます。
 
 [fixture: sequence/multi-line-statements/comment-inside-kept]
 

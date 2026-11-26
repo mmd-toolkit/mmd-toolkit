@@ -14,16 +14,16 @@ preserved text and differences from mermaid.js.
 Print `radar-beta` at column one and put an ordinary first statement on the next
 line so the heading is easy to find. Where a statement stands is no place of
 rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [pie](./pie.md#header), [packet](./packet.md#header),
-[architecture](./architecture.md#header), [treemap](./treemap.md#header),
-[cynefin](./cynefin.md#header), and [gitgraph](./gitgraph.md#header) print the
-header at column one and an ordinary first statement on the next line, where no
-other rule keeps the boundary as written, as the hidden forms, global trivia and
-protected semicolon segments below do. A colon right after the header word is
-removed, together with the whitespace before it: mermaid.js reads `radar-beta:`
-and `radar-beta` as the same header, and the examples in its documentation write
-the header without the colon 3 times against none (see
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the first statement its line, as [pie](./pie.md#header),
+[packet](./packet.md#header), [architecture](./architecture.md#header),
+[treemap](./treemap.md#header), [cynefin](./cynefin.md#header), and
+[gitgraph](./gitgraph.md#header) print an ordinary first statement on the next
+line, where no other rule keeps the boundary as written, as the hidden forms,
+global trivia and protected semicolon segments below do. A colon right after the
+header word is removed, together with the whitespace before it: mermaid.js reads
+`radar-beta:` and `radar-beta` as the same header, and the examples in its
+documentation write the header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
@@ -131,13 +131,7 @@ columns have no grammatical meaning. useTabs uses one tab, even at width zero.
 Prettier prints a nested block of JavaScript with no indentation at
 `--tab-width 0`, and with one tab per level at `--use-tabs`, also at
 `--tab-width 0`. Entry continuation lines use two steps; written value columns,
-hidden interiors/closers and retained prefixes keep their own rules. The start
-of a line is no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#multi-line-statements) and
-[quadrant](./quadrant.md#multi-line-statements) put the continuation lines of a
-statement one level inside it, which is two steps here, since the statement
-stands one step in.
+hidden interiors/closers and retained prefixes keep their own rules.
 
 [fixture: radar/indentation/indent-two]
 
@@ -329,11 +323,9 @@ holding comments or Root directives; ordinary continuation lines and comments
 use two indentation steps, while a separate `}` aligns with its statement. A
 comment takes the rest of its line, so joining the next entry onto it would put
 the entry into the comment. The start of a line is no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#multi-line-statements) puts the continuation
-lines one level inside the statement, and the separate `}` stands at the level
-of its statement, as the `}` of an attribute block does in
-[er](./er.md#attribute-blocks) and the `}` of a description block in
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) puts
+the separate `}` at the level of its statement, as the `}` of an attribute block
+does in [er](./er.md#attribute-blocks) and the `}` of a description block in
 [flowchart](./flowchart.md#multi-line-values). No rule gives the line breaks
 that hold a directive, or the other authored entry newlines of a commented list,
 which stay as written: [xychart](./xychart.md#multi-line-statements) keeps the
@@ -3653,14 +3645,14 @@ radar-beta
 
 Align ordinary standalone comments one body step in, or column one before the
 header. A comment on a line of its own stands at the level of the statements
-around it, before the header too, where it starts the line, as under
-[Comments](./flowchart.md#comments) of a flowchart, and as Prettier prints the
-comment lines of code (a `//` line in a block is printed at the level of the
-statements around it). Inline comments keep their line. A comment that touches
-stays touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
-one space before a comment that stands after something on its line, as Prettier
-prints `x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing
-padding. Native comments end at physical EOL and keep LS/PS as content. Earlier
+around it, as under [Comments](./flowchart.md#comments) of a flowchart, and as
+Prettier prints the comment lines of code (a `//` line in a block is printed at
+the level of the statements around it). Inline comments keep their line. A
+comment that touches stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing padding.
+Native comments end at physical EOL and keep LS/PS as content. Earlier
 strings/descriptions own enclosed percent text; removed common regions keep
 their complete source and continuation columns. These shared attachment rules
 prevent text from changing owner.

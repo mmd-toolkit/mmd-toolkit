@@ -16,12 +16,12 @@ the Markdown host in fences. See [compatibility](./compatibility.md).
 
 Put `treeView-beta` at column one and ordinary body items on following lines.
 This gives the header its own line without repairing trailing header padding,
-inline names or rejected spellings. The header stands at column one and ordinary
-body items follow on later lines in [kanban](./kanban.md#header) and
-[C4](./c4.md#header) diagrams;
+inline names or rejected spellings. Ordinary body items follow on later lines,
+as each statement of a [flowchart](./flowchart.md#statements-one-per-line)
+stands on a line of its own;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-treeView the same layout. Empty bodies stay empty; attached directives retain
-their boundary.
+treeView the same body layout. Empty bodies stay empty; attached directives
+retain their boundary.
 
 [fixture: treeview/header/header-leading]
 

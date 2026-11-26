@@ -19,10 +19,11 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 `eventmodeling` は第 1 列に置き、普通の最初の文を次の行へ移して、
 見出しを見つけやすくします。
 文が置かれる位置（行頭）は規則 1 の場所ではないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+最初の文を置く行を決めます。
 [wardley](./wardley.ja.md#見出し)、[cynefin](./cynefin.ja.md#header)、
 [architecture](./architecture.ja.md#header)、[packet](./packet.ja.md#header)も、
-見出しを第 1 列に置き、普通の最初の文を次の行に置きます。
+普通の最初の文を次の行に置きます。
 隠れた形、保持する前置部分、保護行は共有の規則に従い、
 見出しの行が保つ行なら最初の文もその行に残します。
 同じ項目を図種の間で同じように扱うためです。
@@ -513,10 +514,8 @@ resetframe 02 command Beta
 
 ### Declarations and notes
 
-コメントやディレクティブで宣言や note の見出しが分かれる場合、GWT と同じく、
+コメントやディレクティブで宣言や note の見出しが分かれる場合、
 注釈類と見出しが完結する行をキーワードより 1 段深くします。
-規則 2 は、文の後ろの行と、その間のコメントやディレクティブの行に、
-この深さを与えます。
 コメントやディレクティブの隣の改行も残します。
 理由は [Long lines](#long-lines) と同じです。
 data 本文の規則が余白の変更を許す場合、
@@ -606,8 +605,6 @@ entity Shop.Buy
 
 GWT の見出しがコメントやディレクティブの後に続く場合、通常の継続の字下げを使い、
 注釈類と参照元フレームの行を `gwt` より 1 段深く置きます。
-文の後ろの行にこの深さを与えるのは規則 2 です（[Long lines](#long-lines)
-を参照）。
 書かれた順序とコメントの形は保ちます。
 節キーワードは引き続き 1 段、項目は 2 段です。
 理由は [Indentation](#indentation) と同じです。
@@ -1327,10 +1324,6 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 メタデータや必須の `title` の境界を優先します。
 検出が拒否するため、スラッシュのコメントを見出し前へ移しません。
 見出しの前のコメント行は第 1 列に置きます。
-行頭は規則 1 の場所ではないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#コメント)、[timeline](./timeline.ja.md#コメント)、
-[c4](./c4.ja.md#コメント)も、見出しの前のコメント行をそう印字します。
 
 [fixture: eventmodeling/comments/inline-gap-run-and-touching]
 [test: an em space before a `//` comment after a statement of an eventmodeling diagram]

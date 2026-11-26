@@ -1615,8 +1615,7 @@ multi-line-statements/empty-line-inside-joined] [corpus fixture:
 class/lex-direction-line-value-next-line]
 
 A line break next to a comment or a directive stays, while structural
-continuations and intervening trivia stand one level deeper, as in a sequence
-diagram (see [Multi-line statements](./sequence.md#multi-line-statements)).
+continuations and intervening trivia stand one level deeper.
 
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 

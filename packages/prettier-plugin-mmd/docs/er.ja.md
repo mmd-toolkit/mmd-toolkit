@@ -523,12 +523,6 @@ Prettier は CSS の `margin: 1px`、改行、
 属性の内側に 1 段字下げします。
 型、名前、引用符付きコメントの内部は、Db が書かれたまま持つので、
 書かれたまま残します。
-規則 1 はコメント行の隣の改行に記号を挙げないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[block](./block.ja.md#複数行の文)、[sequence](./sequence.ja.md#複数行の文)、
-[flowchart](./flowchart.ja.md#アクセシビリティの行) も、
-文の後続部分と独立した注釈類を、文の内側に継続の 1 段字下げで置きます。
-ただし、ほかの規則が配置を書かれたまま残す所は別です。
 2 つの行を結ぶコメント領域を含む属性は、全体を書かれたまま残します（下を参照）。
 コメント行やディレクティブの隣の改行が残る理由は、
 [複数行の文](#複数行の文)に書いてあります。
@@ -1880,7 +1874,7 @@ Prettier が `return  x` を `return x;` と印字するのと同じです。
 
 ディレクティブやコメント行がある方向の行は改行を残し、
 構造の続きの行を 1 段深く置きます。
-理由は[複数行の文](#複数行の文)に書いてあります。
+改行が残る理由は[複数行の文](#複数行の文)に書いてあります。
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -2394,9 +2388,6 @@ accTitle: direction BT
 [fixture: comments/last-in-body] [fixture: comments/text-kept]
 
 ヘッダーより前のコメント行は 1 桁目に置きます。
-[gantt](./gantt.ja.md#コメント)、[requirement](./requirement.ja.md#コメント)、
-[block](./block.ja.md#コメント)、
-[journey](./journey.ja.md#コメント)も同じです（規則 2）。
 
 [fixture: comments/before-header]
 
@@ -3245,8 +3236,7 @@ mermaid.js が複数行にわたって読む文は、改行が、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
 [journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
-その前の空白を残し、文の後ろの部分と、
-その間のコメントやディレクティブの行を 1 段深く置きます。
+その前の空白を残します。
 ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所と、
 動かすと mermaid.js がテキストを拒否する所です）。
 コメントで結合される領域は、それがつなぐ行を原文のまま残します（下を参照）。
