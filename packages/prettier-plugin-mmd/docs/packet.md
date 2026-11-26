@@ -433,7 +433,9 @@ between the keyword and the opening brace, as Prettier prints `class A{}` as
 `class A {}`. Plain opener whitespace can join across physical or Unicode lines;
 real opener trivia keeps its break. Moving a removed comment region beside
 `accDescr` makes it a native comment that mermaid.js cannot read between the
-keyword and `{`, so the opening gap keeps the comment region on its own line.
+keyword and `{`, so the opening gap keeps the comment region on its own line
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Whitespace-only interiors become `{}` because no text needs surrounding
 whitespace. Prettier prints empty objects and arrays with no interior
 whitespace, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
@@ -443,12 +445,14 @@ accessible-description text in the mermaid.js Db, so the block retains it:
 removing it changes the description. Ordinary description body and standalone
 comment lines align one level inside the statement, since the Db removes
 indentation after LF. Keep line breaks and interior blank lines, and the
-whitespace at the end of each line of text except the last one; a line of
-whitespace only becomes an empty line. The whitespace at the end of the last
-line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. A separate closer
-aligns with the statement. Directives and shared removed comment regions keep
-their complete source. Quotes, backslashes and hidden-looking text do not
+whitespace at the end of each line of text except the last one: mermaid.js keeps
+the line breaks in the description, and a blank line between two lines is one at
+most, as [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives; a
+line of whitespace only becomes an empty line. The whitespace at the end of the
+last line of text is dropped where the closer stands on a line of its own, and
+is printed as one space where the closer follows it on that line. A separate
+closer aligns with the statement. Directives and shared removed comment regions
+keep their complete source. Quotes, backslashes and hidden-looking text do not
 protect the first closing brace.
 
 [corpus fixture: packet/common-block-bare]
@@ -669,8 +673,12 @@ Apply the same shared source/boundary preservation to directive-kind
 PacketIgnoredText, distinct from Root directives. Keep all range/single/relative
 interior gaps, seven statement suffix kinds, header contact and body forms after
 visible EOL. Keep arbitrary/multiline bodies, later qualifying closers, multiple
-forms and global cuts. Glued nonqualifying or unclosed forms can remain native
-Comments: adding a boundary could change their classification.
+forms and global cuts. The space after the last hidden form of a statement stays
+where another statement follows on the next line: without it the hidden form
+takes the line break, and the versions that count reject the next statement (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Glued nonqualifying or unclosed forms can remain native Comments: adding a
+boundary could change their classification.
 
 [fixture: packet/hidden-directives/hidden-all-range-gaps]
 
