@@ -3524,6 +3524,34 @@ quadrant chart の象限、軸、
 Gantt chart、user journey、timeline の `title` は、
 空白をはさんだ 2 つのディレクティブの形がなく、表ではダッシュにしています。
 
+表が示す行からディレクティブを外すと、
+同じテキストをディレクティブなしで印字した行になるときは、次の理由によります。
+mermaid.js は、テキストを読む前にディレクティブを外すので、
+2 つの行から同じテキストを読みます。
+整形器は、mermaid.js が同じに読むテキストを、
+先頭にディレクティブがあってもなくても、1 つの形で印字します。
+ディレクティブは、行がテキストの前に持つ空白の後に置き、テキストに接します。
+これは、隙間の中のディレクティブと同じです。
+詳しくは [ディレクティブ](./flowchart.ja.md#ディレクティブ) を参照してください。
+ishikawa のリテラル、mindmap のノード、kanban のカード、treeView のノードでは、
+ディレクティブは、代わりに行の字下げの中に置きます。
+mermaid.js は、その両側の空白を合わせて字下げとして読み、その幅は、
+ディレクティブのない行の字下げと同じです。
+
+[test: the title of a pie chart without the directive at its start]
+[test: the title of a Wardley map without the directive at its start]
+[test: the title of a quadrant chart without the directive at its start]
+[test: the title of a Gantt chart without the directive at its start]
+[test: the text of an ishikawa literal without the directive at its start]
+[test: the text of a mindmap node without the directive at its start]
+[test: the text of a kanban card without the directive at its start]
+[test: the text of a treeView node without the directive at its start]
+[test: the accDescr line of a flowchart without the directive at its start]
+[test: the accDescr line of a state diagram without the directive at its start]
+[test: the label of a quadrant of a quadrant chart without the directive at its start]
+[test: the member line of a class diagram without the directive at its start]
+[test: the label of a relation of a class diagram without the directive at its start]
+
 書かれたテキストと、書かれたままではないセルの印字したテキストを、
 各行のテキスト 1 つと上に挙げた各文字について、その図種で数える版で描き、
 SVG は、生成された id とテキストノードの空白を除いて同じでした。

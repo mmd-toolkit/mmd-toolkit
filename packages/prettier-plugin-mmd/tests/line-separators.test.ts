@@ -43062,6 +43062,94 @@ describe("the runs after a directive at the start of a text", () => {
 })
 
 /**
+ * A text of each row of the table of docs/compatibility.md, Runs of whitespace
+ * in a text that are drawn the same, whose line keeps what mermaid.js reads
+ * when the directive at its start is taken out, written without that directive:
+ * the line it prints is the line printed with the directive, the directive
+ * taken out.
+ */
+const withoutTheDirectiveAtTheStartExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "the title of a pie chart without the directive at its start",
+    'pie\ntitle  A  b\n"a": 1\n',
+    'pie\n  title A b\n  "a": 1\n',
+  ],
+  [
+    "the title of a Wardley map without the directive at its start",
+    "wardley-beta\ntitle  A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "the title of a quadrant chart without the directive at its start",
+    "quadrantChart\ntitle  A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "the title of a Gantt chart without the directive at its start",
+    "gantt\ntitle  A  b\n",
+    "gantt\n  title A b\n",
+  ],
+  [
+    "the text of an ishikawa literal without the directive at its start",
+    "ishikawa\n  R\n     A  b\n",
+    "ishikawa\n  R\n    A b\n",
+  ],
+  [
+    "the text of a mindmap node without the directive at its start",
+    "mindmap\n  root\n     A  b\n",
+    "mindmap\n  root\n     A  b\n",
+  ],
+  [
+    "the text of a kanban card without the directive at its start",
+    "kanban\n  S\n     A  b\n",
+    "kanban\n  S\n    A  b\n",
+  ],
+  [
+    "the text of a treeView node without the directive at its start",
+    "treeView-beta\nR\n   A  b\n",
+    "treeView-beta\n  R\n    A  b\n",
+  ],
+  [
+    "the accDescr line of a flowchart without the directive at its start",
+    "flowchart LR\naccDescr:  A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: A b\n  A --> B\n",
+  ],
+  [
+    "the accDescr line of a state diagram without the directive at its start",
+    "stateDiagram-v2\naccDescr:  A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: A b\n  A --> B\n",
+  ],
+  [
+    "the label of a quadrant of a quadrant chart without the directive at its start",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1  A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 A b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "the member line of a class diagram without the directive at its start",
+    "classDiagram\nA :  +x  y\n",
+    "classDiagram\n  A : +x y\n",
+  ],
+  [
+    "the label of a relation of a class diagram without the directive at its start",
+    "classDiagram\nA --> B :  A  b\n",
+    "classDiagram\n  A --> B : A  b\n",
+  ],
+]
+
+describe("the texts of the table of directives at the start, without the directive", () => {
+  it.each(withoutTheDirectiveAtTheStartExamples)(
+    "prints %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
  * What a text of each group of the table of docs/compatibility.md, Runs of
  * whitespace in a text that are drawn the same, prints after a directive at
  * its start, for each form of what follows the directive: two spaces, a tab, a

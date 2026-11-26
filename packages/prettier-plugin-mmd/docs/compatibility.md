@@ -3458,6 +3458,32 @@ of the y axis of a quadrant chart, as mermaid.js does]
 The `title` of a Gantt chart, a user journey, and a timeline has no form for two
 directives with a space between them, which the table marks with a dash.
 
+Where taking the directive out of a line that the table gives leaves the line
+that the same text prints without the directive, this is the reason: mermaid.js
+takes the directive out before it reads the text, so it reads the same text from
+both lines, and the formatter prints a text that mermaid.js reads the same in
+one form, whether a directive stands at its start or not. The directive stands
+after the whitespace that the line has before the text and touches the text, as
+a directive in a gap does (see [Directives](./flowchart.md#directives)). In an
+ishikawa literal, a mindmap node, a kanban card, and a treeView node, the
+directive stands inside the indentation of the line instead: mermaid.js reads
+the whitespace on its two sides together as that indentation, and together they
+are as wide as the indentation of the line without the directive.
+
+[test: the title of a pie chart without the directive at its start] [test: the
+title of a Wardley map without the directive at its start] [test: the title of a
+quadrant chart without the directive at its start] [test: the title of a Gantt
+chart without the directive at its start] [test: the text of an ishikawa literal
+without the directive at its start] [test: the text of a mindmap node without
+the directive at its start] [test: the text of a kanban card without the
+directive at its start] [test: the text of a treeView node without the directive
+at its start] [test: the accDescr line of a flowchart without the directive at
+its start] [test: the accDescr line of a state diagram without the directive at
+its start] [test: the label of a quadrant of a quadrant chart without the
+directive at its start] [test: the member line of a class diagram without the
+directive at its start] [test: the label of a relation of a class diagram
+without the directive at its start]
+
 The written text and the printed text of each cell that is not as written were
 drawn, for a text of each row and each character named above, with the versions
 that count for its diagram type, and the SVG was the same without the generated
