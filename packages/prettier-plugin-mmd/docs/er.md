@@ -3798,8 +3798,11 @@ attribute name]
 An entity header, a subgraph header, or a class definition with a comment line
 after U+2028 or U+2029 keeps the whitespace and the line breaks of that span as
 written: mermaid.js removes the comment line and its preceding whitespace,
-joining the continuation to the text before the separator. The colors of a class
-definition on it are printed as under [Colors](#colors).
+joining the continuation to the text before the separator. With a line feed in
+place of the separator, the continuation stands on a line of its own, and the
+versions of mermaid.js that count reject the text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The colors of a class definition on it are printed as under [Colors](#colors).
 
 [test: a comment line after U+2028 in an ER entity header] [test: a comment line
 after U+2029 in an ER entity header] [test: a comment line after U+2028 in an ER

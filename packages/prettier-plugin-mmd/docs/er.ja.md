@@ -3599,6 +3599,11 @@ U+2028 や U+2029 の後にコメント行がある範囲は、
 クラス定義の色は[色](#色)と同じに印字します。
 mermaid.js がコメント行とその前の空白を除き、
 後続の行を区切り文字の前のテキストにつなぐためです。
+区切り文字を改行にすると、後続の行が独立した行になり、
+数える版の mermaid.js はそのテキストを拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: a comment line after U+2028 in an ER entity header]
 [test: a comment line after U+2029 in an ER entity header]
