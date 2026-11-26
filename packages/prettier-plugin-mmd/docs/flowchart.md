@@ -2802,6 +2802,18 @@ The `}` of the block stands at the level of the `accDescr` it closes.
 
 [fixture: multi-line-values/accdescr-block-kept]
 
+A `}` on a line of its own is the same kind of gap in every diagram type that
+has description blocks, and
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it the form that they print: a separate `}` stands at the level of the
+`accDescr` in a pie chart (see
+[Description blocks](./pie.md#description-blocks)) and in a C4 diagram (see
+[Description blocks](./c4.md#description-blocks)). A `}` written deeper or
+shallower moves to that level.
+
+[fixture: multi-line-values/accdescr-block-kept] [fixture:
+multi-line-values/accdescr-block-closing-brace-aligned]
+
 Comment contents inside such a block are kept, with their columns following the
 same top-level or subgraph rule.
 
