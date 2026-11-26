@@ -15,7 +15,7 @@ import { fileURLToPath } from "node:url"
 import { afterEach, expect, it, vi } from "vitest"
 
 // Each test starts Node.js and git processes for the hook and its fixture
-// repository. In the Windows jobs of CI the tests of this file took 0.5 to 7.6
+// repository. In the Windows jobs of CI the tests of this file took 0.3 to 7.6
 // seconds: the slowest seen took 7,558 ms, and one without a limit of its own
 // failed at 6,345 ms, over the default 5 seconds. The limit is twice the slowest
 // test seen: it still stops a hook that hangs, and no longer fails on a slow
