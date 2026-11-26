@@ -1051,7 +1051,9 @@ versions of mermaid.js that count read `A@{%%{init: {}}%%x: 1}` with metadata
 key `x` and value `1` instead of key `x:1` and value `null` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Where its line is too long it prints on lines, one entry on each, under the
-conditions listed there.
+conditions listed there, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)).
 
 [fixture: metadata-blocks/long-split] [fixture: metadata-blocks/one-line-padded]
 [fixture: metadata-blocks/one-line-space-only-padded] [fixture:
@@ -1853,8 +1855,10 @@ Reuse [Chains](./flowchart.md#chains) and
 [Line wrapping](./flowchart.md#line-wrapping): author-chosen statement
 boundaries stay, and `printWidth` never redistributes links. Keep long lines,
 except that a data block on one line whose line is wider than `printWidth`
-prints on lines under the conditions of [Metadata blocks](#metadata-blocks);
-keep explicit split statements, repetitions and source order. Agentflow routing,
+prints on lines under the conditions of [Metadata blocks](#metadata-blocks), a
+form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form); keep
+explicit split statements, repetitions and source order. Agentflow routing,
 generated ids and completion-order containers make that order observable. Domain
 shapes, numeric/prototype operands, entities, HTML and diagnostic-related
 spelling remain authored even when a Db-normalized alternative exists.

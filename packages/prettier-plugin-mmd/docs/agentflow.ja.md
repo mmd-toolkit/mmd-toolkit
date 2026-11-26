@@ -1080,6 +1080,8 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 を参照してください。
 行が長すぎるときは、そこに挙げた条件のもとで、
 1 行に 1 項目ずつ複数行に分けて印字します。
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 
 [fixture: metadata-blocks/long-split] [fixture: metadata-blocks/one-line-padded]
 [fixture: metadata-blocks/one-line-space-only-padded]
@@ -1888,6 +1890,7 @@ cb
 `printWidth`で辺を再配置しません。
 長い行を保ちますが、1行に書いたデータブロックは、その行が`printWidth`より広く、
 [データブロック](#metadata-blocks)の条件を満たすときに、複数行で印字します。
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
 明示的に分けた文、反復と原文の順序を保ちます。
 agentflowの振り分け、生成ID、完了順のコンテナーでは順序が観測できます。
 Dbの正規化で等しくても、ドメインの形、数値やプロトタイプ名のオペランド、

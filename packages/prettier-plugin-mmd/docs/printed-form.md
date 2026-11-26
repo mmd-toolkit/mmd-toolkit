@@ -250,15 +250,18 @@ Where mermaid.js rejects the space after a colon, none is printed before it
 either, since Prettier prints no colon with a space before it alone: the width
 of a block is printed `a:2`, also where `a :2` was written.
 
-Where mermaid.js reads a label otherwise without the whitespace at its start (a
-label that starts with `/`, `\`, `-`, or `"`, or whose first word holds a `@`;
-see [Label inner whitespace](./flowchart.md#label-inner-whitespace)), one space
-stands inside each end of the label: `A[ /x/]` is printed `A[ /x/ ]`. Rule 1
-puts no space inside brackets, so it would leave the space that mermaid.js needs
-alone at the start, where it reads as a slip; with one at the end too, the label
-shows that the space is meant. This corrects the form of rule 1, as AGENTS.md
-(item 4) says of a rule whose form reads worse than another form that draws the
-same. No space stands before the closing `?]` or `=]` of a slanted shape, where
+In a flowchart, a swimlane diagram, and an agentflow diagram, where mermaid.js
+reads a label otherwise without the whitespace at its start, or rejects it (a
+label that is no string in quotes and starts with `/`, `\`, `-`, or `"`, or
+whose first word holds a `@`; see
+[Label inner whitespace](./flowchart.md#label-inner-whitespace)), one space
+stands inside each end of the label, in every shape and in the text between `|`:
+`A[ /x/]` is printed `A[ /x/ ]`. Rule 1 puts no space inside brackets, so it
+would leave the space that mermaid.js needs alone at the start, where it reads
+as a slip; with one at the end too, the label shows that the space is meant. The
+user chose this form, which corrects the form of rule 1, as AGENTS.md (item 4)
+says of a rule whose form reads worse than another form that draws the same. No
+space stands before the closing `?]` or `=]` of a slanted shape, where
 mermaid.js would read the space and the `?` or `=` as text.
 
 ### A text that the tree holds whole
