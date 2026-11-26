@@ -1529,12 +1529,21 @@ click 文などの注釈類行を整形する文では、改行を空白 1 つ�
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+click 文では、この改行がリンク先を保ちます。
+`click style`、改行、`href "x:#y;#z"` は、task `style` を、
+`#y;` が符号化されたままのテキストにリンクします。
+同じ文を 1 行にすると、`x:#y#z` にリンクします。
+対象にする版はどれも同じです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 最終行の別の文にある `;` も、同じ判定をします。
 物理行を結ぶコメント領域とリスト区切りの U+FEFF も、元の配置を保ちます。
 
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
+[fixture: multi-line-statements/semicolon-joining-changes-link-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 

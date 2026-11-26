@@ -1482,13 +1482,19 @@ layout: their value padding is part of the Db. In a statement that formats its
 trivia lines, such as a click statement, a line break stays where joining it,
 with one space or with nothing, could change which `;` the line rule ignores,
 and where a `;` ends the last line; any other line break is joined as usual,
-also in a statement that holds a `;`. The same decision applies to a `;` in
-another statement on its final line. A joining comment region or a U+FEFF list
-separator also keeps the original layout.
+also in a statement that holds a `;`. In a click statement, such a line break
+keeps the link: `click style`, a line break, and `href "x:#y;#z"` link a task
+`style` to a text in which `#y;` stays encoded, while the statement on one line
+links it to `x:#y#z`, in every version that counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The same decision applies to a `;` in another statement on its final line. A
+joining comment region or a U+FEFF list separator also keeps the original
+layout.
 
 [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
 multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/semicolon-joining-changes-kept] [fixture:
+multi-line-statements/semicolon-joining-changes-link-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept]
 
