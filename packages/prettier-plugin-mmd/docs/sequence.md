@@ -126,6 +126,10 @@ dropped: mermaid.js reads a `;` as it reads a line break.
 
 A statement written on the line of the header, or after `end` on its line, moves
 to a line of its own.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this, as a statement on the header's line or after the end of a block moves to a
+line of its own in a [flowchart](./flowchart.md#statements-one-per-line) and in
+an [ER diagram](./er.md#statements-one-per-line).
 
 [fixture: statements-one-per-line/split]
 
@@ -227,9 +231,10 @@ statements-one-per-line/directive-semicolon-after-multi-line-statement-aligned]
 mermaid.js removes the directive, and whitespace at the end of the line then
 hides the line break from the statement, which needs one, and whose last unit
 reads no whitespace: `autonumber`, a space, `%%{wrap}%%`, and `;` are accepted,
-while the same without the `;` is rejected. The last unit of the other
-statements, a text, an id, or a description after `as`, reads the whitespace
-with it (see the specification's
+while the same without the `;` is rejected (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The last unit of the other statements, a text, an id, or a description after
+`as`, reads the whitespace with it (see the specification's
 [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context),
 and
 [Empty description blocks before a separator](../../spec/docs/diagrams/sequence.md#empty-description-blocks-before-a-separator)
@@ -1146,7 +1151,8 @@ source, including the text's indentation: that whitespace is part of the Db
 title (see [Multi-line statements](#multi-line-statements)). The comment line is
 removed before mermaid.js reads the text, so the line after it is the title;
 printed after the one space, the comment would stand on the line of the keyword,
-and the next line would be read as a statement.
+and the next line would be read as a statement, which is rejected (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: title/comment-line-kept] [fixture: title/colon-comment-line-kept]
 
@@ -1645,9 +1651,11 @@ characters as escapes too (see
   before it: `A->>B:   x`, U+2028, `%% c`, and `C->>D: y` is one line, whose
   message text goes on into the next line. The statement or the header, the
   comment line, and the text after it are printed as written, without
-  indentation and without formatting the whitespace between them: the tree lists
-  the comments, and the printer reads them as one line (see
+  indentation and without formatting the whitespace between them (see
   [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+  The line after the comment line takes no indentation: mermaid.js reads it into
+  the text of the message, which is drawn with a wider gap (see
+  [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
   A `#` comment is no comment line: it joins no line. U+2028 or U+2029 before it
   is printed as one space, like the spaces and tabs before a comment after a
   statement (see [Comments](#comments)), except after the units below, where
@@ -1749,7 +1757,8 @@ characters as escapes too (see
   `;` on the next line, after the line break that follows the character, stays
   as written too: `participant Z@{ "style": "x:#y" };`, U+2028, a line break,
   and `;`, followed by a statement, is accepted by mermaid.js, while the same
-  text without the second `;` is rejected.
+  text without the second `;` is rejected (see
+  [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
   [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the
   end of its line] [test: a `;` on the next line after an ignored `;` and
@@ -1913,7 +1922,9 @@ statement, and the lexer reads the whitespace and the line breaks after it as
 whitespace (the specification's
 [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context),
 rule 2). So `Alice ->>`, a space, a line break, and `Bob: hi` is printed as
-`Alice ->> Bob: hi`.
+`Alice ->> Bob: hi`. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the one space where the line broke, as Prettier prints `x = a +`, a line
+break, and `b;` as `x = a + b;`.
 
 [fixture: multi-line-statements/joined] [fixture:
 multi-line-statements/more-lines-joined]
@@ -1936,9 +1947,11 @@ multi-line-statements/autonumber-directive-continuation]
 A title with trivia between its keyword and text keeps its complete source,
 since its text includes indentation. Joining regions also stay as written. A
 line break stays where joining it, with one space or with nothing, could change
-which `;` the line rule ignores, and where a `;` decides the end of the last
-line; any other line break is joined as usual, also in a statement that holds a
-`;`.
+which `;` the line rule ignores (`style ->>`, a line break, and `B: x:#y;` is
+drawn with another message when joined; see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
+and where a `;` decides the end of the last line; any other line break is joined
+as usual, also in a statement that holds a `;`.
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 
@@ -1962,6 +1975,10 @@ The whitespace-only interior of a description block, including tabs, line breaks
 and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. The keyword and opening brace
 have one space between them: `accDescr{  }` becomes `accDescr {}`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: Prettier
+prints braces that hold nothing with nothing inside (`x = { }` is printed
+`x = {};`) and one space before the `{` that opens a block (`class A{}` is
+printed `class A {}`).
 
 [fixture: multi-line-values/empty-whitespace-interiors] [test: sequence Unicode
 and tab interiors]
@@ -1970,6 +1987,9 @@ Blocks with comments or directives keep their contents and line breaks.
 
 Blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
+A block on one line with a comment after its `}` stays a block: with a colon,
+the comment would be part of the description (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
@@ -2011,13 +2031,19 @@ sequence/db-acc-descr-block-after-message]
 For participant and actor data blocks, apply
 [Data blocks](./flowchart.md#data-blocks) only when exactly one body line holds
 text. Move that line one level inside the statement and align a separate `}`
-with the statement; a closer after text stays with that line. This applies at
-the top level and inside `loop`, except with `useTabs`, where the statement is
-printed as written (see [Data blocks](./flowchart.md#data-blocks)), unless the
-statement is not at the depth of the first thing on its line: the header of a
-`box` or a block, as in `box Aqua G; participant A@{ … }`, a section keyword, as
-in `else z; participant P@{ … }`, or a statement inside the box or block before
-an `end`, as in `participant B; end; participant A@{ … }`. The written
+with the statement; a closer after text stays with that line.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the level of that line and of a separate `}`, as
+[Data blocks](./flowchart.md#data-blocks) of a flowchart print them so. This
+applies at the top level and inside `loop`, except with `useTabs`, where the
+statement is printed as written, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) that
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a sequence diagram too (see [Data blocks](./flowchart.md#data-blocks)), unless
+the statement is not at the depth of the first thing on its line: the header of
+a `box` or a block, as in `box Aqua G; participant A@{ … }`, a section keyword,
+as in `else z; participant P@{ … }`, or a statement inside the box or block
+before an `end`, as in `participant B; end; participant A@{ … }`. The written
 indentation is then that of that thing, and the statement is printed with the
 usual indentation, the lines of its block moving with it. So is a statement on a
 line that starts with anything else than the things listed under
@@ -2125,7 +2151,10 @@ because changing it would change the diagram or the input would be rejected:
 - the contents of the data block of a participant;
 - that an arrow touches a source spelled as a number or `title`;
 - a title with trivia between its keyword and text;
-- a statement protected by a semicolon line or a joining comment region;
+- a statement protected by a semicolon line or a joining comment region
+  (statements that a `;` joins on the line of a participant with a data block
+  are rejected when split; see
+  [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
 - the whitespace before the first line break of a gap containing trivia;
 - whether whitespace is written before a `%%` comment after `autonumber 5`, and
   a U+2028 or U+2029 between a comment and a comment line after it;
