@@ -1828,12 +1828,16 @@ gap after the ids and the callback can reject (see
 [Click statements](#click-statements)). Agentflow folds only line whitespace
 immediately before the next LF after a closing brace; later blank LFs remain.
 Keep those raw value lines, including LS/PS/VT/FF/NBSP, and never align an
-opaque data closer as an accessibility closer. A U+2028 inside a quoted label
-stays as written because mermaid.js stores it as part of the vertex text in the
-Db. Replacing it with a space or a line feed changes that value, beyond the
-allowed Db exceptions.
+opaque data closer as an accessibility closer. mermaid.js keeps those later
+blank lines, and the spaces that start the line after them, in the text of the
+vertex: the label `"a}  \n\n  b"`, written with escapes, has the text
+`a}\n\n  b`. Removing them changes that value, beyond the allowed Db exceptions.
+A U+2028 inside a quoted label stays as written because mermaid.js stores it as
+part of the vertex text in the Db. Replacing it with a space or a line feed
+changes that value, beyond the allowed Db exceptions.
 
-[corpus fixture: agentflow/lex-quoted-u2028]
+[corpus fixture: agentflow/lex-brace-string-keeps-blank-line] [corpus fixture:
+agentflow/lex-quoted-u2028]
 
 [fixture: multiline-statements-and-values/brace-blank-kept] [fixture:
 multiline-statements-and-values/multiline-chain] [fixture:
