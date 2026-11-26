@@ -86,23 +86,15 @@ composite-states/multiline-alias-label-kept]
 
 The `{` of a composite state, and of an alias definition with a body, stands on
 the line of its name, after one space, as in a class diagram; a `{` written on
-the next line is moved there. Comments or directives between the name and the
-brace keep the line breaks; the brace aligns with the state keyword, and the
-intervening trivia stands one level deeper. Rule 1 names no mark for a line
-break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the later parts of
-a statement and the comment and directive lines between them one level deeper,
-where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text, and
-the like). The line that holds the `{` of a block, with its name or on a line of
-its own, is not one of those later parts: it stands at the level of its
-statement, and neither these precedents nor the other rules of
-[How the printed form is decided](./printed-form.md) give that level, so the
-form that the released version prints stays until the level is decided (see
+the next line is moved there.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both, as
+Prettier prints `class A{}`, and `class A`, a line break, and `{}`, as
+`class A {}`. Comments or directives between the name and the brace keep the
+line breaks; the brace aligns with the state keyword, and the intervening trivia
+stands one level deeper. The line that holds the `{` of a block, with its name
+or on a line of its own, stands at the level of its statement. No rule of
+[How the printed form is decided](./printed-form.md) gives these levels, so the
+form that the released version prints stays until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: composite-states/split] [fixture:
@@ -434,7 +426,9 @@ statements, and on a line of its own `b` would add the state b, which
 [corpus fixture: state/lex-state-without-body]
 
 The same holds for the `""` that mermaid.js does not read in `state x "" y` and
-`state z ""`.
+`state z ""`: on a line of its own, the `""` of `state z ""` is rejected by some
+of the versions that count and drawn as a state by another (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: statements-one-per-line/state-names-kept]
 
@@ -566,7 +560,14 @@ it so
 The `:::` of a `state` definition is not moved: `state A :::c`,
 `state "x" as B ::: c`, and `state C ::: c {` keep the gap they have, one space
 where whitespace was written, and `state "y" as D:::c` is printed
-`state "y" as D :::c` by the rule of the alias.
+`state "y" as D :::c` by the rule of the alias. In a definition without an
+alias, as in `state A :::c` and `state C ::: c {`, mermaid.js reads a `:::` with
+whitespace before it, and the words after it, as names of their own after the
+name of the state (the specification's
+[The state context](../../spec/docs/diagrams/state.md#the-state-context)), and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between them, as between values that follow one another: Prettier prints
+`margin: 1px    2px;` as `margin: 1px 2px;` in CSS.
 
 [fixture: whitespace-between-tokens/css-class-in-definition-kept]
 
@@ -919,9 +920,12 @@ the keyword start a statement.
 
 The text of a description and of a transition label is kept as written, with its
 runs: a label that wraps draws them (see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[fixture: descriptions-and-labels/text-kept]
+[fixture: descriptions-and-labels/text-kept] [fixture:
+descriptions-and-labels/long-text-kept]
 
 A description of only whitespace keeps the whitespace after its `:`: `A : `
 gives no description, while `A :` is rejected.
@@ -1009,10 +1013,12 @@ writes a space after the colon writes a space before it (step 3 of
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is); counted as
 under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
-The whitespace inside the text stays, since a note that wraps draws its runs.
+The whitespace inside the text stays, since a note that wraps draws its runs
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The Db and the figure are the same.
 
-[fixture: notes/colon-and-text-spaced]
+[fixture: notes/colon-and-text-spaced] [fixture: notes/long-text-kept]
 
 Any other start stays as written, and so does a note with an empty text, with a
 comment or a directive, or with a character other than an ASCII one.
@@ -1034,7 +1040,8 @@ position. A note id follows its position with one space under
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark). With `%%x` touching
 the position, mermaid.js ignores it and reads the following id; whitespace
 before `%%x` makes the id empty and causes rejection of this note on one line.
-The ignored text therefore stays touching the position.
+The ignored text therefore stays touching the position (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: state/lex-note-id-ignored-percent-after-position] [corpus
 fixture: state/lex-note-id-percent-after-space]
@@ -1389,10 +1396,13 @@ the same spacing.
 [fixture: aliases/id-kept]
 
 The `""` that it does not read before and after the string stand apart from it
-in the same way. `asA` is no `as`, and is rejected. The `:` before the second
-description stands after one space and the description after it as written: no
-example in the documentation of mermaid.js writes a second description, so the
-colon is printed as a mark that stands between two things (step 3 of
+in the same way. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives that space too, as between values that follow one another: Prettier prints
+`content:"a""b"` as `content: "a" "b";` in CSS. `asA` is no `as`, and is
+rejected. The `:` before the second description stands after one space and the
+description after it as written: no example in the documentation of mermaid.js
+writes a second description, so the colon is printed as a mark that stands
+between two things (step 3 of
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). The second
 description, the text after the `:`, is kept as written, except for the
 whitespace at its end: mermaid.js reads it with the whitespace at its ends, so
@@ -1403,12 +1413,7 @@ The directives that end it are printed with one space before each that has
 spaces or tabs before it, and the spaces and tabs after the last one are left
 out, unless a directive of the line holds a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)):
-`state "d" as A : x   %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`. A
-trailing directive follows one space where spaces or tabs were written after a
-title in [pie](./pie.md#title) and after an event in
-[timeline](./timeline.md#periods-and-events);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the second description of an alias the same gap.
+`state "d" as A : x   %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
 and tabs after the last directive at the end of the line. A description of
 spaces and tabs only, and one that holds a `;`, stay as written. A second
@@ -1605,6 +1610,10 @@ and `classDef` statements of a state diagram are printed so. A color is a `#`
 and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
 it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+The case of a text that is no color is part of the style that mermaid.js keeps
+in the Db, and a change of it is no kind of change of the Db that formatting may
+make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
 
 [fixture: colors/colors-in-lower-case] [fixture:
 colors/words-that-are-not-colors-as-written] [fixture:
@@ -1763,8 +1772,11 @@ multi-line-values/floating-note-empty-line-kept]
 
 Blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
+A block on one line with a comment after its `}` stays a block, with one space
+inside each brace: `accDescr {a} %% c` is printed `accDescr { a } %% c`.
 
-[fixture: multi-line-values/block-text-on-one-line-padded]
+[fixture: multi-line-values/block-text-on-one-line-padded] [fixture:
+multi-line-values/block-then-comment-kept]
 
 Input
 ([multi-line-values/kept-input.mmd](../tests/fixtures/state/multi-line-values/kept-input.mmd)):
@@ -2110,10 +2122,12 @@ A composite statement whose opening line holds one keeps it, and its body is
 printed as any other body: `state a b`, U+2028, and `{` keeps the character and
 indents the statements of the body. Replacing the separator in `state a b`,
 U+2028, and `{` with a space makes mermaid.js read two words before the brace
-and reject the state name. The separator therefore stays, while the body follows
-the ordinary indentation rule. So does one on the closing line, as in
-`state A {`, a body line `B`, and `}` followed by U+2028: the whitespace after
-the `}` stays as written, with the character, and the body is indented.
+and reject the state name (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The separator therefore stays, while the body follows the ordinary indentation
+rule. So does one on the closing line, as in `state A {`, a body line `B`, and
+`}` followed by U+2028: the whitespace after the `}` stays as written, with the
+character, and the body is indented.
 
 [corpus fixture: state/lex-state-two-names-body]
 
