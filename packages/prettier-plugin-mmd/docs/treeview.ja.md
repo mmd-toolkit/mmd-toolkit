@@ -2179,6 +2179,8 @@ mermaid.js はそれらを、空の title と、
 `title  ;T` と `title ;T` は同じように印字します。
 
 [fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
+[fixture: treeview/title/title-prefix]
+[fixture: treeview/title/title-quoted-next]
 
 テキストのない `title` は、
 同じ行のディレクティブかコメントの前に空白が書かれていれば、

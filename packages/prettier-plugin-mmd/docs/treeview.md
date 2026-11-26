@@ -2180,6 +2180,8 @@ one whitespace character or more comes before it: `title  ;T` and `title ;T` are
 printed alike.
 
 [fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
+[fixture: treeview/title/title-prefix] [fixture:
+treeview/title/title-quoted-next]
 
 A `title` with no text, written with whitespace before a directive or a comment
 on its line, is printed with one space before the first of them, whether the
