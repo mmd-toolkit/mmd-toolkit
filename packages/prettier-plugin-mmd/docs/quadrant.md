@@ -182,11 +182,13 @@ quadrantChart
 
 A run of empty lines becomes one empty line, and there is none between the
 header and the first statement, and none at the end of the text. A blank line is
-not held in the Db, and one empty line shows it at the least cost, as Prettier
-does in code (see [Blank lines](./flowchart.md#blank-lines)). Prettier leaves no
-blank lines at the start of a text or a block, so
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes blank lines
-before the header and between the header and the first statement.
+not held in the Db, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one blank line
+at most between two things, as Prettier prints `a();`, three blank lines, and
+`b();` with one blank line. Prettier leaves no blank lines at the start of a
+text or a block, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+removes blank lines before the header and between the header and the first
+statement.
 
 [fixture: blank-lines/runs-become-one] [fixture:
 blank-lines/none-after-the-header] [fixture: blank-lines/none-at-the-end]
@@ -783,6 +785,10 @@ whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. The ordinary keyword/opener gap
 uses one space: `accDescr{  }` becomes `accDescr {}`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: Prettier
+prints braces that hold nothing with nothing inside (`x = { }` is printed
+`x = {};`) and one space before the `{` that opens a block (`class A{}` is
+printed `class A {}`).
 
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test: quadrant
 Unicode and tab interiors]
@@ -1011,9 +1017,14 @@ A comment starts with `%%` where a unit starts and runs to the end of the line.
 A comment on a line of its own stands at the level of the statement after it,
 and its text and its mark are kept as written: a comment line after the last
 statement stays after it, and one before the header stands at the first column.
-A `%%` inside a title, an accessibility text, a description block, or a string
-is a character of it, and inside the brackets of a point it makes the input
-rejected.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+these places: a [flowchart](./flowchart.md#comments) puts a comment line at the
+level of the statements around it, since a comment belongs to no statement, and
+[gantt](./gantt.md#comments), [requirement](./requirement.md#comments),
+[block](./block.md#comments), and [journey](./journey.md#comments) put one
+before the header at the first column. A `%%` inside a title, an accessibility
+text, a description block, or a string is a character of it, and inside the
+brackets of a point it makes the input rejected.
 
 [fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
 comments/comment-line-at-the-end] [fixture:
