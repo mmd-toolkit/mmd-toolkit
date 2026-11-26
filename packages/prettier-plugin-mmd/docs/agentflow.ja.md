@@ -1860,11 +1860,16 @@ idと呼び出しの後のclickの隙間に、余分な空白単位を足すと�
 agentflowが閉じ波括弧の後で畳むのは直後のLF前の行空白だけです。
 それ以降の空のLFと、LS/PS/VT/FF/NBSPを含む元の値の行を保ちます。
 不透明なデータの閉じ括弧をアクセシビリティの閉じ括弧として揃えません。
+mermaid.js は、その後の空行と、その次の行の先頭の空白を、
+頂点のテキストに持ちます。
+エスケープで書いたラベル `"a}  \n\n  b"` のテキストは `a}\n\n  b` です。
+取り除くと、その値が変わり、認められた Db の差の例外には当たりません。
 引用符付きのラベル内の U+2028 は、
 mermaid.js が Db の頂点のテキストの一部として持つので、書かれたままにします。
 空白や LF に置き換えると、その値が変わり、
 認められた Db の差の例外には当たりません。
 
+[corpus fixture: agentflow/lex-brace-string-keeps-blank-line]
 [corpus fixture: agentflow/lex-quoted-u2028]
 
 [fixture: multiline-statements-and-values/brace-blank-kept]
