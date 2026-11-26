@@ -3577,6 +3577,7 @@ markdown 文字列や swimlane 図でも同じで、
 [fixture: subgraph-header/name-several-words-before-block-kept]
 [fixture: subgraph-header/name-whitespace-before-directive-kept]
 [fixture: subgraph-header/name-whitespace-after-directive-kept]
+[fixture: subgraph-header/long-markdown-title-runs-kept]
 
 ヘッダーと同じ行に書かれた空の説明ブロックの周りの空白も同じです。
 ブロックの前、ブロックの間、最後のブロックと `;` の間の空白がそうで、

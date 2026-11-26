@@ -3449,7 +3449,8 @@ subgraph-header/name-quoted-trailing-whitespace-kept] [fixture:
 subgraph-header/name-several-words-trailing-dropped] [fixture:
 subgraph-header/name-several-words-before-block-kept] [fixture:
 subgraph-header/name-whitespace-before-directive-kept] [fixture:
-subgraph-header/name-whitespace-after-directive-kept]
+subgraph-header/name-whitespace-after-directive-kept] [fixture:
+subgraph-header/long-markdown-title-runs-kept]
 
 So does the whitespace around the empty description blocks written on the line
 of the header: before a block, between two blocks, and between the last block
