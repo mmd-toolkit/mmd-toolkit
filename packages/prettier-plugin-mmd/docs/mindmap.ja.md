@@ -21,6 +21,14 @@ fixture の置き方と確かめ方は、
 `useTabs` はタブのままです。
 整形で Db を変えてはならず、1文字が字下げの読みを保つ最小の幅だからです。
 根にはこの設定の段を使い、ほかのノードは根との書かれた文字数の差を保ちます。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: mindmap/indentation/comment-region-keeps-a-joined-line]
 
 [fixture: mindmap/indentation/tab-width-0]
 [fixture: mindmap/indentation/tab-width-0-kept]
@@ -159,6 +167,14 @@ mindmap
 その下のノードは根からの段の幅を保ちます（[インデント](#インデント)を参照）。
 Db は同じです。
 根は、他の図種でヘッダーの後の文が自分の行に移るのと同じに置きます。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: mindmap/root-on-header-line/comment-region-keeps-a-joined-line]
 
 [fixture: root-on-header-line/moved-to-its-own-line]
 [fixture: root-on-header-line/shape-glued-to-the-header]

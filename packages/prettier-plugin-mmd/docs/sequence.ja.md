@@ -23,6 +23,14 @@ fixture の置き方と確かめ方は、
 ブロックは、`loop`、`alt`、`opt`、`par`、`par_over`、`critical`、`break`、
 `rect` です。
 `else`、`and`、`option`、`end` は、その行と同じ段に置きます。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上の文とともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: sequence/indentation/comment-region-keeps-a-joined-line-in-a-block]
 
 [fixture: indentation/blocks] [fixture: indentation/sections]
 [fixture: indentation/other-blocks-kept]

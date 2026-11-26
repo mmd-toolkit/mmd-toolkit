@@ -20,7 +20,13 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header.
+The statements after the header stand one level deeper than the header. A line
+that a comment line after U+2028 or U+2029 joins to the line before it, which
+mermaid.js reads as one line with it, keeps its indentation as written, with the
+statements on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: class/indentation/comment-region-keeps-a-joined-statement-line]
 
 [fixture: indentation/written-indentation-dropped] [fixture:
 indentation/header-v2-kept]
@@ -102,7 +108,12 @@ The `{` of a class's member body stays on the line of the class, after one
 space, as the documentation of mermaid.js writes it; each member line stands on
 a line of its own, one level deeper; and the `}` stands on a line of its own at
 the level of the class, unless a directive stands before it on its line:
-`%%{init: {}}%% }` stays as it is written.
+`%%{init: {}}%% }` stays as it is written. A line that a comment line after
+U+2028 or U+2029 joins to the line before it, which mermaid.js reads as one line
+with it, keeps its indentation as written, with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: class/member-bodies/comment-region-keeps-a-joined-member-line]
 
 [fixture: member-bodies/directive-on-closing-brace-line-kept] [fixture:
 member-bodies/split] [fixture: member-bodies/opening-brace-after-one-space]
@@ -358,7 +369,12 @@ whitespace-between-tokens/words-collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed]
 
 A line that holds only a class name, which declares nothing, is kept at the
-level of the statements around it.
+level of the statements around it. A line that a comment line after U+2028 or
+U+2029 joins to the line before it, which mermaid.js reads as one line with it,
+keeps its indentation as written, with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: class/whitespace-between-tokens/comment-region-keeps-a-joined-name-line]
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed]
@@ -1795,7 +1811,13 @@ line with another statement or with the header, before it or after it:
 `note for A "x" accDescr {}` are accepted too, while `accDescr {}` on a line of
 its own is rejected, as mermaid.js rejects it. Such a line keeps its statements
 together; a class with a body on that line is printed as any class, with its
-members one level deeper and its `}` at the level of the line.
+members one level deeper and its `}` at the level of the line. A line that a
+comment line after U+2028 or U+2029 joins to the line before it, which
+mermaid.js reads as one line with it, keeps its indentation as written, with
+what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: class/empty-description-blocks/comment-region-keeps-a-joined-member-line]
 
 [fixture: empty-description-blocks/before-class-with-body-indented] [fixture:
 empty-description-blocks/kept-with-statement] [fixture:

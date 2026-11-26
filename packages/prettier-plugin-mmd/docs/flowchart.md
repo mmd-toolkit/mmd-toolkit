@@ -22,7 +22,14 @@ statements of a subgraph one level deeper than its `subgraph` line, with `end`
 at the level of `subgraph`. A level follows Prettier's `useTabs` and `tabWidth`
 options, subject to the minimum below: two spaces by default, as in the other
 languages that Prettier formats. The statements after the header stand one level
-deeper, as the documentation of mermaid.js writes them.
+deeper, as the documentation of mermaid.js writes them. A line that a comment
+line after U+2028 or U+2029 joins to the line before it, which mermaid.js reads
+as one line with it, keeps its indentation as written, with the statements on it
+(see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: flowchart/indentation/comment-region-keeps-a-joined-statement-line]
+[test: swimlane/indentation/comment-region-keeps-a-joined-statement-line]
 
 [fixture: indentation/use-tabs]
 
@@ -3277,7 +3284,11 @@ becomes one space. The spacing follows the "A keyword before what it takes" row
 of [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): `direction` is a
 keyword before the value it takes. A line such as `A[direction TB]` is a
 `direction` statement too, its vertices and links are not read, and it is
-printed so, at the indentation of its level.
+printed so, at the indentation of its level. A statement that holds a comment
+region that joins two of its lines stays as written (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: flowchart/direction/comment-region-keeps-a-joined-direction-statement]
 
 [fixture: direction/statement-holds-text-kept]
 
@@ -3335,7 +3346,12 @@ subgraph-header/title-interior-whitespace-dropped]
 
 A line break or a comment line in the brackets stays, as a line of the header:
 the whitespace before the line break is dropped, as at the end of any line, and
-the bracket after it stands as a continuation line.
+the bracket after it stands as a continuation line. A line that a comment line
+after U+2028 or U+2029 joins to the line before it, which mermaid.js reads as
+one line with it, keeps its indentation as written, with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: flowchart/subgraph-header/comment-region-keeps-a-joined-header-line]
 
 [fixture: subgraph-header/title-padding-beside-line-break]
 

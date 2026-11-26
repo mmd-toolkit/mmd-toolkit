@@ -781,6 +781,14 @@ treeView の根と子にも同じ配置を与えます。
 空白の 1 段は `max(1, tabWidth)`、`useTabs` は 1 タブです。
 最初のノードが深い場合、後の根が浅い場合、不揃いな増分、重複名と空名でも、
 Db の等しい一定幅を選びます。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: treeview/indentation/comment-region-keeps-a-joined-node-line]
 
 [fixture: treeview/indentation/indent-irregular]
 
@@ -839,6 +847,14 @@ treeView-beta
 語彙の読みで除外された枝行の末尾は持ち越しません。
 字下げの連なりを重ねず親子を保つためです。
 固定された境界や値の境界は枝の前置部分に従います。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: treeview/carried-indentation/comment-region-keeps-a-joined-node-line]
 
 行の規則が無視する `;` が引用名や class の後ろに残るときも、
 持ち越しは止まりません。

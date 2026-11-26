@@ -22,7 +22,12 @@ The statements after the header stand one level deeper than the header. The
 statements of a block (`loop`, `alt`, `opt`, `par`, `par_over`, `critical`,
 `break`, `rect`) and the participants of a `box` stand one level deeper than the
 line that opens it; `else`, `and`, `option`, and `end` stand at the level of
-that line.
+that line. A line that a comment line after U+2028 or U+2029 joins to the line
+before it, which mermaid.js reads as one line with it, keeps its indentation as
+written, with the statements on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: sequence/indentation/comment-region-keeps-a-joined-line-in-a-block]
 
 [fixture: indentation/blocks] [fixture: indentation/sections] [fixture:
 indentation/other-blocks-kept]

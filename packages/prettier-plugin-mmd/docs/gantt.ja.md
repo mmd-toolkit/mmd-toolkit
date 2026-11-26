@@ -27,6 +27,14 @@ Gantt 図の木は平らで、文のブロックがないので、文の段は�
 section の下のタスクは、mermaid.js の文書の書き方と同じく、
 section の中に置きます。
 journey も同じです。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上の文とともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: gantt/indentation/comment-region-keeps-a-joined-statement-line]
 
 [fixture: indentation/sections-and-tasks-nested]
 [fixture: indentation/statements-before-the-first-section]
@@ -1348,6 +1356,14 @@ mermaid.js が説明から LF 後の字下げを除くためです。
 文と同じ段に置きます。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、その閉じ括弧にも、
 この位置を与えます。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: gantt/accessibility-statements/comment-region-keeps-a-joined-line]
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]

@@ -26,7 +26,12 @@ the periods, and every other statement. The `section` itself stands at the first
 level. The tree of a timeline is flat, with no block of statements, so the level
 of a statement is decided by its place among the others. This is the rule of a
 user journey and a Gantt chart: the periods of a section stand inside it, as the
-documentation of mermaid.js writes them.
+documentation of mermaid.js writes them. A line that a comment line after U+2028
+or U+2029 joins to the line before it, which mermaid.js reads as one line with
+it, keeps its indentation as written, with the statements on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: timeline/indentation/comment-region-keeps-a-joined-statement-line]
 
 [fixture: indentation/sections-and-periods-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
@@ -437,7 +442,13 @@ description block that holds `style:#x` for one. The colons of the later lines
 stand at the column that the first colon would have if the period began the
 line, with the indentation of the statement before it, and the line stays whole
 (see [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). The
-configured indentation still applies at `tabWidth: 0`.
+configured indentation still applies at `tabWidth: 0`. A line that a comment
+line after U+2028 or U+2029 joins to the line before it, which mermaid.js reads
+as one line with it, keeps its indentation as written, with what stands on it
+(see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: timeline/periods-and-events/comment-region-keeps-a-joined-event-line]
 
 [fixture: periods-and-events/events-on-later-lines] [corpus fixture:
 timeline/docs-syntax-timeline-1b6ef8c6] [fixture:
@@ -649,7 +660,12 @@ event-statements/empty-lines-before]
 As for a period, each event stays on the line on which it was written. Later
 event lines use the statement's indentation, so peer events do not look nested.
 Comment lines and directive lines between those events use the same indentation.
-This also applies within a section.
+This also applies within a section. A line that a comment line after U+2028 or
+U+2029 joins to the line before it, which mermaid.js reads as one line with it,
+keeps its indentation as written, with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: timeline/event-statements/comment-region-keeps-a-joined-peer-event-line]
 
 [fixture: event-statements/several-events] [fixture:
 event-statements/events-of-an-event-statement-on-the-line] [fixture:
@@ -879,7 +895,13 @@ since its colon is not at the column of a period on a line of its own. A
 direction on a line of its own is a period. The line breaks that count are the
 ones that mermaid.js reads, so a directive that spans lines is no break:
 `timeline TD%%{init:`, a line break, and `{}}%% title T` is
-`timeline TD title T`, and the text stays.
+`timeline TD title T`, and the text stays. A line that a comment line after
+U+2028 or U+2029 joins to the line before it, which mermaid.js reads as one line
+with it, keeps its indentation as written, with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test:
+timeline/header-and-direction/comment-region-keeps-a-joined-event-line-after-the-header]
 
 [fixture: header-and-direction/second-word-stays-on-the-header-line] [fixture:
 header-and-direction/direction-then-period-stays] [fixture:
@@ -1083,7 +1105,13 @@ accessibility-statements/block-inner-runs-collapsed]
 
 In a block with a text over several lines, later text lines stand one level
 inside the statement and a separate `}` stands at its level (see
-[Multi-line values](#multi-line-values)).
+[Multi-line values](#multi-line-values)). A line that a comment line after
+U+2028 or U+2029 joins to the line before it, which mermaid.js reads as one line
+with it, keeps its indentation as written, with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test:
+timeline/accessibility-statements/comment-region-keeps-a-joined-description-line]
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]

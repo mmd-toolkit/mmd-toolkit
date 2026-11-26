@@ -26,7 +26,12 @@ the header, block contents one level below their opening line, and closers at
 that line's level.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 state statements, the contents of composite states, and their closing braces the
-same levels.
+same levels. A line that a comment line after U+2028 or U+2029 joins to the line
+before it, which mermaid.js reads as one line with it, keeps its indentation as
+written, with the statements on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: state/indentation/comment-region-keeps-a-joined-line-in-a-composite]
 
 [fixture: indentation/composite-states]
 
@@ -77,7 +82,12 @@ opening brace with the initial keyword, so the body remains one level deeper. Do
 not change a value spanning that line or protected source boundaries. A quoted
 alias description includes its internal line breaks and margins in the Db.
 Changing them changes the stored description, so they stay as written when a
-header continues across trivia.
+header continues across trivia. A line that a comment line after U+2028 or
+U+2029 joins to the line before it, which mermaid.js reads as one line with it,
+keeps its indentation as written, with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: state/composite-states/comment-region-keeps-a-joined-opening-line]
 
 [corpus fixture: state/lex-string-line-separator-then-comment-line]
 

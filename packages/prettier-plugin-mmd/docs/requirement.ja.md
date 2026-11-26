@@ -25,6 +25,14 @@ requirement と element のフィールドは、その文の行より 1 段深�
 閉じる印は開始の文の段にそろえます。
 requirement の文とフィールドと `}` に、この字下げを与えるのは、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)です。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上の文とともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: requirement/indentation/comment-region-keeps-a-joined-statement-line]
 
 [fixture: indentation/statements-and-bodies]
 
@@ -110,6 +118,14 @@ requirementDiagram
 注釈類を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
 本文がさらに 1 段深く見えるようにします。
 その行をまたぐ値や保護された原文の境界は変えません。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: requirement/bodies/comment-region-keeps-a-joined-opening-line]
 
 [fixture: bodies/header-completion-after-comment]
 [fixture: multi-line-statements/header-directive-continuation]
@@ -1171,6 +1187,14 @@ Prettier は、
 独立した注釈をブロックの 1 段内側に置き、
 独立した `}` は `accDescr` にそろえます。
 requirement と element の本文にある空のブロックも同じです。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: requirement/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
 
 [fixture: empty-description-blocks/in-body-with-directive-line]
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
@@ -1267,6 +1291,14 @@ requirementDiagram
 コロン、テキストを 1 段深く置きます。
 テキストの前にコメント行があるときは、この 3 つの図が `accTitle` で同じ形にし、
 [flowchart](./flowchart.ja.md#アクセシビリティの行) も同じです。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: requirement/accessibility-statements/comment-region-keeps-a-joined-text-line]
 
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]

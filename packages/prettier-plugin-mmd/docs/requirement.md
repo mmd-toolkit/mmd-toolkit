@@ -27,7 +27,13 @@ header and body contents one level below their opening statement in
 [sequence diagrams](./sequence.md#indentation), with the closing mark aligned
 with the opening statement;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the statements, fields, and `}` these same levels.
+the statements, fields, and `}` these same levels. A line that a comment line
+after U+2028 or U+2029 joins to the line before it, which mermaid.js reads as
+one line with it, keeps its indentation as written, with the statements on it
+(see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: requirement/indentation/comment-region-keeps-a-joined-statement-line]
 
 [fixture: indentation/statements-and-bodies]
 
@@ -116,7 +122,13 @@ requirementDiagram
 
 When a header continues across trivia, align the physical line containing its
 opening brace with the initial keyword, so the body remains one level deeper. Do
-not change a value spanning that line or protected source boundaries.
+not change a value spanning that line or protected source boundaries. A line
+that a comment line after U+2028 or U+2029 joins to the line before it, which
+mermaid.js reads as one line with it, keeps its indentation as written, with
+what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: requirement/bodies/comment-region-keeps-a-joined-opening-line]
 
 [fixture: bodies/header-completion-after-comment] [fixture:
 multi-line-statements/header-directive-continuation]
@@ -1164,7 +1176,14 @@ empty-description-blocks/in-body-over-lines-joined]
 
 A block containing comments or directives keeps their contents and line breaks;
 standalone trivia is one level inside the block and a separate `}` aligns with
-`accDescr`, including an empty block within a requirement or element body.
+`accDescr`, including an empty block within a requirement or element body. A
+line that a comment line after U+2028 or U+2029 joins to the line before it,
+which mermaid.js reads as one line with it, keeps its indentation as written,
+with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test:
+requirement/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
 
 [fixture: empty-description-blocks/in-body-with-directive-line] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
@@ -1258,7 +1277,13 @@ decides, one case at a time. With a comment line before the colon,
 [timeline](./timeline.md#multi-line-statements) keep the line breaks of an
 `accDescr` and put the comment, the colon, and the text one level deeper. With a
 comment line before the text, the same three do so for an `accTitle`, and so
-does [flowchart](./flowchart.md#accessibility-lines).
+does [flowchart](./flowchart.md#accessibility-lines). A line that a comment line
+after U+2028 or U+2029 joins to the line before it, which mermaid.js reads as
+one line with it, keeps its indentation as written, with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test:
+requirement/accessibility-statements/comment-region-keeps-a-joined-text-line]
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [fixture:

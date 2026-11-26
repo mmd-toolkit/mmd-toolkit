@@ -24,6 +24,15 @@ subgraph の文はその `subgraph` の行より 1 段深く置き、
 下記の下限を適用します。
 既定は空白 2 つで、Prettier が整形するほかの言語と同じです。
 ヘッダーの後の文を 1 段深くするのは、mermaid.js の文書の書き方です。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上の文とともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: flowchart/indentation/comment-region-keeps-a-joined-statement-line]
+[test: swimlane/indentation/comment-region-keeps-a-joined-statement-line]
 
 [fixture: indentation/use-tabs]
 
@@ -3379,6 +3388,12 @@ swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
 「取るものの前に置くキーワード」の行で与えます。
 `A[direction TB]` のような行も `direction` の文で、頂点も接続も読まれず、
 そのように、その段の字下げで印字します。
+2 つの行を結ぶコメント領域を含む文は、書かれたまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: flowchart/direction/comment-region-keeps-a-joined-direction-statement]
 
 [fixture: direction/statement-holds-text-kept]
 
@@ -3441,6 +3456,14 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 括弧の中の改行とコメント行は、ヘッダーの行として残ります。
 改行の前の空白は、どの行末でもそうであるように落ち、
 その後の括弧は継続行になります。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: flowchart/subgraph-header/comment-region-keeps-a-joined-header-line]
 
 [fixture: subgraph-header/title-padding-beside-line-break]
 

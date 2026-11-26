@@ -773,7 +773,12 @@ below a section in [kanban](./kanban.md#indentation) diagrams. Under
 treeView roots and children take those positions. A space step is
 `max(1, tabWidth)`; useTabs uses one tab. This selects a uniform Db-equivalent
 width even for a deep first node, later shallower roots, irregular increments,
-duplicate names and empty names.
+duplicate names and empty names. A line that a comment line after U+2028 or
+U+2029 joins to the line before it, which mermaid.js reads as one line with it,
+keeps its indentation as written, with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: treeview/indentation/comment-region-keeps-a-joined-node-line]
 
 [fixture: treeview/indentation/indent-irregular]
 
@@ -830,7 +835,12 @@ box mode it becomes a branch position, while the old gap run disappears;
 indentation mode still uses its configured step. Branch-line tails already
 excluded by the lexical reading do not carry. This preserves parentage without
 adding a second indentation run. Fixed or value-owned source boundaries follow
-Branch prefixes.
+Branch prefixes. A line that a comment line after U+2028 or U+2029 joins to the
+line before it, which mermaid.js reads as one line with it, keeps its
+indentation as written, with what stands on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: treeview/carried-indentation/comment-region-keeps-a-joined-node-line]
 
 A `;` that the line rule ignores and that stays after a quote or a class does
 not stop the carry. The run before the `;`, after it, or before a comment or a

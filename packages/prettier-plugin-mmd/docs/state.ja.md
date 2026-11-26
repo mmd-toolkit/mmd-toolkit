@@ -25,6 +25,14 @@ fixture の置き方と確かめ方は、
 ブロックの内容を開始行より 1 段深く置き、閉じる行を開始行と同じ段に置きます。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
 state 図の文と複合状態の内容と `}` にも、この段を与えます。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上の文とともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: state/indentation/comment-region-keeps-a-joined-line-in-a-composite]
 
 [fixture: indentation/composite-states]
 
@@ -76,6 +84,14 @@ stateDiagram-v2
 引用符で囲んだ別名の説明は、内側の改行と余白を Db に含みます。
 それらを変えると保存された説明が変わるので、注釈を挟んで見出しが続く場合も、
 書かれたまま残します。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: state/composite-states/comment-region-keeps-a-joined-opening-line]
 
 [corpus fixture: state/lex-string-line-separator-then-comment-line]
 

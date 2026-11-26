@@ -29,6 +29,14 @@ timeline の木は平らで、文のまとまりを表す block を持たない�
 ほかの文の中での位置で決まります。
 これは journey と Gantt 図の規則で、section の period は、
 mermaid.js の文書の書き方と同じく、section の中に置きます。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上の文とともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: timeline/indentation/comment-region-keeps-a-joined-statement-line]
 
 [fixture: indentation/sections-and-periods-nested]
 [fixture: indentation/statements-before-the-first-section]
@@ -449,6 +457,14 @@ period の前に別の文があります。
 文の字下げを加えて立ち、行は全体を保ちます。
 詳しくは [`;` を含む行](./compatibility.ja.md#-を含む行) を参照してください。
 `tabWidth: 0` でも設定した字下げを使います。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: timeline/periods-and-events/comment-region-keeps-a-joined-event-line]
 
 [fixture: periods-and-events/events-on-later-lines]
 [corpus fixture: timeline/docs-syntax-timeline-1b6ef8c6]
@@ -663,6 +679,14 @@ period の event と同じく、各 event は書かれた行に残します。
 後ろの event 行も文の字下げで始め、同列の event が入れ子に見えないようにします。
 event の間のコメント行と指令の行も、同じ字下げを使います。
 section の中でも同じです。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: timeline/event-statements/comment-region-keeps-a-joined-peer-event-line]
 
 [fixture: event-statements/several-events]
 [fixture: event-statements/events-of-an-event-statement-on-the-line]
@@ -903,6 +927,14 @@ timeline について対象にする版は、どちらの形も同じに描き�
 複数行にわたるディレクティブは改行になりません。
 `timeline TD%%{init:`、改行、`{}}%% title T` は `timeline TD title T` となり、
 テキストはその行に残します。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: timeline/header-and-direction/comment-region-keeps-a-joined-event-line-after-the-header]
 
 [fixture: header-and-direction/second-word-stays-on-the-header-line]
 [fixture: header-and-direction/direction-then-period-stays]
@@ -1091,6 +1123,14 @@ journey と同じ形です。
 
 本文が複数行のブロックでは、後ろのテキスト行はその文より 1 段深く置き、
 独立した `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上にあるものとともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: timeline/accessibility-statements/comment-region-keeps-a-joined-description-line]
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
