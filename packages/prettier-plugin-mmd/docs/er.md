@@ -64,10 +64,17 @@ was indented with.
 
 [fixture: indentation/written-indentation-dropped]
 
-The one exception is an `accTitle` or `accDescr` statement that holds a
-direction, which keeps the first column, since the lexer reads it as a title or
-a description at the first column and as a direction line after an indentation
-(see [Accessibility statements](#accessibility-statements)).
+An exception is an `accTitle` or `accDescr` statement that holds a direction,
+which keeps the first column, since the lexer reads it as a title or a
+description at the first column and as a direction line after an indentation
+(see [Accessibility statements](#accessibility-statements)). A line that a
+comment line after U+2028 or U+2029 joins to the line before it, which
+mermaid.js reads as one line with it, keeps its indentation as written, with the
+statements on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+
+[test: er/indentation/comment-region-keeps-a-joined-statement-line] [test:
+er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph]
 
 Input
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -113,9 +120,12 @@ print the `{` of a body after one space on the line of its opener, also where it
 was written touching it, and [class](./class.md#member-bodies),
 [requirement](./requirement.md#indentation), and [state](./state.md#indentation)
 put the members one level deeper on lines of their own and the `}` on a line of
-its own at the level of the opener.
+its own at the level of the opener. An attribute that holds a comment region
+that joins two of its lines stays as written whole (see
+[Attribute spacing](#attribute-spacing)).
 
-[fixture: attribute-blocks/opening-brace-after-one-space] [fixture:
+[fixture: attribute-blocks/opening-brace-after-one-space] [test:
+er/attribute-blocks/comment-region-keeps-the-joined-attributes] [fixture:
 attribute-blocks/split]
 
 A block written on one line, or with its first attribute on the line of the `{`
@@ -2135,7 +2145,7 @@ where the colon or the text was written on a later line; where a comment line
 stands before the text, the line breaks stay and the comment and the text stand
 one level deeper, as said above. A statement that holds a comment region that
 joins two of its lines stays as written instead (see
-[Multi-line statements](#multi-line-statements)).
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [corpus fixture:

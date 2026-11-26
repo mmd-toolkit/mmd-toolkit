@@ -66,10 +66,20 @@ subgraph の中でも同じです。
 
 [fixture: indentation/written-indentation-dropped]
 
-例外は、direction を含む `accTitle` と `accDescr` の文で、1 桁目を保ちます。
+例外の 1 つは、direction を含む `accTitle` と `accDescr` の文で、
+1 桁目を保ちます。
 字句解析器は、1 桁目ではそれをタイトルか説明として読み、
 字下げの後では direction
 の行として読むためです（[アクセシビリティの文](#アクセシビリティの文)を参照）。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上の文とともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+
+[test: er/indentation/comment-region-keeps-a-joined-statement-line]
+[test: er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph]
 
 入力
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -118,8 +128,11 @@ erDiagram
 [requirement](./requirement.ja.md#インデント)、[state](./state.ja.md#字下げ)は、
 メンバーを 1 段深く、行に 1 つずつ置き、`}` を開く行と同じ段に、
 行に単独で置きます。
+2 つの行を結ぶコメント領域を含む属性は、
+全体を書かれたまま残します（[属性の空白](#属性の空白)を参照）。
 
 [fixture: attribute-blocks/opening-brace-after-one-space]
+[test: er/attribute-blocks/comment-region-keeps-the-joined-attributes]
 [fixture: attribute-blocks/split]
 
 1 行に書かれたブロックや、最初の属性が `{` の行に、
@@ -2126,8 +2139,10 @@ Db は両端の空白を持たないからです。
 コロンやテキストが後の行に書かれていても同じです。
 テキストの前にコメント行があるときは、上のとおり、改行を残し、
 コメントとテキストを 1 段深く置きます。
-ただし、2 つの行を結ぶコメント領域を含む文は、
-書かれたまま残します（[複数行の文](#複数行の文)を参照）。
+ただし、2 つの行を結ぶコメント領域を含む文は、書かれたまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の、図のタイトルと説明の行を参照してください。
