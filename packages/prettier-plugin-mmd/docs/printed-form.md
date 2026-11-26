@@ -261,11 +261,11 @@ whose first word holds a `@`; see
 stands inside each end of the label, in every shape and in the text between `|`:
 `A[ /x/]` is printed `A[ /x/ ]`. Rule 1 puts no space inside brackets, so it
 would leave the space that mermaid.js needs alone at the start, where it reads
-as a slip; with one at the end too, the label shows that the space is meant. The
-user chose this form, which corrects the form of rule 1, as AGENTS.md (item 4)
-says of a rule whose form reads worse than another form that draws the same. No
-space stands before the closing `?]` or `=]` of a slanted shape, where
-mermaid.js would read the space and the `?` or `=` as text.
+as a slip; with one at the end too, the label shows that the space is meant.
+This form corrects the form of rule 1, as AGENTS.md (item 4) says of a rule
+whose form reads worse than another form that draws the same. No space stands
+before the closing `?]` or `=]` of a slanted shape, where mermaid.js would read
+the space and the `?` or `=` as text.
 
 ### A text that the tree holds whole
 
@@ -302,6 +302,26 @@ documentation write these four without it since
 ([The names of a header](./compatibility.md#the-names-of-a-header)).
 `block-beta` stays as written, because some of the versions that count read only
 that name.
+
+A tree of a treeView diagram written with box-drawing characters is another
+exception. Of the 13 tree diagrams in the documentation of mermaid.js, 10 are
+written with indentation, so rule 3 gives the indentation form. A tree written
+with box-drawing characters is printed with them instead, redrawn from the tree
+that mermaid.js reads, except where its body stays as written (see
+[Branch prefixes](./treeview.md#branch-prefixes)). The characters themselves
+show the structure on each line: `├` that a sibling follows, `└` the last child,
+and `│` that the siblings of an upper level go on. With indentation, that a node
+is the last child, or that the siblings of an upper level go on, shows only in
+the columns of the lines below it. Each of these characters is drawn anew where
+the tree has it, so that the drawing says what mermaid.js reads (see
+[Modes](./treeview.md#modes)); keeping the written characters and moving only
+their columns would leave a `├` on a last child or a `│` where no sibling goes
+on. This form corrects the form of rule 3, as AGENTS.md (item 4) says of a rule
+whose form reads worse than another form that draws the same. It does not reach
+a tree written with indentation, which rule 3 prints with indentation: not every
+such tree has a box form, since mermaid.js rejects, in a box diagram, an
+indented line that goes on without a branch prefix, such as the second line of a
+name in quotes or an annotation on a line of its own.
 
 ## 4. Where none of these rules gives a form
 
