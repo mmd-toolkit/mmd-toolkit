@@ -296,15 +296,20 @@ tf 01 evt Alpha ->> 02 ->> 001
 ### Data references
 
 Use one ordinary space before a data reference and tight inner edges, `[[D]]`.
-This is how Prettier prints nested brackets, with none inside. Compact ordinary
-component newlines too; `[[title]]` also avoids a padded title composite. The
-one space that a line break between components becomes is the form that rule 2
-gives, for the reason under [Declarations and notes](#declarations-and-notes).
-Preserve hidden forms and trivia in their owned gaps, and never qualify a single
-reference name: a reference holds one identifier, and a dot with another segment
-is rejected.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: a data
+reference follows the other components of its frame as values follow one
+another, one space apart (`margin: 1px    2px;` is printed `margin: 1px 2px;`),
+and Prettier prints nested brackets with none inside (`f([[ D ]])` is printed
+`f([[D]]);`). Compact ordinary component newlines too; `[[title]]` also avoids a
+padded title composite. The one space that a line break between components
+becomes is the form that rule 2 gives, for the reason under
+[Declarations and notes](#declarations-and-notes). Preserve hidden forms and
+trivia in their owned gaps, and never qualify a single reference name: a
+reference holds one identifier, and a dot with another segment is rejected.
 
 [fixture: eventmodeling/data-references/reference-padded]
+
+[fixture: eventmodeling/data-references/reference-gap-collapsed]
 
 [fixture: eventmodeling/data-references/reference-component-lines]
 
