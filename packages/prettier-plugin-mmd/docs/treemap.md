@@ -227,9 +227,7 @@ examples that write a space after the colon, 35 write no space before it and
 none writes one (counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
 Commas inside NumericLiteral spans, including trailing commas, remain part of
-the number. They separate the digits of the number, as the `_` of `1_000` does
-in JavaScript, which Prettier prints with nothing beside it, so rule 1 puts no
-space after them. Trivia-bearing gaps keep their contact.
+the number. Trivia-bearing gaps keep their contact.
 
 [fixture: treemap/separators/colon]
 
@@ -874,10 +872,11 @@ the next line (`title`, two spaces, the character, and `%% c`, with a row after
 it) keeps the line as written, as the comment starts after the character:
 mermaid.js reads the row after the comment as the text of the title, so the
 title is `"A":1` and there is no leaf, while with one space before the comment
-the title is empty and the row is a leaf. The one whitespace character after the
-keyword is part of the keyword to mermaid.js, so a title with no text ends at
-its keyword, and that character is a gap of the line like the whitespace after a
-title with text.
+the title is empty and the row is a leaf (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The one whitespace character after the keyword is part of the keyword to
+mermaid.js, so a title with no text ends at its keyword, and that character is a
+gap of the line like the whitespace after a title with text.
 
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
