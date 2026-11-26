@@ -797,7 +797,7 @@ Unicode and tab interiors]
 A block with a directive or a comment line keeps its contents and line breaks,
 with body indentation under
 [Titles and accessibility statements](#titles-and-accessibility-statements). A
-directive that touches the braces of such a block stays touching them. Rule 1
+directive that touches both braces of such a block stays touching them. Rule 1
 names no mark for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
