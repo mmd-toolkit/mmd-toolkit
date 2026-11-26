@@ -1417,9 +1417,8 @@ treeView-beta
 ### Repeated annotations
 
 Keep every class, icon and description occurrence in order, including
-overwritten assignments and empty resets. The final Db value is insufficient to
-reproduce the authored syntax; moving a later annotation into a description can
-also change that value.
+overwritten assignments and empty resets. Moving a later annotation into a
+description can change the final Db value.
 
 [fixture: treeview/repeated-annotations/repeat-class]
 

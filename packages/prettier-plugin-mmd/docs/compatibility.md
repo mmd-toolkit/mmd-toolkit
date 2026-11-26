@@ -5799,8 +5799,7 @@ gives it as `minlen` of the edge, which the dagre layout
 ([`index.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/dagre/index.js#L759))
 and the elk layout
 ([`render.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L2754))
-take over. The examples that were drawn gave the same figure, but the length is
-the author's request.
+take over. The examples that were drawn gave the same figure.
 
 [fixture: flowchart/arrow-spacing/arrow-length-kept]
 
@@ -10048,10 +10047,10 @@ colon right after the header word (see
 [The colon after a header](#the-colon-after-a-header)), and keep every domain
 redeclaration and empty domain, item order and duplicates, self transitions,
 empty labels and common resets. Domain/item lines express the authored tree;
-columns do not select parents. Rebuilding from the effective Db would lose
-occurrences and can change replacement or reset behavior. Strings retain escapes
-and interior columns, including empty values and native-looking text; a string
-between `'` is printed between `"` as under
+columns do not select parents. Rebuilding from the effective Db can change
+replacement or reset behavior. Strings retain escapes and interior columns,
+including empty values and native-looking text; a string between `'` is printed
+between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same). In a
 cynefin diagram, mermaid.js records an empty string as an item in the Db and
 hidden-looking text inside a string as part of the item's label. Removing the

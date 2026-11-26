@@ -450,10 +450,10 @@ entity Root.Child
 ### Authored spellings
 
 Retain the authored short or long frame keyword, all nine entity-type words and
-every digit-string spelling. Although changing a frame keyword alias can leave
-the comparison Db equal, it loses the chosen form. Entity-type aliases remain in
-the Db, and `1`, `01` and `001` name different frames, so neither alias
-conversion nor numeric normalization is appropriate.
+every digit-string spelling. A frame keyword alias is kept even where changing
+it leaves the comparison Db equal. Entity-type aliases remain in the Db, and
+`1`, `01` and `001` name different frames, so neither alias conversion nor
+numeric normalization is appropriate.
 
 [fixture: eventmodeling/authored-spellings/alias-retained]
 
@@ -1716,24 +1716,84 @@ names no mark for a line break next to a comment or a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep such a line break, where no
-other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`). The later lines of a statement and the comment
-or directive lines between them stand one level deeper than the statement, where
-no other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`), and the `}` that closes a block whose `{`
-stands on a later line stands at the level of the statement. Only GWT's decided
-clause/item layout adds structural splits. Values, hidden forms, metadata and
-protected boundaries retain their contents, apart from the limited block-body
-margin in [Data blocks](#data-blocks). Avoiding width-dependent choices keeps
-those lexical boundaries explicit and never inserts a forbidden LF into inline
-data.
+[journey](./journey.md#multi-line-statements) keep such a line break. The later
+lines of a statement and the comment or directive lines between them stand one
+level deeper than the statement, and the `}` that closes a block whose `{`
+stands on a later line stands at the level of the statement. A later line that
+another rule keeps as written does not move:
+
+- a line inside a value or a hidden form, whose contents stay as said below;
+- the line after a hidden form, whose gap stays as written (see
+  [Hidden forms](#hidden-forms)), but for a line that starts a GWT item, or a
+  GWT clause after the first, which moves to the decided GWT layout;
+- a line inside a directive over several lines (see
+  [Global directives](#global-directives));
+- the lines of a statement with a directive that is not closed and takes the
+  line break after its argument, and the line that it joins to the statement:
+  the joined line is printed as written, with the statement on it (see
+  [Global directives](#global-directives));
+- a line that a block comment goes on to (see [Comments](#comments));
+- the lines of a statement with a `;` that the line rule ignores, where a U+2028
+  or U+2029 follows that `;` on its line, or where only whitespace or directives
+  stand between that `;` and another `;` before it: such a statement is printed
+  as written (see
+  [A line that a `;` ends](./compatibility.md#a-line-that-a--ends));
+- a line that holds a `;` before any U+2028 or U+2029 on it, in a statement
+  whose lines, joined with one space or with nothing, could change which `;` the
+  line rule ignores, since such a statement keeps the text of each segment up to
+  its last kept `;` (see [Semicolons](#semicolons)).
+
+Only GWT's decided clause/item layout adds structural splits. Values, hidden
+forms, metadata and protected boundaries retain their contents, apart from the
+limited block-body margin in [Data blocks](#data-blocks). Avoiding
+width-dependent choices keeps those lexical boundaries explicit and never
+inserts a forbidden LF into inline data.
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap] [fixture:
 eventmodeling/long-lines/break-next-to-comment] [fixture:
 eventmodeling/long-lines/break-next-to-directive] [fixture:
 eventmodeling/long-lines/break-next-to-percent-comment] [fixture:
 eventmodeling/comments/block-opener-on-a-later-line-after-a-comment-line]
+
+[fixture: eventmodeling/description-blocks/description-opener-newline-unchanged]
+[fixture: eventmodeling/hidden-forms/hidden-frame-required-gaps] [fixture:
+eventmodeling/hidden-forms/header-inline-gwt-item-directive] [fixture:
+eventmodeling/hidden-forms/hidden-optional-owners] [fixture:
+eventmodeling/hidden-forms/gwt-required-source-and-given-hidden-gaps] [fixture:
+eventmodeling/hidden-forms/hidden-gwt-clause-item-owners] [fixture:
+eventmodeling/declarations-and-notes/entity-slash-comment-over-lines] [fixture:
+eventmodeling/long-lines/later-line-of-a-joined-semicolon-stretch-kept]
+[fixture: eventmodeling/long-lines/later-line-holding-a-semicolon-deeper]
+[fixture:
+eventmodeling/long-lines/later-line-after-a-joined-semicolon-stretch-deeper]
+[test: a later line after a `%%` comment after U+2028 inside a statement of an
+eventmodeling diagram stands one level deeper] [test: a later line whose `;`
+follows U+2028 in an eventmodeling statement that joining could change stands
+one level deeper] [fixture:
+eventmodeling/declarations-and-notes/header-inline-multiline-directive]
+[fixture:
+eventmodeling/global-directives/description-block-end-line-with-unclosed-directive-kept]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-an-unclosed-directive-kept]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-a-closed-directive-deeper]
+[fixture:
+eventmodeling/long-lines/later-lines-before-an-unclosed-directive-and-a-semicolon-deeper]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-adjacent-semicolons-kept]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-spaced-semicolons-kept]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-a-directive-between-semicolons-kept]
+[fixture:
+eventmodeling/long-lines/later-lines-of-a-statement-with-semicolons-apart-deeper]
+[test: a later line whose `;` comes before U+2028 in an eventmodeling statement
+that joining could change stays where it is written] [test: an eventmodeling
+statement with a `;` that the line rule ignores and U+2028 after it is printed
+as written] [test: an eventmodeling statement with a `;` that the line rule
+ignores and U+2029 after it is printed as written] [test: a later line whose `;`
+comes before U+2029 in an eventmodeling statement that joining could change
+stays where it is written]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 
@@ -1873,9 +1933,9 @@ eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value
 Retain every occurrence in source order, including unused model entities/data,
 notes, GWT, type tags, repeated sources, later same-name data, overwritten
 common forms and inline data alongside a reference. Only their decided layout
-changes, including the permitted block-body margins. An equal comparison Db
-after deduplication would still lose authored occurrences; reordering data can
-also change the first lookup.
+changes, including the permitted block-body margins. Occurrences are not
+deduplicated even where the comparison Db stays equal, and reordering data can
+change the first lookup.
 
 [fixture: eventmodeling/source-order/all-occurrences-retained]
 

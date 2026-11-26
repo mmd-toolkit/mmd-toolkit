@@ -182,10 +182,9 @@ quadrantChart
 
 A run of empty lines becomes one empty line, and there is none between the
 header and the first statement, and none at the end of the text. A blank line is
-a choice of the author that the Db does not hold, and one empty line shows it at
-the least cost, as Prettier does in code (see
-[Blank lines](./flowchart.md#blank-lines)). Prettier leaves no blank lines at
-the start of a text or a block, so
+not held in the Db, and one empty line shows it at the least cost, as Prettier
+does in code (see [Blank lines](./flowchart.md#blank-lines)). Prettier leaves no
+blank lines at the start of a text or a block, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes blank lines
 before the header and between the header and the first statement.
 
@@ -1186,16 +1185,16 @@ quadrantChart
 U+2028 and U+2029 are characters of a word in this diagram type, and so is
 U+00A0: they stand inside a text, a name, a title, an accessibility text, and
 the name of a class. A text and a name keep them at their ends too, where the Db
-trims them, since they are part of the written text; a title, an accessibility
-text, and the text of a description block leave them out at their ends, as their
-values do, and the printer drops them there, but for a U+2028 or a U+2029 at the
-start of a title or of an accessibility text that text follows, which stays with
-the gap that holds it (`title`, a space, U+2028, and `T` is not changed), and
-which a title of directives only loses where the U+2028 or U+2029 touches the
-directive and nothing follows it (`title`, a space, U+2028, and `%%{x}%%` is
-printed `title %%{x}%%` where a statement follows the title directly or the text
-ends after it). A gap that holds one is printed as written, and so is the text
-that holds one. Rule 1 names no mark for a gap that holds one, so
+trims them; a title, an accessibility text, and the text of a description block
+leave them out at their ends, as their values do, and the printer drops them
+there, but for a U+2028 or a U+2029 at the start of a title or of an
+accessibility text that text follows, which stays with the gap that holds it
+(`title`, a space, U+2028, and `T` is not changed), and which a title of
+directives only loses where the U+2028 or U+2029 touches the directive and
+nothing follows it (`title`, a space, U+2028, and `%%{x}%%` is printed
+`title %%{x}%%` where a statement follows the title directly or the text ends
+after it). A gap that holds one is printed as written, and so is the text that
+holds one. Rule 1 names no mark for a gap that holds one, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#line-separators) and
 [timeline](./timeline.md#line-separators) print such a gap as written. The Db

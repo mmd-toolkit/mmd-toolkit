@@ -1186,9 +1186,9 @@ the examples in the documentation of mermaid.js write them (see
 and `style` keeps the case in which it is written (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case)), and every
 declaration, target and property remain in source order, including repeated or
-Db-ineffective entries, to retain authored choices. Names, keys and colors
-retain case; the textual semicolon markers have exact case even though statement
-keywords are case-insensitive.
+Db-ineffective entries. Names, keys and colors retain case; the textual
+semicolon markers have exact case even though statement keywords are
+case-insensitive.
 
 [fixture: venn/keyword-case-and-order/keyword-case-one-form] [fixture:
 venn/keyword-case-and-order/all-written-repeats] [corpus fixture:

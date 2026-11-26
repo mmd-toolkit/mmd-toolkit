@@ -116,9 +116,8 @@ as written.
 [fixture: packet/block-forms-and-order/equal-range-single]
 
 Keep every occurrence in order, repeated labels and empty common assignments.
-Never merge or reconstruct statements from the Db: row splitting and the
-publication cap lose authored structure, and deleting empty assignments can
-change the final value. The mermaid.js Db records separate packet blocks for
+Never merge or reconstruct statements from the Db: deleting empty assignments
+can change the final value. The mermaid.js Db records separate packet blocks for
 repeated labels at different positions; merging or deleting an occurrence
 changes those blocks.
 
@@ -300,9 +299,8 @@ packet
 
 Print the written unsigned digits of start/end/count rather than
 NumericLiteral.value. Preserve zero, precision-losing integers and overflow
-digits. Rounded doubles can lose spelling or print rejected exponent/Infinity
-syntax. Invalid leading-zero, decimal, signed or exponent inputs remain corpus
-failures.
+digits. Rounded doubles can print rejected exponent/Infinity syntax. Invalid
+leading-zero, decimal, signed or exponent inputs remain corpus failures.
 
 [fixture: packet/numbers/number-zero]
 

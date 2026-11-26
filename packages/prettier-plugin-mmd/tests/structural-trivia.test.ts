@@ -13,6 +13,47 @@ describe("structural trivia boundaries", () => {
       output: "erDiagram\n  A {\n    int\u2028%% c\n a\n  }\n",
     },
     {
+      name: "er/attribute-spacing/comment-region-keeps-the-whole-attribute",
+      input: "erDiagram\nA {\nint\n%% ordinary\n a\u2028%% joined\n PK\n}\n",
+      output:
+        "erDiagram\n  A {\n    int\n%% ordinary\n a\u2028%% joined\n PK\n  }\n",
+    },
+    {
+      name: "block/shapes/comment-region-keeps-the-directions-of-a-block-arrow",
+      input: 'block-beta\na<["x"]>(right,\u2028%% c\n   down)\n',
+      output: 'block-beta\n  a<["x"]>(right,\u2028%% c\n   down)\n',
+    },
+    {
+      name: "er/accessibility-statements/comment-region-keeps-the-text-line",
+      input: "erDiagram\naccTitle:\u2028%% c\n   T\n",
+      output: "erDiagram\n  accTitle:\u2028%% c\n   T\n",
+    },
+    {
+      name: "block/indentation/comment-region-keeps-a-joined-statement-line",
+      input: "block-beta\nA\u2028%% c\n   B\n",
+      output: "block-beta\n  A\u2028%% c\n   B\n",
+    },
+    {
+      name: "block/indentation/comment-region-keeps-a-joined-line-in-a-composite",
+      input: "block-beta\nblock:G\nA\u2028%% c\n   B\nend\n",
+      output: "block-beta\n  block: G\n    A\u2028%% c\n   B\n  end\n",
+    },
+    {
+      name: "er/indentation/comment-region-keeps-a-joined-statement-line",
+      input: "erDiagram\nA ||--o{ B : x\u2028%% c\n   C ||--o{ D : y\n",
+      output: "erDiagram\n  A ||--o{ B : x\u2028%% c\n   C ||--o{ D : y\n",
+    },
+    {
+      name: "er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph",
+      input: "erDiagram\nsubgraph S\nA\u2028%% c\n   B\nend\n",
+      output: "erDiagram\n  subgraph S\n    A\u2028%% c\n   B\n  end\n",
+    },
+    {
+      name: "er/attribute-blocks/comment-region-keeps-the-joined-attributes",
+      input: "erDiagram\nA {\nint a\u2028%% c\n   string b\n}\n",
+      output: "erDiagram\n  A {\n    int a\u2028%% c\n   string b\n  }\n",
+    },
+    {
       name: "requirement/relationship-spacing/comment-region-continuation-kept",
       input: "requirementDiagram\na - satisfies \u2029%% c\n -> b\n",
       output: "requirementDiagram\n  a - satisfies \u2029%% c\n -> b\n",

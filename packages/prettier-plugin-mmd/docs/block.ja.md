@@ -28,6 +28,12 @@ composite の中の文は `block:` の行より 1 段深く置き、
 入力に書かれた字下げは残しません。
 行頭の空白は mermaid.js にとって何の意味も持たないので、字下げは構造だけで決め、
 どのテキストも 1 つの形になります。
+U+2028 か U+2029 の後のコメント行が前の行に結ぶ行は、
+mermaid.js が前の行と 1 行に読むので、その上の文とともに、
+書かれた字下げのまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
 入れ子は composite の始まりと終わりを見せます。
 `block:` と `end` だけでは、深く入れ子になると始まりと終わりが見えないからで、
 mermaid.js の文書もそう書き、
@@ -42,6 +48,8 @@ Prettier にない種類の隙間は、ほかの図種が印字する形にし�
 [ER](./er.ja.md#コメント)のコメントがそう書いています。
 
 [fixture: indentation/statements-one-level-deeper]
+[test: block/indentation/comment-region-keeps-a-joined-statement-line]
+[test: block/indentation/comment-region-keeps-a-joined-line-in-a-composite]
 [fixture: indentation/composite-body-one-level-deeper-end-at-the-level-of-block]
 [fixture: indentation/nested-composites]
 [fixture: indentation/written-indentation-dropped]
@@ -177,9 +185,8 @@ block-beta
 
 ほとんどの図は、どの文も自分の行に置きます。
 ブロック図は、そうしません。
-行は、書き手がブロックを並べる単位だからです。
 1 行に並んだノードと `space` の連なりは、`columns` の文が決める格子の 1 行で、
-mermaid.js の文書もそう書いています（`a b c`、`a["A label"] b:2 c:2 d`、
+mermaid.js の文書もそう書いているためです（`a b c`、`a["A label"] b:2 c:2 d`、
 `Start(("Start")) space:2`）。
 ノードを 1 行ずつに分けると、その行が見えなくなり、
 列の数を `columns` の文から数えなおすことになります。
@@ -293,7 +300,7 @@ block-beta
 連続する空行は 1 つの空行にします。
 テキストの先頭にも、ヘッダーと最初の文の間にも、テキストの最後にも、
 空行は置きません。
-空行は、Db に入らない書き手の選択で、
+空行は Db に入らず、
 1 つの空行がそれを最小の手間で示します（[空行](./flowchart.ja.md#空行)を参照）。
 Prettier がコードでそうするのと同じです。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が空行の形を与えます。
@@ -337,8 +344,8 @@ block-beta
 
 ヘッダーの `block-beta` と `block` は、書かれたまま印字します。
 mermaid.js はどちらも同じ図種として読みますが、
-対象にする版には `block-beta` だけを検出するものがあるので、
-綴りは作者の選択だからです。
+対象にする版には `block-beta` だけを検出するものがあり、
+mermaid.js の文書の例では `block` と書くからです。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
 を参照してください。
 残す版は
@@ -521,8 +528,6 @@ mermaid.js は向きの後の空白と、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
 [journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
-ただし、ほかの規則が配置を書かれたまま残す所は別です。
-物理行を結ぶコメント領域と、`;` を含む行がそれです。
 最初の方向の前、`,` の前、`)` の前では、コメント行とディレクティブの行は、
 第 1 列か字下げされた、書かれた位置のままで、次の行も字下げしません。
 そこの空白は Db にあるからです（上を参照）。
@@ -530,6 +535,10 @@ mermaid.js は向きの後の空白と、
 コメント行やディレクティブの行と次の行を 1 段深く置きます。
 [flowchart](./flowchart.ja.md#複数行の文)と
 [xychart](./xychart.ja.md#複数行の文)も、文の続きを 1 段深く置きます。
+ただし、2 つの行を結ぶコメント領域を含む文は、書かれたまま残します。
+詳しくは
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
 方向の行にあるディレクティブは、`(` の後、`,` の前、`)` の前では、
 そこの空白が Db にあるので、接しているか離れているかを書かれたまま残します。
 `(right %%{x}%%, down)` と `(right%%{x}%%, down)` はそのままです。
@@ -564,6 +573,7 @@ mermaid.js は向きの後の空白と、
 [fixture: shapes/block-arrow-directive-before-closing-parenthesis]
 [fixture: shapes/block-arrow-directive-after-comma]
 [fixture: shapes/block-arrow-directive-after-comma-at-the-end-of-the-line]
+[test: block/shapes/comment-region-keeps-the-directions-of-a-block-arrow]
 [test: U+2028 and a directive after the comma between the directions of a block arrow, a space after the U+2028 and after the directive]
 [test: U+2028 and a directive after the comma between the directions of a block arrow, nothing around the directive]
 [test: U+2029 and a directive after the comma between the directions of a block arrow, a space after the U+2029 and after the directive]

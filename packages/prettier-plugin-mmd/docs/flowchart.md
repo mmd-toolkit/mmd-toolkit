@@ -1897,8 +1897,9 @@ A chain of links stays on one line, as written.
 
 [fixture: chains/labelled-links-kept]
 
-It is not split into one link per line: where the author splits statements and
-links is kept, as with long lines and statements written over several lines.
+It is not split into one link per line: a line is not wrapped, a form decided
+under [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Line wrapping](#line-wrapping)).
 
 [fixture: chains/split-after-semicolon]
 
@@ -1932,8 +1933,6 @@ except that a data block `@{ … }` on one line whose line is wider than
 [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form).
 
 [fixture: line-wrapping/print-width-ignored]
-
-Where else a line is broken is the author's choice, as with chains.
 
 Input
 ([line-wrapping/long-line-kept-input.mmd](../tests/fixtures/flowchart/line-wrapping/long-line-kept-input.mmd)):
@@ -2182,12 +2181,10 @@ flowchart LR
 A statement written over several lines keeps its line breaks, except ordinary
 accessibility colon lines and closed empty description blocks without trivia,
 which join under [Accessibility lines](#accessibility-lines). Each later line of
-other statements stands one level deeper than the first. Where the author breaks
-a statement is the author's choice, as with chains and long lines, and a line
-break between tokens needs no whitespace at the end of the line, which the
-printer never writes; a sequence diagram, a class diagram, and a state diagram
-join such lines instead, because there a line break counts only after
-whitespace.
+other statements stands one level deeper than the first. A line break between
+tokens needs no whitespace at the end of the line, which the printer never
+writes; a sequence diagram, a class diagram, and a state diagram join such lines
+instead, because there a line break counts only after whitespace.
 
 [fixture: multi-line-statements/continuation-in-subgraph] [fixture:
 multi-line-statements/label-over-lines] [fixture:
@@ -2324,11 +2321,11 @@ cb
 ### Data blocks
 
 Keep each `@{ ... }` attached to its vertex, without formatting its YAML or
-changing its keys and values. The tree holds the body of a block whole, as one
-text that mermaid.js reads as YAML, so the whitespace beside the marks inside it
-is not decided by the rules of
-[How the printed form is decided](./printed-form.md): the colon of a key stays
-as written (`A@{ shape : circle }` keeps the space before its colon; see
+changing its keys and values. The body of a block is one text that mermaid.js
+reads as YAML, so the whitespace beside the marks inside it is not decided by
+the rules of [How the printed form is decided](./printed-form.md): the colon of
+a key stays as written (`A@{ shape : circle }` keeps the space before its colon;
+see
 [A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
 Three things change: the ends of a block on one line, the margin of an eligible
 multiline block, and a block on one line whose line is too long, which prints on
@@ -2917,10 +2914,10 @@ statement and takes the level of its neighbours.
 comments/after-frontmatter-before-header] [fixture: comments/before-header]
 [fixture: comments/before-end] [fixture: comments/at-end-of-text]
 
-The text of a comment is kept as written, including whitespace at its end:
-mermaid.js does not read it, and it is the author's text. An otherwise empty
-comment line keeps `%% `, since every version of mermaid.js that counts reads
-`%%` as a vertex named `%%` and draws a different figure (see
+The text of a comment is kept as written, including whitespace at its end;
+mermaid.js does not read it. An otherwise empty comment line keeps `%% `, since
+every version of mermaid.js that counts reads `%%` as a vertex named `%%` and
+draws a different figure (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: comments/trailing-whitespace-kept] [fixture:
