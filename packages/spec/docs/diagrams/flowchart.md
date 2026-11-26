@@ -444,7 +444,12 @@ rules that matches:
     `` ` `` `?` `\` `_` `/`, or a `-` followed by a character other than `>`,
     `-`, and `.`. An `id-run` unit.
 
-    [fixture: flowchart/lex-keyword-inside-id-run]
+    [fixture: flowchart/lex-keyword-inside-id-run] [fixture:
+    flowchart/gram-percent-token-glued-after-acc-descr-block] [fixture:
+    flowchart/gram-comment-looking-text-after-acc-descr-block] [fixture:
+    flowchart/gram-swimlane-comment-looking-text-after-acc-descr-block]
+    [fixture: flowchart/lex-percent-pair-vertex-after-acc-descr-block] [fixture:
+    flowchart/lex-swimlane-percent-pair-vertex-after-acc-descr-block]
 
 22. `-`: a `-` unit.
 

@@ -207,6 +207,7 @@ U+3000、U+FEFF は、そこでは名前の文字で、
 [fixture: er/tokens-comment-line-in-role-string]
 [fixture: er/tokens-comment-line-in-comment-string]
 [fixture: er/tokens-comment-line-in-backquoted-word]
+[fixture: er/lex-comment-looking-text-after-acc-descr-block]
 
 文字列を閉じる引用符を持つコメント行は、それを一緒に持っていき、
 文字列は閉じていないことになります。
