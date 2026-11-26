@@ -3519,7 +3519,7 @@ Gantt chart、user journey、timeline の `title` は、
 各行のテキスト 1 つと上に挙げた各文字について、その図種で数える版で描き、
 SVG は、生成された id とテキストノードの空白を除いて同じでした。
 書かれたテキストを拒否する版は、印字したテキストも拒否します。
-ただし、`loop`、`alt`、`opt`、`par`、`critical`、`option`、
+ただし、`loop`、`alt`、`else`、`opt`、`par`、`and`、`critical`、`option`、
 `break` のラベルにある空白の連なりは、10.9.8 が拒否し、
 印字したテキストは描きます。
 
