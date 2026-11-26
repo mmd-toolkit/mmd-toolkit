@@ -610,10 +610,9 @@ style with a `:` and in one without: `stroke-dasharray:  5    5` becomes
 `stroke-dasharray: 5 5`, and `4px    wide` becomes `4px wide`. Whether
 whitespace stands between two words stays as written: `fill #f00` and `fill#f00`
 are kept apart, since a word that touches the next stays touching, as a gap does
-elsewhere (see [Directives](#directives)), and joining the words would hide
-where one word ends. The words of a style keep their contact or separation in
-[flowcharts](./flowchart.md#whitespace-between-tokens) and
-[block diagrams](./block.md#styles);
+elsewhere (see [Directives](#directives)). The words of a style keep their
+contact or separation in [flowcharts](./flowchart.md#whitespace-between-tokens)
+and [block diagrams](./block.md#styles);
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the same distinction between touching and separated style words. Mermaid
 concatenates the native style units whatever whitespace separates them:
@@ -870,12 +869,16 @@ requirementDiagram
 ### Statements one per line
 
 Nothing separates two statements of a requirement diagram, and mermaid.js reads
-statements that follow one another on a line. A line of two statements is hard
-to read, and the other diagram types print one statement on a line too. Each
-statement is printed on a line of its own: a statement after the `}` of a body,
-an empty description block after the header or after a statement that ends with
-a `}` or with a string, and the statement that a string at the end of a `style`,
-`classDef`, or `class` statement starts.
+statements that follow one another on a line.
+[flowchart](./flowchart.md#statements-one-per-line),
+[sequence](./sequence.md#statements-one-per-line), and
+[state](./state.md#statements-one-per-line) diagrams print one statement on a
+line too;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form. Each statement is printed on a line of its own: a statement after the
+`}` of a body, an empty description block after the header or after a statement
+that ends with a `}` or with a string, and the statement that a string at the
+end of a `style`, `classDef`, or `class` statement starts.
 
 [fixture: statements-one-per-line/header-then-empty-description-block] [fixture:
 statements-one-per-line/after-closing-brace] [fixture:

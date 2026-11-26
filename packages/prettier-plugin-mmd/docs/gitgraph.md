@@ -153,7 +153,7 @@ it. At the document end use one configured final newline; directly after the
 header remove blank lines, since the header needs no EOL before its first
 statement. Elsewhere apply the ordinary blank-line rules after the spare LF:
 collapse a run to one blank line and clear whitespace-only lines. The spare LF
-meets the grammar; later blanks express grouping, just as after comments.
+meets the grammar.
 
 A hidden boundary or semicolon protection can keep a statement on the header's
 line; the gap after that statement's hidden suffix still lies between

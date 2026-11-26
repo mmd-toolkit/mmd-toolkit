@@ -751,9 +751,8 @@ spare LF only when a following statement needs it. At the document end use one
 configured final newline; directly after the header remove blank lines, since
 the header needs no EOL before its first statement. Elsewhere apply the ordinary
 blank-line rules after the spare LF: collapse a run to one blank line and clear
-whitespace-only lines. The spare LF meets the grammar; later blanks express
-grouping, just as after comments. Prettier treats a line containing only spaces
-and tabs as a blank line, so
+whitespace-only lines. The spare LF meets the grammar. Prettier treats a line
+containing only spaces and tabs as a blank line, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) clears those spaces
 and tabs and leaves at most one ordinary blank line after the required spare LF.
 Unicode-only invalid body lines remain corpus failures.
