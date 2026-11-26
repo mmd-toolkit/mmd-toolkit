@@ -175,18 +175,15 @@ ignores the `;` after the string in the first line, and the `;` inside
 mermaid.js rejects. The lines join where the rule ignores the same `;` in both
 ways, as in `"style:#x"; B {`, a line break, and `}`. And a `~` inside an
 attribute block that stands before the `{` on its line, on a line that stays as
-written, keeps the lines apart too: the oldest versions that count read the rest
-of the line after such a `~` with a rule that takes the longer, the longer the
-line is, so a line that they draw could become one that they do not draw. A `~`
-in a name in quotes or in a directive is read by no such rule, and the lines
-join: `A["x;~y"] B {`, a line break, and `}` are `A["x;~y"] B { }`. Where the
-lines stay apart and only spaces, tabs, and line feeds stand between the braces,
-the statement is printed as written up to and including the `{`, then one line
-break and the `}` at the indentation of the entity: whitespace after a `{` that
-ends its line and empty lines between the braces draw nothing, and Prettier
-prints neither beside the braces of an empty block that was written over lines
-(a CSS rule written as `a {`, two spaces, two empty lines, and `}` is printed as
-`a {` and `}` on the next line;
+written, keeps the lines apart too. A `~` in a name in quotes or in a directive
+does not, and the lines join: `A["x;~y"] B {`, a line break, and `}` are
+`A["x;~y"] B { }`. Where the lines stay apart and only spaces, tabs, and line
+feeds stand between the braces, the statement is printed as written up to and
+including the `{`, then one line break and the `}` at the indentation of the
+entity: whitespace after a `{` that ends its line and empty lines between the
+braces draw nothing, and Prettier prints neither beside the braces of an empty
+block that was written over lines (a CSS rule written as `a {`, two spaces, two
+empty lines, and `}` is printed as `a {` and `}` on the next line;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and the `}` stands
 at the level of the line that opens the block, as under
 [Indentation](#indentation). Where a whitespace character that is no space or

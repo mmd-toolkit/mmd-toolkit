@@ -101,12 +101,6 @@ architecture-beta
 [state](./state.ja.md#1-行に-1-文) の図と同じく1行ずつ印字します。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 共通の行値は物理行末までのキーワードに見える文字も所有するため、分割しません。
-対象にする版の mermaid.js のすべてが、
-`architecture-beta title t` の後で改行して `service a; junction j`
-を次の行にした形を拒否します。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 セミコロンは文の区切りではありません。
 隣接する不正な文や部品の隙間に使われた空の説明は、失敗のままです。
 

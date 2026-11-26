@@ -346,13 +346,15 @@ The Db keeps the whitespace at the end of a period, which is the whitespace
 before its colon, and the whitespace at both ends of an event beyond the one
 character after its colon: `2004 : a` and `2004: a` are different periods,
 `a :   e` has the event `  e`, and `a : e   ` the event `e   `. So the padding
-that aligns the colons of a timeline stays; `a : e   ` at the end of a line is
-printed `a : e`, and `c : g   : h` stays as written. Without event text after
-the colon's separator, mermaid.js rejects the event, so an event consisting only
-of spaces or tabs keeps them. A colon that follows a text without whitespace at
-its end gets one space before it, as the examples in the documentation of
-mermaid.js write every colon after a text (88 of them have a space before them,
-and none touches the text; counted as under
+that aligns the colons of a timeline stays, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4));
+`a : e   ` at the end of a line is printed `a : e`, and `c : g   : h` stays as
+written. Without event text after the colon's separator, mermaid.js rejects the
+event, so an event consisting only of spaces or tabs keeps them. A colon that
+follows a text without whitespace at its end gets one space before it, as the
+examples in the documentation of mermaid.js write every colon after a text (88
+of them have a space before them, and none touches the text; counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)):
 `2004: Facebook: Google` is printed `2004 : Facebook : Google`. A colon that no
 whitespace follows is a character of the text and stays where it is. After a
