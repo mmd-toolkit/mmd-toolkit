@@ -3525,10 +3525,13 @@ Gantt chart、user journey、timeline の `title` は、
 各行のテキスト 1 つと上に挙げた各文字について、その図種で数える版で描き、
 SVG は、生成された id とテキストノードの空白を除いて同じでした。
 書かれたテキストを拒否する版は、印字したテキストも拒否します。
-ただし、`loop`、`alt`、`else`、`opt`、`par`、`and`、`critical`、`option`、
-`break` のラベルにある空白の連なりは例外で、
+ただし、`loop`、`alt`、`else`、`opt`、`par`、`par_over`、`and`、`critical`、
+`option`、`break` のラベルにある空白の連なりは例外で、
 10.9.8 はそのようなテキストを読みますが、描くときにエラーで止まり、
-印字したテキストは描きます。
+印字したテキストは描くので、この形については対象にしません。
+詳しくは
+[対象にする mermaid.js の版](./printed-form.ja.md#対象にする-mermaidjs-の版)
+を参照してください。
 
 mermaid.js は連なりを Db に残します。
 レンダラーは、これらのテキストを SVG の `text` 要素に入れ、
