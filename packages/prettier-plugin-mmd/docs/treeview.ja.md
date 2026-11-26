@@ -2172,12 +2172,18 @@ Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 `title` と空でない値の間に空白 1 つを与えます。
 Prettier が `return  x` を `return x;` と印字するためです。
-`titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。
+`titlex` と `title"node"` は AST の境界に従います。
+mermaid.js はそれらを、空の title と、
+その後のノード `x` または `node` として読みます。
+ノードの前に空白を置くと、そのノードは title のテキストになり、木から消えます。
+要約に出ない title も残します。
 値の最初の文字より前にある、行の規則が無視する `;` は、
 その前の空白が 1 文字でもそれ以上でも、隙間の項目です。
 `title  ;T` と `title ;T` は同じように印字します。
 
 [fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
+[fixture: treeview/title/title-prefix]
+[fixture: treeview/title/title-quoted-next]
 
 テキストのない `title` は、
 同じ行のディレクティブかコメントの前に空白が書かれていれば、

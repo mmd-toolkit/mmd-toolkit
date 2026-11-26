@@ -97,10 +97,18 @@ mermaid.js は引用符の隣の空白も拒否するので、
 コンマの後に空白を置くと、1 つの記録の中で、引用符のない欄の前には空白があり、
 文字列の前にはない、という 2 つの形が混ざります。
 欄の中の空白は残します。
+リンクの元と先の欄では、空白はノードの名前の一部です。
+名前が空白の連なりだけ違う 2 つの元は 2 つのノードです。
+連なりを空白 1 つにすると、1 つのノードになります。
+対象にする版はどれも、描くノードが 1 つ減ります。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: commas/spaces-around-commas-dropped]
 [fixture: commas/space-after-comma-dropped]
 [fixture: commas/spaces-inside-fields-kept]
+[fixture: commas/names-differing-by-a-run-kept]
 
 コンマの隣には空白を置かないので、
 コンマの隣の指令はコンマに接します（[指令](#指令)を参照）。

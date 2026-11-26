@@ -94,10 +94,15 @@ decides (see
 mermaid.js also rejects a space next to a quote, so a string can have no space
 before it (`a, "b",1` is rejected), and a space after each comma would give one
 record two shapes, a space before a field without quotes and none before a
-string. The whitespace inside a field stays.
+string. The whitespace inside a field stays. In the source and the target of a
+link it is part of the name of a node: two sources whose names differ only by a
+run of spaces are two nodes, which the run printed as one space would make one.
+Every version that counts draws one node fewer (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: commas/spaces-around-commas-dropped] [fixture:
 commas/space-after-comma-dropped] [fixture: commas/spaces-inside-fields-kept]
+[fixture: commas/names-differing-by-a-run-kept]
 
 A directive next to a comma touches it, as a comma has no space beside it (see
 [Directives](#directives)), and a field of spaces only is printed as one space:

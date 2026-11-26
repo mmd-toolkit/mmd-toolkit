@@ -75,10 +75,14 @@ info
 ### Statements one per line
 
 Move an ordinary first common statement below the header and print common
-statements one per line, in written order with every occurrence. Empty titles,
-accessibility lines and description blocks remain statements even though the
-public Db is empty. A keyword already consumed by a line value remains value
-text. Hidden boundaries and protected groups take precedence.
+statements one per line, in written order with every occurrence:
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form, as a [flowchart](./flowchart.md#statements-one-per-line) and an
+[ER diagram](./er.md#statements-one-per-line) print each statement on a line of
+its own, also one written on the line of the header. Empty titles, accessibility
+lines and description blocks remain statements even though the public Db is
+empty. A keyword already consumed by a line value remains value text. Hidden
+boundaries and protected groups take precedence.
 
 [fixture: info/statements-one-per-line/first-title-inline]
 
@@ -486,17 +490,13 @@ another figure in every version that counts. Within a printed line, place a
 directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
-contact is broken. Rule 1 names no mark for a directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#directives),
-[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-print such a gap in the same way. Align only an ordinary standalone start one
-body step in. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
-the depth of a standalone directive line inside the diagram body, as Prettier
-prints the lines inside a block. Keep complete component boundaries and
-value-internal directives, multiline contents, malformed init arguments and
-EOF-reaching endings. Do not gather, reformat or delete them: an init directive
-can change configuration even though info’s Db remains empty.
+contact is broken. Align only an ordinary standalone start one body step in.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. Keep complete component boundaries and value-internal
+directives, multiline contents, malformed init arguments and EOF-reaching
+endings. Do not gather, reformat or delete them: an init directive can change
+configuration even though info’s Db remains empty.
 
 [fixture: info/global-directives/header-to-body]
 

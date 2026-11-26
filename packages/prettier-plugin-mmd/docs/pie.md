@@ -189,8 +189,10 @@ For equivalent exterior whitespace,
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `title` and its value, as Prettier prints `return  x` as `return x;`.
 Print `title`, one space, and a trimmed nonempty value; a
-null/empty/whitespace-only value prints bare `title`. Print a run of spaces and
-tabs inside the value as one space (see
+null/empty/whitespace-only value prints bare `title`, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) leaves no whitespace
+at the end of a line. Print a run of spaces and tabs inside the value as one
+space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and preserve quotes and backslashes, and all repeated assignments, including
 frontmatter fallback. The quotes and backslashes in a title are literal title
@@ -308,17 +310,21 @@ and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip, and some of the versions of mermaid.js that count draw different text
 for `accTitle: A B` than for `accTitle: A   B` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Quotes and line-form braces remain text; repeated assignments and percent
-comment attachment remain. The pinned grammar never joins next-line values,
-including after blank/comment/directive gaps, because its composite line forms
-stop at physical EOL, but the oldest version that counts does: its lexer takes
-the whitespace after the `:` of an empty `accTitle:` or `accDescr:` for the line
-breaks too, and reads the next statement, after the blank lines and the comments
-and directives that mermaid.js removes first, as the value. That statement stays
-as written (`"A":1` is not printed `"A": 1`), as does the whitespace before a
-`%%` that follows an `accTitle` value, which that version reads as part of the
-title (`accTitle: Value   %% note`), and before a `%%{` that no word character
-follows after its whitespace, such as `%%{}%%`, which it reads as text too
+Quotes and line-form braces remain text: they are characters of the value that
+mermaid.js keeps in the Db (`accDescr: { A }` has the description `{ A }`), and
+removing them is no kind of change of the Db that formatting may make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
+Repeated assignments and percent comment attachment remain. The pinned grammar
+never joins next-line values, including after blank/comment/directive gaps,
+because its composite line forms stop at physical EOL, but the oldest version
+that counts does: its lexer takes the whitespace after the `:` of an empty
+`accTitle:` or `accDescr:` for the line breaks too, and reads the next
+statement, after the blank lines and the comments and directives that mermaid.js
+removes first, as the value. That statement stays as written (`"A":1` is not
+printed `"A": 1`), as does the whitespace before a `%%` that follows an
+`accTitle` value, which that version reads as part of the title
+(`accTitle: Value   %% note`), and before a `%%{` that no word character follows
+after its whitespace, such as `%%{}%%`, which it reads as text too
 (`accTitle: Value   %%{}%%`), and so does a whitespace character that is no
 space or tab, one of those named in [Title](#title), before a `%%` or such a
 `%%{` that follows an `accDescr` value, which that version draws as a part of
@@ -378,7 +384,8 @@ pie chart] [test: a no-break space and spaces before a comment after the
 accDescr line of a pie chart] [test: a no-break space before a directive and two
 spaces before a comment after the accDescr line of a pie chart] [test: a
 no-break space before a comment after the accDescr line, with no line break at
-the end of a pie chart]
+the end of a pie chart] [corpus fixture: pie/review-common-quotes-backslashes]
+[corpus fixture: pie/review-block-brace-colon-priority]
 
 The same holds for an `accTitle:` or an `accDescr:` line: a value that ends at a
 U+2028 or U+2029, a comment region after it, and a line of `%%` and nothing else
@@ -454,15 +461,11 @@ just `D`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
 statement. Keep line breaks and interior blank lines, and the whitespace at the
-end of each line of text except the last one. The oldest version that counts
-draws the whitespace at the end of a line of text before the last one in the
-description of the figure (`<desc>x  </desc>` for `x` and two spaces), so that
-whitespace stays (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-A line of whitespace only becomes an empty line. The whitespace at the end of
-the last line of text is dropped where the closer stands on a line of its own,
-and is printed as one space where the closer follows it on that line. A separate
-`}` aligns with its statement.
+end of each line of text except the last one. A run of blank lines between two
+lines of text stays as written. A line of whitespace only becomes an empty line.
+The whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
 puts the closing line at the level of the line that holds the `{`, as Prettier
 prints the closing line of a block, and that line is the `accDescr` line or,
@@ -474,6 +477,7 @@ brace still closes the block, even inside quote/backslash/hidden-looking text.
 [fixture: pie/description-blocks/brace-on-a-later-line]
 
 [fixture: pie/description-blocks/block-runs] [fixture:
+pie/description-blocks/blank-line-run-kept] [fixture:
 pie/description-blocks/block-empty] [fixture:
 pie/description-blocks/block-columns] [fixture:
 pie/description-blocks/block-opener-newline] [fixture:
@@ -687,21 +691,17 @@ directives in their authored gaps, including multiline contents and EOF-reaching
 endings. Within a printed line, place a directive as under
 [Directives](./flowchart.md#directives). When formatting splits units that were
 on the same line, a directive in their gap moves with the following unit: its
-right boundary stays touching or separated, while its left contact is broken.
-Rule 1 names no mark for a directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#directives),
-[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-print such a gap in the same way. A segment that holds a kept `;` is formatted
-as anywhere else, except where formatting could change which `;` the line rule
-ignores. The rule reads a segment from the first `:` after `style` or `classDef`
-to the last `#` before its last kept `;`, with no whitespace between the `:` and
-the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
-padding inside that stretch keep whether they hold whitespace, a run becoming
-one space, and the rest of the segment follows the ordinary rules of this
-diagram. Text that no part of the layout holds stays as written. For example,
-changing `accDescr {style:#x;y}` to `accDescr {style: #x;y}` changes the
-description text mermaid.js draws (see
+right boundary stays touching or separated, while its left contact is broken. A
+segment that holds a kept `;` is formatted as anywhere else, except where
+formatting could change which `;` the line rule ignores. The rule reads a
+segment from the first `:` after `style` or `classDef` to the last `#` before
+its last kept `;`, with no whitespace between the `:` and the `#` (see
+[Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
+that stretch keep whether they hold whitespace, a run becoming one space, and
+the rest of the segment follows the ordinary rules of this diagram. Text that no
+part of the layout holds stays as written. For example, changing
+`accDescr {style:#x;y}` to `accDescr {style: #x;y}` changes the description text
+mermaid.js draws (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A statement over several lines whose lines, joined with one space or with
 nothing, could change which `;` the line rule ignores keeps the text of each
