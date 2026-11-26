@@ -31,6 +31,7 @@ Nothing in the grammar forbids indenting a statement, and the documentation of
 mermaid.js writes the statements one level deeper than the header, as the other
 diagrams do (see [Indentation](./flowchart.md#indentation) in the flowchart
 rules). The header, and a comment line before it, stand at the first column.
+[Comments](#comments) gives the reason for the comment line.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/written-indentation-dropped] [fixture:
@@ -795,8 +796,9 @@ Unicode and tab interiors]
 
 A block with a directive or a comment line keeps its contents and line breaks,
 with body indentation under
-[Titles and accessibility statements](#titles-and-accessibility-statements).
-Rule 1 names no mark for a line inside a block, so
+[Titles and accessibility statements](#titles-and-accessibility-statements). A
+directive that touches the braces of such a block stays touching them. Rule 1
+names no mark for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
 [block](./block.md#empty-description-blocks) keep the contents and line breaks
@@ -1018,13 +1020,11 @@ A comment on a line of its own stands at the level of the statement after it,
 and its text and its mark are kept as written: a comment line after the last
 statement stays after it, and one before the header stands at the first column.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-these places: a [flowchart](./flowchart.md#comments) puts a comment line at the
-level of the statements around it, since a comment belongs to no statement, and
-[gantt](./gantt.md#comments), [requirement](./requirement.md#comments),
-[block](./block.md#comments), and [journey](./journey.md#comments) put one
-before the header at the first column. A `%%` inside a title, an accessibility
-text, a description block, or a string is a character of it, and inside the
-brackets of a point it makes the input rejected.
+the first column of a comment line before the header, as
+[gantt](./gantt.md#comments), [requirement](./requirement.md#comments), and
+[block](./block.md#comments) put one there. A `%%` inside a title, an
+accessibility text, a description block, or a string is a character of it, and
+inside the brackets of a point it makes the input rejected.
 
 [fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
 comments/comment-line-at-the-end] [fixture:
