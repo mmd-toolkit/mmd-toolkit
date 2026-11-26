@@ -481,15 +481,11 @@ another figure in every version that counts. Within a printed line, place a
 directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
-contact is broken. Rule 1 names no mark for a directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#directives),
-[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-print such a gap in the same way. Align only an ordinary standalone start one
-body step in. Keep complete component boundaries and value-internal directives,
-multiline contents, malformed init arguments and EOF-reaching endings. Do not
-gather, reformat or delete them: an init directive can change configuration even
-though info’s Db remains empty.
+contact is broken. Align only an ordinary standalone start one body step in.
+Keep complete component boundaries and value-internal directives, multiline
+contents, malformed init arguments and EOF-reaching endings. Do not gather,
+reformat or delete them: an init directive can change configuration even though
+info’s Db remains empty.
 
 [fixture: info/global-directives/header-to-body]
 
