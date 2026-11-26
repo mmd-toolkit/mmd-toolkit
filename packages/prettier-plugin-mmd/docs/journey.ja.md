@@ -106,6 +106,9 @@ journey
 journey には文を区切るものがなく（diagrams/journey.md、図と文）、
 ヘッダーと `accDescr` ブロックの後ろには、同じ行に次の文を続けられます。
 それらの後ろの文は、それぞれの行に移します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの形を与えます。
+[flowchart](./flowchart.ja.md#1-行に-1-文) と [ER 図](./er.ja.md#1-行に-1-文)
+も、各文をそれぞれの行に印字します。
 
 [fixture: statements-one-per-line/header-then-title]
 [fixture: statements-one-per-line/header-then-task]
@@ -349,10 +352,17 @@ mermaid.js の文書の例で、コロンの後に空白を置いて書かれた
 
 score と人は書かれたまま印字します。
 人の中の空白は人の一部で、Db に入ります。
+名前が空白の連なりだけ違う 2 人は 2 人で、
+連なりを空白 1 つにすると 1 人になります。
+対象にする版はどれも、凡例に描く人が 1 人減ります。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 score の書き方は、mermaid.js が数として読み、`05` と `5` で Db が同じでも、
 書かれたまま保ちます。
 
 [fixture: task-data/people-inner-whitespace-kept]
+[fixture: task-data/people-differing-by-a-run-kept]
 [fixture: task-data/score-forms-kept]
 
 データの末尾の空白は落とします。
@@ -738,6 +748,9 @@ journey
 すでに空の内側は空のままです。
 通常のキーワードと開き括弧の間には空白 1 つを置き、
 `accDescr{  }` は `accDescr {}` にします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がどちらも与えます。
+Prettier は、何も持たない括弧の内側に何も置かず（`x = { }` は `x = {};`）、
+ブロックを開く `{` の前に空白を 1 つ置きます（`class A{}` は `class A {}`）。
 
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: journey Unicode and tab interiors]
@@ -1067,6 +1080,11 @@ journey # c
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
+user journey の木は平らで、section は終わるブロックを持たないので、
+ディレクティブの次の文がその段を決めます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)は、
+[Gantt チャート](./gantt.ja.md#ディレクティブ)の形を与えます。
+Gantt チャートも、section の前と task の前のディレクティブを同じように置きます。
 
 [fixture: directives/kept] [fixture: directives/levels-around-sections]
 [fixture: directives/before-header]
