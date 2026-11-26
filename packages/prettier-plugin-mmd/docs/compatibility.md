@@ -9426,14 +9426,15 @@ and redraw ordinary branches and guides with fixed four-column cells. A
 following sibling uses `├── `, the last sibling `└── `, and continuing ancestors
 `│   `. This redrawing corrects the form of
 [rule 3](./printed-form.md#3-a-spelling): the box characters show the structure
-on each line, and drawn from the tree they say what mermaid.js reads. Light
-strokes, two dashes and four-column cells give one form to branches and guides
-that are already being drawn anew; keeping only authored weights would mix two
-ways of drawing. Mixed or prefixed roots all receive root branches; otherwise
-roots and first-generation branches start at column one. This deliberately
-replaces misleading source columns, sibling marks, heavy strokes and dash counts
-with the tree Mermaid reads. Nodes sharing a physical line also split in source
-order and receive their branches from that tree.
+on each line, which indentation shows only in the columns of the lines below,
+and drawn from the tree they say what mermaid.js reads. Light strokes, two
+dashes and four-column cells give one form to branches and guides that are
+already being drawn anew; keeping only authored weights would mix two ways of
+drawing. Mixed or prefixed roots all receive root branches; otherwise roots and
+first-generation branches start at column one. This deliberately replaces
+misleading source columns, sibling marks, heavy strokes and dash counts with the
+tree Mermaid reads. Nodes sharing a physical line also split in source order and
+receive their branches from that tree.
 
 [fixture:
 treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]

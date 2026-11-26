@@ -64,25 +64,26 @@ treeView-beta
 Keep the original indentation or box-drawing mode. For box-drawing input this
 form corrects the form of [rule 3](./printed-form.md#3-a-spelling): the box
 characters show on each line whether a sibling follows, the node is the last
-child, or the siblings of an upper level go on. Of the 13 tree diagrams in the
-documentation of mermaid.js, 10 are written with indentation and 3 with box
-characters, so [rule 3](./printed-form.md#3-a-spelling) gives the indentation
-form, and an input written with indentation stays in indentation mode. Some of
-these inputs have no box form: written in box mode, an indented line that goes
-on without a branch prefix, such as the second line of a quoted name or an
-annotation on a line of its own, is rejected, and so is an annotation at column
-one. The second line of a quoted name at column one is a part of the name, and
-so is a second line that starts with a `│`; a `│` put before an annotation adds
-a node named `│`. The mode test still examines logical LF lines after the
-header, including value interiors, excluding whitespace-only, comment-shaped,
-metadata-shaped and vertical-only lines. Prefix presence alone is insufficient.
-In box mode redraw ordinary outer structure from the AST forest; do not convert
-indentation-mode input into a box diagram. Redrawing makes `├`, `└`, and `│` say
-what mermaid.js reads; moving only the authored characters' columns would leave
-a `├` on a last child or a `│` where no sibling follows. Preserve the mode and
-the reading of enclosed box forms, using the body-retention conditions in Branch
-prefixes. Common statement prefixes are removed and ordinary common statements
-use column one, so they do not appear as children.
+child, or the siblings of an upper level go on, which indentation shows only in
+the columns of the lines below. Of the 13 tree diagrams in the documentation of
+mermaid.js, 10 are written with indentation and 3 with box characters, so
+[rule 3](./printed-form.md#3-a-spelling) gives the indentation form, and an
+input written with indentation stays in indentation mode. Some of these inputs
+have no box form: written in box mode, an indented line that goes on without a
+branch prefix, such as the second line of a quoted name or an annotation on a
+line of its own, is rejected, and so is an annotation at column one. The second
+line of a quoted name at column one is a part of the name, and so is a second
+line that starts with a `│`; a `│` put before an annotation adds a node named
+`│`. The mode test still examines logical LF lines after the header, including
+value interiors, excluding whitespace-only, comment-shaped, metadata-shaped and
+vertical-only lines. Prefix presence alone is insufficient. In box mode redraw
+ordinary outer structure from the AST forest; do not convert indentation-mode
+input into a box diagram. Redrawing makes `├`, `└`, and `│` say what mermaid.js
+reads; moving only the authored characters' columns would leave a `├` on a last
+child or a `│` where no sibling follows. Preserve the mode and the reading of
+enclosed box forms, using the body-retention conditions in Branch prefixes.
+Common statement prefixes are removed and ordinary common statements use column
+one, so they do not appear as children.
 
 Box characters inside a comment line do not select box mode; in indentation mode
 that comment aligns with the following statement.
