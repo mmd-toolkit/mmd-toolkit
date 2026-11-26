@@ -312,8 +312,8 @@ that mermaid.js reads, except where its body stays as written (see
 show the structure on each line: `├` that a sibling follows, `└` the last child,
 and `│` that the siblings of an upper level go on. With indentation, that a node
 is the last child, or that the siblings of an upper level go on, shows only in
-the columns of the lines below it. Each of them is drawn anew where the tree has
-it, so that the drawing says what mermaid.js reads (see
+the columns of the lines below it. Each of these characters is drawn anew where
+the tree has it, so that the drawing says what mermaid.js reads (see
 [Modes](./treeview.md#modes)); keeping the written characters and moving only
 their columns would leave a `├` on a last child or a `│` where no sibling goes
 on. This form corrects the form of rule 3, as AGENTS.md (item 4) says of a rule
