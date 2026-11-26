@@ -7087,10 +7087,7 @@ sequence/spec-sequence-diagram-c8d8bf08]
 ## Sequence statements over several lines
 
 In a sequence diagram, a statement continues on the next line when whitespace
-comes before the line break, and such a statement is printed on one line, with
-the one space that [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives where the line broke (see
-[Multi-line statements](./sequence.md#multi-line-statements)).
+comes before the line break, and such a statement is printed on one line.
 
 [fixture: sequence/multi-line-statements/joined]
 
