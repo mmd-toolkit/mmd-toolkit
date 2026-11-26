@@ -779,9 +779,9 @@ erDiagram
 Nothing separates two statements of an ER diagram, and mermaid.js reads
 statements that follow one another on a line. A line of two statements is hard
 to read, and [flowchart](./flowchart.md#statements-one-per-line),
-[sequence](./sequence.md#statements-one-per-line),
-[class](./class.md#indentation), and [state](./state.md#statements-one-per-line)
-diagrams print one statement on a line too;
+[sequence](./sequence.md#statements-one-per-line), and
+[state](./state.md#statements-one-per-line) diagrams print one statement on a
+line too;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 this form. Each statement is printed on a line of its own: `A B` is the entities
 A and B, a relationship stands on one line and the entity after its role on the
