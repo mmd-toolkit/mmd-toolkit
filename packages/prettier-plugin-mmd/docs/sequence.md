@@ -1209,13 +1209,22 @@ In the text of a message, a note, a `title`, an `accTitle:` or `accDescr:` line,
 the label of a block (`loop`, `alt`, `else`, `opt`, `par`, `and`, `critical`,
 `option`, `break`), the text of a `box`, and the description after `as`, `%%` is
 a character of the text, not a comment, and is kept with it: `A->>B: x %% c` is
-the message `x %% c`. A run of whitespace before it is a run inside the text,
-printed as
+the message `x %% c`. Two kinds of `%%` are no characters of the text: a closed
+directive `%%{…}%%`, which mermaid.js removes before it reads the text
+(`A->>B: x%%{init: {}}%%y` is the message `xy`; see [Directives](#directives)),
+and a comment line that starts right after a U+2028 or U+2029, which mermaid.js
+removes, joining the text before it to the line after it (see
+[Line separators](#line-separators)). The whitespace between a character of the
+text and the `%%` is a run inside the text, printed as
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
 gives: `A->>B: x   %% c` is printed `A ->> B: x %% c`, and the run in an
-`accTitle:` line stays.
+`accTitle:` line stays. Where the text starts with `%%`, the whitespace before
+it is the gap after the `:`, printed as under [Colons](#colons).
 
-[fixture: comments/percent-in-texts-kept]
+[fixture: comments/percent-in-texts-kept] [fixture: directives/touching-kept]
+[fixture: title/title-between-words-directive-gap-kept] [test: a `%%` comment
+line after U+2028, which joins the next line] [fixture:
+colons/whitespace-only-text]
 
 Input
 ([comments/kept-input.mmd](../tests/fixtures/sequence/comments/kept-input.mmd)):

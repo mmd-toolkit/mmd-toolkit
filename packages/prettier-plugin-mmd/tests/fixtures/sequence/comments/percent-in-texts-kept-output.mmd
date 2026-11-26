@@ -11,7 +11,15 @@ sequenceDiagram
     Note over P: n %% n
   end
   alt x %% x
-    P ->> Q: y
   else z %% z
-    P ->> Q: w
+  end
+  opt O %% o
+  end
+  par P %% p
+  and A %% a
+  end
+  critical C %% c
+  option O %% o
+  end
+  break B %% b
   end
