@@ -900,15 +900,8 @@ mermaid.js は同じ行に続く文を読みます。
 [fixture: statements-one-per-line/empty-description-blocks]
 
 2 つの文の間のディレクティブは、後ろの文と一緒に動きます。
-規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#ディレクティブ)、
-[gantt](./gantt.ja.md#ディレクティブ)、
-[journey](./journey.ja.md#ディレクティブ)も、
-整形が分ける単位の隙間のディレクティブを後ろの単位と一緒に動かし、
-右側の接触か間隔を残し、左側の接触は切ります。
-ただし、ほかの規則が配置を書かれたまま残す所は別です。
-たとえば、文の後の閉じていないディレクティブです。
+右側の接触か間隔は残し、左側の接触は切ります。
+文の後の閉じていないディレクティブは、配置を書かれたまま残します。
 
 [fixture: statements-one-per-line/directive-after-statement]
 [fixture: statements-one-per-line/directive-after-statement-right-touching]

@@ -1501,14 +1501,9 @@ eventmodeling/frontmatter-extra-whitespace-line-boundary]
 Use the shared directive placement: on the same printed line place a directive
 as under [Directives](./flowchart.md#directives). When statements, clauses or
 items split into lines, attach an intervening directive to the following unit,
-retaining its right-side contact or separation. Rule 1 names no mark for a
-directive between two units, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#directives),
-[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-print such a gap in the same way. Keep content, order, multiline interiors,
-positions inside values and unfinished EOF endings. Standalone starts align with
-the owning body. The start of a line is no place of rule 1, so
+retaining its right-side contact or separation. Keep content, order, multiline
+interiors, positions inside values and unfinished EOF endings. Standalone starts
+align with the owning body. The start of a line is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [flowchart](./flowchart.md#directives) and
 [sequence](./sequence.md#directives) stand a directive on a line of its own at
