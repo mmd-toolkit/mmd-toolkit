@@ -1651,8 +1651,7 @@ characters as escapes too (see
   before it: `A->>B:   x`, U+2028, `%% c`, and `C->>D: y` is one line, whose
   message text goes on into the next line. The statement or the header, the
   comment line, and the text after it are printed as written, without
-  indentation and without formatting the whitespace between them: the tree lists
-  the comments, and the printer reads them as one line (see
+  indentation and without formatting the whitespace between them (see
   [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
   The line after the comment line takes no indentation: mermaid.js reads it into
   the text of the message, which is drawn with a wider gap (see
@@ -2034,21 +2033,20 @@ For participant and actor data blocks, apply
 text. Move that line one level inside the statement and align a separate `}`
 with the statement; a closer after text stays with that line.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this layout, as [Data blocks](./flowchart.md#data-blocks) of a flowchart print
-the body and the closer of a block so. This applies at the top level and inside
-`loop`, except with `useTabs`, where the statement is printed as written, a form
-decided under
-[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
-[Data blocks](./flowchart.md#data-blocks)), unless the statement is not at the
-depth of the first thing on its line: the header of a `box` or a block, as in
-`box Aqua G; participant A@{ … }`, a section keyword, as in
-`else z; participant P@{ … }`, or a statement inside the box or block before an
-`end`, as in `participant B; end; participant A@{ … }`. The written indentation
-is then that of that thing, and the statement is printed with the usual
-indentation, the lines of its block moving with it: the form decided under rule
-4 keeps the indentation that a statement is written with, and such a statement
-is written with none of its own. So is a statement on a line that starts with
-anything else than the things listed under
+the level of that line and of a separate `}`, as
+[Data blocks](./flowchart.md#data-blocks) of a flowchart print them so. This
+applies at the top level and inside `loop`, except with `useTabs`, where the
+statement is printed as written, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) that
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a sequence diagram too (see [Data blocks](./flowchart.md#data-blocks)), unless
+the statement is not at the depth of the first thing on its line: the header of
+a `box` or a block, as in `box Aqua G; participant A@{ … }`, a section keyword,
+as in `else z; participant P@{ … }`, or a statement inside the box or block
+before an `end`, as in `participant B; end; participant A@{ … }`. The written
+indentation is then that of that thing, and the statement is printed with the
+usual indentation, the lines of its block moving with it. So is a statement on a
+line that starts with anything else than the things listed under
 [Data blocks](./flowchart.md#data-blocks), such as the rest of a directive that
 runs over lines. A statement after an `end` that comes first is at the depth of
 the line and is printed as written.
