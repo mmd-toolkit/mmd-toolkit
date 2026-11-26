@@ -146,9 +146,8 @@ packet
 
 Print ordinary range gaps with no spaces, as `0-15`, so the numeric range reads
 as one visual unit. `0 - 15` reads as a subtraction, while `0-15` reads as one
-range. The examples in the documentation of the pinned mermaid.js write all 20
-ranges without spaces too. Preserve global trivia and hidden boundaries instead
-of tightening them: a consumed LF is not an ordinary space. For
+range. Preserve global trivia and hidden boundaries instead of tightening them:
+a consumed LF is not an ordinary space. For
 `0%%{!left}%% -%%{!right}%% 2:"Hidden dash"`, the space before `-` stays, since
 some of the versions of mermaid.js that count reject
 `0%%{!left}%%-%%{!right}%%2:"Hidden dash"` (see
