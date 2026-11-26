@@ -231,6 +231,9 @@ mermaid.js はディレクティブを取り除き、行末の空白が、
 文に必要な改行を隠すからです。
 その文の最後の単位は、後ろの空白を読みません。
 `autonumber`、空白、`%%{wrap}%%`、`;` は受理され、`;` がないと拒否されます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 ほかの文の最後の単位、つまりテキスト、id、`as` の後の説明は、
 後ろの空白を一緒に読みます（仕様の
 [文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈) と、
@@ -1204,7 +1207,10 @@ sequenceDiagram
 コメント行は mermaid.js がテキストを読む前に取り除かれるので、
 その次の行がタイトルです。
 空白 1 つの後に印字すると、コメントがキーワードの行に乗り、
-次の行が文として読まれてしまいます。
+次の行が文として読まれて、拒否されます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: title/comment-line-kept] [fixture: title/colon-comment-line-kept]
 
@@ -1665,6 +1671,11 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   木はコメントを並べますが、印字処理は 1 つの行として読みます。
   [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
   を参照してください。
+  コメント行の次の行は字下げしません。
+  mermaid.js はその行をメッセージのテキストとして読み、隙間を広く描くからです。
+  詳しくは
+  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+  を参照してください。
   `#` のコメントはコメント行ではなく、行をつなぎません。
   その前の U+2028 と U+2029 は、文の後のコメントの前の空白とタブと同じく、
   空白 1 つで印字します（[コメント](#コメント)を参照）。
@@ -1783,6 +1794,9 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   `participant Z@{ "style": "x:#y" };`、U+2028、改行、`;`、
   続く文は mermaid.js が受理し、
   続く文があって 2 つ目の `;` がない同じテキストは拒否されます。
+  詳しくは
+  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+  を参照してください。
 
   [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the end of its line]
   [test: a `;` on the next line after an ignored `;` and U+2028, which the line rule reads as the end of its line]
@@ -1978,6 +1992,10 @@ Prettier は、`x = a +`、改行、`b;` を `x = a + b;` と印字します。
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、
 最後の行の終わりを `;` が決める場合は、その改行を残します。
+`style ->>`、改行、`B: x:#y;` は、つなぐと別のメッセージとして描かれます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
@@ -2012,6 +2030,11 @@ Prettier は、何も持たない括弧の内側に何も置かず（`x = { }` �
 コメントやディレクティブがあるブロックの内容と改行は保ちます。
 1 行のブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+`}` の後にコメントがある 1 行のブロックは、ブロックのまま残します。
+コロンの形にすると、コメントが説明文の一部になるからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
@@ -2184,6 +2207,11 @@ sequenceDiagram
 - 数の形か `title` の綴りの送り元に、矢印が接していること。
 - キーワードと本文の間に注釈があるタイトル。
 - セミコロン行かコメントで結合される領域の保護対象の文。
+  データブロックを持つ participant の行で `;` がつなぐ文は、
+  分けると拒否されます。
+  詳しくは
+  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+  を参照してください。
 - 注釈を含む隙間の最初の改行の前の空白。
 - `autonumber 5` の後の `%%` コメントの前に空白があるかどうかと、
   コメントとその後のコメント行の間の U+2028 か U+2029。

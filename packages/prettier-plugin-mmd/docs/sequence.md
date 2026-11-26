@@ -231,9 +231,10 @@ statements-one-per-line/directive-semicolon-after-multi-line-statement-aligned]
 mermaid.js removes the directive, and whitespace at the end of the line then
 hides the line break from the statement, which needs one, and whose last unit
 reads no whitespace: `autonumber`, a space, `%%{wrap}%%`, and `;` are accepted,
-while the same without the `;` is rejected. The last unit of the other
-statements, a text, an id, or a description after `as`, reads the whitespace
-with it (see the specification's
+while the same without the `;` is rejected (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The last unit of the other statements, a text, an id, or a description after
+`as`, reads the whitespace with it (see the specification's
 [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context),
 and
 [Empty description blocks before a separator](../../spec/docs/diagrams/sequence.md#empty-description-blocks-before-a-separator)
@@ -1150,7 +1151,8 @@ source, including the text's indentation: that whitespace is part of the Db
 title (see [Multi-line statements](#multi-line-statements)). The comment line is
 removed before mermaid.js reads the text, so the line after it is the title;
 printed after the one space, the comment would stand on the line of the keyword,
-and the next line would be read as a statement.
+and the next line would be read as a statement, which is rejected (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: title/comment-line-kept] [fixture: title/colon-comment-line-kept]
 
@@ -1652,6 +1654,9 @@ characters as escapes too (see
   indentation and without formatting the whitespace between them: the tree lists
   the comments, and the printer reads them as one line (see
   [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+  The line after the comment line takes no indentation: mermaid.js reads it into
+  the text of the message, which is drawn with a wider gap (see
+  [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
   A `#` comment is no comment line: it joins no line. U+2028 or U+2029 before it
   is printed as one space, like the spaces and tabs before a comment after a
   statement (see [Comments](#comments)), except after the units below, where
@@ -1753,7 +1758,8 @@ characters as escapes too (see
   `;` on the next line, after the line break that follows the character, stays
   as written too: `participant Z@{ "style": "x:#y" };`, U+2028, a line break,
   and `;`, followed by a statement, is accepted by mermaid.js, while the same
-  text without the second `;` is rejected.
+  text without the second `;` is rejected (see
+  [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
   [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the
   end of its line] [test: a `;` on the next line after an ignored `;` and
@@ -1942,9 +1948,11 @@ multi-line-statements/autonumber-directive-continuation]
 A title with trivia between its keyword and text keeps its complete source,
 since its text includes indentation. Joining regions also stay as written. A
 line break stays where joining it, with one space or with nothing, could change
-which `;` the line rule ignores, and where a `;` decides the end of the last
-line; any other line break is joined as usual, also in a statement that holds a
-`;`.
+which `;` the line rule ignores (`style ->>`, a line break, and `B: x:#y;` is
+drawn with another message when joined; see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
+and where a `;` decides the end of the last line; any other line break is joined
+as usual, also in a statement that holds a `;`.
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 
@@ -1980,6 +1988,9 @@ Blocks with comments or directives keep their contents and line breaks.
 
 Blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
+A block on one line with a comment after its `}` stays a block: with a colon,
+the comment would be part of the description (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
@@ -2142,7 +2153,10 @@ because changing it would change the diagram or the input would be rejected:
 - the contents of the data block of a participant;
 - that an arrow touches a source spelled as a number or `title`;
 - a title with trivia between its keyword and text;
-- a statement protected by a semicolon line or a joining comment region;
+- a statement protected by a semicolon line or a joining comment region
+  (statements that a `;` joins on the line of a participant with a data block
+  are rejected when split; see
+  [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
 - the whitespace before the first line break of a gap containing trivia;
 - whether whitespace is written before a `%%` comment after `autonumber 5`, and
   a U+2028 or U+2029 between a comment and a comment line after it;
