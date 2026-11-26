@@ -38,7 +38,10 @@ mermaid.js がディレクティブを後ろの改行ごと取り除き、
 [fixture: cynefin/header/colon-unclosed-directive-kept]
 [fixture: cynefin/header/colon-directive-before-hidden-yaml-kept]
 
-普通の最初の文は次の行へ移し、見出しを見つけやすくします。
+普通の最初の文は次の行へ移します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの形を与えます。
+[flowchart](./flowchart.ja.md#1-行に-1-文) と [ER 図](./er.ja.md#1-行に-1-文)
+も、見出しの行に書かれた文をそれぞれの行に印字します。
 
 大域的なディレクティブの接触、隠れた形の隣接、保護行は共有規則に従います。
 見出し行を保つときは、その行の領域と項目の開きも同じ行に保ちます。
@@ -632,6 +635,8 @@ Prettier は空の波括弧の内側に、空白を置きません。
 Prettier が `class A{}` を `class A {}` と印字するのと同じです。
 
 普通の開始記号前の空白は結合し、独立した閉じ記号は文の段にそろえます。
+空白の結合も規則 1 が与え、Prettier は `class A`、改行、
+`{}` も `class A {}` と印字します。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 改行と内部の空行は保ちます。
 mermaid.js は説明本文の改行を Db に記録するので、
@@ -655,6 +660,7 @@ mermaid.js は説明本文の改行を Db に記録するので、
 [fixture: cynefin/description-blocks/description-spaced-edges]
 
 [fixture: cynefin/description-blocks/description-plain-opener-newline]
+[fixture: cynefin/description-blocks/description-plain-opener-newline-block-kept]
 
 [fixture: cynefin/description-blocks/description-multiline-columns]
 
@@ -1064,6 +1070,12 @@ Prettier は普通の行末に、空白とタブを残しません。
 値の継続行、コメント、ディレクティブ・隠れた形の内部、必要な閉じ記号の余白、
 保護区間は保ちます。
 全物理行の両端の空白の除去は値や受理を変え得るので、所有ノードごとに決めます。
+複数行の引用符の項目の中の行末の空白とタブは、
+mermaid.js が Db に持つラベルの一部です。
+それを変えることは、整形が Db に起こしてよい変化のどの種類にも当たりません。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
 
 [fixture: cynefin/trailing-whitespace/trailing-structure]
 
@@ -1220,6 +1232,10 @@ cynefin-beta
 ### Multiline values
 
 `printWidth` では折り返しません。
+flowchart も折り返しません（[折り返し](./flowchart.ja.md#折り返し)を参照）。
+これは、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がその形を与えます。
 領域・項目の分割を除き、文字列と遷移ラベルの物理的な内容、継続列、
 内部空行を保ちます。
 説明本文は前述の共有の字下げを使います。
