@@ -667,9 +667,8 @@ comments/only-comments]
 A comment line before the header stands at the first column.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 this place, as [gantt](./gantt.md#comments),
-[requirement](./requirement.md#comments), [block](./block.md#comments), and
-[journey](./journey.md#comments) put a comment line before the header at the
-first column.
+[requirement](./requirement.md#comments), and [block](./block.md#comments) put a
+comment line before the header at the first column.
 
 [fixture: comments/before-the-header]
 
