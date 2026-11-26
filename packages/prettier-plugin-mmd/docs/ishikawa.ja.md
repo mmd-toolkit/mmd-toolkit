@@ -416,7 +416,6 @@ kanban が見出し行のディレクティブを節点と一緒に移すのと�
 [fixture: ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
 
 根に接するディレクティブは、書かれた見出しと根の組全体を保ちます。
-作者が書いたディレクティブと根のテキストの関係を保つためです。
 
 [fixture: ishikawa/standalone-directives/directive-header-touch-root]
 [fixture: ishikawa/standalone-directives/header-directive-touching-root]
@@ -798,7 +797,7 @@ title、アクセシビリティ、style、装飾、データらしい形も同�
 [fixture: ishikawa/node-text/values-html-entities]
 
 他の文法のトークン間隔や値変換は適用しません。
-Db からラベルを再構築せず、書かれた形と設定による読みを保つためです。
+Db からラベルを再構築せず、設定による読みを保つためです。
 mermaid.js は、句読点、引用符、数に見える綴りを、節点のテキストとして読みます。
 記した空白とタブの変更を除き、他の文法のトークン間隔や値変換を適用すると、
 Db のテキストが変わります。

@@ -770,14 +770,12 @@ agentflow-beta TB
 
 Reuse [Arrow spacing](./flowchart.md#arrow-spacing): one exterior space on each
 side of an arrow; an edge id touches its @ and arrow. Keep directive touching
-and exact dash/dot counts, including counts beyond the Db cap: below the cap a
+and exact dash/dot counts, including counts beyond the Db cap. Below the cap a
 shorter or longer arrow is another arrow (`A---->B` printed as `A --> B` is read
-differently), and beyond the cap the Db is the same but the tree keeps the
-written length, and a Db-equal capped arrow is not shortened because an equal Db
-alone gives no permission to rewrite authored text. Agentflow has only sequence
-`-->`, failure `--x`, and reference `-.-`, with their extensions. Reference
-length counts dots. A following x may be vertex text; no unsupported arrow
-family is introduced.
+differently); beyond the cap the Db is the same, and a Db-equal capped arrow is
+not shortened. Agentflow has only sequence `-->`, failure `--x`, and reference
+`-.-`, with their extensions. Reference length counts dots. A following x may be
+vertex text; no unsupported arrow family is introduced.
 
 [fixture: arrows/arrow-cap-spelling] [fixture:
 arrows/arrow-length-change-unsafe] [fixture: arrows/arrow-lengths] [fixture:
@@ -949,10 +947,9 @@ tabs after the `;` stay: `A[x  %% c;` and two spaces, a line break, and `]`
 print `A[x %% c;`, the two spaces, and `]` one level deeper. Where the label
 goes on after the line break of such a comment, both spaces before it stay.
 Tildes remain content. Shape spellings, entities and HTML remain authored. The
-text of a label is a text that the tree holds whole (see
-[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
-and the Db keeps it, so an entity stays as written: `&amp;` is not printed `&`,
-a change of the text that no rule of this document defines.
+Db keeps the text of a label, so an entity stays as written: `&amp;` is not
+printed `&`, a change of the text that no rule of this document defines (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
@@ -1827,22 +1824,25 @@ trivia instead follow [Accessibility](#accessibility), joining their lines.
 accessibility/empty-block-lines]
 
 Reuse [Multi-line statements](./flowchart.md#multi-line-statements) and
-[Multi-line values](./flowchart.md#multi-line-values) for the same reasons: the
-author chooses statement breaks, and later value columns are characters except
-for the description-body indentation described in
-[Accessibility](#accessibility). Indent ordinary continuation tokens one
-additional step; keep string/markdown/split text, Name, metadata, directive and
-multiline click continuation columns. An extra whitespace character in a click
-gap after the ids and the callback can reject (see
+[Multi-line values](./flowchart.md#multi-line-values) for the same reason: later
+value columns are characters except for the description-body indentation
+described in [Accessibility](#accessibility). Indent ordinary continuation
+tokens one additional step; keep string/markdown/split text, Name, metadata,
+directive and multiline click continuation columns. An extra whitespace
+character in a click gap after the ids and the callback can reject (see
 [Click statements](#click-statements)). Agentflow folds only line whitespace
 immediately before the next LF after a closing brace; later blank LFs remain.
 Keep those raw value lines, including LS/PS/VT/FF/NBSP, and never align an
-opaque data closer as an accessibility closer. A U+2028 inside a quoted label
-stays as written because mermaid.js stores it as part of the vertex text in the
-Db. Replacing it with a space or a line feed changes that value, beyond the
-allowed Db exceptions.
+opaque data closer as an accessibility closer. mermaid.js keeps those later
+blank lines, and the spaces that start the line after them, in the text of the
+vertex: the label `"a}  \n\n  b"`, written with escapes, has the text
+`a}\n\n  b`. Removing them changes that value, beyond the allowed Db exceptions.
+A U+2028 inside a quoted label stays as written because mermaid.js stores it as
+part of the vertex text in the Db. Replacing it with a space or a line feed
+changes that value, beyond the allowed Db exceptions.
 
-[corpus fixture: agentflow/lex-quoted-u2028]
+[corpus fixture: agentflow/lex-brace-string-keeps-blank-line] [corpus fixture:
+agentflow/lex-quoted-u2028]
 
 [fixture: multiline-statements-and-values/brace-blank-kept] [fixture:
 multiline-statements-and-values/multiline-chain] [fixture:
@@ -2272,20 +2272,18 @@ agentflow-beta TB
 Reuse callback value retention from
 [Whitespace between tokens](./flowchart.md#whitespace-between-tokens) and
 [Multi-line statements](./flowchart.md#multi-line-statements): whitespace before
-call parentheses belongs to its name, and argument/string text is authored.
-Normalize the harmless first click-keyword gap; keep the id/list/value suffix
-and multiline columns, including href/call presence, targets,
-punctuation/numeric/prototype ids, holes, URL/tooltip whitespace and a second
-call supplying arguments. A tooltip keeps its internal runs of whitespace
-because mermaid.js stores them as part of the tooltip value in the Db.
-Collapsing a run changes that value, beyond the allowed Db exceptions. Agentflow
-retains each erased click/empty description/string/markdown/call in
-textBeforeUrl/textBeforeTooltip with its exact source gaps, including either
-side of href. It has no prefix field before a callback name or target. The
-single whitespace characters required before tooltips and targets stay written;
-terminal empty descriptions are following statements. The erased prefixes are
-kept because the specification accepts them and the tree holds them in
-textBeforeUrl/textBeforeTooltip, so dropping one would lose written text;
+call parentheses belongs to its name. Normalize the harmless first click-keyword
+gap; keep the id/list/value suffix and multiline columns, including href/call
+presence, targets, punctuation/numeric/prototype ids, holes, URL/tooltip
+whitespace and a second call supplying arguments. A tooltip keeps its internal
+runs of whitespace because mermaid.js stores them as part of the tooltip value
+in the Db. Collapsing a run changes that value, beyond the allowed Db
+exceptions. Agentflow retains each erased click/empty
+description/string/markdown/call in textBeforeUrl/textBeforeTooltip with its
+exact source gaps, including either side of href. It has no prefix field before
+a callback name or target. The single whitespace characters required before
+tooltips and targets stay written; terminal empty descriptions are following
+statements. The erased prefixes are kept; the specification accepts them, and
 flowchart's rule for the reserved word `click`, which rejects such input, does
 not apply to Agentflow.
 

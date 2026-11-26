@@ -269,11 +269,10 @@ kanban
 ### Shapes
 
 The opener and the closer of a shape are printed as written. The closer need not
-match the opener: `S[x)` is accepted, and `S[x]` would give the same Db, but it
-would rewrite what the author wrote, as in [mindmap](./mindmap.md#shapes). This
-holds for every family of shapes (`S[x]`, `A(y)`, `B((z))`, `C{{q}}`, `D)w(`,
-`E))v((`, and the dash spellings `F-)"bang"(-` and `G(-"cloud"-)`), and for a
-shape with no id (`[S]`).
+match the opener: `S[x)` is accepted, and `S[x]` would give the same Db, as in
+[mindmap](./mindmap.md#shapes). This holds for every family of shapes (`S[x]`,
+`A(y)`, `B((z))`, `C{{q}}`, `D)w(`, `E))v((`, and the dash spellings
+`F-)"bang"(-` and `G(-"cloud"-)`), and for a shape with no id (`[S]`).
 
 [fixture: shapes/mismatched] [fixture: shapes/matching-closer] [fixture:
 shapes/shape-families] [fixture: shapes/shape-alone] [fixture:
@@ -480,7 +479,7 @@ shape of its text and the rest part of the id (`A ::icon(x)` is the node
 id `A :::c`), and after a shape both are rejected (`S[x] ::icon(star)`, see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
 Classes and the icons of sections do not show in the Db that the tests compare,
-but they are text that the author wrote, and they are kept as well.
+but they are kept as well.
 
 [fixture: icons-and-classes/icon-after-bare] [fixture:
 icons-and-classes/class-after-bare] [fixture:
@@ -521,9 +520,8 @@ kanban
 
 A data block `@{ ... }` is embedded text that mermaid.js reads as YAML for the
 properties of a node, such as `ticket` and `assigned`. The printer keeps it
-opaque, with its delimiters and its content retained (the tree holds its body
-whole, so the colon of a key stays as written: `A@{ ticket : MC-1 }` keeps the
-space before its colon; see
+opaque, with its delimiters and its content retained (the colon of a key stays
+as written: `A@{ ticket : MC-1 }` keeps the space before its colon; see
 [A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
 apart from the uniform indentation below, the spaces at the ends of a block on
 one line, and the printing of a block on one line on lines where its line is too
@@ -955,16 +953,16 @@ a directive included, and a directive is not counted, so the line has the
 indentation of its role, like any other line. The printer writes the whitespace
 before the first directive, keeps the whitespace after each directive as many
 characters as it was while the whole fits, and shortens it, from the last
-directive back, when it does not. The gaps keep their size where they can,
-because the author wrote them beside the directive; what does not fit carries
-nothing that the Db reads. In `kanban`, ` S`, and `      %%{init: {}}%%  A`, the
-node `A` is an item and is indented by 8 characters, 6 before the directive and
-2 after it; it gets 4, 2 before the directive and the 2 after it. In
-`    %%{a}%%  %%{b}%%   A` the gaps are 2 and 3 and `A` gets 4, so the last gap
-is shortened to 2, and nothing stands before the first directive. A directive
-between two units of a line (`A  %%{init: {}}%%  B[x]`), between data blocks,
-inside an id, an icon, a class, or a markdown label, a directive that is not
-closed, and its line joins stay exactly as written.
+directive back, when it does not. The gaps keep their size where they can; what
+does not fit carries nothing that the Db reads. In `kanban`, ` S`, and
+`      %%{init: {}}%%  A`, the node `A` is an item and is indented by 8
+characters, 6 before the directive and 2 after it; it gets 4, 2 before the
+directive and the 2 after it. In `    %%{a}%%  %%{b}%%   A` the gaps are 2 and 3
+and `A` gets 4, so the last gap is shortened to 2, and nothing stands before the
+first directive. A directive between two units of a line
+(`A  %%{init: {}}%%  B[x]`), between data blocks, inside an id, an icon, a
+class, or a markdown label, a directive that is not closed, and its line joins
+stay exactly as written.
 
 [fixture: directives/leading-directive-kept] [fixture:
 directives/leading-directive-with-semicolon] [fixture:
@@ -1282,8 +1280,9 @@ A `;` is a character of text in a kanban board: no `;` separates statements.
 alone is a node, and `:::c;d` has a `;` in the class. The printer keeps every
 `;`, the ones that the line rule of mermaid.js ignores included (see
 [Line rule and kept lines](#line-rule-and-kept-lines)); dropping one, or
-splitting a line at it, would change a written text or its reading. A `;` right
-after a shape is not part of the shape and is rejected (`S[x];`).
+splitting a line at it, would change the text that the Db holds or which `;` the
+line rule ignores. A `;` right after a shape is not part of the shape and is
+rejected (`S[x];`).
 
 [fixture: semicolons/values] [fixture: semicolons/semicolon-remove]
 

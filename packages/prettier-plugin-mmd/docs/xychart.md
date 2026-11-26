@@ -183,10 +183,9 @@ xychart
 
 A run of empty lines becomes one empty line, and there is none between the
 header and the first statement, and none at the end of the text. A blank line is
-a choice of the author that the Db does not hold, and one empty line shows it at
-the least cost, as Prettier does in code (see
-[Blank lines](./flowchart.md#blank-lines)). Prettier leaves no blank line at the
-start of a text or a block, or at the end of a text;
+not held in the Db, and one empty line shows it at the least cost, as Prettier
+does in code (see [Blank lines](./flowchart.md#blank-lines)). Prettier leaves no
+blank line at the start of a text or a block, or at the end of a text;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) therefore leaves none
 before the header, between the header and the first statement, or after the last
 statement.
@@ -223,15 +222,14 @@ xychart
 
 The header is printed as written: `xychart` or `xychart-beta`, in the case
 written. mermaid.js reads them as the same diagram type, but some versions that
-count detect `xychart-beta` only, so the spelling is the author's, not the
-printer's (see [The names of a header](./compatibility.md#the-names-of-a-header)
-and
+count detect `xychart-beta` only, so the spelling stays (see
+[The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A header after the first stands on a line of its own, and none is dropped: a
-later header with an orientation changes the orientation, and one without
-changes nothing, but the text is the author's. A header with a comment or
-directive in its gap keeps that line break and aligns its continuation one level
-inside the header (see [Multi-line statements](#multi-line-statements)).
+later header with an orientation changes the orientation. A later header without
+one changes nothing and is kept too. A header with a comment or directive in its
+gap keeps that line break and aligns its continuation one level inside the
+header (see [Multi-line statements](#multi-line-statements)).
 
 [fixture: header-and-orientation/plain-header] [fixture:
 header-and-orientation/beta-header-kept] [fixture:
@@ -568,10 +566,10 @@ writes as it is. Any other string and a markdown string are printed as written:
 their quotes, their text, and the line breaks inside them stay, and a run of
 spaces and tabs inside them is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-The empty string is read as no token by mermaid.js though it is the author's
-text, so it stays, and no quotes are added to nothing. An empty string stands
-where the grammar takes one: as the title of a plot, as the title of an axis
-before data, and as the label of a value.
+The empty string is read as no token by mermaid.js, but it stays, and no quotes
+are added to nothing. An empty string stands where the grammar takes one: as the
+title of a plot, as the title of an axis before data, and as the label of a
+value.
 
 [fixture: quotes/strings-runs-collapsed] [fixture: quotes/titles-in-quotes]
 [fixture: quotes/categories-without-quotes] [fixture:

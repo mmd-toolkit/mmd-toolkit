@@ -400,9 +400,9 @@ boolean; the colon cannot be part of an unquoted id.
 
 [fixture: quotes/metadata]
 
-The tree holds each property of the native metadata as a key, a colon, and a
-scalar, unlike the data block of a flowchart or a kanban board, which it holds
-whole. So the colon of a property is the colon of a key (step 2 of
+mermaid.js reads each property of the native metadata as a key and its value,
+unlike the data block of a flowchart or a kanban board, which it reads as one
+text in YAML. So the colon of a property is the colon of a key (step 2 of
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)):
 `type : hollow` is printed `type: hollow`.
 

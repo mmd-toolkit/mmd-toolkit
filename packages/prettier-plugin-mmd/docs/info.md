@@ -76,10 +76,9 @@ info
 
 Move an ordinary first common statement below the header and print common
 statements one per line, in written order with every occurrence. Empty titles,
-accessibility lines and description blocks remain statements: the empty public
-Db is no reason to discard authored syntax. A keyword already consumed by a line
-value remains value text. Hidden boundaries and protected groups take
-precedence.
+accessibility lines and description blocks remain statements even though the
+public Db is empty. A keyword already consumed by a line value remains value
+text. Hidden boundaries and protected groups take precedence.
 
 [fixture: info/statements-one-per-line/first-title-inline]
 
@@ -269,10 +268,10 @@ info
 ### Authored values
 
 Print InfoLiteral source rather than decoding or reconstructing it. Keep
-interior whitespace, case, quotes, escapes, HTML and entities, since they are
-authored text even though info publishes no common values. `singleQuote` does
-not rewrite quotes and `printWidth` does not wrap values. Physical multiline
-block content retains line breaks and blank lines, with body margins following
+interior whitespace, case, quotes, escapes, HTML and entities, even though info
+publishes no common values. `singleQuote` does not rewrite quotes and
+`printWidth` does not wrap values. Physical multiline block content retains line
+breaks and blank lines, with body margins following
 [Description blocks](#description-blocks). A range cut by common trivia keeps
 its complete source without duplicating that trivia.
 

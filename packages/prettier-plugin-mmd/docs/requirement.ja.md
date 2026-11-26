@@ -449,7 +449,6 @@ ER 図の関係文も単位の間は空白 1 つです。
 [fixture: relationship-spacing/string-names]
 
 矢印の向きは書かれたまま残します。
-`a - copies -> b` と `b <- copies - a` は書き方が違うからです。
 関係の語は、mermaid.js の文書の例と同じく、小文字で印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 
@@ -816,7 +815,6 @@ requirementDiagram
 方向の行は、`direction` とその値、
 その前後にある mermaid.js が読まないテキストからなります。
 テキストは書かれたまま残します。
-木がそのテキストを丸ごと持つからです。
 詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
 を参照してください。
 テキストと `direction` の間は、離れて書かれていれば空白 1 つ、

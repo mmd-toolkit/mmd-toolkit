@@ -215,7 +215,6 @@ mermaid.js の文書の例の書き方と同じです。
 
 2 つ目のクラスの行（アイコンの行も同じ）は Db で最初のものを置き換えますが、
 どちらも書かれたまま残します。
-作者が書いたテキストを、印字は落とさないからです。
 
 [fixture: decorations/second-class-kept]
 
@@ -359,7 +358,6 @@ mindmap
 
 形の開きと閉じは、書かれたまま印字します。
 閉じは開きに合わなくてよく、`[text)` は長方形、`((x)` は円です。
-合う閉じに直すと、作者が書いたテキストを書き換えることになります。
 
 [fixture: shapes/openers-and-closers-kept]
 [fixture: shapes/mismatched-closers-kept]

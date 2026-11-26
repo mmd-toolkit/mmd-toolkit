@@ -61,20 +61,26 @@ treeView-beta
 
 ### Modes
 
-Keep the original indentation or box-drawing mode. Of the 13 tree diagrams in
-the documentation of mermaid.js, 10 are written with indentation and 3 with box
-characters, so [rule 3](./printed-form.md#3-a-spelling) gives the indentation
-form, and an input written with indentation stays in indentation mode. Some of
-these inputs have no box form: written in box mode, an indented line that goes
-on without a branch prefix, such as the second line of a quoted name or an
-annotation on a line of its own, is rejected, and so is an annotation at column
-one. The second line of a quoted name at column one is a part of the name, and
-so is a second line that starts with a `│`; a `│` put before an annotation adds
-a node named `│`. The mode test still examines logical LF lines after the
-header, including value interiors, excluding whitespace-only, comment-shaped,
-metadata-shaped and vertical-only lines. Prefix presence alone is insufficient.
-In box mode redraw ordinary outer structure from the AST forest; do not convert
-indentation-mode input into a box diagram. Preserve the mode and the reading of
+Keep the original indentation or box-drawing mode. For box-drawing input this
+form corrects the form of [rule 3](./printed-form.md#3-a-spelling): the box
+characters show on each line whether a sibling follows, the node is the last
+child, or the siblings of an upper level go on, which indentation shows only in
+the columns of the lines below. Of the 13 tree diagrams in the documentation of
+mermaid.js, 10 are written with indentation and 3 with box characters, so
+[rule 3](./printed-form.md#3-a-spelling) gives the indentation form, and an
+input written with indentation stays in indentation mode. Some of these inputs
+have no box form: written in box mode, an indented line that goes on without a
+branch prefix, such as the second line of a quoted name or an annotation on a
+line of its own, is rejected, and so is an annotation at column one. The second
+line of a quoted name at column one is a part of the name, and so is a second
+line that starts with a `│`; a `│` put before an annotation adds a node named
+`│`. The mode test still examines logical LF lines after the header, including
+value interiors, excluding whitespace-only, comment-shaped, metadata-shaped and
+vertical-only lines. Prefix presence alone is insufficient. In box mode redraw
+ordinary outer structure from the AST forest; do not convert indentation-mode
+input into a box diagram. Redrawing makes `├`, `└`, and `│` say what mermaid.js
+reads; moving only the authored characters' columns would leave a `├` on a last
+child or a `│` where no sibling follows. Preserve the mode and the reading of
 enclosed box forms, using the body-retention conditions in Branch prefixes.
 Common statement prefixes are removed and ordinary common statements use column
 one, so they do not appear as children.
@@ -241,7 +247,10 @@ zero-based column four. If any root originally has a prefix, give every root a
 branch at column one, including mixed roots. This forest form preserves
 parentage and box mode. Use light box characters, two dashes and fixed
 four-column cells: they describe the read tree consistently rather than
-retaining misleading authored depth, sibling marks or mixed weights.
+retaining misleading authored depth, sibling marks or mixed weights. The
+branches and guides are drawn anew, so the authored characters no longer stay
+where they stood; keeping only their weight would mix two ways of drawing in one
+diagram. Box characters inside a name stay as written.
 
 [fixture: treeview/statements-one-per-line/review159-box-quoted-two]
 
@@ -330,18 +339,20 @@ treeview/branch-prefixes/continued-name-line-separator-comment-line-follows]
 
 Choose body retention once before drawing. Keep the complete body as written if
 an outer prefix or its separator crosses arbitrary text, a directive, selected
-semicolon or comment region, or a decoration line crosses shared trivia. Also
-retain it for fixed source row boundaries, unsafe annotation moves, loss of box
-mode, changed effective indentation of a prefix inside a value, or a newly
-added/removed branch changing owned value tabs or tails. Splitting a box-mode
-logical line also retains the body when it would expose leading Unicode
-whitespace in a name on a new unprefixed line, and where drawing a branch would
-give one to a node that ends at a U+2028 or U+2029 before a comment region or a
-directive (see [Line terminators and unicode](#line-terminators-and-unicode)).
-These conditions compose; one protected row can determine the first positive
-branch column for every other row. Body-retained diagrams are exempt from visual
-agreement. Names, values, arbitrary prefix text and shared trivia are never
-discarded.
+semicolon or comment region, or a decoration line crosses shared trivia. This
+keeps characters that redrawing would otherwise drop. Also retain it for fixed
+source row boundaries, unsafe annotation moves, loss of box mode, changed
+effective indentation of a prefix inside a value, or a newly added/removed
+branch changing owned value tabs or tails. An annotation moved after an existing
+`##` description would be read as description text; an intervening comment must
+also keep its place. Splitting a box-mode logical line also retains the body
+when it would expose leading Unicode whitespace in a name on a new unprefixed
+line, and where drawing a branch would give one to a node that ends at a U+2028
+or U+2029 before a comment region or a directive (see
+[Line terminators and unicode](#line-terminators-and-unicode)). These conditions
+compose; one protected row can determine the first positive branch column for
+every other row. Body-retained diagrams are exempt from visual agreement. Names,
+values, arbitrary prefix text and shared trivia are never discarded.
 
 [test: treeview/branch-prefixes/uppercase-entity-and-tab-column]
 
@@ -602,18 +613,19 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 ### Decorations
 
 Redraw each ordinary outer decoration once as the guide continuing toward the
-next node, or as a blank line when no tree continues there. Apply this at body,
-pending-name, annotation and opener-gap owners; moved blanks join the following
-gap's single-blank placement, including before its first trivia item, and edge
-blanks follow Final newline. When a prefixed annotation moves inline, its
-decorations remain after the joined node line, before the continuing tree. This
-replaces stale verticals, heavy lines and dash-only shapes with the tree's
-continuation. Keep a decoration needed to select box mode, including its
-complete gap before an `accDescr` opener when it is the only selector there;
-format the rest of the block and body normally. Keeping that gap preserves mode
-without freezing unrelated title spacing or blank lines. Keep value-owned
-decoration spans unchanged. Shared trivia on a decoration line invokes body
-retention rather than deletion.
+next node, or as a blank line when no tree continues there. A vertical-only
+decoration shows the branch continuing below its place; with none, there is no
+guide to draw. Apply this at body, pending-name, annotation and opener-gap
+owners; moved blanks join the following gap's single-blank placement, including
+before its first trivia item, and edge blanks follow Final newline. When a
+prefixed annotation moves inline, its decorations remain after the joined node
+line, before the continuing tree. This replaces stale verticals, heavy lines and
+dash-only shapes with the tree's continuation. Keep a decoration needed to
+select box mode, including its complete gap before an `accDescr` opener when it
+is the only selector there; format the rest of the block and body normally.
+Keeping that gap preserves mode without freezing unrelated title spacing or
+blank lines. Keep value-owned decoration spans unchanged. Shared trivia on a
+decoration line invokes body retention rather than deletion.
 
 [fixture: treeview/decorations/explicit-empty-description-trivia] [fixture:
 treeview/decorations/pending-name-before-first-root] [fixture:
@@ -1405,9 +1417,8 @@ treeView-beta
 ### Repeated annotations
 
 Keep every class, icon and description occurrence in order, including
-overwritten assignments and empty resets. The final Db value is insufficient to
-reproduce the authored syntax; moving a later annotation into a description can
-also change that value.
+overwritten assignments and empty resets. Moving a later annotation into a
+description can change the final Db value.
 
 [fixture: treeview/repeated-annotations/repeat-class]
 
@@ -1449,15 +1460,18 @@ branch-prefixed annotation onto its owner's line, in source order with one
 separating space, only when no earlier description and no intervening comment,
 directive, selected semicolon or comment region prevents it. Retain the whole
 body otherwise, including when joining exposes a branch in a value, changes
-value tabs or loses box mode. When an annotation starts a retained physical line
-after a joining comment region or removed directive, align its leading spaces
-with the owner's name column, with a minimum of one space. That positive width
-is required for Mermaid to read class, icon and description markers as
-annotations rather than name text, even when the physical LF disappears from its
-logical line. A truly separate indentation-only logical line in a box diagram is
-rejected. Joining removes a false child branch; replacing it with a vertical
-guide creates a vertical-bar node. Preserve all repeated classes, icons and
-descriptions.
+value tabs or loses box mode. An annotation moved after an existing `##`
+description would be read as description text; a comment between it and the node
+must keep its place. When an annotation starts a retained physical line after a
+joining comment region or removed directive, align its leading spaces with the
+owner's name column, with a minimum of one space. That positive width is
+required for Mermaid to read class, icon and description markers as annotations
+rather than name text, even when the physical LF disappears from its logical
+line. A truly separate indentation-only logical line in a box diagram is
+rejected. Joining removes a false child branch: an annotation on its own line
+needs a branch in a box diagram, although it adds no child node; replacing it
+with a vertical guide creates a vertical-bar node. Preserve all repeated
+classes, icons and descriptions.
 
 [test: treeview/annotation-lines/empty-description-after-unrelated-region-ls]
 

@@ -436,8 +436,9 @@ use case の角括弧内のラベルは、ASCII の英字、数字、
 
 [fixture: quotes/metadata]
 
-木は固有のメタデータの各プロパティを、キー、コロン、スカラーとして持ちます。
-flowchart や kanban のデータブロックは、木が丸ごと持つので違います。
+mermaid.js は固有のメタデータの各プロパティを、キーとその値として読みます。
+flowchart や kanban のデータブロックは、
+YAML として 1 つのテキストで読むので違います。
 そのため、プロパティのコロンはキーのコロンで、
 `type : hollow` は `type: hollow` と印字します。
 詳しくは

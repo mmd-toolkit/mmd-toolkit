@@ -1961,8 +1961,9 @@ flowchart LR
 
 [fixture: chains/labelled-links-kept]
 
-1 辺 1 行には分けません。
-長い行や複数行に書かれた文と同じく、書き手が文や辺を区切った位置を保ちます。
+1 辺 1 行には分けず、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた、
+行を折り返さない形にします（[折り返し](#折り返し)を参照）。
 
 [fixture: chains/split-after-semicolon]
 
@@ -1996,8 +1997,6 @@ Prettier の `printWidth` オプションにかかわらず、行を折り返し
 [規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
 
 [fixture: line-wrapping/print-width-ignored]
-
-それ以外で行をどこで分けるかは、連鎖と同じく書き手が決めます。
 
 入力
 ([line-wrapping/long-line-kept-input.mmd](../tests/fixtures/flowchart/line-wrapping/long-line-kept-input.mmd)):
@@ -2248,7 +2247,6 @@ flowchart LR
 通常のアクセシビリティのコロン行と、注釈類のない閉じた空の説明ブロックは、
 [アクセシビリティの行](#アクセシビリティの行)に従い行をつなぎます。
 それ以外の複数行の文は改行を保ち、2行目以降を1行目より1段深く置きます。
-文をどこで折るかは、連鎖や長い行と同じく書き手の選択です。
 トークンの間の改行は、印字が書かない行末の空白を要しません。
 sequence、class、state は、そこでは改行が空白の後でだけ数えられるので、
 行をつなぎます。
@@ -2391,8 +2389,7 @@ cb
 ### データブロック
 
 各 `@{ ... }` の頂点への付着を保ち、YAML の整形やキーと値の変更はしません。
-ブロックの本体は、
-木が mermaid.js が YAML として読む 1 つのテキストとして丸ごと持つので、
+ブロックの本体は mermaid.js が YAML として読む 1 つのテキストなので、
 その中の記号の隣の空白は、
 [印字する形の決め方](./printed-form.ja.md)の決まりでは決めません。
 キーのコロンは書かれたままです（`A@{ shape : circle }`
@@ -3033,7 +3030,7 @@ Prettier がブロックの中の行をそう印字するためです。
 [fixture: comments/at-end-of-text]
 
 コメントのテキストは、末尾の空白も含めて書かれたまま残します。
-mermaid.js は読まず、書き手のテキストだからです。
+mermaid.js は読みません。
 ほかに文字のないコメント行は、`%% ` を保ちます。
 対象にする版の mermaid.js のすべてが、`%%` を名前が `%%` の頂点として読み、
 別の図を描くためです。

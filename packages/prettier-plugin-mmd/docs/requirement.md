@@ -445,9 +445,8 @@ the `-`, so the space does not change the name.
 relationship-spacing/one-space-between-units] [fixture:
 relationship-spacing/string-names]
 
-The direction of the arrow is kept, since `a - copies -> b` and
-`b <- copies - a` are written differently; the relation is printed in lower
-case, as the examples in the documentation of mermaid.js write it (see
+The direction of the arrow is kept; the relation is printed in lower case, as
+the examples in the documentation of mermaid.js write it (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 
 [fixture: relationship-spacing/relation-case-one-form] [fixture:
@@ -803,8 +802,7 @@ requirementDiagram
 ### Direction
 
 A direction line is `direction` and its value, with the text that mermaid.js
-does not read before and after them. The text is kept as written, since the tree
-holds it whole (see
+does not read before and after them. The text is kept as written (see
 [A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
 One space stands between it and `direction`, where they were written apart, and
 between `direction` and the value; the value `lr` is printed `LR`; the other

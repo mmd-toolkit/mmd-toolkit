@@ -450,10 +450,10 @@ entity Root.Child
 ### Authored spellings
 
 Retain the authored short or long frame keyword, all nine entity-type words and
-every digit-string spelling. Although changing a frame keyword alias can leave
-the comparison Db equal, it loses the chosen form. Entity-type aliases remain in
-the Db, and `1`, `01` and `001` name different frames, so neither alias
-conversion nor numeric normalization is appropriate.
+every digit-string spelling. A frame keyword alias is kept even where changing
+it leaves the comparison Db equal. Entity-type aliases remain in the Db, and
+`1`, `01` and `001` name different frames, so neither alias conversion nor
+numeric normalization is appropriate.
 
 [fixture: eventmodeling/authored-spellings/alias-retained]
 
@@ -1873,9 +1873,9 @@ eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value
 Retain every occurrence in source order, including unused model entities/data,
 notes, GWT, type tags, repeated sources, later same-name data, overwritten
 common forms and inline data alongside a reference. Only their decided layout
-changes, including the permitted block-body margins. An equal comparison Db
-after deduplication would still lose authored occurrences; reordering data can
-also change the first lookup.
+changes, including the permitted block-body margins. Occurrences are not
+deduplicated even where the comparison Db stays equal, and reordering data can
+change the first lookup.
 
 [fixture: eventmodeling/source-order/all-occurrences-retained]
 

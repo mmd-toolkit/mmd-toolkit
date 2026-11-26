@@ -353,8 +353,8 @@ mermaid.js の文書の例で、コロンの後に空白を置いて書かれた
 
 score と人は書かれたまま印字します。
 人の中の空白は人の一部で、Db に入ります。
-score の書き方は作者のもので、mermaid.js は数として読み、
-`05` と `5` は Db が同じです。
+score の書き方は、mermaid.js が数として読み、`05` と `5` で Db が同じでも、
+書かれたまま保ちます。
 
 [fixture: task-data/people-inner-whitespace-kept]
 [fixture: task-data/score-forms-kept]

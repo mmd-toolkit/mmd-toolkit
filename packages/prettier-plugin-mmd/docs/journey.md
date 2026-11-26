@@ -344,8 +344,8 @@ empty people stay, since mermaid.js reads each as a name.
 task-data/no-people-no-score]
 
 The score and the people are printed as written: the whitespace inside a person
-is part of it in the Db. The spelling of a score is the author's: mermaid.js
-reads it as a number, and `05` and `5` give the same Db.
+is part of it in the Db. The spelling of a score is kept as written, although
+mermaid.js reads it as a number and `05` and `5` give the same Db.
 
 [fixture: task-data/people-inner-whitespace-kept] [fixture:
 task-data/score-forms-kept]

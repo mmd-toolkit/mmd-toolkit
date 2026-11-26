@@ -3460,9 +3460,10 @@ drawn, for a text of each row and each character named above, with the versions
 that count for its diagram type, and the SVG was the same without the generated
 ids and the whitespace in text nodes. A version that rejects the written text
 rejects the printed text too, but for a run of spaces in the label of a `loop`,
-`alt`, `else`, `opt`, `par`, `and`, `critical`, `option`, or `break`: 10.9.8
-reads such a text but stops with an error when it draws it, and draws the
-printed text.
+`alt`, `else`, `opt`, `par`, `par_over`, `and`, `critical`, `option`, or
+`break`: 10.9.8 reads such a text but stops with an error when it draws it, and
+draws the printed text, so it does not count for this form (see
+[The versions of mermaid.js that count](./printed-form.md#the-versions-of-mermaidjs-that-count)).
 
 mermaid.js keeps the runs in the Db. The renderers put these texts into `text`
 elements of the SVG, whose whitespace the browser collapses
@@ -5792,8 +5793,7 @@ gives it as `minlen` of the edge, which the dagre layout
 ([`index.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/dagre/index.js#L759))
 and the elk layout
 ([`render.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L2754))
-take over. The examples that were drawn gave the same figure, but the length is
-the author's request.
+take over. The examples that were drawn gave the same figure.
 
 [fixture: flowchart/arrow-spacing/arrow-length-kept]
 
@@ -9443,7 +9443,13 @@ The [treeview rules](./treeview.md) keep indentation-mode input in that mode.
 For box diagrams they read the forest from AST children, including file parents,
 and redraw ordinary branches and guides with fixed four-column cells. A
 following sibling uses `├── `, the last sibling `└── `, and continuing ancestors
-`│   `. Mixed or prefixed roots all receive root branches; otherwise roots and
+`│   `. This redrawing corrects the form of
+[rule 3](./printed-form.md#3-a-spelling): the box characters show the structure
+on each line, which indentation shows only in the columns of the lines below,
+and drawn from the tree they say what mermaid.js reads. Light strokes, two
+dashes and four-column cells give one form to branches and guides that are
+already being drawn anew; keeping only authored weights would mix two ways of
+drawing. Mixed or prefixed roots all receive root branches; otherwise roots and
 first-generation branches start at column one. This deliberately replaces
 misleading source columns, sibling marks, heavy strokes and dash counts with the
 tree Mermaid reads. Nodes sharing a physical line also split in source order and
@@ -10054,10 +10060,10 @@ colon right after the header word (see
 [The colon after a header](#the-colon-after-a-header)), and keep every domain
 redeclaration and empty domain, item order and duplicates, self transitions,
 empty labels and common resets. Domain/item lines express the authored tree;
-columns do not select parents. Rebuilding from the effective Db would lose
-occurrences and can change replacement or reset behavior. Strings retain escapes
-and interior columns, including empty values and native-looking text; a string
-between `'` is printed between `"` as under
+columns do not select parents. Rebuilding from the effective Db can change
+replacement or reset behavior. Strings retain escapes and interior columns,
+including empty values and native-looking text; a string between `'` is printed
+between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same). In a
 cynefin diagram, mermaid.js records an empty string as an item in the Db and
 hidden-looking text inside a string as part of the item's label. Removing the
