@@ -2171,10 +2171,13 @@ tab after it, or a mark after a space]
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `title` and a nonempty value, as Prettier prints `return  x` as
 `return x;`. This gives consistent Db-equivalent outer spacing without taking a
-next-line value. Follow AST boundaries for `titlex` and `title"node"`; title
-still stays written when the summary omits it. A `;` that the line rule ignores
-before the first character of the value is a gap item whether one whitespace
-character or more comes before it: `title  ;T` and `title ;T` are printed alike.
+next-line value. Follow AST boundaries for `titlex` and `title"node"`:
+mermaid.js reads them as an empty title followed by the node `x` or `node`, and
+a space before the node would make it the text of the title and take it out of
+the tree. Title still stays written when the summary omits it. A `;` that the
+line rule ignores before the first character of the value is a gap item whether
+one whitespace character or more comes before it: `title  ;T` and `title ;T` are
+printed alike.
 
 [fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
 
