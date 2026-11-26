@@ -142,12 +142,16 @@ prints two of them, and drops any other whitespace at the end of a line (`a `
 and a line break is printed `a` and a line break). The start of a line is no
 place of this rule, except for the lines inside a block, which the row of that
 name gives. Where a statement stands otherwise,
-[rule 2](#2-a-gap-of-a-kind-that-prettier-does-not-have) decides it. What
-Prettier does by an option or by itself, and not by the kind of mark or place,
-is no rule here: the unit of one level of indentation (`useTabs` and
-`tabWidth`), the line ending (`endOfLine`), and a byte order mark. The formatter
-follows them as Prettier does, and the document of a diagram type says so as a
-fact.
+[rule 2](#2-a-gap-of-a-kind-that-prettier-does-not-have) decides it. Neither the
+row nor rule 2 places a line that a comment line after U+2028 or U+2029 joins to
+the line before it, and the sentences on indentation of a diagram type do not
+apply to it:
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)
+gives what is printed there, for every diagram type. What Prettier does by an
+option or by itself, and not by the kind of mark or place, is no rule here: the
+unit of one level of indentation (`useTabs` and `tabWidth`), the line ending
+(`endOfLine`), and a byte order mark. The formatter follows them as Prettier
+does, and the document of a diagram type says so as a fact.
 
 Prettier prints the `=` of an attribute of HTML without spaces (`<a href="x">`).
 An argument of a C4 diagram stands in the list of the arguments of a call, where
@@ -306,11 +310,10 @@ text is defined in the document of its diagram type.
 A gap of a kind that Prettier does not have takes the form that the other
 diagram types print for the same kind of gap.
 
-Where a statement stands is a gap of this kind, and the document of each diagram
-type gives it in its sentences on indentation. These sentences do not apply to a
-line that a comment line after U+2028 or U+2029 joins to the line before it:
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)
-gives what is printed there, for every diagram type.
+Where a statement stands, apart from the lines inside a block that rule 1 gives
+(see [the start of a line](#1-the-whitespace-beside-a-mark)), is a gap of this
+kind, and the document of each diagram type gives it in its sentences on
+indentation.
 
 ## 3. A spelling
 
