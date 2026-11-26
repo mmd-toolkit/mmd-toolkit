@@ -177,12 +177,16 @@ treemap
 ### Statements one per line
 
 Print ordinary adjacent rows and statements after a closed description on
-separate lines in source order, exposing statement boundaries. Keep an empty
-unterminated class name touching its next quoted row, including intervening
-directives: whitespace would consume that row as style. A completed class
-definition has no such contact requirement; semicolon protection still takes
-precedence. Text already owned by a title or class style is one value, not a new
-statement.
+separate lines in source order.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form: two statements on one line are printed on lines of their own in a
+[flowchart](./flowchart.md#statements-one-per-line) and in an
+[ER diagram](./er.md#statements-one-per-line), where a statement after the `}`
+of an attribute block also stands on the next line. Keep an empty unterminated
+class name touching its next quoted row, including intervening directives:
+whitespace would consume that row as style. A completed class definition has no
+such contact requirement; semicolon protection still takes precedence. Text
+already owned by a title or class style is one value, not a new statement.
 
 [fixture: treemap/statements-one-per-line/adjacent]
 
@@ -214,11 +218,12 @@ treemap
 ### Separators
 
 Keep the leaf’s authored colon or comma, with no ordinary space before and one
-after. This gives equivalent padding a consistent form without changing
-punctuation. Each line adds a leaf, so the colon is not the colon of a key, and
-the examples in the documentation of mermaid.js decide the whitespace before it
-(step 3 of [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): of
-the examples that write a space after the colon, 35 write no space before it and
+after. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+whitespace beside the comma, as Prettier prints `f(a,b)` as `f(a, b);`. Each
+line adds a leaf, so the colon is not the colon of a key, and the examples in
+the documentation of mermaid.js decide the whitespace before it (step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): of the
+examples that write a space after the colon, 35 write no space before it and
 none writes one (counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
 Commas inside NumericLiteral spans, including trailing commas, remain part of
@@ -383,10 +388,13 @@ treemap
 ### Class definitions
 
 Use one ordinary ASCII space between `classDef` and its authored class name.
-Join plain separating newlines and Unicode whitespace there because the
-composite rule requires whitespace but does not retain its width. Do not
-reinterpret names beginning with `title`; class names require at least two
-characters, unlike selectors.
+Spaces, tabs, and line breaks there are joined into that space:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space after
+a keyword before what it takes, as Prettier prints `x = typeof`, a line break, a
+tab, a space, and `y;` as `x = typeof y;`. Unicode whitespace there is joined
+into the space too. mermaid.js needs whitespace there and does not keep its
+width. Do not reinterpret names beginning with `title`; class names require at
+least two characters, unlike selectors.
 
 [fixture: treemap/class-definitions/keyword-space]
 
@@ -576,7 +584,10 @@ other diagram types, but not in a class diagram (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)):
 `classDef zz fill:#ABCDEF` is printed `classDef zz fill: #abcdef`. The versions
 that count draw `#ABCDEF` and `#abcdef` the same. A `#` that is no color, such
-as the `#ABC` of `url(#ABC)`, stays as written.
+as the `#ABC` of `url(#ABC)`, which refers to an element, stays as written. Its
+case is part of the style that mermaid.js keeps in the Db, and a change of it is
+no kind of change of the Db that formatting may make (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
 
 [fixture: colors/colors-in-lower-case]
 
@@ -858,10 +869,14 @@ where nothing is written between the keyword and the directive: `title`, a
 space, and `%%{init: {}}%%` is printed as it is, and `title`, three spaces, and
 `%%{init: {}}%%` as the first. A U+2028 or U+2029 before a comment that joins
 the next line (`title`, two spaces, the character, and `%% c`, with a row after
-it) keeps the line as written, as the comment starts after the character. The
-one whitespace character after the keyword is part of the keyword to mermaid.js,
-so a title with no text ends at its keyword, and that character is a gap of the
-line like the whitespace after a title with text.
+it) keeps the line as written, as the comment starts after the character:
+mermaid.js reads the row after the comment as the text of the title, so the
+title is `"A":1` and there is no leaf, while with one space before the comment
+the title is empty and the row is a leaf (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The one whitespace character after the keyword is part of the keyword to
+mermaid.js, so a title with no text ends at its keyword, and that character is a
+gap of the line like the whitespace after a title with text.
 
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
@@ -875,7 +890,8 @@ title/bare-title-unclosed-directive-spaces] [test:
 treemap/title/bare-title-directive-space-and-line-separator] [test:
 treemap/title/bare-title-directive-space-and-paragraph-separator] [test:
 treemap/title/bare-title-directive-spaces-and-line-separator] [test:
-treemap/title/bare-title-comment-after-line-separator-kept]
+treemap/title/bare-title-comment-after-line-separator-kept] [test:
+treemap/title/bare-title-comment-after-paragraph-separator-kept]
 
 A U+2028 or U+2029 after the text of a `title` or `accTitle:` line, or after the
 keyword where it has no text, with only whitespace before it, and a directive
@@ -1135,15 +1151,16 @@ accTitle: Access  words
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, put one space between `accDescr` and `{`,
-even when they originally touched, to distinguish the keyword from its body.
-Whitespace-only interiors become `{}` because no text needs surrounding padding.
-Join plain opener whitespace, keep comment/directive contents and their
-boundaries, and align body lines one step inside the statement while retaining
-internal blank lines. Mermaid discards indentation after LF from the
-description. The body uses the configured indentation, including tabs and the
-positive minimum step at width zero. Align a separate opener or closer with its
-statement. A description block’s separate closing brace stands at the
-statement’s indentation under
+even when they originally touched.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it, as Prettier
+prints `class A{}` as `class A {}`. Whitespace-only interiors become `{}`
+because no text needs surrounding padding. Join plain opener whitespace, keep
+comment/directive contents and their boundaries, and align body lines one step
+inside the statement while retaining internal blank lines. Mermaid discards
+indentation after LF from the description. The body uses the configured
+indentation, including tabs and the positive minimum step at width zero. Align a
+separate opener or closer with its statement. A description block’s separate
+closing brace stands at the statement’s indentation under
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as in
 the description blocks of [flowchart](./flowchart.md#multi-line-values)
 diagrams. The first `}` still closes the block. A block that was not written
@@ -1315,9 +1332,16 @@ treemap/comments/aligned-protected-title]
 Keep inline comments on their line and preserve content, marks, tails, order and
 ownership. When whitespace before an inline comment supplied the next row’s
 indent, move it to that row even if the comment then touches the preceding
-token. Use the AST hierarchy rather than whitespace already removed with common
-comment regions. Native comments retain LS/PS as content. Mermaid.js reads the
-text after a U+2028 or U+2029 inside a native comment as part of the comment.
+token. A space before the comment would be indentation as well: mermaid.js reads
+the spaces and tabs at the end of a line as the indentation of the next row (the
+specification's
+[Headers and indentation](../../spec/docs/diagrams/treemap.md#headers-and-indentation)),
+so the next row would have two runs of it, or the text would end with a run that
+no row uses, and every version that counts rejects both (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Use the AST hierarchy rather than whitespace already removed with common comment
+regions. Native comments retain LS/PS as content. Mermaid.js reads the text
+after a U+2028 or U+2029 inside a native comment as part of the comment.
 Replacing the character with a line feed would expose that text as diagram
 syntax, which can change the Db or produce a rejected row.
 
