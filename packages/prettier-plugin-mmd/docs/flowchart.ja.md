@@ -2901,17 +2901,6 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 
 [fixture: multi-line-values/accdescr-block-kept]
 
-単独の行の `}` は、説明ブロックを持つどの図種でも同じ種類の隙間で、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間) は、
-それらが印字する形を与えます。
-pie 図でも C4 図でも、単独の `}` は `accDescr` と同じ段に置きます。
-詳しくは [Description blocks](./pie.ja.md#description-blocks) と
-[説明ブロック](./c4.ja.md#説明ブロック) を参照してください。
-それより深く、または浅く書いた `}` は、その段に動きます。
-
-[fixture: multi-line-values/accdescr-block-kept]
-[fixture: multi-line-values/accdescr-block-closing-brace-aligned]
-
 そうしたブロックのコメントの内容も保ち、
 列は同じトップレベルまたは subgraph の規則に従います。
 
