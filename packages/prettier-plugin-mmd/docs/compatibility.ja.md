@@ -196,6 +196,7 @@ ELK の配置のパッケージのどのリリースも、
 | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [agentflow](./agentflow.ja.md#arrows)                                                                                                 | `A["x"]--a@-->B`                                                                                                                         | `A["x"] --a@-->B`                                                         | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.0.0 と 12.3.0 は形状が異なり、12.3.0 は Db の辺の文字と id も変える                                                   | [fixture: agentflow/arrows/edge-id-arrow-like-kept-attached]                                                                                                          |
 | [agentflow](./agentflow.ja.md#labels)                                                                                                 | `A[ /x/ ]`                                                                                                                               | `A[/x/]`                                                                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.0.0 と 12.3.0 は頂点の文字が異なり、12.3.0 は Db の頂点の型も変える                                                   | [fixture: agentflow/labels/slash-label-padding-kept]                                                                                                                  |
+| [agentflow](./agentflow.ja.md#labels)                                                                                                 | 折り返すほど長い引用符のラベルの中の空白 2 つ                                                                                            | 空白 1 つ                                                                 | なし                                                  | 12.0.0 と 12.3.0 が、折り返したラベルの隙間を広く描く                                                                    | [fixture: agentflow/labels/quoted-label-space-run-kept]                                                                                                               |
 | [agentflow](./agentflow.ja.md#vertices-and-lists)                                                                                     | `A&B`                                                                                                                                    | `A & B`                                                                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.0.0 と 12.3.0 は頂点の文字が異なり、12.3.0 は Db の `A&B` を `A` と `B` に分ける                                      | [fixture: agentflow/vertices-and-lists/ampersand-id]                                                                                                                  |
 | [agentflow](./agentflow.ja.md#metadata-blocks)                                                                                        | `A@{%%{init: {}}%%x:1}`                                                                                                                  | `A@{%%{init: {}}%%x: 1}`                                                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.3.0 はメタデータのキー `x:1` と値 `null` を、キー `x` と値 `1` にする                                                 | [fixture: agentflow/metadata-blocks/block-directive-colon-kept]                                                                                                       |
 | [agentflow](./agentflow.ja.md#trailing-whitespace)                                                                                    | 50000 UTF-16 単位で `before`、コメント状の行、`after` を含む引用符付き頂点ラベル                                                         | `A` の前に空白 2 つを足した図                                             | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.0.0 と 12.3.0 は文字と形状が異なり、12.3.0 は Db の頂点の文字も変える                                                 | [fixture: agentflow/default-size-branches/size-preserving-to-fallback-unsafe]                                                                                         |
@@ -331,6 +332,7 @@ ELK の配置のパッケージのどのリリースも、
 | [railroad](./railroad.ja.md#コメント)                                                                                                 | ABNF の `r="comment"; note` と、次の行の `;`                                                                                             | `r="comment"; note ;`                                                     | なし                                                  | 11.16.1 から 12.3.0 がもう一方の形を拒否する                                                                             | [fixture: railroad/comments/abnf-before-terminator]                                                                                                                   |
 | [railroad](./railroad.ja.md#タイトル)                                                                                                 | `title`、改行、`r=terminal("x");`                                                                                                        | `title r=terminal("x");`                                                  | なし                                                  | 11.16.1 から 12.3.0 が別の図を描き、12.3.0 は Db も変える                                                                | [fixture: railroad/title/ir-rule-on-next-line]                                                                                                                        |
 | [railroad](./railroad.ja.md#accessibility-の行)                                                                                       | `accTitle:`、改行、`r=terminal("x");`（`accDescr:` も同じ）                                                                              | `accTitle: r=terminal("x");`                                              | なし                                                  | 11.16.1 から 12.3.0 が別の図を描き、12.3.0 は Db も変える                                                                | [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]                                                                                                      |
+| [railroad](./railroad.ja.md#長い行)                                                                                                   | 最後の引数の後にコンマのない、複数行の呼出し                                                                                             | コンマのある同じ呼出し                                                    | なし                                                  | 11.16.1、11.17.2、12.0.0、12.3.0 がコンマのある形を拒否する                                                              | [fixture: railroad/calls/ir-singletons] [corpus fixture: railroad/ir-choice-trailing-comma]                                                                           |
 | [radar](./radar.ja.md#header)                                                                                                         | `radar-beta%%{wrap}%%:axis North`                                                                                                        | `radar-beta%%{wrap}%%axis North`                                          | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.17.2、12.0.0、12.3.0 は `:` のない形を拒否します                                                              | [fixture: radar/header/header-global-colon]                                                                                                                           |
 | [radar](./radar.ja.md#header)                                                                                                         | `radar-beta:%%{x y`、改行、`axis North`                                                                                                  | `radar-beta%%{x y`、改行、`axis North`                                    | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.17.2、12.0.0、12.3.0 が `:` のない形を拒否する                                                                | [fixture: radar/header/colon-unclosed-directive-kept]                                                                                                                 |
 | [radar](./radar.ja.md#header)                                                                                                         | 隠れた YAML ブロックの前の `radar-beta:`（コロンがブロックの `---` に接する）                                                            | ブロックの前の `radar-beta---`                                            | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.17.2、12.0.0、12.3.0 は `:` のない形を拒否します                                                              | [fixture: radar/header/colon-yaml-kept]                                                                                                                               |
@@ -352,6 +354,7 @@ ELK の配置のパッケージのどのリリースも、
 | [gantt](./gantt.ja.md#複数行の値)                                                                                                     | `accDescr {`、2 つの空白が続く行 `x`、空行、行 `y`、`}`                                                                                  | 2 つの空白のない行 `x`                                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は SVG に別の説明のテキストを書き、12.3.0 は Db も変える                         | [fixture: gantt/multi-line-values/description-line-trailing-spaces-kept]                                                                                              |
 | [gantt](./gantt.ja.md#アクセシビリティの文)                                                                                           | `}` の後ろに単独の `%` がある 1 行のブロック `accDescr {d}%c`                                                                            | `accDescr: d%c`                                                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 は SVG に別の説明のテキストを書き、12.3.0 は Db も変える                         | [fixture: gantt/accessibility-statements/block-then-percent-kept]                                                                                                     |
 | [ER](./er.ja.md#トークンの間の空白)                                                                                                   | `class-A a`                                                                                                                              | `class -A a`                                                              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を入れた形を拒否する                                                                                      | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                               |
+| [ER](./er.ja.md#アクセシビリティの文)                                                                                                 | subgraph の中の `accDescr` ブロックの行の列（`a` と、2 つ深い `b`）                                                                      | 行をそろえた形                                                            | なし                                                  | 12.3.0 が、行を列ごと subgraph の節点として読む                                                                          | [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]                                                                                                          |
 | [ER](./er.ja.md#トークンの間の空白)                                                                                                   | `subgraph-x`、`end-x`                                                                                                                    | `subgraph -x`、`end` と単独の行の `-x`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が空白を入れた形を拒否し、11.7.0 が違って描く                                                                     | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                              |
 | [ER](./er.ja.md#方向)                                                                                                                 | `DIRECTION lr`                                                                                                                           | `direction LR`                                                            | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、その行をエンティティとして読む                                                                                | [fixture: er/direction/case-kept]                                                                                                                                     |
 | [ER](./er.ja.md#subgraph)                                                                                                             | `SUBGRAPH S` と `END`                                                                                                                    | `subgraph S` と `end`                                                     | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が、エンティティとして読む                                                                              | [fixture: er/subgraphs/end-case-kept]                                                                                                                                 |
@@ -386,6 +389,8 @@ ELK の配置のパッケージのどのリリースも、
 | [Wardley](./wardley.ja.md#セミコロンのラベル)                                                                                         | `Alpha->Beta ;` の後に空白とタブ                                                                                                         | `Alpha->Beta ;`                                                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.14.0、11.17.2、12.0.0、12.3.0 が拒否する                                                                              | [fixture: wardley/semicolon-labels/label-whitespace]                                                                                                                  |
 | [Wardley](./wardley.ja.md#行末の空白)                                                                                                 | EOF の `Alpha -> Beta;` の後に空白 3 つ                                                                                                  | EOF の `Alpha -> Beta;`                                                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.14.0、11.17.2、12.0.0、12.3.0 が拒否する                                                                              | [fixture: wardley/trailing-whitespace/trailing-blank-label-keep]                                                                                                      |
 | [Wardley](./wardley.ja.md#flow)                                                                                                       | `Alpha+' F G\n\q '>Beta`                                                                                                                 | `Alpha+ ' F G\n\q ' >Beta`                                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.14.0 から 12.3.0 がもう一方の形を拒否する                                                                             | [fixture: wardley/flows/flow-padding-escapes]                                                                                                                         |
+| [Wardley](./wardley.ja.md#名前と引用)                                                                                                 | `component Alpha  beta` と `component Alpha beta`                                                                                        | 1 つ目の名前の連なりを空白 1 つにした形                                   | なし                                                  | 11.14.0、11.17.2、12.0.0、12.3.0 が component を 2 つでなく 1 つ描く                                                     | [fixture: wardley/names-and-quotes/names-differing-by-a-run]                                                                                                          |
+| [Wardley](./wardley.ja.md#行末の空白)                                                                                                 | 引用符で囲んだノートの行末の空白とタブ                                                                                                   | それらのない行                                                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.3.0 がノートのテキストにそれらを持つ                                                                                  | [fixture: wardley/trailing-whitespace/trailing-string]                                                                                                                |
 | [treeView](./treeview.ja.md#names)                                                                                                    | 引用符つきの `"name"`                                                                                                                    | `name`                                                                    | [3](./printed-form.ja.md#3-綴り)                      | 11.14.0 が、引用符で囲んだ名前だけを読む                                                                                 | [fixture: treeview/names/quoted-name-kept]                                                                                                                            |
 | [treeView](./treeview.ja.md#names)                                                                                                    | `A B`、`A` と `B` の間に空白 3 つ                                                                                                        | `A B`、間に空白 1 つ                                                      | なし                                                  | 11.17.2、12.0.0、12.3.0 で style と viewBox が異なり、12.3.0 で Db の `nodes[0].name` も異なる                           | [fixture: treeview/names/name-bare-internal]                                                                                                                          |
 | [treeView](./treeview.ja.md#title)                                                                                                    | `title T`、U+2028、U+0085、同じ行の `%%{x}%%%% c`                                                                                        | `title T` と、U+0085 で始まる行                                           | なし                                                  | 11.14.0 がもう一方の形を拒否し、11.17.2、12.0.0、12.3.0 が別の図を描き、12.3.0 は Db にノードを足す                      | [test: treeview: a U+2028 or U+2029 and a U+0085 around the last directive of a title, with the text ending]                                                          |
@@ -8144,10 +8149,32 @@ mermaid.js がこう読む行は、ソースの何行にもまたがります。
 整形は、その行の空白と改行を、最初の行から終わりまで、その上にある文ごと、
 書かれたまま残します。
 文の間の空白は整形せず、コメント行の後の行も字下げしません。
-これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則です。
-例外は mindmap です。
-mindmap は、ノードのコメント行を、ノードの段の自分の行に置きます。
-[行区切り文字](./mindmap.ja.md#行区切り文字)を参照してください。
+これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則で、
+例外は 3 つです。
+agentflow 図をふつうの配置で印字するときは、図は既定の大きさより小さく、
+mermaid.js がコメントを残すので、そこで行は結ばれません。
+詳しくは [Default size branches](./agentflow.ja.md#default-size-branches)
+を参照してください。
+コメント行の前の U+2028 か U+2029 は空白 1 つにして印字し、値の中では残し、
+コメント行の後の行はふつうの段に置きます。
+詳しくは
+[Agentflowの値、コメント、既定のサイズ境界](#agentflowの値コメント既定のサイズ境界)
+を参照してください。
+eventmodeling 図をふつうの配置で印字するときは、
+コメント行の前の U+2028 か U+2029 を、空白 1 つにして印字します。
+詳しくは [Default size branches](./eventmodeling.ja.md#default-size-branches)
+を参照してください。
+ただし、`title`、`accTitle`、`accDescr` の値の中では残します。
+詳しくは [Comments](./eventmodeling.ja.md#comments) を参照してください。
+コメント行の後の行は、前の文の続きなら、文の後続の行と同じく 1 段深く置き、
+文を始めるなら、文の段に置きます。
+詳しくは [Long lines](./eventmodeling.ja.md#long-lines) を参照してください。
+mindmap では、U+2028 か U+2029 が、
+ノードかヘッダーの後の図のコメントを終えるとき、その後のコメント行と、
+それに続くコメント行を、それぞれ自分の行に置き、ノードの行はその後に続きます。
+詳しくは [行区切り文字](./mindmap.ja.md#行区切り文字) を参照してください。
+それ以外では、`%%` がノードのテキストの文字であるときも含め、
+mindmap もこの規則に従います。
 そのようなコメント行が途中で切る図のコメントも、
 書かれたまま印字します（[行区切り](./sequence.ja.md#行区切り)を参照）。
 領域が名前の中にあるときも同じです。
@@ -8159,6 +8186,75 @@ ER 図では、そのような行にある実体のブロックだけは、
 ほかの実体と同じに置きます。
 ただし `}` が、そのようなコメント行が始まる行にあるときは、
 書かれたまま残ります（[ER](./er.ja.md#複数行の文)を参照）。
+
+[test: mindmap/line-separators/comment-region-continuation-kept]
+[test: eventmodeling/long-lines/comment-region-continuation-one-level-deeper]
+[test: eventmodeling/statements-one-per-line/comment-region-joined-statement-at-the-statement-level]
+[test: U+2028 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2028 before a comment line and a directive]
+[test: U+2028 after a comment on the header line]
+
+[test: block/shapes/comment-region-keeps-the-directions-of-a-block-arrow]
+[test: er/accessibility-statements/comment-region-keeps-the-text-line]
+[test: block/indentation/comment-region-keeps-a-joined-statement-line]
+[test: block/indentation/comment-region-keeps-a-joined-line-in-a-composite]
+[test: er/indentation/comment-region-keeps-a-joined-statement-line]
+[test: er/indentation/comment-region-keeps-a-joined-line-in-a-subgraph]
+[test: c4/indentation/comment-region-keeps-a-joined-statement-line]
+[test: class/indentation/comment-region-keeps-a-joined-statement-line]
+[test: class/member-bodies/comment-region-keeps-a-joined-member-line]
+[test: class/whitespace-between-tokens/comment-region-keeps-a-joined-name-line]
+[test: class/empty-description-blocks/comment-region-keeps-a-joined-member-line]
+[test: flowchart/indentation/comment-region-keeps-a-joined-statement-line]
+[test: flowchart/direction/comment-region-keeps-a-joined-direction-statement]
+[test: flowchart/subgraph-header/comment-region-keeps-a-joined-header-line]
+[test: swimlane/indentation/comment-region-keeps-a-joined-statement-line]
+[test: gantt/indentation/comment-region-keeps-a-joined-statement-line]
+[test: gantt/accessibility-statements/comment-region-keeps-a-joined-line]
+[test: ishikawa/indentation/comment-region-keeps-a-joined-line]
+[test: ishikawa/root-on-header-line/comment-region-keeps-a-joined-line]
+[test: ishikawa/root-indentation/comment-region-keeps-a-joined-line]
+[test: journey/indentation/comment-region-keeps-a-joined-statement-line]
+[test: journey/accessibility-statements/comment-region-keeps-a-joined-line]
+[test: kanban/indentation/comment-region-keeps-a-joined-line]
+[test: kanban/header/comment-region-keeps-a-joined-line]
+[test: kanban/nodes-one-per-line/comment-region-keeps-a-joined-line]
+[test: mindmap/indentation/comment-region-keeps-a-joined-line]
+[test: mindmap/root-on-header-line/comment-region-keeps-a-joined-line]
+[test: quadrant/titles-and-accessibility-statements/comment-region-keeps-a-joined-description-line]
+[test: quadrant/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+[test: requirement/indentation/comment-region-keeps-a-joined-statement-line]
+[test: requirement/bodies/comment-region-keeps-a-joined-opening-line]
+[test: requirement/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+[test: requirement/accessibility-statements/comment-region-keeps-a-joined-text-line]
+[test: sequence/indentation/comment-region-keeps-a-joined-line-in-a-block]
+[test: state/indentation/comment-region-keeps-a-joined-line-in-a-composite]
+[test: state/composite-states/comment-region-keeps-a-joined-opening-line]
+[test: timeline/indentation/comment-region-keeps-a-joined-statement-line]
+[test: timeline/periods-and-events/comment-region-keeps-a-joined-event-line]
+[test: timeline/event-statements/comment-region-keeps-a-joined-peer-event-line]
+[test: timeline/header-and-direction/comment-region-keeps-a-joined-event-line-after-the-header]
+[test: timeline/accessibility-statements/comment-region-keeps-a-joined-description-line]
+[test: treeview/indentation/comment-region-keeps-a-joined-node-line]
+[test: treeview/carried-indentation/comment-region-keeps-a-joined-node-line]
+[test: xychart/indentation/comment-region-keeps-a-joined-statement-line]
+[test: xychart/accessibility-statements/comment-region-keeps-a-joined-description-line]
+[test: xychart/empty-description-blocks/comment-region-keeps-a-joined-closing-line]
+[test: an agentflow diagram below the default size puts the line after a comment line after U+2028 at its ordinary depth]
+[test: an agentflow diagram keeps U+2028 before a comment line in the body of a description block]
+[test: an eventmodeling diagram keeps U+2028 before a comment line in the value of accTitle on the header line]
+[test: an eventmodeling diagram keeps U+2028 before a comment line in the value of accDescr on the header line]
+[test: a mindmap puts a comment line after U+2028 that ends a comment of the header on a line of its own]
+[test: an agentflow diagram keeps U+2029 before a comment line in the body of a description block]
+[test: an eventmodeling diagram keeps U+2029 before a comment line in the value of accTitle on the header line]
+[test: an eventmodeling diagram keeps U+2029 before a comment line in the value of accDescr on the header line]
+[test: a mindmap puts a comment line after U+2029 that ends a comment of the header on a line of its own]
+[test: a mindmap puts each comment line after U+2028 that ends a comment of the header on a line of its own]
+[test: a mindmap puts a comment line after U+2028 that ends a comment after a node on a line of its own]
+[test: a mindmap puts a comment line after U+2029 that ends a comment after a node on a line of its own]
+[test: a mindmap keeps a line that a comment line after U+2029 joins where the separator ends no diagram comment]
+[test: a mindmap keeps a line that a comment line after U+2028 joins after a node text that holds %%]
+
 `;` がテキストの文字として行を一緒に残す行は、たとえば `title T;` や、
 kanban の section のテキスト `S[x;]` で、U+2028 か U+2029 の後のコメント行ごと、
 書かれたまま印字します。

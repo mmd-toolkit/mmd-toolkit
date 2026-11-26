@@ -26,14 +26,10 @@ statements of a composite one level deeper than its `block:` line, with `end` at
 the level of `block:`. A level is what Prettier's `useTabs` and `tabWidth`
 options say: two spaces by default. The indentation written in the input is not
 kept: whitespace at the start of a line is nothing to mermaid.js, so the printer
-chooses it from the structure alone, and every text has one form. A line that a
-comment line after U+2028 or U+2029 joins to the line before it, which
-mermaid.js reads as one line with it, keeps its indentation as written, with the
-statements on it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-The nesting shows where a composite starts and ends, which `block:` and `end`
-alone would not once composites nest deeply, and it is how the documentation of
-mermaid.js writes them, as the other diagrams nest their blocks (see
+chooses it from the structure alone, and every text has one form. The nesting
+shows where a composite starts and ends, which `block:` and `end` alone would
+not once composites nest deeply, and it is how the documentation of mermaid.js
+writes them, as the other diagrams nest their blocks (see
 [Indentation](./flowchart.md#indentation) in the flowchart rules). The header,
 and a comment line before it, stand at the first column, also where whitespace
 was written before them. A gap of a kind that Prettier does not have takes the
@@ -44,9 +40,7 @@ first column: the Indentation of [Gantt](./gantt.md#indentation) and of
 [user journey](./journey.md#indentation) and the Comments of
 [ER](./er.md#comments) say so.
 
-[fixture: indentation/statements-one-level-deeper] [test:
-block/indentation/comment-region-keeps-a-joined-statement-line] [test:
-block/indentation/comment-region-keeps-a-joined-line-in-a-composite] [fixture:
+[fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/composite-body-one-level-deeper-end-at-the-level-of-block] [fixture:
 indentation/nested-composites] [fixture:
 indentation/written-indentation-dropped] [fixture:
@@ -499,21 +493,18 @@ where the whitespace is in no direction, the comment line or the directive line
 and the next line stand one level deeper, as
 [flowchart](./flowchart.md#multi-line-statements) and
 [xychart](./xychart.md#multi-line-statements) put the continuations of a
-statement one level deeper. A statement that holds a comment region that joins
-two of its lines stays as written instead (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-A directive on the line of the direction stays touching or separated as written
-after the `(`, before a `,`, and before the `)`, since the whitespace there is
-in the Db (`(right %%{x}%%, down)` and `(right%%{x}%%, down)` stay). After a `,`
-the gap is printed as without the directive, and the directive stands after its
-space and touches the unit that follows it, as under [Directives](#directives):
-`(right,  %%{x}%%  down)` and `(right,%%{x}%%down)` are printed
-`(right, %%{x}%%down)`. Where the gap holds a U+2028 or U+2029, it stays as
-written, a directive in it included: `(right,`, U+2028, and ` %%{x}%% down)`
-stay. Where a line break follows a directive after a `,`, the whitespace before
-it stays as written and the next line stands one level deeper:
-`(right,  %%{x}%%` and a line break stay. A run of spaces or tabs before the
-directive stays too.
+statement one level deeper. A directive on the line of the direction stays
+touching or separated as written after the `(`, before a `,`, and before the
+`)`, since the whitespace there is in the Db (`(right %%{x}%%, down)` and
+`(right%%{x}%%, down)` stay). After a `,` the gap is printed as without the
+directive, and the directive stands after its space and touches the unit that
+follows it, as under [Directives](#directives): `(right,  %%{x}%%  down)` and
+`(right,%%{x}%%down)` are printed `(right, %%{x}%%down)`. Where the gap holds a
+U+2028 or U+2029, it stays as written, a directive in it included: `(right,`,
+U+2028, and ` %%{x}%% down)` stay. Where a line break follows a directive after
+a `,`, the whitespace before it stays as written and the next line stands one
+level deeper: `(right,  %%{x}%%` and a line break stay. A run of spaces or tabs
+before the directive stays too.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [fixture:
@@ -533,8 +524,7 @@ shapes/block-arrow-closing-directive-line-indented] [fixture:
 shapes/block-arrow-directive-after-open-parenthesis] [fixture:
 shapes/block-arrow-directive-before-closing-parenthesis] [fixture:
 shapes/block-arrow-directive-after-comma] [fixture:
-shapes/block-arrow-directive-after-comma-at-the-end-of-the-line] [test:
-block/shapes/comment-region-keeps-the-directions-of-a-block-arrow] [test: U+2028
+shapes/block-arrow-directive-after-comma-at-the-end-of-the-line] [test: U+2028
 and a directive after the comma between the directions of a block arrow, a space
 after the U+2028 and after the directive] [test: U+2028 and a directive after
 the comma between the directions of a block arrow, nothing around the directive]

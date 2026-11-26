@@ -830,8 +830,11 @@ railroad-peg-beta
 `printWidth` や元の空白による改行には依存しません。
 文法の階層を一貫して示すためです。
 末尾コンマは加えません。
-固定した版の mermaid.js は、後ろに引数がない IR 呼出しのコンマを拒否するので、
+対象にする版の mermaid.js は、後ろに引数がない IR 呼出しのコンマを拒否するので、
 複数行の呼出しにも末尾コンマを加えません。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [corpus fixture: railroad/ir-choice-trailing-comma]
 
@@ -1474,6 +1477,12 @@ railroad-peg-beta
 ### コメント
 
 独立したコメントは本文で1段、見出し前で第1列に置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの位置を与えます。
+[flowchart](./flowchart.ja.md#コメント)は、コメントがどの文にも属さないので、
+コメント行を周りの文と同じ段に置きます。
+見出しの前のコメント行は、[gantt](./gantt.ja.md#コメント)、
+[requirement](./requirement.ja.md#コメント)、[block](./block.ja.md#コメント)、
+[journey](./journey.ja.md#コメント)でも第1列に置きます。
 通常の IR 呼出し以外では、行内のコメントは左右の位置と行を変えません。
 接する行内コメントは接したまま残します。
 印、内容、末尾空白、ブロックの継続列、順序を保ちます。
@@ -1580,6 +1589,8 @@ railroad-beta
 [fixture: railroad/comments/ir-closer]
 
 [fixture: railroad/comments/ir-positions]
+
+[fixture: railroad/comments/ir-indented-comments]
 
 [fixture: railroad/comments/peg-bare]
 

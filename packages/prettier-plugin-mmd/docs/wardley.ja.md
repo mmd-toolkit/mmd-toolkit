@@ -256,8 +256,10 @@ component の名前は Db の id で、pipeline は同じ id で component を�
 Db は書かれたとおりの空白を持つ id を保ち、mermaid.js は、
 名前の空白がタブかスペースかで component と違う pipeline を拒否します。
 名前が空白の連なりだけ違う 2 つの component は、描かれる図も違います。
+対象にする版の mermaid.js のすべてが、連なりを残せば component を 2 つ描き、
+連なりをそろえると 1 つしか描きません。
 詳しくは
-[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 名前の文字列が `'` で囲まれていれば、`"` で囲んで印字しますが、内容に `'`、`"`、
 バックスラッシュ、改行、U+2028、U+2029、バッククォート、`&`、`#`、
@@ -279,6 +281,7 @@ mermaid.js がその場所で読む引用符は、それだけだからです。
 エスケープの別の解釈が必要になる引用符への変更はしません。
 
 [fixture: wardley/names-and-quotes/name-spaces]
+[fixture: wardley/names-and-quotes/names-differing-by-a-run]
 
 [fixture: wardley/names-and-quotes/name-parenthesis-ampersand]
 
@@ -740,6 +743,10 @@ wardley-beta
 ### evolution
 
 @ は両側を詰め、/ と段階の矢印 -> の左右は空白 1 つにします。
+`/` と `->` は 2 つのものの間の記号なので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がその左右の空白を与えます。
+[link](#link) と同じです。
+Prettier は `x = a/b` を `x = a / b;` と印字します。
 任意の境界と第 2 名、空の引用名、段階の原順を保ちます。
 付属する印は詰め、選択肢どうしは分け、欠けた値は補いません。
 引用符なしの title には名前の境界を適用します。
@@ -3306,6 +3313,9 @@ Prettier は JavaScript、CSS、YAML で行末に空白を印字せず、
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+引用符で囲んだノートの行末の空白やタブも残します。
+mermaid.js はそれをノートのテキストに持ち、ノートは同じに描かれますが、
+Db のその変化を認める例外の種類はありません（同じ表を参照してください）。
 
 [fixture: wardley/trailing-whitespace/trailing-exterior]
 
