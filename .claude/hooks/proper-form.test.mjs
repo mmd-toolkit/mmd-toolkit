@@ -12,7 +12,14 @@ import {
 import os from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { afterEach, expect, it } from "vitest"
+import { afterEach, expect, it, vi } from "vitest"
+
+// Each test starts Node.js and git processes for the hook and its fixture
+// repository. In the Windows job of CI the tests of this file took 0.5 to 6.3
+// seconds, and one took 6,345 ms, over the default 5 seconds. The limit is twice
+// the slowest test seen: it still stops a hook that hangs, and no longer fails
+// on a slow start.
+vi.setConfig({ testTimeout: 13_000 })
 
 const script = fileURLToPath(new URL("./proper-form.mjs", import.meta.url))
 const agents = readFileSync(new URL("../../AGENTS.md", import.meta.url), "utf8")
@@ -288,7 +295,7 @@ it("checks attributed package fields and package-manager commands only", () => {
   record(description, "Edit", fileInput("package.json"))
   write(description.repo, "package.json", '{"description":"new"}')
   allowed(description, check(description))
-}, 30_000)
+})
 
 it("asks about dependencies changed by a filtered package-manager command", () => {
   const fixture = setup()
