@@ -355,8 +355,8 @@ wardley-beta
 Print NumericLiteral source spans without converting their double values back to
 text. Preserve decimal leading/trailing zeros, precision, rounded boundaries,
 subnormal values, underflow and overflow where accepted. Converting 01.00 to 1
-can reject a decimal-only position; percent conversion also loses the chosen
-unit. Rejected leading-zero integers are not repaired.
+can reject a decimal-only position; numbers are not converted to percent.
+Rejected leading-zero integers are not repaired.
 
 [fixture: wardley/numbers/decimal-leading-zero]
 
@@ -410,8 +410,7 @@ keys of an attribute and its comment stands before a quoted string, not before a
 before a `(` until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep bare inertia and (inertia) distinct, along with build, buy, outsource and
-market. The inertia forms can share a Db, but converting them loses an authored
-node form; do not supply defaults.
+market. The inertia forms can share a Db; do not supply defaults.
 
 [fixture: wardley/decorations/decorations-all] [fixture:
 wardley/decorations/decorations-spaced] [fixture:
@@ -4071,13 +4070,12 @@ wardley-beta
 
 Keep at most one ordinary ASCII blank line between statements or trivia,
 dropping excess document/body edge blanks and whitespace-only padding. Pipeline
-edge blanks disappear while mandatory visible LF remains. This keeps authored
-grouping without excess space.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the empty
-lines: Prettier keeps one blank line where a run of them stands in JavaScript,
-CSS, and YAML, and drops the blank lines at the start and the end of a file in
-all three, and at the start and the end of a block in JavaScript and CSS;
-[flowchart](./flowchart.md#blank-lines), [pie](./pie.md#blank-lines), and
+edge blanks disappear while mandatory visible LF remains. This avoids excess
+space. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+empty lines: Prettier keeps one blank line where a run of them stands in
+JavaScript, CSS, and YAML, and drops the blank lines at the start and the end of
+a file in all three, and at the start and the end of a block in JavaScript and
+CSS; [flowchart](./flowchart.md#blank-lines), [pie](./pie.md#blank-lines), and
 [radar](./radar.md#blank-lines) print them so: a run of empty lines as one, and
 none at the start or the end of a body. Values, hidden/directive interiors,
 retained prefixes, protected stretches and required hidden LF use their own
@@ -4353,7 +4351,7 @@ Keep every authored statement, child, stage, decoration, reference and empty
 assignment in source order. Repeated declarations and pipelines, unpublished
 evolves, first annotations boxes and last size/evolution/common assignments stay
 written. Never rebuild from the effective Db: sorting or deleting occurrences
-can change its reading and loses authored choices.
+can change its reading.
 
 [fixture: wardley/source-order/order-repeated-components]
 

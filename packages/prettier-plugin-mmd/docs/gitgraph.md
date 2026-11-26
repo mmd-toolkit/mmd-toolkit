@@ -245,8 +245,8 @@ gitGraph
 
 Print every option and statement occurrence in source order, including
 overwritten ids/types/messages and repeated or empty tags. Do not sort or reduce
-scalar options to their final values: the resolved history loses authored
-occurrences, and scalar/tag/statement order can change the Db.
+scalar options to their final values. Scalar/tag/statement order can change the
+Db.
 
 [fixture: gitgraph/order-and-repetitions/order-reverse-id] [fixture:
 gitgraph/order-and-repetitions/order-reverse-type] [fixture:
@@ -269,7 +269,7 @@ gitGraph
 ### Messages
 
 Keep the bare quoted message and explicit `msg:` forms, including empty and
-repeated messages. Their introducer is authored syntax. The Db summary omits
+repeated messages. Their introducer is kept as written. The Db summary omits
 message text, so summary equality does not authorize changing or deleting it.
 
 [fixture: gitgraph/messages/message-forms] [fixture:
@@ -291,8 +291,7 @@ Print each StringLiteral as its complete source span, with escapes unchanged. A
 string between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
 backslash, a line break, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-and `singleQuote` is not read. Other re-encoding would require new escape and
-preprocessing decisions and would discard the authored form.
+and `singleQuote` is not read. Other re-encoding is not performed.
 
 [fixture: gitgraph/quotes/quotes-one-form] [corpus fixture:
 gitgraph/lex-string-escapes] [fixture: gitgraph/quotes/single-quote-option]
@@ -378,8 +377,8 @@ gitGraph
 
 Print every unsigned order digit as written, including zero, precision-losing
 integers and overflow. The NumericLiteral source, rather than its converted
-double, is the authored value. Do not reorder branches by their numeric orders.
-Invalid signs, leading zeros, fractions and exponents remain corpus failures.
+double, is printed. Do not reorder branches by their numeric orders. Invalid
+signs, leading zeros, fractions and exponents remain corpus failures.
 
 [corpus fixture: gitgraph/number-zero] [corpus fixture:
 gitgraph/number-precision] [corpus fixture: gitgraph/number-overflow] [fixture:
@@ -654,10 +653,9 @@ the header. Inline comments stay on the same line. A comment that touches stays
 touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
 space before a comment that stands after something on its line, as Prettier
 prints `x = 1;   // c` as `x = 1; // c`. Keep marks, content and trailing
-whitespace for author attachment. Native comments keep LS/PS as content;
-strings/blocks own percent text while line values stop before it. Common removed
-regions retain complete source spans. Retained prefixes override ordinary
-alignment.
+whitespace. Native comments keep LS/PS as content; strings/blocks own percent
+text while line values stop before it. Common removed regions retain complete
+source spans. Retained prefixes override ordinary alignment.
 
 [fixture: gitgraph/comments/comment-placement] [fixture:
 gitgraph/comments/comment-bare-triple] [fixture:

@@ -214,7 +214,7 @@ mermaid.js writes them.
 decorations/before-and-after-children]
 
 A second class line, or a second icon line, replaces the first in the Db, and
-both are kept as written, since the printer drops no text that the author wrote.
+both are kept as written.
 
 [fixture: decorations/second-class-kept]
 
@@ -358,8 +358,7 @@ mindmap
 ### Shapes
 
 The opener and the closer of a shape are printed as written. The closer need not
-match the opener: `[text)` is a rectangle and `((x)` a circle, and writing the
-closer that matches would change the text the author wrote.
+match the opener: `[text)` is a rectangle and `((x)` a circle.
 
 [fixture: shapes/openers-and-closers-kept] [fixture:
 shapes/mismatched-closers-kept]

@@ -407,8 +407,7 @@ the first separating gap moves with the root.
 [fixture:
 ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
 
-A directive touching root text retains the whole written header group, which
-keeps the relation the author wrote between the directive and the root text.
+A directive touching root text retains the whole written header group.
 
 [fixture: ishikawa/standalone-directives/directive-header-touch-root] [fixture:
 ishikawa/standalone-directives/header-directive-touching-root] [fixture:
@@ -783,9 +782,9 @@ ishikawa/node-text/values-quote-unsafe] [fixture:
 ishikawa/node-text/unquoted-root] [fixture:
 ishikawa/node-text/values-html-entities]
 
-No foreign token-spacing or value conversion applies. This preserves authored
-forms and configuration-sensitive reading rather than reconstructing labels from
-the Db. Punctuation, quotes and number-like spellings are literal node text in
+No foreign token-spacing or value conversion applies. This preserves
+configuration-sensitive reading rather than reconstructing labels from the Db.
+Punctuation, quotes and number-like spellings are literal node text in
 mermaid.js. Apart from the stated changes to spaces and tabs, applying another
 syntax's token-spacing or value conversions would change the text stored in the
 Db.

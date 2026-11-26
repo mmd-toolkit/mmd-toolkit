@@ -123,11 +123,10 @@ pie
 ### Labels
 
 Reuse [XY chart authored strings](./xychart.md#quotes): keep complete quoted
-source spans, because the source text belongs to the author. Preserve escapes
-without decoding, empty and whitespace-only labels, entities/HTML and
-hidden-looking percent text; a string between `'` is printed between `"`, unless
-its text holds a `'`, a `"`, a backslash, a line break, U+2028, U+2029, a
-backquote, `&`, `#`, or `<` (see
+source spans. Preserve escapes without decoding, empty and whitespace-only
+labels, entities/HTML and hidden-looking percent text; a string between `'` is
+printed between `"`, unless its text holds a `'`, a `"`, a backslash, a line
+break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. Keep converted-label collisions as separate
 occurrences; the resolved Map is not source.
@@ -742,9 +741,9 @@ pie title style:#a;b
 ### Blank lines
 
 Reuse [shared blank grouping](./flowchart.md#blank-lines): collapse ordinary
-ASCII blank runs to one and remove ordinary document/body edge blanks,
-preserving a visible grouping choice. Prettier keeps at most one ordinary blank
-line between statements and none at the document or body edges, so
+ASCII blank runs to one and remove ordinary document/body edge blanks. Prettier
+keeps at most one ordinary blank line between statements and none at the
+document or body edges, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that grouping
 for ordinary blank lines. Values, directives, ignored interiors, common-region
 joins and complete retained prefixes keep authored blanks: changing these can
@@ -837,9 +836,12 @@ pie showData
 ### Multiline values and order
 
 Reuse [flowchart value columns](./flowchart.md#multi-line-values) and
-[shared no wrapping](./flowchart.md#line-wrapping): source text is authored and
-one layout should apply independently of width. Keep physical label lines, their
-continuation columns and internal blanks; description bodies follow
+[shared no wrapping](./flowchart.md#line-wrapping): a line is not wrapped, as in
+a flowchart, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) that
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+a pie chart too. Keep physical label lines, their continuation columns and
+internal blanks; description bodies follow
 [Description blocks](#description-blocks). Line breaks inside a quoted label are
 label content for mermaid.js. Keeping physical label lines and internal blank
 lines preserves that content in the Db; removing an internal blank line would
@@ -848,12 +850,11 @@ components. A visible line break between a slice's quoted label, colon and
 number makes mermaid.js reject the section, so these components stay together
 even when the statement exceeds `printWidth`. Preserve insertion order,
 duplicate converted labels, prototype/numeric-looking keys, repeated/empty
-common assignments and zero/small slices; reconstructing the resolved Map would
-lose source occurrences or change the first value. Prototype-looking labels name
-real slices in mermaid.js, and numeric-looking labels keep Map insertion order.
-Keeping those entries and their order preserves the sections in the Db; dropping
-entries or reordering them as object keys would change the sections or their
-order.
+common assignments and zero/small slices; reconstructing the resolved Map can
+change the first value. Prototype-looking labels name real slices in mermaid.js,
+and numeric-looking labels keep Map insertion order. Keeping those entries and
+their order preserves the sections in the Db; dropping entries or reordering
+them as object keys would change the sections or their order.
 
 [corpus fixture: pie/db-prototype-labels] [corpus fixture:
 pie/db-numeric-label-order]

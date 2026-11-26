@@ -6021,7 +6021,7 @@ dagre のレイアウトは
 elk のレイアウトは
 [`render.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L2754)
 で、その長さを引き継ぎます。
-描いた例は同じ図でしたが、長さは作者が求めたものです。
+描いた例は同じ図でした。
 
 [fixture: flowchart/arrow-spacing/arrow-length-kept]
 
@@ -10369,7 +10369,7 @@ Markdown は最後のコード行の末尾空白を除きます。
 領域の再宣言と空領域、項目の順と重複、自己遷移、空ラベル、
 共通文のリセットを残します。
 領域と項目の行は木を示すもので、列が親を選ぶわけではありません。
-有効な Db からの再構築は出現を失い、置換やリセットの読みを変え得ます。
+有効な Db からの再構築は置換やリセットの読みを変え得ます。
 文字列は空の値や図固有の形に見える文字も含め、エスケープ、内部の列を保ちます。
 cynefin 図では、mermaid.js は、空の文字列も項目として Db に格納し、
 文字列の中の隠れた形に見える文字も、項目のラベルに含めます。

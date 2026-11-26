@@ -460,8 +460,8 @@ Print NumericLiteral source spans in entries and ticks/max/min. A plain decimal
 is printed in the shortest form (`1.50` is `1.5`, `5.00` is `5`; see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 Preserve a zero at the start of the integer part, rounded precision, subnormals,
-underflow and overflow. Reprinting double values loses spelling and can produce
-exponents or Infinity, which radar's number grammar rejects.
+underflow and overflow. Reprinting double values can produce exponents or
+Infinity, which radar's number grammar rejects.
 
 [fixture: radar/numbers/shortest-form]
 
@@ -501,8 +501,8 @@ comma groups and every repeated assignment in source order: the numbers are
 under [Numbers](#numbers), the commas under
 [Groups and commas](#groups-and-commas), and the order and the repeated
 assignments under [Source order](#source-order). Do not substitute effective
-defaults, cap ticks at 32 or reorder min/max: publication is not authored
-syntax. Radar drawing configuration does not supply these statement values.
+defaults, cap ticks at 32 or reorder min/max. Radar drawing configuration does
+not supply these statement values.
 
 [fixture: radar/options/option-gaps]
 
@@ -3624,8 +3624,7 @@ Keep body, axis/curve/option groups and entry order with every occurrence.
 Preserve forward references, duplicate axes/curves/entries, extra named entries,
 zero-first matches, prototype-shaped names and empty common assignments.
 Different curves may use different entry forms; never convert positional and
-named lists. A resolved Db cannot reproduce these authored choices, and sorting
-or deleting them can change its reading.
+named lists. Sorting or deleting these occurrences can change the Db's reading.
 
 [fixture: radar/source-order/declaration-order-kept]
 

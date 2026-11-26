@@ -395,7 +395,7 @@ railroad-peg-beta
 Keep the presence of each optional comma at each sequence boundary. A comma has
 no ordinary space before it and one after it; adjacency has one space. Mixed
 comma and adjacency forms stay mixed. Adding or removing commas can keep the Db,
-but loses the authored punctuation.
+but the commas are kept as written.
 
 [fixture: railroad/ebnf-sequences/adjacency]
 
@@ -556,8 +556,8 @@ railroad-peg-beta
 ABNF retains every count and star as written, including leading zeroes, exact
 counts, omitted lower or upper bounds, zero, optional bounds and large integers.
 Compact only the ordinary gap between a complete repeat and its primary. Do not
-fill omitted bounds or replace the repeat with an optional group: Db equality
-does not justify losing the chosen form or reprinting rounded numbers.
+fill omitted bounds or replace the repeat with an optional group. Db equality
+does not justify reprinting rounded numbers.
 
 [fixture: railroad/repeats/abnf-large]
 
@@ -609,8 +609,8 @@ one space after it (`f(a,b)` is printed `f(a, b);`). mermaid.js rejects a space
 before the `(` of a call in a C4 diagram (see
 [Rejected inputs](./c4.md#rejected-inputs)). Call layout follows
 [Long lines](#long-lines). Retain empty quoted arguments, nested calls and
-singleton sequence/choice calls. Collapsing a singleton can keep the Db but
-loses an authored call; trailing commas are not added.
+singleton sequence/choice calls. A singleton call is kept even when collapsing
+it would keep the Db; trailing commas are not added.
 
 [fixture: railroad/calls/ir-all]
 
