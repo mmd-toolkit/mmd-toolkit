@@ -1763,7 +1763,7 @@ entity Shop.Buy
 その前の隙間を書かれたまま残します（[Hidden forms](#hidden-forms)を参照）。
 ブロックコメントが続く行（[Comments](#comments)を参照）もそうです。
 行を空白 1 つか何も挟まずにつなぐと、行の規則が無視する `;` が変わりうる文では、
-`;` を含む行も同じです。
+U+2028 や U+2029 より前に `;` を含む行も同じです。
 そのような文は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残すからです（[Semicolons](#semicolons)を参照）。
 構造上の分割を加えるのは決定済みの GWT 節・項目配置です。
@@ -1784,6 +1784,7 @@ entity Shop.Buy
 [fixture: eventmodeling/long-lines/later-line-holding-a-semicolon-deeper]
 [fixture: eventmodeling/long-lines/later-line-after-a-joined-semicolon-stretch-deeper]
 [test: a later line after a `%%` comment after U+2028 inside a statement of an eventmodeling diagram stands one level deeper]
+[test: a later line whose `;` follows U+2028 in an eventmodeling statement that joining could change stands one level deeper]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 

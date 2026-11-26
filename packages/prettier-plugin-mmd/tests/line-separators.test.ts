@@ -10251,6 +10251,12 @@ describe("the later line after a joining comment region of an eventmodeling diag
       "eventmodeling\ntf 01 %% c\n  evt Alpha\n",
     )
   })
+  it("a later line whose `;` follows U+2028 in an eventmodeling statement that joining could change stands one level deeper", async () => {
+    await expectKept(
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/\nAlpha\u2028/*#y;*/ ->> 02\n",
+      "eventmodeling\ntf 01 evt /*style:*/\n/*#x;*/\n  Alpha\u2028/*#y;*/ ->> 02\n",
+    )
+  })
 })
 
 /** The printers that docs/eventmodeling.md, Comments, cites: where they print the characters before a comment otherwise. */
