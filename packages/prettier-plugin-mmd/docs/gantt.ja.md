@@ -113,7 +113,10 @@ Gantt 図には文を区切るものがなく（`diagrams/gantt.md`、図と文�
 `inclusiveEndDates`、日つきの `weekday` と `weekend`、`accDescr` ブロック、
 click 文の後ろには、同じ行に次の文を続けられます。
 これらの後ろの文は、それぞれの行に移します。
-ほかの図種も 1 行に 1 つの文を印字します。
+[flowchart](./flowchart.ja.md#1-行に-1-文)、
+[sequence](./sequence.ja.md#1-行に-1-文)、
+[state](./state.ja.md#1-行に-1-文) の図も 1 行に 1 つの文を印字します。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
 
 [fixture: statements-one-per-line/header-then-statement]
 [fixture: statements-one-per-line/header-then-task]

@@ -86,6 +86,10 @@ agentflow-beta
 
 字下げは木から決め、元の桁位置では所属を決めません。
 見出しと flow/global の本文を 1 段深くし、`end` を開始語にそろえます。
+[sequence](./sequence.ja.md#字下げ) と [state](./state.ja.md#字下げ) の図は、
+ヘッダーの後の文をヘッダーより 1 段深く置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
+agentflow の文にも同じ段を与えます。
 [state](./state.ja.md#字下げ) の複合状態は、`}` を開始行と同じ段に置きます。
 flow と global を閉じる `end` の字下げも、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が同じ形を与えます。
