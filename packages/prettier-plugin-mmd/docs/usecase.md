@@ -299,8 +299,9 @@ and `classDef` statements of a use case diagram are printed so. A color is a `#`
 and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
 it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
-Its case is part of the style that mermaid.js keeps in the Db, and a change of
-it is no kind of change of the Db that formatting may make (see
+The case of a text that is no color is part of the style that mermaid.js keeps
+in the Db, and a change of it is no kind of change of the Db that formatting may
+make (see
 [The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
 
 [fixture: colors/colors-in-lower-case] [fixture:
@@ -1497,7 +1498,8 @@ change of them is no kind of change of the Db that formatting may make (see
 a markdown label keeps them for the versions that count (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[fixture: trailing-whitespace/trailing-values] [test: usecase:
+[fixture: trailing-whitespace/trailing-values] [fixture:
+trailing-whitespace/opaque-and-metadata-lines] [test: usecase:
 terminal-comment-tab] [test: usecase: terminal-a11y-tab]
 
 Unicode characters are not automatically exterior HWS; no dangling null CSS

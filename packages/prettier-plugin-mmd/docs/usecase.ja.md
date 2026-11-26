@@ -327,8 +327,8 @@ usecase 図の `style`、`classDef` 文のスタイルの色が対象です。
 色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
 色を短くすることはなく、色でないテキストは書かれたままにします。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
-その大文字小文字は mermaid.js が Db に持つスタイルの一部で、それを変えることは、
-整形が Db に起こしてよい変化のどの種類にも当たりません。
+色でないテキストの大文字小文字は mermaid.js が Db に持つスタイルの一部で、
+それを変えることは、整形が Db に起こしてよい変化のどの種類にも当たりません。
 詳しくは
 [確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
 を参照してください。
@@ -1619,6 +1619,7 @@ markdown のラベルは、対象にする版のためにそれを保ちます�
 を参照してください。
 
 [fixture: trailing-whitespace/trailing-values]
+[fixture: trailing-whitespace/opaque-and-metadata-lines]
 [test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]
 
 Unicode 文字を自動的に外側の水平空白とせず、空の CSS style も作りません。
