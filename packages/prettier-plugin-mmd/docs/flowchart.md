@@ -193,8 +193,8 @@ word.
 
 [fixture: statements-one-per-line/word-before-ignored-semicolon]
 
-Each statement stands on a line of its own, a form that
-[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) gives (see
+Each statement stands on a line of its own, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
 [Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)). A
 `;` that separates two statements and a line break both end a statement for
 mermaid.js, so the split changes neither the Db nor the figure.
@@ -507,8 +507,8 @@ flowchart LR
 ### Semicolons
 
 A `;` at the end of a statement is dropped, and so is a `;` that stands alone at
-the top level, a form that
-[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) gives (see
+the top level, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
 [Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)).
 
 [fixture: semicolons/alone-between-empty-lines-removed] [fixture:
@@ -1843,10 +1843,13 @@ flowchart LR
 ### Link label form
 
 A link label keeps the form it is written in: text between two arrows, or text
-between `|` after the arrow. [Rule 3](./printed-form.md#3-a-spelling) keeps it
-as written, since the examples in the documentation of mermaid.js use the first
-form 14 times and the second 8 times, which is not twice as often (see
-[The label of a link](./compatibility.md#the-label-of-a-link)).
+between `|` after the arrow. The examples in the documentation of mermaid.js use
+the first form 14 times and the second 8 times, which is not twice as often, so
+[rule 3](./printed-form.md#3-a-spelling) gives no form (see
+[The label of a link](./compatibility.md#the-label-of-a-link)); keeping the
+written form is a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)).
 
 [fixture: link-label-form/other-link-kinds-kept] [fixture:
 link-label-form/flowchart-header-both-forms-kept]
@@ -1917,8 +1920,9 @@ flowchart LR
 
 ### Line wrapping
 
-Lines are not wrapped, whatever Prettier's `printWidth` option says, a form that
-[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) gives (see
+Lines are not wrapped, whatever Prettier's `printWidth` option says, a form
+decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
 [Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)),
 except that a data block `@{ … }` on one line whose line is wider than
 `printWidth` prints on several lines under the conditions of
@@ -2611,9 +2615,10 @@ written:
   data-blocks/separate-single-line-block-kept] [fixture:
   data-blocks/edge-adjacent-single-line-kept]
 
-With `useTabs`, a statement that holds a block of several lines is printed as
-written, the indentation of its first line included, a form that
-[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) gives (see
+With `useTabs`, a statement that holds a data block (`@{ … }`) of several lines
+is printed as written, the indentation of its first line included, a form
+decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
 [Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)).
 mermaid.js rejects a tab before the lines of a block, so they are indented with
 spaces, which stand right for one width of a tab only. A node line alone,

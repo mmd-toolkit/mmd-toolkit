@@ -201,7 +201,7 @@ direction 行はそれより前へは届きません。
 
 文はそれぞれ 1 行に置きます。
 この形は、
-[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)が与えます。
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
 [規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 文を区切る `;` と改行は、どちらも mermaid.js にとって文の終わりなので、
 行に分けても Db も図も変わりません。
@@ -517,7 +517,7 @@ flowchart LR
 文の終わりの `;` は取り除き、
 トップレベルでそれだけで置かれた `;` も取り除きます。
 この形は、
-[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)が与えます。
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
 [規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 
 [fixture: semicolons/alone-between-empty-lines-removed]
@@ -1901,8 +1901,11 @@ flowchart LR
 辺のラベルは、書かれた形を保ちます。
 2 つの矢印の間のテキストか、矢印の後の `|` の間のテキストです。
 mermaid.js の文書の例は前者を 14 回、後者を 8 回使い、2 倍にはならないので、
-[規則 3](./printed-form.ja.md#3-綴り)が書かれたまま残すためです。
-（[リンクのラベル](./compatibility.ja.md#リンクのラベル)を参照）。
+[規則 3](./printed-form.ja.md#3-綴り)は形を与えません。
+[リンクのラベル](./compatibility.ja.md#リンクのラベル)を参照してください。
+書かれた形を残すのは、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
+[規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 
 [fixture: link-label-form/other-link-kinds-kept]
 [fixture: link-label-form/flowchart-header-both-forms-kept]
@@ -1977,7 +1980,7 @@ flowchart LR
 
 Prettier の `printWidth` オプションにかかわらず、行を折り返しません。
 この形は、
-[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)が与えます。
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
 [規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 ただし、1 行に書いたデータブロック `@{ … }` は、その行が `printWidth` より広く、
 [データブロック](#データブロック)の条件を満たすときに、複数行で印字します。
@@ -2693,10 +2696,10 @@ flowchart LR
   [fixture: data-blocks/separate-single-line-block-kept]
   [fixture: data-blocks/edge-adjacent-single-line-kept]
 
-`useTabs` では、複数行のブロックを持つ文は、
+`useTabs` では、複数行のデータブロック（`@{ … }`）を持つ文は、
 最初の行の字下げも含めて書かれたまま印字します。
 この形は、
-[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)が与えます。
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形です。
 [規則 4 で決めた形](./printed-form.ja.md#規則-4-で決めた形)を参照してください。
 mermaid.js はブロックの行の前のタブを拒否するので、
 ブロックの行は空白で字下げし、タブの幅が特定の値のときだけ正しくそろいます。

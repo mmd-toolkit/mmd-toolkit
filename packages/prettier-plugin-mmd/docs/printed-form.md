@@ -260,7 +260,9 @@ number, the direction of a header) takes the form that the examples in the
 documentation of the pinned mermaid.js use at least twice as often as any other:
 `"CUSTOMER" ||--o{ "ORDER" : places` in an ER diagram is printed
 `CUSTOMER ||--o{ ORDER : places`. Where no form is used that often, or the
-examples use none, the spelling is kept as written.
+examples use none, rule 3 gives no form, and the spelling is kept as written
+until a form is decided under
+[rule 4](#4-where-none-of-these-rules-gives-a-form).
 
 The name of a header with and without `-beta` is an exception. Where every
 version that counts and has the diagram type reads both names and draws them the
@@ -291,8 +293,10 @@ diagram type says where each one applies and where it does not.
 - A `;` that ends a statement is dropped, and so is a `;` that stands alone at
   the top level.
 - A line is not wrapped, whatever Prettier's `printWidth` option says.
-- With `useTabs`, a statement that holds a block of several lines is printed as
-  written.
+- A link label keeps the form it is written in: text between two arrows, or text
+  between `|` after the arrow.
+- With `useTabs`, a statement that holds a data block (`@{ … }`) of several
+  lines is printed as written.
 
 ## The versions of mermaid.js that count
 
