@@ -2654,13 +2654,7 @@ sequence、journey、timeline は、`accTitle` のコロンの後ろで、
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-この配置は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
-[radar](./radar.ja.md#global-directives)、
-[packet](./packet.ja.md#global-directives)、
-[wardley](./wardley.ja.md#global-directive) も、
-整形が分ける単位の隙間のディレクティブを同じように置きます。
-ただし、ほかの規則が配置を書かれたまま残す所は別です。
-文の後の閉じていないディレクティブがそれです。
+文の後の閉じていないディレクティブは、配置を書かれたまま残します。
 
 [fixture: er/directives/whitespace-on-both-sides]
 

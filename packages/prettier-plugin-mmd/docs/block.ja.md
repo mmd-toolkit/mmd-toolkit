@@ -1401,15 +1401,7 @@ mermaid.js はディレクティブを読む前に取り除くので、
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#ディレクティブ)、
-[gantt](./gantt.ja.md#ディレクティブ)、
-[journey](./journey.ja.md#ディレクティブ)も、
-整形が分ける単位の隙間のディレクティブを後ろの単位と一緒に動かし、
-右側の接触か間隔を残し、左側の接触は切ります。
-ただし、ほかの規則が配置を書かれたまま残す所は別です。
-文の後の閉じていないディレクティブがそれです。
+文の後の閉じていないディレクティブは、配置を書かれたまま残します。
 
 [fixture: block/directives/directive-after-columns]
 [fixture: block/directives/directive-after-columns-right-touching]

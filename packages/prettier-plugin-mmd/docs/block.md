@@ -1378,14 +1378,8 @@ directives/directive-after-columns] [fixture: directives/directive-after-end]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
-break its left contact. Rule 1 names no mark for a directive between two units,
-so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#directives),
-[gantt](./gantt.md#directives), and [journey](./journey.md#directives) move a
-directive in the gap of units that formatting splits with the following unit,
-keep its right-side contact or separation, and break its left contact, where no
-other rule keeps the layout as written (a directive that is not closed after a
-statement).
+break its left contact. A directive that is not closed after a statement keeps
+its layout as written.
 
 [fixture: block/directives/directive-after-columns] [fixture:
 block/directives/directive-after-columns-right-touching] [fixture:
