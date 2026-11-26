@@ -7865,8 +7865,13 @@ formatter keeps the whitespace and the line breaks of such a line as written,
 from its first line to its end, with the statements that stand on it: it does
 not format the whitespace between them, and it does not indent the lines after
 the comment line. This is one rule for every statement, block opening, and
-header, but for a mindmap, which puts the comment line of a node on a line of
-its own at the level of the node (see
+header, but for an eventmodeling diagram, which prints the U+2028 or U+2029
+before the comment line as one space and stands the line after the comment line
+one level deeper, as any later line of a statement (see
+[Comments](./eventmodeling.md#comments) and
+[Long lines](./eventmodeling.md#long-lines)). A mindmap follows the rule too;
+what it puts on a line of its own is the text after a comment of a node that a
+U+2028 or U+2029 ends, which is no comment line (see
 [Line separators](./mindmap.md#line-separators)). A diagram comment that such a
 comment line cuts is printed as written as well (see
 [Line separators](./sequence.md#line-separators)). The same holds where the
@@ -7877,6 +7882,9 @@ does what follows the `{` on its line in a nonempty block, and the attributes
 after it and the `}` stand as those of any entity, unless the `}` stands on a
 line that holds the start of such a comment line (see
 [ER](./er.md#multi-line-statements)).
+
+[test: mindmap/line-separators/comment-region-continuation-kept] [test:
+eventmodeling/long-lines/comment-region-continuation-one-level-deeper]
 
 A line that a `;` of its text keeps together, as `title T;` or the text of a
 kanban section `S[x;]`, is printed as written with the comment line after a

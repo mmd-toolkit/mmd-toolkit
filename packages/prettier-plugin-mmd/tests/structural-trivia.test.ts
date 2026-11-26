@@ -1,4 +1,9 @@
-/** Joining comment regions keep their raw columns inside structural statements. */
+/**
+ * Joining comment regions keep their raw columns inside structural statements,
+ * also in a mindmap; an eventmodeling diagram prints the separator before the
+ * comment line as a space and the line after it one level deeper
+ * (docs/compatibility.md, A comment line after U+2028 or U+2029).
+ */
 import { describe, expect, it } from "vitest"
 import { parse } from "@mmd-toolkit/parser"
 import { createSource } from "../src/printers/source.ts"
@@ -62,6 +67,16 @@ describe("structural trivia boundaries", () => {
       name: "xychart/multi-line-statements/bare-title-comment-region-kept",
       input: "xychart\ntitle A \u2028%% c\n B\n",
       output: "xychart\n  title A \u2028%% c\n B\n",
+    },
+    {
+      name: "mindmap/line-separators/comment-region-continuation-kept",
+      input: "mindmap\nroot\n  a\u2028%% c\n     b\n",
+      output: "mindmap\n  root\n    a\u2028%% c\n     b\n",
+    },
+    {
+      name: "eventmodeling/long-lines/comment-region-continuation-one-level-deeper",
+      input: "eventmodeling\ntf 01 evt\u2028%% c\n   Alpha\n",
+      output: "eventmodeling\ntf 01 evt %% c\n  Alpha\n",
     },
   ])("$name", async ({ input, output }) => {
     const source = createSource(input, parse(input))
