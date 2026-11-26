@@ -1378,8 +1378,7 @@ treeView-beta
 ### Repeated annotations
 
 class、icon、description は、上書きと空の代入も含めて全出現を原順に保ちます。
-Db の最後の値だけでは原文を再現できません。
-後の注釈を description の中へ移すと、その値も変わりえます。
+後の注釈を description の中へ移すと、Db の最後の値が変わりえます。
 
 [fixture: treeview/repeated-annotations/repeat-class]
 

@@ -265,8 +265,7 @@ gitGraph
 上書きされた id・type・メッセージ、反復や空の tag を含め、
 オプションと文のすべての出現を原順序で印字します。
 並べ替えたりスカラーを最終値だけに減らしたりしません。
-解決後の履歴からは作者の出現列が失われ、
-スカラー・tag・文の順序は Db にも影響します。
+スカラー・tag・文の順序は Db に影響します。
 
 [fixture: gitgraph/order-and-repetitions/order-reverse-id]
 [fixture: gitgraph/order-and-repetitions/order-reverse-type]
@@ -290,7 +289,7 @@ gitGraph
 
 導入語のない引用メッセージと明示した `msg:` の形を保持します。
 空値や反復も保持します。
-導入の形は作者の構文です。
+導入の形は書かれたまま保持します。
 Db の要約にメッセージ本文がなくても、一致を理由に変更や削除はしません。
 
 [fixture: gitgraph/messages/message-forms]
@@ -314,8 +313,7 @@ gitGraph
 バッククォート、`&`、`#`、`<` がない限り、`"` で囲んで印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。
-それ以外の再エンコードにはエスケープと前処理の新たな判断が必要で、
-作者の書き方も失われるためです。
+それ以外の再エンコードは行いません。
 
 [fixture: gitgraph/quotes/quotes-one-form]
 [corpus fixture: gitgraph/lex-string-escapes]
@@ -409,7 +407,7 @@ gitGraph
 ### Order numbers
 
 order の符号なし整数は、0、精度を失う整数、桁あふれも書かれた桁を保持します。
-作者の値は変換後の倍精度浮動小数点数でなく `NumericLiteral` の原文です。
+変換後の倍精度浮動小数点数でなく `NumericLiteral` の原文を印字します。
 order を使って branch を並べ替えません。
 不正な符号・先頭 0・小数・指数形はコーパスの拒否例です。
 
@@ -683,7 +681,7 @@ gitGraph
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
 同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
 Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
-作者の付着を保つため mark・本文・末尾空白を保持します。
+mark・本文・末尾空白を保持します。
 図固有のコメントの LS/PS は内容です。
 文字列とブロックはパーセント記号 2 つで始まるテキストを自身の内容として持ち、
 行値はその前で終わります。

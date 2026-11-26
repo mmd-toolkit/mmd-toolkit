@@ -1957,7 +1957,9 @@ flowchart LR
 
 [fixture: chains/labelled-links-kept]
 
-1 辺 1 行には分けません。
+1 辺 1 行には分けず、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた、
+行を折り返さない形にします（[折り返し](#折り返し)を参照）。
 
 [fixture: chains/split-after-semicolon]
 
@@ -3007,7 +3009,7 @@ flowchart LR
 [fixture: comments/at-end-of-text]
 
 コメントのテキストは、末尾の空白も含めて書かれたまま残します。
-mermaid.js は読まず、書き手のテキストだからです。
+mermaid.js は読みません。
 ほかに文字のないコメント行は、`%% ` を保ちます。
 対象にする版の mermaid.js のすべてが、`%%` を名前が `%%` の頂点として読み、
 別の図を描くためです。

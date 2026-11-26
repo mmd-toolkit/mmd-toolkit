@@ -182,10 +182,9 @@ quadrantChart
 
 A run of empty lines becomes one empty line, and there is none between the
 header and the first statement, and none at the end of the text. A blank line is
-a choice of the author that the Db does not hold, and one empty line shows it at
-the least cost, as Prettier does in code (see
-[Blank lines](./flowchart.md#blank-lines)). Prettier leaves no blank lines at
-the start of a text or a block, so
+not held in the Db, and one empty line shows it at the least cost, as Prettier
+does in code (see [Blank lines](./flowchart.md#blank-lines)). Prettier leaves no
+blank lines at the start of a text or a block, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes blank lines
 before the header and between the header and the first statement.
 

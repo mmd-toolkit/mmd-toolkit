@@ -355,8 +355,8 @@ wardley-beta
 Print NumericLiteral source spans without converting their double values back to
 text. Preserve decimal leading/trailing zeros, precision, rounded boundaries,
 subnormal values, underflow and overflow where accepted. Converting 01.00 to 1
-can reject a decimal-only position; percent conversion also loses the chosen
-unit. Rejected leading-zero integers are not repaired.
+can reject a decimal-only position; numbers are not converted to percent.
+Rejected leading-zero integers are not repaired.
 
 [fixture: wardley/numbers/decimal-leading-zero]
 
@@ -410,8 +410,7 @@ keys of an attribute and its comment stands before a quoted string, not before a
 before a `(` until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep bare inertia and (inertia) distinct, along with build, buy, outsource and
-market. The inertia forms can share a Db, but converting them loses an authored
-node form; do not supply defaults.
+market. The inertia forms can share a Db; do not supply defaults.
 
 [fixture: wardley/decorations/decorations-all] [fixture:
 wardley/decorations/decorations-spaced] [fixture:
@@ -4353,7 +4352,7 @@ Keep every authored statement, child, stage, decoration, reference and empty
 assignment in source order. Repeated declarations and pipelines, unpublished
 evolves, first annotations boxes and last size/evolution/common assignments stay
 written. Never rebuild from the effective Db: sorting or deleting occurrences
-can change its reading and loses authored choices.
+can change its reading.
 
 [fixture: wardley/source-order/order-repeated-components]
 

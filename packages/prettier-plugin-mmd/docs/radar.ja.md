@@ -542,7 +542,6 @@ Prettier が `return  x` を `return x;` と印字するためです。
 数は [Numbers](#numbers)、カンマは [Groups and commas](#groups-and-commas)、
 順序と反復した代入は [Source order](#source-order) にあります。
 既定値への置換、ticks の 32 への制限、min・max の並べ替えはしません。
-公開された値は作者の構文ではないためです。
 radar の描画設定から文の値を補いません。
 
 [fixture: radar/options/option-gaps]
@@ -2806,7 +2805,7 @@ last"]
 プロトタイプに似た名前、空の共通代入を残します。
 別の curve は異なる項目形式を選べます。
 数だけのリストと名前つきリストを相互変換しません。
-解決済み Db は作者の選択を再現できず、並べ替えや削除で読みが変わるためです。
+これらの出現の並べ替えや削除で Db の読みが変わるためです。
 
 [fixture: radar/source-order/declaration-order-kept]
 

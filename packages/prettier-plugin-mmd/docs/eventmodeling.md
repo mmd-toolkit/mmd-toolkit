@@ -1876,9 +1876,9 @@ eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value
 Retain every occurrence in source order, including unused model entities/data,
 notes, GWT, type tags, repeated sources, later same-name data, overwritten
 common forms and inline data alongside a reference. Only their decided layout
-changes, including the permitted block-body margins. An equal comparison Db
-after deduplication would still lose authored occurrences; reordering data can
-also change the first lookup.
+changes, including the permitted block-body margins. Occurrences are not
+deduplicated even where the comparison Db stays equal, and reordering data can
+change the first lookup.
 
 [fixture: eventmodeling/source-order/all-occurrences-retained]
 

@@ -458,8 +458,8 @@ cynefin-beta
 
 Keep all authored transitions, including self transitions, duplicates,
 undeclared endpoints and empty labels. Self transitions may be absent from the
-Db, but they remain authored syntax. Removing duplicates or trimming
-whitespace-only labels can change the reading.
+Db, but they are kept. Removing duplicates or trimming whitespace-only labels
+can change the reading.
 
 [fixture: cynefin/transition-occurrences/transition-occurrences]
 
@@ -1279,8 +1279,8 @@ frontmatter status and byte identity are not guaranteed.
 
 Keep every domain, item, transition, common assignment and body hidden
 occurrence in source order. Empty common assignments remain resets. Sorting or
-rebuilding from effective values loses authored occurrences and can change the
-reading, including transition order and empty resets.
+rebuilding from effective values can change the reading, including transition
+order and empty resets.
 
 [fixture: cynefin/source-order/source-interleaving]
 

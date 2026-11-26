@@ -381,7 +381,7 @@ wardley-beta
 小数の先頭と末尾のゼロ、精度、丸められる境界、非正規化数、小さすぎる値の丸め、
 受理される桁あふれを保ちます。
 01.00 を 1 にすると、小数必須の位置で拒否されます。
-百分率への変換も作者の単位を失うため行いません。
+百分率への変換は行いません。
 拒否される先頭ゼロの整数は修復しません。
 
 [fixture: wardley/numbers/decimal-leading-zero]
@@ -444,7 +444,7 @@ xychart も wardley も同じで、
 を参照してください。
 括弧なしの `inertia` と `(inertia)`、`build`、`buy`、`outsource`、
 `market` を保ちます。
-inertia の両形は Db が同じでも、変更すると書かれたノード形を失います。
+inertia の両形は Db が同じになる場合があります。
 既定値は補いません。
 
 [fixture: wardley/decorations/decorations-all]
@@ -3555,7 +3555,7 @@ LS/PS/NBSP/BOM は字句上の役割を保ちます。
 繰り返した宣言と pipeline、未反映の evolve、最初の annotations box、
 最後の size、evolution、共通代入も書かれたまま残します。
 実効 Db から再構築しません。
-並べ替えや削除は読みを変え、作者の選択を失うためです。
+並べ替えや削除は読みを変えるためです。
 
 [fixture: wardley/source-order/order-repeated-components]
 

@@ -235,8 +235,8 @@ architecture-beta
 Keep each StringLiteral source span, including single/double quotes, opposite
 quotes, empty text, escapes, padding and physical continuation lines, except
 that a run of spaces and tabs inside the text is printed as one space (see
-[Label content](#label-content)). `singleQuote` does not rewrite it: re-encoding
-loses authored spelling, and trimming or decoding can change the Db.
+[Label content](#label-content)). `singleQuote` does not rewrite it: trimming or
+decoding can change the Db.
 
 [fixture: architecture/text-icons/double-quote]
 
@@ -4607,9 +4607,8 @@ architecture-beta
 
 Keep every statement, reference, alignment member, repeated edge/constraint and
 empty assignment in source order. Do not rebuild the tree from the Db or sort
-declarations into publication order: those steps lose authored structure, and
-deleting an empty assignment can change the final value. Numeric-looking IDs
-remain written text.
+declarations into publication order. Deleting an empty assignment can change the
+final value. Numeric-looking IDs remain written text.
 
 [fixture: architecture/source-order/authored-order]
 

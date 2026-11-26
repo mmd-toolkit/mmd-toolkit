@@ -5792,8 +5792,7 @@ gives it as `minlen` of the edge, which the dagre layout
 ([`index.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/dagre/index.js#L759))
 and the elk layout
 ([`render.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L2754))
-take over. The examples that were drawn gave the same figure, but the length is
-the author's request.
+take over. The examples that were drawn gave the same figure.
 
 [fixture: flowchart/arrow-spacing/arrow-length-kept]
 

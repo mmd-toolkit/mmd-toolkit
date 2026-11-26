@@ -116,9 +116,8 @@ as written.
 [fixture: packet/block-forms-and-order/equal-range-single]
 
 Keep every occurrence in order, repeated labels and empty common assignments.
-Never merge or reconstruct statements from the Db: row splitting and the
-publication cap lose authored structure, and deleting empty assignments can
-change the final value. The mermaid.js Db records separate packet blocks for
+Never merge or reconstruct statements from the Db: deleting empty assignments
+can change the final value. The mermaid.js Db records separate packet blocks for
 repeated labels at different positions; merging or deleting an occurrence
 changes those blocks.
 

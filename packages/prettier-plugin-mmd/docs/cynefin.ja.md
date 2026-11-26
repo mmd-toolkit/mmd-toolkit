@@ -474,7 +474,7 @@ cynefin-beta
 ### Transition occurrences
 
 自己遷移、重複、未宣言の端点、空ラベルも含めて、全遷移を残します。
-自己遷移が Db から消えても、書かれた構文は残るためです。
+自己遷移が Db から消えても、残します。
 重複の削除や空白だけのラベルの両端の空白の除去は読みを変え得ます。
 
 [fixture: cynefin/transition-occurrences/transition-occurrences]
@@ -1328,8 +1328,7 @@ LS・PS・NBSP・BOM は、共通値の外端と普通の説明開始記号前�
 
 領域、項目、遷移、共通の代入、本文の隠れた形の全出現を原文順で残します。
 空の共通代入もリセットとして残します。
-有効値からの再構築や並べ替えは書かれた出現を失い、
-遷移の順や空のリセットの読みを変え得るためです。
+有効値からの再構築や並べ替えは、遷移の順や空のリセットの読みを変え得るためです。
 
 [fixture: cynefin/source-order/source-interleaving]
 

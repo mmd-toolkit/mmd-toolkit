@@ -6018,7 +6018,7 @@ dagre のレイアウトは
 elk のレイアウトは
 [`render.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L2754)
 で、その長さを引き継ぎます。
-描いた例は同じ図でしたが、長さは作者が求めたものです。
+描いた例は同じ図でした。
 
 [fixture: flowchart/arrow-spacing/arrow-length-kept]
 

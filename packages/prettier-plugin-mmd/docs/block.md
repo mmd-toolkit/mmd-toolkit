@@ -170,12 +170,11 @@ block-beta
 ### Rows
 
 Most diagrams stand each statement on a line of its own. A block diagram does
-not, because the line is what the author lays the blocks out by: a run of nodes
-and `space` blocks on one line is a row of the grid that a `columns` statement
-sets, and the documentation of mermaid.js writes them so (`a b c`,
-`a["A label"] b:2 c:2 d`, `Start(("Start")) space:2`). Putting each node on a
-line of its own would hide the rows, and the number of columns would have to be
-counted again from the `columns` statement. No rule of
+not, because a run of nodes and `space` blocks on one line is a row of the grid
+that a `columns` statement sets, and the documentation of mermaid.js writes them
+so (`a b c`, `a["A label"] b:2 c:2 d`, `Start(("Start")) space:2`). Putting each
+node on a line of its own would hide the rows, and the number of columns would
+have to be counted again from the `columns` statement. No rule of
 [How the printed form is decided](./printed-form.md) gives this form: rule 2
 gives the form of the other diagram types, a statement on a line of its own,
 which hides the rows. The released form stays until it is decided (see
@@ -280,8 +279,8 @@ block-beta
 
 A run of empty lines becomes one empty line, and there is none at the start of
 the text, none between the header and the first statement, and none at the end
-of the text. A blank line is a choice of the author that the Db does not hold,
-and one empty line shows it at the least cost, as Prettier does in code (see
+of the text. A blank line is not held in the Db, and one empty line shows it at
+the least cost, as Prettier does in code (see
 [Blank lines](./flowchart.md#blank-lines)).
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the empty
 lines: Prettier prints a run of empty lines as one and drops the empty lines at

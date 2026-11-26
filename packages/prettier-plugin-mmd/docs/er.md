@@ -1997,12 +1997,11 @@ next line goes on in the style: `classDef a fill:red `, a line break, and `A`
 define the style `fill:redA` and no entity A. So such a statement is kept as
 written, with the whitespace and the line that it takes, and the line stays at
 the column written. Joining the two lines (`classDef a fill:red A`) would give
-the same Db and would show how mermaid.js reads them, but it removes the
-whitespace that the author wrote, and the printer does not interpret the
-statement. A directive after the last style takes the whitespace beside it in
-the same way: the statement is kept as written where whitespace stands before
-the directive or after it, and formatted as usual where the directive touches
-the last style and no whitespace follows it on its line
+the same Db and would show how mermaid.js reads them, but the printer does not
+interpret the statement. A directive after the last style takes the whitespace
+beside it in the same way: the statement is kept as written where whitespace
+stands before the directive or after it, and formatted as usual where the
+directive touches the last style and no whitespace follows it on its line
 (`classDef a fill:red%%{init: {}}%%`).
 
 [fixture: styles-and-classes/trailing-whitespace-takes-next-line] [fixture:

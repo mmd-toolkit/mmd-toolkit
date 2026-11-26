@@ -899,8 +899,8 @@ one space, however much whitespace was written there.
 
 The items keep their separators: a `,` touches the item before it and is
 followed by one space, and items that are separated by whitespace only are
-separated by one space. The Db is the same for every separator, so the kind of
-separator is the author's.
+separated by one space. The Db is the same for every separator, and the kind of
+separator is kept as written.
 
 [fixture: lists/separators-as-written] [fixture: lists/dates-and-days]
 

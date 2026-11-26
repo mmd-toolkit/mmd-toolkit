@@ -1897,7 +1897,9 @@ A chain of links stays on one line, as written.
 
 [fixture: chains/labelled-links-kept]
 
-It is not split into one link per line.
+It is not split into one link per line: a line is not wrapped, a form decided
+under [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
+[Line wrapping](#line-wrapping)).
 
 [fixture: chains/split-after-semicolon]
 
@@ -2912,10 +2914,10 @@ statement and takes the level of its neighbours.
 comments/after-frontmatter-before-header] [fixture: comments/before-header]
 [fixture: comments/before-end] [fixture: comments/at-end-of-text]
 
-The text of a comment is kept as written, including whitespace at its end:
-mermaid.js does not read it, and it is the author's text. An otherwise empty
-comment line keeps `%% `, since every version of mermaid.js that counts reads
-`%%` as a vertex named `%%` and draws a different figure (see
+The text of a comment is kept as written, including whitespace at its end;
+mermaid.js does not read it. An otherwise empty comment line keeps `%% `, since
+every version of mermaid.js that counts reads `%%` as a vertex named `%%` and
+draws a different figure (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: comments/trailing-whitespace-kept] [fixture:
