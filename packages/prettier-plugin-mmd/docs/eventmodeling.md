@@ -1716,18 +1716,16 @@ names no mark for a line break next to a comment or a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep such a line break, where no
-other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`). The later lines of a statement and the comment
-or directive lines between them stand one level deeper than the statement, where
-no other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`), and the `}` that closes a block whose `{`
-stands on a later line stands at the level of the statement. Only GWT's decided
-clause/item layout adds structural splits. Values, hidden forms, metadata and
-protected boundaries retain their contents, apart from the limited block-body
-margin in [Data blocks](#data-blocks). Avoiding width-dependent choices keeps
-those lexical boundaries explicit and never inserts a forbidden LF into inline
-data.
+[journey](./journey.md#multi-line-statements) keep such a line break. The later
+lines of a statement and the comment or directive lines between them stand one
+level deeper than the statement, where no other rule keeps the layout as written
+(a comment region that joins physical lines, a line that holds a `;`), and the
+`}` that closes a block whose `{` stands on a later line stands at the level of
+the statement. Only GWT's decided clause/item layout adds structural splits.
+Values, hidden forms, metadata and protected boundaries retain their contents,
+apart from the limited block-body margin in [Data blocks](#data-blocks).
+Avoiding width-dependent choices keeps those lexical boundaries explicit and
+never inserts a forbidden LF into inline data.
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap] [fixture:
 eventmodeling/long-lines/break-next-to-comment] [fixture:
