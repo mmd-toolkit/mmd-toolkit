@@ -625,9 +625,9 @@ concatenates the native style units whatever whitespace separates them:
 `stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does not
 change. For example, `fill   : navy, stroke  : black` becomes
 `fill: navy, stroke: black`. A style that starts with the `:` has no whitespace
-before it and one space after it, as any other: `style r :  red   x` is printed
-`style r : red x`. The gaps between words of a style that starts with `:` become
-one space.
+before it and one space after it, as any other (rule 1, as above):
+`style r :  red   x` is printed `style r : red x`. The gaps between words of a
+style that starts with `:` become one space (rule 1, as above).
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 

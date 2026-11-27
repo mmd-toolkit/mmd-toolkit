@@ -514,11 +514,11 @@ reads a run of whitespace as one. So a style has no whitespace before its first
 it and one space after it, a run of spaces and tabs between two words of a style
 is one space, and the style has no whitespace at its end.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these spaces,
-as it gives them to the styles of the other diagram types (see
-[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)),
 and no whitespace at the end of a value before the `,` or the end of the line.
 The Db keeps the whitespace in each style, so it changes, but the figure is the
-same, which was checked by drawing the chart before and after.
+same (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)),
+which was checked by drawing the chart before and after.
 
 [fixture: treemap/styles/spaced] [fixture: treemap/styles/trailing] [fixture:
 treemap/styles/trailing-before-semicolon] [fixture:

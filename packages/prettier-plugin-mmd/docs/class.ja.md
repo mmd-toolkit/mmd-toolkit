@@ -510,7 +510,8 @@ Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 [test: prints a form feed before a comment as one space]
 [test: keeps a form feed before a comment where a version that counts reads the text as words]
 
-`:` のない語だけのスタイルでも同じです。
+`:` のない語だけのスタイルでも、上の `:` のあるスタイルと同じく、規則 1 が、
+`,` の前に空白を置かず後ろに 1 つ置く形と、語の間の空白 1 つを与えます。
 mermaid.js はこれらを独立したトークンとして読み、
 `style A bold ,italic` は `style A bold, italic` と印字し、
 `style A fill   #f00` は `style A fill #f00` と印字します。

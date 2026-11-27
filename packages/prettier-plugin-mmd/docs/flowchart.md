@@ -961,9 +961,10 @@ style property gives a name its value, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) treats its first
 colon as the colon of a key: no whitespace before it and one space after it when
 the value is nonempty. Where the value is empty, nothing but the `,` or the end
-of the line follows the `:`, and rule 1 puts no whitespace before either. The
-`,` between styles has no whitespace before it and one space after it, as
-Prettier prints the comma of `f(a,b)` as `f(a, b);`
+of the line follows the `:`, and rule 1 puts no whitespace before either, as
+Prettier prints `a{color: ;}` in CSS with `color:;`. The `,` between styles has
+no whitespace before it and one space after it, as Prettier prints the comma of
+`f(a,b)` as `f(a, b);`
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)):
 `style A fill :#f00,stroke:  #333` is printed
 `style A fill: #f00, stroke: #333`.

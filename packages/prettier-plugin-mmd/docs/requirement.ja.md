@@ -638,10 +638,11 @@ Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字し�
 Mermaid は、区切る空白にかかわらずスタイルの単位をつなげて読むため、
 `stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` で、Db は変わりません。
 `fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
-`:` で始まるスタイルも、ほかのスタイルと同じく、`:` の前に空白を置かず、
-後ろに空白を 1 つ置きます。
+`:` で始まるスタイルも、ほかのスタイルと同じく（上のとおり規則 1 です）、
+`:` の前に空白を置かず、後ろに空白を 1 つ置きます。
 `style r :  red   x` は `style r : red x` と印字します。
-`:` で始まるスタイルの語の間は、空白 1 つにして印字します。
+`:` で始まるスタイルの語の間は、
+空白 1 つにして印字します（上のとおり規則 1 です）。
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 

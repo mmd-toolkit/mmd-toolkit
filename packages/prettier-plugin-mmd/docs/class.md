@@ -468,14 +468,15 @@ before a comment that stands after something on its line, as Prettier prints
 [test: prints a form feed before a comment as one space] [test: keeps a form
 feed before a comment where a version that counts reads the text as words]
 
-The same holds for styles that are words without a `:`, which mermaid.js reads
-as tokens of their own: `style A bold ,italic` is printed
-`style A bold, italic`, and `style A fill   #f00` is printed
-`style A fill #f00`. Whether whitespace stands between two words stays as
-written: mermaid.js joins the words, so `fill #f00` and `fill#f00` are the same
-style, and a word that touches the next stays touching, as a gap does elsewhere
-(see [Directives](#directives)); joining the words would hide where one word
-ends.
+As for the styles with a `:` above, rule 1 gives a `,` no whitespace before it
+and one space after it, and the words one space between them, in styles that are
+words without a `:`, which mermaid.js reads as tokens of their own:
+`style A bold ,italic` is printed `style A bold, italic`, and
+`style A fill   #f00` is printed `style A fill #f00`. Whether whitespace stands
+between two words stays as written: mermaid.js joins the words, so `fill #f00`
+and `fill#f00` are the same style, and a word that touches the next stays
+touching, as a gap does elsewhere (see [Directives](#directives)); joining the
+words would hide where one word ends.
 
 [fixture: whitespace-between-tokens/style-words-comma-spaced] [fixture:
 whitespace-between-tokens/style-words-as-written] [fixture:
