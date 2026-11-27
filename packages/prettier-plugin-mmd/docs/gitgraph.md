@@ -685,10 +685,14 @@ before a comment that stands after something on its line, as Prettier prints
 The whitespace at the start of the text of a comment and the runs of whitespace
 inside it stay as written:
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-comment as written, as Prettier prints `//    spaced   text` as written. Native
-comments keep LS/PS as content; strings/blocks own percent text while line
-values stop before it. Common removed regions retain complete source spans.
-Retained prefixes override ordinary alignment.
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written. The whitespace at the end of its line,
+which stays too, is not the form of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): rule 1 leaves it
+out, as Prettier does at the end of every line. Native comments keep LS/PS as
+content; strings/blocks own percent text while line values stop before it.
+Common removed regions retain complete source spans. Retained prefixes override
+ordinary alignment.
 
 [fixture: gitgraph/comments/comment-text-as-written] [fixture:
 gitgraph/comments/comment-placement] [fixture:

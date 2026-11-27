@@ -1267,15 +1267,19 @@ following unit, in the same direction as directives. Keep marks, contents,
 trailing padding and block-comment continuation columns. The whitespace at the
 start of the text of a comment and the runs of whitespace inside it stay as
 written: [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the
-text of a comment as written, as Prettier prints `//    spaced   text` as
-written. Native `//` and `%%` run through LS/PS to physical LF. A `%%` comment
-line inside a data block, a note, an `accDescr` block, a slash block comment or
-a hidden form is part of that text. Its columns stay written except for the
-block-body margin adjustment in [Data blocks](#data-blocks), since in a `data`
-block that a frame reads the Db holds them as a part of the value. Boundaries
-needed for metadata or a required `title` take precedence. Slash comments are
-not moved before the header, where detection would reject them. A comment line
-before the header stands at column one.
+text of a comment as written but for the whitespace at the end of its line, as
+Prettier prints `//    spaced   text` as written. The whitespace at the end of
+its line, which stays too, is not the form of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): rule 1 leaves it
+out, as Prettier does at the end of every line. Native `//` and `%%` run through
+LS/PS to physical LF. A `%%` comment line inside a data block, a note, an
+`accDescr` block, a slash block comment or a hidden form is part of that text.
+Its columns stay written except for the block-body margin adjustment in
+[Data blocks](#data-blocks), since in a `data` block that a frame reads the Db
+holds them as a part of the value. Boundaries needed for metadata or a required
+`title` take precedence. Slash comments are not moved before the header, where
+detection would reject them. A comment line before the header stands at column
+one.
 
 [fixture: eventmodeling/comments/comment-text-as-written] [test: an em space
 before a `//` comment after a statement of an eventmodeling diagram] [test: a

@@ -466,7 +466,8 @@ first column, like every other line (see [Indentation](#indentation)). The
 whitespace at the start of the text of a comment and the runs of whitespace
 inside it stay as written:
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-comment as written, as Prettier prints `//    spaced   text` as written.
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written.
 
 [fixture: comments/lines-at-the-first-column] [fixture: comments/text-kept]
 [fixture: comments/comment-line-only-in-the-body]

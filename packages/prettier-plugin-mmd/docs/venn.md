@@ -712,12 +712,13 @@ value is read, so its characters, a `)` among them, are no part of the value and
 stay as written. The whitespace at the start of the text of a comment and the
 runs of whitespace inside it stay as written:
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-comment as written, as Prettier prints `//    spaced   text` as written. Space
-inside an rgb/rgba token is different: changing a component gap changes the Db,
-and so does quoting a joined bare value; a quoted value is printed without
-quotes as [Quotes](#quotes) says, and whole rgb/rgba tokens, key case,
-repetitions and separate statements stay as written. A kept prefix overrides
-punctuation spacing so colon-to-hash gaps cannot change semicolon selection.
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written. Space inside an rgb/rgba token is
+different: changing a component gap changes the Db, and so does quoting a joined
+bare value; a quoted value is printed without quotes as [Quotes](#quotes) says,
+and whole rgb/rgba tokens, key case, repetitions and separate statements stay as
+written. A kept prefix overrides punctuation spacing so colon-to-hash gaps
+cannot change semicolon selection.
 
 [corpus fixture: venn/div-c4-bare-style-value] [corpus fixture:
 venn/db-style-case-and-order] [corpus fixture:

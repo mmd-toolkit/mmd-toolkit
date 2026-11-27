@@ -1719,7 +1719,8 @@ In the Langium types, a `%%` after the text of a title starts a comment, and the
 text of the comment, the runs of whitespace inside it included, stays as written
 (`title T %% c  %%{x}%%` keeps the two spaces after `c`):
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-comment as written, as Prettier prints `//    spaced   text` as written.
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written.
 
 [fixture: radar/title/title-comment-text-as-written]
 

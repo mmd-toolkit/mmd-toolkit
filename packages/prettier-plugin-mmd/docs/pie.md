@@ -658,8 +658,9 @@ continuation columns, because re-indenting a continuation adds spaces to the
 joined label. The whitespace at the start of the text of a comment and the runs
 of whitespace inside it stay as written:
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-comment as written, as Prettier prints `//    spaced   text` as written. A
-protected preheader prefix overrides ordinary alignment.
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written. A protected preheader prefix overrides
+ordinary alignment.
 
 [fixture: pie/comments/comment-text-as-written] [fixture:
 pie/comments/comments-align] [fixture:

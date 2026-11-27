@@ -1042,7 +1042,8 @@ or of the member lines in a body, and its text is kept as written. The
 whitespace at the start of the text of a comment and the runs of whitespace
 inside it stay as written:
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-comment as written, as Prettier prints `//    spaced   text` as written.
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
 comment line inside a block one level deeper than the line that opens it, as
 Prettier prints the lines inside a block.
