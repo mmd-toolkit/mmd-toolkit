@@ -2237,12 +2237,19 @@ statement (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A comment line or a `)` alone on a later line changes no argument (see
 [Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
-It stays as written all the same:
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-value that spreads over several lines as written, as Prettier keeps the text
-inside a template literal of JavaScript. The other gaps of such a statement
-follow the ordinary rules: `click   A "/u" "x` and `y"` on the next line is
-printed `click A "/u" "x` and `y"`, as the statement on one line would be.
+mermaid.js keeps the text between the parentheses in the Db, with its line
+breaks and the indentation of its lines, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the lines of
+the arguments and the line of the `)` as written, as Prettier keeps the text
+inside a template literal of JavaScript. mermaid.js removes a comment line among
+them with its indentation, so such a line is a line inside a block of rule 1,
+one level deeper than the line of the statement: in `click A call f(a`, a line
+break, `%% c`, a line break, and `) "t"`, the comment line stands one level
+deeper than the line of `click`, and `) "t"` stays where it was written. The
+released version keeps a comment line as written, which that rule does not give.
+The other gaps of such a statement follow the ordinary rules:
+`click   A "/u" "x` and `y"` on the next line is printed `click A "/u" "x` and
+`y"`, as the statement on one line would be.
 
 [fixture: multi-line-statements/click-string-over-lines-collapsed] [fixture:
 multi-line-statements/click-callback-args-over-lines-collapsed] [fixture:
@@ -2846,12 +2853,56 @@ A quoted string written over several lines keeps its columns.
 
 [fixture: multi-line-values/markdown-string-kept]
 
-At the top level, align the lines of an `accDescr { ... }` body one step inside
-its statement. mermaid.js discards the indentation after a line feed from the
-description. Inside a subgraph, keep the columns of a block with text, because
-its raw text is also stored among the subgraph's members.
+At the top level, align the lines of an
+`accDescr { ... [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level: mermaid.js reads these lines without their indentation, so they are lines inside a block, one level deeper than the line that opens it. }`
+body one step inside its statement. mermaid.js discards the indentation after a
+line feed from the description. Inside a subgraph, keep the columns of a block
+with text, because its raw text is also stored among the subgraph's members:
+mermaid.js reads the text of such a block, without the whitespace at its ends,
+as a node of the subgraph, with the columns of its later lines, so aligning them
+changes the Db. A line of whitespace only and a run of empty lines among them
+stay as written there too, and so does the indentation of a directive line among
+them, which stays in the node when mermaid.js removes the directive: the node
+holds them. The indentation of the first line of text and the empty lines, the
+lines of whitespace only, and the directive lines at the start and the end of
+such a block are no part of the node, which mermaid.js reads without the
+whitespace at its ends:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the first line
+and those directive lines one level deeper than the line that opens the block,
+as lines inside a block, and leaves out those empty lines, and the released
+version keeps them as written, which rule 1 does not give. A directive that is
+not closed and whose argument starts with a word character, also on the next
+line, takes the whitespace after that word, line breaks included (the
+specification's
+[Where a directive is](../../spec/docs/common.md#where-a-directive-is)), so what
+follows it goes on the line of the directive and is printed as written, as in
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins).
+Any other argument, as in `%%{init: {}`, runs to the end of the text (see
+[Directives](#directives)), which is then printed as written. In a line `%%{x`,
+a line `b`, and a line `}`, the name of the directive is `x`, its argument is
+`b`, and the `}` goes on the line of the directive with the indentation before
+it. The line of the directive itself is printed as any other directive line of
+the block, as above. The released version keeps that line where it is written
+inside a subgraph, also at the start or the end of the block. Where the closer
+goes on the line of the directive, it also keeps every line of the block after
+the opening line as written, at the top level and inside a subgraph. Rule 1
+gives neither.
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-blank-line-run-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-whitespace-line-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-directive-line-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-edge-blank-lines-kept]
+[fixture:
+multi-line-values/accdescr-block-subgraph-directive-lines-at-the-ends-kept]
+[fixture:
+multi-line-values/accdescr-block-subgraph-unclosed-directive-line-kept]
+[fixture:
+multi-line-values/accdescr-block-subgraph-unclosed-directive-line-at-the-start-kept]
+[fixture:
+multi-line-values/accdescr-block-unclosed-directive-free-text-argument] [corpus
+fixture: flowchart/db-subgraph-member-acc-descr-block-blank-lines] [corpus
+fixture: flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]
 
 A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
@@ -2862,7 +2913,10 @@ the opening line, as Prettier prints the closing line of a block.
 multi-line-values/accdescr-block-closing-brace-aligned]
 
 Comment contents inside such a block are kept, with their columns following the
-same top-level or subgraph rule.
+same top-level or subgraph rule. Inside a subgraph, mermaid.js removes a comment
+line with its indentation, so the node does not hold it: rule 1 puts the comment
+line one level deeper than the line that opens the block, and the released
+version keeps its column, which rule 1 does not give.
 
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
 

@@ -1483,18 +1483,20 @@ classDiagram
 ### Multi-line values
 
 As in [flowchart's top-level descriptions](./flowchart.md#multi-line-values),
-align the lines of an `accDescr { ... }` body one step inside its statement. A
-separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block. Mermaid
-discards this indentation from the description. In an `accDescr` body,
-mermaid.js keeps spaces and tabs after text and before an interior line break in
-the description's Db text, so they stay as written. A string, a backquoted name,
-and a generic type written over several lines are kept as written too. Line
-feeds and indentation inside a note string or a backquoted class name are part
-of the note text or class name in mermaid.js's Db. Joining or reindenting those
-lines changes that text, so they stay as written.
+align the lines of an `accDescr { ... }` body one step inside its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block. Mermaid discards this indentation from the description. In an `accDescr`
+body, mermaid.js keeps spaces and tabs after text and before an interior line
+break in the description's Db text, so they stay as written. A string, a
+backquoted name, and a generic type written over several lines are kept as
+written too. Line feeds and indentation inside a note string or a backquoted
+class name are part of the note text or class name in mermaid.js's Db. Joining
+or reindenting those lines changes that text, so they stay as written.
 
 [corpus fixture: class/lex-string-multi-line]
 

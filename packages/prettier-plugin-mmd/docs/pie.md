@@ -436,8 +436,11 @@ pie
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, body lines stand one step inside the
-statement. The keyword and opener use one ordinary space, even when written
-touching. Prettier puts one space before the opening brace of a block, so
+statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
+level: mermaid.js reads these lines without their indentation, so they are lines
+inside a block, one level deeper than the line that opens it. The keyword and
+opener use one ordinary space, even when written touching. Prettier puts one
+space before the opening brace of a block, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one-space
 gap between `accDescr` and `{`. A gap made only of whitespace has that form even
 across line breaks. Protected trivia and semicolon layouts keep their gaps.
@@ -458,11 +461,15 @@ description empty or just `D`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
 statement. Keep line breaks and interior blank lines, and the whitespace at the
-end of each line of text except the last one. A run of blank lines between two
-lines of text stays as written. A line of whitespace only becomes an empty line.
-The whitespace at the end of the last line of text is dropped where the closer
-stands on a line of its own, and is printed as one space where the closer
-follows it on that line. A separate `}` aligns with its statement.
+end of each line of text except the last one.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the level of
+these lines, since mermaid.js reads them without their indentation, and keeps
+the line breaks between the lines of text, since mermaid.js keeps them in the
+value. A run of blank lines between two lines of text stays as written. A line
+of whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. A separate `}`
+aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
 puts the closing line at the level of the line that holds the `{`, as Prettier
 prints the closing line of a block, and that line is the `accDescr` line or,

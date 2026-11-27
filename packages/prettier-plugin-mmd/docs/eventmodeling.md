@@ -669,16 +669,23 @@ tf 01 evt Alpha { 	 x  }
 
 For ordinary data and note blocks written as `{` immediately followed by LF and
 closed by LF followed by `}`, align every nonblank body line to `tabWidth` ASCII
-spaces (U+0020) where the conditions below permit it. The body lines are the
-text of a value and no lines inside a block of rule 1, and rule 2 gives no
-margin of a body line: [pie](./pie.md#description-blocks),
-[radar](./radar.md#description-blocks), and
-[cynefin](./cynefin.md#description-blocks) stand the lines of a description
-block one level inside their statement, `tabWidth` spaces and none at
-`tabWidth: 0`, but in each of them this is a question of the list of undecided
-forms (D35), so their printing is no decided form, and the released form stays
-until it is decided (see
-[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+spaces (U+0020) where the conditions below permit it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these lines by
+whether mermaid.js holds their indentation in the Db. The body of a `data` block
+that a frame reads is the value that the Db holds for the frame, with the
+indentation of each line, so rule 1 keeps it as written, as Prettier keeps the
+text inside a template literal of JavaScript, but where the conditions below
+permit the alignment, a change of the Db of the kind that the exception below
+defines, rule 1 gives the alignment: the lines of one body at one column read as
+one body, where lines kept at their written columns read as standing beside the
+line that opens the block or as nested under one another. The body of a note,
+and of a `data` block that no frame reads, is in no field of the Db, and
+mermaid.js draws nothing of it, so rule 1 puts its lines as lines inside a
+block, one level deeper than the line that opens the block, as
+[pie](./pie.md#description-blocks), [radar](./radar.md#description-blocks), and
+[cynefin](./cynefin.md#description-blocks) put the lines of a description block.
+The released version keeps the body of a note or of a `data` block that no frame
+reads as written where the rules below keep a body, which rule 1 does not give.
 Use `2 * tabWidth` spaces when an ordinary header continuation remains, putting
 the body one further step inside its opening line, as
 [sequence](./sequence.md#indentation) and [state](./state.md#indentation) stand
@@ -688,16 +695,20 @@ inside an inline directive, does not add this step: the step stands for a
 continuation line that the printer indents, a joined LF leaves none, and the
 lines of a directive stay as written. Native hidden header forms retain their
 boundary columns and use the ordinary one-step body rule. Use spaces even with
-`useTabs`: a tab margin gives the same Db and the same drawing in the versions
-that were run, so no reason keeps the spaces, and its row is in the list (D35).
-At `tabWidth: 0`, keep the body as written, since the margin there is none, and
-removing the margin of a later line draws a different diagram (see
+`useTabs`. For a body that a frame reads, that is the alignment that rule 1
+gives, since the kind of change that the exception below defines holds ASCII
+spaces only; for the other bodies, rule 1 indents the lines with a tab for each
+level, which the released version does not do. At `tabWidth: 0`, keep the body
+as written, since the margin there is none, and removing the margin of a later
+line draws a different diagram (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count):
-a later line at column one against two spaces in). A body of one line, and a
-body none of whose later lines has a margin, is kept as written, which no rule
-gives either (D35); removing the margin of its first line draws the same. This
-does not parse the body into data fields or format it as JSON or code; authored
-indentation differences are not preserved.
+a later line at column one against two spaces in). That is the form of rule 1
+for a body that a frame reads; for the other bodies, rule 1 puts the lines at
+the level of the line that opens the block, since a level has no width there. A
+body of one line, and a body none of whose later lines has a margin, is kept as
+written, the form of rule 1 for a body that a frame reads and not for the other
+bodies (above). This does not parse the body into data fields or format it as
+JSON or code; authored indentation differences are not preserved.
 
 [fixture: eventmodeling/declarations-and-notes/header-completion-comments]
 
@@ -737,12 +748,17 @@ margin on every line would add the first space to a later line, which can change
 the rendered label: every version that counts draws different text and geometry
 for it (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-A leading empty line does not make the next line the first physical line.
+A note and a `data` block that no frame reads draw nothing, so this reason does
+not hold for them (above). A leading empty line does not make the next line the
+first physical line.
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
 
 [fixture: eventmodeling/data-blocks/body-later-zero-margin-kept] [fixture:
 eventmodeling/data-blocks/body-later-zero-margin-plain-kept]
+
+[fixture: eventmodeling/data-blocks/body-later-zero-margin-unread-kept]
+[fixture: eventmodeling/data-blocks/note-later-zero-margin-kept]
 
 [fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
 

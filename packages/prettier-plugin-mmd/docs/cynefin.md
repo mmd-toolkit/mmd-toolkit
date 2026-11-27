@@ -617,16 +617,19 @@ depth: it puts the closing line at the level of the line that holds the `{`, as
 Prettier prints the closing line of a block, and that line is the `accDescr`
 line or, where a comment or a directive stands before the `{`, a later line at
 the level of the statement. Ordinary description body and standalone comment
-lines align one level inside it. Keep line breaks and interior blank lines, and
-the whitespace at the end of each line of text except the last one; a line of
-whitespace only becomes an empty line. A block description's line breaks form
-part of its value in mermaid.js, so joining description lines with spaces
-changes the Db. The whitespace at the end of the last line of text is dropped
-where the closer stands on a line of its own, and is printed as one space where
-the closer follows it on that line. Directives and shared removed comment
-regions keep their complete source. Comments/directives inside empty blocks
-retain their shared layout. Native-looking text inside a value remains value
-text.
+lines align one level inside it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. Keep line breaks and
+interior blank lines, and the whitespace at the end of each line of text except
+the last one; a line of whitespace only becomes an empty line. A block
+description's line breaks form part of its value in mermaid.js, so joining
+description lines with spaces changes the Db. The whitespace at the end of the
+last line of text is dropped where the closer stands on a line of its own, and
+is printed as one space where the closer follows it on that line. Directives and
+shared removed comment regions keep their complete source. Comments/directives
+inside empty blocks retain their shared layout. Native-looking text inside a
+value remains value text.
 
 [fixture: cynefin/description-blocks/brace-on-a-later-line]
 

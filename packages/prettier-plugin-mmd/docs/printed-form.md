@@ -112,11 +112,52 @@ things, what Prettier prints beside a block comment at the same place, as
 mermaid.js reads the whitespace on the two sides of a directive as one gap of an
 exact width, it decides instead (see
 [Where mermaid.js decides against the whitespace](#where-mermaidjs-decides-against-the-whitespace)).
-The text inside a template literal of JavaScript stays as written, and so does
-the text of a value that spreads over several lines. The lines between the `{`
-and the `}` of a description block, its text lines and the comment and directive
-lines among them, are such a text and no lines inside a block of this row: the
-row gives the closing `}` of such a block and no line between.
+The text inside a template literal of JavaScript stays as written, and so does a
+line of a value that spreads over several lines where mermaid.js holds the
+indentation of that line in the value, the Db, such as the later lines of a
+string of a flowchart label written over lines, the later lines of the body of a
+note of a state diagram, the lines of the body of an eventmodeling `data` block
+that a frame reads, the lines of the arguments of a `click` call written over
+lines, the line of its `)` among them, and the later lines of a description
+block inside a `subgraph` of a flowchart, a swimlane diagram, or an ER diagram,
+or inside a `flow` of an agentflow diagram, whose text mermaid.js also reads,
+without the whitespace at its ends, as a node of the subgraph or the flow, with
+the columns of its later lines. Where the formatter aligns such lines in a kind
+that
+[The check, and formatting that changes the Db](#the-check-and-formatting-that-changes-the-db)
+allows, as the rules of [Notes](./state.md#notes) align the later lines of a
+paragraph of a note and those of [Data blocks](./eventmodeling.md#data-blocks)
+the body of a `data` block, this row gives the alignment instead, one level
+deeper than the line that opens the block: the lines of one body at one column
+read as one body, where a line left at its written column reads as nested under
+the line before it or as standing beside the line that opens the block. This
+corrects the form of the row there, as AGENTS.md (item 4) says of a rule whose
+form reads worse than another form that draws the same. A line whose indentation
+mermaid.js does not hold in the Db is a line inside a block of this row, and it
+stands one level deeper than the line that opens the block, whatever its written
+indentation, as every line inside a block does. So do the lines between the `{`
+and the `}` of a description block: its text lines, which mermaid.js reads
+without their indentation but for the later lines inside such a `subgraph` or
+`flow`; its comment lines, which it removes with their indentation (in an
+agentflow diagram, a line there that starts with `%%` is a line of text); and
+its directive lines, which it removes, but for those between two lines of text
+inside such a `subgraph` or `flow`, whose indentation stays in the node. So do
+the lines of a description block in the `global` body of an agentflow diagram,
+whose text decides the members of a later flow but whose whitespace does not;
+the first line of the body of a note of a state diagram, which mermaid.js reads
+without its indentation; the lines of the body of an eventmodeling note and of a
+`data` block that no frame reads, which no field of the Db holds; and a comment
+line among the arguments of a `click` call written over lines, which mermaid.js
+removes with its indentation. The line breaks between the lines of text of a
+description block stay, since mermaid.js keeps them in the value, and the empty
+lines among its lines follow the row Blank lines: a run of them becomes one, and
+none stands at the start or the end of the block, as Prettier prints the
+statements of a function body. Inside such a `subgraph` or `flow`, a run of
+empty lines and a line of whitespace only between two lines of text stay as
+written, since the node holds them, while the indentation of its first line of
+text, and the empty lines, the lines of whitespace only, and the directive lines
+at the start and the end of the block, are no part of the node. The closing `}`
+of a description block stands at the level of the line that opens it.
 
 The statements of an eventmodeling diagram stand at column one, and not one
 level deeper than its header. Every version of mermaid.js that counts rejects

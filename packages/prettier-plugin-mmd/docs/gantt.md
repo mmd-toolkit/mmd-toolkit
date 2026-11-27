@@ -53,10 +53,14 @@ it. A header at the first column is easier to find than an indented one.
 
 Values kept as written retain their columns. Description-body lines instead
 stand one step inside their statement (see
-[Multi-line values](#multi-line-values)). A separate `}` aligns with its
-statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
-depth when the `{` stands on the `accDescr` line: it puts the closing line at
-the level of the opening line, as Prettier prints the closing line of a block.
+[Multi-line values](#multi-line-values)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block.
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -1314,11 +1318,14 @@ another description text in the SVG (see
 accessibility-statements/block-then-percent-kept]
 
 In a block with a text over several lines, indent the body one level inside the
-statement: mermaid.js discards indentation after LF from the description. A
-separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block.
+statement: mermaid.js discards indentation after LF from the description.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1560,10 +1567,13 @@ T
 The arguments and the name of a call and the string of a link are kept as
 written, with the line breaks and the whitespace inside, since they are part of
 the value. Description-body lines instead align one step inside their statement
-under [Accessibility statements](#accessibility-statements). The spaces at the
-end of an inner line of the description stay, since the Db holds them and every
-version of mermaid.js that counts puts another description text in the SVG
-without them (see
+under [Accessibility statements](#accessibility-statements).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. The spaces at the end of
+an inner line of the description stay, since the Db holds them and every version
+of mermaid.js that counts puts another description text in the SVG without them
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: multi-line-values/call-arguments-kept] [fixture:

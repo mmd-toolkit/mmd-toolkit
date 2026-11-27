@@ -1811,11 +1811,44 @@ U+2028 と U+2029 は、[行の保持](./agentflow.ja.md#kept-lines) のとお�
 [fixture: accessibility/block-right-padding-only]
 
 トップレベルの閉じた説明ブロックの本文は文より 1 段深くそろえます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの段を与えます。
+mermaid.js はこれらの行を字下げなしで読むので、これらはブロックの中の行で、
+それを開く行より 1 段深く置くからです。
 flow または global の本文では、原文がメンバーの決定にも使われるため、
 元の列を保ちます。
-global 本文の原文を変えると、後続の flow のメンバーが変わる場合があります。
+flow の中では、mermaid.js はそのブロックのテキストを、端の空白を除いて、
+2 行目以降の列とともに flow のノードとして読みます。
+そのため、2 行目以降の字下げと、2 つのテキストの行の間の空行の連なり、
+空白だけの行、ディレクティブの行は、ノードが持つので、
+そこでは書かれたまま残ります。
+そこで `%%` で始まる行は、ノードのテキストの行です。
+テキストの 1 行目の字下げと、ブロックの頭と終わりの空行、空白だけの行、
+ディレクティブの行は、ノードにありません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+1 行目とそのディレクティブの行を、ブロックを開く行より 1 段深く置き、
+その空行を除きます。
+リリース済みの版はそれらを書かれたまま残し、
+これは規則 1 が与える形ではありません。
+閉じていないディレクティブは、
+flowchart の [複数行の値](./flowchart.ja.md#複数行の値) と同じく読み、
+印字します。
+後ろに続くものはその行に乗って書かれたまま残り、ディレクティブの行は、
+ブロックのほかのディレクティブの行と同じく印字します。
+リリース済みの版は、flow の中ではその行を書かれた所に残し、
+これは規則 1 が与える形ではありません。
+global の本文では、そのブロックのテキストが後の flow のメンバーを決めますが、
+その空白は決めません。
+テキスト `X` は、`X` を持つ後の flow から、ノード `X` を外します。
+そのため、規則 1 はその行をすべてブロックを開く行より 1 段深く置き、
+その空行には表の「空行」の行を与えます。
+リリース済みの版はその列と空行を書かれたまま残し、
+これは規則 1 が与える形ではありません。
 
 [fixture: accessibility/global-description-membership-kept]
+[fixture: accessibility/flow-description-directive-lines-at-the-ends-kept]
+[fixture: accessibility/flow-description-blank-lines-at-the-ends-kept]
+[fixture: accessibility/flow-description-unclosed-directive-line-kept]
+[fixture: accessibility/global-description-blank-lines-kept]
 
 単独行の閉じ括弧は、0桁目でも字下げされていても`accDescr`に揃えます。
 独立した行の `}` は文と同じ段に置きます。

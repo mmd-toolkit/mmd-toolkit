@@ -2121,9 +2121,11 @@ er/lex-acc-title-line-feed-after-colon] [fixture:
 multi-line-statements/acc-colon-and-brace-joined]
 
 Later text lines of an ordinary `accDescr { ... }` block stand one level inside
-its statement, replacing only ASCII spaces and tabs immediately after LF. The
-description setter drops that indentation; line breaks and directive interiors
-stay written (see
+its statement, replacing only ASCII spaces and tabs immediately after LF.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. The description setter
+drops that indentation; line breaks and directive interiors stay written (see
 [Description block indentation](./compatibility.md#description-block-indentation),
 which states the level and why replacing the indentation keeps the Db). Keep
 line breaks and interior blank lines, and the whitespace at the end of each line

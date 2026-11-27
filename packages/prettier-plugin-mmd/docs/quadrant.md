@@ -707,12 +707,15 @@ A block on one line follows
 [fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 
 In a block with a text over several lines, indent the body one level inside the
-statement: mermaid.js discards indentation after LF from the description. A
-separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block. A block that
-is not closed makes the input rejected, so it is not printed.
+statement: mermaid.js discards indentation after LF from the description.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block. A block that is not closed makes the input rejected, so it is not
+printed.
 
 [fixture: titles-and-accessibility-statements/block-lines-kept] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
@@ -916,10 +919,13 @@ inside the name of a class]
 
 Strings keep their authored line breaks and whitespace, which are part of their
 values. Description-body lines align one step inside their statement; Mermaid
-discards their indentation after LF. Keep the remaining text and line breaks.
-The spaces at the end of an inner line of an `accDescr` block stay: the Db holds
-them, and every version that counts puts another description text in the SVG
-without them (see
+discards their indentation after LF.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. Keep the remaining text
+and line breaks. The spaces at the end of an inner line of an `accDescr` block
+stay: the Db holds them, and every version that counts puts another description
+text in the SVG without them (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: multi-line-values/description-block-inner-line-trailing-spaces-kept]
