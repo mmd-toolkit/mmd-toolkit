@@ -1,5 +1,12 @@
 # mmdfmt
 
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies:
+  - [prettier-plugin-mmd@0.9.3](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/prettier-plugin-mmd%400.9.3)
+
 ## 0.2.4
 
 ### Patch Changes
