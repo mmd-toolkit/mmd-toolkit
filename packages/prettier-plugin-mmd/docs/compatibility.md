@@ -876,11 +876,20 @@ of whitespace only stays as written.
 mermaid.js keeps them at the end of the last style, so this changes what
 mermaid.js stores, separately from the permitted eventmodeling body margins in
 [Data blocks](./eventmodeling.md#data-blocks). The tests compare styles without
-their trailing spaces and tabs, with a run of spaces, tabs, and form feeds
-before a `%%` comment as one space where the formatter prints it so (see below),
-and those of an ER diagram also without the U+2028 and U+2029 that the formatter
-drops at the end of a style (see
+the spaces, tabs, and form feeds at their ends, which CSS reads as whitespace,
+with a run of spaces, tabs, and form feeds before a `%%` comment as one space
+where the formatter prints it so (see below). They compare the `style` of an
+agentflow diagram also without the other whitespace at its end, which the
+formatter leaves out (see below), and the styles of an ER diagram also without
+the U+2028 and U+2029 that the formatter drops at the end of a style (see
 [Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
+Any other whitespace at the end of a style is compared as it is: a style of a
+class diagram that ends in a U+2028 is drawn otherwise than the style without
+it.
+
+[test: a U+2028 or a U+2029 at the end of a style of a class diagram] [test: the
+whitespace of every kind at the end of a style of a node of an agentflow
+diagram]
 
 Whitespace of another kind at the end (a no-break space, U+3000, a vertical tab,
 a byte order mark) is not removed where mermaid.js draws another figure without
@@ -909,10 +918,12 @@ spaces, and tabs included. A treemap whose line no `;` ends keeps the form
 feeds, drops the spaces and tabs after the last such character, and prints a run
 of them before it as one space; the whitespace after a directive stays as
 written. The figure is the same without the character for a block diagram, a
-state diagram, and the `style` of an agentflow diagram, and a requirement, a use
-case, a Venn diagram, and a quadrant chart reject the text with the character
-and accept the text without it, so there the character is removed, as the
-formatter formats other text that mermaid.js rejects.
+state diagram, and the `style` of an agentflow diagram, where 12.0.0 and 12.3.0
+draw the same figure without any whitespace at the end, a U+2028 and a U+2029
+included, and a requirement, a use case, a Venn diagram, and a quadrant chart
+reject the text with the character and accept the text without it, so there the
+character is removed, as the formatter formats other text that mermaid.js
+rejects.
 
 [test: keeps whitespace other than a space and a tab at the end of a style]
 [test: keeps a vertical tab and a form feed at the end of the classDef of an ER

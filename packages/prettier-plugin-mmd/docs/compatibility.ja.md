@@ -918,13 +918,21 @@ mermaid.js はそれらを最後のスタイルの末尾に残すので、
 これとは別に、
 eventmodeling の [データブロック](./eventmodeling.ja.md#data-blocks)
 も限定した本文の字下げの変更を認めています。
-テストは、末尾の空白とタブを除き、
+テストは、CSS が空白として読む末尾の空白、タブ、改ページを除き、
 整形器が空白 1 つで印字する所（下を参照）では、`%%` コメントの前の空白、タブ、
 改ページの連なりを空白 1 つにしたスタイルを比べます。
+agentflow 図の `style` は、
+整形器が除く末尾のほかの空白も除いて比べます（下を参照）。
 ER 図のスタイルは、末尾で消す U+2028 と U+2029 も除いて比べます。
 詳しくは、
 [スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
 を参照してください。
+スタイルの末尾にあるそのほかの空白は、そのまま比べます。
+U+2028 で終わる class 図のスタイルは、それのないスタイルと違う図に描かれます。
+
+[test: a U+2028 or a U+2029 at the end of a style of a class diagram] [test:
+the whitespace of every kind at the end of a style of a node of an agentflow
+diagram]
 
 末尾にあるほかの種類の空白（ノーブレークスペース、U+3000、垂直タブ、
 バイト順マーク）は、なくすと mermaid.js が違う図を描く所では取り除きません。
@@ -958,6 +966,8 @@ class 図、flowchart、agentflow 図は、そのとき行を、改ページ、�
 指令の後の空白は書かれたまま残します。
 block 図、state 図の `style` と `classDef` と、agentflow 図の `style` は、
 その文字がなくても図が同じなので、取り除きます。
+agentflow 図の `style` では、12.0.0 と 12.3.0 が、U+2028 と U+2029 も含め、
+末尾のどの空白がなくても同じ図を描きます。
 requirement 図、use case 図、Venn 図、象限チャートは、
 文字のあるテキストを拒否し、ないテキストを受理するので、
 mermaid.js が拒否するほかのテキストと同じく、文字を取り除きます。

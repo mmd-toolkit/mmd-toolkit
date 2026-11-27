@@ -227,9 +227,64 @@ const restored: readonly DbPair[] = [
     before: { vertices: [{ id: "A", styles: ["fill\\   :red   x"] }] },
     after: { vertices: [{ id: "A", styles: ["fill\\ : red x"] }] },
   },
+  {
+    name: "the whitespace of every kind at the end of a style of a node of an agentflow diagram",
+    diagramType: "agentflow",
+    before: {
+      vertices: [
+        { id: "A", styles: ["fill:#f9f\u2028"] },
+        { id: "B", styles: ["fill:#f9f\u2029"] },
+        { id: "C", styles: ["fill:#f9f\u00a0"] },
+      ],
+    },
+    after: {
+      vertices: [
+        { id: "A", styles: ["fill: #f9f"] },
+        { id: "B", styles: ["fill: #f9f"] },
+        { id: "C", styles: ["fill: #f9f"] },
+      ],
+    },
+  },
 ]
 
 const kept: readonly DbPair[] = [
+  {
+    name: "a U+2028 or a U+2029 at the end of a style of a class diagram",
+    diagramType: "classDiagram",
+    before: {
+      classes: [
+        { id: "A", styles: ["fill:red\u2028"] },
+        { id: "B", styles: ["fill:red\u2029"] },
+      ],
+    },
+    after: {
+      classes: [
+        { id: "A", styles: ["fill: red"] },
+        { id: "B", styles: ["fill: red"] },
+      ],
+    },
+  },
+  {
+    name: "a U+2028 at the end of a classDef of a treemap",
+    diagramType: "treemap",
+    before: { classDefs: [{ id: "c", styles: ["fill: red \u2028"] }] },
+    after: { classDefs: [{ id: "c", styles: ["fill: red"] }] },
+  },
+  {
+    name: "a no-break space at the end of a style of a node of a flowchart",
+    before: { vertices: [{ id: "A", styles: ["fill:red\u00a0"] }] },
+    after: { vertices: [{ id: "A", styles: ["fill: red"] }] },
+  },
+  {
+    name: "a U+2028 at the start of a style",
+    before: { vertices: [{ id: "A", styles: ["\u2028fill:red"] }] },
+    after: { vertices: [{ id: "A", styles: ["fill: red"] }] },
+  },
+  {
+    name: "a no-break space before the colon of a style",
+    before: { vertices: [{ id: "A", styles: ["fill\u00a0:red"] }] },
+    after: { vertices: [{ id: "A", styles: ["fill: red"] }] },
+  },
   {
     name: "a form feed before a comment in a style of a state diagram",
     diagramType: "stateDiagram",

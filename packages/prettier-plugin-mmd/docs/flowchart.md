@@ -3951,9 +3951,9 @@ style-trailing-whitespace/removed-after-directive]
 mermaid.js keeps them at the end of the last style, so this is one of the rules
 that change what mermaid.js stores (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same));
-the tests compare styles without their trailing spaces and tabs. Whitespace of
-another kind at the end, such as a no-break space, stays, and the line is
-printed as written (see
+the tests compare styles without the spaces, tabs, and form feeds at their end,
+which CSS reads as whitespace. Whitespace of another kind at the end, such as a
+no-break space, stays, and the line is printed as written (see
 [Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
 
 [test: keeps whitespace other than a space and a tab at the end of a style]
