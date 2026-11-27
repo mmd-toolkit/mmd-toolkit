@@ -1173,6 +1173,12 @@ Prettier は `class A{}` を `class A {}` と印字します。
 コメントやディレクティブの中身と境界、内部の空行は保ちます。
 本文行は文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
+テキストの行の間の改行と、その間の空行は、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+説明ブロックのテキストを書かれたまま保つからです。
+Prettier もテンプレートリテラルの中の文字を書かれたまま保ちます。
+また、テキストの 2 行を 1 行につなぐと、対象にする mermaid.js の版はどれも、
+描く図のアクセシビリティの説明を変えます。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 別行の開始記号は文の列にそろえます。
 独立した行の `}` は文と同じ段に置きます。
@@ -1200,6 +1206,7 @@ Prettier がブロックを閉じる行を印字する形です。
 [fixture: treemap/description-blocks/right-touching]
 
 [fixture: treemap/description-blocks/continuation]
+[fixture: treemap/description-blocks/blank-line-run-kept]
 
 [fixture: treemap/description-blocks/body-tabs]
 

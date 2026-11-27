@@ -589,6 +589,12 @@ Db で LF 後の字下げが取り除かれるためです。
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。
+改行と空行は書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+説明ブロックのテキストを書かれたまま保つからです。
+Prettier もテンプレートリテラルの中の文字を書かれたまま保ちます。
+また、テキストの 2 行を 1 行につなぐと、対象にする mermaid.js の版はどれも、
+描く図のアクセシビリティの説明を変えます。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
@@ -602,6 +608,8 @@ Db で LF 後の字下げが取り除かれるためです。
 [test: gitgraph Unicode and tab interiors]
 [fixture: title-and-common-values/block-trailing-whitespace]
 [fixture: title-and-common-values/block-trailing-whitespace-closer-on-the-text-line]
+[fixture: gitgraph/title-and-common-values/blank-line-kept]
+[fixture: gitgraph/title-and-common-values/blank-line-run-kept]
 
 コメントやディレクティブだけのブロックも注釈類を残します。
 フロントマターの代替の扱いを含む反復・空値・出現位置を保持します。

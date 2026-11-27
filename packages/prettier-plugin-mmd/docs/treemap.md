@@ -1161,7 +1161,12 @@ prints `class A{}` as `class A {}`. Whitespace-only interiors become `{}`
 because no text needs surrounding padding. Join plain opener whitespace, keep
 comment/directive contents and their boundaries, and align body lines one step
 inside the statement while retaining internal blank lines. Mermaid discards
-indentation after LF from the description. The body uses the configured
+indentation after LF from the description. The line breaks between the lines of
+text, and the blank lines among them, stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+description block as written, as Prettier keeps the text of a template literal,
+and joining two lines of text would change the accessibility description that
+every version of mermaid.js that counts draws. The body uses the configured
 indentation, including tabs and the positive minimum step at width zero. Align a
 separate opener with its statement. A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
@@ -1185,7 +1190,8 @@ treemap/description-blocks/empty]
 
 [fixture: treemap/description-blocks/right-touching]
 
-[fixture: treemap/description-blocks/continuation]
+[fixture: treemap/description-blocks/continuation] [fixture:
+treemap/description-blocks/blank-line-run-kept]
 
 [fixture: treemap/description-blocks/body-tabs]
 

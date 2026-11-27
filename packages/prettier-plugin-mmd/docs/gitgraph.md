@@ -551,13 +551,17 @@ where a comment or a directive stands before the `{`, a later line at the level
 of the statement. Ordinary description body and standalone comment lines align
 one level inside it: the Db removes indentation after LF. Keep line breaks and
 interior blank lines, and the whitespace at the end of each line of text except
-the last one; a line of whitespace only becomes an empty line. The whitespace at
-the end of the last line of text is dropped where the closer stands on a line of
-its own, and is printed as one space where the closer follows it on that line.
-Directives and shared removed comment regions keep their complete source.
-Whitespace-only interiors print `{}` because there is no text for interior
-whitespace to surround; tabs, line breaks and Unicode whitespace follow the same
-rule.
+the last one; a line of whitespace only becomes an empty line. The line breaks
+and the blank lines stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+description block as written, as Prettier keeps the text of a template literal,
+and joining two lines of text would change the accessibility description that
+every version of mermaid.js that counts draws. The whitespace at the end of the
+last line of text is dropped where the closer stands on a line of its own, and
+is printed as one space where the closer follows it on that line. Directives and
+shared removed comment regions keep their complete source. Whitespace-only
+interiors print `{}` because there is no text for interior whitespace to
+surround; tabs, line breaks and Unicode whitespace follow the same rule.
 
 [fixture: gitgraph/title-and-common-values/brace-on-a-later-line]
 
@@ -566,6 +570,8 @@ title-and-common-values/empty-whitespace-interiors] [test: gitgraph Unicode and
 tab interiors] [fixture: title-and-common-values/block-trailing-whitespace]
 [fixture:
 title-and-common-values/block-trailing-whitespace-closer-on-the-text-line]
+[fixture: gitgraph/title-and-common-values/blank-line-kept] [fixture:
+gitgraph/title-and-common-values/blank-line-run-kept]
 
 Comment/directive-only blocks keep their trivia. Keep every repeated, empty and
 interleaved assignment, including frontmatter fallback. The pinned grammar reads

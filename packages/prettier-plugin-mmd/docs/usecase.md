@@ -176,10 +176,11 @@ occurrence; a name and a label are printed in the form that the examples use
 because mermaid.js records an ellipse and a rectangle as different Db shapes.
 Suffixes stay in the order required by the native grammar: metadata, stereotype,
 then classes for an actor or use case, and metadata then classes for a boundary.
-Placing metadata after a stereotype or classes is rejected. Generated ids and
-resolved actor endpoints never replace authored nodes; boundary metadata forms
-remain declarations while top-level forms remain updates. This shows written
-syntax without inventing aliases or geometry.
+Every version of mermaid.js that counts rejects metadata placed after a
+stereotype or classes. Generated ids and resolved actor endpoints never replace
+authored nodes; boundary metadata forms remain declarations while top-level
+forms remain updates. This shows written syntax without inventing aliases or
+geometry.
 
 [corpus fixture: usecase/gram-label-padding] [corpus fixture:
 usecase/gram-note-empty] [corpus fixture:
@@ -729,7 +730,8 @@ keywords and both endpoint occurrences; a plain label is printed in quotes (see
 [Quotes](#quotes)). The `actor` keyword at a relationship source declares an
 actor; mermaid.js otherwise reads an unresolved endpoint as an implicit use
 case. Removing the keyword from an otherwise unresolved source therefore changes
-its kind in the Db. Explicit ids remain available to later metadata/class/style
+its kind in the Db, and every version of mermaid.js that counts draws it
+differently. Explicit ids remain available to later metadata/class/style
 targets. A pipe or class-style colon label would be another grammar, and a chain
 is never split into valid relationships.
 
