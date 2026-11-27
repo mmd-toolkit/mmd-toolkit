@@ -163,7 +163,8 @@ keyword に接する directive は、除去後に LF が残るなら許すが、
 通常の字下げは ASCII space と tab を各 1 と数える。
 最大の一続きの列であり、tab stop や特定の倍数ではない。
 改行は hidden なので、引用名・class・icon の後の列は、
-前の行や空白だけの行からでも、空行を越えても、次の node の字下げになりうる。
+前の行や空白だけの行からでも、空行、コメント行、ディレクティブの行を越えても、
+次の node の字下げになりうる。
 後に node が続かなければ、その列はコメントの後でもテキストの終わりまで届き、
 名前のない字下げになるので、文法が拒否する。
 hidden な改行で分かれた二つの列は結合せず、
@@ -195,6 +196,16 @@ hidden な改行で分かれた二つの列は結合せず、
 [fixture: treeview/gram-quoted-tail-space-comment-end-of-text]
 [fixture: treeview/gram-class-tail-space-end-of-text]
 [fixture: treeview/gram-icon-tail-space-end-of-text]
+[fixture: treeview/gram-quoted-tail-space-eof]
+[fixture: treeview/gram-quoted-tail-space-comment-eof]
+[fixture: treeview/gram-quoted-tail-space-empty-line-end-of-text]
+[fixture: treeview/gram-quoted-tail-space-crlf-end-of-text]
+[fixture: treeview/gram-quoted-tail-tab-end-of-text]
+[fixture: treeview/db-quoted-tail-space-two-empty-lines]
+[fixture: treeview/db-class-tail-space-empty-line]
+[fixture: treeview/db-icon-tail-space-empty-line]
+[fixture: treeview/gram-quoted-tail-space-comment-line]
+[fixture: treeview/gram-quoted-tail-space-directive-line]
 
 [branch 行の規則](#列と-prefix-の字下げ)が読みから外す行末の空白は、
 次の node の字下げにはならない。
