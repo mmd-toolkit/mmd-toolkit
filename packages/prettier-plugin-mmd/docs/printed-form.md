@@ -71,6 +71,7 @@ same way. The texts of Prettier are JavaScript where no language is named.
 | Parentheses and square brackets          | `f( a )` is printed `f(a);`                                                                                                                                                                                                                  | none inside                                                                                                                                                                                      | `A( text )` in a flowchart                                             | `A(text)`                                                |
 | A `;` that ends a statement              | `a ;` is printed `a;`                                                                                                                                                                                                                        | none before                                                                                                                                                                                      | `r="a" ;` in a railroad diagram                                        | `r = "a";`                                               |
 | A comment after something on its line    | `x = 1;   // c` is printed `x = 1; // c`, and `a: 1   # c` in YAML is printed `a: 1 # c`                                                                                                                                                     | one space before                                                                                                                                                                                 | `title A B   %% c` in an XY chart                                      | `title A B %% c`                                         |
+| A comment between two things             | `x = a/* c */+b` is printed `x = a /* c */ + b;`, and `f( /* c */ a )` is printed `f(/* c */ a);`                                                                                                                                            | one space on each side, none on a side where the mark there takes none                                                                                                                           | `title T  %%{x}%%  %% c` in a radar chart                              | `title T %%{x}%% %% c`                                   |
 | The `(` of a call                        | `f (a)` is printed `f(a);`                                                                                                                                                                                                                   | none before                                                                                                                                                                                      | `terminal ("x")` in a railroad diagram                                 | `terminal("x")`                                          |
 | The `[` of an index                      | `x [ 0 ];` is printed `x[0];`                                                                                                                                                                                                                | none before                                                                                                                                                                                      | `service a (server) [A]` in an architecture diagram                    | `service a(server)[A]`                                   |
 | The `{` that opens a block               | `class A{}` is printed `class A {}`                                                                                                                                                                                                          | one space before                                                                                                                                                                                 | `A   {` in an ER diagram                                               | `A {`                                                    |
@@ -101,20 +102,30 @@ YAML mapping does: the lines after it stand one level deeper, up to the next
 line at the level of the line that opens it. Every line inside a block stands at
 that level, whatever it holds: a statement, a comment line, or, in these
 diagrams, a directive line (`%%{x}%%` on a line of its own), which mermaid.js
-removes before it reads the text, as it removes a comment. The text inside a
-template literal of JavaScript stays as written, and so does a line of a value
-that spreads over several lines where mermaid.js can draw the indentation of
-that line, as the later lines of a note of a state diagram that the rules of
-[Notes](./state.md#notes) do not align. A line whose indentation mermaid.js does
-not draw is a line inside a block of this row, and it stands one level deeper
-than the line that opens the block, whatever its written indentation, as every
-line inside a block does. So do the lines between the `{` and the `}` of a
-description block: its text lines, which mermaid.js reads without their
-indentation, and its comment and directive lines, which it removes. So do the
-first line of the body of a note of a state diagram, which mermaid.js reads
-without its indentation, and the later lines of a note that those rules align,
-whose indentation mermaid.js keeps in the Db but does not draw. The closing `}`
-of a description block stands at the level of the line that opens it.
+removes before it reads the text, as it removes a comment. For the same reason,
+a directive within a line, between two units, is the same kind of mark as the
+comment of JavaScript and CSS that can stand between two tokens, a block comment
+(`/* c */`): the whitespace beside it is that of the row A comment between two
+things, what Prettier prints beside a block comment at the same place, as
+`x = a/*c*/+b;` is printed `x = a /*c*/ + b;`, `x = [/*c*/1];` is printed
+`x = [/*c*/ 1];`, and `x = {  /*c*/  };` is printed `x = {/*c*/};`. Where
+mermaid.js reads the whitespace on the two sides of a directive as one gap of an
+exact width, it decides instead (see
+[Where mermaid.js decides against the whitespace](#where-mermaidjs-decides-against-the-whitespace)).
+The text inside a template literal of JavaScript stays as written, and so does a
+line of a value that spreads over several lines where mermaid.js can draw the
+indentation of that line, as the later lines of a note of a state diagram that
+the rules of [Notes](./state.md#notes) do not align. A line whose indentation
+mermaid.js does not draw is a line inside a block of this row, and it stands one
+level deeper than the line that opens the block, whatever its written
+indentation, as every line inside a block does. So do the lines between the `{`
+and the `}` of a description block: its text lines, which mermaid.js reads
+without their indentation, and its comment and directive lines, which it
+removes. So do the first line of the body of a note of a state diagram, which
+mermaid.js reads without its indentation, and the later lines of a note that
+those rules align, whose indentation mermaid.js keeps in the Db but does not
+draw. The closing `}` of a description block stands at the level of the line
+that opens it.
 
 A keyword stands between two things (`a in b`) or before what it takes
 (`return x`, `typeof y`, `throw e`, and in CSS `@media screen` and
@@ -295,6 +306,12 @@ the lists that stay without the space.
 Where mermaid.js rejects the space after a colon, none is printed before it
 either, since Prettier prints no colon with a space before it alone: the width
 of a block is printed `a:2`, also where `a :2` was written.
+
+Where mermaid.js reads the whitespace on the two sides of a directive as one gap
+of an exact width, a space stands on one side only: the unit `note for` of a
+class diagram reads exactly one whitespace character, and mermaid.js rejects
+`note %%{init: {}}%% for A "t"`, so `note%%{init: {}}%% for A "t"` is printed
+`note %%{init: {}}%%for A "t"` (see [Directives](./flowchart.md#directives)).
 
 In a flowchart, a swimlane diagram, and an agentflow diagram, where mermaid.js
 reads a label otherwise without the whitespace at its start, or rejects it (a

@@ -644,6 +644,9 @@ between the parentheses of a blank class callback]
 Arguments with a comment line or a directive among them are printed as written
 through the `)`: the whitespace before the `)` is part of the arguments in the
 Db, so a comment line before the `)` must not indent it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps them as
+written: the arguments are a value that spreads over several lines, whose text
+stays as written, as the text inside a template literal of JavaScript does.
 
 [fixture: whitespace-between-tokens/callback-args-comment-line-kept] [fixture:
 whitespace-between-tokens/callback-name-kept] [fixture:

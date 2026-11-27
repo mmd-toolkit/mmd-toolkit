@@ -182,13 +182,16 @@ easier to find than an indented one. Text after `kanban` on the header line is
 read as a node line, with the whitespace between as its indentation: in
 `kanban   S[x]` the node `S[x]` is the first node, and so a section. The printer
 moves it to a line of its own and indents it as any section: `kanban`, a line
-break, and `  S[x]`. The same holds when the node touches the header, as in
-`kanban[S]` or `kanban-x` (`  [S]`, `  -x`). Everything after `kanban` moves
-with it, a `%%` that is text of the node included (`kanban S %% literal` prints
-`  S %% literal` on its line). A header line that holds a directive keeps it
-with the node (see [Directives](#directives)), and one that holds a `;` is no
-exception: the word `kanban` holds nothing that the line rule reads, so the node
-moves with its `;` (`kanban S;T` prints `kanban` and `  S;T`; see
+break, and `  S[x]`. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives that step: the header opens a block with no closing line, and a section is
+a line inside it, one level deeper, as Prettier prints the lines inside a block.
+The same holds when the node touches the header, as in `kanban[S]` or `kanban-x`
+(`  [S]`, `  -x`). Everything after `kanban` moves with it, a `%%` that is text
+of the node included (`kanban S %% literal` prints `  S %% literal` on its
+line). A header line that holds a directive keeps it with the node (see
+[Directives](#directives)), and one that holds a `;` is no exception: the word
+`kanban` holds nothing that the line rule reads, so the node moves with its `;`
+(`kanban S;T` prints `kanban` and `  S;T`; see
 [Line rule and kept lines](#line-rule-and-kept-lines)).
 
 [fixture: header/inline-count] [fixture: header/header-column] [fixture:
@@ -650,9 +653,11 @@ width of a tab.
 data-blocks/use-tabs-empty-lines-kept] [fixture:
 data-blocks/use-tabs-folded-empty-lines-kept]
 
-Comments, directives and blank lines outside the block retain their own rules.
-CRLF and CR follow `endOfLine`; Unicode separators inside values remain
-characters.
+Comments, directives and blank lines outside the block retain their own rules. A
+comment line and a directive line stand at the level of the lines around them,
+as [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts every line
+inside a block, whatever it holds (see [Comments](#comments)). CRLF and CR
+follow `endOfLine`; Unicode separators inside values remain characters.
 
 [fixture: data-blocks/surrounding-trivia] [test: kanban: multiline-data-crlf]
 [test: kanban: multiline-data-cr] [test: data blocks: kanban U+2028]

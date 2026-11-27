@@ -1127,6 +1127,9 @@ U+2029 があるときを除きます。
 `accTitle` と `accDescr` の文は title と同じ位置に置きます。
 字下げして書かれていなければ行頭に置いて印字し、
 字下げして書かれていれば 1 段深く印字します。
+この 1 段は[規則 1](./printed-form.ja.md#1-記号の横の空白)の段です。
+ブロックの中の行をヘッダーより 1 段深く置く、
+Prettier がブロックの中の行を印字する形です。
 詳しくは [タイトル](#title) を参照してください。
 
 [fixture: treemap/accessibility-lines/title-padding]

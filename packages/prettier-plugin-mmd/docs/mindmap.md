@@ -43,7 +43,10 @@ indentation/siblings-after-deeper-nodes]
 The indentation of the root is no part of the Db. The root stands one level
 deeper than the header, as the statements of every diagram type do, and each
 other node stands as many characters deeper than the root as it was written, so
-no level changes. The indentation written in the input is not kept beyond that.
+no level changes. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the level of the root: the header opens a block with no closing line, and
+a line inside a block stands one level deeper, as Prettier prints the lines
+inside a block. The indentation written in the input is not kept beyond that.
 
 [fixture: indentation/root-shifted-to-one-level] [fixture:
 indentation/root-at-the-first-column] [fixture:
@@ -161,7 +164,9 @@ Db is the same, and
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as a [flowchart](./flowchart.md#statements-one-per-line) and an
 [ER diagram](./er.md#statements-one-per-line) print a statement written on the
-line of the header on a line of its own.
+line of the header on a line of its own. The one level is that of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) (see
+[Indentation](#indentation)).
 
 [fixture: root-on-header-line/moved-to-its-own-line] [fixture:
 root-on-header-line/shape-glued-to-the-header] [fixture:
@@ -212,6 +217,10 @@ An icon line and a class line decorate the node written last before them,
 whatever their indentation, so their indentation is no part of the Db. They are
 printed at the column of the node that they decorate, as the documentation of
 mermaid.js writes them.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that column
+too: a decoration line is a line inside the block that holds its node, and every
+line inside a block stands at the level of the lines around it, whatever it
+holds.
 
 [fixture: decorations/at-the-column-of-the-node] [fixture:
 decorations/before-and-after-children]
@@ -660,10 +669,12 @@ mindmap
 ### Comments
 
 A comment line, a line `%%` alone, and a line `%%{ }%%` stand at the level of
-the line after them, and at the end of the body at that of the last line. Their
-indentation is no part of the Db and does not change what mermaid.js accepts,
-and a `%%{` line needs no particular indentation. Their text and mark are kept
-as written.
+the line after them, and at the end of the body at that of the last line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
+inside a block at the level of the lines around it, as Prettier prints the lines
+inside a block. Their indentation is no part of the Db and does not change what
+mermaid.js accepts, and a `%%{` line needs no particular indentation. Their text
+and mark are kept as written.
 
 [fixture: comments/lines-at-the-level-of-the-next-line] [fixture:
 comments/at-the-end] [fixture: comments/bare-and-brace-lines] [fixture:
@@ -739,13 +750,16 @@ mindmap
 
 ### Directives
 
-A directive on a line of its own stands at the level of the line after it. A
-directive on the line of a node keeps whether whitespace is written on each side
-of it: where it is, one space stands there, and where it touches, it keeps
-touching. The directives that end the text of a node or of a class are printed
-with one space before each that has spaces or tabs before it, and the spaces and
-tabs after the last one are left out, whatever the spaces and tabs at the end of
-the line, unless a directive of the line holds a line break or a `;` (see
+A directive on a line of its own stands at the level of the line after it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts it there, as
+every line inside a block stands at the level of the lines around it, whatever
+it holds. A directive on the line of a node keeps whether whitespace is written
+on each side of it: where it is, one space stands there, and where it touches,
+it keeps touching. The directives that end the text of a node or of a class are
+printed with one space before each that has spaces or tabs before it, and the
+spaces and tabs after the last one are left out, whatever the spaces and tabs at
+the end of the line, unless a directive of the line holds a line break or a `;`
+(see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
