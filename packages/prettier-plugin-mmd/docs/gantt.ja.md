@@ -1736,6 +1736,10 @@ gantt
 
 コメントは、単位が始まる所の `%%` か `%` で始まり、行末まで続きます。
 単独の行のコメントは次の文と同じ段に置き、テキストと印は書かれたまま残します。
+コメントの本文の先頭の空白と中の空白の連なりは、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+コメントの本文を書かれたまま保つからです。
+Prettier は `//    spaced   text` を書かれたまま印字します。
 
 [fixture: comments/lines-at-statement-level]
 [fixture: comments/directive-before-comment-line] [fixture: comments/text-kept]

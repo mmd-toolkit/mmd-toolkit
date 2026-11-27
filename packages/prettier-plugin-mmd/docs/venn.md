@@ -709,12 +709,15 @@ as between values that follow one another: Prettier prints `margin: 1px    2px;`
 in CSS as `margin: 1px 2px;`. A comment line inside the parentheses
 (`style A fill:rgb(1,`, a line `%% ) x  y`, and `2,3)`) is removed before the
 value is read, so its characters, a `)` among them, are no part of the value and
-stay as written. Space inside an rgb/rgba token is different: changing a
-component gap changes the Db, and so does quoting a joined bare value; a quoted
-value is printed without quotes as [Quotes](#quotes) says, and whole rgb/rgba
-tokens, key case, repetitions and separate statements stay as written. A kept
-prefix overrides punctuation spacing so colon-to-hash gaps cannot change
-semicolon selection.
+stay as written. The whitespace at the start of the text of a comment and the
+runs of whitespace inside it stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+comment as written, as Prettier prints `//    spaced   text` as written. Space
+inside an rgb/rgba token is different: changing a component gap changes the Db,
+and so does quoting a joined bare value; a quoted value is printed without
+quotes as [Quotes](#quotes) says, and whole rgb/rgba tokens, key case,
+repetitions and separate statements stay as written. A kept prefix overrides
+punctuation spacing so colon-to-hash gaps cannot change semicolon selection.
 
 [corpus fixture: venn/div-c4-bare-style-value] [corpus fixture:
 venn/db-style-case-and-order] [corpus fixture:

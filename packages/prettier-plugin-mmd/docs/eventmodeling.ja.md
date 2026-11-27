@@ -1315,6 +1315,10 @@ U+2028 と U+2029 の前では、sequence、journey、timeline は、
 単位を行に分けるとき、
 間の行内のコメントはディレクティブと同じく次の単位へ付けます。
 印、内容、末尾空白、ブロックコメントの継続列を保ちます。
+コメントの本文の先頭の空白と中の空白の連なりは、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+コメントの本文を書かれたまま保つからです。
+Prettier は `//    spaced   text` を書かれたまま印字します。
 図固有の `//` と `%%` は LS・PS を越えて物理 LF まで読みます。
 data ブロック、note、`accDescr` ブロック、スラッシュのブロックコメント、
 隠れた形の内部の `%%` のコメント行は、そのテキストの一部です。
@@ -1324,6 +1328,7 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 検出が拒否するため、スラッシュのコメントを見出し前へ移しません。
 見出しの前のコメント行は第 1 列に置きます。
 
+[fixture: eventmodeling/comments/comment-text-as-written]
 [fixture: eventmodeling/comments/inline-gap-run-and-touching]
 [test: an em space before a `//` comment after a statement of an eventmodeling diagram]
 [test: a sequence diagram keeps U+2029 before a comment that a statement follows as written]

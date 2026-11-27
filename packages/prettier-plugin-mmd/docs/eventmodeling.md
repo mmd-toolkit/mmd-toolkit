@@ -1264,32 +1264,35 @@ released version prints, one space, stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 When units split into separate lines, attach intervening inline comments to the
 following unit, in the same direction as directives. Keep marks, contents,
-trailing padding and block-comment continuation columns. Native `//` and `%%`
-run through LS/PS to physical LF. A `%%` comment line inside a data block, a
-note, an `accDescr` block, a slash block comment or a hidden form is part of
-that text. Its columns stay written except for the block-body margin adjustment
-in [Data blocks](#data-blocks), since in a `data` block that a frame reads the
-Db holds them as a part of the value. Boundaries needed for metadata or a
-required `title` take precedence. Slash comments are not moved before the
-header, where detection would reject them. A comment line before the header
-stands at column one.
+trailing padding and block-comment continuation columns. The whitespace at the
+start of the text of a comment and the runs of whitespace inside it stay as
+written: [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the
+text of a comment as written, as Prettier prints `//    spaced   text` as
+written. Native `//` and `%%` run through LS/PS to physical LF. A `%%` comment
+line inside a data block, a note, an `accDescr` block, a slash block comment or
+a hidden form is part of that text. Its columns stay written except for the
+block-body margin adjustment in [Data blocks](#data-blocks), since in a `data`
+block that a frame reads the Db holds them as a part of the value. Boundaries
+needed for metadata or a required `title` take precedence. Slash comments are
+not moved before the header, where detection would reject them. A comment line
+before the header stands at column one.
 
-[test: an em space before a `//` comment after a statement of an eventmodeling
-diagram] [test: a sequence diagram keeps U+2029 before a comment that a
-statement follows as written] [test: a sequence diagram puts a comment after
-U+2028 at the end of the text on a line of its own] [test: a timeline keeps
-U+2029 before a comment after its header that a statement follows as written]
-[test: a timeline puts a comment after its header and U+2028 at the end of the
-text on a line of its own] [test: a user journey keeps U+2029 before a comment
-after its header that a statement follows as written] [test: a user journey puts
-a comment after its header and U+2028 at the end of the text on a line of its
-own] [test: a user journey prints a no-break space before a comment after its
-header as one space] [test: a timeline prints U+3000 before a comment after its
-header as one space] [test: a user journey prints a run before a comment after
-its title as one space] [test: a timeline prints a run before a comment after
-its title as one space] [test: a sequence diagram prints a run before a comment
-after its title as one space] [fixture:
-eventmodeling/comments/inline-gap-run-and-touching] [fixture:
+[fixture: eventmodeling/comments/comment-text-as-written] [test: an em space
+before a `//` comment after a statement of an eventmodeling diagram] [test: a
+sequence diagram keeps U+2029 before a comment that a statement follows as
+written] [test: a sequence diagram puts a comment after U+2028 at the end of the
+text on a line of its own] [test: a timeline keeps U+2029 before a comment after
+its header that a statement follows as written] [test: a timeline puts a comment
+after its header and U+2028 at the end of the text on a line of its own] [test:
+a user journey keeps U+2029 before a comment after its header that a statement
+follows as written] [test: a user journey puts a comment after its header and
+U+2028 at the end of the text on a line of its own] [test: a user journey prints
+a no-break space before a comment after its header as one space] [test: a
+timeline prints U+3000 before a comment after its header as one space] [test: a
+user journey prints a run before a comment after its title as one space] [test:
+a timeline prints a run before a comment after its title as one space] [test: a
+sequence diagram prints a run before a comment after its title as one space]
+[fixture: eventmodeling/comments/inline-gap-run-and-touching] [fixture:
 eventmodeling/comments/standalone-native-comments] [test: a no-break space
 before a `%%` comment after a statement of an eventmodeling diagram] [test:
 U+3000 before a `//` comment after a statement of an eventmodeling diagram]

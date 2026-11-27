@@ -655,9 +655,14 @@ would expose the rest of the line as a statement and change the Db; strings and
 block interiors keep percent content, while line common values stop at it.
 Common removed regions keep their complete swallowed source and joined
 continuation columns, because re-indenting a continuation adds spaces to the
-joined label. A protected preheader prefix overrides ordinary alignment.
+joined label. The whitespace at the start of the text of a comment and the runs
+of whitespace inside it stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+comment as written, as Prettier prints `//    spaced   text` as written. A
+protected preheader prefix overrides ordinary alignment.
 
-[fixture: pie/comments/comments-align] [fixture:
+[fixture: pie/comments/comment-text-as-written] [fixture:
+pie/comments/comments-align] [fixture:
 pie/comments/inline-gap-run-before-comment] [fixture: pie/comments/comment-bare]
 [fixture: pie/comments/comment-value-text] [test:
 pie/comments/comment-region-join] [fixture:

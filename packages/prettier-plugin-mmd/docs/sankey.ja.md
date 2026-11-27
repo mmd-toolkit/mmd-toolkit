@@ -479,6 +479,10 @@ a,b,1
 コメントは `%%` で始まる行で、mermaid.js がテキストを読む前に取り除かれます。
 テキストと印は書かれたまま残し、
 ほかの行と同じく 1 列目に置きます（[インデント](#インデント)を参照）。
+コメントの本文の先頭の空白と中の空白の連なりは、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+コメントの本文を書かれたまま保つからです。
+Prettier は `//    spaced   text` を書かれたまま印字します。
 
 [fixture: comments/lines-at-the-first-column] [fixture: comments/text-kept]
 [fixture: comments/comment-line-only-in-the-body]

@@ -2906,7 +2906,12 @@ CRLF と CR は `endOfLine` に従い、値の U+2028 と U+2029 は文字とし
 
 移動できるブロック内の字下げしたコメント行は、ほかの本文行と一緒に動かし、
 書かれた行とテキストを保ちます。
+コメントの本文の先頭の空白と中の空白の連なりは、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+コメントの本文を書かれたまま保つからです。
+Prettier は `//    spaced   text` を書かれたまま印字します。
 
+[fixture: flowchart/data-blocks/comment-text-as-written]
 [fixture: data-blocks/indented-comment-line]
 
 入力
@@ -3081,6 +3086,10 @@ Prettier がブロックの中の行をそう印字するためです。
 [fixture: comments/at-end-of-text]
 
 コメントのテキストは、末尾の空白も含めて書かれたまま残します。
+コメントの本文の先頭の空白と中の空白の連なりは、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+コメントの本文を書かれたまま保つからです。
+Prettier は `//    spaced   text` を書かれたまま印字します。
 mermaid.js は読みません。
 ほかに文字のないコメント行は、`%% ` を保ちます。
 対象にする版の mermaid.js のすべてが、`%%` を名前が `%%` の頂点として読み、

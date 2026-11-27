@@ -703,8 +703,13 @@ LS・PS は区切りではなく、
 文字列とブロック内のパーセントは内容で、共通の行形式の値はその直前で終わります。
 共通の削除領域は飲み込んだ範囲と結合後の継続列を保ちます。
 継続行を字下げし直すと、結合したラベルに空白が加わるためです。
+コメントの本文の先頭の空白と中の空白の連なりは、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+コメントの本文を書かれたまま保つからです。
+Prettier は `//    spaced   text` を書かれたまま印字します。
 保持する前置きは通常の整列より優先します。
 
+[fixture: pie/comments/comment-text-as-written]
 [fixture: pie/comments/comments-align] [fixture: pie/comments/comment-bare]
 [fixture: pie/comments/inline-gap-run-before-comment]
 [fixture: pie/comments/comment-value-text]

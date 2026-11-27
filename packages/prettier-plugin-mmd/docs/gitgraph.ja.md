@@ -712,12 +712,17 @@ Prettier がブロックの中の行をそう印字するためです。
 同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
 Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 mark・本文・末尾空白を保持します。
+コメントの本文の先頭の空白と中の空白の連なりは、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+コメントの本文を書かれたまま保つからです。
+Prettier は `//    spaced   text` を書かれたまま印字します。
 図固有のコメントの LS/PS は内容です。
 文字列とブロックはパーセント記号 2 つで始まるテキストを自身の内容として持ち、
 行値はその前で終わります。
 共通の削除領域は完全な原文の範囲を保持します。
 保持する前置部分は通常の配置に優先します。
 
+[fixture: gitgraph/comments/comment-text-as-written]
 [fixture: gitgraph/comments/comment-placement]
 [fixture: gitgraph/comments/comment-bare-triple]
 [fixture: gitgraph/comments/comment-in-values]

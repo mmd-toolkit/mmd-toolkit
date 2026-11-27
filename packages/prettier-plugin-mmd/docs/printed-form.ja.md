@@ -162,6 +162,12 @@ XY チャートでは、mermaid.js は、
 1 文字の単位に接する `%%` をその文字と一緒に読むので、
 `title A B%% c` の title は `A` で、`title A B %% c` の title は `AB` になる。
 
+コメントの本文は、印の後から、先頭の空白と中の空白の連なりも含めて、
+書かれたまま印字する。
+Prettier は、JavaScript の `//no space` と `//    spaced   text`、
+YAML の `#    spaced   text` を書かれたまま印字し、落とすのは、
+どの行でもそうするように、行の終わりの空白だけである。
+
 行の終わり、テキストの終わり、空行は、JavaScript、CSS、YAML、Markdown で同じで、
 空白だけの行は、4 つとも空行にする。
 Markdown で、改行の前の 2 つ以上の空白は、改行（hard line break）の記号で、
