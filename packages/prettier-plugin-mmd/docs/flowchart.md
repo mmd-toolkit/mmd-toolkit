@@ -2866,19 +2866,22 @@ whitespace at its ends:
 and those directive lines one level deeper than the line that opens the block,
 as lines inside a block, and leaves out those empty lines, and the released
 version keeps them as written, which rule 1 does not give. A directive that is
-not closed takes the whitespace after its argument, line breaks included (the
+not closed and whose argument starts with a word character, also on the next
+line, takes the whitespace after that word, line breaks included (the
 specification's
 [Where a directive is](../../spec/docs/common.md#where-a-directive-is)), so what
 follows it goes on the line of the directive and is printed as written, as in
 [A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins).
-In a line `%%{x`, a line `b`, and a line `}`, the name of the directive is `x`,
-its argument is `b`, and the `}` goes on the line of the directive with the
-indentation before it. The line of the directive itself is printed as any other
-directive line of the block, as above. The released version keeps that line
-where it is written inside a subgraph, also at the start or the end of the
-block. Where the closer goes on the line of the directive, it also keeps every
-line of the block after the opening line as written, at the top level and inside
-a subgraph. Rule 1 gives neither.
+Any other argument, as in `%%{init: {}`, runs to the end of the text (see
+[Directives](#directives)), which is then printed as written. In a line `%%{x`,
+a line `b`, and a line `}`, the name of the directive is `x`, its argument is
+`b`, and the `}` goes on the line of the directive with the indentation before
+it. The line of the directive itself is printed as any other directive line of
+the block, as above. The released version keeps that line where it is written
+inside a subgraph, also at the start or the end of the block. Where the closer
+goes on the line of the directive, it also keeps every line of the block after
+the opening line as written, at the top level and inside a subgraph. Rule 1
+gives neither.
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-blank-line-run-kept]
@@ -2891,9 +2894,10 @@ multi-line-values/accdescr-block-subgraph-directive-lines-at-the-ends-kept]
 multi-line-values/accdescr-block-subgraph-unclosed-directive-line-kept]
 [fixture:
 multi-line-values/accdescr-block-subgraph-unclosed-directive-line-at-the-start-kept]
-[corpus fixture: flowchart/db-subgraph-member-acc-descr-block-blank-lines]
-[corpus fixture:
-flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]
+[fixture:
+multi-line-values/accdescr-block-unclosed-directive-free-text-argument] [corpus
+fixture: flowchart/db-subgraph-member-acc-descr-block-blank-lines] [corpus
+fixture: flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]
 
 A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when

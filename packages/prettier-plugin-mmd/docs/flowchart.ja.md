@@ -2971,7 +2971,8 @@ mermaid.js は、端の空白を除いてノードを読むからです。
 ブロックを開く行より 1 段深く置き、その空行を除きます。
 リリース済みの版はそれらを書かれたまま残し、
 これは規則 1 が与える形ではありません。
-閉じていないディレクティブは、引数の後ろの空白を改行ごと取り込みます。
+閉じていないディレクティブの引数が語の文字で始まるときは、次の行にあっても、
+ディレクティブはその語の後ろの空白を改行ごと取り込みます。
 詳しくは仕様の
 [ディレクティブの位置](../../spec/docs/common.ja.md#ディレクティブの位置)
 を参照してください。
@@ -2979,6 +2980,9 @@ mermaid.js は、端の空白を除いてノードを読むからです。
 詳しくは
 [閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
 を参照してください。
+`%%{init: {}` のように、ほかの文字で始まる引数は、
+テキストの終わりまで続き（[ディレクティブ](#ディレクティブ)を参照）、
+そこまでを書かれたまま印字します。
 `%%{x` の行、`b` の行、`}` の行が続くとき、ディレクティブの名前は `x`、
 引数は `b` で、`}` はその前の字下げとともにディレクティブの行に乗ります。
 ディレクティブの行そのものは、上で述べたとおり、
@@ -2998,6 +3002,7 @@ mermaid.js は、端の空白を除いてノードを読むからです。
 [fixture: multi-line-values/accdescr-block-subgraph-directive-lines-at-the-ends-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-unclosed-directive-line-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-unclosed-directive-line-at-the-start-kept]
+[fixture: multi-line-values/accdescr-block-unclosed-directive-free-text-argument]
 [corpus fixture: flowchart/db-subgraph-member-acc-descr-block-blank-lines]
 [corpus fixture: flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]
 
