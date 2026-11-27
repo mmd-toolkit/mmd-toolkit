@@ -3218,21 +3218,13 @@ flowchart %%{init: {}}%%LR
   B %%{init: {}}%%--> C
 ```
 
-A directive that is not closed is kept as written, with the text that goes on
-its line. An argument that starts with a word character ends with that word,
-also on the next line, and the directive takes the whitespace after it, line
-breaks included, so the text after it goes on the line of the directive (see
-[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)):
-`A`, `%%{x`, `B`, and `C` give the nodes `A` and `C`. Any other argument, as in
-`%%{init: {}`, runs to the end of the text, as mermaid.js reads it.
+A directive that is not closed runs to the end of the text, as mermaid.js reads
+it.
 
 [fixture: directives/compat-unclosed-directive-joins-next-line] [fixture:
-directives/unclosed-after-statement-on-same-line] [fixture:
-directives/unclosed-takes-the-next-word] [fixture:
-directives/unclosed-word-argument-stops-after-word]
+directives/unclosed-after-statement-on-same-line]
 
-The range of a directive that reaches the end of the text ends at its last
-character that is not whitespace (the specification's
+Its range ends at its last character that is not whitespace (the specification's
 [Comments, directives, and frontmatter](../../spec/docs/ast.md#directives-and-frontmatter)),
 so the whitespace after it is whitespace at the end of the text and is formatted
 as such: the text ends with one line break after the directive. When the text
