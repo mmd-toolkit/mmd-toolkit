@@ -270,7 +270,9 @@ packet/lex-block-gap-comment-region] [fixture: packet/accdescr-block-gap-ls]
 packet/accdescr-block-escaped-close] [fixture:
 packet/lex-description-quoted-close] [fixture:
 packet/lex-description-nested-open] [fixture: packet/accdescr-block-open]
-[fixture: packet/lex-description-colon-first]
+[fixture: packet/lex-description-colon-first] [fixture:
+packet/lex-description-close-on-comment-line] [fixture:
+packet/lex-description-close-on-comment-line-later-close]
 
 ### Hidden forms
 
@@ -383,7 +385,10 @@ and can leave a native comment.
 
 [fixture: packet/common-block-bare] [fixture: packet/common-block-comment]
 [fixture: packet/lex-description-comment-only] [fixture:
-packet/lex-description-hidden-first-brace]
+packet/lex-description-hidden-first-brace] [fixture:
+packet/lex-description-comment-after-open] [fixture:
+packet/lex-description-close-on-comment-line] [fixture:
+packet/lex-description-close-on-comment-line-later-close]
 
 Common directives, comment regions and selected semicolons retain their shared
 scope inside values and hidden forms. Written value fields leave them out, while
