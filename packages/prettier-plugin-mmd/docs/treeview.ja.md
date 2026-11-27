@@ -2634,7 +2634,12 @@ mermaid.js は字下げしたコメント行も受理しますが、
 
 文の間では、`%%` だけの行、ディレクティブではない `%%{` 始まりの行、
 独立したディレクティブを第 1 列に置きます。
-字下げモードでは、字下げすると mermaid.js が拒否するためです。
+字下げモードでは、前の 2 つを字下げすると mermaid.js が拒否するためです。
+独立したディレクティブを字下げすると、対象の版はどれも、
+次のノードを前のノードの子として読むか、後にノードがなければ拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 混在する列と末尾でも、この区別を保ちます。
 
 [fixture: treeview/comments/comment-bare-native]
@@ -2642,6 +2647,7 @@ mermaid.js は字下げしたコメント行も受理しますが、
 [fixture: treeview/comments/unclosed-directive]
 [fixture: treeview/comments/mixed-directives]
 [fixture: treeview/comments/native-final]
+[fixture: treeview/comments/standalone-directive-column-one]
 
 空の説明ブロックやセミコロンで保護された title の前後でも、
 コメント行は次の文にそろえます。

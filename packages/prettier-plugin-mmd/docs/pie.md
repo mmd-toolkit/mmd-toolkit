@@ -524,13 +524,17 @@ Keep opaque malformed/empty/nested-looking contents, internal trivia and
 multiple forms. Do not insert a break before a form: each of these edits changes
 what Mermaid accepts. A break added before a form, or a form moved onto its own
 line, turns the line feed that the form consumed into a visible one inside the
-statement. Removing a form exposes the line feed that it consumed. Removing the
-closing space lets the form consume the line feed that the next statement needs,
-and that statement is rejected. The closing fence of a hidden YAML block also
-stays at column one: it is the closer only there, and an indented closing fence
-is rejected. Ordinary opener padding can compact and a body opener can be
-indented; its interior and unindented closer keep their columns. Already-started
-string/title/block text retains priority.
+statement. Removing a form exposes the line feed that it consumed. Where the
+form follows a statement on its line, removing the closing space lets the form
+consume the line feed that the next statement needs, and every version of
+mermaid.js that counts and reads such a form rejects that statement (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
+for a form on lines of its own, after the header, or at the end of the text, no
+version that counts needs the closing space. The closing fence of a hidden YAML
+block also stays at column one: it is the closer only there, and an indented
+closing fence is rejected. Ordinary opener padding can compact and a body opener
+can be indented; its interior and unindented closer keep their columns.
+Already-started string/title/block text retains priority.
 
 Keep closing padding for standalone forms at the start or middle of the body,
 indented forms, forms after the header or showData, and forms at EOF. The same

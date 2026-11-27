@@ -2620,13 +2620,17 @@ misalign the starts of successive lines.
 
 Between statements, keep a line of only `%%`, a line starting with `%%{` without
 being a directive, and a standalone directive at column one: mermaid.js rejects
-them when indented in indentation mode. Keep this distinction in mixed runs and
-at EOF.
+the first two when indented in indentation mode, and with a standalone directive
+indented, every version that counts reads the next node as a child of the node
+before it, or rejects the text where no node follows (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Keep this distinction in mixed runs and at EOF.
 
 [fixture: treeview/comments/comment-bare-native] [fixture:
 treeview/comments/native-nonword] [fixture:
 treeview/comments/unclosed-directive] [fixture:
 treeview/comments/mixed-directives] [fixture: treeview/comments/native-final]
+[fixture: treeview/comments/standalone-directive-column-one]
 
 Comment lines around an empty description block or a semicolon-protected title
 still align with the following statement.

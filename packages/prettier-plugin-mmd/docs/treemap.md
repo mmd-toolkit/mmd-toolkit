@@ -697,10 +697,13 @@ semicolons/class-terminator-entity-kept] [fixture:
 semicolons/class-terminator-beside-semicolon-kept] [fixture:
 semicolons/class-terminator-beside-semicolon-directive-kept]
 
-It stays too after a U+2028 or U+2029 and then a comment line: the character is
-no whitespace of the line rule and the comment line is removed, so dropping the
-`;` and the character would change what mermaid.js draws, and the line is
-printed as written.
+It stays too after a U+2028 or U+2029 and then a comment line, and the line is
+printed as written. The character is no whitespace of the line rule and the
+comment line is removed, so the character is part of the style: with it, no
+version of mermaid.js that counts draws the style of the class, and without it
+every one does, so it stays (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Dropping the `;` alone draws the same in every version that counts.
 
 [test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
 
