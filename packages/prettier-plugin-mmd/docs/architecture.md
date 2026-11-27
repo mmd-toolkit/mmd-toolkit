@@ -3887,14 +3887,18 @@ released form stays until it is decided (see
 Ordinary description body and standalone comment lines align one level inside
 the statement, since the Db removes indentation after LF. Keep line breaks and
 interior blank lines, and the whitespace at the end of each line of text except
-the last one; a line of whitespace only becomes an empty line. The whitespace at
-the end of the last line of text is dropped where the closer stands on a line of
-its own, and is printed as one space where the closer follows it on that line.
-Rule 2 gives the level of the description text and boundary comment lines: the
-formatter, run on a block of each of flowchart, sequence, state, gantt, journey,
-timeline, pie, and radar, puts the text lines and the comment lines of the block
-one level inside the statement and a separate closer at the level of the
-statement, and the sections of [flowchart](./flowchart.md#multi-line-values),
+the last one; a line of whitespace only becomes an empty line. The line breaks
+and the blank lines between the lines of text, a run of them too, stay as
+written: [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the
+text of a description block as written, as Prettier keeps the text of a template
+literal. The whitespace at the end of the last line of text is dropped where the
+closer stands on a line of its own, and is printed as one space where the closer
+follows it on that line. Rule 2 gives the level of the description text and
+boundary comment lines: the formatter, run on a block of each of flowchart,
+sequence, state, gantt, journey, timeline, pie, and radar, puts the text lines
+and the comment lines of the block one level inside the statement and a separate
+closer at the level of the statement, and the sections of
+[flowchart](./flowchart.md#multi-line-values),
 [sequence](./sequence.md#multi-line-values),
 [state](./state.md#multi-line-values),
 [gantt](./gantt.md#accessibility-statements), and
@@ -3913,7 +3917,8 @@ that opens a block: the line that holds the `{` is the statement's line or,
 where a comment or a directive stands before the `{`, a later line at the level
 of the statement.
 
-[fixture: architecture/description-blocks/brace-on-a-later-line]
+[fixture: architecture/description-blocks/blank-line-run-kept] [fixture:
+architecture/description-blocks/brace-on-a-later-line]
 
 [fixture: architecture/description-blocks/asymmetric] [fixture:
 architecture/description-blocks/directive-line-between-keyword-and-brace]

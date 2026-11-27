@@ -2642,13 +2642,16 @@ including native LS/PS.
 A comment that touches the closing quote of a name stays touching it. Every
 version of mermaid.js that counts reads whitespace between the quote and the
 `%%` as the indentation of the next node, also after an empty line, so that this
-node becomes a child of the name, and rejects the text where no node follows.
+node becomes a child of the name; it rejects the text where no node follows and
+where the next node is indented.
 
 [fixture: treeview/comments/comment-quoted-inline] [fixture:
 treeview/comments/comment-quoted-inline-final] [fixture:
 treeview/comments/comment-quoted-inline-blank-line] [fixture:
 treeview/comments/comment-inline-carried] [corpus fixture:
-treeview/tail-quoted-space-comment]
+treeview/tail-quoted-space-comment] [fixture:
+treeview/comments/comment-quoted-inline-indented-next] [corpus fixture:
+treeview/gram-quoted-tail-space-comment-end-of-text]
 
 Move meaningful indentation runs once to their assigned node. In a drawable box
 diagram remove a native comment's structural prefix and draw that assigned

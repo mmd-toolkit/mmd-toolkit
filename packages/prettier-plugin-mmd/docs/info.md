@@ -231,13 +231,17 @@ of the statement. Ordinary description body and standalone comment lines align
 one level inside the statement; LF indentation is absent from the Db. Keep line
 breaks and interior blank lines, and the whitespace at the end of each line of
 text except the last one; a line of whitespace only becomes an empty line. The
-whitespace at the end of the last line of text is dropped where the closer
-stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Directives and shared removed comment regions keep
-their complete source. Quotes and backslashes do not protect the first closing
-brace.
+line breaks and the blank lines between the lines of text, a run of them too,
+stay as written: [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+keeps the text of a description block as written, as Prettier keeps the text of
+a template literal. The whitespace at the end of the last line of text is
+dropped where the closer stands on a line of its own, and is printed as one
+space where the closer follows it on that line. Directives and shared removed
+comment regions keep their complete source. Quotes and backslashes do not
+protect the first closing brace.
 
-[fixture: info/description-blocks/brace-on-a-later-line]
+[fixture: info/blank-lines/blank-values-kept] [fixture:
+info/description-blocks/brace-on-a-later-line]
 
 [fixture: info/description-blocks/block-gap-presence] [fixture:
 description-blocks/block-trailing-whitespace-closer-on-the-text-line]

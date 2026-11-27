@@ -3523,10 +3523,13 @@ Ordinary description body and standalone comment lines align one level inside
 the statement: the Db removes indentation after LF. Rule 1 does not decide the
 indentation of description text. Keep line breaks and interior blank lines, and
 the whitespace at the end of each line of text except the last one; a line of
-whitespace only becomes an empty line. The whitespace at the end of the last
-line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. Align a separate
-opener or closer with the statement.
+whitespace only becomes an empty line. The line breaks and the blank lines
+between the lines of text, a run of them too, stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+description block as written, as Prettier keeps the text of a template literal.
+The whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. Align a separate opener or closer with the statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
 level, as Prettier prints the closing line at the level of the line that opens a
 block: the line that holds the `{` is the statement's line or, where a comment
@@ -3534,7 +3537,8 @@ or a directive stands before the `{`, a later line at the level of the
 statement. Directives and shared removed comment regions keep their complete
 source. The first closing brace still ends the value.
 
-[fixture: radar/description-blocks/brace-on-a-later-line]
+[fixture: radar/description-blocks/blank-line-run-kept] [fixture:
+radar/description-blocks/brace-on-a-later-line]
 
 [fixture: radar/description-blocks/block-touching-with-text-fixed] [fixture:
 radar/description-blocks/block-empty-fixed] [fixture:

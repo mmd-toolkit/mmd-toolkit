@@ -465,10 +465,12 @@ level inside the statement, since the Db removes indentation after LF. Keep line
 breaks and interior blank lines, and the whitespace at the end of each line of
 text except the last one: mermaid.js keeps the line breaks in the description,
 and a line of whitespace only becomes an empty line. A run of blank lines
-between two lines of text stays as written. The whitespace at the end of the
-last line of text is dropped where the closer stands on a line of its own, and
-is printed as one space where the closer follows it on that line. A separate `}`
-aligns with its statement.
+between two lines of text stays as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+description block as written, as Prettier keeps the text of a template literal.
+The whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
 puts the closing line at the level of the line that holds the `{`, as Prettier
 prints the closing line of a block, and that line is the `accDescr` line or,
@@ -491,7 +493,8 @@ description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: packet/description-blocks/blank-line-run-kept]
 
-[fixture: packet/description-blocks/description-trivia]
+[fixture: packet/description-blocks/description-trivia] [fixture:
+packet/description-blocks/comment-and-directive-lines]
 
 [corpus fixture: packet/lex-description-directive-only]
 

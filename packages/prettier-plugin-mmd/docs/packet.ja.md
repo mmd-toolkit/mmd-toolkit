@@ -498,6 +498,9 @@ Db で LF 後の字下げが取り除かれるためです。
 改行と内部の空行は保ちます。
 mermaid.js は説明の中の改行を保ちます。
 2 つのテキスト行の間の空行の連なりは、書かれたまま残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+説明ブロックのテキストを書かれたまま保つからです。
+Prettier もテンプレートリテラルの中の文字を書かれたまま保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
@@ -527,6 +530,7 @@ Prettier がブロックを閉じる行を印字する形です。
 [fixture: packet/description-blocks/blank-line-run-kept]
 
 [fixture: packet/description-blocks/description-trivia]
+[fixture: packet/description-blocks/comment-and-directive-lines]
 
 [corpus fixture: packet/lex-description-directive-only]
 

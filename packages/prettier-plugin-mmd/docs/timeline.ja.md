@@ -1370,10 +1370,15 @@ Db の設定処理はこの字下げを捨てるので、section の中でも、
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。
+テキストの行の間の改行と空行は、空行の連なりも、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+説明ブロックのテキストを書かれたまま保つからです。
+Prettier もテンプレートリテラルの中の文字を書かれたまま保ちます。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 開始行のテキストはその行に残し、テキスト内の空行も空行のまま残します。
 
+[fixture: timeline/multi-line-values/blank-line-run-kept]
 [fixture: multi-line-values/description-line-ending-whitespace]
 [fixture: multi-line-values/block-trailing-whitespace]
 [fixture: multi-line-values/block-trailing-whitespace-closer-on-the-text-line]

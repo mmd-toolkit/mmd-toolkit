@@ -2127,6 +2127,10 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 固定した版の Db はそれを持ちます。
 `x`、空白 2 つ、改行、`y` は、`x`、改行、`y` と accDescr が違います。
 空白だけの行は空行にします。
+テキストの行の間の改行と空行は、空行の連なりも、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+説明ブロックのテキストを書かれたまま保つからです。
+Prettier もテンプレートリテラルの中の文字を書かれたまま保ちます。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 subgraph 内では、生の説明がその所属の読みにも使われるため、
@@ -2139,6 +2143,7 @@ mermaid.js はその行を列ごと subgraph の節点として読むので、
 そこでは空白だけの行は書かれたまま残し、最後のテキスト行の行末の空白は、
 上と同じく落とすか、同じ行に閉じ括弧が続くときは空白 1 つで印字します。
 
+[fixture: er/accessibility-statements/blank-line-run-kept]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 [fixture: accessibility-statements/block-trailing-whitespace]
 [fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]

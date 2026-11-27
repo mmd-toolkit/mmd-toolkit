@@ -2708,6 +2708,10 @@ Db で LF 後の字下げが取り除かれるためです。
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。
+テキストの行の間の改行と空行は、空行の連なりも、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+説明ブロックのテキストを書かれたまま保つからです。
+Prettier もテンプレートリテラルの中の文字を書かれたまま保ちます。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
@@ -2719,6 +2723,7 @@ Prettier がブロックの閉じ行を開始行と同じ段に印字するの�
 文と同じ段の後の行です。
 最初の閉じ波括弧で値を終えます。
 
+[fixture: radar/description-blocks/blank-line-run-kept]
 [fixture: radar/description-blocks/brace-on-a-later-line]
 
 [fixture: radar/description-blocks/block-touching-with-text-fixed]
