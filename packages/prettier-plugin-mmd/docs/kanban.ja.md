@@ -423,6 +423,9 @@ kanban
 余白や改行を持つラベルです。
 開きの `(-` の後の文字列は、引用符を外します。
 mermaid.js は `card8(-x)` を `card8(-"x")` と同じに読むからです。
+`:` と `;` を持つラベルは、
+[規則 3](./printed-form.ja.md#3-綴り)の直しにより引用符を保ちます。
+引用符がないと、`A[aStyle:#x;yb]` はスタイルを持つカードに見えるからです。
 markdown 文字列は書かれたまま残します。
 文字列とダッシュの間にディレクティブがあっても、変わりません。
 mermaid.js は、テキストを読む前にそれらを取り除くので、
@@ -433,6 +436,7 @@ mermaid.js は、テキストを読む前にそれらを取り除くので、
 [fixture: quotes/labels-that-need-quotes]
 [fixture: quotes/dash-closer-after-a-directive-kept]
 [fixture: quotes/dash-opener-string-unquoted]
+[fixture: line-rule-and-kept-lines/lex-label-style-rule-upper]
 
 入力
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-input.mmd)):
@@ -1389,9 +1393,15 @@ kanban のボードでは、`;` はテキストの文字で、文を区切る `;
 すべての `;` を残します（[行の規則と保つ行](#行の規則と保つ行)を参照）。
 落としたり、そこで行を分けたりすると、Db が持つテキストか、
 行の規則が無視する `;` が変わります。
+カードか列のテキストと形の間の、行の規則が無視する `;` も、
+前の空白とともに残します（`style:#a ;[x]`）。
+その `;` がないと、`style:#a;b ;[x]` は `style:#a;b[x]` になり、
+行の規則はその id を `style:#ab` と読みます。
 形のすぐ後の `;` は形の一部でなく、拒否されます（`S[x];`）。
 
 [fixture: semicolons/values] [fixture: semicolons/semicolon-remove]
+[fixture: semicolons/ignored-before-shape-kept]
+[fixture: semicolons/ignored-before-shape-at-end-of-text]
 
 入力
 ([semicolons/values-input.mmd](../tests/fixtures/kanban/semicolons/values-input.mmd)):

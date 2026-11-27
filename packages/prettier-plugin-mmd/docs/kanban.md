@@ -396,15 +396,19 @@ label with a `)`, a `]`, a `(`, or a `}`; a label that starts with a `-`
 (`card6("-x")`, since `(-` opens another shape, and a `-` before a `)` closes
 one); a string next to a dash of the dash form (`card4(-"x"-)`); a label with
 padding or a line break. A string after the opener `(-` loses its quotes, since
-mermaid.js reads `card8(-x)` as it reads `card8(-"x")`. A markdown string stays
-as written. Directives between the string and the dash change nothing, since
-mermaid.js removes them before it reads the text: `card7("x"%%{init: {}}%%-)`
-keeps its quotes, and `card9(-%%{init: {}}%%"y z")` loses them.
+mermaid.js reads `card8(-x)` as it reads `card8(-"x")`. A label with a `:` and a
+`;` keeps its quotes by the correction of
+[rule 3](./printed-form.md#3-a-spelling): without them, `A[aStyle:#x;yb]` looks
+like a card that holds a style. A markdown string stays as written. Directives
+between the string and the dash change nothing, since mermaid.js removes them
+before it reads the text: `card7("x"%%{init: {}}%%-)` keeps its quotes, and
+`card9(-%%{init: {}}%%"y z")` loses them.
 
 [fixture: quotes/labels-without-quotes] [fixture:
 quotes/labels-that-need-quotes] [fixture:
 quotes/dash-closer-after-a-directive-kept] [fixture:
-quotes/dash-opener-string-unquoted]
+quotes/dash-opener-string-unquoted] [fixture:
+line-rule-and-kept-lines/lex-label-style-rule-upper]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-input.mmd)):
@@ -1285,10 +1289,15 @@ alone is a node, and `:::c;d` has a `;` in the class. The printer keeps every
 `;`, the ones that the line rule of mermaid.js ignores included (see
 [Line rule and kept lines](#line-rule-and-kept-lines)); dropping one, or
 splitting a line at it, would change the text that the Db holds or which `;` the
-line rule ignores. A `;` right after a shape is not part of the shape and is
+line rule ignores. The `;` that the rule ignores between the text of a card or a
+column and its shape stays with the whitespace before it (`style:#a ;[x]`):
+without it, `style:#a;b ;[x]` would be `style:#a;b[x]`, whose id the rule reads
+as `style:#ab`. A `;` right after a shape is not part of the shape and is
 rejected (`S[x];`).
 
-[fixture: semicolons/values] [fixture: semicolons/semicolon-remove]
+[fixture: semicolons/values] [fixture: semicolons/semicolon-remove] [fixture:
+semicolons/ignored-before-shape-kept] [fixture:
+semicolons/ignored-before-shape-at-end-of-text]
 
 Input
 ([semicolons/values-input.mmd](../tests/fixtures/kanban/semicolons/values-input.mmd)):

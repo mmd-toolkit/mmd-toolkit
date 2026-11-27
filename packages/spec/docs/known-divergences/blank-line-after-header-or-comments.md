@@ -120,7 +120,14 @@ here and rejected by mermaid.js:
    ishikawa/div-header-space-directive-node] [fixture:
    ishikawa/div-header-two-comments-blank-cr] [fixture:
    ishikawa/div-header-two-comments-blank-crlf] [fixture:
-   ishikawa/div-header-two-comments-common-gap]
+   ishikawa/div-header-two-comments-common-gap] [fixture:
+   ishikawa/div-header-trailing-space-indented-node] [fixture:
+   ishikawa/div-header-trailing-two-spaces-node] [fixture:
+   ishikawa/div-header-trailing-space-crlf-node] [fixture:
+   ishikawa/div-header-trailing-space-blank-node] [fixture:
+   ishikawa/div-header-directive-space-node] [fixture:
+   ishikawa/div-header-trailing-space-cr-node] [fixture:
+   ishikawa/div-header-trailing-space-comment-line-node]
 
 2. After the header, an odd diagram-comment count ending at U+2028 or U+2029
    before a node on the same physical line is accepted.
@@ -152,8 +159,11 @@ here and rejected by mermaid.js:
 
 The counterparts accepted by both keep their tree: an odd count after the header
 followed by a blank, an even count between nodes followed by a blank, two
-comments before a header-line separator and node, and blanks before comments or
-at the end.
+comments before a header-line separator and node, blanks before comments or at
+the end, a header line that ends with whitespace and no node after it, one
+diagram comment on the header line followed by a node on the next physical line,
+and a comment line between a header without trailing whitespace and the first
+node, with no blank line after it.
 
 [fixture: ishikawa/gram-header-comment-blank-node] [fixture:
 ishikawa/gram-between-two-comments-blank-node] [fixture:
@@ -162,7 +172,10 @@ ishikawa/gram-header-two-comments-ls-node] [fixture:
 ishikawa/gram-between-blank-comment-node] [fixture:
 ishikawa/gram-last-whitespace-line] [fixture:
 ishikawa/gram-last-comment-blank-line] [fixture:
-ishikawa/gram-header-two-comments-ps-node]
+ishikawa/gram-header-two-comments-ps-node] [fixture:
+ishikawa/lex-header-space-comment-indented-node] [fixture:
+ishikawa/lex-header-trailing-space-lf-eof] [fixture: ishikawa/header-spaces-eof]
+[fixture: ishikawa/header-tab-eof] [fixture: ishikawa/gram-leading-comment-line]
 
 The header alone at the end of the source, with no written line break or other
 following content, is still rejected; removed directives and the appended line

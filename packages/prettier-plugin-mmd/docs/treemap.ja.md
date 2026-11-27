@@ -724,10 +724,16 @@ style のない `classDef` の `;` は、消すと次の行が style になり�
 [fixture: semicolons/class-terminator-beside-semicolon-kept]
 [fixture: semicolons/class-terminator-beside-semicolon-directive-kept]
 
-U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も残します。
-その文字は行の規則の空白ではなく、コメント行は取り除かれるので、
-`;` とその文字を消すと mermaid.js の描く図が変わります。
+U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も残し、
 その行は書かれたまま印字します。
+その文字は行の規則の空白ではなく、コメント行は取り除かれるので、
+その文字はスタイルの一部です。
+その文字があると、対象の版の mermaid.js はどれも、描く SVG の `<style>` に、
+CSS が読むそのクラスの規則を書かず、ないとどれも書くので、その文字は残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+`;` だけを消しても、対象の版はどれも同じに描きます。
 
 [test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
 

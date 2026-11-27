@@ -5,12 +5,14 @@ import type {
   MindmapIconStatement,
   MindmapNode,
   Node,
+  Range,
 } from "@mmd-toolkit/ast"
 import type { AtomLayout } from "./atoms.ts"
 import {
   findLeadingDirectives,
   findNodeLineTextStart,
 } from "./indentation-lines.ts"
+import { changesIgnoredSemicolonsWithout } from "./kept-lines.ts"
 import {
   isPlainLine,
   printPaddedLiteral,
@@ -152,9 +154,27 @@ function printMindmapText(
   return (
     (id === null
       ? head
-      : trimBlanksEnd(withoutIgnoredSemicolonsEnd(source, id.range))) +
+      : trimBlanksEnd(nodeTextBeforeShape(source, id.range, shape.range))) +
     printShapeWithoutPadding(source, shape)
   )
+}
+
+/**
+ * The text of a node up to its shape. A `;` that the line rule ignores between
+ * the text and the shape is left out with the whitespace around it, as
+ * mermaid.js removes it, except where the rule would then ignore another `;` of
+ * the line, which would change the text that mermaid.js reads: there the text
+ * runs to the shape as written (docs/mindmap.md, Node text).
+ */
+function nodeTextBeforeShape(source: Source, id: Range, shape: Range): string {
+  for (let offset = id[0]; offset < shape[0]; offset++) {
+    if (
+      source.ignoredSemicolons.has(offset) &&
+      changesIgnoredSemicolonsWithout(source, offset)
+    )
+      return source.text.slice(id[0], shape[0])
+  }
+  return withoutIgnoredSemicolonsEnd(source, id)
 }
 
 /**

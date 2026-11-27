@@ -311,6 +311,8 @@ colon があれば代わりに行テキストを選び、brace もその内容�
 [fixture: packet/lex-description-nested-open]
 [fixture: packet/accdescr-block-open]
 [fixture: packet/lex-description-colon-first]
+[fixture: packet/lex-description-close-on-comment-line]
+[fixture: packet/lex-description-close-on-comment-line-later-close]
 
 ### hidden な形
 
@@ -438,6 +440,9 @@ native comment を残し得る。
 [fixture: packet/common-block-bare] [fixture: packet/common-block-comment]
 [fixture: packet/lex-description-comment-only]
 [fixture: packet/lex-description-hidden-first-brace]
+[fixture: packet/lex-description-comment-after-open]
+[fixture: packet/lex-description-close-on-comment-line]
+[fixture: packet/lex-description-close-on-comment-line-later-close]
 
 共通 directive、comment region、選ばれた semicolon は、
 値や hidden な形の中でも共通の適用範囲を持つ。

@@ -262,6 +262,7 @@ ELK の配置のパッケージのどのリリースも、
 | [flowchart](./flowchart.ja.md#複数行の文)                                                                                             | `flowchart`、U+2028、`%% c`、` TD`                                                                                                       | U+2028 の代わりの改行                                                     | なし                                                  | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が、ほかの形で `TD` を頂点として読む                                             | [test: a comment line after U+2028 in a flowchart header]                                                                                                             |
 | [flowchart](./flowchart.ja.md#ラベルの内側の空白)                                                                                     | 長いノードのラベルの中の空白の連なり                                                                                                     | 空白 1 つのラベル                                                         | なし                                                  | 11.7.0、11.17.2、12.0.0、12.3.0 が、空白 1 つの形を違う形に描く                                                          | [fixture: flowchart/label-inner-whitespace/long-label-run-kept]                                                                                                       |
 | [flowchart](./flowchart.ja.md#subgraph-のヘッダー)                                                                                    | subgraph の長い markdown の題の中の空白の連なり。名前でも角括弧の中でも                                                                  | 空白 1 つの題                                                             | なし                                                  | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が、空白 1 つの形を違う形に描く                                                  | [fixture: flowchart/subgraph-header/long-markdown-title-runs-kept]                                                                                                    |
+| [flowchart](./flowchart.ja.md#複数行の文)                                                                                             | `style A fill:#F00`、U+2028、`%% c` の後に、空行か、コメント行とディレクティブの行だけが続く形                                           | U+2028 を除き、`%% c` を自分の行に置いた形                                | [コメント行](#u2028-か-u2029-の後のコメント行)        | 10.9.8 がスタイルを別に描く                                                                                              | [test: a flowchart style that ends with U+2028 before a comment line at the end of the text]                                                                          |
 | [swimlane](./flowchart.ja.md#辺のラベルの書き方)                                                                                      | swimlane 図の `I -- left\|right --> J`                                                                                                   | `I -->\|left\|right\| J`                                                  | [3](./printed-form.ja.md#3-綴り)                      | 11.16.1 から 12.3.0 がもう一方の形を拒否する                                                                             | [fixture: flowchart/link-label-form/swimlane-arrows-to-pipes]                                                                                                         |
 | [class](./class.ja.md#トークンの間の空白)                                                                                             | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と印字                                                              | `style A fill: #f00, color: white`                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、`color:` か `text-align:` で始まるスタイルからラベルの色と寄せを取る                                          | [fixture: class/whitespace-between-tokens/style-color-touching-kept]                                                                                                  |
 | [class](./class.ja.md#メンバーの行)                                                                                                   | `+<タブ>int x`（属性の記号の後のタブ）                                                                                                   | `+int x`                                                                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、タブを名前の一部として読む                                                                                    | [fixture: class/member-lines/visibility-tab-kept]                                                                                                                     |
@@ -280,6 +281,7 @@ ELK の配置のパッケージのどのリリースも、
 | [cynefin](./cynefin.ja.md#header)                                                                                                     | `cynefin-beta:%%{x y`、改行、`complex "A"`                                                                                               | `cynefin-beta%%{x y`、改行、`complex "A"`                                 | [3](./printed-form.ja.md#3-綴り)                      | 11.16.1、11.17.2、12.0.0、12.3.0 がコロンのない見出しを拒否する                                                          | [fixture: cynefin/header/colon-unclosed-directive-kept]                                                                                                               |
 | [cynefin](./cynefin.ja.md#retained-prefix)                                                                                            | `---`、`title: IgnoredByLeadingLf`、`---` の前の空白 1 つと LF                                                                           | 先頭の空白と LF を除いた同じ前置部分                                      | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.16.1、11.17.2、12.0.0、12.3.0 が、別の形でだけタイトルを描き、12.3.0 では Db の `title` が変わる                      | [fixture: cynefin/retained-prefix/prefix-leading-lf]                                                                                                                  |
 | [cynefin](./cynefin.ja.md#semicolons)                                                                                                 | `%%{%%{wrap}%%init: {"label":"style:#x"}}%% cynefin-beta ;complex "A"`                                                                   | 同じ入力の `cynefin-beta;complex "A"`                                     | なし                                                  | 12.0.0、12.3.0 が空白のない見出しを拒否する                                                                              | [fixture: cynefin/semicolons/ignored-semicolon-after-header-keyword-kept]                                                                                             |
+| [cynefin](./cynefin.ja.md#hidden-boundaries)                                                                                          | 遷移の終わりの隠れた形、空白、次の行の文（`complex-->clear%%{!padding}%%`、空白、`chaotic "Pad"`）                                       | 空白を除いた形                                                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.16.1、11.17.2、12.0.0、12.3.0 がもう一方の形を拒否する                                                                | [fixture: cynefin/hidden-boundaries/boundary-suffix-directive-space]                                                                                                  |
 | [block](./block.ja.md#辺)                                                                                                             | `A ---x B`、`A ---o B`                                                                                                                   | `A --x B`、`A --o B`                                                      | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が違って描く                                                                                            | [fixture: block/edges/arrow-length-kept-where-drawn-differently]                                                                                                      |
 | [block](./block.ja.md#辺)                                                                                                             | `A ===x B`、`A ===o B`                                                                                                                   | `A ==x B`、`A ==o B`                                                      | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が違って描く                                                                                            | [fixture: block/edges/arrow-length-kept-where-drawn-differently]                                                                                                      |
 | [block](./block.ja.md#辺)                                                                                                             | `A ==== B`                                                                                                                               | `A === B`                                                                 | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が、線を長さで違う id として読む                                                                        | [fixture: block/edges/arrow-length-kept-where-drawn-differently]                                                                                                      |
@@ -351,6 +353,8 @@ ELK の配置のパッケージのどのリリースも、
 | [pie](./pie.ja.md#description-blocks)                                                                                                 | `accDescr {%% c` と次行の `D}`                                                                                                           | `%% c` と `D` を 1 段内側の別行、`}` を別行に                             | なし                                                  | 10.9.8 から 12.3.0 が説明の文字を違って描き、12.3.0 は Db.accDescr も変える                                              | [fixture: pie/description-blocks/opener-comment-with-text-kept]                                                                                                       |
 | [pie](./pie.ja.md#directives-and-semicolons)                                                                                          | `accDescr {style:#x;y}`                                                                                                                  | `accDescr {style: #x;y}`                                                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が説明の文字を違って描き、12.3.0 は Db.accDescr も変える                                              | [fixture: pie/directives-and-semicolons/block-style-colon-gap-kept]                                                                                                   |
 | [pie](./compatibility.ja.md#1-行の説明ブロック)                                                                                       | `accDescr {a%%{init: {}}%%b}` を `accDescr: a%%{init: {}}%%b` と印字する                                                                 | `accDescr: a %%{init: {}}%% b`                                            | なし                                                  | 10.9.8 から 12.3.0 が、ほかの形にアクセシブルな説明 `a b` を与える                                                       | [fixture: pie/accessibility-lines/block-with-directive-inside-the-text]                                                                                               |
+| [pie](./pie.ja.md#hidden-yaml)                                                                                                        | 行で文の後にある隠れた YAML ブロック、閉じの `---` の後の空白、次の行の文                                                                | 空白を除いた形                                                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.7.0、11.17.2、12.0.0、12.3.0 がもう一方の形を拒否する。10.9.8 は両方を拒否する                                        | [fixture: pie/hidden-yaml/yaml-after-space-boundary]                                                                                                                  |
+| [pie](./pie.ja.md#hidden-directives)                                                                                                  | 行で文の後にある隠れたディレクティブ、その `}%%` の後の空白、次の行の文                                                                  | 空白を除いた形                                                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.7.0、11.17.2、12.0.0、12.3.0 がもう一方の形を拒否する。10.9.8 は両方を同じに描く                                      | [fixture: pie/hidden-directives/hidden-after-space]                                                                                                                   |
 | [quadrant](./quadrant.ja.md#複数行の文)                                                                                               | `style \n: [0.2, 0.7]; title x:#y;`                                                                                                      | ` style: [0.2, 0.7]; title x:#y;`                                         | [1, 2](./printed-form.ja.md#形を決めるもの)           | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が異なる title のテキストを描く                                                  | [fixture: quadrant/multi-line-statements/semicolon-joining-changes-kept]                                                                                              |
 | [quadrant](./quadrant.ja.md#複数行の文)                                                                                               | `classDef A\u2028%% c\nBar color: #ff0000`                                                                                               | ` classDef A\u2028%% c\n Bar color: #ff0000`                              | なし                                                  | 11.17.2、12.0.0、12.3.0 が規則の形を拒否する                                                                             | [test: a comment line after U+2028 inside the name of a class]                                                                                                        |
 | [quadrant](./quadrant.ja.md#空白文字)                                                                                                 | `quadrant-1 a\u00a0b`                                                                                                                    | ` quadrant-1 a b`                                                         | なし                                                  | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が異なるテキストを描く                                                           | [test: U+00A0 between the words of a text]                                                                                                                            |
@@ -412,6 +416,7 @@ ELK の配置のパッケージのどのリリースも、
 | [treemap](./treemap.ja.md#comments)                                                                                                   | `treemap%% heading note`                                                                                                                 | `treemap %% heading note`                                                 | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.8.1、11.17.2、12.0.0、12.3.0 が空白のある形を拒否する                                                                 | [fixture: treemap/comments/header-inline]                                                                                                                             |
 | [treemap](./treemap.ja.md#comments)                                                                                                   | テキストの末尾の `"Tail": 2%% note`                                                                                                      | `"Tail": 2 %% note`                                                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.8.1、11.17.2、12.0.0、12.3.0 が空白のある形を拒否する                                                                 | [fixture: treemap/comments/tail]                                                                                                                                      |
 | [treemap](./treemap.ja.md#frontmatter-yaml)                                                                                           | `title: "<a b=\"c\">"`                                                                                                                   | `title: '<a b="c">'`                                                      | [YAML](#フロントマター)                               | 11.8.1, 11.17.2, 12.0.0, 12.3.0 が単一引用符の形を拒否する                                                               | [fixture: treemap/frontmatter-yaml/html-guard]                                                                                                                        |
+| [treemap](./treemap.ja.md#semicolons)                                                                                                 | `classDef cc fill: red`、空白、U+2028、コメント行、次の行の ` ;`                                                                         | U+2028 と `;` を除き、コメント行を自分の行に置いた形                      | なし                                                  | 11.8.1、11.17.2、12.0.0、12.3.0 は、もう一方の形でだけ CSS が読むクラスの規則を SVG に書く                               | [test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]                                                                                          |
 | [すべての図種](./compatibility.ja.md#フロントマター)                                                                                  | `tabWidth: 0` で本文が 1 つ分の空白だけ入るブロックスカラー                                                                              | 本文を幅 0 の字下げにした形                                               | [YAML](#フロントマター)                               | 10.9.8 から 12.3.0 が幅 0 の形を拒否する                                                                                 | [fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title]                                                                                                    |
 | [すべての図種](./compatibility.ja.md#フロントマター)                                                                                  | `tabWidth: 0` で入れ子の `config` の値が 1 つ分の空白だけ入る形                                                                          | 入れ子の値を幅 0 の字下げにした形                                         | [YAML](#フロントマター)                               | 10.9.8 から 12.3.0 が幅 0 の形を違って描く                                                                               | [fixture: ishikawa/frontmatter-yaml/zero-width-nested-config]                                                                                                         |
 | [すべての図種](./compatibility.ja.md#フロントマター)                                                                                  | フロントマターの `%YAML 1.2` の後の `--- !!map`                                                                                          | `---` と `!!map` を別の行に                                               | [YAML](#フロントマター)                               | 10.9.8 から 12.3.0 が分割した形を拒否する                                                                                | [fixture: flowchart/frontmatter-yaml/delimiter-line-kept]                                                                                                             |
@@ -435,6 +440,7 @@ ELK の配置のパッケージのどのリリースも、
 | [treeView](./treeview.ja.md#names)                                                                                                    | 引用符つきの `"name"`                                                                                                                    | `name`                                                                    | [3](./printed-form.ja.md#3-綴り)                      | 11.14.0 が、引用符で囲んだ名前だけを読む                                                                                 | [fixture: treeview/names/quoted-name-kept]                                                                                                                            |
 | [treeView](./treeview.ja.md#names)                                                                                                    | `A B`、`A` と `B` の間に空白 3 つ                                                                                                        | `A B`、間に空白 1 つ                                                      | なし                                                  | 11.17.2、12.0.0、12.3.0 で style と viewBox が異なり、12.3.0 で Db の `nodes[0].name` も異なる                           | [fixture: treeview/names/name-bare-internal]                                                                                                                          |
 | [treeView](./treeview.ja.md#title)                                                                                                    | `title T`、U+2028、U+0085、同じ行の `%%{x}%%%% c`                                                                                        | `title T` と、U+0085 で始まる行                                           | なし                                                  | 11.14.0 がもう一方の形を拒否し、11.17.2、12.0.0、12.3.0 が別の図を描き、12.3.0 は Db にノードを足す                      | [test: treeview: a U+2028 or U+2029 and a U+0085 around the last directive of a title, with the text ending]                                                          |
+| [treeView](./treeview.ja.md#comments)                                                                                                 | 字下げで書いた木の 2 つのノードの間で、行に一つだけあり、次の行がコメント行でない、1 桁目の独立したディレクティブ                        | ディレクティブを 1 段深くした形                                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.14.0、11.17.2、12.0.0、12.3.0 はもう一方の形で次のノードを子として読むか、title の後で拒否する                        | [fixture: treeview/comments/standalone-directive-column-one]                                                                                                          |
 | [Venn](./venn.ja.md#色)                                                                                                               | `style A color:` の `rgba( 1 ,2 ,3 ,.5 )` の余白                                                                                         | `style A color:` の `rgba(1, 2, 3, .5)`                                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.3.0 では Db の `color` の値が異なる                                                                                   | [fixture: venn/colors/function-padding-kept]                                                                                                                          |
 | [Venn](./venn.ja.md#title)                                                                                                            | `title` の後に空白 2 個、タブ、空白 1 個                                                                                                 | `title` の後に何もない形                                                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0、11.17.2、12.0.0、12.3.0 が `title` だけの行を拒否する                                                           | [fixture: venn/title/title-blank-kept]                                                                                                                                |
 | [Venn](./venn.ja.md#title)                                                                                                            | 改行しない空白か U+3000 を先頭か末尾に持つ title                                                                                         | それらのない title                                                        | なし                                                  | 11.13.0 から 12.3.0 が別のテキストを描き、改行しない空白では別の形状も描き、12.3.0 は Db の title の末尾を変える         | [test: a no-break space and U+3000 at both ends of the title of a Venn diagram]                                                                                       |
@@ -913,13 +919,21 @@ mermaid.js はそれらを最後のスタイルの末尾に残すので、
 これとは別に、
 eventmodeling の [データブロック](./eventmodeling.ja.md#data-blocks)
 も限定した本文の字下げの変更を認めています。
-テストは、末尾の空白とタブを除き、
+テストは、CSS が空白として読む末尾の空白、タブ、改ページを除き、
 整形器が空白 1 つで印字する所（下を参照）では、`%%` コメントの前の空白、タブ、
 改ページの連なりを空白 1 つにしたスタイルを比べます。
+agentflow 図の `style` は、
+整形器が除く末尾のほかの空白も除いて比べます（下を参照）。
 ER 図のスタイルは、末尾で消す U+2028 と U+2029 も除いて比べます。
 詳しくは、
 [スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
 を参照してください。
+スタイルの末尾にあるそのほかの空白は、そのまま比べます。
+U+2028 で終わる class 図のスタイルは、それのないスタイルと違う図に描かれます。
+
+[test: a U+2028 or a U+2029 at the end of a style of a class diagram] [test:
+the whitespace of every kind at the end of a style of a node of an agentflow
+diagram]
 
 末尾にあるほかの種類の空白（ノーブレークスペース、U+3000、垂直タブ、
 バイト順マーク）は、なくすと mermaid.js が違う図を描く所では取り除きません。
@@ -953,6 +967,8 @@ class 図、flowchart、agentflow 図は、そのとき行を、改ページ、�
 指令の後の空白は書かれたまま残します。
 block 図、state 図の `style` と `classDef` と、agentflow 図の `style` は、
 その文字がなくても図が同じなので、取り除きます。
+agentflow 図の `style` では、12.0.0 と 12.3.0 が、U+2028 と U+2029 も含め、
+末尾のどの空白がなくても同じ図を描きます。
 requirement 図、use case 図、Venn 図、象限チャートは、
 文字のあるテキストを拒否し、ないテキストを受理するので、
 mermaid.js が拒否するほかのテキストと同じく、文字を取り除きます。
@@ -8686,9 +8702,11 @@ kanban の section のテキスト `S[x;]` で、U+2028 か U+2029 の後のコ�
 書かれたまま印字します。
 コメント行の後に続くものが、文の行でも、空行でも、テキストの終わりでも同じです。
 ここでは、コメント行は自分の行に置かれません。
-`;` が行を残さない行では、コメント行は、
-後ろに空行かテキストの終わりが続くときだけ自分の行に置かれ、
-文が続くときは書かれたまま残ります（[Title](./treemap.ja.md#title)を参照）。
+`;` が行を残さない行では、コメント行は、後ろに空行が続くとき、
+またはテキストの終わりまでコメント行、ディレクティブの行、
+空白だけの行しか続かないときに自分の行に置かれ、
+間に空行を挟まずに文が続くときは、
+書かれたまま残ります（[Title](./treemap.ja.md#title)を参照）。
 整形は止まりません。
 
 [test: treemap: a title with a `;` inside, U+2028, a directive, three spaces, and a comment]
@@ -8718,6 +8736,70 @@ kanban の section のテキスト `S[x;]` で、U+2028 か U+2029 の後のコ�
 [test: treemap: a title that ends with a `;`, a space, U+2028, a directive, two spaces, a comment, and an empty line]
 [test: treemap: a title that ends with a `;`, a space, U+2029, a directive, two spaces, a comment, and an empty line]
 [test: treemap: an accTitle that ends with a `;`, U+2028, a directive, two spaces, a comment, and an empty line]
+
+コメント行を自分の行に置くときは、その前の U+2028 か U+2029 を除き、
+コメント行とその後の各行を、普通の行と同じように置きます。
+block 図の終わりの `style a fill:#F00`、U+2028、`%% c` は、
+`style a fill: #f00` と、次の行の `%% c` に印字します。
+エディターは U+2028 や U+2029 を、何も表示しないか改行として表示するので、
+その後のコメントは、文の行の上の、
+読み手がコメントを探さない所に置かれることになります。
+自分の行に置けば、コメント行として読めます。
+この形は、AGENTS.md の 4 が、
+同じに描かれるほかの形より読みにくい形を与える規則として、直すものと述べる、
+そのような行を書かれたまま残す形を直したものです。
+mermaid.js が U+2028 や U+2029 をテキストや名前の文字として、
+またはノードとして読む所では、除くと、
+どの種類の例外も許さない形で Db が変わるので、行を書かれたまま残します。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
+Gantt と user journey のタイトルの終わり、timeline の期間とイベントの終わり、
+mindmap のノードと kanban のカードのテキストの終わり、
+ER 図のエンティティの名前と関係のラベルの終わり、
+swimlane 図の `style` と treemap の `classDef` の値の終わり、
+class 図の `style`
+の値の終わり（そのとき対象の版はどれもスタイルを描きません）、
+mermaid.js がそれを treeView 図のノードとして読む所、
+ER 図の引用符で囲んだ関係のラベルの後で、それをエンティティとして読む所です。
+それがないテキストを mermaid.js が拒否する行も、同じく残します。
+テキストの終わりで、空白だけの行が後に続く treemap のタイトルです。
+flowchart の `style` の値も、それを残します。
+それがないと、対象の版の 1 つがスタイルを別に描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
+[test: block: style-ls-before-a-comment-at-the-end-of-the-text-is-dropped]
+[test: block: style-ls-before-two-comment-lines-at-the-end-of-the-text-is-dropped]
+[test: block: style-ls-before-a-comment-line-and-an-empty-line-at-the-end-is-dropped]
+[test: block: style-ls-before-a-comment-line-and-a-whitespace-only-line-at-the-end-is-dropped]
+[test: block: style-ls-before-a-comment-line-a-directive-line-and-a-comment-line-at-the-end-is-dropped]
+[test: a Gantt title that ends with U+2028 before a comment line at the end of the text]
+[test: a user journey title that ends with U+2028 before a comment line at the end of the text]
+[test: a timeline event that ends with U+2028 before a comment line at the end of the text]
+[test: a mindmap node that ends with U+2028 before a comment line at the end of the text]
+[test: a kanban card that ends with U+2028 before a comment line at the end of the text]
+[test: an ER entity name that ends with U+2028 before a comment line at the end of the text]
+[test: a treeView node, U+2028, and a comment line at the end of the text]
+[test: a timeline period that ends with U+2028 before a comment line at the end of the text]
+[test: an ER relationship label that ends with U+2028 before a comment line at the end of the text]
+[test: an ER relationship label in quotes, U+2028, and a comment line at the end of the text]
+[test: a treemap title, U+2028, a comment line, and a line of whitespace only at the end of the text]
+[test: a class style that ends with U+2028 before a comment line at the end of the text]
+[test: a class style that ends with U+2028 before a comment line and a directive line at the end of the text]
+[test: a class style that ends with U+2028 before two comment lines and a directive line at the end of the text]
+[test: a class style that ends with U+2028 before a comment line, an empty line, and a statement]
+[test: a flowchart style that ends with U+2028 before a comment line and a directive line at the end of the text]
+[test: a flowchart style that ends with U+2028 before two comment lines and a directive line at the end of the text]
+[test: a flowchart style that ends with U+2028 before a comment line, an empty line, and a statement]
+[test: a swimlane style that ends with U+2028 before a comment line at the end of the text]
+[test: a swimlane style that ends with U+2028 before a comment line and a directive line at the end of the text]
+[test: a swimlane style that ends with U+2028 before two comment lines and a directive line at the end of the text]
+[test: a swimlane style that ends with U+2028 before a comment line, an empty line, and a statement]
+[test: a treemap classDef that ends with U+2028 before a comment line at the end of the text]
+[test: a treemap classDef that ends with U+2028 before a comment line and a directive line at the end of the text]
+[test: a treemap classDef that ends with U+2028 before a comment line, an empty line, and a statement]
 
 ER 図では、そのような行の文について、スタイルの色、関係の語、
 1 語の名前の引用符のように普通の行と別に印字するものを、
@@ -10618,6 +10700,9 @@ ABNF の repeat は先頭ゼロ、上下限の省略、ちょうどの回数を�
 EBNF の特殊シーケンスは外端の空白も含め、範囲全体を保ち、
 内部の空白とタブの連なりは空白 1 つで印字します。
 これらの表記の変換や値の折り返し直しで Db が変わることがあります。
+ただし repeat の上下限と、回数がちょうどの repeat の回数の先頭ゼロは別で、
+それがあってもなくても Db は同じで、対象の版の mermaid.js はどれも、
+`002*004` と `2*4`、`03"exact"` と `3"exact"` を同じに描きます。
 PEG の先読み記号は公開 label から再構築せず、書かれた適用先全体を残します。
 
 [fixture: railroad/quotes/ir-escape] [fixture: railroad/quotes/ebnf-escape]

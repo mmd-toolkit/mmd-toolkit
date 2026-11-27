@@ -524,13 +524,23 @@ Keep opaque malformed/empty/nested-looking contents, internal trivia and
 multiple forms. Do not insert a break before a form: each of these edits changes
 what Mermaid accepts. A break added before a form, or a form moved onto its own
 line, turns the line feed that the form consumed into a visible one inside the
-statement. Removing a form exposes the line feed that it consumed. Removing the
-closing space lets the form consume the line feed that the next statement needs,
-and that statement is rejected. The closing fence of a hidden YAML block also
+statement. Removing a form exposes the line feed that it consumed. Where the
+form follows a statement on its line and the next statement stands on the next
+line, also with comment lines between, removing the closing space lets the form
+consume the line feed that the next statement needs, and every version of
+mermaid.js that counts and reads such a form rejects that statement (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
+for a form on lines of its own, after the header or its `showData`, before an
+empty line or a directive line, or at the end of the text, no version that
+counts needs the closing space. The closing fence of a hidden YAML block also
 stays at column one: it is the closer only there, and an indented closing fence
 is rejected. Ordinary opener padding can compact and a body opener can be
 indented; its interior and unindented closer keep their columns. Already-started
 string/title/block text retains priority.
+
+[fixture: pie/hidden-yaml/yaml-after-space-comment-line] [fixture:
+pie/hidden-yaml/yaml-after-space-empty-line] [fixture:
+pie/hidden-yaml/yaml-after-space-directive-line]
 
 Keep closing padding for standalone forms at the start or middle of the body,
 indented forms, forms after the header or showData, and forms at EOF. The same
@@ -588,12 +598,17 @@ nonqualifying closer can be a real comment, or a later closer can qualify;
 preserve that classification instead of adding a boundary: a space added after
 such a `}%%` would make the comment that Mermaid reads a hidden token instead.
 Strings and blocks retain earlier lexical priority. Closing spaces and spare LF
-remain significant before another statement; a closed form at EOF can gain the
-shared final LF.
+remain significant where they are under [Hidden yaml](#hidden-yaml): before a
+statement on the next line, also with comment lines between (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
+a closed form at EOF can gain the shared final LF.
 
 [fixture: pie/hidden-directives/hidden-number-gap] [fixture:
 pie/hidden-directives/hidden-before-colon] [fixture:
 pie/hidden-directives/hidden-after-space] [fixture:
+pie/hidden-directives/hidden-after-space-comment-line] [fixture:
+pie/hidden-directives/hidden-after-space-empty-line] [fixture:
+pie/hidden-directives/hidden-after-space-directive-line] [fixture:
 pie/hidden-directives/hidden-after-extra-lf] [fixture:
 pie/hidden-directives/hidden-after-title] [fixture:
 pie/hidden-directives/hidden-after-block] [fixture:

@@ -122,6 +122,16 @@ and the `}` of a description block, its text lines and the comment and directive
 lines among them, are such a text and no lines inside a block of this row: the
 row gives the closing `}` of such a block and no line between.
 
+The statements of an eventmodeling diagram stand at column one, and not one
+level deeper than its header. Every version of mermaid.js that counts rejects
+the `}` that closes a `data` or a `note` block indented, so that `}` stands at
+column one; with the statements one level deeper, it would stand to the left of
+the line that opens its block. At column one, each `}` stands at the column of
+the line that opens its block, as the closing line does in this row. This form
+corrects the form of this row, as AGENTS.md (item 4) says of a rule whose form
+reads worse than another form that draws the same (see
+[Indentation](./eventmodeling.md#indentation)).
+
 A keyword stands between two things (`a in b`) or before what it takes
 (`return x`, `typeof y`, `throw e`, and in CSS `@media screen` and
 `@import "a.css"`). Its role decides the row, as the role of a colon decides its
@@ -381,6 +391,16 @@ a tree written with indentation, which rule 3 prints with indentation: not every
 such tree has a box form, since mermaid.js rejects, in a box diagram, an
 indented line that goes on without a branch prefix, such as the second line of a
 name in quotes or an annotation on a line of its own.
+
+A string keeps its quotes where its text holds the mark that closes the call it
+stands in, or the marks of a style, also where mermaid.js reads the text the
+same without them: an alias with a `)` in a C4 diagram (`Person("a)", "A")`),
+and the label of a kanban card with a `:` and a `;` (`A["aStyle:#x;yb"]`).
+Without the quotes, `Person(a), "A")` looks like a call that ends after `a`, and
+`A[aStyle:#x;yb]` looks like a card that holds a style. This form corrects the
+form of rule 3, as AGENTS.md (item 4) says of a rule whose form reads worse than
+another form that draws the same (see [Quotes](./c4.md#quotes) and
+[Quotes](./kanban.md#quotes)).
 
 ## 4. Where none of these rules gives a form
 

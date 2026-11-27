@@ -126,6 +126,13 @@ Ishikawa
    [fixture: ishikawa/div-header-two-comments-blank-cr]
    [fixture: ishikawa/div-header-two-comments-blank-crlf]
    [fixture: ishikawa/div-header-two-comments-common-gap]
+   [fixture: ishikawa/div-header-trailing-space-indented-node]
+   [fixture: ishikawa/div-header-trailing-two-spaces-node]
+   [fixture: ishikawa/div-header-trailing-space-crlf-node]
+   [fixture: ishikawa/div-header-trailing-space-blank-node]
+   [fixture: ishikawa/div-header-directive-space-node]
+   [fixture: ishikawa/div-header-trailing-space-cr-node]
+   [fixture: ishikawa/div-header-trailing-space-comment-line-node]
 
 2. 見出しの後の図のコメントが奇数個で、
    最後のコメントを終える U+2028 または U+2029 の後に、
@@ -159,7 +166,10 @@ Ishikawa
 
 両者が受理する対照例の木は保ちます。
 見出し後の奇数個のコメントと空行、節点間の偶数個のコメントと空行、
-見出し後の 2 個のコメントと区切りと節点、コメントの前や末尾の空行です。
+見出し後の 2 個のコメントと区切りと節点、コメントの前や末尾の空行、
+空白で終わり後に節点のない見出しの行、見出しの行の 1 個のコメントと、
+次の物理行に続く節点、行末に空白のない見出しと最初の節点の間の、
+後に空行のないコメント行です。
 
 [fixture: ishikawa/gram-header-comment-blank-node]
 [fixture: ishikawa/gram-between-two-comments-blank-node]
@@ -169,6 +179,10 @@ Ishikawa
 [fixture: ishikawa/gram-last-whitespace-line]
 [fixture: ishikawa/gram-last-comment-blank-line]
 [fixture: ishikawa/gram-header-two-comments-ps-node]
+[fixture: ishikawa/lex-header-space-comment-indented-node]
+[fixture: ishikawa/lex-header-trailing-space-lf-eof]
+[fixture: ishikawa/header-spaces-eof] [fixture: ishikawa/header-tab-eof]
+[fixture: ishikawa/gram-leading-comment-line]
 
 ソースの末尾が見出しだけで、書かれた改行も他の内容も続かない形は引き続き拒否し、
 この差異には含めません。

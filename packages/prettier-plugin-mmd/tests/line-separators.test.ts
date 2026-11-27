@@ -8827,6 +8827,151 @@ describe("a block diagram with a line separator", () => {
   )
 })
 
+/**
+ * Each example ends with a U+2028 and a comment line that no statement
+ * follows, where mermaid.js reads the U+2028 as a character of a text or of a
+ * name, or as a node, or rejects the text without it, so the line stays as
+ * written (docs/compatibility.md, A comment line after U+2028 or U+2029).
+ */
+const separatorKeptExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "a Gantt title that ends with U+2028 before a comment line at the end of the text",
+    "gantt\ntitle T\u2028%% c\n",
+    "gantt\n  title T\u2028%% c\n",
+  ],
+  [
+    "a user journey title that ends with U+2028 before a comment line at the end of the text",
+    "journey\ntitle T\u2028%% c\n",
+    "journey\n  title T\u2028%% c\n",
+  ],
+  [
+    "a timeline event that ends with U+2028 before a comment line at the end of the text",
+    "timeline\n2020 : e\u2028%% c\n",
+    "timeline\n  2020 : e\u2028%% c\n",
+  ],
+  [
+    "a mindmap node that ends with U+2028 before a comment line at the end of the text",
+    "mindmap\nroot\u2028%% c\n",
+    "mindmap\n  root\u2028%% c\n",
+  ],
+  [
+    "a kanban card that ends with U+2028 before a comment line at the end of the text",
+    "kanban\nS\n  A\u2028%% c\n",
+    "kanban\n  S\n    A\u2028%% c\n",
+  ],
+  [
+    "an ER entity name that ends with U+2028 before a comment line at the end of the text",
+    "erDiagram\nA\u2028%% c\n",
+    "erDiagram\n  A\u2028%% c\n",
+  ],
+  [
+    "a treeView node, U+2028, and a comment line at the end of the text",
+    'treeView-beta\n"root"\u2028%% c\n',
+    'treeView-beta\n"root"\u2028%% c\n',
+  ],
+  [
+    "a timeline period that ends with U+2028 before a comment line at the end of the text",
+    "timeline\n2020\u2028%% c\n",
+    "timeline\n  2020\u2028%% c\n",
+  ],
+  [
+    "an ER relationship label that ends with U+2028 before a comment line at the end of the text",
+    "erDiagram\nA ||--o{ B : x\u2028%% c\n",
+    "erDiagram\n  A ||--o{ B : x\u2028%% c\n",
+  ],
+  [
+    "an ER relationship label in quotes, U+2028, and a comment line at the end of the text",
+    'erDiagram\nA ||--o{ B : "x"\u2028%% c\n',
+    'erDiagram\n  A ||--o{ B : "x"\u2028%% c\n',
+  ],
+  [
+    "a class style that ends with U+2028 before a comment line at the end of the text",
+    "classDiagram\nclass A\nstyle A fill:#F00\u2028%% c\n",
+    "classDiagram\n  class A\n  style A fill:#F00\u2028%% c\n",
+  ],
+  [
+    "a flowchart style that ends with U+2028 before a comment line at the end of the text",
+    "flowchart LR\nA\nstyle A fill:#F00\u2028%% c\n",
+    "flowchart LR\n  A\n  style A fill:#F00\u2028%% c\n",
+  ],
+  [
+    "a treemap title, U+2028, a comment line, and a line of whitespace only at the end of the text",
+    "treemap\ntitle T\u2028%% c\n  \n",
+    "treemap\ntitle T\u2028%% c\n  \n",
+  ],
+  [
+    "a class style that ends with U+2028 before a comment line and a directive line at the end of the text",
+    "classDiagram\nclass A\nstyle A fill:#F00\u2028%% c\n%%{x}%%\n",
+    "classDiagram\n  class A\n  style A fill:#F00\u2028%% c\n%%{x}%%\n",
+  ],
+  [
+    "a class style that ends with U+2028 before two comment lines and a directive line at the end of the text",
+    "classDiagram\nclass A\nstyle A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+    "classDiagram\n  class A\n  style A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+  ],
+  [
+    "a class style that ends with U+2028 before a comment line, an empty line, and a statement",
+    "classDiagram\nclass A\nstyle A fill:#F00\u2028%% c\n\nclass B\n",
+    "classDiagram\n  class A\n  style A fill:#F00\u2028%% c\n\n  class B\n",
+  ],
+  [
+    "a flowchart style that ends with U+2028 before a comment line and a directive line at the end of the text",
+    "flowchart LR\nA\nstyle A fill:#F00\u2028%% c\n%%{x}%%\n",
+    "flowchart LR\n  A\n  style A fill:#F00\u2028%% c\n%%{x}%%\n",
+  ],
+  [
+    "a flowchart style that ends with U+2028 before two comment lines and a directive line at the end of the text",
+    "flowchart LR\nA\nstyle A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+    "flowchart LR\n  A\n  style A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+  ],
+  [
+    "a flowchart style that ends with U+2028 before a comment line, an empty line, and a statement",
+    "flowchart LR\nA\nstyle A fill:#F00\u2028%% c\n\nB\n",
+    "flowchart LR\n  A\n  style A fill:#F00\u2028%% c\n\n  B\n",
+  ],
+  [
+    "a swimlane style that ends with U+2028 before a comment line at the end of the text",
+    "swimlane-beta TB\nA\nstyle A fill:#F00\u2028%% c\n",
+    "swimlane-beta TB\n  A\n  style A fill:#F00\u2028%% c\n",
+  ],
+  [
+    "a swimlane style that ends with U+2028 before a comment line and a directive line at the end of the text",
+    "swimlane-beta TB\nA\nstyle A fill:#F00\u2028%% c\n%%{x}%%\n",
+    "swimlane-beta TB\n  A\n  style A fill:#F00\u2028%% c\n%%{x}%%\n",
+  ],
+  [
+    "a swimlane style that ends with U+2028 before two comment lines and a directive line at the end of the text",
+    "swimlane-beta TB\nA\nstyle A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+    "swimlane-beta TB\n  A\n  style A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+  ],
+  [
+    "a swimlane style that ends with U+2028 before a comment line, an empty line, and a statement",
+    "swimlane-beta TB\nA\nstyle A fill:#F00\u2028%% c\n\nB\n",
+    "swimlane-beta TB\n  A\n  style A fill:#F00\u2028%% c\n\n  B\n",
+  ],
+  [
+    "a treemap classDef that ends with U+2028 before a comment line at the end of the text",
+    'treemap\n"a": 1:::cc\nclassDef cc fill: red\u2028%% c\n',
+    'treemap\n  "a": 1:::cc\n  classDef cc fill: red\u2028%% c\n',
+  ],
+  [
+    "a treemap classDef that ends with U+2028 before a comment line and a directive line at the end of the text",
+    'treemap\n"a": 1:::cc\nclassDef cc fill: red\u2028%% c\n%%{x}%%\n',
+    'treemap\n  "a": 1:::cc\n  classDef cc fill: red\u2028%% c\n%%{x}%%\n',
+  ],
+  [
+    "a treemap classDef that ends with U+2028 before a comment line, an empty line, and a statement",
+    'treemap\n"a": 1:::cc\nclassDef cc fill: red\u2028%% c\n\n"b": 2\n',
+    'treemap\n  "a": 1:::cc\n  classDef cc fill: red\u2028%% c\n\n  "b": 2\n',
+  ],
+]
+
+describe("a separator before a comment line that mermaid.js reads or needs", () => {
+  it.each(separatorKeptExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
+
 describe("a block diagram with a whitespace character that no fixture file holds", () => {
   it.each(blockWhitespaceExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)

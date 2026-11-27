@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "blank-line-after-header-or-comments, counterparts accepted by both: whitespace and one diagram comment after the header, then an indented root on the next line; the count is odd with no blank line, so both accept the root R."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  }
+}
