@@ -380,7 +380,7 @@ mermaid.js は部分をつなぎます。
 [fixture: block/db-directive-after-end-of-text]
 [fixture: block/gram-directive-unclosed]
 [fixture: block/db-directive-unclosed-end-of-text]
-[fixture: block/gram-directive-unclosed-word-next-line]
+[fixture: block/gram-directive-unclosed-free-text-takes-next-line]
 [fixture: block/gram-directive-empty] [fixture: block/gram-directive-only]
 [fixture: block/db-label-directive] [fixture: block/db-label-directive-line]
 [fixture: block/db-edge-label-directive] [fixture: block/db-tail-node-directive]

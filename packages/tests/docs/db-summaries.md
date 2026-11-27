@@ -6922,11 +6922,14 @@ Values of the summary, by field.
   the word is on the next line, with the whitespace after it, and the text after
   them is read: with `A`, `%%{x`, `B`, and `C` on lines of their own, it takes
   `B`, and the blocks are `A` and `C`. An argument that starts with another
-  character is free text, which takes the rest of the text: with `%%{init: {}`
-  in place of `%%{x`, the only block is `A`. At the end of the text it takes
-  nothing else, and when it takes every statement, the diagram has none and is
-  rejected. A directive on a line of its own inside a string leaves the line
-  breaks around it. A text of only a directive after the header is rejected.
+  character is free text, which runs to a U+2028 or a U+2029, taking that
+  character too, or to the end of the text: with `%%{init: {}` in place of
+  `%%{x`, the only block is `A`, and with `%%{init: {}`, a U+2028 or a U+2029,
+  and `B` on that line, the blocks are `A`, `B`, and `C`. At the end of the text
+  it takes nothing else, and when it takes every statement, the diagram has none
+  and is rejected. A directive on a line of its own inside a string leaves the
+  line breaks around it. A text of only a directive after the header is
+  rejected.
 
   [fixture: block/db-directive-init-line] [fixture:
   block/db-directive-init-before-header] [fixture:
@@ -6952,9 +6955,11 @@ Values of the summary, by field.
   [fixture: block/db-directive-after-end-of-text] [fixture:
   block/gram-directive-unclosed] [fixture:
   block/db-directive-unclosed-end-of-text] [fixture:
-  block/gram-directive-unclosed-word-next-line] [fixture:
+  block/gram-directive-unclosed-free-text-takes-next-line] [fixture:
   block/db-directive-unclosed-word-argument-takes-next-word] [fixture:
   block/db-directive-unclosed-free-text-takes-rest] [fixture:
+  block/db-directive-unclosed-free-text-stops-at-line-separator] [fixture:
+  block/db-directive-unclosed-free-text-stops-at-paragraph-separator] [fixture:
   block/gram-directive-unclosed-word-argument-takes-only-statement] [fixture:
   block/gram-directive-empty] [fixture: block/gram-directive-only] [fixture:
   block/db-label-directive] [fixture: block/db-label-directive-line] [fixture:
