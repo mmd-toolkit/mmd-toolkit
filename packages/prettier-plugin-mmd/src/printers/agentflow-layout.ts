@@ -16,10 +16,11 @@ import {
   addShapeRules,
   breaksBetweenParts,
   addBlankCallbackRule,
-  findGraphEndKeyword,
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
+import type { DiagramStatements, StatementListsOf } from "./data-blocks.ts"
+import { findLineStartBetween } from "./data-blocks.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -48,7 +49,6 @@ import {
   normalizeStyleList,
 } from "./statement-rules.ts"
 import {
-  findFirstIndex,
   findStructuralToken,
   findTriviaBetween,
   isSpaceOrTab,
@@ -358,58 +358,52 @@ function isOnKeptLine(source: Source, offset: number): boolean {
   return kept.verbatim.has(line) || kept.joined.has(line)
 }
 
-/** The offsets where the printer starts lines (see `findLineStarts`). */
-const lineStartsBySource = new WeakMap<Source, readonly number[]>()
+/** The lists of statements that the node holds, the diagram included. */
+export function statementListsOf(
+  node: MermaidAst,
+): ReturnType<StatementListsOf> {
+  if (node.type === "AgentflowDiagram") {
+    return [{ head: node.range[0], statements: node.body }]
+  }
+  const classified = classifyAgentflowStatement(node)
+  return classified?.kind === "container"
+    ? [{ head: node.range[0], statements: classified.statement.body }]
+    : []
+}
 
-/**
- * The offsets, in order, where the things start that the printer puts on lines
- * of their own (docs/agentflow.md, Statements one per line): the statements
- * that it prints, which are all but those that it drops at the top level (see
- * `isDroppedAtTopLevel`), and the `end` of each `flow` and `global`.
- */
-function findLineStarts(source: Source): readonly number[] {
-  const cached = lineStartsBySource.get(source)
-  if (cached !== undefined) return cached
-  const diagram = source.root.body
-  const topLevel = new Set<Node>(
-    diagram.type === "AgentflowDiagram" ? diagram.body : [],
-  )
-  const starts: number[] = []
-  walk(diagram, (node) => {
-    const classified = classifyAgentflowStatement(node)
-    if (classified === null) return
-    if (!topLevel.has(node) || !isDroppedAtTopLevel(source, node))
-      starts.push(node.range[0])
-    if (classified.kind === "container")
-      starts.push(findGraphEndKeyword(source, node).range[0])
-  })
-  starts.sort((left, right) => left - right)
-  lineStartsBySource.set(source, starts)
-  return starts
+/** The statements of an agentflow diagram (see `DiagramStatements`). */
+export function agentflowStatements(source: Source): DiagramStatements {
+  return {
+    listsOf: statementListsOf,
+    isDroppedAtTopLevel: (statement) => isDroppedAtTopLevel(source, statement),
+  }
 }
 
 /**
  * The items that the printer prints after `offset` on the line of `offset`;
- * null where it prints none there. Where a thing that the printer puts on a
- * line of its own follows on the line (see `findLineStarts`), the line holds
- * what the gap before that thing leaves with the thing before it, as the block
- * printer reads the gap (see `readGap`); a `;` of its own that the printer
- * prints is such a thing, an empty statement, and the run of the whole line
- * would read it as a `;` that separates statements. Elsewhere it is the run
- * of the rest of the line (see `readRunOnItsLine`).
+ * null where it prints none there. Where a thing that the printer puts at the
+ * start of a line follows on the line (see `findLineStartBetween`): a
+ * statement that it prints, or the `end` of a `flow` or a `global`, the line
+ * holds what the gap before that thing leaves with the thing before it, as the
+ * block printer reads the gap (see `readGap`); a `;` of its own that the
+ * printer prints is such a thing, an empty statement, and the run of the whole
+ * line would read it as a `;` that separates statements. Elsewhere it is the
+ * run of the rest of the line (see `readRunOnItsLine`).
  */
 function readPrintedRunAfter(source: Source, offset: number): ItemRun | null {
   const options = {
     dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
   }
-  const lineStarts = findLineStarts(source)
-  const next = lineStarts.at(
-    findFirstIndex(lineStarts, (start) => start >= offset),
+  const next = findLineStartBetween(
+    source,
+    agentflowStatements(source),
+    offset,
+    lineEndOf(source, offset),
   )
-  if (next !== undefined && next < lineEndOf(source, offset))
+  if (next !== undefined)
     return readGap(source, offset, next, false, options).trailing
   // Any text after `offset` on its line starts a line of its own (see
-  // `findLineStarts`), so the run here holds the rest of the line.
+  // `findLineStartBetween`), so the run here holds the rest of the line.
   return readRunOnItsLine(source, offset, options) ?? null
 }
 

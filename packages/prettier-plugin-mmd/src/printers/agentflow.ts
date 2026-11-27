@@ -7,7 +7,6 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
-import type { DiagramStatements, StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
@@ -19,11 +18,13 @@ import {
 } from "./blocks.ts"
 import {
   agentflowDropsSeparatorsBeforeComments,
+  agentflowStatements,
   classifyAgentflowStatement,
   findNamePrintedEnd,
   isDroppedAtTopLevel,
   layoutStatement,
   layoutContainerHeader,
+  statementListsOf,
 } from "./agentflow-layout.ts"
 import { endsWithSpaceOrTab } from "./gap.ts"
 import { expectToken, walk } from "./layout.ts"
@@ -151,28 +152,9 @@ function printDiagram(
   return printDiagramBlock(source, header, block, options)
 }
 
-/** The lists of statements that the node holds, the diagram included. */
-function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
-  if (node.type === "AgentflowDiagram") {
-    return [{ head: node.range[0], statements: node.body }]
-  }
-  const classified = classifyAgentflowStatement(node)
-  return classified?.kind === "container"
-    ? [{ head: node.range[0], statements: classified.statement.body }]
-    : []
-}
-
 /** Whether the node holds statements of its own. */
 function holdsStatements(node: MermaidAst): boolean {
   return statementListsOf(node).length > 0
-}
-
-/** The statements of an agentflow diagram (see `DiagramStatements`). */
-function agentflowStatements(source: Source): DiagramStatements {
-  return {
-    listsOf: statementListsOf,
-    isDroppedAtTopLevel: (statement) => isDroppedAtTopLevel(source, statement),
-  }
 }
 
 /**
