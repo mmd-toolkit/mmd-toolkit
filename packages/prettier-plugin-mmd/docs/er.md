@@ -2146,12 +2146,13 @@ that line, as above. A run of empty lines among them stays as written there too:
 the node holds the empty lines, and printing the run as one changes the Db in a
 way that no kind of exception allows (see
 [The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
-The first line of text and the empty lines at the start and the end of such a
-block are no part of the node, which mermaid.js reads without the whitespace at
-its ends: [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the
-first line one level deeper than the line that opens the block, as a line inside
-a block, and leaves out those empty lines, and the released version keeps them
-as written, which rule 1 does not give.
+The indentation of the first line of text and the empty lines at the start and
+the end of such a block are no part of the node, which mermaid.js reads without
+the whitespace at its ends:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the first line
+one level deeper than the line that opens the block, as a line inside a block,
+and leaves out those empty lines, and the released version keeps them as
+written, which rule 1 does not give.
 
 [fixture: er/accessibility-statements/blank-lines-at-the-ends-kept] [fixture:
 er/accessibility-statements/blank-line-run-kept] [fixture:
@@ -2159,6 +2160,7 @@ er/accessibility-statements/blank-line-run-in-subgraph-kept] [fixture:
 er/accessibility-statements/first-line-in-subgraph-kept] [fixture:
 er/accessibility-statements/blank-lines-at-the-ends-in-subgraph-kept] [corpus
 fixture: er/db-subgraph-nodes-acc-descr-block-blank-lines] [corpus fixture:
+er/db-subgraph-nodes-acc-descr-block-edge-blank-lines] [corpus fixture:
 er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]

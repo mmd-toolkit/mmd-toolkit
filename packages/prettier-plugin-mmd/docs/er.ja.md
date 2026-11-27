@@ -2151,7 +2151,7 @@ mermaid.js は 2 行目以降を列ごと subgraph の節点として読むの�
 詳しくは
 [確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
 を参照してください。
-そのようなブロックのテキストの 1 行目と、頭と終わりの空行は、
+そのようなブロックのテキストの 1 行目の字下げと、頭と終わりの空行は、
 節点の一部ではありません。
 mermaid.js は節点を両端の空白なしで読むからです。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
@@ -2166,6 +2166,7 @@ mermaid.js は節点を両端の空白なしで読むからです。
 [fixture: er/accessibility-statements/first-line-in-subgraph-kept]
 [fixture: er/accessibility-statements/blank-lines-at-the-ends-in-subgraph-kept]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-blank-lines]
+[corpus fixture: er/db-subgraph-nodes-acc-descr-block-edge-blank-lines]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 [fixture: accessibility-statements/block-trailing-whitespace]
 [fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
