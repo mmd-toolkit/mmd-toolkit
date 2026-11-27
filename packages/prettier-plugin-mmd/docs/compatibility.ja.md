@@ -8669,9 +8669,11 @@ kanban の section のテキスト `S[x;]` で、U+2028 か U+2029 の後のコ�
 書かれたまま印字します。
 コメント行の後に続くものが、文の行でも、空行でも、テキストの終わりでも同じです。
 ここでは、コメント行は自分の行に置かれません。
-`;` が行を残さない行では、コメント行は、
-後ろに空行かテキストの終わりが続くときだけ自分の行に置かれ、
-文が続くときは書かれたまま残ります（[Title](./treemap.ja.md#title)を参照）。
+`;` が行を残さない行では、コメント行は、後ろに空行が続くとき、
+またはテキストの終わりまでコメント行、ディレクティブの行、
+空白だけの行しか続かないときに自分の行に置かれ、
+間に空行を挟まずに文が続くときは、
+書かれたまま残ります（[Title](./treemap.ja.md#title)を参照）。
 整形は止まりません。
 
 [test: treemap: a title with a `;` inside, U+2028, a directive, three spaces, and a comment]
@@ -8701,6 +8703,37 @@ kanban の section のテキスト `S[x;]` で、U+2028 か U+2029 の後のコ�
 [test: treemap: a title that ends with a `;`, a space, U+2028, a directive, two spaces, a comment, and an empty line]
 [test: treemap: a title that ends with a `;`, a space, U+2029, a directive, two spaces, a comment, and an empty line]
 [test: treemap: an accTitle that ends with a `;`, U+2028, a directive, two spaces, a comment, and an empty line]
+
+コメント行を自分の行に置くときは、その前の U+2028 か U+2029 を除き、
+コメント行とその後の各行を、普通の行と同じように置きます。
+block 図の終わりの `style a fill:#F00`、U+2028、`%% c` は、
+`style a fill: #f00` と、次の行の `%% c` に印字します。
+エディターは U+2028 や U+2029 を、何も表示しないか改行として表示するので、
+その後のコメントは、文の行の上の、
+読み手がコメントを探さない所に置かれることになります。
+自分の行に置けば、コメント行として読めます。
+この形は、AGENTS.md の 4 が、
+同じに描かれるほかの形より読みにくい形を与える規則として、直すものと述べる、
+そのような行を書かれたまま残す形を直したものです。
+mermaid.js が U+2028 や U+2029 をテキストや名前の文字として読む所では、
+除くと描くものが変わるので、行を書かれたまま残します。
+Gantt と user journey のタイトルの終わり、timeline のイベントの終わり、
+mindmap のノードと kanban のカードのテキストの終わり、
+ER 図のエンティティの名前の終わりと、
+mermaid.js がそれを treeView 図のノードとして読む所です。
+
+[test: block: style-ls-before-a-comment-at-the-end-of-the-text-is-dropped]
+[test: block: style-ls-before-two-comment-lines-at-the-end-of-the-text-is-dropped]
+[test: block: style-ls-before-a-comment-line-and-an-empty-line-at-the-end-is-dropped]
+[test: block: style-ls-before-a-comment-line-and-a-whitespace-only-line-at-the-end-is-dropped]
+[test: block: style-ls-before-a-comment-line-a-directive-line-and-a-comment-line-at-the-end-is-dropped]
+[test: a Gantt title that ends with U+2028 before a comment line at the end of the text]
+[test: a user journey title that ends with U+2028 before a comment line at the end of the text]
+[test: a timeline event that ends with U+2028 before a comment line at the end of the text]
+[test: a mindmap node that ends with U+2028 before a comment line at the end of the text]
+[test: a kanban card that ends with U+2028 before a comment line at the end of the text]
+[test: an ER entity name that ends with U+2028 before a comment line at the end of the text]
+[test: a treeView node, U+2028, and a comment line at the end of the text]
 
 ER 図では、そのような行の文について、スタイルの色、関係の語、
 1 語の名前の引用符のように普通の行と別に印字するものを、

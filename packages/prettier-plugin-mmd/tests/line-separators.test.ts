@@ -8827,6 +8827,63 @@ describe("a block diagram with a line separator", () => {
   )
 })
 
+/**
+ * Each example ends with a U+2028 and a comment line that no statement
+ * follows, where mermaid.js reads the U+2028 as a character of a text or of a
+ * name, so the line stays as written (docs/compatibility.md, A comment line
+ * after U+2028 or U+2029).
+ */
+const separatorReadAsTextExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a Gantt title that ends with U+2028 before a comment line at the end of the text",
+    "gantt\ntitle T\u2028%% c\n",
+    "gantt\n  title T\u2028%% c\n",
+  ],
+  [
+    "a user journey title that ends with U+2028 before a comment line at the end of the text",
+    "journey\ntitle T\u2028%% c\n",
+    "journey\n  title T\u2028%% c\n",
+  ],
+  [
+    "a timeline event that ends with U+2028 before a comment line at the end of the text",
+    "timeline\n2020 : e\u2028%% c\n",
+    "timeline\n  2020 : e\u2028%% c\n",
+  ],
+  [
+    "a mindmap node that ends with U+2028 before a comment line at the end of the text",
+    "mindmap\nroot\u2028%% c\n",
+    "mindmap\n  root\u2028%% c\n",
+  ],
+  [
+    "a kanban card that ends with U+2028 before a comment line at the end of the text",
+    "kanban\nS\n  A\u2028%% c\n",
+    "kanban\n  S\n    A\u2028%% c\n",
+  ],
+  [
+    "an ER entity name that ends with U+2028 before a comment line at the end of the text",
+    "erDiagram\nA\u2028%% c\n",
+    "erDiagram\n  A\u2028%% c\n",
+  ],
+  [
+    "a treeView node, U+2028, and a comment line at the end of the text",
+    'treeView-beta\n"root"\u2028%% c\n',
+    'treeView-beta\n"root"\u2028%% c\n',
+  ],
+]
+
+describe("a separator that mermaid.js reads as text before a comment line at the end of the text", () => {
+  it.each(separatorReadAsTextExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
 describe("a block diagram with a whitespace character that no fixture file holds", () => {
   it.each(blockWhitespaceExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)

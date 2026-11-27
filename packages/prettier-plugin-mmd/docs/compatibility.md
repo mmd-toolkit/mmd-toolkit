@@ -8510,10 +8510,11 @@ A line that a `;` of its text keeps together, as `title T;` or the text of a
 kanban section `S[x;]`, is printed as written with the comment line after a
 U+2028 or U+2029, whatever follows the comment line: a line of a statement, an
 empty line, or the end of the text. The comment line gets no line of its own
-there. On a line that no `;` keeps, it goes to a line of its own only where an
-empty line or the end of the text follows it, and stays as written where a
-statement follows (see [Title](./treemap.md#title)). The formatter does not
-stop.
+there. On a line that no `;` keeps, it goes to a line of its own where an empty
+line follows it, or where only comment lines, directive lines, and lines of
+whitespace follow it to the end of the text, and stays as written where a
+statement follows it with no empty line between (see
+[Title](./treemap.md#title)). The formatter does not stop.
 
 [test: treemap: a title with a `;` inside, U+2028, a directive, three spaces,
 and a comment] [test: treemap: a title with a `;` inside, a directive, U+2028,
@@ -8548,6 +8549,38 @@ line] [test: treemap: a title that ends with a `;`, a space, U+2029, a
 directive, two spaces, a comment, and an empty line] [test: treemap: an accTitle
 that ends with a `;`, U+2028, a directive, two spaces, a comment, and an empty
 line]
+
+Where the comment line goes to a line of its own, the U+2028 or U+2029 before it
+is left out, and the comment line and each line after it stand as on a plain
+line: `style a fill:#F00`, a U+2028, and `%% c` at the end of a block diagram
+are printed `style a fill: #f00` and, on the next line, `%% c`. An editor shows
+a U+2028 or U+2029 as nothing or as a line break, so a comment after one, on the
+line of a statement, stands where a reader does not look for a comment; on a
+line of its own, it reads as the comment line it is. This form corrects the form
+of keeping such a line as written, as AGENTS.md (item 4) says of a rule whose
+form reads worse than another form that draws the same. Where mermaid.js reads
+the U+2028 or U+2029 as a character of a text or of a name, leaving it out would
+change what is drawn, and the line stays as written: at the end of the title of
+a Gantt chart and of a user journey, of an event of a timeline, of the text of a
+mindmap node and of a kanban card, and of the name of an entity of an ER
+diagram, and where mermaid.js reads it as a node of a treeView diagram.
+
+[test: block: style-ls-before-a-comment-at-the-end-of-the-text-is-dropped]
+[test: block:
+style-ls-before-two-comment-lines-at-the-end-of-the-text-is-dropped] [test:
+block: style-ls-before-a-comment-line-and-an-empty-line-at-the-end-is-dropped]
+[test: block:
+style-ls-before-a-comment-line-and-a-whitespace-only-line-at-the-end-is-dropped]
+[test: block:
+style-ls-before-a-comment-line-a-directive-line-and-a-comment-line-at-the-end-is-dropped]
+[test: a Gantt title that ends with U+2028 before a comment line at the end of
+the text] [test: a user journey title that ends with U+2028 before a comment
+line at the end of the text] [test: a timeline event that ends with U+2028
+before a comment line at the end of the text] [test: a mindmap node that ends
+with U+2028 before a comment line at the end of the text] [test: a kanban card
+that ends with U+2028 before a comment line at the end of the text] [test: an ER
+entity name that ends with U+2028 before a comment line at the end of the text]
+[test: a treeView node, U+2028, and a comment line at the end of the text]
 
 In an ER diagram, what else the formatter prints on a statement of such a line,
 as the colors of a style, the words of a relationship, and the quotes of a name
