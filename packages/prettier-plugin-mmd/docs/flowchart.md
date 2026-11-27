@@ -2729,12 +2729,14 @@ A `;` of its own that the printer drops at the top level (see
 [Semicolons](#semicolons)) is no statement that counts either: nothing is
 printed for it, so the whitespace before it is written for no depth, and the
 statement after it on its line is moved, as `A@{ … }` is after `C` and a line
-`; A@{ … }`, also where a directive stands between the `;` and the statement. A
-`;` of its own inside a subgraph is a statement that the printer keeps, on a
-line of its own at the depth of the statements of the subgraph, and it counts.
+`; A@{ … }`, also where a directive stands before the `;` or between the `;` and
+the statement. A `;` of its own inside a subgraph is a statement that the
+printer keeps, on a line of its own at the depth of the statements of the
+subgraph, and it counts.
 
 [fixture: data-blocks/use-tabs-dropped-semicolon-moved] [fixture:
-data-blocks/use-tabs-directive-dropped-semicolon-moved] [fixture:
+data-blocks/use-tabs-directive-before-dropped-semicolon-moved] [fixture:
+data-blocks/use-tabs-directive-after-dropped-semicolon-moved] [fixture:
 data-blocks/use-tabs-after-semicolon-in-subgraph-on-line]
 
 Where the printer must set the indentation of the node line itself, the lines of

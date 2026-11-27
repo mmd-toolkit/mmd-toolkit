@@ -2824,13 +2824,14 @@ mermaid.js は単独行の `}` の前のタブを受理しますが、
 その `;` には何も印字されないので、
 その前の空白はどの深さのためにも書かれていません。
 そのため、同じ行でその後ろにある文は動かします。
-`C` の次の行の `; A@{ … }` の `A@{ … }` がそうで、
+`C` の次の行の `; A@{ … }` の `A@{ … }` がそうで、`;` の前や、
 `;` と文の間にディレクティブがあっても同じです。
 subgraph の中の単独の `;` は、整形器が subgraph の文の深さで行に残す文なので、
 数えます。
 
 [fixture: data-blocks/use-tabs-dropped-semicolon-moved]
-[fixture: data-blocks/use-tabs-directive-dropped-semicolon-moved]
+[fixture: data-blocks/use-tabs-directive-before-dropped-semicolon-moved]
+[fixture: data-blocks/use-tabs-directive-after-dropped-semicolon-moved]
 [fixture: data-blocks/use-tabs-after-semicolon-in-subgraph-on-line]
 
 ノードの行自体の字下げを整形器が整える必要がある場合は、
