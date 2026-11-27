@@ -590,19 +590,19 @@ data-blocks/one-line-padded-tab-inside-directive-blanks] [fixture:
 data-blocks/one-line-padded-long-directive-blanks] [fixture:
 data-blocks/multiline-directive-blanks-kept]
 
-Apply the movement and safety conditions of
-[Data blocks](./flowchart.md#data-blocks). When a newline immediately follows
-`@{`, shift every body line by the same number of ASCII spaces to put the
-shallowest text one level inside its node. A section's body is two levels below
-the header, an item's three; nested YAML keeps its relative indentation. A
-separate `}` aligns with the node, even if it had no margin; a closer after text
-stays on that line. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives the depth of that separate closing `}` when the block opens on the node's
-line: the closing line stands at the level of the opening line, as Prettier
-prints the closing line of a block. A `}` after the text of a literal or folded
-scalar (`|`, `|-`, `|+`, `>`, `>-`, and `>+`) stays on its line: on a line of
-its own it changes the end of the text of the scalar in the Db, and formatting
-does not change the Db. The drawing is the same, but no kind of exception that
+Apply the safety conditions of [Data blocks](./flowchart.md#data-blocks). When a
+newline immediately follows `@{`, shift every body line by the same number of
+ASCII spaces to put the shallowest text one level inside its node. A section's
+body is two levels below the header, an item's three; nested YAML keeps its
+relative indentation. A separate `}` aligns with the node, even if it had no
+margin; a closer after text stays on that line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of
+that separate closing `}` when the block opens on the node's line: the closing
+line stands at the level of the opening line, as Prettier prints the closing
+line of a block. A `}` after the text of a literal or folded scalar (`|`, `|-`,
+`|+`, `>`, `>-`, and `>+`) stays on its line: on a line of its own it changes
+the end of the text of the scalar in the Db, and formatting does not change the
+Db. The drawing is the same, but no kind of exception that
 [How the printed form is decided](./printed-form.md#the-check-and-formatting-that-changes-the-db)
 defines covers that gap. The formatter does not look at the kind of scalar, so a
 `}` after the text of a plain scalar stays too.
@@ -843,7 +843,8 @@ kanban
 A standalone comment is a comment line (`%% note`), a line of `%%` alone, or a
 line `%%{ }%%`. It is printed at the column of the statement after it, at the
 end of the board at the column of the last statement, and before the header at
-the first column; its mark and its text are kept as written.
+the first column; its mark and its text are kept as written. In the body this
+shows which statement the comment is about.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
 comment line inside a block one level deeper than the line that opens it, as
 Prettier prints the lines inside a block. In `kanban`, `%% c1`, ` S`,

@@ -1625,7 +1625,7 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 普通の class の部品は `:::Name`、icon は `icon(reference)` に詰めます。
 `icon()` と `icon(:file)` も同様で、名前の綴りは保ちます。
-icon の内側の空白は文法にありません。
+印後を詰めると class がまとまり、icon の内側の空白は文法にありません。
 完全な部品の間の付随要素は境界を保ちます。
 
 [fixture: treeview/annotation-components/class-post-marker]
@@ -2600,6 +2600,7 @@ treeView-beta
 
 字下げモードの独立したコメント行は次の文の桁にそろえ、
 末尾では最後の文の桁にそろえます。
+どの文に関係するかを示すためです。
 字下げが浅くなる行の前も含め、コメントを深くも浅くも移します。
 連続するコメントは、空行を挟んでも同じ桁にそろえます。
 

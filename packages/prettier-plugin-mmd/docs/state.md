@@ -538,9 +538,10 @@ stateDiagram-v2
 Within a line, a run of spaces and tabs between two tokens becomes one space.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between a keyword and what it takes, as Prettier prints `return  x` as
-`return x;`. Tokens that touch keep touching, except the words of an alias
-definition and a pseudostate mark, which get one space (see [Aliases](#aliases)
-and [Pseudostates](#pseudostates)).
+`return x;`. Tokens that touch keep touching, as in a flowchart (see
+[Whitespace between tokens](./flowchart.md#whitespace-between-tokens)), except
+the words of an alias definition and a pseudostate mark, which get one space
+(see [Aliases](#aliases) and [Pseudostates](#pseudostates)).
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:

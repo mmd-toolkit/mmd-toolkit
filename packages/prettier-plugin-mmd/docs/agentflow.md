@@ -766,14 +766,16 @@ agentflow-beta TB
 
 ### Arrows
 
-Reuse [Arrow spacing](./flowchart.md#arrow-spacing): one exterior space on each
-side of an arrow. An edge id touches its @ and arrow. Keep directive touching
-and exact dash/dot counts, including counts beyond the Db cap. Below the cap a
-shorter or longer arrow is another arrow (`A---->B` printed as `A --> B` is read
-differently); beyond the cap the Db is the same, and a Db-equal capped arrow is
-not shortened. Agentflow has only sequence `-->`, failure `--x`, and reference
-`-.-`, with their extensions. Reference length counts dots. A following x may be
-vertex text; no unsupported arrow family is introduced.
+One exterior space stands on each side of an arrow, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for another
+mark between two things (Prettier prints `x = a+b` as `x = a + b;`). An edge id
+touches its @ and arrow. Keep directive touching and exact dash/dot counts,
+including counts beyond the Db cap. Below the cap a shorter or longer arrow is
+another arrow (`A---->B` printed as `A --> B` is read differently); beyond the
+cap the Db is the same, and a Db-equal capped arrow is not shortened. Agentflow
+has only sequence `-->`, failure `--x`, and reference `-.-`, with their
+extensions. Reference length counts dots. A following x may be vertex text; no
+unsupported arrow family is introduced.
 
 [fixture: arrows/arrow-cap-spelling] [fixture:
 arrows/arrow-length-change-unsafe] [fixture: arrows/arrow-lengths] [fixture:
@@ -1829,12 +1831,12 @@ trivia instead follow [Accessibility](#accessibility), joining their lines.
 accessibility/empty-block-lines]
 
 A statement written over several lines keeps its line breaks. Reuse
-[Multi-line values](./flowchart.md#multi-line-values) for the same reason: later
-value columns are characters except for the description-body indentation
-described in [Accessibility](#accessibility). Indent ordinary continuation
-tokens one additional step; keep string/markdown/split text, Name, metadata,
-directive and multiline click continuation columns. An extra whitespace
-character in a click gap after the ids and the callback can reject (see
+[Multi-line values](./flowchart.md#multi-line-values): later value columns are
+characters except for the description-body indentation described in
+[Accessibility](#accessibility). Indent ordinary continuation tokens one
+additional step; keep string/markdown/split text, Name, metadata, directive and
+multiline click continuation columns. An extra whitespace character in a click
+gap after the ids and the callback can reject (see
 [Click statements](#click-statements)). Agentflow folds only line whitespace
 immediately before the next LF after a closing brace; later blank LFs remain.
 Keep those raw value lines, including LS/PS/VT/FF/NBSP, and never align an

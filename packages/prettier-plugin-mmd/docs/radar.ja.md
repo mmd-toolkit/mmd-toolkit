@@ -14,12 +14,12 @@
 ### Header
 
 `radar-beta` を第 1 列に置き、普通の最初の文を次の行へ移します。
+見出しを見つけやすくするためです。
 文をどの行に置くかは、規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
 最初の文を置く行を決めます。
 [packet](./packet.ja.md#header)、[architecture](./architecture.ja.md#header)、
-[cynefin](./cynefin.ja.md#header)、[gitgraph](./gitgraph.ja.md#header)も、
-普通の最初の文を次の行に印字します。
+[cynefin](./cynefin.ja.md#header)も、普通の最初の文を次の行に印字します。
 ただし、ほかの規則が境界を書かれたままにする場合は別です。
 あとに述べる隠れた形、大域的な注釈類、セミコロンの保護区間がそれに当たります。
 見出しの語の直後のコロンは、その前の空白とともに落とします。

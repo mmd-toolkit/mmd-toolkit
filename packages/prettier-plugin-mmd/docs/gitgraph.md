@@ -523,8 +523,9 @@ that no word character follows after its whitespace, that follows an `accDescr`
 value stays where it is, as in a pie chart (see
 [Accessibility lines](./pie.md#accessibility-lines)), and the spaces and tabs
 beside it are printed as one space each. The `title` of a gitGraph is printed as
-in the other diagrams, whatever stands before a `%%` after it: the oldest
-version that counts rejects it (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
+gives, whatever stands before a `%%` after it: the oldest version that counts
+rejects it (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
 
 [test: a no-break space before a comment after the accDescr line of a gitGraph]

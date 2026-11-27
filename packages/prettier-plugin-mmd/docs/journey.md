@@ -539,13 +539,10 @@ titles-and-sections/one-space-after-keyword]
 
 A value written on a later line is printed after the keyword on one line; a
 comment line between them makes the statement printed as written (see
-[Multi-line statements](#multi-line-statements)). Rule 1 names no mark for a
-line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#title) prints a `title`, a line break, and the
-text that follows on one line, and [xychart](./xychart.md#multi-line-statements)
-prints a statement that mermaid.js reads over several lines on one line, with
-one space in place of the line break.
+[Multi-line statements](#multi-line-statements)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+where the line broke, as Prettier prints `x = a +`, a line break, and `b;` as
+`x = a + b;`.
 
 [fixture: titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept]
@@ -813,8 +810,12 @@ multi-line-statements/value-on-next-line-joined]
 In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement, also under a section. Preserve each first gap-line tail and complete
-directive interiors. A line break next to a comment or a directive and the
-whitespace before it stay; in some places another rule also keeps the layout as
+directive interiors. A line break next to a comment or a directive stays, and so
+does the whitespace before it, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives:
+[sequence](./sequence.md#multi-line-statements) keeps the whitespace before the
+first line break of each gap, which can make mermaid.js read later lines as part
+of the same statement. In some places another rule also keeps the layout as
 written (where the Db holds the text with its whitespace, where moving a line
 makes mermaid.js reject the text, and the like). Joining comment regions keep
 their original layout. A `;` does not keep a statement over several lines from

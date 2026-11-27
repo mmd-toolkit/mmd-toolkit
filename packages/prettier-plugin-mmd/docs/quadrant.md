@@ -853,9 +853,13 @@ In points and accessibility line statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement. Preserve each first gap-line tail and complete directive interiors;
 multiline names and other value ranges stay whole. A line break next to a
-comment or a directive and the whitespace before it stay; in some places another
-rule also keeps the layout as written (where the Db holds the text with its
-whitespace, where moving a line makes mermaid.js reject the text, and the like).
+comment or a directive stays, and so does the whitespace before it, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives:
+[sequence](./sequence.md#multi-line-statements) keeps the whitespace before the
+first line break of each gap, which can make mermaid.js read later lines as part
+of the same statement. In some places another rule also keeps the layout as
+written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text, and the like).
 
 [fixture: multi-line-statements/point-trivia-with-multiline-label] [fixture:
 multi-line-statements/accessibility-trivia-continuations]

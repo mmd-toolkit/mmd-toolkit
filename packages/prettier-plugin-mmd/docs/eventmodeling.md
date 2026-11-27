@@ -16,7 +16,8 @@ data boundaries constrain the line and indentation plan before it is printed.
 ### Header
 
 Keep `eventmodeling` at column one and move an ordinary first statement to the
-next line. The line that a statement stands on is no place of rule 1, so
+next line, making the header easy to find. The line that a statement stands on
+is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the first statement its line: [wardley](./wardley.md#header),
 [cynefin](./cynefin.md#header), [architecture](./architecture.md#header), and
@@ -85,8 +86,8 @@ to avoid suggesting a hierarchy. Reconsider this choice if the pinned Mermaid
 later accepts whitespace before block closers, checking that raw body values and
 rendering remain unchanged.
 
-GWT clauses use one configured step and items two. The clauses and items of a
-GWT are parts of its statement and no lines inside a block of rule 1, so
+GWT clauses use one configured step and items two. The clauses of a GWT are
+parts of its statement and no lines inside a block of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#indentation) and
 [state](./state.md#indentation) stand the statements of a block one level deeper
@@ -1216,8 +1217,8 @@ tf 02 evt Beta
 Align ordinary standalone comments with their owning body; between GWT items
 this is item depth. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
 puts a comment line at the level of the lines around it, as Prettier prints the
-lines inside a block. The clauses and items of a GWT are parts of its statement
-and no lines inside a block, so before a clause
+lines inside a block. The clauses of a GWT are parts of its statement and no
+lines inside a block, so before a clause
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), [block](./block.md#comments),

@@ -16,7 +16,8 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 
 ### Header
 
-`eventmodeling` は第 1 列に置き、普通の最初の文を次の行へ移します。
+`eventmodeling` は第 1 列に置き、普通の最初の文を次の行へ移して、
+見出しを見つけやすくします。
 文をどの行に置くかは、規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
 最初の文を置く行を決めます。
@@ -95,7 +96,7 @@ eventmodeling tf 01 evt A %%{{x}}%%
 トップレベルの字下げを再検討します。
 
 GWT 節は設定の 1 段、項目は 2 段にします。
-GWT の節と項目は文の一部で、規則 1 のブロックの中の行ではないので、
+GWT の節は文の一部で、規則 1 のブロックの中の行ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#字下げ)と [state](./state.ja.md#字下げ)は、
 ブロックの文を、それを開く行より 1 段深く置きます。
@@ -1262,7 +1263,7 @@ tf 02 evt Beta
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 コメント行を周りの行と同じ段に置きます。
 Prettier がブロックの中の行を印字する形です。
-GWT の節と項目は文の一部で、ブロックの中の行ではないので、
+GWT の節は文の一部で、ブロックの中の行ではないので、
 節の前では[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [journey](./journey.ja.md#コメント)、[timeline](./timeline.ja.md#コメント)、
 [block](./block.ja.md#コメント)、[quadrant](./quadrant.ja.md#コメント)、

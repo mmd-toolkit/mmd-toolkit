@@ -3298,33 +3298,36 @@ multi-line-statements/style-over-lines-joined]
 A statement with a comment or directive keeps its line breaks; structural
 continuations and intervening trivia stand one level deeper. Whitespace inside
 values and before the first line break of each gap stays unchanged. A line break
-next to a comment or a directive and the whitespace before it stay; in some
-places another rule also keeps the layout as written (where the Db holds the
-text with its whitespace, where moving a line makes mermaid.js reject the text).
-A joining region keeps the line that it joins as written (see below). A line
-break stays where joining it, with one space or with nothing, could change which
-`;` the line rule ignores, and where a `;` ends the last line; any other line
-break is joined as usual, also in a statement that holds a `;`. A statement that
-keeps a line break prints a run of spaces, tabs, no-break spaces, and U+3000
-after a comma between two styles, and a run of spaces and tabs before it, as one
-space, on the first line and on the lines after it. A vertical tab, a form feed,
-and every other wide space (U+1680, U+2000 to U+200A, U+202F, U+205F, and
-U+FEFF) after a comma are printed as one space too, and so are a vertical tab
-and a form feed before it. The statement keeps a run at the end of a line, a run
-around the colon of a style, a run inside the text of a style, and a wide space
-(a no-break space, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, or U+FEFF)
-or a U+2028 before a comma as written, with its color. Its colors are printed as
-under [Colors](#colors) where a comma follows the color, also after whitespace
-and a line break, and for the last color of the statement where no `;` follows
-it on its line. A color that characters follow after whitespace stays as
-written, as under Colors, and so does a color that a `;` touches (`#ABC;`,
-`#ABC;;`, and `#ABC; ;`) and a color that a wide space other than the vertical
-tab and the form feed, a U+2028, or a U+2029 separates from the `;`. A color
-that a space, a tab, a vertical tab, or a form feed separates from the `;` is
-printed as under Colors where no comment region follows it on its line: where
-one does, the color stays as written, since the U+2028 or U+2029 that the text
-of the style keeps after the color makes it a word that the character touches
-(see [Attribute spacing](#attribute-spacing)).
+next to a comment or a directive stays, and so does the whitespace before it, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives:
+[sequence](./sequence.md#multi-line-statements) keeps the whitespace before the
+first line break of each gap, which can make mermaid.js read later lines as part
+of the same statement. In some places another rule also keeps the layout as
+written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text). A joining region keeps the line that it joins
+as written (see below). A line break stays where joining it, with one space or
+with nothing, could change which `;` the line rule ignores, and where a `;` ends
+the last line; any other line break is joined as usual, also in a statement that
+holds a `;`. A statement that keeps a line break prints a run of spaces, tabs,
+no-break spaces, and U+3000 after a comma between two styles, and a run of
+spaces and tabs before it, as one space, on the first line and on the lines
+after it. A vertical tab, a form feed, and every other wide space (U+1680,
+U+2000 to U+200A, U+202F, U+205F, and U+FEFF) after a comma are printed as one
+space too, and so are a vertical tab and a form feed before it. The statement
+keeps a run at the end of a line, a run around the colon of a style, a run
+inside the text of a style, and a wide space (a no-break space, U+1680, U+2000
+to U+200A, U+202F, U+205F, U+3000, or U+FEFF) or a U+2028 before a comma as
+written, with its color. Its colors are printed as under [Colors](#colors) where
+a comma follows the color, also after whitespace and a line break, and for the
+last color of the statement where no `;` follows it on its line. A color that
+characters follow after whitespace stays as written, as under Colors, and so
+does a color that a `;` touches (`#ABC;`, `#ABC;;`, and `#ABC; ;`) and a color
+that a wide space other than the vertical tab and the form feed, a U+2028, or a
+U+2029 separates from the `;`. A color that a space, a tab, a vertical tab, or a
+form feed separates from the `;` is printed as under Colors where no comment
+region follows it on its line: where one does, the color stays as written, since
+the U+2028 or U+2029 that the text of the style keeps after the color makes it a
+word that the character touches (see [Attribute spacing](#attribute-spacing)).
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:

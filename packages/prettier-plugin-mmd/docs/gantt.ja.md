@@ -890,12 +890,9 @@ Prettier は `return  x;` と空白 3 つを `return x;` と印字します。
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
 間にコメント行があれば、
 文は書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
-規則 1 は、改行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#タイトル) は、
-`title` と改行とその次のテキストを 1 行で印字し、
-[xychart](./xychart.ja.md#複数行の文) は、mermaid.js が複数行で読む文を、
-改行を空白 1 つにして 1 行で印字します。
+改行のあった所の空白 1 個は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は、`x = a +`、改行、`b;` を `x = a + b;` と印字します。
 
 [fixture: titles-and-sections/comment-line-inside-kept]
 

@@ -1654,8 +1654,9 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 Print ordinary class components as `:::Name` and icon components as
 `icon(reference)`, including `icon()` and `icon(:file)`. Keep class/reference
-spelling. Icon-internal whitespace is not grammar. Trivia between complete
-components retains its boundaries.
+spelling. Compact marker padding groups the class visually; icon-internal
+whitespace is not grammar. Trivia between complete components retains its
+boundaries.
 
 [fixture: treeview/annotation-components/class-post-marker]
 
@@ -2585,9 +2586,9 @@ treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
 ### Comments
 
 In indentation mode, align standalone comment lines with the next statement, or
-the last statement at EOF. A comment may move deeper or shallower, including
-before a dedent; successive comments share the target column even across blank
-lines.
+the last statement at EOF, to show their association. A comment may move deeper
+or shallower, including before a dedent; successive comments share the target
+column even across blank lines.
 
 [fixture: treeview/comments/comment-standalone-aligned] [fixture:
 treeview/comments/aligned-depths] [fixture: treeview/comments/aligned-final]

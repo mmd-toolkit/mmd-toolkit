@@ -720,16 +720,18 @@ usecase-beta
 
 Reuse
 [flowchart's authored edge-label principle](./flowchart.md#link-label-form):
-keep split labels with one exterior gap. Print an explicit id touching `@` and
-its opening/sole arrow. Usecase keeps only its allowed split halves, markdown
-labels, empty quoted labels, actor source keywords and both endpoint
-occurrences; a plain label is printed in quotes (see [Quotes](#quotes)). The
-`actor` keyword at a relationship source declares an actor; mermaid.js otherwise
-reads an unresolved endpoint as an implicit use case. Removing the keyword from
-an otherwise unresolved source therefore changes its kind in the Db. Explicit
-ids remain available to later metadata/class/style targets. A pipe or
-class-style colon label would be another grammar, and a chain is never split
-into valid relationships.
+keep split labels, with one space on each side of each half, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for another
+mark between two things (Prettier prints `x = a+b` as `x = a + b;`). Print an
+explicit id touching `@` and its opening/sole arrow. Usecase keeps only its
+allowed split halves, markdown labels, empty quoted labels, actor source
+keywords and both endpoint occurrences; a plain label is printed in quotes (see
+[Quotes](#quotes)). The `actor` keyword at a relationship source declares an
+actor; mermaid.js otherwise reads an unresolved endpoint as an implicit use
+case. Removing the keyword from an otherwise unresolved source therefore changes
+its kind in the Db. Explicit ids remain available to later metadata/class/style
+targets. A pipe or class-style colon label would be another grammar, and a chain
+is never split into valid relationships.
 
 [fixture: relationship-labels-and-ids/split-labels] [fixture:
 relationship-labels-and-ids/edge-id-tight] [fixture:

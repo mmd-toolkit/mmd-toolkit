@@ -330,8 +330,8 @@ sequenceDiagram
 Within a line, a run of spaces and tabs between two tokens becomes one space.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between a keyword and what it takes, as Prettier prints `return  x` as
-`return x;`. Tokens that touch keep touching, except for the text after a prefix
-or a keyword of a block, which stands after one space.
+`return x;`. Tokens that touch keep touching, as in a flowchart, except for the
+text after a prefix or a keyword of a block, which stands after one space.
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed]

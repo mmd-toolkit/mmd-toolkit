@@ -15,11 +15,11 @@ records preserved text and differences from mermaid.js.
 ### Header
 
 Print the authored header at column one and put an ordinary first statement on
-the next line. IR keeps `railroad-beta`, EBNF `railroad-ebnf-beta`, ABNF
-`railroad-abnf-beta`, and PEG `railroad-peg-beta`. Add no colon or flags.
-mermaid.js reads each of the four names in this spelling only: it rejects the
-name without `-beta`, with `-beta` in another case, and in capitals, so no other
-spelling is printed (see
+the next line, making the dialect easy to find. IR keeps `railroad-beta`, EBNF
+`railroad-ebnf-beta`, ABNF `railroad-abnf-beta`, and PEG `railroad-peg-beta`.
+Add no colon or flags. mermaid.js reads each of the four names in this spelling
+only: it rejects the name without `-beta`, with `-beta` in another case, and in
+capitals, so no other spelling is printed (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Hidden
 forms, global trivia and protected semicolon segments retain their shared
 boundaries; an empty body stays empty.
@@ -107,10 +107,10 @@ continuation lines and standalone trivia inside a rule use two steps; a separate
 structural closer or terminator aligns with the statement. Nested IR calls use
 their argument levels as described in [Long lines](#long-lines). Other written
 value columns, hidden interiors and retained prefixes keep their own columns.
-Semicolon-protected segments start at one body step, like other flat diagrams;
-their later lines keep their written columns because these belong to the
-protected text. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
-the first line that step, as Prettier prints the lines inside a block.
+Semicolon-protected segments start at one body step; their later lines keep
+their written columns because these belong to the protected text.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the first line
+that step, as Prettier prints the lines inside a block.
 
 [fixture: railroad/indentation/abnf-default]
 
@@ -2109,9 +2109,10 @@ comment marks remain grammatical punctuation and are excluded from the shared
 textual-prefix scan. Ordinary IR rules keep semicolons inside values as text
 without preventing structural call layout. Other semicolons protect their source
 segment through whole crossing values/trivia. Align each protected segment's
-first line to one body step, as in other flat diagrams; its later lines retain
-their written columns with no added indentation. Columns have no grammatical
-meaning on the first line.
+first line to one body step, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for the lines
+inside a block; its later lines retain their written columns with no added
+indentation. Columns have no grammatical meaning on the first line.
 
 [fixture: railroad/long-lines/ir-semicolon-kept]
 

@@ -1295,8 +1295,8 @@ treemap
 ### Comments
 
 Align standalone comment lines with the next statement, or the last statement at
-EOF. This applies whether the comment was shallower or deeper than that
-statement, including before a dedent.
+EOF, to show their association. This applies whether the comment was shallower
+or deeper than that statement, including before a dedent.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
 among the statements one configured step below the header, as Prettier prints
 every line inside a block at one level, whatever it holds. A comment line before

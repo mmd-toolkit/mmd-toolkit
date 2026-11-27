@@ -334,6 +334,7 @@ sequenceDiagram
 キーワードとそれが取るものの間に空白 1 つを与えます。
 Prettier が `return  x` を `return x;` と印字するためです。
 接しているトークンは接したまま残します。
+flowchart と同じです。
 ただし、接頭辞やブロックのキーワードの後のテキストは、空白 1 つの後に置きます。
 
 [fixture: whitespace-between-tokens/collapsed]
