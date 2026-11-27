@@ -1034,15 +1034,18 @@ After its `(`, before a comma, and before its `)`, where the whitespace stays as
 written (see [Colors](#colors)), the whitespace on both sides of a directive
 stays as written; after a comma, which is printed with one space after it, the
 whitespace after a directive stays as written (see
-[Style properties](#style-properties)). A leading directive retains the positive
-versus zero logical indentation of implicit versus explicit text, choosing
-exterior indentation before the first directive while keeping its internal gap
-relations. Embedded, multiline, semicolon-stopped and EOF directives keep their
-boundaries; no embedded data is reformatted.
+[Style properties](#style-properties)). In a function that stays as written, in
+capitals (`RGB(`) or over lines, a directive stays as written with the function
+(see [Colors](#colors)). A leading directive retains the positive versus zero
+logical indentation of implicit versus explicit text, choosing exterior
+indentation before the first directive while keeping its internal gap relations.
+Embedded, multiline, semicolon-stopped and EOF directives keep their boundaries;
+no embedded data is reformatted.
 
 [fixture: venn/directives/unclosed-after-doubled-semicolon] [fixture:
 venn/directives/color-function-gaps-kept] [fixture:
-venn/style-properties/word-run-directive-parenthesis-kept]
+venn/style-properties/word-run-directive-parenthesis-kept] [fixture:
+venn/directives/function-as-written-directive-kept]
 
 An internal gap, including between two leading directives, already supplies the
 positive marker. Only where no internal gap supplies it does an implicit line
