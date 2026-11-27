@@ -18,37 +18,29 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header, as
-Prettier prints the body of a block one level deeper than the line that opens it
-(the body of a function in JavaScript, the declarations of a rule in CSS). Rule
-1 gives no form here, since the start of a line is no place that its table names
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [flowchart](./flowchart.md#indentation), [class](./class.md#indentation),
-[state](./state.md#indentation), and [sequence](./sequence.md#indentation) put
-the statements after the header one level deeper than the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, as Prettier prints the body
+of a block one level deeper than the line that opens it (the body of a function
+in JavaScript, the declarations of a rule in CSS).
 
 [fixture: indentation/written-indentation-dropped]
 
 The statements of a subgraph stand one level deeper than the line of the
 subgraph, and its `end` stands on a line of its own at the level of that line,
-also when it was written after a statement. Prettier puts the `}` that closes a
-block at the level of the line that opens it, and
-[flowchart](./flowchart.md#indentation) and [state](./state.md#indentation) put
-the statements of a subgraph or of a composite state one level deeper than the
-line that opens it, with `end` or `}` at the level of that line (rule 2, as
-above); an `end` written after a statement goes to a line of its own, as under
+also when it was written after a statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+of a subgraph one level deeper than its opening line and `end` at that line's
+level, as Prettier prints the lines inside a block. An `end` written after a
+statement goes to a line of its own, as under
 [Statements one per line](#statements-one-per-line).
 
 [fixture: indentation/nested-subgraphs] [fixture:
 subgraphs/end-on-the-line-of-a-statement]
 
-The attributes of an entity stand one level deeper than the line of the entity,
-and its `}` stands at the level of that line, also in a subgraph. Rule 2 gives
-it, as [class](./class.md#member-bodies) and
-[requirement](./requirement.md#indentation) put the members of a body one level
-deeper than the line of the class or of the requirement, with the `}` at the
-level of that line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the attributes
+of an entity one level deeper than the line of the entity and its `}` at the
+level of that line, also in a subgraph, as Prettier prints the lines inside a
+block.
 
 [fixture: indentation/attribute-blocks-in-subgraphs]
 
@@ -103,18 +95,18 @@ erDiagram
 
 The `{` of an attribute block stays on the line of the entity, after one space;
 each attribute stands on a line of its own, one level deeper; and the `}` stands
-on a line of its own at the level of the entity. Rule 1 gives the one space
+on a line of its own at the level of the entity.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the attributes
+one level deeper than the line of the entity and its closing `}` at that line's
+level, as Prettier prints the lines inside a block. Rule 1 gives the one space
 before the `{` of a block (Prettier prints `function f(){}` as
-`function f() {}`). The start of a line is no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the lines, as [class](./class.md#member-bodies),
+`function f() {}`).
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the line of the opening brace, as [class](./class.md#member-bodies),
 [requirement](./requirement.md#bodies), and [state](./state.md#composite-states)
 print the `{` of a body after one space on the line of its opener, also where it
-was written touching it, and [class](./class.md#member-bodies),
-[requirement](./requirement.md#indentation), and [state](./state.md#indentation)
-put the members one level deeper on lines of their own and the `}` on a line of
-its own at the level of the opener. An attribute that holds a comment region
-that joins two of its lines stays as written whole (see
+was written touching it. An attribute that holds a comment region that joins two
+of its lines stays as written whole (see
 [Attribute spacing](#attribute-spacing)).
 
 [fixture: attribute-blocks/opening-brace-after-one-space] [test:
@@ -1747,11 +1739,14 @@ written touching: mermaid.js joins them with one space.
 [fixture: subgraphs/title-names-spaced] [fixture:
 subgraphs/quoted-and-number-ids]
 
-The statements of the body stand one level deeper, and `end` stands on a line of
-its own at the level of the subgraph (see [Indentation](#indentation)), printed
-in the case in which it is written; in the body, the keyword of a `class`,
-`classDef`, or `style` statement stays as written, as it does outside a
-subgraph, and mermaid.js lists it as a node of the subgraph as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+of the body one level deeper than the line of the subgraph and `end` at that
+line's level, as Prettier prints the lines inside a block. The statements of the
+body stand one level deeper, and `end` stands on a line of its own at the level
+of the subgraph (see [Indentation](#indentation)), printed in the case in which
+it is written; in the body, the keyword of a `class`, `classDef`, or `style`
+statement stays as written, as it does outside a subgraph, and mermaid.js lists
+it as a node of the subgraph as written.
 
 [fixture: subgraphs/statement-keywords-case-kept]
 
@@ -1789,9 +1784,10 @@ as written.
 [fixture: subgraphs/header-description-blocks-kept] [corpus fixture:
 er/gram-subgraph-header-blocks]
 
-Comments and directives on lines of their own in a subgraph stand at the level
-of its statements, as under [Comments](#comments) and [Directives](#directives),
-and a directive before `end` on its line stays there.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts comments and
+directives on lines of their own in a subgraph one level deeper than its
+`subgraph` line, as Prettier prints the lines inside a block, and a directive
+before `end` on its line stays there.
 
 [fixture: subgraphs/directive-and-comment-lines]
 
@@ -2165,9 +2161,10 @@ accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
 [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
 
-Its `}` stands at the level of its statement, as the `}` of a block does in
-Prettier and in
-[Description block indentation](./compatibility.md#description-block-indentation).
+A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
@@ -2193,13 +2190,16 @@ and usecase.
 [test: accessibility revisions: er empty-description-nbsp]
 
 Blocks with comments or directives keep their line breaks and complete contents,
-while ordinary standalone trivia aligns inside the block. Rule 1 names no mark
-for a line inside a block, so
+while ordinary standalone trivia aligns inside the block. Rule 1 does not decide
+the depth of these comment lines at a block boundary, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#multi-line-values) keeps the comment
-lines of a block without text and puts them one level inside the block, with its
-`}` at the level of the `accDescr`. A block that holds a directive is another
-case: [flowchart](./flowchart.md#multi-line-values),
+decides their depth, as [flowchart](./flowchart.md#multi-line-values) keeps the
+comment lines of a block without text and puts them one level inside the block.
+Its `}` stands at the level of the `accDescr`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block. A block that holds
+a directive is another case: [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
 breaks, but their documents give that form no reason, and it is a question of
@@ -2373,12 +2373,10 @@ accTitle: direction BT
 
 A comment line, `%%` at the start of a line, stands at the level of the
 statements around it, and its text is kept as written; this diagram has no other
-comment (diagrams/er.md, Comments). Rule 1 gives no form here, since the start
-of a line is no place that its table names
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
-a comment line at the level of the statements around it.
+comment (diagrams/er.md, Comments).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/kept] [fixture: comments/in-blocks] [fixture:
 comments/last-in-body] [fixture: comments/text-kept]
@@ -2453,11 +2451,12 @@ erDiagram
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, as in a flowchart, a class diagram, a state diagram, and a sequence diagram
-(rule 2, as for a comment line under [Comments](#comments)), and a directive
-within a printed line is placed as in a flowchart: the gap is printed as without
-the directive, and the directive stands after its space and touches the unit
-that follows it. Rule 1 names no mark for a directive in a gap, so
+it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive within a printed line is
+placed as in a flowchart: the gap is printed as without the directive, and the
+directive stands after its space and touches the unit that follows it. Rule 1
+names no mark for a directive in a gap, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [class](./class.md#directives),
 [sequence](./sequence.md#directives), and [state](./state.md#directives) print
@@ -3617,7 +3616,10 @@ class definition]
 
 Of an entity with a nonempty attribute block over several lines, what is printed
 as written is the line that opens the block, with what follows the `{` on it,
-and the lines that an attribute that starts there goes on over. The attributes
+and the lines that an attribute that starts there goes on over.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the later
+attributes one level deeper than the statement's line and the separate `}` at
+that line's level, as Prettier prints the lines inside a block. The attributes
 after it and the `}` are printed as usual, one level deeper and at the level of
 the statement, unless the `}` stands on a line that holds the start of a comment
 line after U+2028 or U+2029: the block then stays as written with that line, as

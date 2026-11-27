@@ -38,13 +38,13 @@ pie showData
 
 ### Indentation
 
-Reuse [XY chart indentation](./xychart.md#indentation): ordinary statements and
-standalone comments/directives stand one configured step below the header, as
-the other diagram types do. A pie section is a slice and adds no nested level.
-`tabWidth: 0` gives zero body spaces; `useTabs` gives one tab, including with
-width zero, because pie columns have no grammatical meaning. Other value
-continuation columns and hidden closers retain their source columns; YAML alone
-uses the shared positive minimum.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+statements and standalone comments/directives one configured step below the
+header, as Prettier prints the lines inside a block. A pie section is a slice
+and adds no nested level. `tabWidth: 0` gives zero body spaces; `useTabs` gives
+one tab, including with width zero, because pie columns have no grammatical
+meaning. Other value continuation columns and hidden closers retain their source
+columns; YAML alone uses the shared positive minimum.
 
 [fixture: pie/indentation/indent-default] [fixture: pie/indentation/indent-four]
 [fixture: pie/indentation/indent-zero] [fixture: pie/indentation/indent-tabs]
@@ -448,12 +448,11 @@ Empty whitespace-only interiors print `{}` because no text needs surrounding
 whitespace. Prettier prints empty braces without interior whitespace, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives `{}` for a
 description block whose interior contains only whitespace. Keep comment-only
-blocks with comments one level inside and a separate closer at statement level.
-In `accDescr {%% c` followed by `}` or `D}` on the next line, `%% c` stays after
-`{` as description text, since moving it to its own line one level inside the
-block, with `D` and `}` also on separate lines in the second case, makes
-mermaid.js read it as a comment, leaving the description empty or just `D`,
-respectively (see
+blocks with comments one level inside. In `accDescr {%% c` followed by `}` or
+`D}` on the next line, `%% c` stays after `{` as description text, since moving
+it to its own line one level inside the block, with `D` and `}` also on separate
+lines in the second case, makes mermaid.js read it as a comment, leaving the
+description empty or just `D`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
 statement. Keep line breaks and interior blank lines, and the whitespace at the
@@ -461,10 +460,16 @@ end of each line of text except the last one. A run of blank lines between two
 lines of text stays as written. A line of whitespace only becomes an empty line.
 The whitespace at the end of the last line of text is dropped where the closer
 stands on a line of its own, and is printed as one space where the closer
-follows it on that line. A separate `}` aligns with the statement. Directives
-and shared removed comment regions keep their complete source. Trivia-bearing
-interiors keep their trivia. The first closing brace still closes the block,
-even inside quote/backslash/hidden-looking text.
+follows it on that line. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. Directives and shared removed comment regions keep their
+complete source. Trivia-bearing interiors keep their trivia. The first closing
+brace still closes the block, even inside quote/backslash/hidden-looking text.
+
+[fixture: pie/description-blocks/brace-on-a-later-line]
 
 [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/blank-line-run-kept] [fixture:
@@ -634,10 +639,13 @@ pie
 An inline comment stays on its line. An inline comment that touches stays
 touching. Standalone comments align with body statements, or at column one
 before the header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives one space before a comment that stands after something on its line, as
-Prettier prints `x = 1;   // c` as `x = 1; // c`. The whitespace before a `%%`
-or a `%%{}%%` that follows an `accTitle` value is the exception: the oldest
-version that counts reads it as part of the title (see
+gives the depth of a standalone comment line inside the diagram body, as
+Prettier prints the lines inside a block.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. The whitespace before a `%%` or a `%%{}%%`
+that follows an `accTitle` value is the exception: the oldest version that
+counts reads it as part of the title (see
 [Accessibility lines](#accessibility-lines)). Keep bare/triple-percent marks and
 trailing comment spaces. Pie native comments end at LF, retaining LS/PS inside
 them, because pie does not treat them as separators: ending a comment at one

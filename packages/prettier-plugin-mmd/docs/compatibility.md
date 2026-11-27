@@ -5363,10 +5363,8 @@ block holds, or would not be read as the block is:
   `accDescr: direction RL` is the description at the start of a line and a
   direction line when the line is indented, which the printer does for the
   statements of a body. Statements in an agentflow body stand one level below
-  the header, as the statements of a [class diagram](./class.md#indentation) and
-  a [Gantt chart](./gantt.md#indentation) do;
-  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-  gives this placement.
+  the header; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+  this placement, as Prettier prints the lines inside a block.
 
   [fixture: class/multi-line-values/block-direction-on-its-own-line-kept]
   [fixture: class/multi-line-values/block-brace-on-the-next-line-direction-kept]
@@ -6396,13 +6394,16 @@ diagram-specific value boundaries still take precedence.
 This applies to class and state statements, ER statements, requirement headers,
 fields and statements, and sequence statements other than trivia-separated
 titles. Empty description blocks inside requirement and element bodies also
-align their standalone trivia and separate closer. Rule 1 gives no form here,
-since its table does not name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+align their standalone trivia and separate closer. A separate closing brace
+stands at the level of its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block. Rule 1 does not
+decide the depth of these standalone trivia lines at a block boundary;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [block](./block.md#empty-description-blocks) and
+their depth, as [block](./block.md#empty-description-blocks) and
 [c4](./c4.md#description-blocks) put standalone trivia one level inside a
-description block and a separate closing brace at the level of its statement.
+description block.
 
 [fixture: requirement/empty-description-blocks/in-body-with-comment-line-kept]
 [fixture: requirement/empty-description-blocks/in-body-with-directive-line]
@@ -6442,9 +6443,11 @@ c4/boundary-bodies/opener-directive] [fixture:
 c4/named-attributes/named-exterior-directive-lines] [fixture:
 c4/argument-spacing/directive-semicolon-prefix]
 
-The physical line completing an ordinary block header aligns with its statement,
-leaving its body one level deeper. Crossing literal values keep their own
-columns. This applies to state, requirement and C4 boundary headers.
+The physical line completing an ordinary block header aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts its body one
+level deeper than that opening line, as Prettier prints the lines inside a
+block. Crossing literal values keep their own columns. This applies to state,
+requirement and C4 boundary headers.
 
 [fixture: state/composite-states/header-completion-after-comment] [fixture:
 requirement/bodies/header-completion-after-comment] [fixture:
@@ -7208,11 +7211,14 @@ without changing its text. Interior contacts and trivia keep their own rules.
 flowchart/accessibility-lines/empty-block-touching-keyword]
 
 Ordinary closed multiline `accDescr` bodies use the statement's continuation
-indentation, with a separate `}` at the statement's level. mermaid.js discards
-the indentation after a line feed from the description. Keep the remaining text,
-line breaks, trailing whitespace and directive contents. In a two-line
-`accDescr` body, mermaid.js stores the line break between the text lines in the
-description value;
+indentation, with a separate `}` at the statement's level.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block. mermaid.js
+discards the indentation after a line feed from the description. Keep the
+remaining text, line breaks, trailing whitespace and directive contents. In a
+two-line `accDescr` body, mermaid.js stores the line break between the text
+lines in the description value;
 [a description after a colon](./compatibility.md#a-description-block-on-one-line)
 occupies one line. Replacing that line break with a space changes the Db outside
 the defined whitespace exceptions, so the body keeps the line break. Quoted
@@ -8417,7 +8423,10 @@ is not kept as written to its end: the line up to the `{` stays as written, as
 does what follows the `{` on its line in a nonempty block, and the attributes
 after it and the `}` stand as those of any entity, unless the `}` stands on a
 line that holds the start of such a comment line (see
-[ER](./er.md#multi-line-statements)).
+[ER](./er.md#multi-line-statements)). For the attributes and closing line that
+are printed normally, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+puts the attributes one level deeper than the entity line and its closing `}` at
+that line's level, as Prettier prints the lines inside a block.
 
 [test: mindmap/line-separators/comment-region-continuation-kept] [test:
 eventmodeling/long-lines/comment-region-continuation-one-level-deeper] [test:
@@ -9129,7 +9138,10 @@ c4/direction-rejection/acc-colon-direction]
 
 Inside multiline empty `beforeBody` blocks, standalone trivia uses one level
 inside the containing header or call, and the closer aligns with that owner.
-Existing adjacency and brace-joining rules still apply.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block. Existing adjacency
+and brace-joining rules still apply.
 
 [fixture: c4/header/empty-header-comment-columns] [fixture:
 c4/boundary-bodies/empty-beforebody-comment-columns]
@@ -9170,13 +9182,15 @@ c4/trailing-whitespace/semicolon-line] [test: c4: ls-line-rule-segments]
 
 ## Venn implicit text and textual line rules
 
-Venn's body is one step deep, and targetless text one step deeper: positive
-indentation selects implicit text while its mode is enabled, while explicit text
-stands at the level of the header, since indenting it there can make it implicit
-text. Declarations retain same-line style, explicit text and title followers so
-splitting cannot clear that mode. Leading directives keep the positive/zero
-logical marker; diagram-comment gaps preserve the empty versus whitespace-only
-line boundary before `%%{ }%%`. See the [Venn rules](./venn.md).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts Venn's `set`,
+`union`, `style`, and `title` statements one step deeper than the header, as
+Prettier prints the lines inside a block. Targetless text stands one step
+deeper: positive indentation selects implicit text while its mode is enabled,
+while explicit text stands at the level of the header, since indenting it there
+can make it implicit text. Declarations retain same-line style, explicit text
+and title followers so splitting cannot clear that mode. Leading directives keep
+the positive/zero logical marker; diagram-comment gaps preserve the empty versus
+whitespace-only line boundary before `%%{ }%%`. See the [Venn rules](./venn.md).
 
 [fixture: venn/indentation/indent-width] [fixture:
 venn/statements-one-per-line/header-declaration-group] [fixture:
@@ -9412,8 +9426,12 @@ Accessibility lines reuse class/C4 spacing: one space precedes the trimmed
 value. Description bodies follow
 [Description block indentation](#description-block-indentation), retaining
 contents and line breaks while aligning ordinary body prefixes and a separate
-closing brace. Comment-only bodies use the same body and closer alignment. See
-the [usecase rule](./usecase.md#direction-and-accessibility).
+closing brace. Comment-only bodies use the same body and closer alignment. A
+separate closing brace aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that closing
+depth when the `{` is on the statement's line: the closing line stands at the
+level of the opening line, as Prettier prints the lines inside a block. See the
+[usecase rule](./usecase.md#direction-and-accessibility).
 
 [fixture: usecase/direction-and-accessibility/a11y-comment-empty-tabs] [fixture:
 usecase/direction-and-accessibility/a11y-padding] [fixture:
@@ -9895,15 +9913,14 @@ radar/semicolons/semicolon-selected-kept] [fixture:
 radar/multi-line-statements/semicolon-terminal-line]
 
 A list containing comments or directives keeps its other authored entry newlines
-too, so it remains a block as written. A separate closing brace aligns with the
-statement. Rule 1 gives no form here, since its table does not name the start of
-a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [usecase](./usecase.md#native-metadata) puts the comment lines and the
-properties of a braced list one level inside and its separate closing brace at
-the level of the statement, and [er](./er.md#attribute-blocks) puts the `}` of
-an attribute block at the level of the entity. Comment-free lists still compact
-their ordinary entry newlines.
+too, so it remains a block as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the properties
+of a braced list one level deeper than the statement that opens it and a
+separate closing brace at the level of that statement, as Prettier prints the
+lines inside a block, with the closing line at the level of the opening line. A
+comment or directive line between properties of the same depth stands at their
+level, as Prettier prints a comment line at the level of the lines around it.
+Comment-free lists still compact their ordinary entry newlines.
 
 [fixture: radar/multi-line-statements/entry-comment-after-comma] [fixture:
 radar/multi-line-statements/entry-global-lines]

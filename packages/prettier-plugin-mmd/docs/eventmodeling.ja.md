@@ -18,7 +18,7 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 
 `eventmodeling` は第 1 列に置き、普通の最初の文を次の行へ移して、
 見出しを見つけやすくします。
-文が置かれる位置（行頭）は規則 1 の場所ではないので、
+文をどの行に置くかは、規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
 最初の文を置く行を決めます。
 [wardley](./wardley.ja.md#見出し)、[cynefin](./cynefin.ja.md#header)、
@@ -97,7 +97,7 @@ eventmodeling tf 01 evt A %%{{x}}%%
 トップレベルの字下げを再検討します。
 
 GWT 節は設定の 1 段、項目は 2 段にします。
-行頭は規則 1 の場所ではないので、
+GWT の節と項目は文の一部で、規則 1 のブロックの中の行ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#字下げ)と [state](./state.ja.md#字下げ)は、
 ブロックの文を、それを開く行より 1 段深く置きます。
@@ -193,7 +193,7 @@ note 01 {
 ### Statements one per line
 
 普通の最上位 AST 文は原順の各行へ分け、セミコロンは足しません。
-文が置かれる位置（行頭）は規則 1 の場所ではないので、
+文をどの行に置くかは、規則 1 の場所ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [er](./er.ja.md#1-行に-1-文)、[gantt](./gantt.ja.md#1-行に-1-文)、
 [journey](./journey.ja.md#1-行に-1-文)も、各文を自分の行に印字します。
@@ -710,7 +710,8 @@ tf 01 evt Alpha { 	 x  }
 `{` の直後が LF で、LF の直後の `}` で閉じる通常の data と note は、
 次の条件を満たす場合、
 空でない本文行をすべて `tabWidth` 個の ASCII 空白（U+0020）で字下げします。
-行頭は規則 1 の場所ではなく、規則 2 も本文の行の余白を与えません。
+本文の行は値のテキストで、規則 1 のブロックの中の行ではなく、
+規則 2 も本文の行の余白を与えません。
 [pie](./pie.ja.md#description-blocks)、
 [radar](./radar.ja.md#description-blocks)、
 [cynefin](./cynefin.ja.md#description-blocks) は、説明ブロックの行を、
@@ -804,11 +805,11 @@ tf 01 evt Alpha { 	 x  }
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-[sequence](./sequence.ja.md#字下げ) と [state](./state.ja.md#字下げ) は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
 ヘッダーの後の文をヘッダーより 1 段深く置き、
-閉じる行をブロックを開く行と同じ段に置くので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)なら、
-`}` を空白 2 つで字下げすることになります。
+閉じる行をブロックを開く行と同じ段に置きます。
+Prettier がブロックの中の行を印字する形です。
+そのため、規則 1 なら、`}` を空白 2 つで字下げすることになります。
 見かけの文、波括弧を含むテキスト、直後の閉じ風の行も、
 本文を持つ形の規則が後の閉じまで読む場合は保ちます。
 フレームが読む `data` ブロックでは、
@@ -1141,8 +1142,6 @@ tf 01 evt Alpha accTitle:
 （`accDescr { }` と `accDescr {}`、`accDescr`、改行、
 `{ Details }` と `accDescr { Details }` は accDescr
 が違います）空白だけの内部と開き前の改行は残ります。
-閉じの列は Db に入らず、走らせた版は両方の形を同じに描くので、理由なしに残し、
-その行は一覧（D34）にあります。
 共有 `layoutDescriptionBlock` を通さない判断はこの 1 か所です。
 通常の `{}` への圧縮と閉じの整列は `EM_ACC_DESCR` の値を変えるためです。
 図種専用の空ブロック正規化も加えません。
@@ -1185,12 +1184,9 @@ GWT 節・項目の隙間を保ちます。
 保持 YAML と図固有の `DIRECTIVE` を設定として解釈しません。
 隠れた形を扱う共有経路が内部の列、消費 LF、閉じの先読み空白を保ち、
 普通の本文開始記号は本文の段に揃えます。
-行頭は規則 1 の場所ではないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[radar](./radar.ja.md#hidden-forms) は、普通の本文開始記号を字下げします。
-[pie](./pie.ja.md#indentation)と [packet](./packet.ja.md#indentation)は、
-独立したディレクティブを見出しの 1 段下に置き、
-自分の行にある隠れたディレクティブも、どちらでもそれに従います。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、本文で隠れた形を開く行を、
+周りの行と同じ段に置きます。
+Prettier は、ブロックの中の行を、何を持つ行でも同じ段に印字するためです。
 必須の開始部分の隙間と共通文の前方境界は原文どおりです。
 `eventmodeling`、`%%{{x}}%%`、` accDescr: D` を各行に置いた形は、
 `accDescr` の前の空白 1 つも残します。
@@ -1264,14 +1260,14 @@ tf 02 evt Beta
 ### Comments
 
 普通の独立コメントは所属本文の段に揃え、GWT 項目間では項目の段にします。
-行頭は規則 1 の場所ではないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#コメント)は、コメント行を周りの文の段に置きます。
-[sequence](./sequence.ja.md#コメント)も同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+コメント行を周りの行と同じ段に置きます。
+Prettier がブロックの中の行を印字する形です。
+GWT の節と項目は文の一部で、ブロックの中の行ではないので、
+そこでは[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [journey](./journey.ja.md#コメント)、[timeline](./timeline.ja.md#コメント)、
 [block](./block.ja.md#コメント)、[quadrant](./quadrant.ja.md#コメント)、
 [gantt](./gantt.ja.md#コメント)は、コメント行を後ろの文の段に置きます。
-eventmodeling の本文は平らなので、どちらも同じ段になります。
 同じ印字行ではコメントの前の空白とタブの連なりを空白 1 つにします。
 ただし、ヘッダー行とフレーム文の行の title と accTitle と accDescr では、
 コメントの印の前の連なりが値に属するので、
@@ -1279,6 +1275,8 @@ eventmodeling の本文は平らなので、どちらも同じ段になります
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
 同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
 Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
+
+[fixture: eventmodeling/comments/comment-lines-between-gwt-items]
 
 直前の部分に接するコメントは接したままです。
 コメントの前にある幅のある空白、U+2028、U+2029 は、空白 1 つにします。
@@ -1537,14 +1535,17 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 右の接し方を保ちます。
 内容、順序、複数行の内部、値の中の位置、未完 EOF の終端を保ちます。
 独立した開始は所属本文の段に揃えます。
-行頭は規則 1 の場所ではないので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+ディレクティブの行を周りの行と同じ段に置きます。
+Prettier は、ブロックの中の行を、何を持つ行でも同じ段に印字するためです。
+GWT の節と項目の間では、それらが文の一部で、ブロックの中の行ではないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#ディレクティブ)と
-[sequence](./sequence.ja.md#ディレクティブ)は、自分の行にあるディレクティブを、
-周りの文の段に置きます。
-[journey](./journey.ja.md#ディレクティブ)は、後ろの文の段に置きます。
+[journey](./journey.ja.md#ディレクティブ)は、自分の行にあるディレクティブを、
+後ろの文の段に置きます。
 共通文の境界は普通の空白規則でなく原文隙間全体を保ちます。
 除去されるディレクティブ自体は必要な空白の代わりになりません。
+
+[fixture: eventmodeling/global-directives/directive-lines-between-gwt-items]
 
 閉じていないディレクティブは、引数の後の空白を、改行も含めて取ります。
 そのため次の行はその行に続き、その行は書かれたまま印字します（詳しくは、

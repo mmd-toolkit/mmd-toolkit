@@ -113,22 +113,26 @@ venn/indentation/tab-width-0-kept-leading-directive] [fixture:
 venn/indentation/tab-width-0-internal-marker] [fixture:
 venn/indentation/tab-width-0-use-tabs]
 
-The `set`, `union`, `style`, and `title` statements stand one configured step
-deeper than the header (`tabWidth`, `useTabs`), as the statements of the other
-diagram types do and as the documentation of mermaid.js writes them: all 39
-lines of these statements in its 8 examples are indented, and none stands at
-column one. An implicit text statement stands one step deeper still. mermaid.js
-skips the indentation before `set`, `union`, `style`, and `title`, so it does
-not change their reading. Whitespace before `text` selects an implicit text
-statement while mode is enabled, so an explicit text statement (`text A item`)
-stands at the level of the header, whatever the mode: indenting it can change
-its reading, and the one form does not depend on the mode. Positive indentation
-selects implicit syntax while mode is enabled; it expresses no nesting. A
-declaration enables mode, a later ordinary line-start statement clears it, and
-another declaration enables it again. The comment and directive lines before a
-statement stand at its level.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the `set`,
+`union`, `style`, and `title` statements one configured step deeper than the
+header (`tabWidth`, `useTabs`), as Prettier prints the lines inside a block. An
+implicit text statement stands one step deeper still. With `tabWidth: 0`, that
+step is one character, for the reason above. mermaid.js skips the indentation
+before `set`, `union`, `style`, and `title`, so it does not change their
+reading. Whitespace before `text` selects an implicit text statement while mode
+is enabled, so an explicit text statement (`text A item`) stands at the level of
+the header, whatever the mode: indenting it can change its reading, and the one
+form does not depend on the mode. Positive indentation selects implicit syntax
+while mode is enabled; it expresses no nesting. A declaration enables mode, a
+later ordinary line-start statement clears it, and another declaration enables
+it again. The comment and directive lines before a statement stand at its level.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts standalone
+comment and directive lines one level deeper than the header in a body whose
+statements are all `set`, `union`, `style`, or `title`, including before the
+first and after the last statement, as Prettier prints the lines inside a block.
 
-[fixture: venn/indentation/ordinary-statements-stand-one-step-deep] [fixture:
+[corpus fixture: venn/db-indent-width] [fixture:
+venn/indentation/ordinary-statements-stand-one-step-deep] [fixture:
 venn/indentation/explicit-text-stays-at-the-header] [fixture:
 venn/indentation/comment-and-directive-lines-follow-the-statement] [corpus
 fixture: venn/db-form-indent-id-label] [corpus fixture:
@@ -282,7 +286,8 @@ venn-beta
 ### Comments
 
 Standalone comments align with the next statement, or the last statement at EOF.
-A trailing comment that touches stays touching.
+[Indentation](#indentation) gives the reason for their level. A trailing comment
+that touches stays touching.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. A swallowed `VennIgnoredText` fragment remains

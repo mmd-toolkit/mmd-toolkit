@@ -57,9 +57,12 @@ AST の `children` から、書かれた順に親を読みます。
 普通の根は設定の 1 段、子は親より 1 段深く置きます。
 共通文と classDef は本文の 1 段に置きます。
 同じ読みを持つ幅から、一貫した深さを選ぶためです。
-普通の根を見出しより設定の 1 段、子を親より 1 段深く置く形は、
-[kanban](./kanban.ja.md#インデント)の図の字下げの間隔と同じです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、この形を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+普通の根と共通文と classDef を、見出しより設定の 1 段深く置きます。
+Prettier がブロックの中の行を印字する形です。
+子は、字下げが親子を決めるのでそれより深く立ち、親より 1 段深く置きます。
+この間隔は [kanban](./kanban.ja.md#インデント)の図の字下げの間隔と同じで、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
 字下げして書かれていない title とアクセシビリティの文だけは、
 行頭に置いて印字します。
 詳しくは [タイトル](#title) を参照してください。
@@ -1170,15 +1173,19 @@ Prettier は `class A{}` を `class A {}` と印字します。
 本文行は文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
-別行の開始記号と閉じ記号は文の列にそろえます。
-説明ブロックの別行の閉じ記号は、
-[flowchart](./flowchart.ja.md#複数行の値)の図と同じく、文の列にそろえます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この位置を与えます。
+別行の開始記号は文の列にそろえます。
+独立した行の `}` は文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この深さを与えます。
+閉じる行を `{` のある行と同じ段に置く形で、
+Prettier がブロックを閉じる行を印字する形です。
+`{` のある行は、`accDescr` の行か、
+`{` の前にコメントかディレクティブがあるときは、文と同じ段の後の行です。
 最初の `}` がブロックを閉じます。
 字下げして書かれていないブロックは行頭に置いて印字し、
 本文はその 1 段内側に置きます。
 詳しくは [タイトル](#title) を参照してください。
+
+[fixture: treemap/description-blocks/brace-on-a-later-line]
 
 [fixture: treemap/description-blocks/block-touching-with-text-fixed]
 [fixture: treemap/description-blocks/empty]
@@ -1308,6 +1315,12 @@ treemap
 [mindmap](./mindmap.ja.md#コメント) と同じく、どの文に関係するかを示します。
 元のコメントが次の文より浅くても深くても同じで、
 字下げが浅くなる行の前にも適用します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、文の間のコメント行を、
+見出しより設定の 1 段深く置きます。
+Prettier は、ブロックの中の行を、何を持つ行でも同じ段に印字します。
+子の前のコメント行と、最後の文が子のときの末尾のコメント行は、
+その子にそろえます。
+子は字下げが親子を決めるので深く立ち、それらの図種と同じ形です。
 
 [fixture: treemap/comments/aligned-depths]
 [fixture: treemap/comments/standalone] [fixture: treemap/comments/aligned-final]

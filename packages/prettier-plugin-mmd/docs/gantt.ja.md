@@ -24,9 +24,10 @@ fixture の置き方と確かめ方は、
 `section` 自体は最初の段です。
 Gantt 図の木は平らで、文のブロックがないので、文の段は、
 ほかの文の中での位置で決まります。
-section の下のタスクは、mermaid.js の文書の書き方と同じく、
-section の中に置きます。
-journey も同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ヘッダーの後の文はヘッダーより 1 段深く、section のタスク、click 文、設定など、
+どの文も `section` の行より 1 段深く置きます。
+Prettier がブロックの中の行を印字する形です。
 
 [fixture: indentation/sections-and-tasks-nested]
 [fixture: indentation/statements-before-the-first-section]
@@ -51,13 +52,11 @@ journey も同じです。
 [fixture: indentation/header-leading-whitespace]
 
 原文を保つ値は行ごとの列を保ちます。
-説明本文の行は[複数行の値](#複数行の値)に従って文より 1 段深くし、
-独立した `}` は文と同じ段に置きます。
-[class](./class.ja.md#複数行の値) の図と
-[flowchart](./flowchart.ja.md#複数行の値) も、説明ブロックの独立した閉じ括弧を、
-文と同じ段に置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、その閉じ括弧にも、
-この位置を与えます。
+説明本文の行は[複数行の値](#複数行の値)に従って文より 1 段深くします。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -1360,14 +1359,12 @@ gantt
 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-then-percent-kept]
 
-本文が複数行のブロックでは、本文を文より 1 段深くし、
-独立した `}` は文と同じ段に置きます。
+本文が複数行のブロックでは、本文を文より 1 段深くします。
 mermaid.js が説明から LF 後の字下げを除くためです。
-[class](./class.ja.md#複数行の値) の図と
-[flowchart](./flowchart.ja.md#複数行の値) も、説明ブロックの独立した閉じ括弧を、
-文と同じ段に置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、その閉じ括弧にも、
-この位置を与えます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1451,8 +1448,12 @@ Prettier は、
 
 ディレクティブやコメント行の内容と改行は保ち、
 本文の字下げは [アクセシビリティの文](#アクセシビリティの文)に従います。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
+規則 1 は、ブロックの境界にあるこれらのコメント行の段を決めません。
+独立した閉じ括弧は文の段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+開始の `{` が文と同じ行にある場合に、
+Prettier がブロックの閉じ行を開始行と同じ段に印字するのと同じく、
+この閉じ行の段を与えます。
 
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 
@@ -1746,21 +1747,15 @@ gantt
 コメント行は、その次の文と同じ段に置きます。
 `section` の前のコメントは `section` の段、タスクの前のコメントはタスクの段、
 テキストの末尾のコメントは最後の文の段です。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[quadrant](./quadrant.ja.md#コメント) と [ishikawa](./ishikawa.ja.md#comments)
-も、単独の行のコメントを、後ろの文か節の段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中のコメント行をそう印字するためです。
 
 [fixture: comments/levels-around-sections]
 [fixture: directives/levels-around-sections]
 
 ヘッダーより前のコメント行は 1 桁目に置き、テキストの末尾のコメント行は、
 改行を足して自分の行に残します。
-[quadrant](./quadrant.ja.md#コメント) と [ishikawa](./ishikawa.ja.md#comments)
-の図も、末尾のコメントを、最後の文の後の独立した行に残します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-末尾のコメントにも、この配置を与えます。
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
@@ -1886,6 +1881,10 @@ gantt
 ### ディレクティブ
 
 単独の行のディレクティブは周りの文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のディレクティブ行は、
+そのブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 同じ印字行の中では、[flowchart](./flowchart.ja.md#ディレクティブ) と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。

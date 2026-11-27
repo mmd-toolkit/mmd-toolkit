@@ -71,8 +71,11 @@ usecase-beta
 
 ### Indentation
 
-Use structural indentation: one configured step below the header, two for
-boundary declarations, and `end` aligned with its opener.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts statements one
+configured step below the header, as Prettier prints the lines inside a block.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts boundary
+declarations one configured step deeper than the boundary opener and `end` at
+the level of its opener, as Prettier prints the lines inside a block.
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -522,10 +525,12 @@ usecase-beta
 
 ### System boundaries
 
-Openings, declaration bodies and aligned `end` use separate lines, including
-empty boundaries and empty quoted names. An empty boundary with `end` on the
-line of its opening (`systemBoundary S end`) is rejected (see
+Openings, declaration bodies and `end` use separate lines, including empty
+boundaries and empty quoted names. An empty boundary with `end` on the line of
+its opening (`systemBoundary S end`) is rejected (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts `end` at the
+level of its boundary opener, as Prettier prints the lines inside a block.
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -775,13 +780,14 @@ Keep the first property on its written opening or following line.
 [fixture: native-metadata/metadata-first-gap-standalone-directive]
 
 Ordinary property/comment/directive lines stand one level below the containing
-statement; a separate closing brace aligns with that statement. Ordinary
-metadata property, comment and directive lines use the same layout as
-[requirement fields](./requirement.md#indentation) and
-[ER attributes](./er.md#indentation): one level below the containing statement,
-with a separate closing brace aligned to that statement. Under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
-ordinary metadata lines take this layout.
+statement; a separate closing brace aligns with that statement. When the
+metadata opener stands on the line of the containing statement,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+property lines one level below that line and the separate closing brace at its
+level, as Prettier prints the lines inside a block. A standalone comment or
+directive inside the metadata block follows that level under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), as the lines inside
+a block in those languages do.
 
 [fixture: native-metadata/metadata-comma-comment-close] [fixture:
 native-metadata/metadata-closer-directive-own-line]
@@ -890,9 +896,12 @@ When `{` is immediately followed by a newline, shift all body lines by the same
 number of ASCII spaces so the shallowest text stands one level inside the JSON
 statement. Relative indentation, including nested objects, stays unchanged. A
 separate `}` aligns with the statement; a closer after text stays on that line.
-JSON strings cannot contain raw newlines: Mermaid rejects them with
-`Bad control character in string literal`, so this movement cannot change a
-string's contents.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of
+that separate closing `}` when the block opens on the statement's line: the
+closing line stands at the level of the opening line, as Prettier prints the
+closing line of a block. JSON strings cannot contain raw newlines: Mermaid
+rejects them with `Bad control character in string literal`, so this movement
+cannot change a string's contents.
 
 [fixture: json-tables/closing-deeper-kept] [fixture:
 json-tables/closing-equal-depth] [fixture: json-tables/zero-and-shallow]
@@ -1134,11 +1143,13 @@ direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 [fixture: direction-and-accessibility/acctitle-inner-gap-kept] [fixture:
 direction-and-accessibility/acc-descr-line-trailing-spaces-kept]
 
-In description blocks, align body lines one step inside the statement and a
-separate `}` with the statement, including a block whose only content is a
-comment line. mermaid.js discards the indentation after a line feed from the
-description. Structural indentation keeps the same layout with zero width or
-tabs.
+In description blocks, align body lines one step inside the statement, including
+a block whose only content is a comment line. A separate `}` aligns with its
+statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
+depth when the `{` stands on the `accDescr` line: it puts the closing line at
+the level of the opening line, as Prettier prints the closing line of a block.
+mermaid.js discards the indentation after a line feed from the description.
+Structural indentation keeps the same layout with zero width or tabs.
 
 [fixture: direction-and-accessibility/a11y-closer-aligned] [fixture:
 direction-and-accessibility/a11y-closer-tabs] [fixture:
@@ -1146,8 +1157,12 @@ direction-and-accessibility/a11y-closer-zero] [fixture:
 direction-and-accessibility/a11y-directive-padding] [fixture:
 direction-and-accessibility/a11y-comment-empty-tabs]
 
-The whitespace before the `}` is no text, so the `}` stays aligned with the
-statement in every pass, also after a comment line.
+The whitespace before the `}` is no text. The `}` stays aligned with the
+statement in every pass, also after a comment line. A separate `}` aligns with
+its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+this depth when the `{` stands on the `accDescr` line: it puts the closing line
+at the level of the opening line, as Prettier prints the closing line of a
+block.
 
 [fixture: direction-and-accessibility/block-comment-line-after-the-text]
 
@@ -1337,15 +1352,12 @@ usecase-beta
 
 ### Comments
 
-Reuse [standalone comment alignment](./class.md#comments): comments align with
-nearby statements, with declarations before boundary `end`, retaining all
-comment text and terminal HWS. Rule 1 gives no form here, since its table does
-not name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [block](./block.md#comments) and [er](./er.md#comments) put a comment
-line at the level of the statements around it. Comments before the header stand
-at column one.
+Comments align with nearby statements, with declarations before boundary `end`,
+retaining all comment text and terminal HWS.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. Comments before the header stand at
+column one.
 
 [fixture: system-boundaries/boundary-header-comment-empty] [test: usecase:
 terminal-comment-tab]
@@ -1396,6 +1408,9 @@ separator. Keep directive contents, order and multiline columns; align
 standalone directives, and place a directive within a printed line as under
 [flowchart's Directives](./flowchart.md#directives). A directive on a line of
 its own stands at the level of the surrounding statements.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: system-boundaries/boundary-id-title-directed-gap] [fixture:
 arrows/semantic-operator-directives] [fixture:

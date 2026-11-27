@@ -79,7 +79,12 @@ usecase-beta
 
 ### Indentation
 
-ヘッダーの下を設定の 1 段、境界内の宣言を 2 段とし、`end` は開始文に揃えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+文はヘッダーより設定の 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+境界内の宣言を開始文より 1 段深くし、`end` は開始文に揃えます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -575,12 +580,15 @@ usecase-beta
 
 ### System boundaries
 
-開始文、宣言の本文、揃えた `end` を別々の行に置きます。
+開始文、宣言の本文、`end` を別々の行に置きます。
 空の境界や空の引用名も同じです。
 `end` を開始文の行に置いた空の境界（`systemBoundary S end`）は拒否されます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+`end` は境界の開始文と同じ段に置きます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -857,12 +865,14 @@ YAML や flowchart、Agentflow の不透明なメタデータの整形は当て�
 
 通常のプロパティ、コメント、ディレクティブの行は含む文より 1 段深くし、
 独立した閉じ波括弧はその文に揃えます。
-通常のメタデータのプロパティ、コメント、ディレクティブの行は、
-含む文より 1 段深くし、独立した閉じ波括弧はその文に揃えます。
-[requirement のフィールド](./requirement.ja.md#インデント) と
-[ER の属性](./er.ja.md#字下げ) も、同じ配置を印字します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
+メタデータの開始記号が含む文の行にあるとき、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+通常のプロパティの行はその行より 1 段深くし、
+独立した閉じ波括弧はその行に揃えます。
+Prettier がブロックの中の行をそう印字するためです。
+メタデータのブロックの中の単独のコメントやディレクティブの行も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+それらの言語のブロックの中の行と同じくその段に置きます。
 
 [fixture: native-metadata/metadata-comma-comment-close]
 [fixture: native-metadata/metadata-closer-directive-own-line]
@@ -975,6 +985,9 @@ Db の検査は共有のデータブロックの経路に従います。
 
 入れ子のオブジェクトを含め、行どうしの字下げの差を保ちます。
 単独行の `}` は文の段に揃え、本文の後の閉じ括弧はその行に残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、ブロックが文の行で開くとき、
+その独立した `}` を開く行と同じ段に置きます。
+Prettier がブロックを閉じる行を、開く行と同じ段に印字する形です。
 JSON の文字列には生の改行を入れられず、
 Mermaid が `Bad control character in string literal` として拒否するため、
 移動で文字列の内容は変わりません。
@@ -1239,7 +1252,11 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 [fixture: direction-and-accessibility/acctitle-inner-gap-kept]
 [fixture: direction-and-accessibility/acc-descr-line-trailing-spaces-kept]
 
-説明ブロックは、本文行を文より 1 段深くし、独立した `}` を文の字下げに揃えます。
+説明ブロックは、本文行を文より 1 段深くします。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 コメント行だけが入ったブロックも同じ配置です。
 mermaid.js は説明から行送り後の字下げを除きます。
 構造の字下げは、幅 0 やタブでも同じ配置を保ちます。
@@ -1250,8 +1267,12 @@ mermaid.js は説明から行送り後の字下げを除きます。
 [fixture: direction-and-accessibility/a11y-directive-padding]
 [fixture: direction-and-accessibility/a11y-comment-empty-tabs]
 
-`}` の前の空白はテキストではないので、コメント行の後でも、
-毎回の整形で `}` を文と同じ段にそろえます。
+`}` の前の空白はテキストではありません。
+コメント行の後でも、毎回の整形で `}` を文と同じ段にそろえます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: direction-and-accessibility/block-comment-line-after-the-text]
 
@@ -1443,14 +1464,11 @@ usecase-beta
 
 ### Comments
 
-[コメント](./class.ja.md#コメント)を再利用します。
 周囲の文、境界の `end` の前では宣言に揃えます。
 末尾の水平空白を含むコメント全体を保ちます。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[block](./block.ja.md#コメント) と [er](./er.ja.md#コメント)も、
-コメントを宣言や周りの文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中のコメント行をそう印字するためです。
 ヘッダー前のコメントは先頭列に置きます。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
@@ -1503,6 +1521,10 @@ usecase-beta
 除去は区切りを補いません。
 内容、順序、複数行の列を保ち、独立したディレクティブは揃えます。
 独立したディレクティブを、周囲の文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のディレクティブ行は、
+そのブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 

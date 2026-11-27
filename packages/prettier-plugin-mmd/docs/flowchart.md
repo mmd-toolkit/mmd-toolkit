@@ -17,12 +17,15 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header, and the
-statements of a subgraph one level deeper than its `subgraph` line, with `end`
-at the level of `subgraph`. A level follows Prettier's `useTabs` and `tabWidth`
-options, subject to the minimum below: two spaces by default, as in the other
-languages that Prettier formats. The statements after the header stand one level
-deeper, as the documentation of mermaid.js writes them.
+The statements after the header stand one level deeper than the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+of a subgraph one level deeper than its `subgraph` line and `end` at the level
+of `subgraph`, as Prettier prints the lines inside a block. A level follows
+Prettier's `useTabs` and `tabWidth` options, subject to the minimum below: two
+spaces by default, as in the other languages that Prettier formats.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, as Prettier prints the lines
+inside a block.
 
 [fixture: indentation/use-tabs]
 
@@ -2420,10 +2423,14 @@ alone on a line at the column of the statement, as in a block of several lines
 that moves (see below). This is a form decided under
 [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) (see
 [Forms decided under rule 4](./printed-form.md#forms-decided-under-rule-4)),
-where the lines read better than the one line. Prettier chooses between the two
-forms: the block stays on its line where the line fits, and where the line would
-still be too long up to the `{` (a long text of the node stands before it), the
-lines would not shorten what is too long, so the block stays.
+where the lines read better than the one line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the separate
+closing `}` at the level of the opening line when the block opens on the
+statement's line, as Prettier prints the closing line of a block. Prettier
+chooses between the two forms: the block stays on its line where the line fits,
+and where the line would still be too long up to the `{` (a long text of the
+node stands before it), the lines would not shorten what is too long, so the
+block stays.
 
 [fixture: data-blocks/long-split] [fixture:
 data-blocks/long-prefix-too-long-kept]
@@ -2536,11 +2543,14 @@ For an eligible multiline block, move every body line by the same number of
 ASCII spaces until the shallowest line with text stands one level inside its
 statement. This preserves relative indentation, including nested YAML, and can
 move lines inward or outward. A `}` alone on its line aligns with the statement;
-a `}` after body text stays there and moves with that line. A `}` after the text
-of a literal or folded scalar (`|`, `|-`, `|+`, `>`, `>-`, and `>+`) stays on
-its line: on a line of its own it changes the end of the text of the scalar in
-the Db, and formatting does not change the Db. The drawing is the same, but no
-kind of exception that
+a `}` after body text stays there and moves with that line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of
+that separate closing `}` when the block opens on the statement's line: the
+closing line stands at the level of the opening line, as Prettier prints the
+closing line of a block. A `}` after the text of a literal or folded scalar
+(`|`, `|-`, `|+`, `>`, `>-`, and `>+`) stays on its line: on a line of its own
+it changes the end of the text of the scalar in the Db, and formatting does not
+change the Db. The drawing is the same, but no kind of exception that
 [How the printed form is decided](./printed-form.md#the-check-and-formatting-that-changes-the-db)
 defines covers that gap. The formatter does not look at the kind of scalar, so a
 `}` after the text of a plain scalar stays too.
@@ -2717,10 +2727,11 @@ data-blocks/use-tabs-directive-continuation-moved]
 
 Where the printer must set the indentation of the node line itself, the lines of
 the block move with it, as without `useTabs`, indented with spaces: the header
-of an agentflow container, whose `end` stands at the indentation of the header,
-a statement that is not at the depth of a first thing that counts, or whose line
-starts with anything else (see above), and a kanban node, whose indentation
-mermaid.js reads as its level (see
+of an agentflow container, whose `end` stands at the indentation of the header
+under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) (as Prettier
+prints the lines inside a block), a statement that is not at the depth of a
+first thing that counts, or whose line starts with anything else (see above),
+and a kanban node, whose indentation mermaid.js reads as its level (see
 [Metadata blocks](./agentflow.md#metadata-blocks) and
 [Data blocks](./kanban.md#data-blocks)). The lines then stand right where a tab
 is as wide as `tabWidth`, whatever the author wrote, and off by the difference
@@ -2807,7 +2818,10 @@ its raw text is also stored among the subgraph's members.
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 
-The `}` of the block stands at the level of the `accDescr` it closes.
+A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: multi-line-values/accdescr-block-kept] [fixture:
 multi-line-values/accdescr-block-closing-brace-aligned]
@@ -2828,6 +2842,9 @@ and empty blocks without trivia follow
 [Accessibility lines](#accessibility-lines). A block without text, whose lines
 are only comment lines, holds no value: its comment lines stand one level deeper
 than the `accDescr`, and its `}` at the level of the `accDescr`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block.
 
 [fixture: multi-line-values/accdescr-block-comment-only-several-comments]
 [fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
@@ -2918,6 +2935,9 @@ flowchart LR
 A comment on a line of its own stands at the level of the statements around it,
 before the header too, where it starts the line. A comment belongs to no
 statement and takes the level of its neighbours.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/only-comment-in-subgraph] [fixture: comments/after-end]
 [fixture: comments/tab-indented-and-consecutive] [fixture:
@@ -3038,7 +3058,9 @@ empty line, and a line of a semicolon]
 ### Directives
 
 A directive (`%%{ ... }%%`) on a line of its own stands at the level of the
-statements around it.
+statements around it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+puts a standalone directive line inside a block one level deeper than the line
+that opens it, as Prettier prints the lines inside a block.
 
 [fixture: directives/own-line-in-subgraph] [fixture:
 directives/several-on-own-line] [fixture: directives/multi-line-on-own-line]

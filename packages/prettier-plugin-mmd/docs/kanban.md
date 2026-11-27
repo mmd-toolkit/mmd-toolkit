@@ -599,10 +599,13 @@ Apply the movement and safety conditions of
 shallowest text one level inside its node. A section's body is two levels below
 the header, an item's three; nested YAML keeps its relative indentation. A
 separate `}` aligns with the node, even if it had no margin; a closer after text
-stays on that line. A `}` after the text of a literal or folded scalar (`|`,
-`|-`, `|+`, `>`, `>-`, and `>+`) stays on its line: on a line of its own it
-changes the end of the text of the scalar in the Db, and formatting does not
-change the Db. The drawing is the same, but no kind of exception that
+stays on that line. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the depth of that separate closing `}` when the block opens on the node's
+line: the closing line stands at the level of the opening line, as Prettier
+prints the closing line of a block. A `}` after the text of a literal or folded
+scalar (`|`, `|-`, `|+`, `>`, `>-`, and `>+`) stays on its line: on a line of
+its own it changes the end of the text of the scalar in the Db, and formatting
+does not change the Db. The drawing is the same, but no kind of exception that
 [How the printed form is decided](./printed-form.md#the-check-and-formatting-that-changes-the-db)
 defines covers that gap. The formatter does not look at the kind of scalar, so a
 `}` after the text of a plain scalar stays too.
@@ -845,11 +848,14 @@ line `%%{ }%%`. It is printed at the column of the statement after it, at the
 end of the board at the column of the last statement, and before the header at
 the first column; its mark and its text are kept as written. In the body this
 shows which statement the comment is about, as in
-[mindmap](./mindmap.md#comments). In `kanban`, `%% c1`, ` S`, `       %% c2`,
-`   A`, `%% c3`, the comments stand with 2, 4, and 4 characters of indentation,
-those of `S` and `A`. A comment line inside a multi-line label or data block is
-removed by mermaid.js and stays on its authored line, with eligible data-block
-margins following [Data blocks](#data-blocks).
+[mindmap](./mindmap.md#comments).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. In `kanban`, `%% c1`, ` S`,
+`       %% c2`, `   A`, `%% c3`, the comments stand with 2, 4, and 4 characters
+of indentation, those of `S` and `A`. A comment line inside a multi-line label
+or data block is removed by mermaid.js and stays on its authored line, with
+eligible data-block margins following [Data blocks](#data-blocks).
 
 [fixture: data-blocks/indented-comment-line]
 

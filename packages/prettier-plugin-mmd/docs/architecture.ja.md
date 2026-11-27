@@ -55,12 +55,11 @@ architecture-beta
 
 ### Indentation
 
-通常の宣言・辺・整列指定・共通文・独立した注釈類は設定の1段だけ字下げします。
-行頭は規則 1 の場所ではないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#字下げ)、[sequence](./sequence.ja.md#字下げ)、
-[gantt](./gantt.ja.md#インデント)、[pie](./pie.ja.md#indentation)、
-[info](./info.ja.md#indentation) も、本文の文を見出しの 1 段下に置きます。
+通常の宣言・辺・整列指定・共通文・独立した注釈類は、
+ヘッダーより設定の 1 段深く置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+これらの行はヘッダーより 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 本文は平坦で、`in` は参照なので入れ子の段を増やしません。
 architecture の列には文法上の意味がないため、`tabWidth: 0` は空白0個、
 `useTabs` は幅0でもタブ1個です。
@@ -2812,11 +2811,12 @@ treeview、wardley は、文と同じ段に置きます。
 [test: architecture/description-blocks/keyword-u2028-directive-then-spaces-and-brace-on-line]
 
 コメント・ディレクティブだけの内側を保ちます。
-規則 1 は、ブロックの中の行の印を挙げていません。
-コメント行だけのブロックは、規則 2 が決めます。
+規則 1 は、説明ブロックの境界にあるコメント行の段を決めません。
+コメント行だけのブロックでは、規則 2 が境界のコメント行の段を決めます。
 [flowchart](./flowchart.ja.md#複数行の値)は、
-本文のないブロックのコメント行をそのまま残し、ブロックの内側に 1 段深く置いて、
-`}` を `accDescr` と同じ段に置きます。
+本文のないブロックのコメント行をそのまま残し、
+ブロックの内側に 1 段深く置きます。
+`}` は `accDescr` と同じ段に置きます。
 ディレクティブのあるブロックの内側は、どの規則も与えません。
 [flowchart](./flowchart.ja.md#複数行の値)、
 [xychart](./xychart.ja.md#空の説明ブロック)、
@@ -2833,7 +2833,7 @@ Db で LF 後の字下げが取り除かれるためです。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
-説明ブロックの行の段と、独立した閉じ括弧の位置は、規則 2 が与えます。
+説明ブロックの本文の行と境界のコメント行の段は、規則 2 が与えます。
 flowchart、sequence、state、gantt、journey、timeline、pie、radar のそれぞれで、
 フォーマッタを走らせると、
 ブロックのテキスト行とコメント行を文より 1 段内側に置き、
@@ -2852,6 +2852,13 @@ flowchart、sequence、state、gantt、journey、timeline、pie、radar のそ�
 を参照してください。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 独立する閉じは文の位置に揃え、最初の閉じ波括弧が値を終える規則も保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+Prettier がブロックの閉じ行を開始行と同じ段に印字するのと同じく、
+この閉じ行の段を与えます。
+`{` のある行は、文の行か、`{` の前にコメントかディレクティブがあるときは、
+文と同じ段の後の行です。
+
+[fixture: architecture/description-blocks/brace-on-a-later-line]
 
 [fixture: architecture/description-blocks/asymmetric]
 [fixture: architecture/description-blocks/directive-line-between-keyword-and-brace]
@@ -2939,12 +2946,9 @@ C" ["D
 ### Comments
 
 通常の独立コメントは本文の1段、見出し前は第1列に揃えます。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は行頭を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-本文での揃え方を与えます。
-[flowchart](./flowchart.ja.md#コメント) と [wardley](./wardley.ja.md#コメント)
-も、独立した行のコメントを本文と同じ段に揃えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 行内コメントは同じ行に残します。
 接するコメントは接したまま残します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
@@ -2994,10 +2998,10 @@ architecture-beta
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 通常の独立開始だけ本文の1段に揃え、複数行の内部と EOF までの末尾は保ちます。
-独立した行のディレクティブは、周りの文と同じ段に置きます。
-[flowchart](./flowchart.ja.md#ディレクティブ)、
-[sequence](./sequence.ja.md#ディレクティブ)、
-[gantt](./gantt.ja.md#ディレクティブ)も同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のディレクティブ行は、
+そのブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 共通処理の除去は両側を結合するため、
 部品の境界の空白を消すと宣言が拒否され得ます。
 部品間・値内部のディレクティブを保ち、不透明な内容を JSON として扱いません。

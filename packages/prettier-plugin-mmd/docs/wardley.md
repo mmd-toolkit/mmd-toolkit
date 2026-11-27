@@ -13,8 +13,8 @@ records preserved text and differences from mermaid.js.
 ### Header
 
 Print the authored wardley-beta header at column one and move an ordinary first
-statement below it. This makes the diagram type easy to find; add no colon.
-Where a statement stands is no place of rule 1, so
+statement below it. This makes the diagram type easy to find; add no colon. The
+line that a statement stands on is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [architecture](./architecture.md#header),
 [cynefin](./cynefin.md#header), [radar](./radar.md#header), and
@@ -46,19 +46,18 @@ wardley-beta
 
 ### Indentation
 
-Indent ordinary statements, metadata and standalone trivia by one configured
-step. The default is two spaces; tabWidth four uses four and tabWidth zero uses
-zero because columns have no grammatical meaning. useTabs uses a tab even at
-width zero. A level is what Prettier's `useTabs` and `tabWidth` options say:
-Prettier prints the declarations of a CSS rule and the statements of a
-JavaScript block one level in, with two spaces by default, four at `tabWidth` 4,
-none at 0, and a tab with `useTabs`, also at width 0. The statements after the
-header stand one level deeper, as [flowchart](./flowchart.md#indentation),
-[radar](./radar.md#indentation), [architecture](./architecture.md#indentation),
-and [pie](./pie.md#indentation) print theirs
-([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)).
-Protected segments align their first line with the body; their interiors and
-later lines keep written columns.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+statements, metadata and standalone trivia one configured step below the header,
+as Prettier prints the lines inside a block. The default is two spaces; tabWidth
+four uses four and tabWidth zero uses zero because columns have no grammatical
+meaning. useTabs uses a tab even at width zero. A level is what Prettier's
+`useTabs` and `tabWidth` options say: Prettier prints the declarations of a CSS
+rule and the statements of a JavaScript block one level in, with two spaces by
+default, four at `tabWidth` 4, none at 0, and a tab with `useTabs`, also at
+width 0. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the
+statements after the header one level deeper, as Prettier prints the lines
+inside a block. Protected segments align their first line with the body; their
+interiors and later lines keep written columns.
 
 [fixture: wardley/indentation/indent-two]
 
@@ -88,15 +87,14 @@ wardley-beta
 
 Print pipeline Parent { with children one step deeper and } aligned with the
 parent statement. Rule 1 gives one space before the `{` that opens a block
-(`class A{}` is printed `class A {}`). The start of a line is no place of rule
-1, so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides where the statements and the `}` stand, as
-[class](./class.md#indentation), [er](./er.md#indentation), and
-[state](./state.md#indentation) print the statements of the block one level
-deeper than that line and the `}` on a line of its own at the level of that
-line. Keep the visible LF after { and each child, including at tabWidth zero:
-the grammar requires them. These delimiters show the authored parent and
-children without adding coordinates or generated IDs.
+(`class A{}` is printed `class A {}`). The `}` stands on a line of its own.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the children of
+a pipeline one level deeper than the parent statement and the `}` at the level
+of that statement, as Prettier prints the lines inside a block, with the closing
+line at the level of the opening line. Keep the visible LF after { and each
+child, including at tabWidth zero: the grammar requires them. These delimiters
+show the authored parent and children without adding coordinates or generated
+IDs.
 
 [fixture: wardley/pipeline/pipeline-depth]
 
@@ -3735,7 +3733,14 @@ wardley/accessibility/description-opener-newline]
 In a block that keeps its braces, separate the keyword and `{` by one ordinary
 space even when written touching, compact whitespace-only interiors to `{}`
 because there is no text for the whitespace to surround, join plain opener
-whitespace and align a separate closer.
+whitespace. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement.
+
+[fixture: wardley/accessibility/brace-on-a-later-line]
 
 [fixture: wardley/accessibility/description-empty]
 
@@ -3760,18 +3765,26 @@ becomes an empty line. The whitespace at the end of the last line of text is
 dropped where the closer stands on a line of its own, and is printed as one
 space where the closer follows it on that line. Directives and shared removed
 comment regions keep their complete source, including in a block that contains
-only a directive, and trivia keeps its shared continuation layout. Rule 1 names
-no mark for a line inside a block. For a block that holds only comment lines,
-rule 2 decides, as [flowchart](./flowchart.md#multi-line-values) keeps the
-comment lines of a block without text and puts them one level inside the block,
-with its `}` at the level of the `accDescr`. No rule gives the interior of a
-block that holds a directive: [flowchart](./flowchart.md#multi-line-values),
+only a directive, and trivia keeps its shared continuation layout. Rule 1 does
+not decide the depth of comment lines at the boundary of a description block.
+For a block that holds only comment lines, rule 2 decides the depth of those
+boundary comment lines, as [flowchart](./flowchart.md#multi-line-values) keeps
+the comment lines of a block without text and puts them one level inside the
+block. A separate `}` stands at the level of the `accDescr`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level, as Prettier prints the closing line at the level of the line that opens a
+block: the line that holds the `{` is the statement's line or, where a comment
+or a directive stands before the `{`, a later line at the level of the
+statement. No rule gives the interior of a block that holds a directive:
+[flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
 breaks, but their documents give that form no reason, and it is a question of
 the list of undecided forms (D34), so their printing is no decided form, and the
 released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+
+[fixture: wardley/accessibility/brace-on-a-later-line]
 
 [fixture: wardley/accessibility/description-closer] [fixture:
 wardley/accessibility/description-comment-only] [fixture:
@@ -3970,12 +3983,17 @@ splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
 contact is broken. `component%%{wrap}%%Glued` is printed
 `component %%{wrap}%%Glued`. Ordinary standalone directives align with their
-body, as [flowchart](./flowchart.md#directives) stands a directive on a line of
-its own at the level of the statements around it
-([rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have));
-multiline interiors and EOF-reaching unfinished endings remain written. Do not
-format their JSON or reorder them: common removal joins surrounding text and can
-change acceptance or values. Native hidden directives remain separate nodes.
+body. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth
+of a standalone directive line inside the diagram body, as Prettier prints the
+lines inside a block. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+puts a directive line between two pipeline children of the same depth at their
+level, as Prettier prints a comment line between two lines of the same depth
+inside a block. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts
+a standalone directive line at the start or the end of a pipeline at the level
+of its children, as Prettier prints the lines inside a block; multiline
+interiors and EOF-reaching unfinished endings remain written. Do not format
+their JSON or reorder them: common removal joins surrounding text and can change
+acceptance or values. Native hidden directives remain separate nodes.
 
 [fixture: wardley/global-directives/header-to-body]
 
@@ -4015,22 +4033,26 @@ wardley-beta
 ### Comments
 
 Align ordinary standalone comments with the containing body and prefix comments
-at column one. Inline comments keep their line. A comment that touches stays
-touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
-space before a comment that stands after something on its line, as Prettier
-prints `x = 1;   // c` as `x = 1; // c`. Preserve marks, text and trailing
-padding; pipeline comments use child depth. The start of a line is no place of
-rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#comments) and
-[timeline](./timeline.md#comments) stand a comment on a line of its own at the
-level of the statement after it, and at the end of the text at the level of the
-last statement. In a pipeline the statements are the children: a comment before
-a child stands at the level of the children, and so does one after the last
-child. A comment line between `accDescr` and its `{` is the exception: it stands
-one level inside the statement, deeper than the `{` line that follows. Enclosing
-strings, flows and link labels retain percent text. Common comment-region joins
-keep their source columns, preventing text from changing owner.
+at column one. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+the depth of a standalone comment line inside the diagram body, as Prettier
+prints the lines inside a block. Inline comments keep their line. A comment that
+touches stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Preserve marks, text and trailing padding;
+pipeline comments use child depth.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
+between two pipeline children of the same depth at their level, as Prettier
+prints a comment line between two lines of the same depth inside a block.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line at the start or the end of a pipeline at the level of its children,
+as Prettier prints the lines inside a block. In a pipeline the statements are
+the children: a comment before a child stands at the level of the children, and
+so does one after the last child. A comment line between `accDescr` and its `{`
+is the exception: it stands one level inside the statement, deeper than the `{`
+line that follows. Enclosing strings, flows and link labels retain percent text.
+Common comment-region joins keep their source columns, preventing text from
+changing owner.
 
 [test: wardley/comments/native-separators] [fixture:
 wardley/comments/comment-standalone] [fixture:

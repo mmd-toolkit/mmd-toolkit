@@ -18,11 +18,15 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header. The
-statements of a block (`loop`, `alt`, `opt`, `par`, `par_over`, `critical`,
-`break`, `rect`) and the participants of a `box` stand one level deeper than the
-line that opens it; `else`, `and`, `option`, and `end` stand at the level of
-that line.
+The statements after the header stand one level deeper than the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, the statements of a block
+(`loop`, `alt`, `opt`, `par`, `par_over`, `critical`, `break`, `rect`) and the
+participants of a `box` one level deeper than the line that opens it and `end`
+at the level of that line, as Prettier prints the lines inside a block. `else`,
+`and`, and `option` close one body of a block and open the next, and rule 1 puts
+them at the level of that line too, as Prettier prints `} else {` at the level
+of `if`.
 
 [fixture: indentation/blocks] [fixture: indentation/sections] [fixture:
 indentation/other-blocks-kept]
@@ -1182,6 +1186,9 @@ sequenceDiagram
 
 A comment on a line of its own, `%%`, `#`, or `%`, stands at the level of the
 statements around it, and its text is kept as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/kept] [corpus fixture:
 sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
@@ -1805,9 +1812,11 @@ sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment]
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, and a directive within a printed line is placed as in a flowchart: the gap
-is printed as without the directive, and the directive stands after its space
-and touches the unit that follows it.
+it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive within a printed line is
+placed as in a flowchart: the gap is printed as without the directive, and the
+directive stands after its space and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/section-edges-kept] [fixture:
 directives/whitespace-on-each-side] [fixture: directives/touching-kept]
@@ -1993,12 +2002,15 @@ the comment would be part of the description (see
 
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
-Align the lines of an `accDescr { ... }` body one step inside its statement,
-with a separate `}` at the statement's level. mermaid.js discards the
-indentation after a line feed from the description. Mermaid.js records spaces at
-the end of an internal description line as part of the description in the Db,
-and every version of mermaid.js that counts puts another description text in the
-SVG without them, so those spaces stay as written (see
+Align the lines of an `accDescr { ... }` body one step inside its statement. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. mermaid.js
+discards the indentation after a line feed from the description. Mermaid.js
+records spaces at the end of an internal description line as part of the
+description in the Db, and every version of mermaid.js that counts puts another
+description text in the SVG without them, so those spaces stay as written (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: sequence/db-acc-descr-block-blank-lines]
@@ -2009,8 +2021,11 @@ multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:
 multi-line-values/data-block-in-block-indented]
 
 A block without text, whose lines are only comment lines, holds no value: its
-comment lines stand one level deeper than the `accDescr`, and its separate `}`
-at the level of the `accDescr`.
+comment lines stand one level deeper than the `accDescr`. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block.
 
 [fixture: multi-line-values/accdescr-block-comment-only] [fixture:
 multi-line-values/accdescr-block-without-text-kept]
@@ -2033,10 +2048,13 @@ For participant and actor data blocks, apply
 text. Move that line one level inside the statement and align a separate `}`
 with the statement; a closer after text stays with that line.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the level of that line and of a separate `}`, as
-[Data blocks](./flowchart.md#data-blocks) of a flowchart print them so. This
-applies at the top level and inside `loop`, except with `useTabs`, where the
-statement is printed as written, a form decided under
+the level of that line, as [Data blocks](./flowchart.md#data-blocks) of a
+flowchart print it so, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+separate closing `}` when the block opens on the statement's line: the closing
+line stands at the level of the opening line, as Prettier prints the closing
+line of a block. This applies at the top level and inside `loop`, except with
+`useTabs`, where the statement is printed as written, a form decided under
 [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) that
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 a sequence diagram too (see [Data blocks](./flowchart.md#data-blocks)), unless

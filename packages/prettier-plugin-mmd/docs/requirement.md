@@ -21,13 +21,11 @@ organized and checked is described in
 The statements after the header stand one level deeper than the header. The
 fields of a requirement or an element stand one level deeper than the line of
 the statement, one on each line, and the `}` that closes the body stands on a
-line of its own, at the level of that line. Statements stand one level below the
-header and body contents one level below their opening statement in
-[ER diagrams](./er.md#indentation) and
-[sequence diagrams](./sequence.md#indentation), with the closing mark aligned
-with the opening statement;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the statements, fields, and `}` these same levels.
+line of its own, at the level of that line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, and the fields of a
+requirement or an element one level deeper than the statement's line and its
+closing `}` at that line's level, as Prettier prints the lines inside a block.
 
 [fixture: indentation/statements-and-bodies]
 
@@ -49,8 +47,10 @@ it. A header at the first column is easier to find than an indented one.
 [fixture: indentation/header-leading-whitespace]
 
 The lines of a text that is kept as written, such as the lines of an `accDescr`
-block, keep their columns, and the `}` that closes a block stands at the level
-of its statement.
+block, keep their columns. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: indentation/description-block-lines-kept]
 
@@ -115,8 +115,10 @@ requirementDiagram
 ### Bodies
 
 When a header continues across trivia, align the physical line containing its
-opening brace with the initial keyword, so the body remains one level deeper. Do
-not change a value spanning that line or protected source boundaries.
+opening brace with the initial keyword.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the body one
+level deeper, as Prettier prints the lines inside a block. Do not change a value
+spanning that line or protected source boundaries.
 
 [fixture: bodies/header-completion-after-comment] [fixture:
 multi-line-statements/header-directive-continuation]
@@ -1154,6 +1156,9 @@ empty-description-blocks/in-body-over-lines-joined]
 A block containing comments or directives keeps their contents and line breaks;
 standalone trivia is one level inside the block and a separate `}` aligns with
 `accDescr`, including an empty block within a requirement or element body.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block.
 
 [fixture: empty-description-blocks/in-body-with-directive-line] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
@@ -1258,12 +1263,16 @@ accessibility-statements/description-text-with-comment-line-kept]
 Later text lines of an `accDescr { ... }` block stand one level inside its
 statement, replacing only ASCII spaces and tabs immediately after LF. mermaid.js
 discards the indentation after a line feed from the description. Line breaks and
-directive interiors stay written. Keep line breaks and interior blank lines, and
-the whitespace at the end of each line of text except the last one; a line of
-whitespace only becomes an empty line. The whitespace at the end of the last
-line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. Its `}` stands at
-the level of its statement.
+directive interiors stay written. The lines of the description's body text are
+outside the "Lines inside a block" row of rule 1. Keep line breaks and interior
+blank lines, and the whitespace at the end of each line of text except the last
+one; a line of whitespace only becomes an empty line. The whitespace at the end
+of the last line of text is dropped where the closer stands on a line of its
+own, and is printed as one space where the closer follows it on that line. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
@@ -1694,14 +1703,10 @@ requirementdiagram
 A comment starts with `%%`, `#`, or `%`, where a unit starts, and runs to the
 end of the line. A comment on a line of its own stands at the level of the
 statement after it, in a body at the level of the fields, and its text and its
-mark are kept as written. Rule 1 gives no form here, since its table does not
-name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [c4](./c4.md#comments) and [quadrant](./quadrant.md#comments) align a
-standalone comment with the following statement, or with the last statement at
-the end of the text, and [c4](./c4.md#indentation) aligns one in a body with the
-statements around it.
+mark are kept as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/lines-at-statement-level] [fixture:
 comments/single-mark-lines-kept]
@@ -1826,10 +1831,12 @@ requirementDiagram
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, in a body at the level of the fields, and a directive on the line of a
-statement is placed as in a flowchart: the gap is printed as without the
-directive, and the directive stands after its space and touches the unit that
-follows it.
+it, in a body at the level of the fields.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive on the line of a statement
+is placed as in a flowchart: the gap is printed as without the directive, and
+the directive stands after its space and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/in-body] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]

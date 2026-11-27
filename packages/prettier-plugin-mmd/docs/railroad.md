@@ -104,8 +104,9 @@ railroad-peg-beta%%{!heading}%%
 
 ### Indentation
 
-Use the shared flat-body printer for one configured step before ordinary rules,
-metadata, standalone comments and Root directives. The default is two spaces;
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary rules,
+metadata, standalone comments and Root directives one configured step below the
+header, as Prettier prints the lines inside a block. The default is two spaces;
 tabWidth four uses four and tabWidth zero uses zero because columns have no
 grammatical meaning. useTabs uses one tab, even at width zero. Structural
 continuation lines and standalone trivia inside a rule use two steps; a separate
@@ -114,13 +115,13 @@ their argument levels as described in [Long lines](#long-lines). Other written
 value columns, hidden interiors and retained prefixes keep their own columns.
 Semicolon-protected segments start at one body step, like other flat diagrams;
 their later lines keep their written columns because these belong to the
-protected text.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this layout, as [wardley](./wardley.md#indentation) aligns the first line of a
-protected segment with the body and keeps its later lines in their written
-columns, and so does [cynefin](./cynefin.md#semicolons), where no other rule
-keeps the layout as written (a value that mermaid.js reads by its columns, and
-the like).
+protected text. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+the first line that step, as Prettier prints the lines inside a block, and
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) keeps
+the later lines, as [wardley](./wardley.md#indentation) and
+[cynefin](./cynefin.md#semicolons) keep the later lines of a protected segment
+in their written columns, where no other rule keeps the layout as written (a
+value that mermaid.js reads by its columns, and the like).
 
 [fixture: railroad/indentation/abnf-default]
 
@@ -1010,8 +1011,15 @@ Keep physical newlines, internal blank lines and continuation columns inside
 strings and EBNF special sequences. These values are indivisible atoms and gain
 no structural indentation on their later lines. Reflowing or reindenting these
 contents can change the Db, including PEG predicate labels. Description body
-indentation, exterior edges and its separate closer use the shared description
-rule.
+indentation and exterior edges use the shared description rule. A separate `}`
+aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement.
+
+[fixture: railroad/description-blocks/brace-on-a-later-line]
 
 [fixture: railroad/multiline-values/abnf-columns]
 
@@ -1323,8 +1331,15 @@ indentation after LF. Keep line breaks and interior blank lines, and the
 whitespace at the end of each line of text except the last one; a line of
 whitespace only becomes an empty line. The whitespace at the end of the last
 line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. Align a separate
-closing brace with the statement.
+printed as one space where the closer follows it on that line. A separate `}`
+aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement.
+
+[fixture: railroad/description-blocks/brace-on-a-later-line]
 
 [fixture: railroad/description-blocks/abnf-lines] [fixture:
 railroad/description-blocks/ebnf-lines] [fixture:
@@ -1419,11 +1434,10 @@ railroad-peg-beta
 ### Comments
 
 Standalone comments use one body step, or column one before the header.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the body position: a comment line stands at the level of the statements around
-it in a [flowchart](./flowchart.md#comments), since a comment belongs to no
-statement. Outside ordinary IR calls, inline comments keep their side and their
-line. An inline comment that touches stays touching. Preserve marks, text,
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone comment line inside the diagram body, as Prettier prints the lines
+inside a block. Outside ordinary IR calls, inline comments keep their side and
+their line. An inline comment that touches stays touching. Preserve marks, text,
 tails, block continuation columns and source order. A line comment leaves its
 following operand or terminator on the next line. For the terminator of an ABNF
 rule, every version of mermaid.js that counts rejects `r="comment"; note ;`,
@@ -1711,12 +1725,10 @@ Outside ordinary IR call gaps, place a directive within a printed line as under
 on the same line, a directive in their gap moves with the following unit: its
 right boundary stays touching or separated, while its left contact is broken. A
 protected `style` or `classDef` line, and the like, keeps its layout as written.
-Use one body step for ordinary standalone directives. An ordinary standalone
-directive has one body step of indentation in
-[info](./info.md#global-directives) and [packet](./packet.md#global-directives)
-diagrams too;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this depth. Do not format their contents as JSON or collect them before the
+Use one body step for ordinary standalone directives.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. Do not format their contents as JSON or collect them before the
 header. Uniform added spaces can change strings, repeat components, numeric
 values and predicate operands after common removal.
 

@@ -17,13 +17,17 @@ fixture の置き方と確かめ方は、
 
 ### 字下げ
 
-ヘッダーの後の文はヘッダーより 1 段、
+ヘッダーの後の文はヘッダーより 1 段深く置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 subgraph の文はその `subgraph` の行より 1 段深く置き、
 `end` は `subgraph` と同じ段に置きます。
+Prettier がブロックの中の行をそう印字するためです。
 1 段は Prettier の `useTabs` と `tabWidth` オプションで指定し、
 下記の下限を適用します。
 既定は空白 2 つで、Prettier が整形するほかの言語と同じです。
-ヘッダーの後の文を 1 段深くするのは、mermaid.js の文書の書き方です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、ヘッダーの後の文は、
+ヘッダーより 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: indentation/use-tabs]
 
@@ -2499,6 +2503,9 @@ CRLF と CR は `endOfLine` に従います。
 
 1 行のブロックがある行が `printWidth` より長いときは、複数行に分けて印字します。
 1 行に 1 項目ずつ文の 1 段内側に置き、`}` は文と同じ桁の単独行に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、ブロックが文の行で開くとき、
+独立した閉じる `}` を開く行と同じ段に置きます。
+Prettier がブロックの中の行と閉じる行をその深さに印字する形です。
 移動できる複数行のブロックと同じです（後述）。
 [規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形で、
 複数行のほうが読みやすいときに当てます。
@@ -2622,6 +2629,9 @@ flowchart LR
 入れ子の YAML を含む行どうしの字下げの差を保ち、内側にも外側にも動かします。
 単独行の `}` は文の段に揃え、
 本文の後の `}` はその行に残して行と一緒に動かします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、ブロックが文の行で開くとき、
+その独立した `}` を開く行と同じ段に置きます。
+Prettier がブロックを閉じる行を、開く行と同じ段に印字する形です。
 リテラルスカラーや折りたたみスカラー（`|`、`|-`、`|+`、`>`、`>-`、
 `>+`）のテキストの後の `}` は、その行に残します。
 独立した行に置くと、Db のスカラーのテキストの末尾が変わり、
@@ -2812,7 +2822,9 @@ mermaid.js は単独行の `}` の前のタブを受理しますが、
 ノードの行自体の字下げを整形器が整える必要がある場合は、
 `useTabs` でないときと同じく、ブロックの行も空白で字下げして一緒に動かします。
 該当するのは、
-`end` がヘッダーと同じ字下げに置かれる agentflow のコンテナーのヘッダー、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により `end`
+がヘッダーと同じ字下げに置かれる agentflow のコンテナーのヘッダー（Prettier
+が ブロックの中の行をそう印字するためです）、
 数える最初にあるものと同じ深さでない文や、それ以外のもので始まる行の文（前述）、
 mermaid.js が字下げをノードの段として読む kanban のノードです。
 [データブロック](./agentflow.ja.md#metadata-blocks)と
@@ -2906,7 +2918,10 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 
-ブロックの `}` は、それが閉じる `accDescr` と同じ段に置きます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: multi-line-values/accdescr-block-kept]
 [fixture: multi-line-values/accdescr-block-closing-brace-aligned]
@@ -2928,6 +2943,10 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
 そのコメント行は、`accDescr` より 1 段深く置き、
 `}` は `accDescr` と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+開始の `{` が文と同じ行にある場合に、
+Prettier がブロックの閉じ行を開始行と同じ段に印字するのと同じく、
+この閉じ行の段を与えます。
 
 [fixture: multi-line-values/accdescr-block-comment-only-several-comments]
 [fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
@@ -3018,6 +3037,9 @@ flowchart LR
 1 行に置かれたコメントは、周りの文と同じ段に置きます。
 コメントはどの文にも属しません。
 隣の文と同じ段にします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のコメント行は、ブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 ヘッダーの前でも同じで、行の先頭に置きます。
 
 [fixture: comments/only-comment-in-subgraph] [fixture: comments/after-end]
@@ -3135,6 +3157,9 @@ U+2028 か U+2029 の後のコメント行が次の行をその行につなぐ�
 ### ディレクティブ
 
 1 行に置かれたディレクティブ（`%%{ ... }%%`）は、周りの文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のディレクティブ行は、ブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: directives/own-line-in-subgraph]
 [fixture: directives/several-on-own-line]

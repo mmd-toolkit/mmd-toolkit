@@ -50,9 +50,12 @@ later deep row after a leaf can be another root. Common statements and class
 definitions in statementsBefore keep their source position and do not determine
 parents. Print ordinary roots one configured step in and children one step
 deeper than their parent; common statements and class definitions use one body
-step. This chooses consistent depths from equivalent widths. Ordinary roots
-stand one configured step below the header and children one below their parent
-under [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
+step. This chooses consistent depths from equivalent widths.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary roots,
+common statements, and class definitions one configured step below the header,
+as Prettier prints the lines inside a block. A child stands deeper, since
+indentation determines parentage, one step below its parent under
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
 following the indentation gaps in [kanban](./kanban.md#indentation) diagrams.
 Use at least one character per step at tabWidth zero because indentation
 determines parentage. A title or an accessibility statement that was not written
@@ -1159,13 +1162,16 @@ comment/directive contents and their boundaries, and align body lines one step
 inside the statement while retaining internal blank lines. Mermaid discards
 indentation after LF from the description. The body uses the configured
 indentation, including tabs and the positive minimum step at width zero. Align a
-separate opener or closer with its statement. A description block’s separate
-closing brace stands at the statement’s indentation under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as in
-the description blocks of [flowchart](./flowchart.md#multi-line-values)
-diagrams. The first `}` still closes the block. A block that was not written
-indented is printed at the start of its line, with its body one step inside it
-(see [Title](#title)).
+separate opener with its statement. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. The first `}` still closes the block. A block that was not
+written indented is printed at the start of its line, with its body one step
+inside it (see [Title](#title)).
+
+[fixture: treemap/description-blocks/brace-on-a-later-line]
 
 [fixture: treemap/description-blocks/block-touching-with-text-fixed] [fixture:
 treemap/description-blocks/empty]
@@ -1292,6 +1298,12 @@ EOF, to show their association, as in [ishikawa](./ishikawa.md#comments),
 [kanban](./kanban.md#comments) and [mindmap](./mindmap.md#comments). This
 applies whether the comment was shallower or deeper than that statement,
 including before a dedent.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
+among the statements one configured step below the header, as Prettier prints
+every line inside a block at one level, whatever it holds. A comment line before
+a child, or after the last statement where that is a child, aligns with that
+child, which stands deeper since indentation determines parentage, as in those
+diagram types.
 
 [fixture: treemap/comments/aligned-depths] [fixture:
 treemap/comments/standalone] [fixture: treemap/comments/aligned-final]

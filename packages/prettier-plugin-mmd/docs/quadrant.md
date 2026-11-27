@@ -22,16 +22,15 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header, and the comment lines among them, stand one
-level deeper than the header. A level is what Prettier's `useTabs` and
-`tabWidth` options say: two spaces by default. The indentation written in the
-input is not kept: whitespace at the start of a line is nothing to mermaid.js,
-so the printer chooses it from the structure alone, and every text has one form.
-Nothing in the grammar forbids indenting a statement, and the documentation of
-mermaid.js writes the statements one level deeper than the header, as the other
-diagrams do (see [Indentation](./flowchart.md#indentation) in the flowchart
-rules). The header, and a comment line before it, stand at the first column. A
-header at the first column is easier to find than an indented one.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header, and the comment lines among them, one level deeper than the
+header, as Prettier prints the lines inside a block. A level is what Prettier's
+`useTabs` and `tabWidth` options say: two spaces by default. The indentation
+written in the input is not kept: whitespace at the start of a line is nothing
+to mermaid.js, so the printer chooses it from the structure alone, and every
+text has one form. Nothing in the grammar forbids indenting a statement. The
+header, and a comment line before it, stand at the first column. A header at the
+first column is easier to find than an indented one.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/written-indentation-dropped] [fixture:
@@ -708,9 +707,12 @@ A block on one line follows
 [fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 
 In a block with a text over several lines, indent the body one level inside the
-statement and align a separate `}` with the statement: mermaid.js discards
-indentation after LF from the description. A block that is not closed makes the
-input rejected, so it is not printed.
+statement: mermaid.js discards indentation after LF from the description. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. A block that
+is not closed makes the input rejected, so it is not printed.
 
 [fixture: titles-and-accessibility-statements/block-lines-kept] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
@@ -797,8 +799,9 @@ Unicode and tab interiors]
 A block with a directive or a comment line keeps its contents and line breaks,
 with body indentation under
 [Titles and accessibility statements](#titles-and-accessibility-statements). A
-directive that touches both braces of such a block stays touching them. Rule 1
-names no mark for a line inside a block, so
+directive that touches both braces of such a block stays touching them. The
+lines between the `{` and the `}` of a description block are outside the "Lines
+inside a block" row of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
 [block](./block.md#empty-description-blocks) keep the contents and line breaks
@@ -1017,9 +1020,11 @@ A comment starts with `%%` where a unit starts and runs to the end of the line.
 A comment on a line of its own stands at the level of the statement after it,
 and its text and its mark are kept as written: a comment line after the last
 statement stays after it, and one before the header stands at the first column.
-A `%%` inside a title, an accessibility text, a description block, or a string
-is a character of it, and inside the brackets of a point it makes the input
-rejected.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone comment line inside the diagram body, as Prettier prints the lines
+inside a block. A `%%` inside a title, an accessibility text, a description
+block, or a string is a character of it, and inside the brackets of a point it
+makes the input rejected.
 
 [fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
 comments/comment-line-at-the-end] [fixture:
@@ -1092,6 +1097,9 @@ without the directive, and the directive stands after its space and touches the
 unit that follows it. A directive on a line of its own stands at the level of
 the statement after it, and a directive between two statements on a line moves
 with the statement after it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block.
 
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
 [fixture: directives/directive-line-before-the-header] [fixture:

@@ -53,17 +53,14 @@ architecture-beta
 
 ### Indentation
 
-Indent ordinary declarations, edges, alignments, common statements and
-standalone trivia one configured step. The start of a line is no place of rule
-1, so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#indentation),
-[sequence](./sequence.md#indentation), [gantt](./gantt.md#indentation),
-[pie](./pie.md#indentation), and [info](./info.md#indentation) put the
-statements of the body one level below the header. The body is flat: `in` is a
-reference, not nesting. `tabWidth: 0` gives zero spaces; `useTabs` gives one tab
-even at width zero, because architecture columns have no grammatical meaning. A
-level is what Prettier's `tabWidth` and `useTabs` options say, as
-[pie](./pie.md#indentation), [packet](./packet.md#indentation),
+Ordinary declarations, edges, alignments, common statements and standalone
+trivia stand one configured step below the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts these lines one
+level deeper than the header, as Prettier prints the lines inside a block. The
+body is flat: `in` is a reference, not nesting. `tabWidth: 0` gives zero spaces;
+`useTabs` gives one tab even at width zero, because architecture columns have no
+grammatical meaning. A level is what Prettier's `tabWidth` and `useTabs` options
+say, as [pie](./pie.md#indentation), [packet](./packet.md#indentation),
 [gitgraph](./gitgraph.md#indentation), [info](./info.md#indentation),
 [radar](./radar.md#indentation), and [wardley](./wardley.md#indentation) print
 it, and as Prettier indents JavaScript: in `if (a) { b }` there are zero spaces
@@ -3890,12 +3887,13 @@ architecture/description-blocks/keyword-u2028-directive-touching-brace-on-line]
 [test:
 architecture/description-blocks/keyword-u2028-directive-then-spaces-and-brace-on-line]
 
-Keep comment/directive-only interiors. Rule 1 names no mark for a line inside a
-block. For a block that holds only comment lines, rule 2 decides, as
+Keep comment/directive-only interiors. Rule 1 does not decide the depth of
+comment lines at the boundary of a description block. For a block that holds
+only comment lines, rule 2 decides the depth of those boundary comment lines, as
 [flowchart](./flowchart.md#multi-line-values) keeps the comment lines of a block
-without text and puts them one level inside the block, with its `}` at the level
-of the `accDescr`. No rule gives the interior of a block that holds a directive:
-[flowchart](./flowchart.md#multi-line-values),
+without text and puts them one level inside the block. A separate `}` stands at
+the level of the `accDescr`. No rule gives the interior of a block that holds a
+directive: [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
 breaks, but their documents give that form no reason, and it is a question of
@@ -3908,7 +3906,7 @@ interior blank lines, and the whitespace at the end of each line of text except
 the last one; a line of whitespace only becomes an empty line. The whitespace at
 the end of the last line of text is dropped where the closer stands on a line of
 its own, and is printed as one space where the closer follows it on that line.
-Rule 2 gives the level of the lines and the place of a separate closer: the
+Rule 2 gives the level of the description text and boundary comment lines: the
 formatter, run on a block of each of flowchart, sequence, state, gantt, journey,
 timeline, pie, and radar, puts the text lines and the comment lines of the block
 one level inside the statement and a separate closer at the level of the
@@ -3925,7 +3923,13 @@ decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Directives and shared removed comment regions keep their complete source. A
 separate closer aligns with the statement; the first closing brace still ends
-the value.
+the value. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+closer that level, as Prettier prints the closing line at the level of the line
+that opens a block: the line that holds the `{` is the statement's line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement.
+
+[fixture: architecture/description-blocks/brace-on-a-later-line]
 
 [fixture: architecture/description-blocks/asymmetric] [fixture:
 architecture/description-blocks/directive-line-between-keyword-and-brace]
@@ -4012,18 +4016,16 @@ C" ["D
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. Rule 1 gives no form here, since the start of a line is no place that
-its table names ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the body alignment, as [flowchart](./flowchart.md#comments) and
-[wardley](./wardley.md#comments) align a comment on a line of its own with the
-body in the same way. Inline comments keep their line. A comment that touches
-stays touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
-one space before a comment that stands after something on its line, as Prettier
-prints `x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing
-padding for attachment. Native comments end at LF/CR and keep LS/PS as content.
-Earlier values own enclosed percent text; common lines stop at it. Removed
-common regions keep complete source and continuation columns.
+header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a
+standalone comment line inside a block one level deeper than the line that opens
+it, as Prettier prints the lines inside a block. Inline comments keep their
+line. A comment that touches stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing padding
+for attachment. Native comments end at LF/CR and keep LS/PS as content. Earlier
+values own enclosed percent text; common lines stop at it. Removed common
+regions keep complete source and continuation columns.
 
 [fixture: architecture/comments/comment-attachments] [fixture:
 architecture/comments/inline-gap-run-before-comment]
@@ -4062,11 +4064,11 @@ directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
 contact is broken. Ordinary standalone starts align one body step in; multiline
-interiors and EOF-reaching endings stay written. A directive on a line of its
-own stands at the level of the statements around it, as in
-[flowchart](./flowchart.md#directives), [sequence](./sequence.md#directives),
-and [gantt](./gantt.md#directives). Common removal joins surrounding text, so
-deleting component-boundary whitespace can reject a declaration. Preserve
+interiors and EOF-reaching endings stay written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. Common removal joins surrounding text,
+so deleting component-boundary whitespace can reject a declaration. Preserve
 component/value-internal directives rather than treating their opaque text as
 JSON.
 

@@ -22,9 +22,11 @@ The statements after the header stand one level deeper than the header, and the
 statements after a `section`, up to the next `section`, one level deeper still:
 the tasks, and every other statement. The `section` itself stands at the first
 level. The tree of a user journey is flat, with no block of statements, so the
-level of a statement is decided by its place among the others. The tasks of a
-section stand inside it, as the documentation of mermaid.js writes them, and as
-in a Gantt chart.
+level of a statement is decided by its place among the others.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, and the tasks and every other
+statement of a section one level deeper than its `section` line, as Prettier
+prints the lines inside a block.
 
 [fixture: indentation/sections-and-tasks-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
@@ -49,8 +51,11 @@ it. A header at the first column is easier to find than an indented one.
 [fixture: indentation/header-leading-whitespace]
 
 Values kept as written retain their columns. Description-body lines instead
-stand one step inside their statement, with a separate `}` at its level (see
-[Multi-line values](#multi-line-values)).
+stand one step inside their statement (see
+[Multi-line values](#multi-line-values)). A separate `}` aligns with its
+statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
+depth when the `{` stands on the `accDescr` line: it puts the closing line at
+the level of the opening line, as Prettier prints the closing line of a block.
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -659,8 +664,11 @@ A block on one line follows
 [fixture: accessibility-statements/block-text-on-opening-line]
 
 In a block with a text over several lines, indent the body one level inside the
-statement and align a separate `}` with the statement: mermaid.js discards
-indentation after LF from the description.
+statement: mermaid.js discards indentation after LF from the description. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
@@ -960,12 +968,9 @@ end of the line. A comment on a line of its own stands at the level of the
 statement after it, and its text and its mark are kept as written: a comment
 before a `section` stands at its level, and one before a task at the level of
 the task; at the end of the text it stands at the level of the last statement.
-Rule 1 gives no form here, since its table does not name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [gantt](./gantt.md#comments), [block](./block.md#comments), and
-[quadrant](./quadrant.md#comments) put a comment line at the level of the
-statement after it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
@@ -1053,6 +1058,9 @@ A directive on a line of its own stands at the level of the statement after it,
 and a directive within a printed line is placed as in a flowchart: the gap is
 printed as without the directive, and the directive stands after its space and
 touches the unit that follows it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: directives/kept] [fixture: directives/levels-around-sections]
 [fixture: directives/before-header] [fixture:
