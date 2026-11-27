@@ -165,9 +165,11 @@ keyword に接する directive は、除去後に LF が残るなら許すが、
 改行は hidden なので、引用名・class・icon の後の列は、
 前の行や空白だけの行からでも、空行、コメント行、ディレクティブの行を越えても、
 次の node の字下げになりうる。
-後に node が続かなければ、その列はコメントの後でもテキストの終わりまで届き、
-名前のない字下げになるので、文法が拒否する。
-hidden な改行で分かれた二つの列は結合せず、
+後に node が続かなければ、その列は、同じ行のコメントの後でも、
+それらの行を越えても、テキストの終わりまで届き、名前のない字下げになるので、
+文法が拒否する。
+hidden な改行で分かれた二つの列は、間にコメント、コメント行、
+ディレクティブの行、空行があっても結合せず、
 両方が次の名前の前にあれば文法が拒否する。
 この拒否条件では、
 [branch の prefix](#列と-prefix-の字下げ)が表す字下げも別の列として数える。
@@ -206,6 +208,15 @@ hidden な改行で分かれた二つの列は結合せず、
 [fixture: treeview/db-icon-tail-space-empty-line]
 [fixture: treeview/gram-quoted-tail-space-comment-line]
 [fixture: treeview/gram-quoted-tail-space-directive-line]
+[fixture: treeview/gram-quoted-tail-space-comment-next-indent]
+[fixture: treeview/gram-quoted-tail-space-comment-line-end-of-text]
+[fixture: treeview/gram-quoted-tail-space-directive-line-end-of-text]
+[fixture: treeview/gram-quoted-tail-space-comment-line-next-indent]
+[fixture: treeview/gram-quoted-tail-space-directive-line-next-indent]
+[fixture: treeview/gram-quoted-tail-space-empty-line-next-indent]
+[fixture: treeview/gram-quoted-tail-space-comment-empty-line-next-indent]
+[fixture: treeview/gram-class-tail-space-comment-next-indent]
+[fixture: treeview/gram-icon-tail-space-comment-next-indent]
 
 [branch 行の規則](#列と-prefix-の字下げ)が読みから外す行末の空白は、
 次の node の字下げにはならない。
