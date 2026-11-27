@@ -54,10 +54,14 @@ it. A header at the first column is easier to find than an indented one.
 [fixture: indentation/header-leading-whitespace]
 
 The later text lines of an `accDescr` block stand one level inside its statement
-(see [Multi-line values](#multi-line-values)). A separate `}` aligns with its
-statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
-depth when the `{` stands on the `accDescr` line: it puts the closing line at
-the level of the opening line, as Prettier prints the closing line of a block.
+(see [Multi-line values](#multi-line-values)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block.
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -1077,11 +1081,14 @@ A block on one line follows
 accessibility-statements/block-inner-runs-collapsed]
 
 In a block with a text over several lines, later text lines stand one level
-inside the statement (see [Multi-line values](#multi-line-values)). A separate
-`}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block.
+inside the statement (see [Multi-line values](#multi-line-values)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1336,9 +1343,11 @@ T
 ### Multi-line values
 
 Indent later text lines of an `accDescr` block one level inside the statement,
-replacing only ASCII spaces and tabs immediately after a line feed. The Db
-setter drops that indentation, so this keeps text inside its block, including
-under a section.
+replacing only ASCII spaces and tabs immediately after a line feed.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. The Db setter drops that
+indentation, so this keeps text inside its block, including under a section.
 
 [fixture: multi-line-values/description-block-lines-kept] [fixture:
 indentation/description-block-under-a-section]

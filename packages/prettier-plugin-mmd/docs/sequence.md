@@ -2013,15 +2013,18 @@ the comment would be part of the description (see
 
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
-Align the lines of an `accDescr { ... }` body one step inside its statement. A
-separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block. mermaid.js
-discards the indentation after a line feed from the description. Mermaid.js
-records spaces at the end of an internal description line as part of the
-description in the Db, and every version of mermaid.js that counts puts another
-description text in the SVG without them, so those spaces stay as written (see
+Align the lines of an `accDescr { ... }` body one step inside its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block. mermaid.js discards the indentation after a line feed from the
+description. Mermaid.js records spaces at the end of an internal description
+line as part of the description in the Db, and every version of mermaid.js that
+counts puts another description text in the SVG without them, so those spaces
+stay as written (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: sequence/db-acc-descr-block-blank-lines]
@@ -2045,9 +2048,12 @@ A description block that the text ends, as in `accDescr {` with no `}` after it,
 is accepted by mermaid.js (see
 [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context)),
 and its body lines stand one level inside the statement as in a closed block; no
-`}` is added. An unfinished description block sets an empty description in the
-mermaid.js Db even when its body contains text; closing it would set the
-description from that text, so no `}` is added.
+`}` is added. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+this level: mermaid.js reads these lines without their indentation, so they are
+lines inside a block, one level deeper than the line that opens it. An
+unfinished description block sets an empty description in the mermaid.js Db even
+when its body contains text; closing it would set the description from that
+text, so no `}` is added.
 
 [corpus fixture: sequence/db-acc-descr-block-unclosed] [corpus fixture:
 sequence/db-acc-descr-block-after-message]

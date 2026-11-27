@@ -288,6 +288,9 @@ info が共通値を公開しなくても、内部空白、大小文字、引用
 `singleQuote` で引用符を変えず、`printWidth` で値を折り返しません。
 物理的な複数行ブロックは改行と空行を保ちます。
 本文の字下げは [説明ブロック](#description-blocks) に従います。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、これらの行の段を与え、
+テキストの行の間の改行を残します。
+mermaid.js は、これらの行を字下げなしで読み、改行を値に残すからです。
 共通注釈類が範囲を切る場合も、注釈類を二重にせず原文全体を保ちます。
 
 [fixture: info/authored-values/literal-quotes-escapes]

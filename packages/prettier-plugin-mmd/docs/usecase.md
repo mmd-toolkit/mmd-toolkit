@@ -1145,12 +1145,16 @@ direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 direction-and-accessibility/acc-descr-line-trailing-spaces-kept]
 
 In description blocks, align body lines one step inside the statement, including
-a block whose only content is a comment line. A separate `}` aligns with its
-statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
-depth when the `{` stands on the `accDescr` line: it puts the closing line at
-the level of the opening line, as Prettier prints the closing line of a block.
-mermaid.js discards the indentation after a line feed from the description.
-Structural indentation keeps the same layout with zero width or tabs.
+a block whose only content is a comment line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block. mermaid.js discards the indentation after a line feed from the
+description. Structural indentation keeps the same layout with zero width or
+tabs.
 
 [fixture: direction-and-accessibility/a11y-closer-aligned] [fixture:
 direction-and-accessibility/a11y-closer-tabs] [fixture:

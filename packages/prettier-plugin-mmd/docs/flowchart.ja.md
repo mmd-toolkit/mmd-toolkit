@@ -2950,29 +2950,54 @@ flowchart LR
 [fixture: multi-line-values/markdown-string-kept]
 
 トップレベルの `accDescr { ... }` の本文行は、文より 1 段深くそろえます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの段を与えます。
+mermaid.js はこれらの行を字下げなしで読むので、これらはブロックの中の行で、
+それを開く行より 1 段深く置くからです。
 mermaid.js は説明から行送り後の字下げを除きます。
 subgraph の中では、本文があるブロックの原文が字下げごとメンバーに入るため、
 元の列を保ちます。
-mermaid.js は後ろの行を列ごと subgraph のノードとして読むので、
+mermaid.js はそのブロックのテキストを、端の空白を除いて、
+2 行目以降の列とともに subgraph のノードとして読むので、
 そろえると Db が変わります。
 その間の空白だけの行と空行の連なりも、そこでは書かれたまま残します。
 その間のディレクティブの行の字下げも同じです。
 mermaid.js がディレクティブを取り除いても、その字下げはノードに残ります。
 どれも、ノードが持つからです。
-テキストの 1 行目の字下げと、
-そのようなブロックの頭と終わりの空行と空白だけの行は、ノードにありません。
+テキストの 1 行目の字下げと、そのようなブロックの頭と終わりの空行、
+空白だけの行、ディレクティブの行は、ノードにありません。
 mermaid.js は、端の空白を除いてノードを読むからです。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
-1 行目をブロックの中の行として、ブロックを開く行より 1 段深く置き、
-その空行を除きます。
+1 行目とそのディレクティブの行をブロックの中の行として、
+ブロックを開く行より 1 段深く置き、その空行を除きます。
 リリース済みの版はそれらを書かれたまま残し、
 これは規則 1 が与える形ではありません。
+閉じていないディレクティブは、引数の後ろの空白を改行ごと取り込みます。
+詳しくは仕様の
+[ディレクティブの位置](../../spec/docs/common.ja.md#ディレクティブの位置)
+を参照してください。
+そのため、後ろに続くものはディレクティブの行に乗り、書かれたまま印字します。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
+`%%{x` の行、`b` の行、`}` の行が続くとき、ディレクティブの名前は `x`、
+引数は `b` で、`}` はその前の字下げとともにディレクティブの行に乗ります。
+ディレクティブの行そのものは、上で述べたとおり、
+ブロックのほかのディレクティブの行と同じく印字します。
+リリース済みの版は、subgraph の中では、
+ブロックの頭や終わりでもその行を書かれた所に残します。
+また、閉じ括弧がディレクティブの行に乗るときは、
+トップレベルでも subgraph の中でも、
+開く行より後のブロックの行をすべて書かれたまま残します。
+規則 1 はどちらも与えません。
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-blank-line-run-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-whitespace-line-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-directive-line-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-edge-blank-lines-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-directive-lines-at-the-ends-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-unclosed-directive-line-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-unclosed-directive-line-at-the-start-kept]
 [corpus fixture: flowchart/db-subgraph-member-acc-descr-block-blank-lines]
 [corpus fixture: flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]
 

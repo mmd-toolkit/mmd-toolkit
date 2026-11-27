@@ -1760,11 +1760,39 @@ accessibility/block-right-padding-only]
 
 At the top level, align the body lines of a closed description block one step
 inside its statement. The body lines of a closed description block stand one
-level inside its top-level statement. Inside a flow or global body, keep their
-columns, because the raw text also participates in membership. Changing a global
-body's text can change the members of a later flow.
+level inside its top-level statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. Inside a flow or global
+body, keep their columns, because the raw text also participates in membership.
+In a flow, mermaid.js reads the text of such a block, without the whitespace at
+its ends, as a node of the flow, with the columns of its later lines, so the
+indentation of the later lines, and a run of empty lines, a line of whitespace
+only, and a directive line between two lines of text, stay as written there,
+since the node holds them; a line that starts with `%%` there is a line of text
+of the node. The indentation of the first line of text and the empty lines, the
+lines of whitespace only, and the directive lines at the start and the end of
+the block are no part of the node:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the first line
+and those directive lines one level deeper than the line that opens the block
+and leaves out those empty lines, and the released version keeps them as
+written, which rule 1 does not give. A directive that is not closed is read and
+printed as in [Multi-line values](./flowchart.md#multi-line-values) of
+flowchart: what follows it goes on its line and stays as written, the line of
+the directive is printed as any other directive line of the block, and the
+released version keeps that line where it is written in a flow, which rule 1
+does not give. In a global body, the text of such a block decides the members of
+a later flow (a text `X` leaves the node `X` out of a later flow that holds it),
+but none of its whitespace does, so rule 1 puts all its lines one level deeper
+than the line that opens the block and gives its empty lines the row Blank
+lines, and the released version keeps its columns and its empty lines as
+written, which rule 1 does not give.
 
-[fixture: accessibility/global-description-membership-kept]
+[fixture: accessibility/global-description-membership-kept] [fixture:
+accessibility/flow-description-directive-lines-at-the-ends-kept] [fixture:
+accessibility/flow-description-blank-lines-at-the-ends-kept] [fixture:
+accessibility/flow-description-unclosed-directive-line-kept] [fixture:
+accessibility/global-description-blank-lines-kept]
 
 A closed description brace on its own line aligns with `accDescr`, whether
 written at column zero or indented. A separate `}` aligns with its statement.

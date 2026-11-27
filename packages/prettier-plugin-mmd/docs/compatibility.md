@@ -7218,6 +7218,9 @@ flowchart/accessibility-lines/empty-block-touching-keyword]
 
 Ordinary closed multiline `accDescr` bodies use the statement's continuation
 indentation, with a separate `}` at the statement's level.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
 level where the opening `{` stands on the statement's line, as Prettier prints
 the closing line at the level of the line that opens a block. mermaid.js
@@ -7335,9 +7338,13 @@ margins can appear in the rendered label: changing indentation inside `<pre>` or
 after a blank line can change its size or layout. For such bodies, only a
 nonempty first physical row with ASCII-space/tab padding aligns; Mermaid trims
 that margin, so the raw Db stays identical. Use the configured body level for
-that first row, regardless of later margins or whether later content exists. Do
-not copy authored later indentation into it. Later bytes stay exact even when
-their margins differ from the first line.
+that first row, regardless of later margins or whether later content exists.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this form:
+mermaid.js reads the first line without its margin, so it stands one level
+deeper than the line of `note`, as a line inside a block, and the Db keeps the
+margins of the later lines, which the formatter does not align here, so they
+stay as written. Do not copy authored later indentation into it. Later bytes
+stay exact even when their margins differ from the first line.
 
 [fixture: state/notes/backslash-margins-kept] [fixture:
 state/notes/protected-tab-margins-kept] [fixture: state/notes/single-markup-row]

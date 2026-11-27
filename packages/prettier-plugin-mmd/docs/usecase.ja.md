@@ -1253,6 +1253,9 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 [fixture: direction-and-accessibility/acc-descr-line-trailing-spaces-kept]
 
 説明ブロックは、本文行を文より 1 段深くします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの段を与えます。
+mermaid.js はこれらの行を字下げなしで読むので、これらはブロックの中の行で、
+それを開く行より 1 段深く置くからです。
 独立した行の `}` は文と同じ段に置きます。
 `{` が `accDescr` の行にあるときは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。

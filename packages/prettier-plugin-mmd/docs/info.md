@@ -280,8 +280,12 @@ interior whitespace, case, quotes, escapes, HTML and entities, even though info
 publishes no common values. `singleQuote` does not rewrite quotes and
 `printWidth` does not wrap values. Physical multiline block content retains line
 breaks and blank lines, with body margins following
-[Description blocks](#description-blocks). A range cut by common trivia keeps
-its complete source without duplicating that trivia.
+[Description blocks](#description-blocks).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the level of
+these lines, since mermaid.js reads them without their indentation, and keeps
+the line breaks between the lines of text, since mermaid.js keeps them in the
+value. A range cut by common trivia keeps its complete source without
+duplicating that trivia.
 
 [fixture: info/authored-values/literal-quotes-escapes]
 

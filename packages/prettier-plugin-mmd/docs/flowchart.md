@@ -2848,27 +2848,49 @@ A quoted string written over several lines keeps its columns.
 
 [fixture: multi-line-values/markdown-string-kept]
 
-At the top level, align the lines of an `accDescr { ... }` body one step inside
-its statement. mermaid.js discards the indentation after a line feed from the
-description. Inside a subgraph, keep the columns of a block with text, because
-its raw text is also stored among the subgraph's members: mermaid.js reads the
-later lines, with their columns, as a node of the subgraph, so aligning them
+At the top level, align the lines of an
+`accDescr { ... [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level: mermaid.js reads these lines without their indentation, so they are lines inside a block, one level deeper than the line that opens it. }`
+body one step inside its statement. mermaid.js discards the indentation after a
+line feed from the description. Inside a subgraph, keep the columns of a block
+with text, because its raw text is also stored among the subgraph's members:
+mermaid.js reads the text of such a block, without the whitespace at its ends,
+as a node of the subgraph, with the columns of its later lines, so aligning them
 changes the Db. A line of whitespace only and a run of empty lines among them
 stay as written there too, and so does the indentation of a directive line among
 them, which stays in the node when mermaid.js removes the directive: the node
-holds them. The indentation of the first line of text and the empty lines and
-the lines of whitespace only at the start and the end of such a block are no
-part of the node, which mermaid.js reads without the whitespace at its ends:
+holds them. The indentation of the first line of text and the empty lines, the
+lines of whitespace only, and the directive lines at the start and the end of
+such a block are no part of the node, which mermaid.js reads without the
+whitespace at its ends:
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the first line
-one level deeper than the line that opens the block, as a line inside a block,
-and leaves out those empty lines, and the released version keeps them as
-written, which rule 1 does not give.
+and those directive lines one level deeper than the line that opens the block,
+as lines inside a block, and leaves out those empty lines, and the released
+version keeps them as written, which rule 1 does not give. A directive that is
+not closed takes the whitespace after its argument, line breaks included (the
+specification's
+[Where a directive is](../../spec/docs/common.md#where-a-directive-is)), so what
+follows it goes on the line of the directive and is printed as written, as in
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins).
+In a line `%%{x`, a line `b`, and a line `}`, the name of the directive is `x`,
+its argument is `b`, and the `}` goes on the line of the directive with the
+indentation before it. The line of the directive itself is printed as any other
+directive line of the block, as above. The released version keeps that line
+where it is written inside a subgraph, also at the start or the end of the
+block. Where the closer goes on the line of the directive, it also keeps every
+line of the block after the opening line as written, at the top level and inside
+a subgraph. Rule 1 gives neither.
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-blank-line-run-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-whitespace-line-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-directive-line-kept]
 [fixture: multi-line-values/accdescr-block-subgraph-edge-blank-lines-kept]
+[fixture:
+multi-line-values/accdescr-block-subgraph-directive-lines-at-the-ends-kept]
+[fixture:
+multi-line-values/accdescr-block-subgraph-unclosed-directive-line-kept]
+[fixture:
+multi-line-values/accdescr-block-subgraph-unclosed-directive-line-at-the-start-kept]
 [corpus fixture: flowchart/db-subgraph-member-acc-descr-block-blank-lines]
 [corpus fixture:
 flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]

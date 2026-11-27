@@ -1255,15 +1255,18 @@ accessibility-statements/description-comment-line-before-colon-kept] [fixture:
 accessibility-statements/description-text-with-comment-line-kept]
 
 Later text lines of an `accDescr { ... }` block stand one level inside its
-statement, replacing only ASCII spaces and tabs immediately after LF. mermaid.js
-discards the indentation after a line feed from the description. Line breaks and
-directive interiors stay written. The lines of the description's body text are
-outside the "Lines inside a block" row of rule 1. Keep line breaks and interior
-blank lines, and the whitespace at the end of each line of text except the last
-one; a line of whitespace only becomes an empty line. The whitespace at the end
-of the last line of text is dropped where the closer stands on a line of its
-own, and is printed as one space where the closer follows it on that line. A
-separate `}` aligns with its statement.
+statement, replacing only ASCII spaces and tabs immediately after LF.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. mermaid.js discards the
+indentation after a line feed from the description. Line breaks and directive
+interiors stay written. The lines of the description's body text are outside the
+"Lines inside a block" row of rule 1. Keep line breaks and interior blank lines,
+and the whitespace at the end of each line of text except the last one; a line
+of whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. A separate `}`
+aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
 the `{` stands on the `accDescr` line: it puts the closing line at the level of
 the opening line, as Prettier prints the closing line of a block.

@@ -671,18 +671,20 @@ spaces (U+0020) where the conditions below permit it.
 whether mermaid.js holds their indentation in the Db. The body of a `data` block
 that a frame reads is the value that the Db holds for the frame, with the
 indentation of each line, so rule 1 keeps it as written, as Prettier keeps the
-text inside a template literal of JavaScript. The body of a note, and of a
-`data` block that no frame reads, is in no field of the Db, and mermaid.js draws
-nothing of it, so rule 1 puts its lines as lines inside a block, one level
-deeper than the line that opens the block, as
+text inside a template literal of JavaScript, but where the conditions below
+permit the alignment, a change of the Db of the kind that the exception below
+defines, rule 1 gives the alignment: the lines of one body at one column read as
+one body, where lines kept at their written columns read as standing beside the
+line that opens the block or as nested under one another. The body of a note,
+and of a `data` block that no frame reads, is in no field of the Db, and
+mermaid.js draws nothing of it, so rule 1 puts its lines as lines inside a
+block, one level deeper than the line that opens the block, as
 [pie](./pie.md#description-blocks), [radar](./radar.md#description-blocks), and
 [cynefin](./cynefin.md#description-blocks) put the lines of a description block.
-The released version aligns the body of a `data` block that a frame reads, a
-change of the Db of the kind that the exception below defines, and keeps the
-body of a note or of a `data` block that no frame reads as written where the
-rules below keep a body; neither is the form that rule 1 gives. Use
-`2 * tabWidth` spaces when an ordinary header continuation remains, putting the
-body one further step inside its opening line, as
+The released version keeps the body of a note or of a `data` block that no frame
+reads as written where the rules below keep a body, which rule 1 does not give.
+Use `2 * tabWidth` spaces when an ordinary header continuation remains, putting
+the body one further step inside its opening line, as
 [sequence](./sequence.md#indentation) and [state](./state.md#indentation) stand
 the body of a block one level deeper than the line that opens it, and the
 continued line is that line. An authored LF that joins into the header, or an LF
@@ -690,11 +692,12 @@ inside an inline directive, does not add this step: the step stands for a
 continuation line that the printer indents, a joined LF leaves none, and the
 lines of a directive stay as written. Native hidden header forms retain their
 boundary columns and use the ordinary one-step body rule. Use spaces even with
-`useTabs`, which rule 1 does not give either: it keeps the written margins of a
-body that a frame reads, and indents the lines of the other bodies with a tab
-for each level. At `tabWidth: 0`, keep the body as written, since the margin
-there is none, and removing the margin of a later line draws a different diagram
-(see
+`useTabs`. For a body that a frame reads, that is the alignment that rule 1
+gives, since the kind of change that the exception below defines holds ASCII
+spaces only; for the other bodies, rule 1 indents the lines with a tab for each
+level, which the released version does not do. At `tabWidth: 0`, keep the body
+as written, since the margin there is none, and removing the margin of a later
+line draws a different diagram (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count):
 a later line at column one against two spaces in). That is the form of rule 1
 for a body that a frame reads; for the other bodies, rule 1 puts the lines at

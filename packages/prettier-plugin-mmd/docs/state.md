@@ -1108,12 +1108,21 @@ notes/marker-at-paragraph-boundary-kept] [fixture:
 notes/literal-setext-zero-width]
 
 For bodies outside this paragraph rule, align only the first physical body line
-when it is nonempty and starts with only ASCII-space/tab padding. Mermaid trims
-that margin, while later margins can affect the drawing. Use the configured body
-indentation, as for eligible paragraphs. Do not infer a different indentation
-from protected later lines: their authored margins are part of the body text and
-may affect rendering. This rule applies with or without later content lines, and
-with any later margins.
+when it is nonempty and starts with only ASCII-space/tab padding.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this form:
+mermaid.js reads the first line without its margin, so it stands one level
+deeper than the line of `note`, as a line inside a block, and the Db keeps the
+margins of the later lines, which the formatter does not align here, so they
+stay as written. Mermaid trims that margin, while later margins can affect the
+drawing. Use the configured body indentation, as for eligible paragraphs.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this form:
+mermaid.js reads the first line without its margin, so it stands one level
+deeper than the line of `note`, as a line inside a block, and the Db keeps the
+margins of the later lines, which the formatter does not align here, so they
+stay as written. Do not infer a different indentation from protected later
+lines: their authored margins are part of the body text and may affect
+rendering. This rule applies with or without later content lines, and with any
+later margins.
 
 [fixture: notes/backslash-margins-kept] [fixture:
 notes/protected-tab-margins-kept] [fixture:
@@ -1133,23 +1142,24 @@ notes/html-first-line-tabs] [fixture: notes/html-first-line-zero-width]
 [fixture: notes/first-tab-markup-margin]
 
 Mermaid keeps the margins in the Db, so the Db of the printed note differs from
-the Db of the written note, but it draws the same figure. Since the Db keeps the
-margins of the later lines,
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps those lines as
-written, as Prettier keeps the text inside a template literal of JavaScript, and
-the alignment of a later line is not the form that rule 1 gives. The first line,
-whose margin mermaid.js trims, is a line inside a block of rule 1, one level
-deeper than the line of `note`. Both texts of each fixture of this section whose
-printed note differs from the written one were drawn with pinned mermaid.js in
-Chromium, after the state that the note refers to was declared where the fixture
-does not declare it, and with `handDrawnSeed` set, since the lines of the box of
-a note are random otherwise. The SVG, without the generated ids, and the pixels
-were the same, except for `notes/over-lines-empty-id-kept`, whose note refers to
-an empty id and which pinned mermaid.js cannot draw in either form. The tests
-compare the Db of the printed text with the margins of the notes restored from
-the Db of the written text (`stateDbForFormattingComparison` in
-`tests/state-note-margins.ts`). When the pinned mermaid.js is updated, draw both
-texts of each fixture again before the exception stays.
+the Db of the written note, but it draws the same figure. The Db keeps the
+margins of the later lines, and this alignment is the form that
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives to such lines
+where the check allows the change: the lines of a note at one column read as one
+text, where a later line left at its written column reads as nested under the
+line before it. The first line, whose margin mermaid.js trims, is a line inside
+a block of rule 1, one level deeper than the line of `note`. Both texts of each
+fixture of this section whose printed note differs from the written one were
+drawn with pinned mermaid.js in Chromium, after the state that the note refers
+to was declared where the fixture does not declare it, and with `handDrawnSeed`
+set, since the lines of the box of a note are random otherwise. The SVG, without
+the generated ids, and the pixels were the same, except for
+`notes/over-lines-empty-id-kept`, whose note refers to an empty id and which
+pinned mermaid.js cannot draw in either form. The tests compare the Db of the
+printed text with the margins of the notes restored from the Db of the written
+text (`stateDbForFormattingComparison` in `tests/state-note-margins.ts`). When
+the pinned mermaid.js is updated, draw both texts of each fixture again before
+the exception stays.
 
 For example, the first line of the following note uses the configured four
 spaces. Its blank-separated later paragraphs retain their two spaces: moving
@@ -1724,12 +1734,15 @@ stateDiagram-v2
 
 ### Multi-line values
 
-Align the lines of an `accDescr { ... }` body one step inside its statement. A
-separate `}` aligns with its statement.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
-the `{` stands on the `accDescr` line: it puts the closing line at the level of
-the opening line, as Prettier prints the closing line of a block. mermaid.js
-discards the indentation after a line feed from the description.
+Align the lines of an `accDescr { ... }` body one step inside its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this level:
+mermaid.js reads these lines without their indentation, so they are lines inside
+a block, one level deeper than the line that opens it. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block. mermaid.js discards the indentation after a line feed from the
+description.
 
 [fixture: multi-line-values/kept] [fixture:
 multi-line-values/accdescr-block-single-line] [fixture:
