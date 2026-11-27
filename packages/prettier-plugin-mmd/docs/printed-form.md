@@ -108,6 +108,16 @@ description block, its text lines and the comment and directive lines among
 them, are such a text and no lines inside a block of this row: the row gives the
 closing `}` of such a block and no line between.
 
+The statements of an eventmodeling diagram stand at column one, and not one
+level deeper than its header. Every version of mermaid.js that counts rejects
+the `}` that closes a `data` or a `note` block indented, so that `}` stands at
+column one; with the statements one level deeper, it would stand to the left of
+the line that opens its block. At column one, each `}` stands at the column of
+the line that opens its block, as the closing line does in this row. This form
+corrects the form of this row, as AGENTS.md (item 4) says of a rule whose form
+reads worse than another form that draws the same (see
+[Indentation](./eventmodeling.md#indentation)).
+
 A keyword stands between two things (`a in b`) or before what it takes
 (`return x`, `typeof y`, `throw e`, and in CSS `@media screen` and
 `@import "a.css"`). Its role decides the row, as the role of a colon decides its

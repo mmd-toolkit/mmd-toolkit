@@ -83,8 +83,11 @@ stand at column one too, since every version that counts rejects them indented
 
 The pinned Mermaid requires `data` and `note` block closers at column one; the
 formatter aligns their headers there and keeps peer statements at the same level
-to avoid suggesting a hierarchy. Reconsider this choice if the pinned Mermaid
-later accepts whitespace before block closers, checking that raw body values and
+to avoid suggesting a hierarchy, and so that each closer stands at the column of
+the line that opens its block, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for an
+eventmodeling diagram. Reconsider this choice if the pinned Mermaid later
+accepts whitespace before block closers, checking that raw body values and
 rendering remain unchanged.
 
 GWT clauses use one configured step and items two. The clauses and items of a
