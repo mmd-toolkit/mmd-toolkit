@@ -716,14 +716,22 @@ Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 数える版のうち最も古い版が、その空白をタイトルの一部として読むためです。
 詳しくは [アクセシビリティの行](#accessibility-lines) を参照してください。
 裸・3つのパーセントと末尾の空白を残します。
+その行の終わりの空白も残りますが、
+これは[規則 1](./printed-form.ja.md#1-記号の横の空白)の形ではありません。
+規則 1 は、Prettier がどの行の終わりでもそうするように、それを外します。
 pie 固有のコメントは LF で終わり、LS・PS は内部に残ります。
 LS・PS は区切りではなく、
 そこで終えると行の残りが文として現れて Db が変わるためです。
 文字列とブロック内のパーセントは内容で、共通の行形式の値はその直前で終わります。
 共通の削除領域は飲み込んだ範囲と結合後の継続列を保ちます。
 継続行を字下げし直すと、結合したラベルに空白が加わるためです。
+コメントの本文の先頭の空白と中の空白の連なりは、書かれたまま保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、行の終わりの空白を除いて、
+コメントの本文を書かれたまま保つからです。
+Prettier は `//    spaced   text` を書かれたまま印字します。
 保持する前置きは通常の整列より優先します。
 
+[fixture: pie/comments/comment-text-as-written]
 [fixture: pie/comments/comments-align] [fixture: pie/comments/comment-bare]
 [fixture: pie/comments/inline-gap-run-before-comment]
 [fixture: pie/comments/comment-value-text]

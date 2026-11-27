@@ -291,8 +291,11 @@ swallows a preceding fragment by position, so adding or removing the gap before
 a comment can change which fragment is swallowed. A required one-character name
 that a comment already swallows is rejected, and no space is added to rescue it.
 Comment contents, including trailing spaces and U+2028/U+2029 through LF or EOF,
-stay whole; percent pairs inside values remain value text. Protected gaps retain
-comment and mode boundaries.
+stay whole; percent pairs inside values remain value text. The whitespace at the
+end of the line of a comment, which stays too, is not the form of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): rule 1 leaves it
+out, as Prettier does at the end of every line. Protected gaps retain comment
+and mode boundaries.
 
 [test: a venn set with two spaces before a comment and an empty line after the
 comment] [fixture: venn/comments/bare-percent-tail] [fixture:
@@ -709,12 +712,16 @@ as between values that follow one another: Prettier prints `margin: 1px    2px;`
 in CSS as `margin: 1px 2px;`. A comment line inside the parentheses
 (`style A fill:rgb(1,`, a line `%% ) x  y`, and `2,3)`) is removed before the
 value is read, so its characters, a `)` among them, are no part of the value and
-stay as written. Space inside an rgb/rgba token is different: changing a
-component gap changes the Db, and so does quoting a joined bare value; a quoted
-value is printed without quotes as [Quotes](#quotes) says, and whole rgb/rgba
-tokens, key case, repetitions and separate statements stay as written. A kept
-prefix overrides punctuation spacing so colon-to-hash gaps cannot change
-semicolon selection.
+stay as written. The whitespace at the start of the text of a comment and the
+runs of whitespace inside it stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written. Space inside an rgb/rgba token is
+different: changing a component gap changes the Db, and so does quoting a joined
+bare value; a quoted value is printed without quotes as [Quotes](#quotes) says,
+and whole rgb/rgba tokens, key case, repetitions and separate statements stay as
+written. A kept prefix overrides punctuation spacing so colon-to-hash gaps
+cannot change semicolon selection.
 
 [corpus fixture: venn/div-c4-bare-style-value] [corpus fixture:
 venn/db-style-case-and-order] [corpus fixture:
