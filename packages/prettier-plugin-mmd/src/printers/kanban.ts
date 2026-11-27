@@ -63,7 +63,10 @@ export function printKanban(
           tabWidth: options.tabWidth,
           useTabs: options.useTabs,
           decidesIndentation: true,
-          statementListsOf: () => [],
+          diagramStatements: {
+            listsOf: () => [],
+            isDroppedAtTopLevel: () => false,
+          },
           wholeLine: true,
         }),
         {

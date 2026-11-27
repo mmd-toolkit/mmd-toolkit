@@ -3,10 +3,11 @@ import type {
   FlowchartDiagram,
   FlowchartStatement,
   FlowchartSubgraphStatement,
+  Node,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
-import type { StatementListsOf } from "./data-blocks.ts"
+import type { DiagramStatements, StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import { keepsStyleTerminator, lineEndOf } from "./kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
@@ -98,7 +99,7 @@ export function printFlowchart(
           statement: indentationOf(bodyOptions, depth),
           tabWidth: options.tabWidth,
           useTabs: options.useTabs,
-          statementListsOf,
+          diagramStatements: flowchartStatements(source),
         },
       )
       return printAtoms(source, layout, {
@@ -199,6 +200,26 @@ function holdsStatements(node: MermaidAst): boolean {
 }
 
 /**
+ * Whether a statement of the diagram is dropped: a `;` of its own, where the
+ * Db does not list it, unless a style terminator on a later line still ends
+ * the style before a removed comment (docs/flowchart.md, Semicolons).
+ */
+function isDroppedAtTopLevel(source: Source, statement: Node): boolean {
+  return (
+    statement.type === "FlowchartEmptyStatement" &&
+    !keepsStyleTerminator(source, statement.range[0])
+  )
+}
+
+/** The statements of a flowchart (see `DiagramStatements`). */
+function flowchartStatements(source: Source): DiagramStatements {
+  return {
+    listsOf: statementListsOf,
+    isDroppedAtTopLevel: (statement) => isDroppedAtTopLevel(source, statement),
+  }
+}
+
+/**
  * The block rules of a flowchart (see `BlockRules`): a subgraph holds
  * statements, and a `;` of its own is dropped at the top level, where the
  * Db does not list it.
@@ -214,13 +235,9 @@ function flowchartBlockRules(
     writtenIndentationOf: writtenIndentationRule(
       source,
       options.useTabs,
-      statementListsOf,
+      flowchartStatements(source),
     ),
-    // A style terminator on a later line still ends the style before a
-    // removed comment (docs/flowchart.md, Semicolons).
-    isDroppedAtTopLevel: (statement) =>
-      statement.type === "FlowchartEmptyStatement" &&
-      !keepsStyleTerminator(source, statement.range[0]),
+    isDroppedAtTopLevel: (statement) => isDroppedAtTopLevel(source, statement),
     dropsTrailingLineSeparators: true,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
