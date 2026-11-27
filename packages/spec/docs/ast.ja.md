@@ -120,6 +120,12 @@ class 図のスタイル（[ClassLiteral](./ast/class.ja.md#classliteral) を参
 
 [fixture: flowchart/tokens-label-string-inner-whitespace]
 [fixture: flowchart/gram-data-consecutive-blocks]
+[fixture: er/lex-subgraph-nodes-acc-descr-block-comment-line]
+[fixture: flowchart/lex-subgraph-member-acc-descr-block-comment-line]
+[fixture: flowchart/lex-swimlane-subgraph-member-acc-descr-block-comment-line]
+[fixture: er/lex-subgraph-nodes-acc-descr-block-directive-line]
+[fixture: flowchart/lex-subgraph-member-acc-descr-block-directive-line]
+[fixture: flowchart/lex-swimlane-subgraph-member-acc-descr-block-directive-line]
 
 2 つのリテラルのノード、
 [StringLiteral](#stringliteral) と [NumericLiteral](#numericliteral) は、

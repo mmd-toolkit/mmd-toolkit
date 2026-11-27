@@ -969,7 +969,10 @@ that comment start: from there it looks ahead over whitespace, line terminators,
 and directives, and when it reaches a comment, the region starts where the
 look-ahead started. Comment regions do not overlap. The whole region is trivia.
 
-[fixture: common/comment-blank-line-before-in-string]
+[fixture: common/comment-blank-line-before-in-string] [fixture:
+er/lex-subgraph-nodes-acc-descr-block-comment-line] [fixture:
+flowchart/lex-subgraph-member-acc-descr-block-comment-line] [fixture:
+flowchart/lex-swimlane-subgraph-member-acc-descr-block-comment-line]
 
 In the tree, only its directives appear, in `Root.directives`; its whitespace
 and line terminators belong to no node. The region still matters beyond them:
