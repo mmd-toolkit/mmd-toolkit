@@ -298,6 +298,12 @@ Where mermaid.js rejects the space after a colon, none is printed before it
 either, since Prettier prints no colon with a space before it alone: the width
 of a block is printed `a:2`, also where `a :2` was written.
 
+Where mermaid.js reads the whitespace on the two sides of a directive as one gap
+of an exact width, a space stands on one side only: the unit `note for` of a
+class diagram reads exactly one whitespace character, and mermaid.js rejects
+`note %%{init: {}}%% for A "t"`, so `note%%{init: {}}%% for A "t"` is printed
+`note %%{init: {}}%%for A "t"` (see [Directives](./flowchart.md#directives)).
+
 In a flowchart, a swimlane diagram, and an agentflow diagram, where mermaid.js
 reads a label otherwise without the whitespace at its start, or rejects it (a
 label that is no string in quotes and starts with `/`, `\`, `-`, or `"`, or
