@@ -795,10 +795,10 @@ edge id touch one another: `A@{ shape: rect }%%{x}%%e1@-->B` is printed
 arrows/edge-id-after-data-block-directive] [fixture:
 arrows/edge-id-after-data-block-semicolon]
 
-An edge id that starts as an arrow does touches the shape or the data block
-before it, as in `A["x"]--a@-->B`. In agentflow that is an edge id that starts
-with `--`, `-.-`, or `-..-`; one such as `x--a`, `==a`, `-.a`, or `.-a` is read
-the same after whitespace, and has one space before it. `A["x"]--a@-->B` stays
+An edge id that starts as an arrow touches the shape or the data block before
+it, as in `A["x"]--a@-->B`. In agentflow that is an edge id that starts with
+`--`, `-.-`, or `-..-`; one such as `x--a`, `==a`, `-.a`, or `.-a` is read the
+same after whitespace, and has one space before it. `A["x"]--a@-->B` stays
 attached, since every version of mermaid.js that counts draws `A["x"] --a@-->B`
 differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).

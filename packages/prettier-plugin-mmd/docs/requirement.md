@@ -1576,8 +1576,10 @@ requirementDiagram
 ### Whitespace between tokens
 
 Where no rule above applies, a run of whitespace between two tokens of a
-statement becomes one space, and tokens that touch keep touching: the braces of
-an empty description block.
+statement becomes one space, and tokens that touch keep touching, as in a
+flowchart (see
+[Whitespace between tokens](./flowchart.md#whitespace-between-tokens)): the
+braces of an empty description block.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
 after a keyword before what it takes, as Prettier prints `return  x;` as
 `return x;`: `style  r` is printed `style r`. The opening brace of a description
@@ -1714,9 +1716,9 @@ before a comment that stands after something on its line, as Prettier prints
 stays touching.
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
-[fixture: comments/after-opening-brace] [fixture: comments/after-closing-brace]
-[fixture: comments/after-keyword-and-string-values] [fixture:
-comments/after-string-name]
+[fixture: comments/after-whitespace-run] [fixture: comments/after-opening-brace]
+[fixture: comments/after-closing-brace] [fixture:
+comments/after-keyword-and-string-values] [fixture: comments/after-string-name]
 
 Where an unquoted name or value stands, a `#` or a `%` is a character of the
 text, and after the value of a direction line it is text that mermaid.js does

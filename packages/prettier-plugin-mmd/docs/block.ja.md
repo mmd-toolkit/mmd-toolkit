@@ -467,7 +467,7 @@ mermaid.js は id と形の始まりの間の空白を同じに読むので、�
 mermaid.js の文書の形です。
 幅の `:` は、前にも後にも接します（`A:3`、`B["b"]:2`）。
 対象にする版はどれも、コロンの後の空白（`A: 3`、`A : 3`）を拒否します。
-Prettier は片側だけに空白を置いたコロンを印字しないので、前の空白（`A :3`。
+Prettier は前にだけ空白を置いたコロンを印字しないので、前の空白（`A :3`。
 それらの版は同じに読みます）も印字しません。
 詳しくは
 [mermaid.js が空白を許さない所](./printed-form.ja.md#mermaidjs-が空白を許さない所)
@@ -682,10 +682,12 @@ mermaid.js の文書は矢印 `-->` を 9 回、`--` を 1 回書きます。
 対象にする版のうち、`---x` と `--x`、
 `---o` と `--o` を違う図に描くものがあるからです。
 `>` で終わらない太線（`====`）も同じで、長さで違う id として読む版があります。
-`~` の線も、どの版でも id なので同じです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+`~` の線も書かれたままにします。
+どの版もこれを id として読み、線の長さは、
+Db が保つその id のテキストだからです。
 
 [fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
 [fixture: edges/end-marker-apart-from-the-id] [fixture: edges/start-marker]

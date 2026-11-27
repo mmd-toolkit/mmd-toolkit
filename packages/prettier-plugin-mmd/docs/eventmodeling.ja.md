@@ -2019,6 +2019,7 @@ EOF に達する未完ディレクティブは字句上の終端を保ちます�
 ブロック終端トークンの先読みの変更を避けます。
 
 [fixture: eventmodeling/final-newline/final-common-line-newline]
+[fixture: eventmodeling/final-newline/final-blank-run-removed]
 
 [fixture: eventmodeling/final-newline/final-native-comment-newline]
 

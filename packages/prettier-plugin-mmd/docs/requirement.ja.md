@@ -1592,6 +1592,8 @@ requirementDiagram
 文の中の 2 つのトークンの間の空白は 1 つの空白にし、
 接しているトークンは接したままにします。
 空の説明ブロックの波括弧がそうです。
+接したままにするのは flowchart と同じです。
+（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)）。
 取るものの前に置くキーワードの後の空白 1 つは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 Prettier は `return  x;` を `return x;` と印字し、
@@ -1729,7 +1731,8 @@ Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 前のテキストに接するコメントは接したままです。
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
-[fixture: comments/after-opening-brace] [fixture: comments/after-closing-brace]
+[fixture: comments/after-whitespace-run] [fixture: comments/after-opening-brace]
+[fixture: comments/after-closing-brace]
 [fixture: comments/after-keyword-and-string-values]
 [fixture: comments/after-string-name]
 

@@ -1986,7 +1986,8 @@ source and EOF-reaching unfinished directives retain their lexical endings. This
 shares the file-ending policy without adding LF to directive content or changing
 a block terminal's lookahead.
 
-[fixture: eventmodeling/final-newline/final-common-line-newline]
+[fixture: eventmodeling/final-newline/final-common-line-newline] [fixture:
+eventmodeling/final-newline/final-blank-run-removed]
 
 [fixture: eventmodeling/final-newline/final-native-comment-newline]
 
