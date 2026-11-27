@@ -373,6 +373,16 @@ such tree has a box form, since mermaid.js rejects, in a box diagram, an
 indented line that goes on without a branch prefix, such as the second line of a
 name in quotes or an annotation on a line of its own.
 
+A string keeps its quotes where its text holds the mark that closes the call it
+stands in, or the marks of a style, also where mermaid.js reads the text the
+same without them: an alias with a `)` in a C4 diagram (`Person("a)", "A")`),
+and the label of a kanban card with a `:` and a `;` (`A["aStyle:#x;yb"]`).
+Without the quotes, `Person(a), "A")` looks like a call that ends after `a`, and
+`A[aStyle:#x;yb]` looks like a card that holds a style. This form corrects the
+form of rule 3, as AGENTS.md (item 4) says of a rule whose form reads worse than
+another form that draws the same (see [Quotes](./c4.md#quotes) and
+[Quotes](./kanban.md#quotes)).
+
 ## 4. Where none of these rules gives a form
 
 Where none of these rules gives a form, it is not decided yet which form reads
