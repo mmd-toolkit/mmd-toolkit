@@ -79,9 +79,7 @@ three steps that say which kind it is), then the form that the other diagram
 types print for the same kind of gap, then a spelling. The rules say which form
 reads best, which is what a printed form is for; they are applied in their order
 so that the form does not depend on who judges. Where none of them gives a form,
-the output of the released version is not changed on the judgment of whoever is
-working on it: a form that seems to read better is proposed to the user, with a
-text as written and both outputs, and what is decided is added to those rules.
+the form is decided as section 4 of that document says.
 
 1. From the grammar and the tree in the specification, list what formatting
    could change. The kinds of items flowchart has (as examples; a diagram type
@@ -108,21 +106,20 @@ text as written and both outputs, and what is decided is added to those rules.
    and draws it the same. A form that one of them rejects or draws differently
    is not printed. Each case that the choice distinguishes has a fixture
    (section 6). Attach the results, marked as checked by running.
-4. Implement the forms that the rules decide. A form that would change what a
-   released version printed, and a form that seems better where no rule gives
-   one, is shown to the user first, with a text as written, the old and the new
-   output, the rule that gives the new form if there is one, and a
-   recommendation; the user decides it, and the decision is added to the rules.
+4. Implement the forms that the rules decide. Where a rule gives a form that
+   reads worse than another form that draws the same, or no rule gives a form,
+   decide the form that reads best and add it to the rules first with a reason
+   that anyone would accept, as AGENTS.md (item 4) says. A form that changes
+   what a released version printed goes with a changeset.
 5. Write each decision into the rules document `docs/<diagram>.md` (English and
    Japanese) as a rule with its reason. The reason is the rule of that document
    that decided the form, with the facts that rule needs. A reason that says
    only "reads better" tells a reader nothing: name the rule that says why it
    reads better. Where a rule gives a form that reads worse than another form
-   that draws the same, say so and propose the other form to the user as under
-   step 4 of this section, since the rule is then what is wrong. Write what is
-   kept as written because it affects the Db, and the differences from
-   mermaid.js, into `docs/compatibility.md` too. Keep decisions in these two
-   documents only.
+   that draws the same, say so and correct the rule as under step 4 of this
+   section, since the rule is then what is wrong. Write what is kept as written
+   because it affects the Db, and the differences from mermaid.js, into
+   `docs/compatibility.md` too. Keep decisions in these two documents only.
 
 ## 4. Writing the printer
 
@@ -213,8 +210,8 @@ and an example to that rule in `docs/<diagram>.md` (and to
 `docs/compatibility.md` when needed) in the same change. Show as the result: the
 wording of the rule, an input that shows it, mermaid.js's results before and
 after formatting, and the reason in the specification. A rule that changes a
-decided choice needs a decision before it is implemented; ask for it with that
-evidence.
+choice that the user decided needs the user's decision before it is implemented;
+ask for it with that evidence.
 
 Write a narrow exception (for example, no space before the closing `?]` or `=]`
 of a slanted shape) into the document in the same way.

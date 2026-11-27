@@ -673,7 +673,9 @@ The whitespace immediately after the `(` and before the `)` of a `rect` stays
 too, since every version that counts draws another `fill` attribute for
 `rect rgb( 1,2,3)` and `rect rgb(1,2,3 )` (see the same table). In a `box` they
 stay for the same reasons, and so does the whitespace before a comma, which
-changes `boxes[0].fill` in the Db with the same drawing.
+changes `boxes[0].fill` in the Db with the same drawing. Of the whitespace in a
+color, only the space after a comma is a kind of exception that is drawn the
+same.
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/rect-leading-and-comma-padding-kept] [fixture:
