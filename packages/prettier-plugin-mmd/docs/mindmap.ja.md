@@ -300,16 +300,27 @@ Db はその空白を id の一部として持ちますが、描かれるノー�
 [fixture: node-text/trailing-whitespace-dropped]
 [fixture: node-text/space-before-a-shape-dropped]
 
-id と形の間の、mermaid.js の行の規則が無視する `;` は、前の空白とともに残し、
+id と形の間の、mermaid.js の行の規則が無視する `;` は、
+それがないと行の規則が行のほかの `;` を無視する所では、前の空白とともに残し、
 後ろの空白は、形の前の空白と同じく除きます。
-`style:#a ; [x]` は `style:#a ;[x]` と印字します。
+`style:#a;b ; [x]` は `style:#a;b ;[x]` と印字します。
 mermaid.js は `style:#` を持つ行の最後の `;` を無視するので（仕様の
 [`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)）、
-その `;` がないと、前の `;` を無視することがあります。
-`style:#a;b[x]` の id は `style:#ab` で、
-`style:#a;b ;[x]` の id はそうではありません。
+その `;` を除いた行 `style:#a;b[x]` の id は `style:#ab` です。
 
 [fixture: node-text/ignored-semicolon-before-shape-kept]
+[fixture: node-text/ignored-semicolon-before-shape-kept-at-end-of-text]
+
+そのほかの所では、`;` をまわりの空白とともに除き、
+`style:#a ;[x]` は同じノードの `style:#a[x]` と印字します。
+この形はどの決まりも与えず、決まっていない形の一覧（D17）の問いです。
+そのため、決まるまでリリース済みの形を残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
+
+[fixture: node-text/ignored-semicolon-before-shape-dropped]
+[fixture: node-text/ignored-semicolon-before-shape-dropped-at-end-of-text]
 
 ノードのテキストの中の空白は残します。
 最大の幅に達したノードのテキストは折り返され、空白の連なりをそのまま描きます。

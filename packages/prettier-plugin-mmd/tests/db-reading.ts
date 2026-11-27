@@ -33,6 +33,7 @@ import type {
   DiagramBody,
   Root,
   EventmodelingDataBlock,
+  MindmapNode,
   Range,
   TreeviewBranchPrefix,
   TreeviewIgnoredText,
@@ -240,8 +241,10 @@ const styleStatementTypes: ReadonlySet<string> = new Set([
  * The offsets of the `;` of a text that formatting may drop: every `;` in a
  * diagram of `semicolonSeparatorDiagramTypes`, and in the others the `;` that
  * the line rule ignores right after a `classDef` or `style` statement, and the
- * last character of such a statement. Every other `;`, including grammatical
- * punctuation and text, stays.
+ * last character of such a statement, and in a mindmap the `;` that the line
+ * rule ignores between the text of a node and its shape, which the printer
+ * leaves out where the rule then ignores no other `;` (docs/mindmap.md, Node
+ * text). Every other `;`, including grammatical punctuation and text, stays.
  */
 function droppableSemicolonsOf(text: string, root: Root): ReadonlySet<number> {
   const offsets = new Set<number>()
@@ -251,8 +254,14 @@ function droppableSemicolonsOf(text: string, root: Root): ReadonlySet<number> {
     }
     return offsets
   }
+  const beforeShapes: Range[] = []
   const ends = new Set<number>()
   walk(root.body, (node) => {
+    if (node.type === "MindmapNode") {
+      const { id, shape } = node as MindmapNode
+      if (id !== null && shape !== null)
+        beforeShapes.push([id.range[0], shape.range[0]])
+    }
     if (!styleStatementTypes.has(node.type)) return
     const { range } = node as unknown as { range: Range }
     ends.add(range[1])
@@ -274,6 +283,11 @@ function droppableSemicolonsOf(text: string, root: Root): ReadonlySet<number> {
 
   for (const token of root.tokens) {
     if (token.type !== "IgnoredSemicolon") continue
+    const [start] = token.range
+    if (beforeShapes.some(([from, to]) => from <= start && start < to)) {
+      offsets.add(start)
+      continue
+    }
     // Only whitespace and directives lie between the statement and the `;`.
     let position = token.range[0]
     while (position > 0 && !ends.has(position)) {

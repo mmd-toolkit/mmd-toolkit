@@ -303,15 +303,24 @@ whitespace at its end (see
 node-text/space-before-a-shape-dropped]
 
 A `;` between the id and the shape that the line rule of mermaid.js ignores
-stays with the whitespace before it, and the whitespace after it goes as the
-space before a shape does: `style:#a ; [x]` is printed `style:#a ;[x]`.
-mermaid.js ignores the last `;` of a line that holds `style:#` (the
-specification's
+stays with the whitespace before it where the rule would ignore another `;` of
+the line without it, and the whitespace after it goes as the space before a
+shape does: `style:#a;b ; [x]` is printed `style:#a;b ;[x]`. mermaid.js ignores
+the last `;` of a line that holds `style:#` (the specification's
 [`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)),
-so without that `;` it can ignore an earlier one: `style:#a;b[x]` has the id
-`style:#ab`, and `style:#a;b ;[x]` has not.
+so `style:#a;b[x]`, the line without that `;`, has the id `style:#ab`.
 
-[fixture: node-text/ignored-semicolon-before-shape-kept]
+[fixture: node-text/ignored-semicolon-before-shape-kept] [fixture:
+node-text/ignored-semicolon-before-shape-kept-at-end-of-text]
+
+Elsewhere the `;` is left out with the whitespace around it: `style:#a ;[x]` is
+printed `style:#a[x]`, the same node. No rule gives this form, and it is a
+question of the list of undecided forms (D17), so the released form stays until
+it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+
+[fixture: node-text/ignored-semicolon-before-shape-dropped] [fixture:
+node-text/ignored-semicolon-before-shape-dropped-at-end-of-text]
 
 The whitespace inside a node text stays: a node text that reaches its maximum
 width wraps and draws its runs, and whether it does depends on the font and on

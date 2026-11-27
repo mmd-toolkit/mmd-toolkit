@@ -1382,7 +1382,7 @@ kanban のボードでは、`;` はテキストの文字で、文を区切る `;
 すべての `;` を残します（[行の規則と保つ行](#行の規則と保つ行)を参照）。
 落としたり、そこで行を分けたりすると、Db が持つテキストか、
 行の規則が無視する `;` が変わります。
-カードのテキストと形の間の、行の規則が無視する `;` も、
+カードか列のテキストと形の間の、行の規則が無視する `;` も、
 前の空白とともに残します（`style:#a ;[x]`）。
 その `;` がないと、`style:#a;b ;[x]` は `style:#a;b[x]` になり、
 行の規則はその id を `style:#ab` と読みます。
@@ -1390,6 +1390,7 @@ kanban のボードでは、`;` はテキストの文字で、文を区切る `;
 
 [fixture: semicolons/values] [fixture: semicolons/semicolon-remove]
 [fixture: semicolons/ignored-before-shape-kept]
+[fixture: semicolons/ignored-before-shape-at-end-of-text]
 
 入力
 ([semicolons/values-input.mmd](../tests/fixtures/kanban/semicolons/values-input.mmd)):
