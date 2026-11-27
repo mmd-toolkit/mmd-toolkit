@@ -8559,11 +8559,15 @@ line of a statement, stands where a reader does not look for a comment; on a
 line of its own, it reads as the comment line it is. This form corrects the form
 of keeping such a line as written, as AGENTS.md (item 4) says of a rule whose
 form reads worse than another form that draws the same. Where mermaid.js reads
-the U+2028 or U+2029 as a character of a text or of a name, leaving it out would
-change what is drawn, and the line stays as written: at the end of the title of
-a Gantt chart and of a user journey, of an event of a timeline, of the text of a
-mindmap node and of a kanban card, and of the name of an entity of an ER
-diagram, and where mermaid.js reads it as a node of a treeView diagram.
+the U+2028 or U+2029 as a character of a text or of a name, or as a node,
+leaving it out would change what is drawn, and the line stays as written: at the
+end of the title of a Gantt chart and of a user journey, of a period and of an
+event of a timeline, of the text of a mindmap node and of a kanban card, and of
+the name of an entity and of the label of a relationship of an ER diagram; where
+it reads it as a node of a treeView diagram; and after the label in quotes of a
+relationship of an ER diagram, where it reads it as an entity. So does the line
+where mermaid.js rejects the text without it: a title of a treemap that a line
+of whitespace only follows at the end of the text.
 
 [test: block: style-ls-before-a-comment-at-the-end-of-the-text-is-dropped]
 [test: block:
@@ -8581,6 +8585,11 @@ with U+2028 before a comment line at the end of the text] [test: a kanban card
 that ends with U+2028 before a comment line at the end of the text] [test: an ER
 entity name that ends with U+2028 before a comment line at the end of the text]
 [test: a treeView node, U+2028, and a comment line at the end of the text]
+[test: a timeline period that ends with U+2028 before a comment line at the end
+of the text] [test: an ER relationship label that ends with U+2028 before a
+comment line at the end of the text] [test: an ER relationship label in quotes,
+U+2028, and a comment line at the end of the text] [test: a treemap title,
+U+2028, a comment line, and a line of whitespace only at the end of the text]
 
 In an ER diagram, what else the formatter prints on a statement of such a line,
 as the colors of a style, the words of a relationship, and the quotes of a name

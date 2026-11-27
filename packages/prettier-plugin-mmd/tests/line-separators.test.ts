@@ -8830,14 +8830,10 @@ describe("a block diagram with a line separator", () => {
 /**
  * Each example ends with a U+2028 and a comment line that no statement
  * follows, where mermaid.js reads the U+2028 as a character of a text or of a
- * name, so the line stays as written (docs/compatibility.md, A comment line
- * after U+2028 or U+2029).
+ * name, or as a node, or rejects the text without it, so the line stays as
+ * written (docs/compatibility.md, A comment line after U+2028 or U+2029).
  */
-const separatorReadAsTextExamples: readonly (readonly [
-  string,
-  string,
-  string,
-])[] = [
+const separatorKeptExamples: readonly (readonly [string, string, string])[] = [
   [
     "a Gantt title that ends with U+2028 before a comment line at the end of the text",
     "gantt\ntitle T\u2028%% c\n",
@@ -8873,15 +8869,32 @@ const separatorReadAsTextExamples: readonly (readonly [
     'treeView-beta\n"root"\u2028%% c\n',
     'treeView-beta\n"root"\u2028%% c\n',
   ],
+  [
+    "a timeline period that ends with U+2028 before a comment line at the end of the text",
+    "timeline\n2020\u2028%% c\n",
+    "timeline\n  2020\u2028%% c\n",
+  ],
+  [
+    "an ER relationship label that ends with U+2028 before a comment line at the end of the text",
+    "erDiagram\nA ||--o{ B : x\u2028%% c\n",
+    "erDiagram\n  A ||--o{ B : x\u2028%% c\n",
+  ],
+  [
+    "an ER relationship label in quotes, U+2028, and a comment line at the end of the text",
+    'erDiagram\nA ||--o{ B : "x"\u2028%% c\n',
+    'erDiagram\n  A ||--o{ B : "x"\u2028%% c\n',
+  ],
+  [
+    "a treemap title, U+2028, a comment line, and a line of whitespace only at the end of the text",
+    "treemap\ntitle T\u2028%% c\n  \n",
+    "treemap\ntitle T\u2028%% c\n  \n",
+  ],
 ]
 
-describe("a separator that mermaid.js reads as text before a comment line at the end of the text", () => {
-  it.each(separatorReadAsTextExamples)(
-    "keeps %s",
-    async (_name, input, output) => {
-      await expectKept(input, output)
-    },
-  )
+describe("a separator before a comment line at the end of the text that mermaid.js reads or needs", () => {
+  it.each(separatorKeptExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
 })
 
 describe("a block diagram with a whitespace character that no fixture file holds", () => {

@@ -1692,11 +1692,12 @@ in every row where block drops it (ER rejects the row of a whitespace-only
 line). For a node or an edge that a U+2028 or U+2029 and a comment line follow,
 the other diagram types do not agree: flowchart and class print the comment line
 on a line of its own, as block does, and state and ER keep the line as written
-(`b`, a U+2028, and `%% c`). Where no statement follows the comment line,
+(`b`, a U+2028, and `%% c`). Where no statement follows the comment line, or an
+empty line stands before the statement that follows it,
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)
-gives the comment line a line of its own without the U+2028 or U+2029, as block
-prints it; elsewhere no rule gives the form, and the released form, which the
-conditions above state, stays until it is decided (see
+gives the comment line a line of its own without the U+2028 or U+2029, the form
+of the rows above that drop it; elsewhere no rule gives the form, and the
+released form, which the conditions above state, stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 On such a line, a color before a comma on its line, also after a space, a tab,
 or a form feed, and the last color of the last line, where no `;` that the line

@@ -8715,12 +8715,16 @@ block 図の終わりの `style a fill:#F00`、U+2028、`%% c` は、
 この形は、AGENTS.md の 4 が、
 同じに描かれるほかの形より読みにくい形を与える規則として、直すものと述べる、
 そのような行を書かれたまま残す形を直したものです。
-mermaid.js が U+2028 や U+2029 をテキストや名前の文字として読む所では、
-除くと描くものが変わるので、行を書かれたまま残します。
-Gantt と user journey のタイトルの終わり、timeline のイベントの終わり、
+mermaid.js が U+2028 や U+2029 をテキストや名前の文字として、
+またはノードとして読む所では、除くと描くものが変わるので、
+行を書かれたまま残します。
+Gantt と user journey のタイトルの終わり、timeline の期間とイベントの終わり、
 mindmap のノードと kanban のカードのテキストの終わり、
-ER 図のエンティティの名前の終わりと、
-mermaid.js がそれを treeView 図のノードとして読む所です。
+ER 図のエンティティの名前と関係のラベルの終わり、
+mermaid.js がそれを treeView 図のノードとして読む所、
+ER 図の引用符で囲んだ関係のラベルの後で、それをエンティティとして読む所です。
+それがないテキストを mermaid.js が拒否する行も、同じく残します。
+テキストの終わりで、空白だけの行が後に続く treemap のタイトルです。
 
 [test: block: style-ls-before-a-comment-at-the-end-of-the-text-is-dropped]
 [test: block: style-ls-before-two-comment-lines-at-the-end-of-the-text-is-dropped]
@@ -8734,6 +8738,10 @@ mermaid.js がそれを treeView 図のノードとして読む所です。
 [test: a kanban card that ends with U+2028 before a comment line at the end of the text]
 [test: an ER entity name that ends with U+2028 before a comment line at the end of the text]
 [test: a treeView node, U+2028, and a comment line at the end of the text]
+[test: a timeline period that ends with U+2028 before a comment line at the end of the text]
+[test: an ER relationship label that ends with U+2028 before a comment line at the end of the text]
+[test: an ER relationship label in quotes, U+2028, and a comment line at the end of the text]
+[test: a treemap title, U+2028, a comment line, and a line of whitespace only at the end of the text]
 
 ER 図では、そのような行の文について、スタイルの色、関係の語、
 1 語の名前の引用符のように普通の行と別に印字するものを、
