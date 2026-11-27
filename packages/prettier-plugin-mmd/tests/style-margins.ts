@@ -105,13 +105,21 @@ interface StyleReading {
    * statement.
    */
   readonly joinsFormFeeds: boolean
+  /**
+   * The style is one of a node of an agentflow diagram, which mermaid.js draws
+   * without any whitespace at the end of the last style, and the printer
+   * leaves all of it out, so whitespace of every kind there is no margin; in
+   * the other styles, only what CSS reads as whitespace is (docs/compatibility.md,
+   * Whitespace at the end of a style).
+   */
+  readonly dropsEveryWhitespaceAtEnd: boolean
 }
 
 /**
  * The text of a style without the whitespace that mermaid.js takes away
- * before it draws the figure: at its ends, and around its first `:`
- * (docs/flowchart.md, Styles), except the whitespace described in
- * `StyleReading`.
+ * before it draws the figure: what CSS reads as whitespace (see
+ * `isCssWhitespace`) at its ends and around its first `:` (docs/flowchart.md,
+ * Styles), except the whitespace described in `StyleReading`.
  */
 function withoutStyleMargins(
   written: string,
@@ -122,19 +130,22 @@ function withoutStyleMargins(
     splitsLabelStyles,
     collapsesWordGaps,
     joinsFormFeeds,
+    dropsEveryWhitespaceAtEnd,
   }: StyleReading,
 ): string {
   const style = collapsesWordGaps
     ? withoutWordRuns(written, joinsFormFeeds)
     : written
-  const trimmed = style.trim()
+  const trimmed = trimCssWhitespaceStart(
+    dropsEveryWhitespaceAtEnd ? style.trimEnd() : trimCssWhitespaceEnd(style),
+  )
   const escapedTail =
-    joinsStyles && escapesNext(trimmed) && style !== style.trimEnd()
+    joinsStyles && escapesNext(trimmed) && style !== trimCssWhitespaceEnd(style)
   const tail = escapedTail ? " " : ""
   const colon = trimmed.indexOf(":")
   if (colon < 0) return `${trimmed}${tail}`
   const beforeColon = trimmed.slice(0, colon)
-  const nameText = beforeColon.trimEnd()
+  const nameText = trimCssWhitespaceEnd(beforeColon)
   // CSS reads the space that a backslash escapes as part of the name.
   const name =
     nameText !== beforeColon && escapesNext(nameText)
@@ -144,13 +155,13 @@ function withoutStyleMargins(
     name.length < colon &&
     ((readsStroke && name.endsWith("stroke")) ||
       (splitsLabelStyles && (name === "color" || name === "text-align")))
-  const startsWithWhitespace = style !== style.trimStart()
+  const startsWithWhitespace = style !== trimCssWhitespaceStart(style)
   const start =
     startsWithWhitespace &&
     ((readsLinkStyle && trimmed.startsWith("stroke:")) ||
       (splitsLabelStyles &&
         (trimmed.startsWith("color:") || trimmed.startsWith("text-align:"))))
-  const value = trimmed.slice(colon + 1).trimStart()
+  const value = trimCssWhitespaceStart(trimmed.slice(colon + 1))
   const writtenValue = style.slice(style.indexOf(":") + 1)
   const blank =
     readsLinkStyle &&
@@ -158,6 +169,39 @@ function withoutStyleMargins(
     value === "" &&
     writtenValue !== ""
   return `${start ? " " : ""}${name}${gap ? " " : ""}:${blank ? " " : value}${tail}`
+}
+
+/**
+ * Whether a character is one that CSS reads as whitespace: a space, a tab, a
+ * line feed, a carriage return, or a form feed. The other characters that
+ * JavaScript's `trim` takes away (a no-break space, U+3000, a vertical tab, a
+ * byte order mark, U+2028, U+2029, and the other spaces of Unicode) are part of
+ * the value for CSS: the `style` of a class diagram that ends in one is drawn
+ * otherwise than without it (docs/compatibility.md, Whitespace at the end of a
+ * style).
+ */
+function isCssWhitespace(character: string | undefined): boolean {
+  return (
+    character === " " ||
+    character === "\t" ||
+    character === "\n" ||
+    character === "\r" ||
+    character === "\f"
+  )
+}
+
+/** The text without the CSS whitespace at its start. */
+function trimCssWhitespaceStart(text: string): string {
+  let start = 0
+  while (isCssWhitespace(text[start])) start++
+  return text.slice(start)
+}
+
+/** The text without the CSS whitespace at its end. */
+function trimCssWhitespaceEnd(text: string): string {
+  let end = text.length
+  while (end > 0 && isCssWhitespace(text[end - 1])) end--
+  return text.slice(0, end)
 }
 
 /**
@@ -324,6 +368,10 @@ export function styleDbForFormattingComparison(
         path.at(-2) === "children",
       collapsesWordGaps: runCollapsingDiagramTypes.has(diagramType),
       joinsFormFeeds: joinsFormFeedsAt(path, diagramType),
+      dropsEveryWhitespaceAtEnd:
+        diagramType === "agentflow" &&
+        key === "styles" &&
+        path.at(-2) === "vertices",
     }
     return key !== undefined &&
       isStyleKey(key) &&
