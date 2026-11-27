@@ -103,12 +103,17 @@ line at the level of the line that opens it. Every line inside a block stands at
 that level, whatever it holds: a statement, a comment line, or, in these
 diagrams, a directive line (`%%{x}%%` on a line of its own), which mermaid.js
 removes before it reads the text, as it removes a comment. For the same reason,
-a directive within a line, between two units, is the same kind of mark as the
-comment of JavaScript and CSS that can stand between two tokens, a block comment
-(`/* c */`): the whitespace beside it is that of the row A comment between two
+a directive within a line, between two units or after the last unit of a line,
+is the same kind of mark as the comment of JavaScript and CSS that can stand
+between two tokens or after the last one, a block comment (`/* c */`). Between
+two units, the whitespace beside it is that of the row A comment between two
 things, what Prettier prints beside a block comment at the same place, as
 `x = a/*c*/+b;` is printed `x = a /*c*/ + b;`, `x = [/*c*/1];` is printed
-`x = [/*c*/ 1];`, and `x = {  /*c*/  };` is printed `x = {/*c*/};`. Where
+`x = [/*c*/ 1];`, and `x = {  /*c*/  };` is printed `x = {/*c*/};`. After the
+last unit of a line, it is that of the row A comment after something on its
+line: one space before the directive and none after it at the end of the line,
+as `x = a;/*c*/` is printed `x = a; /*c*/`, `x = a;   /*c*/   ` is printed
+`x = a; /*c*/`, and `x = a /*c*/ /*d*/` is printed `x = a; /*c*/ /*d*/`. Where
 mermaid.js reads the whitespace on the two sides of a directive as one gap of an
 exact width, it decides instead (see
 [Where mermaid.js decides against the whitespace](#where-mermaidjs-decides-against-the-whitespace)).
