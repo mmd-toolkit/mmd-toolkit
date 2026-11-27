@@ -8885,6 +8885,16 @@ const separatorKeptExamples: readonly (readonly [string, string, string])[] = [
     'erDiagram\n  A ||--o{ B : "x"\u2028%% c\n',
   ],
   [
+    "a class style that ends with U+2028 before a comment line at the end of the text",
+    "classDiagram\nclass A\nstyle A fill:#F00\u2028%% c\n",
+    "classDiagram\n  class A\n  style A fill:#F00\u2028%% c\n",
+  ],
+  [
+    "a flowchart style that ends with U+2028 before a comment line at the end of the text",
+    "flowchart LR\nA\nstyle A fill:#F00\u2028%% c\n",
+    "flowchart LR\n  A\n  style A fill:#F00\u2028%% c\n",
+  ],
+  [
     "a treemap title, U+2028, a comment line, and a line of whitespace only at the end of the text",
     "treemap\ntitle T\u2028%% c\n  \n",
     "treemap\ntitle T\u2028%% c\n  \n",
