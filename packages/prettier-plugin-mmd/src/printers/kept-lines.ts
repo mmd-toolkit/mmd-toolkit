@@ -1983,6 +1983,33 @@ export function printedIgnoredSemicolonsOf(
   return printed
 }
 
+/**
+ * Whether taking the `;` at `offset`, one that the line rule ignores, out of
+ * its line changes which `;` the rule ignores there (common.md, The `style` and
+ * `classDef` lines): the rule takes the last `;` of a segment, so without this
+ * one it can take an earlier `;` of the line, and mermaid.js then reads another
+ * text (docs/mindmap.md, Node text).
+ */
+export function changesIgnoredSemicolonsWithout(
+  source: Source,
+  offset: number,
+): boolean {
+  const first = lineStartOf(source, offset)
+  const end = lineEndOf(source, offset)
+  const removed = new Set([offset])
+  const segments = readSegments(source, first, end).map((segment) =>
+    withoutOffsets(segment, removed),
+  )
+  const ignored = ignoredSemicolonsIn(segments).filter((other) => other >= 0)
+  const before = [...source.ignoredSemicolons].filter(
+    (other) => other !== offset && first <= other && other < end,
+  )
+  return (
+    ignored.length !== before.length ||
+    ignored.some((other) => !source.ignoredSemicolons.has(other))
+  )
+}
+
 /** The segment without the characters at the offsets in `removed`. */
 function withoutOffsets(
   segment: ReadableSegment,
