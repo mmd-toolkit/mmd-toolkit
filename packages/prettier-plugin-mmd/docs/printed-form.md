@@ -101,12 +101,20 @@ YAML mapping does: the lines after it stand one level deeper, up to the next
 line at the level of the line that opens it. Every line inside a block stands at
 that level, whatever it holds: a statement, a comment line, or, in these
 diagrams, a directive line (`%%{x}%%` on a line of its own), which mermaid.js
-removes before it reads the text, as it removes a comment. The text inside a
-template literal of JavaScript stays as written, and so does the text of a value
-that spreads over several lines. The lines between the `{` and the `}` of a
-description block, its text lines and the comment and directive lines among
-them, are such a text and no lines inside a block of this row: the row gives the
-closing `}` of such a block and no line between.
+removes before it reads the text, as it removes a comment. For the same reason,
+a directive within a line, between two units, is the same kind of mark as the
+comment of JavaScript and CSS that can stand between two tokens, a block comment
+(`/* c */`): the whitespace beside it is what Prettier prints beside a block
+comment at the same place, as `x = a/*c*/+b;` is printed `x = a /*c*/ + b;`,
+`x = [/*c*/1];` is printed `x = [/*c*/ 1];`, and `x = {  /*c*/  };` is printed
+`x = {/*c*/};`. Where mermaid.js reads the whitespace on the two sides of a
+directive as one gap of an exact width, it decides instead (see
+[Where mermaid.js decides against the whitespace](#where-mermaidjs-decides-against-the-whitespace)).
+The text inside a template literal of JavaScript stays as written, and so does
+the text of a value that spreads over several lines. The lines between the `{`
+and the `}` of a description block, its text lines and the comment and directive
+lines among them, are such a text and no lines inside a block of this row: the
+row gives the closing `}` of such a block and no line between.
 
 A keyword stands between two things (`a in b`) or before what it takes
 (`return x`, `typeof y`, `throw e`, and in CSS `@media screen` and
