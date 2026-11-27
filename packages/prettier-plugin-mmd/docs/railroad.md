@@ -22,13 +22,7 @@ only: it rejects the name without `-beta`, with `-beta` in another case, and in
 capitals, so no other spelling is printed (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Hidden
 forms, global trivia and protected semicolon segments retain their shared
-boundaries; an empty body stays empty. Rule 1 names no mark for the line that
-follows the header, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [info](./info.md#header), [wardley](./wardley.md#header), and
-[architecture](./architecture.md#header) keep the boundaries of hidden forms and
-protected segments at their headers, where no other rule keeps the layout as
-written (a protected `style` or `classDef` line, and the like).
+boundaries; an empty body stays empty.
 
 [fixture: railroad/header/abnf-hidden]
 
@@ -113,15 +107,10 @@ continuation lines and standalone trivia inside a rule use two steps; a separate
 structural closer or terminator aligns with the statement. Nested IR calls use
 their argument levels as described in [Long lines](#long-lines). Other written
 value columns, hidden interiors and retained prefixes keep their own columns.
-Semicolon-protected segments start at one body step, like other flat diagrams;
-their later lines keep their written columns because these belong to the
-protected text. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
-the first line that step, as Prettier prints the lines inside a block, and
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) keeps
-the later lines, as [wardley](./wardley.md#indentation) and
-[cynefin](./cynefin.md#semicolons) keep the later lines of a protected segment
-in their written columns, where no other rule keeps the layout as written (a
-value that mermaid.js reads by its columns, and the like).
+Semicolon-protected segments start at one body step; their later lines keep
+their written columns because these belong to the protected text.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the first line
+that step, as Prettier prints the lines inside a block.
 
 [fixture: railroad/indentation/abnf-default]
 
@@ -1450,8 +1439,7 @@ preserve ownership and prevent a line comment from taking code.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. The text of a comment is kept as written, with
-the whitespace at its end: mermaid.js does not read it, as
-[flowchart](./flowchart.md#comments) says of the text of its comments.
+the whitespace at its end: mermaid.js does not read it.
 
 Inside an ordinary IR call, a block comment before an argument moves with that
 argument onto its line. Comments before a comma or the closing parenthesis
@@ -2121,9 +2109,10 @@ comment marks remain grammatical punctuation and are excluded from the shared
 textual-prefix scan. Ordinary IR rules keep semicolons inside values as text
 without preventing structural call layout. Other semicolons protect their source
 segment through whole crossing values/trivia. Align each protected segment's
-first line to one body step, as in other flat diagrams; its later lines retain
-their written columns with no added indentation. Columns have no grammatical
-meaning on the first line.
+first line to one body step, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for the lines
+inside a block; its later lines retain their written columns with no added
+indentation. Columns have no grammatical meaning on the first line.
 
 [fixture: railroad/long-lines/ir-semicolon-kept]
 
@@ -2870,14 +2859,14 @@ railroad-peg-beta
 
 Collapse ordinary blank runs to at most one and remove blanks at document/body
 edges. Empty ordinary whitespace-only lines and remove harmless ASCII padding at
-headers or completed structures. This keeps the same visual separation as other
-flat diagrams. Prettier prints blank lines empty and removes spaces and tabs at
-the end of a line, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-prints ordinary whitespace-only lines empty and removes harmless ASCII padding
-after headers and completed structures. Values, comment tails, directive/hidden
-contents, necessary closer padding, prefixes and protected segments retain their
-own rules. ABNF space after an apparent terminator is not assumed harmless: its
-AST can instead contain a comment.
+headers or completed structures. Prettier prints blank lines empty and removes
+spaces and tabs at the end of a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints ordinary
+whitespace-only lines empty and removes harmless ASCII padding after headers and
+completed structures. Values, comment tails, directive/hidden contents,
+necessary closer padding, prefixes and protected segments retain their own
+rules. ABNF space after an apparent terminator is not assumed harmless: its AST
+can instead contain a comment.
 
 [fixture: railroad/blank-lines/abnf-collapse]
 
@@ -2947,17 +2936,10 @@ Malformed YAML, indented fences, closer padding, HTML-quote hazards, fences that
 formatting would create in the body and retained-prefix YAML stay written. An
 indented fence, a fence line that formatting would create, and an HTML-quote
 hazard stay written for the reasons under
-[Frontmatter](./compatibility.md#frontmatter). Rule 1 names no mark for the
-whitespace after a `---` line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [radar](./radar.md#frontmatter-yaml),
-[info](./info.md#frontmatter-yaml), [packet](./packet.md#frontmatter-yaml), and
-[wardley](./wardley.md#frontmatter-yaml) keep the padding of a delimiter, where
-no other rule keeps the layout as written (a hazard named under Frontmatter, and
-the like). The YAML that is formatted is printed as Prettier prints YAML, with
-`key: value` for the colon of a key (rule 1). YAML nesting and block scalars use
-the shared positive minimum at tabWidth zero. Native hidden YAML is opaque and
-never enters this path.
+[Frontmatter](./compatibility.md#frontmatter). The YAML that is formatted is
+printed as Prettier prints YAML, with `key: value` for the colon of a key (rule
+1). YAML nesting and block scalars use the shared positive minimum at tabWidth
+zero. Native hidden YAML is opaque and never enters this path.
 
 [fixture: railroad/frontmatter-yaml/abnf-padding]
 

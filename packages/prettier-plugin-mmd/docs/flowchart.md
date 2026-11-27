@@ -2008,12 +2008,7 @@ value read from the next line.
 
 [fixture: accessibility-lines/next-line-values]
 
-A real comment or directive prevents compact joining. Accessibility statements
-in [class](./class.md#multi-line-statements) and
-[C4](./c4.md#accessibility-lines) diagrams keep the line breaks beside an
-intervening comment or directive;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-a flowchart the same breaks. Keep the previous
+A real comment or directive prevents compact joining. Keep the previous
 [Multi-line statements](#multi-line-statements) layout: continuation lines,
 including comment and directive lines, stand one level deeper than the keyword;
 the comment/directive text and the authored statement breaks remain. Other rules
@@ -2239,10 +2234,7 @@ a statement on one line.
 [fixture: multi-line-statements/click-string-over-lines-comment-and-empty-line]
 
 A U+2028 or U+2029 between its parts stays where it is, also after a string that
-runs over lines. Rule 1 names no mark for a gap that holds one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+runs over lines.
 
 [test: U+2028 between the parts of a flowchart click statement with a string
 over lines] [test: U+2029 between the parts of a flowchart click statement with
@@ -3333,11 +3325,7 @@ the keyword: `graph>` is printed `graph >`, and `flowchart^` is printed
 `TD` already needs the space. The header is a keyword before the direction it
 takes; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space
 between them. A directive between them is placed as under
-[Directives](#directives), and a U+2028 or U+2029 stays where it is. Rule 1
-names no mark for a gap that holds one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+[Directives](#directives), and a U+2028 or U+2029 stays where it is.
 
 [fixture: direction/header-symbol-touching-spaced] [fixture:
 direction/header-symbol-beside-directive-kept] [test: U+2029 between the graph
@@ -3409,11 +3397,12 @@ subgraph-header/title-touches-name] [fixture:
 subgraph-header/title-touches-name-kinds]
 
 mermaid.js reads both forms the same, so nothing forces the form. The `[` of the
-label of a node touches its id, as in `A[t]`, and the headings of an agentflow
-touch their titles, as in `flow F[T]`: all 19 headings with a title in
-[the documentation of agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
-are written so. The documentation of flowchart has two subgraphs with a title,
-and both have a space
+label of a node touches its id, as in `A[t]`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form, with
+`subgraph S [t]` printed `subgraph S[t]` as its example: the `[` of the title
+attaches to the name as the `[` of an index does (Prettier prints `x [ 0 ];` as
+`x[0];`). The documentation of flowchart has two subgraphs with a title, and
+both have a space
 ([`subgraph ide1 [one]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1030),
 [`subgraph one [My Group]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1109)),
 which does not decide the form. Where the gap lies between a `:` and a `#` of a
@@ -3429,11 +3418,7 @@ A directive in the gap is placed as under [Directives](#directives).
 [fixture: subgraph-header/title-beside-directive] [fixture:
 subgraph-header/title-beside-directive-runs]
 
-A U+2028 or U+2029 in the gap stays where it is. Rule 1 names no mark for a gap
-that holds one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+A U+2028 or U+2029 in the gap stays where it is.
 
 [test: U+2028 between a subgraph name and its title] [test: U+2029 and spaces
 between a subgraph name and its title]

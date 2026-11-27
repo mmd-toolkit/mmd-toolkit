@@ -505,8 +505,10 @@ stateDiagram-v2
 
 ### 空行
 
-flowchart と同じです。
 空行の連続は 1 つにし、本体の先頭と末尾の空行は取り除きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、空行の連なりを 1 行にし、
+ファイルやブロックの初めと終わりの空行を除きます。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/end-of-text-dropped]
 [fixture: blank-lines/around-comments-and-directives]
@@ -556,6 +558,7 @@ Prettier が `return  x` を `return x;` と印字するためです。
 接しているトークンは接したまま残します。
 flowchart と同じです。
 （[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)）。
+
 ただし、別名の定義の語と擬似状態の印は、
 空白 1 つを置きます（[別名](#別名)と[擬似状態](#擬似状態)を参照）。
 
@@ -566,11 +569,7 @@ flowchart と同じです。
 遷移の中や単独の行にある状態参照の `:::` は、
 前の状態にも後ろのクラスにも接します。
 `A :::c` と `A ::: c` は `A:::c` になります。
-ER 図と同じです。
 mermaid.js はどの書き方も同じ状態として読むので、形を強いるものはありません。
-ER 図の `:::` はすでにこの形で印字しており、mermaid.js の文書の例 5 件も、
-この書き方です。
-（[`Still:::notMoving` など](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)）。
 
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
@@ -590,11 +589,6 @@ Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字し�
 
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 は、そのまま残します。
-規則 1 の表に、これを含む間隔の印はないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#行区切り文字) と
-[timeline](./timeline.ja.md#行区切り文字) も、
-これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 before the `:::` of a state]
 [test: U+2029 after the `:::` of a state]
@@ -1366,8 +1360,10 @@ id が空の場合も同じです。
 
 [fixture: notes/blank-text-kept]
 
-独立したノートの引用符は書かれたまま残し、その間の本文も空白ごと残します。
-flowchart の引用符で囲むラベルの内部と同じです。
+独立したノートの引用符は書かれたまま残します。
+その間の本文は、空白ごと残します。
+[規則 1](./printed-form.ja.md#木が丸ごと持つテキスト)により、
+木が丸ごと持つテキストは、その中を書かれたまま印字するからです。
 `note ""floating" as N` の本文は `floating` で、
 `note "  floating   text  " as N` はそのまま残します。
 mermaid.js は、その空白によらず同じテキストを読み、同じノートを描きます。
@@ -1385,11 +1381,6 @@ Prettier が 2 つのものの間のキーワードに置く空白と同じく�
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が前後に空白 1 つを与えます。
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
-規則 1 の表に、これを含む間隔の印はないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#行区切り文字) と
-[timeline](./timeline.ja.md#行区切り文字) も、
-これを含む間隔を書かれたまま印字します。
 
 [fixture: notes/floating-note-as-gaps-spaced]
 [fixture: notes/floating-note-as-beside-directive]
@@ -1587,10 +1578,7 @@ stateDiagram-v2
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
 Prettier がブロックの中のコメント行をそう印字するためです。
-[class](./class.ja.md#コメント) と [sequence](./sequence.ja.md#コメント)
-の図は、行に単独のコメントの本文で、先頭と語の間の隙間を書かれたまま残します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-state 図にもこの形を与えます。
+行に単独のコメントの本文で、先頭と語の間の隙間は書かれたまま残します。
 
 [fixture: comments/kept] [fixture: comments/text-kept]
 [fixture: comments/before-closing-brace]

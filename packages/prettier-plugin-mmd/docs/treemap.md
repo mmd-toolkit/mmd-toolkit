@@ -54,15 +54,13 @@ step. This chooses consistent depths from equivalent widths.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary roots,
 common statements, and class definitions one configured step below the header,
 as Prettier prints the lines inside a block. A child stands deeper, since
-indentation determines parentage, one step below its parent under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
-following the indentation gaps in [kanban](./kanban.md#indentation) diagrams.
-Use at least one character per step at tabWidth zero because indentation
-determines parentage. A title or an accessibility statement that was not written
-indented is the exception and is printed at the start of its line (see
-[Title](#title)). A styleless, unterminated class definition touching a row
-keeps that contact; in such a diagram every root uses baseline zero, so later
-roots cannot become children accidentally.
+indentation determines parentage, one step below its parent. Use at least one
+character per step at tabWidth zero because indentation determines parentage. A
+title or an accessibility statement that was not written indented is the
+exception and is printed at the start of its line (see [Title](#title)). A
+styleless, unterminated class definition touching a row keeps that contact; in
+such a diagram every root uses baseline zero, so later roots cannot become
+children accidentally.
 
 [fixture: treemap/indentation/irregular]
 
@@ -504,8 +502,10 @@ treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-
 
 ### Styles
 
-The style of a `classDef` is printed as the styles of the other diagram types
-are (see
+The style of a `classDef` is printed as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the colon of a
+key in a style (`fill: #f00`), one space after a comma, and no whitespace at the
+end of a line (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 mermaid.js splits it at the commas that no backslash escapes, and takes the
 whitespace around the name and the value of each style away before it draws; CSS
@@ -582,8 +582,7 @@ treemap
 
 ### Colors
 
-A color in the style of a `classDef` is printed in lower case, as in most of the
-other diagram types, but not in a class diagram (see
+A color in the style of a `classDef` is printed in lower case (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)):
 `classDef zz fill:#ABCDEF` is printed `classDef zz fill: #abcdef`. The versions
 that count draw `#ABCDEF` and `#abcdef` the same. A `#` that is no color, such
@@ -722,7 +721,7 @@ comment lines after a style terminator that follows U+2028] [test: treemap style
 terminators dropped with a form feed, a space, and a tab]
 
 A directive before a `;` that the line rule ignores stays and the `;` is
-dropped, as in the other diagram types.
+dropped.
 
 [fixture: semicolons/class-terminator-hash-directive-dropped]
 
@@ -1092,17 +1091,19 @@ title Topic words
 
 Use the shared `accTitle: value` and `accDescr: value` layout: colon touching
 the keyword, one space before a trimmed nonempty value, and no space after an
-empty colon. Keep internal text; braces after a colon remain line text. These
-equivalent outer gaps follow the other diagrams. Trivia retains boundaries and
-no next-line value is joined. An accessibility value ends at a line terminator
-or at the first `%%`, so a statement on the next line is not part of it:
-mermaid.js reads `accTitle:` followed by a leaf line as an empty title and a
-separate leaf. Joining the leaf to the value would make mermaid.js read
-accessibility text instead of the leaf and change the Db, so the line boundary
-stays. Where only directives follow the text of the value, they are printed with
-one space before each that has spaces or tabs before it, and the spaces and tabs
-after the last one are left out, unless a directive of the line holds a line
-break, a `;`, a U+2028, or a U+2029 (see
+empty colon. Keep internal text; braces after a colon remain line text.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these
+equivalent outer gaps: those of the colon of a key, and no whitespace at the end
+of a line. Trivia retains boundaries and no next-line value is joined. An
+accessibility value ends at a line terminator or at the first `%%`, so a
+statement on the next line is not part of it: mermaid.js reads `accTitle:`
+followed by a leaf line as an empty title and a separate leaf. Joining the leaf
+to the value would make mermaid.js read accessibility text instead of the leaf
+and change the Db, so the line boundary stays. Where only directives follow the
+text of the value, they are printed with one space before each that has spaces
+or tabs before it, and the spaces and tabs after the last one are left out,
+unless a directive of the line holds a line break, a `;`, a U+2028, or a U+2029
+(see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
@@ -1294,16 +1295,13 @@ treemap
 ### Comments
 
 Align standalone comment lines with the next statement, or the last statement at
-EOF, to show their association, as in [ishikawa](./ishikawa.md#comments),
-[kanban](./kanban.md#comments) and [mindmap](./mindmap.md#comments). This
-applies whether the comment was shallower or deeper than that statement,
-including before a dedent.
+EOF, to show their association. This applies whether the comment was shallower
+or deeper than that statement, including before a dedent.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
 among the statements one configured step below the header, as Prettier prints
 every line inside a block at one level, whatever it holds. A comment line before
 a child, or after the last statement where that is a child, aligns with that
-child, which stands deeper since indentation determines parentage, as in those
-diagram types.
+child, which stands deeper since indentation determines parentage.
 
 [fixture: treemap/comments/aligned-depths] [fixture:
 treemap/comments/standalone] [fixture: treemap/comments/aligned-final]

@@ -262,9 +262,11 @@ classDiagram
 
 ### 空行
 
-flowchart と同じです。
 空行の連続は 1 つにし、
 namespace とメンバーの本体の先頭と末尾の空行は取り除きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、空行の連なりを 1 行にし、
+ファイルやブロックの初めと終わりの空行を除きます。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/namespace-edges-dropped]
 [fixture: blank-lines/edges-around-comment-and-directive-lines-dropped]
@@ -336,13 +338,7 @@ Prettier が `return  x` を `return x;` と印字するためです。
 
 クラスの `:::` は、前の名前にも後ろの CSS クラスにも接します。
 `class A :::c` と `class A ::: c` は `class A:::c` になります。
-ER 図と同じです。
 mermaid.js はどの書き方も同じクラスとして読むので、形を強いるものはありません。
-mermaid.js の文書の例 4 件は、本体なしと本体ありで `class Animal:::someclass`、
-`class Animal:::pink`、`class Animal:::styleClass` と書いています。
-その範囲は、
-[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L833)
-にあります。
 
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
@@ -849,8 +845,11 @@ classDiagram
 sequence 図では `:` を前のものに接して書きます（詳しくは、
 [sequence 図の整形規則のコロン](./sequence.ja.md#コロン) を参照）。
 どちらも、その図種のドキュメントの書き方に従っています。
-`accTitle` と `accDescr` の後の `:` は、他の図種と mermaid.js の文書と同じく、
-キーワードに接し、後に空白を 1 つ置きます。
+`accTitle` と `accDescr` の後の `:` は、キーワードに接し、
+後に空白を 1 つ置きます。
+キーのコロンの形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます（Prettier は
+`x = {a : 1}` を `x = { a: 1 };` と印字します）。
 
 [fixture: labels/accessibility-text-runs-collapsed]
 [fixture: multi-line-statements/joined]

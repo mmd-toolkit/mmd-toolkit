@@ -98,16 +98,11 @@ each attribute stands on a line of its own, one level deeper; and the `}` stands
 on a line of its own at the level of the entity.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the attributes
 one level deeper than the line of the entity and its closing `}` at that line's
-level, as Prettier prints the lines inside a block. Rule 1 gives the one space
-before the `{` of a block (Prettier prints `function f(){}` as
-`function f() {}`).
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the line of the opening brace, as [class](./class.md#member-bodies),
-[requirement](./requirement.md#bodies), and [state](./state.md#composite-states)
-print the `{` of a body after one space on the line of its opener, also where it
-was written touching it. An attribute that holds a comment region that joins two
-of its lines stays as written whole (see
-[Attribute spacing](#attribute-spacing)).
+level, as Prettier prints the lines inside a block. Rule 1 gives the `{` one
+space after the entity, on its line, as Prettier prints `function f(){}` as
+`function f() {}`, and `class A`, a line break, and `{}`, as `class A {}`. An
+attribute that holds a comment region that joins two of its lines stays as
+written whole (see [Attribute spacing](#attribute-spacing)).
 
 [fixture: attribute-blocks/opening-brace-after-one-space] [test:
 er/attribute-blocks/comment-region-keeps-the-joined-attributes] [fixture:
@@ -116,8 +111,8 @@ attribute-blocks/split]
 A block written on one line, or with its first attribute on the line of the `{`
 or its last on the line of the `}`, is split so: mermaid.js reads the attribute
 block without regard to line breaks, so it reads the same attributes.
-[class](./class.md#member-bodies) and [state](./state.md#composite-states) split
-a body written on one line in the same way (rule 2).
+[state](./state.md#composite-states) splits a body written on one line in the
+same way (rule 2).
 
 [fixture: attribute-blocks/split] [corpus fixture: er/gram-attributes-one-line]
 [corpus fixture: er/gram-attribute-split-lines]
@@ -506,11 +501,7 @@ tabs inside a tilde word or a backquoted word is printed as one space (see
 and the text of a comment is kept, since the Db holds the type, the name, and
 the comment of an attribute as written. Rule 1 does not decide the inside of a
 tilde word or a backquoted word
-([A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-one space, as [class](./class.md#member-lines) prints a run of spaces and tabs
-inside a field and [architecture](./architecture.md#label-content) inside the
-text of a label as one space, where mermaid.js draws the text without the run.
+([A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
 
 [fixture: attribute-spacing/tilde-word-runs-collapsed] [fixture:
 attribute-spacing/backquoted-word-runs-collapsed]
@@ -530,8 +521,7 @@ breaks. Later structural parts and standalone trivia stand one level inside the
 attribute, also in a subgraph; type, name and quoted-comment interiors stay as
 written, since the Db holds them as written. An attribute that holds a comment
 region that joins two of its lines stays as written whole (see below). The line
-breaks next to the comment line or the directive stay for the reason given under
-[Multi-line statements](#multi-line-statements).
+breaks next to the comment line or the directive stay.
 
 [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
@@ -1221,9 +1211,11 @@ erDiagram
 
 ### Blank lines
 
-As in a class diagram: a run of empty lines becomes one, and empty lines at the
-start and the end of the diagram, of an attribute block, and of a subgraph are
-dropped.
+A run of empty lines becomes one, and empty lines at the start and the end of
+the diagram, of an attribute block, and of a subgraph are dropped.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and
+the end of a file or of a block.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/block-edges-dropped]
 [fixture: blank-lines/header-and-end-of-text-dropped] [fixture:
@@ -1588,12 +1580,7 @@ gives `A( text )` in a flowchart as `A(text)`): `p [ Person ]` is printed
 The first class after `:::` touches it, and the classes are separated by a `,`
 that touches the class before it and has one space after it, as Prettier prints
 a comma where mermaid.js reads the list the same: `A ::: c1 , c2` is printed
-`A:::c1, c2`. Rule 1 names no mark for the `:::`, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [class](./class.md#whitespace-between-tokens) and
-[state](./state.md#whitespace-between-tokens) print the `:::` touching the name
-before it and the class after it (`class A ::: c` is printed `class A:::c`, and
-`A ::: c` in a state diagram is printed `A:::c`).
+`A:::c1, c2`. The `:::` touches the name before it.
 
 [fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
 
@@ -1880,17 +1867,14 @@ direction/text-both-sides-inner-whitespace-kept] [fixture: direction/case-kept]
 [fixture: direction/case-bt-rl-kept]
 
 A value written on a later line is printed after `direction` on one line, as
-[requirement](./requirement.md#direction),
-[class](./class.md#multi-line-statements), and
-[state](./state.md#multi-line-statements) print `direction` and a value written
-on the next line (rule 2).
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+between a keyword and its text (Prettier prints `return  x` as `return x;`).
 
 [fixture: direction/value-on-next-line-joined] [corpus fixture:
 er/lex-direction-value-next-line]
 
 A direction line with a directive or comment keeps its line breaks and indents
-structural continuations one level deeper. The line breaks stay for the reason
-given under [Multi-line statements](#multi-line-statements).
+structural continuations one level deeper.
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -2386,8 +2370,9 @@ A comment line before the header stands at the first column.
 [fixture: comments/before-header]
 
 A comment line at the end of the text stays on a line of its own, with the line
-break added, as in [gantt](./gantt.md#comments) and
-[journey](./journey.md#comments).
+break added. The line break added at the end is the one line break that
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives at the end of
+the text (Prettier ends a file with one line break).
 
 [fixture: comments/after-last-statement-without-line-break] [fixture:
 comments/after-header-without-line-break]
@@ -2455,15 +2440,11 @@ it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
 directive line inside a block one level deeper than the line that opens it, as
 Prettier prints the lines inside a block. A directive within a printed line is
 placed as in a flowchart: the gap is printed as without the directive, and the
-directive stands after its space and touches the unit that follows it. Rule 1
-names no mark for a directive in a gap, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [class](./class.md#directives),
-[sequence](./sequence.md#directives), and [state](./state.md#directives) print
-the gap in the same way, where no other rule keeps the layout as written: a
-directive that is not closed, below, and a line that a comment region joins, see
+directive stands after its space and touches the unit that follows it. This
+holds where no other rule keeps the layout as written: a directive that is not
+closed, below, and a line that a comment region joins, see
 [Multi-line statements](#multi-line-statements). A gap that holds U+2028 or
-U+2029 is not a gap that they print so: class, sequence, state, and flowchart
+U+2029 is not a gap that is printed so: class, sequence, state, and flowchart
 keep it as written, and no precedent gives a form that ER prints for it except
 where ER keeps the gap as written too, so the forms that the released version
 prints stay until they are decided (see
@@ -2504,14 +2485,8 @@ and its label, the character ends the line, and the directive and the text after
 it stand on the next line. The fourth form is after `direction`, after the colon
 of `accTitle`, and after the keyword of a `style` or a `classDef` statement,
 where the gap stays as written: rule 2 gives that form, since
-[flowchart](./flowchart.md#directives),
-[class](./class.md#whitespace-between-tokens), and
-[state](./state.md#whitespace-between-tokens) keep a gap that holds U+2028 or
-U+2029 at these places as written, and
-[sequence](./sequence.md#whitespace-between-tokens),
-[journey](./journey.md#line-separators), and
-[timeline](./timeline.md#line-separators) after the colon of `accTitle`. The
-other places are not stated here.
+[flowchart](./flowchart.md#directives) keeps a gap that holds U+2028 or U+2029
+at these places as written. The other places are not stated here.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
@@ -2841,10 +2816,10 @@ erDiagram
 
 ### Frontmatter YAML
 
-As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
-YAML formatter, so that every mark in it has the whitespace that Prettier prints
-beside it ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and the
-`---` lines are kept as written, with the spaces and tabs at the end of each.
+The YAML between the `---` lines is formatted with Prettier's YAML formatter, so
+that every mark in it has the whitespace that Prettier prints beside it
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and the `---`
+lines are kept as written, with the spaces and tabs at the end of each.
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/config-formatted] [fixture:
@@ -3322,39 +3297,37 @@ multi-line-statements/style-over-lines-joined]
 
 A statement with a comment or directive keeps its line breaks; structural
 continuations and intervening trivia stand one level deeper. Whitespace inside
-values and before the first line break of each gap stays unchanged. Rule 1 names
-no mark for a line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, where no other rule keeps
-the layout as written (where the Db holds the text with its whitespace, where
-moving a line makes mermaid.js reject the text). A joining region keeps the line
-that it joins as written (see below). A line break stays where joining it, with
-one space or with nothing, could change which `;` the line rule ignores, and
-where a `;` ends the last line; any other line break is joined as usual, also in
-a statement that holds a `;`. A statement that keeps a line break prints a run
-of spaces, tabs, no-break spaces, and U+3000 after a comma between two styles,
-and a run of spaces and tabs before it, as one space, on the first line and on
-the lines after it. A vertical tab, a form feed, and every other wide space
-(U+1680, U+2000 to U+200A, U+202F, U+205F, and U+FEFF) after a comma are printed
-as one space too, and so are a vertical tab and a form feed before it. The
-statement keeps a run at the end of a line, a run around the colon of a style, a
-run inside the text of a style, and a wide space (a no-break space, U+1680,
-U+2000 to U+200A, U+202F, U+205F, U+3000, or U+FEFF) or a U+2028 before a comma
-as written, with its color. Its colors are printed as under [Colors](#colors)
-where a comma follows the color, also after whitespace and a line break, and for
-the last color of the statement where no `;` follows it on its line. A color
-that characters follow after whitespace stays as written, as under Colors, and
-so does a color that a `;` touches (`#ABC;`, `#ABC;;`, and `#ABC; ;`) and a
-color that a wide space other than the vertical tab and the form feed, a U+2028,
-or a U+2029 separates from the `;`. A color that a space, a tab, a vertical tab,
-or a form feed separates from the `;` is printed as under Colors where no
-comment region follows it on its line: where one does, the color stays as
-written, since the U+2028 or U+2029 that the text of the style keeps after the
-color makes it a word that the character touches (see
-[Attribute spacing](#attribute-spacing)).
+values and before the first line break of each gap stays unchanged. A line break
+next to a comment or a directive stays, and so does the whitespace before it, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives:
+[sequence](./sequence.md#multi-line-statements) keeps the whitespace before the
+first line break of each gap, which can make mermaid.js read later lines as part
+of the same statement. In some places another rule also keeps the layout as
+written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text). A joining region keeps the line that it joins
+as written (see below). A line break stays where joining it, with one space or
+with nothing, could change which `;` the line rule ignores, and where a `;` ends
+the last line; any other line break is joined as usual, also in a statement that
+holds a `;`. A statement that keeps a line break prints a run of spaces, tabs,
+no-break spaces, and U+3000 after a comma between two styles, and a run of
+spaces and tabs before it, as one space, on the first line and on the lines
+after it. A vertical tab, a form feed, and every other wide space (U+1680,
+U+2000 to U+200A, U+202F, U+205F, and U+FEFF) after a comma are printed as one
+space too, and so are a vertical tab and a form feed before it. The statement
+keeps a run at the end of a line, a run around the colon of a style, a run
+inside the text of a style, and a wide space (a no-break space, U+1680, U+2000
+to U+200A, U+202F, U+205F, U+3000, or U+FEFF) or a U+2028 before a comma as
+written, with its color. Its colors are printed as under [Colors](#colors) where
+a comma follows the color, also after whitespace and a line break, and for the
+last color of the statement where no `;` follows it on its line. A color that
+characters follow after whitespace stays as written, as under Colors, and so
+does a color that a `;` touches (`#ABC;`, `#ABC;;`, and `#ABC; ;`) and a color
+that a wide space other than the vertical tab and the form feed, a U+2028, or a
+U+2029 separates from the `;`. A color that a space, a tab, a vertical tab, or a
+form feed separates from the `;` is printed as under Colors where no comment
+region follows it on its line: where one does, the color stays as written, since
+the U+2028 or U+2029 that the text of the style keeps after the color makes it a
+word that the character touches (see [Attribute spacing](#attribute-spacing)).
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:

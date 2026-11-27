@@ -210,10 +210,12 @@ journey
 ### 空行
 
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、空行の連なりを 1 行にし、
+ファイルとブロックの先頭と末尾の空行を取り除きます。
 Prettier は、テキストの先頭の空行を落とします。
 ヘッダーの前の空行を落とす形も、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
-他の図種と同じ規則です。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
 
@@ -310,7 +312,6 @@ mermaid.js の文書の例は、このコロンを説明に接して書きます
 [コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
 を参照してください。
 そのため `Make tea : 5: Me` は `Make tea: 5: Me` と印字します。
-名前に桁そろえの空白がある Gantt 図のタスクをそろえるのと同じく、
 コロンをそろえる空白は残します。
 節のどれかの説明が、コロンの前に 2 つ以上の空白かタブを持つ節は、
 その節のタスクをすべて書かれたままにします（最初の `section` より前のタスクは、
@@ -556,12 +557,9 @@ Prettier が行末の空白とタブを落とすのと同じく、そこに何�
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
 間にコメント行があれば、
 文は書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
-規則 1 は、改行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#タイトル) は、
-`title` と改行とその次のテキストを 1 行で印字し、
-[xychart](./xychart.ja.md#複数行の文) は、mermaid.js が複数行で読む文を、
-改行を空白 1 つにして 1 行で印字します。
+改行のあった所の空白 1 個は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は、`x = a +`、改行、`b;` を `x = a + b;` と印字します。
 
 [fixture: titles-and-sections/value-on-next-line]
 [fixture: titles-and-sections/comment-line-inside-kept]
@@ -663,7 +661,9 @@ journey
 
 `accTitle` と `accDescr` の `:` はキーワードに接し、後ろに空白 1 つを置きます。
 テキストの両端に空白は置きません。
-コロンの形は Gantt 図と同じです。
+このコロンの形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がキーのコロンに与える形です。
+Prettier は、`x = {a : 1}` を `x = { a: 1 };` と印字します。
 
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/text-whitespace-dropped]
@@ -828,12 +828,14 @@ mermaid.js が複数行にわたって読む文は、
 `accTitle` と `accDescr:` の文では、注釈類の改行を保ち、
 section の下でも後続の構造部分と独立した注釈類行を文より 1 段深くそろえます。
 各隙間の最初の行の末尾と、指令の内部全体を保ちます。
-規則 1 は、改行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[timeline](./timeline.ja.md#複数行の文)も、
-コメントやディレクティブの隣の改行と、その前の空白を残します。
-ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+コメントやディレクティブの隣の改行は残し、その前の空白も残します。
+その空白は、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+[sequence](./sequence.ja.md#複数行の文) は、
+各隙間の最初の改行の前の空白を残します。
+その空白は、後の行を同じ文の一部として mermaid.js に読ませることがあるためです。
+ほかの規則も配置を書かれたまま残す所があります（Db
+が空白ごとテキストを持つ所や、
 動かすと mermaid.js がテキストを拒否する所などです）。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 `;` があるだけでは、複数行に書かれた文をつなぐ妨げにはなりません。
@@ -1163,9 +1165,10 @@ journey
 
 ### フロントマターの YAML
 
-flowchart と同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整形し、`---` の行は、
-末尾の空白も含めて書かれたまま残します。
+`---` の行の間の YAML は、ほかの場所の YAML と同じく、
+Prettier の YAML 整形で整形します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+`---` の行は、末尾の空白も含めて書かれたまま残します。
 
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]

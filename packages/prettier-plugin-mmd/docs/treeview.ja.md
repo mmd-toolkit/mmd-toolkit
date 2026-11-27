@@ -778,9 +778,6 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 根を見出しより設定の 1 段深く置きます。
 Prettier がブロックの中の行を印字する形です。
 子は、字下げが親子を決めるので、それより深く立ちます。
-[kanban](./kanban.ja.md#インデント) は、項目をセクションのさらに 1 段下に置き、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-treeView の子にも同じ配置を与えます。
 空白の 1 段は `max(1, tabWidth)`、`useTabs` は 1 タブです。
 最初のノードが深い場合、後の根が浅い場合、不揃いな増分、重複名と空名でも、
 Db の等しい一定幅を選びます。
@@ -1426,10 +1423,6 @@ treeView-beta
 
 字下げモードの別行の注釈は、その行を保ち、
 正の前置空白を残して所有ノードに揃えます。
-[kanban](./kanban.ja.md#アイコンとクラス) は、
-別行の装飾を所有ノードの列に置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-字下げモードの注釈にも同じ配置を与えます。
 罫線モードの枝付き注釈は、所有ノードの行へ、原順で空白 1 個を挟んで寄せます。
 ただし、前に description が無く、間にコメント、ディレクティブ、
 選ばれるセミコロンやコメント領域が無い場合だけです。
@@ -1633,10 +1626,6 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 普通の class の部品は `:::Name`、icon は `icon(reference)` に詰めます。
 `icon()` と `icon(:file)` も同様で、名前の綴りは保ちます。
 印後を詰めると class がまとまり、icon の内側の空白は文法にありません。
-[kanban](./kanban.ja.md#アイコンとクラス) は、
-`:::` とクラス名の間の空白とタブを除きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-treeView のクラスにもこの詰めた形を与えます。
 完全な部品の間の付随要素は境界を保ちます。
 
 [fixture: treeview/annotation-components/class-post-marker]
@@ -2611,8 +2600,7 @@ treeView-beta
 
 字下げモードの独立したコメント行は次の文の桁にそろえ、
 末尾では最後の文の桁にそろえます。
-[ishikawa](./ishikawa.ja.md#comments)、[kanban](./kanban.ja.md#コメント)、
-[mindmap](./mindmap.ja.md#コメント) と同じく、どの文に関係するかを示します。
+どの文に関係するかを示すためです。
 字下げが浅くなる行の前も含め、コメントを深くも浅くも移します。
 連続するコメントは、空行を挟んでも同じ桁にそろえます。
 

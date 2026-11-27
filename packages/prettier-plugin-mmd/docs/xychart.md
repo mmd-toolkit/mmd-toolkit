@@ -517,9 +517,8 @@ A number of a range or of a plot is read by value and printed in the shortest
 form: `+3` is `3`, `1.50` is `1.5`, and `.5` is `0.5` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 The same digits in a category or in a title are text (`x-axis [007, .5]` has the
-categories `007` and `.5`), and stay as written, as the values of a sankey
-diagram do (see [Values](./sankey.md#values)); so do a number with a zero at the
-start of its integer part (`007`) and `-0`. A title of one word gets quotes
+categories `007` and `.5`), and stay as written; so do a number with a zero at
+the start of its integer part (`007`) and `-0`. A title of one word gets quotes
 around its digits (`title 007` is printed `title "007"`), as any title of one
 word does (see [Quotes](#quotes)).
 
@@ -1194,8 +1193,8 @@ xychart
 U+2028 and U+2029 are whitespace between the units of an XY chart and characters
 of a string and of an accessibility text. Between statements they are a line
 break like any whitespace: the statements go to lines of their own. A gap inside
-a statement that holds one is printed as written, as in the other diagrams,
-where mermaid.js does not read them as whitespace in every rule (see
+a statement that holds one is printed as written, where mermaid.js does not read
+them as whitespace in every rule (see
 [Line separators](./journey.md#line-separators)), and a string and a text keep
 them.
 
