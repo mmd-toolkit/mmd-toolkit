@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a space run after a quoted name, then an empty line and the end of the text, reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line ?, column ?: Expecting: one of these possible Token sequences:\n  1. [QUOTED_NAME]\n  2. [BARE_NAME]\nbut found: ''"
+  }
+}
