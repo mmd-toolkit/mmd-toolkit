@@ -1732,6 +1732,15 @@ the released version prints stay until they are decided (see
 | `\t%%{x}%%%% c`                | `%%{x}%%%% c`                   | `%%{x}%%%% c`          | `%%{x}%%%% c`                      | as written            |
 | `T  %%{init: {a;b}}%%  `       | as written                      | `T %%{init: {a;b}}%%`  | `T %%{init: {a;b}}%%`              | `T %%{init: {a;b}}%%` |
 
+In the Langium types, a `%%` after the text of a title starts a comment, and the
+text of the comment, the runs of whitespace inside it included, stays as written
+(`title T %% c  %%{x}%%` keeps the two spaces after `c`):
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written.
+
+[fixture: radar/title/title-comment-text-as-written]
+
 A title of directives only (`%%{x}%%  `, a directive and a tab, two directives
 and spaces) stays as written in every type but a quadrant chart, which leaves
 out the spaces and tabs after the last directive. In a Gantt chart, a user

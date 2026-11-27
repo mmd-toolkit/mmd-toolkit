@@ -682,11 +682,20 @@ touches stays touching.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. Keep marks, content and trailing whitespace.
-Native comments keep LS/PS as content; strings/blocks own percent text while
-line values stop before it. Common removed regions retain complete source spans.
-Retained prefixes override ordinary alignment.
+The whitespace at the start of the text of a comment and the runs of whitespace
+inside it stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written. The whitespace at the end of the line
+of a comment, which stays too, is not the form of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): rule 1 leaves it
+out, as Prettier does at the end of every line. Native comments keep LS/PS as
+content; strings/blocks own percent text while line values stop before it.
+Common removed regions retain complete source spans. Retained prefixes override
+ordinary alignment.
 
-[fixture: gitgraph/comments/comment-placement] [fixture:
+[fixture: gitgraph/comments/comment-text-as-written] [fixture:
+gitgraph/comments/comment-placement] [fixture:
 gitgraph/comments/comment-bare-triple] [fixture:
 gitgraph/comments/comment-in-values] [corpus fixture: gitgraph/comment-string]
 [corpus fixture: gitgraph/comment-between-mark-characters] [corpus fixture:

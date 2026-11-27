@@ -1590,6 +1590,9 @@ stateDiagram-v2
 ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
 Prettier がブロックの中のコメント行をそう印字するためです。
 行に単独のコメントの本文で、先頭と語の間の隙間は書かれたまま残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、行の終わりの空白を除いて、
+コメントの本文を書かれたまま保つからです。
+Prettier は `//    spaced   text` を書かれたまま印字します。
 
 [fixture: comments/kept] [fixture: comments/text-kept]
 [fixture: comments/before-closing-brace]

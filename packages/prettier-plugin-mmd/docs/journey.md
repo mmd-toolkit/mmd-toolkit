@@ -969,6 +969,11 @@ end of the line. A comment on a line of its own stands at the level of the
 statement after it, and its text and its mark are kept as written: a comment
 before a `section` stands at its level, and one before a task at the level of
 the task; at the end of the text it stands at the level of the last statement.
+The whitespace at the start of the text of a comment and the runs of whitespace
+inside it stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
 comment line inside a block one level deeper than the line that opens it, as
 Prettier prints the lines inside a block.

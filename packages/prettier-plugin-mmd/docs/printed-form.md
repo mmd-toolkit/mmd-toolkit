@@ -160,6 +160,12 @@ fact: in an XY chart, mermaid.js reads a `%%` that touches a unit of one
 character together with that character, so `title A B%% c` has the title `A` and
 `title A B %% c` has the title `AB`.
 
+The text of a comment, after its mark, is printed as written, with the
+whitespace at its start and the runs of whitespace inside it: Prettier prints
+`//no space` and `//    spaced   text` in JavaScript, and `#    spaced   text`
+in YAML, as written, and leaves out only the whitespace at the end of the line,
+as at the end of every line.
+
 The end of a line, the end of the text, and blank lines are the same in
 JavaScript, CSS, YAML, and Markdown, and a line of whitespace only is a blank
 line in all four. In Markdown, two or more spaces before a line break are the

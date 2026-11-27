@@ -462,7 +462,12 @@ a,b,1
 
 A comment is a line that starts with `%%`, and it is removed before mermaid.js
 reads the text. Its text and mark are kept as written, and it stands at the
-first column, like every other line (see [Indentation](#indentation)).
+first column, like every other line (see [Indentation](#indentation)). The
+whitespace at the start of the text of a comment and the runs of whitespace
+inside it stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written.
 
 [fixture: comments/lines-at-the-first-column] [fixture: comments/text-kept]
 [fixture: comments/comment-line-only-in-the-body]

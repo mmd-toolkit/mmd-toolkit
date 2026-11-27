@@ -2803,9 +2803,14 @@ does not cover it.
 data blocks: flowchart U+2029]
 
 An indented comment line inside an eligible block moves with the other body
-lines, keeping its authored line and text.
+lines, keeping its authored line and text. The whitespace at the start of the
+text of a comment and the runs of whitespace inside it stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written.
 
-[fixture: data-blocks/indented-comment-line]
+[fixture: flowchart/data-blocks/comment-text-as-written] [fixture:
+data-blocks/indented-comment-line]
 
 Input
 ([data-blocks/deep-nested-yaml-input.mmd](../tests/fixtures/flowchart/data-blocks/deep-nested-yaml-input.mmd)):
@@ -2975,9 +2980,16 @@ comments/after-frontmatter-before-header] [fixture: comments/before-header]
 [fixture: comments/before-end] [fixture: comments/at-end-of-text]
 
 The text of a comment is kept as written, including whitespace at its end;
-mermaid.js does not read it. An otherwise empty comment line keeps `%% `, since
-every version of mermaid.js that counts reads `%%` as a vertex named `%%` and
-draws a different figure (see
+mermaid.js does not read it. The whitespace at the start of the text of a
+comment and the runs of whitespace inside it stay as written:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+comment as written but for the whitespace at the end of its line, as Prettier
+prints `//    spaced   text` as written. The whitespace at the end of the line
+of a comment, which stays too, is not the form of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): rule 1 leaves it
+out, as Prettier does at the end of every line. An otherwise empty comment line
+keeps `%% `, since every version of mermaid.js that counts reads `%%` as a
+vertex named `%%` and draws a different figure (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: comments/trailing-whitespace-kept] [fixture:
