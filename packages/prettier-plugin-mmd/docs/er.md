@@ -2142,10 +2142,14 @@ the subgraph, so aligning them changes the Db (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
 there a line of whitespace only stays as written, and the whitespace at the end
 of the last line of text is dropped, or printed as one space before a closer on
-that line, as above.
+that line, as above. A run of empty lines among them stays as written there too:
+the node holds the empty lines, and printing the run as one changes the Db in a
+way that no kind of exception allows (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
 
 [fixture: er/accessibility-statements/blank-lines-at-the-ends-kept] [fixture:
-er/accessibility-statements/blank-line-run-kept] [corpus fixture:
+er/accessibility-statements/blank-line-run-kept] [fixture:
+er/accessibility-statements/blank-line-run-in-subgraph-kept] [corpus fixture:
 er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]

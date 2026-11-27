@@ -462,12 +462,12 @@ end of each line of text except the last one. Rule 1 keeps the line breaks
 between the lines of text, since mermaid.js keeps them in the value and joining
 two lines changes the description, and the row Blank lines of rule 1 gives the
 empty lines among them: a run of them becomes one, and none stands at the start
-or the end of the block. A run of blank lines between two lines of text stays as
-written, and so do the empty lines at the start and the end of the block, which
-that row does not give. A line of whitespace only becomes an empty line. The
-whitespace at the end of the last line of text is dropped where the closer
-stands on a line of its own, and is printed as one space where the closer
-follows it on that line. A separate `}` aligns with its statement.
+or the end of the block. The released version keeps a run of empty lines and the
+empty lines at the start and the end of the block as written, which that row
+does not give. A line of whitespace only becomes an empty line. The whitespace
+at the end of the last line of text is dropped where the closer stands on a line
+of its own, and is printed as one space where the closer follows it on that
+line. A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
 puts the closing line at the level of the line that holds the `{`, as Prettier
 prints the closing line of a block, and that line is the `accDescr` line or,

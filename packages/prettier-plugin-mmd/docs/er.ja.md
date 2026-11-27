@@ -2145,9 +2145,16 @@ mermaid.js はその行を列ごと subgraph の節点として読むので、
 を参照してください。
 そこでは空白だけの行は書かれたまま残し、最後のテキスト行の行末の空白は、
 上と同じく落とすか、同じ行に閉じ括弧が続くときは空白 1 つで印字します。
+そこでは空行の連なりも書かれたまま残します。
+節点が空行を持ち、連なりを 1 つにすると、
+どの種類の例外も許さない形で Db が変わるからです。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
 
 [fixture: er/accessibility-statements/blank-lines-at-the-ends-kept]
 [fixture: er/accessibility-statements/blank-line-run-kept]
+[fixture: er/accessibility-statements/blank-line-run-in-subgraph-kept]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 [fixture: accessibility-statements/block-trailing-whitespace]
 [fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
