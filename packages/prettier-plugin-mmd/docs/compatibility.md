@@ -240,7 +240,7 @@ The table also names the pinned version where it needs the kept form.
 | [flowchart](./flowchart.md#multi-line-statements)                                                                                               | `flowchart`, U+2028, `%% c`, and ` TD`                                                                                                                                       | a line break in place of the U+2028                                              | none                                                                 | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 read `TD` as a vertex in the other form                                                         | [test: a comment line after U+2028 in a flowchart header]                                                                                                             |
 | [flowchart](./flowchart.md#label-inner-whitespace)                                                                                              | a run of spaces in a long node label                                                                                                                                         | the label with one space                                                         | none                                                                 | 11.7.0, 11.17.2, 12.0.0 and 12.3.0 draw the form with one space differently                                                                | [fixture: flowchart/label-inner-whitespace/long-label-run-kept]                                                                                                       |
 | [flowchart](./flowchart.md#subgraph-header)                                                                                                     | a run of spaces in a long markdown title of a subgraph, as its name or in brackets                                                                                           | the title with one space                                                         | none                                                                 | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 draw the form with one space differently                                                        | [fixture: flowchart/subgraph-header/long-markdown-title-runs-kept]                                                                                                    |
-| [flowchart](./flowchart.md#multi-line-statements)                                                                                               | `style A fill:#F00`, U+2028, and `%% c` with no statement after them                                                                                                         | the U+2028 left out, and `%% c` on a line of its own                             | [comment line](#a-comment-line-after-u2028-or-u2029)                 | 10.9.8 draws the style otherwise                                                                                                           | [test: a flowchart style that ends with U+2028 before a comment line at the end of the text]                                                                          |
+| [flowchart](./flowchart.md#multi-line-statements)                                                                                               | `style A fill:#F00`, U+2028, and `%% c`, then an empty line or only comment and directive lines                                                                              | the U+2028 left out, and `%% c` on a line of its own                             | [comment line](#a-comment-line-after-u2028-or-u2029)                 | 10.9.8 draws the style otherwise                                                                                                           | [test: a flowchart style that ends with U+2028 before a comment line at the end of the text]                                                                          |
 | [swimlane](./flowchart.md#link-label-form)                                                                                                      | `I -- left\|right --> J` in a swimlane diagram                                                                                                                               | `I -->\|left\|right\| J`                                                         | [3](./printed-form.md#3-a-spelling)                                  | 11.16.1 to 12.3.0 reject the other form                                                                                                    | [fixture: flowchart/link-label-form/swimlane-arrows-to-pipes]                                                                                                         |
 | [class](./class.md#whitespace-between-tokens)                                                                                                   | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`                                                                                                    | `style A fill: #f00, color: white`                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 takes the label colour and alignment from a style that starts with `color:` or `text-align:`                                        | [fixture: class/whitespace-between-tokens/style-color-touching-kept]                                                                                                  |
 | [class](./class.md#member-lines)                                                                                                                | `+<tab>int x`, the tab after the mark of an attribute                                                                                                                        | `+int x`                                                                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the tab as part of the name                                                                                                   | [fixture: class/member-lines/visibility-tab-kept]                                                                                                                     |
@@ -8567,7 +8567,8 @@ leaving it out would change the Db in a way that no kind of exception allows
 and the line stays as written: at the end of the title of a Gantt chart and of a
 user journey, of a period and of an event of a timeline, of the text of a
 mindmap node and of a kanban card, of the name of an entity and of the label of
-a relationship of an ER diagram, and of the value of a `style` of a class
+a relationship of an ER diagram, of the value of a `style` of a swimlane diagram
+and of a `classDef` of a treemap, and of the value of a `style` of a class
 diagram, which every version that counts then draws without the style; where it
 reads it as a node of a treeView diagram; and after the label in quotes of a
 relationship of an ER diagram, where it reads it as an entity. So does the line
@@ -8599,7 +8600,26 @@ comment line at the end of the text] [test: an ER relationship label in quotes,
 U+2028, and a comment line at the end of the text] [test: a treemap title,
 U+2028, a comment line, and a line of whitespace only at the end of the text]
 [test: a class style that ends with U+2028 before a comment line at the end of
-the text]
+the text] [test: a class style that ends with U+2028 before a comment line and a
+directive line at the end of the text] [test: a class style that ends with
+U+2028 before two comment lines and a directive line at the end of the text]
+[test: a class style that ends with U+2028 before a comment line, an empty line,
+and a statement] [test: a flowchart style that ends with U+2028 before a comment
+line and a directive line at the end of the text] [test: a flowchart style that
+ends with U+2028 before two comment lines and a directive line at the end of the
+text] [test: a flowchart style that ends with U+2028 before a comment line, an
+empty line, and a statement] [test: a swimlane style that ends with U+2028
+before a comment line at the end of the text] [test: a swimlane style that ends
+with U+2028 before a comment line and a directive line at the end of the text]
+[test: a swimlane style that ends with U+2028 before two comment lines and a
+directive line at the end of the text] [test: a swimlane style that ends with
+U+2028 before a comment line, an empty line, and a statement] [test: a treemap
+classDef that ends with U+2028 before a comment line at the end of the text]
+[test: a treemap classDef that ends with U+2028 before a comment line and a
+directive line at the end of the text] [test: a treemap classDef that ends with
+U+2028 before two comment lines and a directive line at the end of the text]
+[test: a treemap classDef that ends with U+2028 before a comment line, an empty
+line, and a statement]
 
 In an ER diagram, what else the formatter prints on a statement of such a line,
 as the colors of a style, the words of a relationship, and the quotes of a name

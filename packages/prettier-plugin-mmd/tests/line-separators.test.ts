@@ -8899,9 +8899,79 @@ const separatorKeptExamples: readonly (readonly [string, string, string])[] = [
     "treemap\ntitle T\u2028%% c\n  \n",
     "treemap\ntitle T\u2028%% c\n  \n",
   ],
+  [
+    "a class style that ends with U+2028 before a comment line and a directive line at the end of the text",
+    "classDiagram\nclass A\nstyle A fill:#F00\u2028%% c\n%%{x}%%\n",
+    "classDiagram\n  class A\n  style A fill:#F00\u2028%% c\n%%{x}%%\n",
+  ],
+  [
+    "a class style that ends with U+2028 before two comment lines and a directive line at the end of the text",
+    "classDiagram\nclass A\nstyle A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+    "classDiagram\n  class A\n  style A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+  ],
+  [
+    "a class style that ends with U+2028 before a comment line, an empty line, and a statement",
+    "classDiagram\nclass A\nstyle A fill:#F00\u2028%% c\n\nclass B\n",
+    "classDiagram\n  class A\n  style A fill:#F00\u2028%% c\n\n  class B\n",
+  ],
+  [
+    "a flowchart style that ends with U+2028 before a comment line and a directive line at the end of the text",
+    "flowchart LR\nA\nstyle A fill:#F00\u2028%% c\n%%{x}%%\n",
+    "flowchart LR\n  A\n  style A fill:#F00\u2028%% c\n%%{x}%%\n",
+  ],
+  [
+    "a flowchart style that ends with U+2028 before two comment lines and a directive line at the end of the text",
+    "flowchart LR\nA\nstyle A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+    "flowchart LR\n  A\n  style A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+  ],
+  [
+    "a flowchart style that ends with U+2028 before a comment line, an empty line, and a statement",
+    "flowchart LR\nA\nstyle A fill:#F00\u2028%% c\n\nB\n",
+    "flowchart LR\n  A\n  style A fill:#F00\u2028%% c\n\n  B\n",
+  ],
+  [
+    "a swimlane style that ends with U+2028 before a comment line at the end of the text",
+    "swimlane-beta TB\nA\nstyle A fill:#F00\u2028%% c\n",
+    "swimlane-beta TB\n  A\n  style A fill:#F00\u2028%% c\n",
+  ],
+  [
+    "a swimlane style that ends with U+2028 before a comment line and a directive line at the end of the text",
+    "swimlane-beta TB\nA\nstyle A fill:#F00\u2028%% c\n%%{x}%%\n",
+    "swimlane-beta TB\n  A\n  style A fill:#F00\u2028%% c\n%%{x}%%\n",
+  ],
+  [
+    "a swimlane style that ends with U+2028 before two comment lines and a directive line at the end of the text",
+    "swimlane-beta TB\nA\nstyle A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+    "swimlane-beta TB\n  A\n  style A fill:#F00\u2028%% c\n%% d\n%%{x}%%\n",
+  ],
+  [
+    "a swimlane style that ends with U+2028 before a comment line, an empty line, and a statement",
+    "swimlane-beta TB\nA\nstyle A fill:#F00\u2028%% c\n\nB\n",
+    "swimlane-beta TB\n  A\n  style A fill:#F00\u2028%% c\n\n  B\n",
+  ],
+  [
+    "a treemap classDef that ends with U+2028 before a comment line at the end of the text",
+    'treemap\n"a": 1:::cc\nclassDef cc fill: red\u2028%% c\n',
+    'treemap\n  "a": 1:::cc\n  classDef cc fill: red\u2028%% c\n',
+  ],
+  [
+    "a treemap classDef that ends with U+2028 before a comment line and a directive line at the end of the text",
+    'treemap\n"a": 1:::cc\nclassDef cc fill: red\u2028%% c\n%%{x}%%\n',
+    'treemap\n  "a": 1:::cc\n  classDef cc fill: red\u2028%% c\n%%{x}%%\n',
+  ],
+  [
+    "a treemap classDef that ends with U+2028 before two comment lines and a directive line at the end of the text",
+    'treemap\n"a": 1:::cc\nclassDef cc fill: red\u2028%% c\n%% d\n%%{x}%%\n',
+    'treemap\n  "a": 1:::cc\n  classDef cc fill: red\u2028%% c\n  %% d\n%%{x}%%\n',
+  ],
+  [
+    "a treemap classDef that ends with U+2028 before a comment line, an empty line, and a statement",
+    'treemap\n"a": 1:::cc\nclassDef cc fill: red\u2028%% c\n\n"b": 2\n',
+    'treemap\n  "a": 1:::cc\n  classDef cc fill: red\u2028%% c\n\n  "b": 2\n',
+  ],
 ]
 
-describe("a separator before a comment line at the end of the text that mermaid.js reads or needs", () => {
+describe("a separator before a comment line that mermaid.js reads or needs", () => {
   it.each(separatorKeptExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
   })

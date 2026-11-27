@@ -261,7 +261,7 @@ ELK の配置のパッケージのどのリリースも、
 | [flowchart](./flowchart.ja.md#複数行の文)                                                                                             | `flowchart`、U+2028、`%% c`、` TD`                                                                                                       | U+2028 の代わりの改行                                                     | なし                                                  | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が、ほかの形で `TD` を頂点として読む                                             | [test: a comment line after U+2028 in a flowchart header]                                                                                                             |
 | [flowchart](./flowchart.ja.md#ラベルの内側の空白)                                                                                     | 長いノードのラベルの中の空白の連なり                                                                                                     | 空白 1 つのラベル                                                         | なし                                                  | 11.7.0、11.17.2、12.0.0、12.3.0 が、空白 1 つの形を違う形に描く                                                          | [fixture: flowchart/label-inner-whitespace/long-label-run-kept]                                                                                                       |
 | [flowchart](./flowchart.ja.md#subgraph-のヘッダー)                                                                                    | subgraph の長い markdown の題の中の空白の連なり。名前でも角括弧の中でも                                                                  | 空白 1 つの題                                                             | なし                                                  | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が、空白 1 つの形を違う形に描く                                                  | [fixture: flowchart/subgraph-header/long-markdown-title-runs-kept]                                                                                                    |
-| [flowchart](./flowchart.ja.md#複数行の文)                                                                                             | `style A fill:#F00`、U+2028、`%% c` の後に文がない形                                                                                     | U+2028 を除き、`%% c` を自分の行に置いた形                                | [コメント行](#u2028-か-u2029-の後のコメント行)        | 10.9.8 がスタイルを別に描く                                                                                              | [test: a flowchart style that ends with U+2028 before a comment line at the end of the text]                                                                          |
+| [flowchart](./flowchart.ja.md#複数行の文)                                                                                             | `style A fill:#F00`、U+2028、`%% c` の後に、空行か、コメント行とディレクティブの行だけが続く形                                           | U+2028 を除き、`%% c` を自分の行に置いた形                                | [コメント行](#u2028-か-u2029-の後のコメント行)        | 10.9.8 がスタイルを別に描く                                                                                              | [test: a flowchart style that ends with U+2028 before a comment line at the end of the text]                                                                          |
 | [swimlane](./flowchart.ja.md#辺のラベルの書き方)                                                                                      | swimlane 図の `I -- left\|right --> J`                                                                                                   | `I -->\|left\|right\| J`                                                  | [3](./printed-form.ja.md#3-綴り)                      | 11.16.1 から 12.3.0 がもう一方の形を拒否する                                                                             | [fixture: flowchart/link-label-form/swimlane-arrows-to-pipes]                                                                                                         |
 | [class](./class.ja.md#トークンの間の空白)                                                                                             | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と印字                                                              | `style A fill: #f00, color: white`                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、`color:` か `text-align:` で始まるスタイルからラベルの色と寄せを取る                                          | [fixture: class/whitespace-between-tokens/style-color-touching-kept]                                                                                                  |
 | [class](./class.ja.md#メンバーの行)                                                                                                   | `+<タブ>int x`（属性の記号の後のタブ）                                                                                                   | `+int x`                                                                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、タブを名前の一部として読む                                                                                    | [fixture: class/member-lines/visibility-tab-kept]                                                                                                                     |
@@ -8719,9 +8719,13 @@ block 図の終わりの `style a fill:#F00`、U+2028、`%% c` は、
 mermaid.js が U+2028 や U+2029 をテキストや名前の文字として、
 またはノードとして読む所では、除くと、
 どの種類の例外も許さない形で Db が変わるので、行を書かれたまま残します。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
 Gantt と user journey のタイトルの終わり、timeline の期間とイベントの終わり、
 mindmap のノードと kanban のカードのテキストの終わり、
 ER 図のエンティティの名前と関係のラベルの終わり、
+swimlane 図の `style` と treemap の `classDef` の値の終わり、
 class 図の `style`
 の値の終わり（そのとき対象の版はどれもスタイルを描きません）、
 mermaid.js がそれを treeView 図のノードとして読む所、
@@ -8732,9 +8736,6 @@ flowchart の `style` の値も、それを残します。
 それがないと、対象の版の 1 つがスタイルを別に描くからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
-詳しくは
-[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
 を参照してください。
 
 [test: block: style-ls-before-a-comment-at-the-end-of-the-text-is-dropped]
@@ -8754,6 +8755,20 @@ flowchart の `style` の値も、それを残します。
 [test: an ER relationship label in quotes, U+2028, and a comment line at the end of the text]
 [test: a treemap title, U+2028, a comment line, and a line of whitespace only at the end of the text]
 [test: a class style that ends with U+2028 before a comment line at the end of the text]
+[test: a class style that ends with U+2028 before a comment line and a directive line at the end of the text]
+[test: a class style that ends with U+2028 before two comment lines and a directive line at the end of the text]
+[test: a class style that ends with U+2028 before a comment line, an empty line, and a statement]
+[test: a flowchart style that ends with U+2028 before a comment line and a directive line at the end of the text]
+[test: a flowchart style that ends with U+2028 before two comment lines and a directive line at the end of the text]
+[test: a flowchart style that ends with U+2028 before a comment line, an empty line, and a statement]
+[test: a swimlane style that ends with U+2028 before a comment line at the end of the text]
+[test: a swimlane style that ends with U+2028 before a comment line and a directive line at the end of the text]
+[test: a swimlane style that ends with U+2028 before two comment lines and a directive line at the end of the text]
+[test: a swimlane style that ends with U+2028 before a comment line, an empty line, and a statement]
+[test: a treemap classDef that ends with U+2028 before a comment line at the end of the text]
+[test: a treemap classDef that ends with U+2028 before a comment line and a directive line at the end of the text]
+[test: a treemap classDef that ends with U+2028 before two comment lines and a directive line at the end of the text]
+[test: a treemap classDef that ends with U+2028 before a comment line, an empty line, and a statement]
 
 ER 図では、そのような行の文について、スタイルの色、関係の語、
 1 語の名前の引用符のように普通の行と別に印字するものを、
