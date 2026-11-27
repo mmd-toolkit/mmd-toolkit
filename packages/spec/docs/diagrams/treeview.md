@@ -154,9 +154,11 @@ treeview/directive-header-space-glued]
 Ordinary indentation counts each ASCII space or tab once. It is one maximal run,
 not a tab stop or a required multiple. Newlines are hidden, so a run after a
 quoted name, class or icon can become the next node's indentation, even from a
-preceding or whitespace-only line. Two runs separated by a hidden newline do not
-merge; when both precede the next name, the grammar rejects. For this rejection
-condition, the indentation denoted by a
+preceding or whitespace-only line, and also across empty lines. When no node
+follows, the run reaches the end of the text, also after a comment, as
+indentation without a name, which the grammar rejects. Two runs separated by a
+hidden newline do not merge; when both precede the next name, the grammar
+rejects. For this rejection condition, the indentation denoted by a
 [branch prefix](#columns-and-prefix-indentation) counts as another run.
 
 [fixture: treeview/db-tabs-one-unit] [fixture: treeview/db-quoted-tail-space]
@@ -176,7 +178,12 @@ treeview/box-tail-collision-unselected-semicolon] [fixture:
 treeview/box-tail-collision-comment-line] [fixture:
 treeview/box-tail-collision-empty-line] [fixture:
 treeview/box-tail-collision-ls] [fixture: treeview/box-tail-collision-ps]
-[fixture: treeview/box-tail-collision-empty-block]
+[fixture: treeview/box-tail-collision-empty-block] [fixture:
+treeview/db-quoted-tail-space-empty-line] [fixture:
+treeview/gram-quoted-tail-space-end-of-text] [fixture:
+treeview/gram-quoted-tail-space-comment-end-of-text] [fixture:
+treeview/gram-class-tail-space-end-of-text] [fixture:
+treeview/gram-icon-tail-space-end-of-text]
 
 Trailing whitespace excluded by the
 [branch-line rule](#columns-and-prefix-indentation) cannot become the next

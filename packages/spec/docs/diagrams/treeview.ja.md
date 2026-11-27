@@ -163,7 +163,9 @@ keyword に接する directive は、除去後に LF が残るなら許すが、
 通常の字下げは ASCII space と tab を各 1 と数える。
 最大の一続きの列であり、tab stop や特定の倍数ではない。
 改行は hidden なので、引用名・class・icon の後の列は、
-前の行や空白だけの行からでも次の node の字下げになりうる。
+前の行や空白だけの行からでも、空行を越えても、次の node の字下げになりうる。
+後に node が続かなければ、その列はコメントの後でもテキストの終わりまで届き、
+名前のない字下げになるので、文法が拒否する。
 hidden な改行で分かれた二つの列は結合せず、
 両方が次の名前の前にあれば文法が拒否する。
 この拒否条件では、
@@ -188,6 +190,11 @@ hidden な改行で分かれた二つの列は結合せず、
 [fixture: treeview/box-tail-collision-ls]
 [fixture: treeview/box-tail-collision-ps]
 [fixture: treeview/box-tail-collision-empty-block]
+[fixture: treeview/db-quoted-tail-space-empty-line]
+[fixture: treeview/gram-quoted-tail-space-end-of-text]
+[fixture: treeview/gram-quoted-tail-space-comment-end-of-text]
+[fixture: treeview/gram-class-tail-space-end-of-text]
+[fixture: treeview/gram-icon-tail-space-end-of-text]
 
 [branch 行の規則](#列と-prefix-の字下げ)が読みから外す行末の空白は、
 次の node の字下げにはならない。
