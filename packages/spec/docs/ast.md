@@ -109,7 +109,13 @@ of `A@{`, a line break, `shape: rect`, a line break, and `}` has the value of a
 line feed, `shape: rect`, and a line feed.
 
 [fixture: flowchart/tokens-label-string-inner-whitespace] [fixture:
-flowchart/gram-data-consecutive-blocks]
+flowchart/gram-data-consecutive-blocks] [fixture:
+er/lex-subgraph-nodes-acc-descr-block-comment-line] [fixture:
+flowchart/lex-subgraph-member-acc-descr-block-comment-line] [fixture:
+flowchart/lex-swimlane-subgraph-member-acc-descr-block-comment-line] [fixture:
+er/lex-subgraph-nodes-acc-descr-block-directive-line] [fixture:
+flowchart/lex-subgraph-member-acc-descr-block-directive-line] [fixture:
+flowchart/lex-swimlane-subgraph-member-acc-descr-block-directive-line]
 
 The two literal nodes, [StringLiteral](#stringliteral) and
 [NumericLiteral](#numericliteral), also have the field `raw`, as ESTree's

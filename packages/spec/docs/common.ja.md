@@ -1068,6 +1068,9 @@ mermaid.js は `A` も `B --> C` も読みません。
 領域全体がトリビアです。
 
 [fixture: common/comment-blank-line-before-in-string]
+[fixture: er/lex-subgraph-nodes-acc-descr-block-comment-line]
+[fixture: flowchart/lex-subgraph-member-acc-descr-block-comment-line]
+[fixture: flowchart/lex-swimlane-subgraph-member-acc-descr-block-comment-line]
 
 木に現れるのは、そのディレクティブだけで、`Root.directives` に並びます。
 空白と行終端は、どのノードにも属しません。

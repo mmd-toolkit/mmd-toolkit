@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an indented directive line inside a description block in a subgraph leave its indentation in the node?"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a\nb",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "a\n      \n      b"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

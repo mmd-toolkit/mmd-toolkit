@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the node of a description block in a subgraph keep the empty lines and the indentation of its later lines?"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a\nb",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "a\n\n\n      b"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}
