@@ -6406,12 +6406,9 @@ align their standalone trivia and separate closer. A separate closing brace
 stands at the level of its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
 level where the opening `{` stands on the statement's line, as Prettier prints
-the closing line at the level of the line that opens a block. Rule 1 does not
-decide the depth of these standalone trivia lines at a block boundary;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-their depth, as [block](./block.md#empty-description-blocks) and
-[c4](./c4.md#description-blocks) put standalone trivia one level inside a
-description block.
+the closing line at the level of the line that opens a block. Rule 1 gives these
+standalone trivia lines their depth too, one level inside the block, as lines
+inside a block whose indentation mermaid.js does not draw.
 
 [fixture: requirement/empty-description-blocks/in-body-with-comment-line-kept]
 [fixture: requirement/empty-description-blocks/in-body-with-directive-line]

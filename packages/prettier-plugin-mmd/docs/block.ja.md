@@ -1451,11 +1451,8 @@ block-beta
 開始の `{` が文と同じ行にある場合に、
 Prettier がブロックの閉じ行を開始行と同じ段に印字するのと同じく、
 この閉じ行の段を与えます。
-規則 1 は、ブロックの境界にあるこれらの独立した注釈類の段を決めないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がその段を決めます。
-[pie](./pie.ja.md#description-blocks)、[sequence](./sequence.ja.md#複数行の値)、
-[info](./info.ja.md#description-blocks)も、ブロックの、
-自分の行にあるコメント行やディレクティブの行を 1 段内側に置きます。
+規則 1 は、これらの独立した注釈類にも、1 段内側の段を与えます。
+mermaid.js が字下げを描かない、ブロックの中の行だからです。
 
 [fixture: empty-description-blocks/trivia-continuations]
 

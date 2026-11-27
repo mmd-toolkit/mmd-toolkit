@@ -667,14 +667,16 @@ tf 01 evt Alpha { 	 x  }
 For ordinary data and note blocks written as `{` immediately followed by LF and
 closed by LF followed by `}`, align every nonblank body line to `tabWidth` ASCII
 spaces (U+0020) where the conditions below permit it. The body lines are the
-text of a value and no lines inside a block of rule 1, and rule 2 gives no
-margin of a body line: [pie](./pie.md#description-blocks),
-[radar](./radar.md#description-blocks), and
+text of a value, whose indentation mermaid.js can draw (a later line at column
+one draws otherwise than two spaces in, below), and no lines inside a block of
+rule 1, and rule 2 gives no margin of a body line:
+[pie](./pie.md#description-blocks), [radar](./radar.md#description-blocks), and
 [cynefin](./cynefin.md#description-blocks) stand the lines of a description
 block one level inside their statement, `tabWidth` spaces and none at
-`tabWidth: 0`, but in each of them this is a question of the list of undecided
-forms (D35), so their printing is no decided form, and the released form stays
-until it is decided (see
+`tabWidth: 0`, as lines inside a block of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), since mermaid.js
+draws no indentation of those lines, so they are no precedent for lines whose
+indentation it draws. The released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Use `2 * tabWidth` spaces when an ordinary header continuation remains, putting
 the body one further step inside its opening line, as

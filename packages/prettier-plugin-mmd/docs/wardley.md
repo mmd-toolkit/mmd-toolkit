@@ -3753,12 +3753,11 @@ becomes an empty line. The whitespace at the end of the last line of text is
 dropped where the closer stands on a line of its own, and is printed as one
 space where the closer follows it on that line. Directives and shared removed
 comment regions keep their complete source, including in a block that contains
-only a directive, and trivia keeps its shared continuation layout. Rule 1 does
-not decide the depth of comment lines at the boundary of a description block.
-For a block that holds only comment lines, rule 2 decides the depth of those
-boundary comment lines, as [flowchart](./flowchart.md#multi-line-values) keeps
-the comment lines of a block without text and puts them one level inside the
-block. A separate `}` stands at the level of the `accDescr`.
+only a directive, and trivia keeps its shared continuation layout.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the comment
+lines of a description block one level inside the block, also in a block that
+holds only comment lines, as lines inside a block whose indentation mermaid.js
+does not draw. A separate `}` stands at the level of the `accDescr`.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
 level, as Prettier prints the closing line at the level of the line that opens a
 block: the line that holds the `{` is the statement's line or, where a comment

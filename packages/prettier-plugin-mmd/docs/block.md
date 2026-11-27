@@ -1425,13 +1425,9 @@ A block with a directive or comment line keeps its contents and line breaks,
 with standalone trivia one level inside and its closer at statement level.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
 level where the opening `{` stands on the statement's line, as Prettier prints
-the closing line at the level of the line that opens a block. Rule 1 does not
-decide the depth of these standalone trivia lines at a block boundary, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides their depth, as [pie](./pie.md#description-blocks),
-[sequence](./sequence.md#multi-line-values), and
-[info](./info.md#description-blocks) stand a comment or directive line of a
-block on a line of its own one level inside.
+the closing line at the level of the line that opens a block. Rule 1 gives these
+standalone trivia lines their depth too, one level inside, as lines inside a
+block whose indentation mermaid.js does not draw.
 
 [fixture: empty-description-blocks/trivia-continuations]
 

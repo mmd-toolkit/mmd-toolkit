@@ -6524,10 +6524,8 @@ requirement と element の本文内の空の説明ブロックも、
 開始の `{` が文と同じ行にある場合に、
 Prettier がブロックの閉じ行を開始行と同じ段に印字するのと同じく、
 この閉じ行の段を与えます。
-規則 1 は、ブロックの境界にあるこれらの独立した注釈の段を決めません。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がその段を与えます。
-[block](./block.ja.md#空の説明ブロック) と [c4](./c4.ja.md#説明ブロック)も、
-独立した注釈をブロックの 1 段内側に置きます。
+規則 1 は、これらの独立した注釈にも、ブロックの 1 段内側の段を与えます。
+mermaid.js が字下げを描かない、ブロックの中の行だからです。
 
 [fixture: requirement/empty-description-blocks/in-body-with-comment-line-kept]
 [fixture: requirement/empty-description-blocks/in-body-with-directive-line]

@@ -102,11 +102,19 @@ line at the level of the line that opens it. Every line inside a block stands at
 that level, whatever it holds: a statement, a comment line, or, in these
 diagrams, a directive line (`%%{x}%%` on a line of its own), which mermaid.js
 removes before it reads the text, as it removes a comment. The text inside a
-template literal of JavaScript stays as written, and so does the text of a value
-that spreads over several lines. The lines between the `{` and the `}` of a
-description block, its text lines and the comment and directive lines among
-them, are such a text and no lines inside a block of this row: the row gives the
-closing `}` of such a block and no line between.
+template literal of JavaScript stays as written, and so does a line of a value
+that spreads over several lines where mermaid.js can draw the indentation of
+that line, as the later lines of a note of a state diagram that the rules of
+[Notes](./state.md#notes) do not align. A line whose indentation mermaid.js does
+not draw is a line inside a block of this row, and it stands one level deeper
+than the line that opens the block, whatever its written indentation, as every
+line inside a block does. So do the lines between the `{` and the `}` of a
+description block: its text lines, which mermaid.js reads without their
+indentation, and its comment and directive lines, which it removes. So do the
+first line of the body of a note of a state diagram, which mermaid.js reads
+without its indentation, and the later lines of a note that those rules align,
+whose indentation mermaid.js keeps in the Db but does not draw. The closing `}`
+of a description block stands at the level of the line that opens it.
 
 A keyword stands between two things (`a in b`) or before what it takes
 (`return x`, `typeof y`, `throw e`, and in CSS `@media screen` and
