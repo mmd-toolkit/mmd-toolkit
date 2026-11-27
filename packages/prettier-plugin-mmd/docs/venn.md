@@ -291,8 +291,11 @@ swallows a preceding fragment by position, so adding or removing the gap before
 a comment can change which fragment is swallowed. A required one-character name
 that a comment already swallows is rejected, and no space is added to rescue it.
 Comment contents, including trailing spaces and U+2028/U+2029 through LF or EOF,
-stay whole; percent pairs inside values remain value text. Protected gaps retain
-comment and mode boundaries.
+stay whole; percent pairs inside values remain value text. The whitespace at the
+end of its line, which stays too, is not the form of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): rule 1 leaves it
+out, as Prettier does at the end of every line. Protected gaps retain comment
+and mode boundaries.
 
 [test: a venn set with two spaces before a comment and an empty line after the
 comment] [fixture: venn/comments/bare-percent-tail] [fixture:
