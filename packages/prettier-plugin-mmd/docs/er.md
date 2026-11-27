@@ -2137,8 +2137,8 @@ which that row does not give. The whitespace at the end of the last line of text
 is dropped where the closer stands on a line of its own, and is printed as one
 space where the closer follows it on that line. Inside a subgraph, keep the
 original body columns because the raw description also participates in its
-membership reading: mermaid.js reads the lines, with their columns, as a node of
-the subgraph, so aligning them changes the Db (see
+membership reading: mermaid.js reads the later lines, with their columns, as a
+node of the subgraph, so aligning them changes the Db (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
 there a line of whitespace only stays as written, and the whitespace at the end
 of the last line of text is dropped, or printed as one space before a closer on
@@ -2146,10 +2146,19 @@ that line, as above. A run of empty lines among them stays as written there too:
 the node holds the empty lines, and printing the run as one changes the Db in a
 way that no kind of exception allows (see
 [The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
+The first line of text and the empty lines at the start and the end of such a
+block are no part of the node, which mermaid.js reads without the whitespace at
+its ends: [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the
+first line one level deeper than the line that opens the block, as a line inside
+a block, and leaves out those empty lines, and the released version keeps them
+as written, which rule 1 does not give.
 
 [fixture: er/accessibility-statements/blank-lines-at-the-ends-kept] [fixture:
 er/accessibility-statements/blank-line-run-kept] [fixture:
-er/accessibility-statements/blank-line-run-in-subgraph-kept] [corpus fixture:
+er/accessibility-statements/blank-line-run-in-subgraph-kept] [fixture:
+er/accessibility-statements/first-line-in-subgraph-kept] [fixture:
+er/accessibility-statements/blank-lines-at-the-ends-in-subgraph-kept] [corpus
+fixture: er/db-subgraph-nodes-acc-descr-block-blank-lines] [corpus fixture:
 er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]

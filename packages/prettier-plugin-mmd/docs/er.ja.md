@@ -2138,7 +2138,7 @@ mermaid.js がそれを値に残し、2 つの行をつなぐと説明が変わ�
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 subgraph 内では、生の説明がその所属の読みにも使われるため、
 本文の元の列を保ちます。
-mermaid.js はその行を列ごと subgraph の節点として読むので、
+mermaid.js は 2 行目以降を列ごと subgraph の節点として読むので、
 そろえると Db が変わります。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
@@ -2151,10 +2151,21 @@ mermaid.js はその行を列ごと subgraph の節点として読むので、
 詳しくは
 [確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
 を参照してください。
+そのようなブロックのテキストの 1 行目と、頭と終わりの空行は、
+節点の一部ではありません。
+mermaid.js は節点を両端の空白なしで読むからです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+1 行目をブロックの中の行として、ブロックを開く行より 1 段深く置き、
+それらの空行は置きません。
+リリース済みの版はそれらを書かれたまま残し、
+これは規則 1 が与える形ではありません。
 
 [fixture: er/accessibility-statements/blank-lines-at-the-ends-kept]
 [fixture: er/accessibility-statements/blank-line-run-kept]
 [fixture: er/accessibility-statements/blank-line-run-in-subgraph-kept]
+[fixture: er/accessibility-statements/first-line-in-subgraph-kept]
+[fixture: er/accessibility-statements/blank-lines-at-the-ends-in-subgraph-kept]
+[corpus fixture: er/db-subgraph-nodes-acc-descr-block-blank-lines]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 [fixture: accessibility-statements/block-trailing-whitespace]
 [fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
