@@ -86,6 +86,11 @@ ishikawa
 どの節も、その前にあるそれより浅い最も近い節より深く、根まで同じで、
 見出しの行にある根は、見出しとテキストの間の空白を字下げとします。
 そうした字下げは、書かれた幅を持ち込まずに、同じ順序付きの木を作ります。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、これらの深さを与えます。
+見出しは、YAML の対応のキーと同じく、閉じる行のないブロックを開き、
+子を持つ節点も同じです。
+そのため各行は、そのブロックを開く行より 1 段深く立ちます。
+Prettier が YAML の入れ子の対応の行を印字する形です。
 
 [fixture: ishikawa/indentation/indent-flatten-unsafe]
 [fixture: ishikawa/indentation/indent-sibling-causes]
@@ -329,6 +334,9 @@ ishikawa
 独立したコメントは次の節点に、末尾では最後の節点に揃えます。
 節点との関係を示すためです。
 見出しより前のコメントは 1 列目に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、ブロックの中のコメント行を、
+周りの行と同じ段に置きます。
+Prettier がブロックの中の行を印字する形です。
 
 [fixture: ishikawa/comments/comments-align]
 [fixture: ishikawa/comments/comment-on-separate-line]
@@ -377,6 +385,9 @@ ishikawa
 
 独立したディレクティブは内容と順序を保ち、コメントと同じように揃えます。
 埋め込みデータを解釈せず、節点との関係を示すためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+ブロックの中のディレクティブ行を、
+コメント行と同じく周りの行と同じ段に置きます（[Comments](#comments) を参照）。
 
 [fixture: ishikawa/standalone-directives/directives-align]
 

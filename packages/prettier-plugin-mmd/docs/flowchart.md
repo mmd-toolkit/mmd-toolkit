@@ -2216,9 +2216,12 @@ statement (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A comment line or a `)` alone on a later line changes no argument (see
 [Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
-The other gaps of such a statement follow the ordinary rules:
-`click   A "/u" "x` and `y"` on the next line is printed `click A "/u" "x` and
-`y"`, as the statement on one line would be.
+It stays as written all the same:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+value that spreads over several lines as written, as Prettier keeps the text
+inside a template literal of JavaScript. The other gaps of such a statement
+follow the ordinary rules: `click   A "/u" "x` and `y"` on the next line is
+printed `click A "/u" "x` and `y"`, as the statement on one line would be.
 
 [fixture: multi-line-statements/click-string-over-lines-collapsed] [fixture:
 multi-line-statements/click-callback-args-over-lines-collapsed] [fixture:

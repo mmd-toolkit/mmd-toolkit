@@ -684,6 +684,10 @@ mermaid.js はどちらも引数のない同じ呼び出しとして読むから
 コメント行やディレクティブを含む引数は、`)` まで書かれたまま印字します。
 `)` の前の空白は Db では引数の一部なので、`)` の前にコメント行があっても、
 字下げしてはいけないからです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)も、これを書かれたまま残します。
+引数は複数の行にわたる値で、そのテキストは、
+JavaScript のテンプレートリテラルの中のテキストと同じく、
+書かれたまま残るからです。
 
 [fixture: whitespace-between-tokens/callback-args-comment-line-kept]
 [fixture: whitespace-between-tokens/callback-name-kept]

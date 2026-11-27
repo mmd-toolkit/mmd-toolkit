@@ -1114,7 +1114,10 @@ and
 
 An `accTitle` or `accDescr` statement is placed like a title: it is printed at
 the start of its line unless it was written indented, in which case it is
-printed one step in (see [Title](#title)).
+printed one step in (see [Title](#title)). The step is that of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), which puts a line
+inside a block one level deeper than the header, as Prettier prints the lines
+inside a block.
 
 [fixture: treemap/accessibility-lines/title-padding]
 
