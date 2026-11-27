@@ -2237,12 +2237,18 @@ statement (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A comment line or a `)` alone on a later line changes no argument (see
 [Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
-It stays as written all the same:
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-value that spreads over several lines as written, as Prettier keeps the text
-inside a template literal of JavaScript. The other gaps of such a statement
-follow the ordinary rules: `click   A "/u" "x` and `y"` on the next line is
-printed `click A "/u" "x` and `y"`, as the statement on one line would be.
+mermaid.js draws no indentation of such a line, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts it as Prettier
+puts the lines of the arguments of a call: a comment line one level deeper than
+the line of the statement, with the `)` after it on a line of its own at the
+level of that line (`f(a`, a line break, `// c`, a line break, and `);` is
+printed with `// c` one level in and `);` at the level of `f`), and a `)` that
+only whitespace comes before on its line at the end of the line of the last
+argument (`f(a`, a line break, and `);` is printed `f(a);`). The released
+version keeps such a line as written, which that rule does not give. The other
+gaps of such a statement follow the ordinary rules: `click   A "/u" "x` and `y"`
+on the next line is printed `click A "/u" "x` and `y"`, as the statement on one
+line would be.
 
 [fixture: multi-line-statements/click-string-over-lines-collapsed] [fixture:
 multi-line-statements/click-callback-args-over-lines-collapsed] [fixture:

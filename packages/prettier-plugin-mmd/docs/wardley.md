@@ -3749,11 +3749,17 @@ text stands there too, one level inside the statement, as
 [quadrant](./quadrant.md#titles-and-accessibility-statements) indents the body
 of such a block. Keep line breaks and interior blank lines, and the whitespace
 at the end of each line of text except the last one; a line of whitespace only
-becomes an empty line. The whitespace at the end of the last line of text is
-dropped where the closer stands on a line of its own, and is printed as one
-space where the closer follows it on that line. Directives and shared removed
-comment regions keep their complete source, including in a block that contains
-only a directive, and trivia keeps its shared continuation layout.
+becomes an empty line. Rule 1 keeps the line breaks between the lines of text,
+since mermaid.js keeps them in the value and joining two lines changes the
+description, and the row Blank lines of rule 1 gives the empty lines among them:
+a run of them becomes one, and none stands at the start or the end of the block.
+The released version keeps a run of empty lines and the empty lines at the start
+and the end of the block as written, which that row does not give. The
+whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. Directives and shared removed comment regions keep
+their complete source, including in a block that contains only a directive, and
+trivia keeps its shared continuation layout.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the comment
 lines of a description block one level inside the block, also in a block that
 holds only comment lines, as lines inside a block whose indentation mermaid.js
