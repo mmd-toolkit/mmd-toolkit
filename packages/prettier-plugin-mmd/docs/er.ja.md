@@ -2136,35 +2136,42 @@ mermaid.js がそれを値に残し、2 つの行をつなぐと説明が変わ�
 これはその行が与える形ではありません。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
-subgraph 内では、生の説明がその所属の読みにも使われるため、
-本文の元の列を保ちます。
-mermaid.js は 2 行目以降を列ごと subgraph の節点として読むので、
-そろえると Db が変わります。
+subgraph の中では、mermaid.js はそのようなブロックのテキストも、
+両端の空白なしで、2 行目以降の列とともに subgraph の節点として読みます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-そこでは空白だけの行は書かれたまま残し、最後のテキスト行の行末の空白は、
-上と同じく落とすか、同じ行に閉じ括弧が続くときは空白 1 つで印字します。
-そこでは空行の連なりも書かれたまま残します。
-節点が空行を持ち、連なりを 1 つにすると、
-どの種類の例外も許さない形で Db が変わるからです。
+節点が持つものは書かれたまま残します。
+変えると、どの種類の例外も許さない形で Db が変わるからです。
 詳しくは
 [確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
 を参照してください。
-そのようなブロックのテキストの 1 行目の字下げと、頭と終わりの空行は、
-節点の一部ではありません。
-mermaid.js は節点を両端の空白なしで読むからです。
-[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
-1 行目をブロックの中の行として、ブロックを開く行より 1 段深く置き、
-それらの空行は置きません。
-リリース済みの版はそれらを書かれたまま残し、
+節点が持つのは、2 行目以降のテキストの字下げ、
+テキストの行の間の空白だけの行と空行の連なり、
+テキストの行の間のディレクティブの行の字下げです。
+mermaid.js がディレクティブを取り除いても、その前の空白は節点に残ります。
+節点が持たないものは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+テキストの 1 行目と、mermaid.js が字下げごと取り除くコメント行と、
+ブロックの頭と終わりのディレクティブの行は、ブロックの中の行として、
+ブロックを開く行より 1 段深く置き、ブロックの頭と終わりには、
+空行も空白だけの行も置きません。
+リリース済みの版は、それらの行を書かれた所に残し、
+それらの空行と空白だけの行も残します。
 これは規則 1 が与える形ではありません。
+最後のテキスト行の行末の空白は、上と同じく落とすか、
+同じ行に閉じ括弧が続くときは空白 1 つで印字します。
 
 [fixture: er/accessibility-statements/blank-lines-at-the-ends-kept]
 [fixture: er/accessibility-statements/blank-line-run-kept]
 [fixture: er/accessibility-statements/blank-line-run-in-subgraph-kept]
 [fixture: er/accessibility-statements/first-line-in-subgraph-kept]
 [fixture: er/accessibility-statements/blank-lines-at-the-ends-in-subgraph-kept]
+[fixture: er/accessibility-statements/comment-lines-in-subgraph-kept]
+[fixture: er/accessibility-statements/directive-line-in-subgraph-kept]
+[fixture: er/accessibility-statements/directive-lines-at-the-ends-in-subgraph-kept]
+[fixture: er/accessibility-statements/whitespace-line-in-subgraph-kept]
+[fixture: er/accessibility-statements/whitespace-lines-at-the-ends-in-subgraph-kept]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-blank-lines]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-edge-blank-lines]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
@@ -2640,6 +2647,7 @@ flowchart は、U+2028 や U+2029 を含む隙間を、これらの場所で、
 
 [fixture: directives/unclosed-at-end-of-text-kept]
 [fixture: directives/unclosed-after-statement-kept]
+[fixture: directives/unclosed-in-description-block-kept]
 
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
