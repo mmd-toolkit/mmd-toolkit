@@ -1176,11 +1176,16 @@ Prettier がブロックの中の行をそう印字するためです。
 `B -->` の次の行の `C; A@{ … }` のように、
 そこに挙げたもの以外で始まる行の文も同じです。
 複数行にわたるディレクティブの残りで始まる行の文も、そうです。
+最上位で行の頭にある単独の `;` の後の文も同じで、
+`; A@{ … }` の `A@{ … }` がそうです。
+整形器はその `;` を落とすので、
+その前の空白はどの深さのためにも書かれていません。
 
 [fixture: metadata-blocks/use-tabs-container-header-statement-moved]
 [fixture: metadata-blocks/use-tabs-statement-before-end-moved]
 [fixture: metadata-blocks/use-tabs-edge-continuation-moved]
 [fixture: metadata-blocks/use-tabs-directive-continuation-moved]
+[fixture: metadata-blocks/use-tabs-dropped-semicolon-moved]
 
 矢印の改行後のブロックは、文の最初の行より後から始まるため桁を残し、
 1 行でも複数行でも、ブロックを 2 つ持つ文は、どちらも桁を残します。

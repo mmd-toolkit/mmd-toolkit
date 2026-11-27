@@ -1132,12 +1132,16 @@ printed as written either (see [Data blocks](./flowchart.md#data-blocks)). So is
 a statement after an `end` when a statement of the container comes first, as
 `A@{ … }` in `B; end; A@{ … }`, and a statement on a line that starts with
 anything else than the things listed there, as `C; A@{ … }` does after `B -->`,
-or after the rest of a directive that runs over lines.
+or after the rest of a directive that runs over lines. So is a statement after a
+`;` of its own that starts the line at the top level, as `A@{ … }` in
+`; A@{ … }`: the printer drops the `;`, so the whitespace before it is written
+for no depth.
 
 [fixture: metadata-blocks/use-tabs-container-header-statement-moved] [fixture:
 metadata-blocks/use-tabs-statement-before-end-moved] [fixture:
 metadata-blocks/use-tabs-edge-continuation-moved] [fixture:
-metadata-blocks/use-tabs-directive-continuation-moved]
+metadata-blocks/use-tabs-directive-continuation-moved] [fixture:
+metadata-blocks/use-tabs-dropped-semicolon-moved]
 
 A block after an arrow's newline retains its columns because it starts after the
 statement's first line, and a statement with two blocks, of one line or of

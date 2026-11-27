@@ -3,7 +3,7 @@ import type { UsecaseStatement } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"
-import type { StatementListsOf } from "./data-blocks.ts"
+import type { DiagramStatements, StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import type { BlockBounds, BlockRules, PrintedBlock } from "./blocks.ts"
 import {
@@ -87,6 +87,15 @@ function holdsStatements(node: MermaidAst): boolean {
   return statementListsOf(node).length > 0
 }
 
+/**
+ * The statements of a use case diagram (see `DiagramStatements`): no
+ * statement is dropped.
+ */
+const usecaseStatements: DiagramStatements = {
+  listsOf: statementListsOf,
+  isDroppedAtTopLevel: () => false,
+}
+
 /** Only system boundaries contain declaration bodies (docs/usecase.md). */
 function printStatements(
   source: Source,
@@ -102,9 +111,9 @@ function printStatements(
     writtenIndentationOf: writtenIndentationRule(
       source,
       options.useTabs,
-      statementListsOf,
+      usecaseStatements,
     ),
-    isDroppedAtTopLevel: () => false,
+    isDroppedAtTopLevel: usecaseStatements.isDroppedAtTopLevel,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
     diagramLineEnd: (offset) => semicolonSegmentEnd(source, offset),
@@ -126,7 +135,7 @@ function printStatements(
               statement: indentationOf(options, depth),
               tabWidth: options.tabWidth,
               useTabs: options.useTabs,
-              statementListsOf,
+              diagramStatements: usecaseStatements,
             },
           ),
           depth,
