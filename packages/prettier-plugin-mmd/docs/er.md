@@ -2179,6 +2179,31 @@ accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
 [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
 
+A directive that is not closed takes the whitespace after its argument, line
+breaks included (the specification's
+[Where a directive is](../../spec/docs/common.md#where-a-directive-is)), so what
+follows it goes on the line of the directive and is printed as written, as in
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins).
+In a line `%%{x`, a line `b`, and a line `}`, the name of the directive is `x`,
+its argument is `b`, and the `}` goes on the line of the directive with the
+indentation before it. The line of the directive itself is printed as any other
+directive line of the block, as above. The released version keeps that line
+where it is written inside a subgraph, also at the start or the end of the
+block. Where the closer goes on the line of the directive, it also keeps every
+line of the block after the opening line as written, at the top level and inside
+a subgraph. Rule 1 gives neither.
+
+[fixture: accessibility-statements/unclosed-directive-line-at-the-start]
+[fixture: accessibility-statements/unclosed-directive-line-among-the-text]
+[fixture:
+accessibility-statements/unclosed-directive-line-before-the-closer-kept]
+[fixture:
+accessibility-statements/unclosed-directive-line-at-the-start-in-subgraph-kept]
+[fixture:
+accessibility-statements/unclosed-directive-line-among-the-text-in-subgraph-kept]
+[fixture:
+accessibility-statements/unclosed-directive-line-before-the-closer-in-subgraph-kept]
+
 A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
 the `{` stands on the `accDescr` line: it puts the closing line at the level of
@@ -2712,8 +2737,7 @@ A directive that is not closed takes the rest of the text, and is kept as
 written.
 
 [fixture: directives/unclosed-at-end-of-text-kept] [fixture:
-directives/unclosed-after-statement-kept] [fixture:
-directives/unclosed-in-description-block-kept]
+directives/unclosed-after-statement-kept]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;

@@ -2137,22 +2137,22 @@ mermaid.js がそれを値に残し、2 つの行をつなぐと説明が変わ�
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 subgraph の中では、mermaid.js はそのようなブロックのテキストも、
-両端の空白なしで、2 行目以降の列とともに subgraph の節点として読みます。
+両端の空白なしで、2 行目以降の列とともに subgraph のノードとして読みます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-節点が持つものは書かれたまま残します。
+ノードが持つものは書かれたまま残します。
 変えると、どの種類の例外も許さない形で Db が変わるからです。
 詳しくは
 [確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
 を参照してください。
-節点が持つのは、2 行目以降のテキストの字下げ、
+ノードが持つのは、2 行目以降のテキストの字下げ、
 テキストの行の間の空白だけの行と空行の連なり、
 テキストの行の間のディレクティブの行の字下げです。
-mermaid.js がディレクティブを取り除いても、その前の空白は節点に残ります。
-節点が持たないものは、
+mermaid.js がディレクティブを取り除いても、その前の空白はノードに残ります。
+ノードが持たないものは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
-節点が持たないのは、テキストの 1 行目の字下げと、
+ノードが持たないのは、テキストの 1 行目の字下げと、
 mermaid.js が字下げごと取り除くコメント行と、
 ブロックの頭と終わりのディレクティブの行です。
 規則 1 は、1 行目と、コメント行と、そのディレクティブの行を、
@@ -2183,6 +2183,32 @@ mermaid.js が字下げごと取り除くコメント行と、
 [fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
 [fixture: accessibility-statements/block-trailing-whitespace-in-a-subgraph]
 [fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
+
+閉じていないディレクティブは、引数の後ろの空白を改行ごと取り込みます。
+詳しくは仕様の
+[ディレクティブの位置](../../spec/docs/common.ja.md#ディレクティブの位置)
+を参照してください。
+そのため、後ろに続くものはディレクティブの行に乗り、書かれたまま印字します。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
+`%%{x` の行、`b` の行、`}` の行が続くとき、ディレクティブの名前は `x`、
+引数は `b` で、`}` はその前の字下げとともにディレクティブの行に乗ります。
+ディレクティブの行そのものは、上で述べたとおり、
+ブロックのほかのディレクティブの行と同じく印字します。
+リリース済みの版は、subgraph の中では、
+ブロックの頭や終わりでもその行を書かれた所に残します。
+また、閉じ括弧がディレクティブの行に乗るときは、
+トップレベルでも subgraph の中でも、
+開く行より後のブロックの行をすべて書かれたまま残します。
+規則 1 はどちらも与えません。
+
+[fixture: accessibility-statements/unclosed-directive-line-at-the-start]
+[fixture: accessibility-statements/unclosed-directive-line-among-the-text]
+[fixture: accessibility-statements/unclosed-directive-line-before-the-closer-kept]
+[fixture: accessibility-statements/unclosed-directive-line-at-the-start-in-subgraph-kept]
+[fixture: accessibility-statements/unclosed-directive-line-among-the-text-in-subgraph-kept]
+[fixture: accessibility-statements/unclosed-directive-line-before-the-closer-in-subgraph-kept]
 
 独立した行の `}` は文と同じ段に置きます。
 `{` が `accDescr` の行にあるときは、
@@ -2651,7 +2677,6 @@ flowchart は、U+2028 や U+2029 を含む隙間を、これらの場所で、
 
 [fixture: directives/unclosed-at-end-of-text-kept]
 [fixture: directives/unclosed-after-statement-kept]
-[fixture: directives/unclosed-in-description-block-kept]
 
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
