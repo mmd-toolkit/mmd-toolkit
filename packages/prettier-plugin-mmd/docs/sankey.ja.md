@@ -536,10 +536,20 @@ mermaid.js に拒否されるからです。
 [fixture: directives/next-to-commas]
 
 欄や文字列の中の指令は、テキストの一部なので残します。
-閉じていない指令はテキストの残りを取り、書かれたまま残します。
+閉じていない指令は、その行に乗るテキストとともに書かれたまま残します。
+語の文字で始まる引数は、次の行にあってもその語で終わり、
+指令はその後ろの空白を改行ごと取り込みます。
+そのため、その後ろのテキストは指令の行に乗ります。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
+`%%{x`、`y`、`c,d,2` では、`c` から `d` へのリンクが残ります。
+`%%{init: {` のようにそれ以外の引数はテキストの終わりまで続き、
+指令はテキストの残りを取り込みます。
 
 [fixture: directives/inside-fields-kept]
 [fixture: directives/unclosed-at-the-end-kept]
+[fixture: directives/unclosed-takes-the-next-word]
 
 入力
 ([directives/after-the-value-input.mmd](../tests/fixtures/sankey/directives/after-the-value-input.mmd)):

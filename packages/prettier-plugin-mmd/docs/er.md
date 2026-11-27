@@ -2152,8 +2152,9 @@ indentation, and a directive line at the start or the end of the block. Rule 1
 puts the first line, the comment lines, and those directive lines one level
 deeper than the line that opens the block, as lines inside a block, and no empty
 line and no line of whitespace only stands at the start or the end of the block.
-The released version keeps those lines where they are written, and keeps those
-empty lines and lines of whitespace only, which rule 1 does not give. The
+The released version keeps those lines where they are written and keeps those
+empty lines, and it keeps a line of whitespace only at the start as written and
+prints one at the end as an empty line, which rule 1 does not give. The
 whitespace at the end of the last line of text is dropped, or printed as one
 space before a closer on that line, as above.
 
@@ -2179,19 +2180,13 @@ accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
 [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
 
-A directive that is not closed takes the whitespace after its argument, line
-breaks included (the specification's
-[Where a directive is](../../spec/docs/common.md#where-a-directive-is)), so what
-follows it goes on the line of the directive and is printed as written, as in
-[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins).
-In a line `%%{x`, a line `b`, and a line `}`, the name of the directive is `x`,
-its argument is `b`, and the `}` goes on the line of the directive with the
-indentation before it. The line of the directive itself is printed as any other
-directive line of the block, as above. The released version keeps that line
-where it is written inside a subgraph, also at the start or the end of the
-block. Where the closer goes on the line of the directive, it also keeps every
-line of the block after the opening line as written, at the top level and inside
-a subgraph. Rule 1 gives neither.
+A directive that is not closed in such a block is printed as in
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins),
+which also says what the released version keeps where the closer goes on the
+line of the directive. Inside a subgraph, the line of the directive itself is
+printed as any other directive line of the block, as above, and the released
+version keeps it where it is written, also at the start or the end of the block,
+which rule 1 does not give.
 
 [fixture: accessibility-statements/unclosed-directive-line-at-the-start]
 [fixture: accessibility-statements/unclosed-directive-line-among-the-text]
@@ -2733,11 +2728,18 @@ its name of an ER diagram: the gap stays as written] [test: U+2029 and a
 directive with a space after it in the gap between the type and the name of an
 ER attribute]
 
-A directive that is not closed takes the rest of the text, and is kept as
-written.
+A directive that is not closed is kept as written, with the text that goes on
+its line. An argument that starts with a word character ends with that word,
+also on the next line, and the directive takes the whitespace after it, line
+breaks included, so the text after it goes on the line of the directive (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)):
+`A`, `%%{x`, `B`, and `C` give the entities `A` and `C`. Any other argument, as
+in `%%{init: {`, runs to the end of the text, and the directive takes the rest
+of the text.
 
 [fixture: directives/unclosed-at-end-of-text-kept] [fixture:
-directives/unclosed-after-statement-kept]
+directives/unclosed-after-statement-kept] [fixture:
+directives/unclosed-takes-the-next-word]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;

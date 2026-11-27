@@ -810,10 +810,18 @@ is part of the text.
 
 [fixture: directives/between-units] [fixture: directives/inside-a-text]
 
-A directive that is not closed takes the rest of the text, and is kept as
-written.
+A directive that is not closed is kept as written, with the text that goes on
+its line. An argument that starts with a word character ends with that word,
+also on the next line, and the directive takes the whitespace after it, line
+breaks included, so the text after it goes on the line of the directive (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)):
+a line `    %%{x`, a line `y`, and a line `    b` keep the node `b`, with the
+whitespace before the directive as its indentation. Any other argument, as in
+`%%{init: {`, runs to the end of the text, and the directive takes the rest of
+the text.
 
 [fixture: directives/unclosed] [fixture: directives/unclosed-after-a-node]
+[fixture: directives/unclosed-takes-the-next-word]
 
 The whitespace after a directive that starts a line counts as indentation of the
 node, since the Db reads the indentation in the text without its directives.

@@ -2047,7 +2047,14 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 | `\u2028T`                                       | `T`                                                        | 書かれたまま                                      |
 | `\u2029T`                                       | `T`                                                        | 書かれたまま                                      |
 
-閉じていないディレクティブはタイトルの残りを取ります。
+タイトルの中の閉じていないディレクティブは、
+[閉じていないディレクティブがつなぐ行](#閉じていないディレクティブがつなぐ行)
+のとおりに、後ろのテキストを取り込みます。
+後ろに語があれば、次の行にあってもそれが引数になり、
+その語より後のテキストはタイトルの行に乗ります。
+レーダーチャートの `axis` の後の `a, b` がその例です。
+後ろのテキストが語の文字で始まらないとき（円グラフの `"a": 1` など）は、
+テキストの残りを取り込みます。
 `title T %%{x` と `title T%%{x` は、どの型でも変えません。
 次の表は、その前の空白が印字される形を、
 タイトルの後に文が続くかどうかで示します。
@@ -6931,6 +6938,38 @@ ER 図の `"style:#x" end; %%{x: w B` は、書かれたまま残ります。
 
 [fixture: flowchart/directives/unclosed-free-text-takes-the-rest]
 [fixture: flowchart/directives/unclosed-word-argument-stops-after-word]
+
+どの図種の説明ブロック `accDescr { ... }` でも、
+そのようなディレクティブの行はブロックの中の行です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+それをブロックを開く行より 1 段深く置きます。
+ただし、subgraph のノードがその字下げを持つときは除きます。
+詳しくは、
+ER の[アクセシビリティの文](./er.ja.md#アクセシビリティの文)を参照してください。
+その行に乗るものは、書かれたまま残します。
+`a` の行、`%%{x` の行、`b` の行、`}` の行が続くときは、引数は `b` で、
+`}` はディレクティブの行に乗ります。
+`%%{x` の行の次が `}` の行のときは、`}` は語ではないので、
+引数は自由なテキストになり、`}` とテキストの残りを取り込みます。
+そのため、ブロックは閉じません。
+flowchart、swimlane、agentflow、sequence、state、xychart は、
+説明が空のブロックとして読み、
+treeView は `accDescr {` をノードの名前として読み、ほかの図種は拒否します。
+リリース済みの版は、`}` がディレクティブの行に乗るときは、
+開く行より後のブロックの行をすべて書かれたまま残します。
+ディレクティブが `}` を取り込むときは、ディレクティブの行を文の段に印字し、
+agentflow はブロックを書かれたまま残します。
+規則 1 はどちらも与えません。
+
+[fixture: er/accessibility-statements/unclosed-directive-line-at-the-start]
+[fixture: er/accessibility-statements/unclosed-directive-line-among-the-text]
+[fixture: er/accessibility-statements/unclosed-directive-line-before-the-closer-kept]
+[fixture: flowchart/directives/compat-unclosed-directive-takes-the-closer]
+[fixture: flowchart/directives/swimlane-compat-unclosed-directive-takes-the-closer]
+[fixture: agentflow/directives/compat-unclosed-directive-takes-the-closer-kept]
+[fixture: sequence/directives/compat-unclosed-directive-takes-the-closer]
+[fixture: state/directives/compat-unclosed-directive-takes-the-closer]
+[fixture: xychart/directives/compat-unclosed-directive-takes-the-closer]
 
 U+2028 か U+2029 を含む空白は、ディレクティブがどこにあっても、
 ディレクティブと一緒に、書かれたまま印字します。

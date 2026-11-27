@@ -1746,14 +1746,18 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: autonumber 5, U+2029, and a `#` comment]
 
 - 閉じていないディレクティブの直後。
-  そのようなディレクティブのテキストはこの文字の手前で止まり、
-  文字はディレクティブにとって空白ではありません。
+  `%%{init: {}` のようなディレクティブの自由なテキストは、
+  この文字の手前で止まります。
   文字を空白や改行で印字すると、
-  ディレクティブが残りのテキストに届いてしまいます。
+  その自由なテキストが残りのテキストに届いてしまいます。
+  `%%{wrap foo` のように引数が語のときは、
+  文字は空白や改行と同じくディレクティブにとって空白で、
+  次の行はディレクティブの行に乗ります。
   これはすべての図種で同じです。
 
   [test: U+2028 after a directive that is not closed]
   [test: U+2029 after a directive that is not closed]
+  [test: U+2028 after a directive that is not closed, before two lines]
   [test: a `;` after U+2029 after a directive that is not closed]
   [test: a standalone open directive before U+2028 and a semicolon]
   [test: a standalone open directive before U+2029 and a semicolon]

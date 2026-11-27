@@ -1021,15 +1021,23 @@ A line that is a kept line, because a `;` that the line rule ignores comes
 before the character, as in `title style:#x;`, stays as written whatever
 follows: the whitespace after the character and between the directive and the
 comment is kept, and the line is not broken at the character. A directive that
-is not closed after the character takes the rest of the text, so the line is not
-broken at the character either: `title T`, the character, `%%{x`, a blank line,
-and `"A":1` print `title T %%{x`, a blank line, and `"A":1`.
+is not closed after the character takes the rest of the text where the text
+after it does not start with a word character, so the line is not broken at the
+character either: `title T`, the character, `%%{x`, a blank line, and `"A":1`
+print `title T %%{x`, a blank line, and `"A":1`. Where a word follows, the
+directive takes that word as its argument and the whitespace after it, and the
+text after it goes on the line of the title (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)),
+so mermaid.js keeps the whitespace around the character in the title, and the
+line stays as written: with `y` before `"A":1`, the title is `T`, a space, the
+character, a space, and `"A":1`.
 
 [test:
 treemap/title/title-text-ignored-semicolon-line-separator-directive-comment-kept]
 [test:
 treemap/title/title-text-two-ignored-semicolons-line-separator-directive-comment-kept]
 [test: treemap/title/title-text-line-separator-unclosed-directive-joins-rest]
+[test: treemap/title/title-text-line-separator-unclosed-directive-word-kept]
 
 The other ways in which the comment can be followed, such as an empty line and
 the end of the text, or an empty line and a bare directive line, are not stated

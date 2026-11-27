@@ -2158,8 +2158,8 @@ mermaid.js が字下げごと取り除くコメント行と、
 規則 1 は、1 行目と、コメント行と、そのディレクティブの行を、
 ブロックの中の行として、ブロックを開く行より 1 段深く置き、
 ブロックの頭と終わりには、空行も空白だけの行も置きません。
-リリース済みの版は、それらの行を書かれた所に残し、
-それらの空行と空白だけの行も残します。
+リリース済みの版は、それらの行を書かれた所に残し、それらの空行も残します。
+空白だけの行は、頭では空白ごと残し、終わりでは空行にします。
 これは規則 1 が与える形ではありません。
 最後のテキスト行の行末の空白は、上と同じく落とすか、
 同じ行に閉じ括弧が続くときは空白 1 つで印字します。
@@ -2184,24 +2184,15 @@ mermaid.js が字下げごと取り除くコメント行と、
 [fixture: accessibility-statements/block-trailing-whitespace-in-a-subgraph]
 [fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
 
-閉じていないディレクティブは、引数の後ろの空白を改行ごと取り込みます。
-詳しくは仕様の
-[ディレクティブの位置](../../spec/docs/common.ja.md#ディレクティブの位置)
-を参照してください。
-そのため、後ろに続くものはディレクティブの行に乗り、書かれたまま印字します。
-詳しくは
+そのようなブロックの閉じていないディレクティブは、
 [閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
-を参照してください。
-`%%{x` の行、`b` の行、`}` の行が続くとき、ディレクティブの名前は `x`、
-引数は `b` で、`}` はその前の字下げとともにディレクティブの行に乗ります。
-ディレクティブの行そのものは、上で述べたとおり、
+のとおりに印字します。
+そこには、
+`}` がディレクティブの行に乗るときにリリース済みの版が残すものも書いてあります。
+subgraph の中では、ディレクティブの行そのものは、上で述べたとおり、
 ブロックのほかのディレクティブの行と同じく印字します。
-リリース済みの版は、subgraph の中では、
-ブロックの頭や終わりでもその行を書かれた所に残します。
-また、閉じ括弧がディレクティブの行に乗るときは、
-トップレベルでも subgraph の中でも、
-開く行より後のブロックの行をすべて書かれたまま残します。
-規則 1 はどちらも与えません。
+リリース済みの版は、ブロックの頭や終わりでも、その行を書かれた所に残します。
+これは規則 1 が与える形ではありません。
 
 [fixture: accessibility-statements/unclosed-directive-line-at-the-start]
 [fixture: accessibility-statements/unclosed-directive-line-among-the-text]
@@ -2673,10 +2664,20 @@ flowchart は、U+2028 や U+2029 を含む隙間を、これらの場所で、
 [test: U+2029 and a directive in the gap between the keyword of a class definition and its name of an ER diagram: the gap stays as written]
 [test: U+2029 and a directive with a space after it in the gap between the type and the name of an ER attribute]
 
-閉じていないディレクティブはテキストの残りを取り込むので、書かれたまま残します。
+閉じていないディレクティブは、その行に乗るテキストとともに書かれたまま残します。
+語の文字で始まる引数は、次の行にあってもその語で終わり、
+ディレクティブはその後ろの空白を改行ごと取り込みます。
+そのため、その後ろのテキストはディレクティブの行に乗ります。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
+`A`、`%%{x`、`B`、`C` は、実体 `A` と `C` になります。
+`%%{init: {` のようにそれ以外の引数はテキストの終わりまで続き、
+ディレクティブはテキストの残りを取り込みます。
 
 [fixture: directives/unclosed-at-end-of-text-kept]
 [fixture: directives/unclosed-after-statement-kept]
+[fixture: directives/unclosed-takes-the-next-word]
 
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。

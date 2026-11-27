@@ -3322,13 +3322,23 @@ flowchart %%{init: {}}%%LR
   B %%{init: {}}%%--> C
 ```
 
-閉じていないディレクティブは、mermaid.js が読むとおり、
+閉じていないディレクティブは、その行に乗るテキストとともに書かれたまま残します。
+語の文字で始まる引数は、次の行にあってもその語で終わり、
+ディレクティブはその後ろの空白を改行ごと取り込みます。
+そのため、その後ろのテキストはディレクティブの行に乗ります。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
+`A`、`%%{x`、`B`、`C` は、ノード `A` と `C` になります。
+`%%{init: {}` のようにそれ以外の引数は、mermaid.js が読むとおり、
 テキストの終わりまで続きます。
 
 [fixture: directives/compat-unclosed-directive-joins-next-line]
 [fixture: directives/unclosed-after-statement-on-same-line]
+[fixture: directives/unclosed-takes-the-next-word]
+[fixture: directives/unclosed-word-argument-stops-after-word]
 
-その範囲は、
+テキストの終わりに届くディレクティブの範囲は、
 空白でない最後の文字で終わります（仕様の
 [コメント、ディレクティブ、フロントマター](../../spec/docs/ast.ja.md#ディレクティブとフロントマター)）。
 そのため、その後の空白はテキストの末尾の空白で、そのとおりに整形します。

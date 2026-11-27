@@ -1938,10 +1938,14 @@ quadrant/db-acc-descr-comment-kept]
 | `\u2028T`                                  | `T`                                                                  | as written                                          |
 | `\u2029T`                                  | `T`                                                                  | as written                                          |
 
-A directive that is not closed in a title takes the rest of the text.
-`title T %%{x` and `title T%%{x` are not changed in any type. The second table
-gives what the whitespace before it prints, by whether a statement follows the
-title or the text ends there.
+A directive that is not closed in a title takes the text after it as in
+[A line that a directive that is not closed joins](#a-line-that-a-directive-that-is-not-closed-joins):
+a word after it, also on the next line, is its argument, and the text after that
+word goes on the line of the title, as `a, b` does after `axis` in a radar
+chart; where the text after it does not start with a word character, as `"a": 1`
+in a pie chart, it takes the rest of the text. `title T %%{x` and `title T%%{x`
+are not changed in any type. The second table gives what the whitespace before
+it prints, by whether a statement follows the title or the text ends there.
 
 | Written after `title ` | Before a statement                                                                                                                                                             | At the end of the text                                                                                                                                                         |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -6824,6 +6828,36 @@ ends after the word, and the lines after it are formatted.
 
 [fixture: flowchart/directives/unclosed-free-text-takes-the-rest] [fixture:
 flowchart/directives/unclosed-word-argument-stops-after-word]
+
+In a description block `accDescr { ... }` of any diagram type, the line of such
+a directive is a line inside the block, which
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one level deeper
+than the line that opens the block, except where the node of a subgraph holds
+its indentation (see
+[Accessibility statements](./er.md#accessibility-statements) of ER), and what
+goes on its line stays as written. With a line `a`, a line `%%{x`, a line `b`,
+and a line `}`, the argument is `b`, and the `}` goes on the line of the
+directive. With a line `%%{x` and then a line `}`, the `}` is no word, so the
+argument is free text that takes the `}` and the rest of the text, and the block
+is not closed: flowchart, swimlane, agentflow, sequence, state, and xychart read
+it as a block with an empty description, treeView reads `accDescr {` as the name
+of a node, and the other diagram types reject it. The released version keeps
+every line of the block after the opening line as written where the `}` goes on
+the line of the directive. Where the directive takes the `}`, it prints the line
+of the directive at the level of the statement, and agentflow keeps the block as
+written. Rule 1 gives neither.
+
+[fixture: er/accessibility-statements/unclosed-directive-line-at-the-start]
+[fixture: er/accessibility-statements/unclosed-directive-line-among-the-text]
+[fixture:
+er/accessibility-statements/unclosed-directive-line-before-the-closer-kept]
+[fixture: flowchart/directives/compat-unclosed-directive-takes-the-closer]
+[fixture:
+flowchart/directives/swimlane-compat-unclosed-directive-takes-the-closer]
+[fixture: agentflow/directives/compat-unclosed-directive-takes-the-closer-kept]
+[fixture: sequence/directives/compat-unclosed-directive-takes-the-closer]
+[fixture: state/directives/compat-unclosed-directive-takes-the-closer] [fixture:
+xychart/directives/compat-unclosed-directive-takes-the-closer]
 
 Whitespace that holds a U+2028 or U+2029 is printed as written, with the
 directive, wherever the directive stands. The free text of the argument stops

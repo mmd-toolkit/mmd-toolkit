@@ -861,6 +861,11 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  A->>B: x %%{wrap foo\u2029\nB->>A: y\n",
   ],
   [
+    "U+2028 after a directive that is not closed, before two lines",
+    "sequenceDiagram\nA->>B: x %%{wrap foo\u2028\nB->>A: y\nB->>A: z\n",
+    "sequenceDiagram\n  A->>B: x %%{wrap foo\u2028\nB->>A: y\n  B ->> A: z\n",
+  ],
+  [
     "a `;` after U+2029 after a directive that is not closed",
     "sequenceDiagram\nA->>B: x %%{init: {}\u2029;\nB->>A: y\n",
     "sequenceDiagram\n  A->>B: x %%{init: {}\u2029;\n  B ->> A: y\n",

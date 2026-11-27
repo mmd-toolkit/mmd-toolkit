@@ -1027,14 +1027,25 @@ section か leaf が直後に続くときは、行を書かれたまま残しま
 その行が書かれたまま残す行であるときは、後に何が続いても書かれたまま残します。
 その文字の後の空白と、ディレクティブとコメントの間の空白を保ち、
 その文字で行を終えません。
-その文字の後に閉じていないディレクティブがあるときは、
-それがテキストの残りを取るので、同じくその文字で行を終えません。
+その文字の後に閉じていないディレクティブがあり、
+その後ろのテキストが語の文字で始まらないときは、
+ディレクティブがテキストの残りを取るので、同じくその文字で行を終えません。
 `title T`、その文字、`%%{x`、空行、`"A":1` は、`title T %%{x`、空行、
 `"A":1` と印字します。
+後ろに語があるときは、ディレクティブはその語を引数として、
+その後ろの空白とともに取り込み、その後ろのテキストはタイトルの行に乗ります。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
+そのため、mermaid.js はその文字の前後の空白をタイトルに残し、
+その行は書かれたまま残ります。
+`"A":1` の前に `y` があると、タイトルは `T`、空白、その文字、空白、
+`"A":1` になります。
 
 [test: treemap/title/title-text-ignored-semicolon-line-separator-directive-comment-kept]
 [test: treemap/title/title-text-two-ignored-semicolons-line-separator-directive-comment-kept]
 [test: treemap/title/title-text-line-separator-unclosed-directive-joins-rest]
+[test: treemap/title/title-text-line-separator-unclosed-directive-word-kept]
 
 コメントの後がそれ以外の形のとき、たとえば空行とテキストの終わりのときや、
 空行とディレクティブだけの行のときは、ここでは述べません。
