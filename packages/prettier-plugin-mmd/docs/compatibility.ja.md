@@ -6534,35 +6534,85 @@ mermaid.js は、ディレクティブを取り除き、その前のテキスト
 詳しくは
 [mermaid.js が空白を許さない所](./printed-form.ja.md#mermaidjs-が空白を許さない所)
 を参照してください。
+固定版の mermaid.js を、コーパスの fixture の行の終わりで、
+木のあらゆる種類の文の後、fixture で行を終えるあらゆる種類のノードの後、
+fixture が書くあらゆるヘッダーの後に、ディレクティブを接して置いた形と、
+空白 1 つを置いた形で走らせました。
+次は、その 2 つが違った所です。
 
 固定版の mermaid.js は、次の行の終わりの空白を値に読みます。
-mindmap の、形のないノードのテキスト（`child%%{wrap}%%`）と、
-`:::` の行のクラス、kanban 図の、形のない列とカードのテキスト、timeline の題、
-セクション、期間、出来事、user journey の題とセクション、gantt の題、
-セクション、`dateFormat`、`tickInterval`、`todayMarker`、
-シーケンス図と C4 図の題、flowchart の、題のない subgraph の id です。
+mindmap の、形のないノードのテキスト（`child%%{wrap}%%`）、`:::` の行のクラス、
+ヘッダーの行のヘッダーの後のテキスト、kanban 図の、
+形のない列とカードのテキストと、ヘッダーの行のヘッダーの後のテキスト、
+timeline の題、セクション、期間、出来事と、
+ヘッダーの行のヘッダーの後のテキスト、user journey の題とセクション、
+gantt の題、セクション、`dateFormat`、`axisFormat`、`tickInterval`、
+`todayMarker`、シーケンス図、C4 図、ベン図の題、eventmodeling 図の、
+ヘッダーの行の `accTitle:` と `accDescr:`、
+フレームが読む `data` ブロックの本文の `{` と `}`、flowchart の、
+題のない subgraph の id、treeView 図の、
+ノードのクラスの注釈とアイコンの注釈です。
+`style`、`classDef`、`linkStyle` の値も空白を読みますが、
+それはスタイルの末尾の空白で、比べの対象ではありません。
+詳しくは [スタイルの末尾の空白](#スタイルの末尾の空白) を参照してください。
 
 [fixture: mindmap/directives/line-end-text-touching-kept]
+[fixture: mindmap/directives/header-text-touching-kept]
 [fixture: kanban/directives/line-end-text-touching-kept]
+[fixture: kanban/directives/header-text-touching-kept]
 [fixture: timeline/directives/line-end-value-touching-kept]
+[fixture: timeline/directives/header-text-touching-kept]
 [fixture: journey/directives/line-end-value-touching-kept]
 [fixture: gantt/directives/line-end-value-touching-kept]
+[fixture: gantt/directives/axis-format-touching-kept]
 [fixture: sequence/directives/line-end-value-touching-kept]
 [fixture: c4/directives/line-end-title-touching-kept]
+[fixture: venn/directives/title-touching-kept]
+[fixture: eventmodeling/global-directives/header-acc-title-touching-kept]
+[fixture: eventmodeling/global-directives/header-acc-descr-touching-kept]
+[fixture: eventmodeling/global-directives/data-block-braces-touching-kept]
 [fixture: flowchart/directives/line-end-subgraph-touching-kept]
+[fixture: treeview/directives/line-end-annotation-touching-kept]
 
 次の所では、その空白を拒否します。
-treemap の項目の名前、値、クラスの後（`"A"`、`"B": 1`、`"A":::c`）、
-シーケンス図の `autonumber` とその数の後、
-flowchart と swimlane 図の subgraph の題の `]` の後、
-agentflow 図の flow の題の `]` の後です。
+mindmap、kanban 図、要求図、sankey 図、ishikawa 図、treeView 図のヘッダーの後、
+`title`、`accTitle`、`accDescr` の行の前の treemap のヘッダーの後、
+treemap の項目の名前、値、クラスの後と、
+treemap を終える説明ブロックの `}` の後、
+シーケンス図の `autonumber` とその数の後と、参加者のデータブロックの `}` の後、
+flowchart と swimlane 図の、subgraph の題の `]` の後、`class` の文の後、
+`click` の文のリンク、呼び出し、ツールチップ、ターゲットの後、
+`interpolate` のある `linkStyle default` の後、agentflow 図の、
+flow の題の `]` の後と、`class`、`click`、`connector` の文の後、
+ER 図の `style` の文の後、四象限チャートの説明ブロックの `}` の後、要求図の、
+引用符で囲んだ値、`risk`、`verifymethod` の後、
+ABNF の railroad 図の規則を終える `;` の後、treeView 図の、
+引用符で囲んだノードの名前の後、
+packet 図の隠れた YAML ブロックを閉じる `---` の後です。
 
 [fixture: treemap/directives/carried]
 [fixture: treemap/directives/line-end-value-touching-kept]
+[fixture: treemap/directives/header-touching-kept]
+[fixture: treemap/directives/description-block-closer-touching-kept]
 [fixture: sequence/directives/line-end-value-touching-kept]
+[fixture: sequence/directives/data-block-touching-kept]
 [fixture: flowchart/directives/line-end-subgraph-touching-kept]
 [fixture: flowchart/directives/line-end-swimlane-title-touching-kept]
+[fixture: flowchart/directives/line-end-statement-touching-kept]
+[fixture: flowchart/directives/line-end-swimlane-statement-touching-kept]
 [fixture: agentflow/directives/line-end-flow-title-touching-kept]
+[fixture: agentflow/directives/line-end-statement-touching-kept]
+[fixture: er/directives/style-touching-kept]
+[fixture: quadrant/directives/description-block-closer-touching-kept]
+[fixture: requirement/directives/line-end-touching-kept]
+[fixture: railroad/global-directives/rule-end-touching-kept]
+[fixture: treeview/directives/header-touching-kept]
+[fixture: treeview/directives/line-end-annotation-touching-kept]
+[fixture: mindmap/directives/header-touching-kept]
+[fixture: kanban/directives/header-touching-kept]
+[fixture: sankey/directives/header-touching-kept]
+[fixture: ishikawa/inline-directives/header-touching-kept]
+[fixture: packet/hidden-yaml/closer-directive-touching-kept]
 
 ## コメントやディレクティブの前後の構造の継続行
 

@@ -331,9 +331,11 @@ class diagram reads exactly one whitespace character, and mermaid.js rejects
 Where mermaid.js reads the text before a directive at the end of a line as a
 value up to the end of the line, a space before the directive would end the
 value with it, so the directive stays touching the last unit of the line, and so
-it does where mermaid.js rejects a space there: `title T%%{wrap}%%` of a
-timeline keeps its directive touching `T`, since mermaid.js reads the title `T `
-from `title T %%{wrap}%%`.
+it does where mermaid.js rejects a space there, and after the `{` that opens the
+body of an eventmodeling `data` block that a frame reads, whose value holds what
+follows the `{`, so that a directive moved into the block or after a space
+changes it: `title T%%{wrap}%%` of a timeline keeps its directive touching `T`,
+since mermaid.js reads the title `T ` from `title T %%{wrap}%%`.
 [Directives at the end of a line](./compatibility.md#directives-at-the-end-of-a-line)
 names these places.
 
