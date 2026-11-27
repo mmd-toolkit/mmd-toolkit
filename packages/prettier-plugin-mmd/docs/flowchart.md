@@ -404,14 +404,24 @@ whitespace before it as written, as part of the `subgraph` line.
 [corpus fixture: flowchart/semicolon-after-end-name-2a3a795c] [fixture:
 statements-one-per-line/name-semicolon-after-directive-line]
 
-In a name, only `end` and `click` read the line break after them; the other
-words of the list are there because the list is shared with the text of a
-statement, and keeping a `;` there changes nothing that mermaid.js reads.
+In a name, `end`, `click`, `call`, and `href` read the line break after them:
+`end` takes it into the name, as above, and `click`, `call`, and `href` with the
+line break are a unit that makes the input rejected, so the `;` after them
+stays. A name is read in the units of a statement, where `click`, `call`, and
+`href` are keywords with the whitespace after them, a line feed included, as
+after the id of a vertex (see
+[The statement context](../../spec/docs/diagrams/flowchart.md#the-statement-context)).
+The other words of the list, `accTitle`, `accDescr`, and `direction`, are there
+because the list is shared with the text of a statement, and keeping a `;` there
+changes nothing that mermaid.js reads.
 
 [fixture: statements-one-per-line/semicolon-after-name-word-kept] [corpus
 fixture: flowchart/name-semicolon-whitespace-0c9483e4] [corpus fixture:
 flowchart/name-semicolon-whitespace-0fd5a434] [corpus fixture:
-flowchart/name-semicolon-whitespace-05fd0f99]
+flowchart/name-semicolon-whitespace-05fd0f99] [corpus fixture:
+flowchart/lex-click-keyword-line-feed] [corpus fixture:
+flowchart/lex-call-keyword-line-feed] [corpus fixture:
+flowchart/lex-href-keyword-line-feed]
 
 `Front pend` and `Front endx` do not end with the word.
 
@@ -925,15 +935,18 @@ removed keeps the argument list as written, like any other blank argument.
 Within a line, a run of spaces and tabs between two tokens becomes one space, so
 that a line has one form whoever wrote it, and tokens that touch keep touching,
 except where a rule below says otherwise (Arrow spacing): mermaid.js reads some
-tokens only when they touch, as `A%%{init: {}}%%B-->C`, which is the id `AB`,
-and a rule that wrote a space between touching tokens would need an exception
-for every such place. Where whitespace already separates `&` from both vertices,
-`&` stands between two things;
+tokens only when they touch, as `A@{ shape: rect }`, which gives the vertex `A`
+the shape `rect`, while `A @{ shape: rect }`, with whitespace before the `@{`,
+is rejected, and a rule that wrote a space between touching tokens would need an
+exception for every such place. Where whitespace already separates `&` from both
+vertices, `&` stands between two things;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space on
 each side.
 
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
-[fixture: whitespace-between-tokens/header-and-tabs-collapsed]
+[fixture: whitespace-between-tokens/header-and-tabs-collapsed] [corpus fixture:
+flowchart/gram-data-shape-known] [corpus fixture:
+flowchart/gram-data-space-before]
 
 A run of spaces and tabs inside the name of a subgraph, which becomes its title,
 is printed as one space where mermaid.js draws the title without a width, and
@@ -960,8 +973,11 @@ before its first `:` and one space after it where the value is not empty. A
 style property gives a name its value, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) treats its first
 colon as the colon of a key: no whitespace before it and one space after it when
-the value is nonempty. The `,` between styles has no whitespace before it and
-one space after it, as Prettier prints the comma of `f(a,b)` as `f(a, b);`
+the value is nonempty. Where the value is empty, nothing but the `,` or the end
+of the line follows the `:`, and rule 1 puts no whitespace before either, as
+Prettier prints `a{color: ;}` in CSS with `color:;`. The `,` between styles has
+no whitespace before it and one space after it, as Prettier prints the comma of
+`f(a,b)` as `f(a, b);`
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)):
 `style A fill :#f00,stroke:  #333` is printed
 `style A fill: #f00, stroke: #333`.
@@ -1178,13 +1194,16 @@ and the two give the same Db. The first style follows one space in
 the same first-style gap here. A run of spaces and tabs between the words of a
 style is printed as one space, and whether whitespace stands between two words
 stays as written: `classDef c fill:#f00    stroke:#333` is printed
-`classDef c fill: #f00 stroke:#333`. A run inside a single-quoted string and
-inside a comment that is not closed stays as written, and so does the escape
-after a backslash, since CSS reads it as part of the value: the hexadecimal
-digits (at most six) and the one space or tab that follows them, or else the
-next character. A run inside a comment that is not closed stays as written
-because the Db holds it: `fill:red/* a   b` and `fill:red/* a b` differ in the
-Db, and
+`classDef c fill: #f00 stroke:#333`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+between the words of a style, which are values that follow one another: Prettier
+prints `margin: 1px    2px;` in CSS as `margin: 1px 2px;`. A run inside a
+single-quoted string and inside a comment that is not closed stays as written,
+and so does the escape after a backslash, since CSS reads it as part of the
+value: the hexadecimal digits (at most six) and the one space or tab that
+follows them, or else the next character. A run inside a comment that is not
+closed stays as written because the Db holds it: `fill:red/* a   b` and
+`fill:red/* a b` differ in the Db, and
 [the exception for styles](./compatibility.md#styles-that-are-drawn-the-same)
 names only the runs between the words of a style. The run after the escape is a
 run like any other: `font-family:a\   b` is printed `font-family: a\  b`,
@@ -1209,7 +1228,9 @@ A style that starts with the `:`, and one whose `:` follows a backslash and a
 space, are printed as any other style: no whitespace before the `:` besides the
 space that the backslash escapes, one space after it, and the runs between their
 words as one space, as CSS drops the whitespace around the `:` and reads a run
-as one. The colon after an escaped space gives the style name its value, so
+as one. Rule 1 gives the same spaces: one after the colon of a key, and one
+between values that follow one another (see above). The colon after an escaped
+space gives the style name its value, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space after
 the colon before a nonempty value. `style A :  red   x` is printed
 `style A : red x`, and `style A fill\ :red   x` is printed
@@ -2216,9 +2237,12 @@ statement (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A comment line or a `)` alone on a later line changes no argument (see
 [Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
-The other gaps of such a statement follow the ordinary rules:
-`click   A "/u" "x` and `y"` on the next line is printed `click A "/u" "x` and
-`y"`, as the statement on one line would be.
+It stays as written all the same:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
+value that spreads over several lines as written, as Prettier keeps the text
+inside a template literal of JavaScript. The other gaps of such a statement
+follow the ordinary rules: `click   A "/u" "x` and `y"` on the next line is
+printed `click A "/u" "x` and `y"`, as the statement on one line would be.
 
 [fixture: multi-line-statements/click-string-over-lines-collapsed] [fixture:
 multi-line-statements/click-callback-args-over-lines-collapsed] [fixture:

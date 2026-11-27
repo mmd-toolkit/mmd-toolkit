@@ -1142,11 +1142,14 @@ configuration. The shared hidden path preserves internal columns, consumed LF
 and closing lookahead padding; ordinary body openers align with their body.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the line that
 opens a hidden form in the body at the level of the lines around it, as Prettier
-prints every line inside a block at one level, whatever it holds. Required
-opening gaps and common successors keep their authored boundaries.
-`eventmodeling`, `%%{{x}}%%` and ` accDescr: D` on lines of their own stay, with
-one space before `accDescr`, since every version of mermaid.js that counts
-rejects the line without that space (see
+prints every line inside a block at one level, whatever it holds. Its later
+lines keep their columns, as Prettier keeps the later lines of a block comment
+as written where they do not all start with `*` (in a block, `    /* x` and
+`  y */` are printed `  /* x` and `  y */`). Required opening gaps and common
+successors keep their authored boundaries. `eventmodeling`, `%%{{x}}%%` and
+` accDescr: D` on lines of their own stay, with one space before `accDescr`,
+since every version of mermaid.js that counts rejects the line without that
+space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A fallback percent comment stays a comment.
 
@@ -1986,7 +1989,8 @@ source and EOF-reaching unfinished directives retain their lexical endings. This
 shares the file-ending policy without adding LF to directive content or changing
 a block terminal's lookahead.
 
-[fixture: eventmodeling/final-newline/final-common-line-newline]
+[fixture: eventmodeling/final-newline/final-common-line-newline] [fixture:
+eventmodeling/final-newline/final-blank-run-removed]
 
 [fixture: eventmodeling/final-newline/final-native-comment-newline]
 

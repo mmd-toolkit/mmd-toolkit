@@ -411,7 +411,15 @@ flowchart LR
 [corpus fixture: flowchart/semicolon-after-end-name-2a3a795c]
 [fixture: statements-one-per-line/name-semicolon-after-directive-line]
 
-名前の後の改行を読むのは `end` と `click` だけで、一覧のほかの単語は、
+名前の後の改行を読むのは、`end`、`click`、`call`、`href` です。
+`end` は、上のとおり改行を名前に取り込みます。
+`click`、`call`、`href` は改行と合わせて 1 つの単位になり、
+入力が拒否されるので、その後の `;` は残します。
+名前は文と同じ単位で読みます。
+文では（[文の文脈](../../spec/docs/diagrams/flowchart.ja.md#文の文脈)を参照）、
+頂点の id の後と同じく、`click`、`call`、`href` は、
+改行を含む空白が後に続くとキーワードになります。
+一覧のほかの単語 `accTitle`、`accDescr`、`direction` は、
 文のテキストと一覧を共用しているために入っています。
 そこで `;` を残しても、mermaid.js が読むものは変わりません。
 
@@ -419,6 +427,9 @@ flowchart LR
 [corpus fixture: flowchart/name-semicolon-whitespace-0c9483e4]
 [corpus fixture: flowchart/name-semicolon-whitespace-0fd5a434]
 [corpus fixture: flowchart/name-semicolon-whitespace-05fd0f99]
+[corpus fixture: flowchart/lex-click-keyword-line-feed]
+[corpus fixture: flowchart/lex-call-keyword-line-feed]
+[corpus fixture: flowchart/lex-href-keyword-line-feed]
 
 `Front pend` と `Front endx` は、単語で終わりません。
 
@@ -930,7 +941,8 @@ flowchart LR
 行を、書いた人によらず 1 つの形にするためです。
 接しているトークンは、下の規則（矢印の空白）がなければ接したままにします。
 mermaid.js には、接しているときだけ読むトークンがあります。
-`A%%{init: {}}%%B-->C` は id `AB` です。
+`A@{ shape: rect }` は形が `rect` の頂点 `A` で、
+`A @{ shape: rect }` のように `@{` の前に空白があると、拒否されます。
 接するトークンの間に空白を書く規則は、その場所ごとの例外を要するからです。
 `&` と両側の頂点の間に空白があるときは、`&` は 2 つの間に立つ印なので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
@@ -938,6 +950,8 @@ mermaid.js には、接しているときだけ読むトークンがあります
 
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
+[corpus fixture: flowchart/gram-data-shape-known]
+[corpus fixture: flowchart/gram-data-space-before]
 
 subgraph の名前（タイトルになる）の中の空白とタブの連なりは、
 mermaid.js がタイトルを幅なしで描くときは空白 1 つにして印字し、
@@ -967,6 +981,9 @@ Markdown 文字列ではバッククォートの間の文字です。
 スタイルは名前に値を与えるので、最初の `:` はキーのコロンです。
 その前に空白を置かず、値が空でなければ後ろに空白 1 つを置く形は、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+値が空のときは、`:` の後ろには `,` か行末しか来ず、規則 1 は、
+そのどちらの前にも空白を置きません。
+Prettier も、CSS の `a{color: ;}` を `color:;` と印字します。
 スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置く形は、
 Prettier が `f(a,b)` を `f(a, b);` と印字するとおり、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
@@ -1211,6 +1228,10 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 語と語の間に空白があるかどうかは、書かれたまま残します。
 `classDef c fill:#f00    stroke:#333` は、
 `classDef c fill: #f00 stroke:#333` と印字します。
+語と語の間の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+スタイルの語は続けて並ぶ値で、
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 一重引用符の文字列の中と閉じていないコメントの中の連続と、
 バックスラッシュの後ろのエスケープは、CSS が値の一部として読むので、
 書かれたまま残します。
@@ -1244,6 +1265,8 @@ Db では、`fill:red/* a   b` と `fill:red/* a b` が違い、
 バックスラッシュがエスケープする空白のほかは `:` の前に空白を置かず、
 後ろに空白 1 つを置き、語と語の間の連続を空白 1 つで印字します。
 CSS が `:` の前後の空白を捨て、連続を 1 つとして読むためです。
+規則 1 も同じ空白を与えます。
+キーのコロンの後に 1 つ、続けて並ぶ値の間に 1 つです（上を参照）。
 エスケープされた空白の後の `:` は、スタイル名に値を与える印なので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
 空でない値の前の空白 1 つを与えます。
@@ -2286,6 +2309,10 @@ mermaid.js は、2 行目以降が字下げされていると、その一部を�
 詳しくは
 [同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)
 を参照してください。
+それでも、これらの行は書かれたまま残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+複数の行にわたる値のテキストを書かれたまま残すからです。
+Prettier が JavaScript のテンプレートリテラルの中のテキストを残すのと同じです。
 そのような文のほかの隙間には、普通の規則を掛けます。
 `click   A "/u" "x` と次の行の `y"` は、
 1 行の文と同じように `click A "/u" "x` と `y"` になります。

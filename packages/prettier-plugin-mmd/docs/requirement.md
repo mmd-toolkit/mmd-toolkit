@@ -610,17 +610,21 @@ or the next style.
 
 Print a run of spaces or tabs between two words of a style as one space, in a
 style with a `:` and in one without: `stroke-dasharray:  5    5` becomes
-`stroke-dasharray: 5 5`, and `4px    wide` becomes `4px wide`. Whether
-whitespace stands between two words stays as written: `fill #f00` and `fill#f00`
-are kept apart, since a word that touches the next stays touching, as a gap does
+`stroke-dasharray: 5 5`, and `4px    wide` becomes `4px wide`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+between the words of a style, which are values that follow one another: Prettier
+prints `margin: 1px    2px;` in CSS as `margin: 1px 2px;`. Whether whitespace
+stands between two words stays as written: `fill #f00` and `fill#f00` are kept
+apart, since a word that touches the next stays touching, as a gap does
 elsewhere (see [Directives](#directives)), and joining the words would hide
 where one word ends. Mermaid concatenates the native style units whatever
 whitespace separates them: `stroke-dasharray: 5 5` still means
 `stroke-dasharray:55`, so the Db does not change. For example,
 `fill   : navy, stroke  : black` becomes `fill: navy, stroke: black`. A style
 that starts with the `:` has no whitespace before it and one space after it, as
-any other: `style r :  red   x` is printed `style r : red x`. The gaps between
-words of a style that starts with `:` become one space.
+any other (rule 1, as above): `style r :  red   x` is printed `style r : red x`.
+The gaps between words of a style that starts with `:` become one space (rule 1,
+as above).
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 
@@ -654,7 +658,8 @@ Ignored semicolons follow
 
 A style that holds no `:`, such as `4px`, is not a property and value pair, so
 its text stays as written, except that a run of spaces between its words is
-printed as one space; the other styles of the statement are spaced as usual.
+printed as one space (rule 1, as above); the other styles of the statement are
+spaced as usual.
 
 [fixture: styles-and-classes/style-without-colon]
 
@@ -1576,8 +1581,10 @@ requirementDiagram
 ### Whitespace between tokens
 
 Where no rule above applies, a run of whitespace between two tokens of a
-statement becomes one space, and tokens that touch keep touching: the braces of
-an empty description block.
+statement becomes one space, and tokens that touch keep touching, as in a
+flowchart (see
+[Whitespace between tokens](./flowchart.md#whitespace-between-tokens)): the
+braces of an empty description block.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
 after a keyword before what it takes, as Prettier prints `return  x;` as
 `return x;`: `style  r` is printed `style r`. The opening brace of a description
@@ -1714,9 +1721,9 @@ before a comment that stands after something on its line, as Prettier prints
 stays touching.
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
-[fixture: comments/after-opening-brace] [fixture: comments/after-closing-brace]
-[fixture: comments/after-keyword-and-string-values] [fixture:
-comments/after-string-name]
+[fixture: comments/after-whitespace-run] [fixture: comments/after-opening-brace]
+[fixture: comments/after-closing-brace] [fixture:
+comments/after-keyword-and-string-values] [fixture: comments/after-string-name]
 
 Where an unquoted name or value stands, a `#` or a `%` is a character of the
 text, and after the value of a direction line it is text that mermaid.js does

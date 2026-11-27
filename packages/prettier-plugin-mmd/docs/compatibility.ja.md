@@ -415,7 +415,10 @@ ELK の配置のパッケージのどのリリースも、
 | [すべての図種](./compatibility.ja.md#フロントマター)                                                                                  | `tabWidth: 0` で本文が 1 つ分の空白だけ入るブロックスカラー                                                                              | 本文を幅 0 の字下げにした形                                               | [YAML](#フロントマター)                               | 10.9.8 から 12.3.0 が幅 0 の形を拒否する                                                                                 | [fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title]                                                                                                    |
 | [すべての図種](./compatibility.ja.md#フロントマター)                                                                                  | `tabWidth: 0` で入れ子の `config` の値が 1 つ分の空白だけ入る形                                                                          | 入れ子の値を幅 0 の字下げにした形                                         | [YAML](#フロントマター)                               | 10.9.8 から 12.3.0 が幅 0 の形を違って描く                                                                               | [fixture: ishikawa/frontmatter-yaml/zero-width-nested-config]                                                                                                         |
 | [すべての図種](./compatibility.ja.md#フロントマター)                                                                                  | フロントマターの `%YAML 1.2` の後の `--- !!map`                                                                                          | `---` と `!!map` を別の行に                                               | [YAML](#フロントマター)                               | 10.9.8 から 12.3.0 が分割した形を拒否する                                                                                | [fixture: flowchart/frontmatter-yaml/delimiter-line-kept]                                                                                                             |
-| [ishikawa](./ishikawa.ja.md#indentation)                                                                                              | `ishikawa`、`R`、` A`、` B`、` C` を書かれたまま                                                                                         | すべてのノードを深さの位置に置く形                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                         | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                                  |
+| [ishikawa](./ishikawa.ja.md#indentation)                                                                                              | `ishikawa`、`R`、`  A`、` B`、`  C` を書かれたまま                                                                                       | すべてのノードを深さの位置に置く形                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                         | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                                  |
+| [ishikawa](./ishikawa.ja.md#indentation)                                                                                              | `ishikawa`、`R`、`    A`、` B`、`  C`、`      D`、` E` を書かれたまま                                                                    | すべてのノードを深さの位置に置く形                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                         | [fixture: ishikawa/indentation/indent-clamped]                                                                                                                        |
+| [ishikawa](./ishikawa.ja.md#indentation)                                                                                              | `ishikawa`、`         R`、` A`、`  B`、` A` を書かれたまま                                                                               | すべてのノードを深さの位置に置く形                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                         | [fixture: ishikawa/root-indentation/root-deeper]                                                                                                                      |
+| [ishikawa](./ishikawa.ja.md#indentation)                                                                                              | `ishikawa`、タブと `R`、タブと `A`、タブ 2 つと `B` を書かれたまま                                                                       | すべてのノードを深さの位置に置く形                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                         | [fixture: ishikawa/indentation/indent-tabs-irregular-kept]                                                                                                            |
 | [user journey](./journey.ja.md#タイトルとセクション)                                                                                  | `title`、半角空白 2 つ、タブ、半角空白 1 つ                                                                                              | `title` だけ（後ろに何もない形）                                          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が、`title` だけの形を拒否する                                                   | [fixture: journey/titles-and-sections/title-blank-kept]                                                                                                               |
 | [user journey](./journey.ja.md#タイトルとセクション)                                                                                  | 改行しない空白か U+3000 を先頭か末尾に持つ title                                                                                         | それらのない title                                                        | なし                                                  | 10.9.8 から 12.3.0 が別のテキストを描き、12.3.0 は Db の title の末尾を変える                                            | [test: a no-break space and U+3000 at both ends of the title of a user journey diagram]                                                                               |
 | [user journey](./journey.ja.md#複数行の値)                                                                                            | `accDescr` ブロックの、途中の行の行末の空白                                                                                              | 空白を除いた形                                                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が、別の説明の文字を SVG に入れ、12.3.0 は Db も変える                           | [fixture: multi-line-values/description-block-inner-line-trailing-spaces-kept] [corpus fixture: journey/db-acc-descr-block-spaces-before-line-feed]                   |
@@ -1038,6 +1041,14 @@ ER や requirement と同じ形でスタイルを印字します。
 スタイルの間の `,` の前にも空白を置かず、後ろに空白を 1 つ置きます。
 `style A fill :#f00,stroke:  #333` は `style A fill: #f00, stroke: #333`
 になります。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
+キーのコロンは、CSS の `color: red` のように、前に空白を置かず、
+後ろに空白を 1 つ置きます。
+コンマは前に空白を置かず、後ろに 1 つ置きます。
+Prettier は CSS の `font-family: a,b` を `font-family: a, b;` と印字します。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+を参照してください。
 スタイルの語と語の間の空白とタブの連なりは、空白 1 つで印字します（後述）。
 swimlane 図のスタイルでは、語と語の間の空白とタブの連続を、`:` の有無によらず、
 空白 1 つで印字します。
@@ -1395,6 +1406,9 @@ requirement の図では、`:` のあるスタイルでも、ないスタイル�
 語と語の間に空白があるかどうかは、書かれたまま残します。
 `style A fill   #f00` は `style A fill #f00` と印字し、
 `style A fill#f00` はそのままです。
+この空白 1 つは、[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+スタイルの語は続けて並ぶ値で、
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 CSS は連なりを 1 つの空白として読むので、描かれる図は同じですが、
 連なりが値の文字になる所は、書かれたまま残します。
 文字列（`"…"` や `'…'`）の中、コメント（`/* … */`）の中、`url(` の括弧の中と、
@@ -4972,10 +4986,12 @@ Chromium で、図種ごとに対象にする版で描くと、
 `---o` と `--o` を違う図に描き、一部の版が `===x` と `==x` を違う図に描きます。
 `>` で終わらない太線は、一部の版が、
 `===` と `====` を長さで違う 2 つの id として読みます。
-`~` の線は id です。
 各行の版は
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 の表にあります。
+`~` の線も書かれたままにします。
+どの版もこれを id として読み、線の長さは、
+Db が保つその id のテキストだからです。
 flowchart のリンクの長さは、これらと違い、
 より多くのランクにまたがるリンクを求めるものです。
 [ほかに書かれたまま残すもの](#ほかに書かれたまま残すもの)を参照してください。
@@ -6593,6 +6609,7 @@ GWT には開始波括弧がありません。
 スタイル同士はカンマと空白1個で区切ります。
 プロパティと値の内容は、書かれたまま保ちますが、値の単語間の空白の連なりは、
 空白 1 つで印字します。
+続けて並ぶ値の間に規則 1 が与える空白です。
 （[同じに描かれるスタイル](#同じに描かれるスタイル)を参照）。
 単なる改行を結合する見出しでも、初回からこの空白にそろえます。
 注釈類、複数行のスタイル値、セミコロンの影響がある行は既存の配置を保ちます。
@@ -9128,6 +9145,11 @@ kanban のボードの Db は字下げを持たず、
 ノードの字下げを最初のノードの字下げと比べて、セクションと項目を区別します。
 そのため、印字は、セクションは 1 段、項目は 2 段の字下げを決め、
 役割を決めるものを保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、これらの段を与えます。
+ヘッダーは閉じる行のないブロックを開き、セクションも同じです。
+そのため、セクションはヘッダーより 1 段、
+項目はそのセクションより 1 段深く立ちます。
+Prettier がブロックの中の行を印字する形です。
 ラベル、アイコン、class のテキストの中の空白の連なりは値として残します。
 裸のラベル、アイコン、class のテキストの末尾の空白とタブは落とし、
 カードの裸の id の後の空白とタブも落としますが、
@@ -9139,7 +9161,9 @@ kanban のボードの Db は字下げを持たず、
 角括弧の内側と行末に余白を置きません。
 裸の kanban ラベルの両端の対象となる空白とタブと、
 裸のカードの id の後の外側の空白とタブは、その余白として除きます。
-装飾はノードの桁に揃え、インラインディレクティブの行は、
+装飾の行は、そのセクションのブロックの中の行で、規則 1 は、ブロックの中の行を、
+何を持っていても周りの行と同じ段に置きます。
+そのため装飾はノードの桁に揃え、インラインディレクティブの行は、
 ディレクティブと隣の隙間を保ち、最初のディレクティブの前の空白を印字が決めます。
 YAML として正しくないデータブロックは、パーサーが不透明なテキストとして受理し、
 mermaid.js は拒否します（既知の差異

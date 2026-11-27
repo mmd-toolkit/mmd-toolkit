@@ -623,6 +623,10 @@ style の文脈が LF で終わる場合、文の末尾の空白は落としま�
 空白 1 つで印字します。
 `stroke-dasharray:  5    5` は `stroke-dasharray: 5 5` に、
 `4px    wide` は `4px wide` になります。
+語と語の間の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+スタイルの語は続けて並ぶ値で、
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 語と語の間に空白があるかどうかは、書かれたまま残します。
 ほかの隙間と同じように、接する語は接したままです。
 そのため、`fill #f00` と `fill#f00` は区別して残します。
@@ -631,10 +635,11 @@ style の文脈が LF で終わる場合、文の末尾の空白は落としま�
 Mermaid は、区切る空白にかかわらずスタイルの単位をつなげて読むため、
 `stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` で、Db は変わりません。
 `fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
-`:` で始まるスタイルも、ほかのスタイルと同じく、`:` の前に空白を置かず、
-後ろに空白を 1 つ置きます。
+`:` で始まるスタイルも、ほかのスタイルと同じく（上のとおり規則 1 です）、
+`:` の前に空白を置かず、後ろに空白を 1 つ置きます。
 `style r :  red   x` は `style r : red x` と印字します。
-`:` で始まるスタイルの語の間は、空白 1 つにして印字します。
+`:` で始まるスタイルの語の間は、
+空白 1 つにして印字します（上のとおり規則 1 です）。
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 
@@ -667,7 +672,8 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 [fixture: styles-and-classes/ignored-style-terminator-dropped]
 
 `:` を含まないスタイル（`4px` など）は、プロパティと値の組ではないので、
-語の間の空白の連続を空白 1 つで印字するほかは、書かれたまま残します。
+語の間の空白の連続を空白 1 つで印字するほかは（上の規則 1）、
+書かれたまま残します。
 文のほかのスタイルは、通常どおり間隔を整えます。
 
 [fixture: styles-and-classes/style-without-colon]
@@ -1592,6 +1598,8 @@ requirementDiagram
 文の中の 2 つのトークンの間の空白は 1 つの空白にし、
 接しているトークンは接したままにします。
 空の説明ブロックの波括弧がそうです。
+接したままにするのは flowchart
+と同じです（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)を参照）。
 取るものの前に置くキーワードの後の空白 1 つは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 Prettier は `return  x;` を `return x;` と印字し、
@@ -1729,7 +1737,8 @@ Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 前のテキストに接するコメントは接したままです。
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
-[fixture: comments/after-opening-brace] [fixture: comments/after-closing-brace]
+[fixture: comments/after-whitespace-run] [fixture: comments/after-opening-brace]
+[fixture: comments/after-closing-brace]
 [fixture: comments/after-keyword-and-string-values]
 [fixture: comments/after-string-name]
 

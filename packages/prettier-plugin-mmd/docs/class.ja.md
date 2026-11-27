@@ -471,6 +471,16 @@ Prettier はコンマの後ろに空白を置くので、形を決める根拠�
 `style C fill: #f9f, stroke: #333` になります。
 スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字します。
 `style C border:1px   solid` は `style C border: 1px solid` と印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
+キーのコロンは、CSS の `color: red` のように、前に空白を置かず、
+後ろに空白を 1 つ置きます。
+コンマは前に空白を置かず、後ろに 1 つ置きます。
+Prettier は CSS の `font-family: a,b` を `font-family: a, b;` と印字します。
+続けて並ぶ値の間は空白 1 つです。
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+を参照してください。
 コメントの中と `url(` の括弧の中の連続は、CSS が値の一部として読むので、
 書かれたまま残します。
 mermaid.js は余白と語の間の空白の連続を Db に残しますが、描かれる図は同じです。
@@ -496,7 +506,8 @@ Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 [test: prints a form feed before a comment as one space]
 [test: keeps a form feed before a comment where a version that counts reads the text as words]
 
-`:` のない語だけのスタイルでも同じです。
+`:` のない語だけのスタイルでも、上の `:` のあるスタイルと同じく、規則 1 が、
+`,` の前に空白を置かず後ろに 1 つ置く形と、語の間の空白 1 つを与えます。
 mermaid.js はこれらを独立したトークンとして読み、
 `style A bold ,italic` は `style A bold, italic` と印字し、
 `style A fill   #f00` は `style A fill #f00` と印字します。
@@ -599,6 +610,7 @@ mermaid.js がその文字をスタイルに残し、CSS は空白として読�
 
 `:` で始まるスタイルも、ほかのスタイルと同じく、`:` の後に空白を 1 つ置き、
 語と語の間の空白とタブの連続は空白 1 つで印字します。
+これも上の規則 1 の形です。
 `style A :  red   x` は `style A : red x` と印字します。
 
 [fixture: whitespace-between-tokens/style-colon-first-run-spaced]
@@ -684,6 +696,10 @@ mermaid.js はどちらも引数のない同じ呼び出しとして読むから
 コメント行やディレクティブを含む引数は、`)` まで書かれたまま印字します。
 `)` の前の空白は Db では引数の一部なので、`)` の前にコメント行があっても、
 字下げしてはいけないからです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)も、これを書かれたまま残します。
+引数は複数の行にわたる値で、そのテキストは、
+JavaScript のテンプレートリテラルの中のテキストと同じく、
+書かれたまま残るからです。
 
 [fixture: whitespace-between-tokens/callback-args-comment-line-kept]
 [fixture: whitespace-between-tokens/callback-name-kept]

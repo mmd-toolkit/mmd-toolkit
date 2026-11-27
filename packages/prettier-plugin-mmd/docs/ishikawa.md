@@ -83,6 +83,11 @@ than the nearest node before it that is less deep, up to the root, and a root on
 the line of the header has the whitespace between the header and its text as its
 indentation. Such an indentation reproduces the same ordered tree without
 importing written widths.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these depths:
+the header opens a block with no closing line, as the key of a YAML mapping
+does, and so does each node that has children, so each line stands one level
+deeper than the line that opens its block, as Prettier prints the lines of a
+nested mapping in YAML.
 
 [fixture: ishikawa/indentation/indent-flatten-unsafe] [fixture:
 ishikawa/indentation/indent-sibling-causes] [fixture:
@@ -204,10 +209,14 @@ ishikawa
 
 ### Root indentation
 
-An ordinary root stands one configured positive step below the header, even when
-its source indentation was deeper or shallower than all causes. Root indentation
-chooses no parent, so column one would be Db-equal; the chosen step follows the
-body convention of the other printers.
+An ordinary root stands one configured positive step below the header where the
+written indentation shows the tree by nesting alone, as when it is shallower
+than all causes or has none. A root deeper than its causes keeps the whitespace
+written before it, and so do the causes (see [Indentation](#indentation)). Root
+indentation chooses no parent, so column one would be Db-equal;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the step: the
+header opens a block with no closing line, and the root, a line inside it,
+stands one level deeper, as Prettier prints the lines inside a block.
 
 [fixture: ishikawa/root-indentation/root-alone] [fixture:
 ishikawa/root-indentation/root-deeper] [fixture:
@@ -320,6 +329,9 @@ ishikawa
 
 Standalone comments align with the next node, or the last node at EOF, to show
 their association; comments before the header stand at column one.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
+inside a block at the level of the lines around it, as Prettier prints the lines
+inside a block.
 
 [fixture: ishikawa/comments/comments-align] [fixture:
 ishikawa/comments/comment-on-separate-line]
@@ -369,6 +381,9 @@ ishikawa
 
 Standalone directives keep their text and order and align like comments, showing
 their association without interpreting embedded data.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a directive line
+inside a block at the level of the lines around it, as it puts a comment line
+(see [Comments](#comments)).
 
 [fixture: ishikawa/standalone-directives/directives-align]
 

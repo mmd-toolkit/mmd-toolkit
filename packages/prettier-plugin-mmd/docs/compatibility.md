@@ -410,7 +410,10 @@ too.
 | [every diagram type](./compatibility.md#frontmatter)                                                                                            | a block scalar with its text one space in, at `tabWidth: 0`                                                                                                                  | its text at zero width                                                           | [YAML](#frontmatter)                                                 | 10.9.8 to 12.3.0 reject the zero-width form                                                                                                | [fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title]                                                                                                    |
 | [every diagram type](./compatibility.md#frontmatter)                                                                                            | a nested `config` value one space in, at `tabWidth: 0`                                                                                                                       | the nested value at zero width                                                   | [YAML](#frontmatter)                                                 | 10.9.8 to 12.3.0 draw the zero-width form differently                                                                                      | [fixture: ishikawa/frontmatter-yaml/zero-width-nested-config]                                                                                                         |
 | [every diagram type](./compatibility.md#frontmatter)                                                                                            | `--- !!map` after `%YAML 1.2` in frontmatter                                                                                                                                 | `---` and `!!map` on separate lines                                              | [YAML](#frontmatter)                                                 | 10.9.8 to 12.3.0 reject the split form                                                                                                     | [fixture: flowchart/frontmatter-yaml/delimiter-line-kept]                                                                                                             |
-| [ishikawa](./ishikawa.md#indentation)                                                                                                           | `ishikawa`, `R`, ` A`, ` B`, ` C` as written                                                                                                                                 | every node at its depth                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.13.0 draws the text printed by depth differently from the written text                                                                  | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                                  |
+| [ishikawa](./ishikawa.md#indentation)                                                                                                           | `ishikawa`, `R`, `  A`, ` B`, `  C` as written                                                                                                                               | every node at its depth                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.13.0 draws the text printed by depth differently from the written text                                                                  | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                                  |
+| [ishikawa](./ishikawa.md#indentation)                                                                                                           | `ishikawa`, `R`, `    A`, ` B`, `  C`, `      D`, ` E` as written                                                                                                            | every node at its depth                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.13.0 draws the text printed by depth differently from the written text                                                                  | [fixture: ishikawa/indentation/indent-clamped]                                                                                                                        |
+| [ishikawa](./ishikawa.md#indentation)                                                                                                           | `ishikawa`, `         R`, ` A`, `  B`, ` A` as written                                                                                                                       | every node at its depth                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.13.0 draws the text printed by depth differently from the written text                                                                  | [fixture: ishikawa/root-indentation/root-deeper]                                                                                                                      |
+| [ishikawa](./ishikawa.md#indentation)                                                                                                           | `ishikawa`, a tab and `R`, a tab and `A`, two tabs and `B` as written                                                                                                        | every node at its depth                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.13.0 draws the text printed by depth differently from the written text                                                                  | [fixture: ishikawa/indentation/indent-tabs-irregular-kept]                                                                                                            |
 | [user journey](./journey.md#titles-and-sections)                                                                                                | `title` followed by two spaces, a tab, and a space                                                                                                                           | `title` with nothing after it                                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 reject `title` with nothing after it                                                           | [fixture: journey/titles-and-sections/title-blank-kept]                                                                                                               |
 | [user journey](./journey.md#titles-and-sections)                                                                                                | a title with a no-break space or U+3000 at its start or end                                                                                                                  | the title without them                                                           | none                                                                 | 10.9.8 to 12.3.0 draw different text; 12.3.0 changes the end of the title in the Db                                                        | [test: a no-break space and U+3000 at both ends of the title of a user journey diagram]                                                                               |
 | [user journey](./journey.md#multi-line-values)                                                                                                  | the spaces at the end of an inner line of an `accDescr` block                                                                                                                | the spaces left out                                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 put another description text in the SVG; 12.3.0 changes the Db                                 | [fixture: multi-line-values/description-block-inner-line-trailing-spaces-kept] [corpus fixture: journey/db-acc-descr-block-spaces-before-line-feed]                   |
@@ -987,9 +990,15 @@ does in ER and requirement diagrams: no whitespace before the first `:` of a
 style, one space after it where the value is not empty, no whitespace before the
 `,` between two styles, and one space after it.
 `style A fill :#f00,stroke:  #333` is printed
-`style A fill: #f00, stroke: #333`. A run of spaces and tabs between the words
-of a style is printed as one space (see below). A run of spaces and tabs between
-words of a swimlane style is printed as one space, with or without a `:`.
+`style A fill: #f00, stroke: #333`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this form: the
+colon of a key has no whitespace before it and one space after it (`color: red`
+in CSS), and a comma has none before it and one space after it (Prettier prints
+`font-family: a,b` as `font-family: a, b;` in CSS); see
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is). A run of
+spaces and tabs between the words of a style is printed as one space (see
+below). A run of spaces and tabs between words of a swimlane style is printed as
+one space, with or without a `:`.
 
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
@@ -1339,7 +1348,10 @@ A run of spaces and tabs between the words of a style is printed as one space in
 flowchart, agentflow, class, state, block, usecase, treemap, ER, and requirement
 diagrams, in a style with a `:` and in one without, and whether whitespace
 stands between two words stays as written: `style A fill   #f00` is printed
-`style A fill #f00`, and `style A fill#f00` stays. CSS reads a run as one
+`style A fill #f00`, and `style A fill#f00` stays.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that one space:
+the words of a style are values that follow one another, and Prettier prints
+`margin: 1px    2px;` in CSS as `margin: 1px 2px;`. CSS reads a run as one
 whitespace, so the figure is the same, except where the run is a character of
 the value, and there it stays as written: inside a string (`"…"` or `'…'`),
 inside a comment (`/* … */`), inside the parentheses of `url(`, and the escape
@@ -4946,13 +4958,14 @@ the printer changes were read with the same Db and drawn the same by every
 version that reads them. These stay as written, since a version that counts
 draws them differently: an arrow without the `<` that ends in `x` or `o` (some
 versions draw `---x` and `--x`, and `---o` and `--o`, differently, and some draw
-`===x` and `==x` differently), a thick line that does not end in `>` (some
-versions read `===` and `====` as two ids that differ), and a line of `~` (an
-id). The row for each of them in
+`===x` and `==x` differently), and a thick line that does not end in `>` (some
+versions read `===` and `====` as two ids that differ). The row for each of them
+in
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
-names the versions. The length of the link of a flowchart is not one of these:
-it asks for a link that spans more ranks (see
-[What else stays as written](#what-else-stays-as-written)).
+names the versions. A line of `~` stays as written too: every version reads it
+as an id, and its length is the text of that id, which the Db keeps. The length
+of the link of a flowchart is not one of these: it asks for a link that spans
+more ranks (see [What else stays as written](#what-else-stays-as-written)).
 
 [fixture: block/edges/arrow-length-shortest] [fixture:
 block/edges/arrow-length-start-marker-shortest] [fixture:
@@ -6476,7 +6489,8 @@ one-level and two-level indentation.
 
 Ordinary ER and requirement style units use `property: value`, with styles
 separated by a comma and one space. Property and value contents stay written,
-except that a run of spaces between value words is printed as one space (see
+except that a run of spaces between value words is printed as one space, as rule
+1 gives between values that follow one another (see
 [Styles that are drawn the same](#styles-that-are-drawn-the-same)). A plain
 joined header gets this spacing on the first pass too. Trivia, multiline style
 literals and semicolon-sensitive lines retain their existing layout.
@@ -9033,19 +9047,27 @@ error/as-written/directive-kept] [corpus fixture: common/error-pseudo-diagram]
 The Db of a kanban board has no indentation: it tells a section from an item by
 comparing the indentation of a node with that of the first node. So the printer
 chooses the indentation, one step for a section and two for an item, and keeps
-what decides the roles. A run of whitespace inside a label, an icon, or a class
-text remains value text, and the spaces and tabs at the ends of a bare label, an
-icon, and a class text are dropped, and so are those after the bare id of a
-card, while those after the bare id of a column stay, and a bare label, an icon,
-or a class text of spaces and tabs only keeps one space (`A[ ]`) (see
+what decides the roles.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these steps:
+the header opens a block with no closing line, and so does a section, so a
+section stands one level deeper than the header and an item one level deeper
+than its section, as Prettier prints the lines inside a block. A run of
+whitespace inside a label, an icon, or a class text remains value text, and the
+spaces and tabs at the ends of a bare label, an icon, and a class text are
+dropped, and so are those after the bare id of a card, while those after the
+bare id of a column stay, and a bare label, an icon, or a class text of spaces
+and tabs only keeps one space (`A[ ]`) (see
 [Trailing whitespace](./kanban.md#trailing-whitespace)). Brackets have no inner
 padding under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), so
 eligible spaces and tabs at the edges of a bare kanban label are dropped. The
 same rule removes trailing line whitespace, so exterior spaces and tabs after a
-bare card id are dropped. Decorations align with their node; an inline-directive
-line keeps its directives and the gaps beside them, and the printer chooses the
-whitespace before the first one. A data block with invalid YAML is accepted by
-the parser as opaque text, although mermaid.js rejects it (known divergence
+bare card id are dropped. Decorations align with their node; a decoration line
+is a line inside the block of its section, and rule 1 puts every line inside a
+block at the level of the lines around it, whatever it holds; an
+inline-directive line keeps its directives and the gaps beside them, and the
+printer chooses the whitespace before the first one. A data block with invalid
+YAML is accepted by the parser as opaque text, although mermaid.js rejects it
+(known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 and the printer retains its opaque content with only eligible margin movement.
 See the [kanban rules](./kanban.md).

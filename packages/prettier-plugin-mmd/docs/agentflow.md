@@ -280,6 +280,33 @@ names-and-headings/heading-with-comment-and-directive-directive-before-ignored-s
 [fixture:
 names-and-headings/heading-with-comment-and-directive-connector-ignored-semicolon-after-whitespace-dropped]
 
+A `;` that separates statements right after a name that holds a directive goes
+in the same way, with the spaces and tabs before it, which mermaid.js reads with
+the name only because the `;` ends it, and trims: the name is printed as the
+text without the `;` is. So `flow Front fin %%{init: {}}%% ;  %% c` is printed
+`flow Front fin %%{init: {}}%% %% c`, with the one space before a comment, and
+`flow Front fin %%{init: {}}%% ;` followed by a line break or by a statement is
+printed `flow Front fin%%{init: {}}%%`, the directive at the end of the name
+standing as it does above. A second `;` is a statement of its own in the body of
+a `flow` or a `global`, an empty statement, which stands on a line of its own
+with what follows it on its line (see [Semicolons](#semicolons)):
+`flow Front fin %%{init: {}}%% ; ;  %% c` is printed
+`flow Front fin%%{init: {}}%%`, and `; %% c` on the next line. At the top level
+the printer drops it, so `connector C fin %%{init: {}}%% ; ;  %% c` is printed
+`connector C fin %%{init: {}}%% %% c`. A name whose last word before the
+directive is `end` or `global` keeps that whitespace, which the keyword takes
+with or without the `;` (see below).
+
+[fixture: names-and-headings/directive-name-dropped-semicolon-before-comment]
+[fixture: names-and-headings/directive-name-dropped-semicolon-at-line-end]
+[fixture: names-and-headings/directive-name-dropped-semicolon-before-statement]
+[fixture:
+names-and-headings/directive-name-dropped-semicolon-before-empty-statement]
+[fixture:
+names-and-headings/heading-end-keyword-directive-semicolon-comment-kept]
+[fixture:
+names-and-headings/heading-global-keyword-directive-semicolon-comment-kept]
+
 A name that ends with the keyword `end` or `global` takes the whitespace after
 it, also before a comment: `flow Front end %% c` is printed
 `flow Front end%% c`. A `;` that the printer drops after such a name, and the
@@ -637,6 +664,9 @@ and whether whitespace stands between two words stays as written: a run inside a
 single-quoted string, inside a comment that is not closed, and the escape after
 a backslash stay: the hexadecimal digits and the one space or tab that follows
 them, or else the next character.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+between the words of a style, which are values that follow one another: Prettier
+prints `margin: 1px    2px;` in CSS as `margin: 1px 2px;`.
 
 [fixture: single-space-gaps/style-words-run-spaced] [fixture:
 single-space-gaps/style-string-runs-kept] [fixture:
@@ -731,8 +761,9 @@ before the comma of a style statement]
 A style that starts with the `:` is printed as any other: one space after the
 `:`, and the runs between its words as one space. Prettier prints one space
 after a CSS colon, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives one space after the leading colon of a style. `style A :  red   x` is
-printed `style A : red x`.
+gives one space after the leading colon of a style. It gives the one space
+between the words too, as above. `style A :  red   x` is printed
+`style A : red x`.
 
 [fixture: single-space-gaps/style-colon-first-run-spaced]
 
@@ -795,10 +826,10 @@ edge id touch one another: `A@{ shape: rect }%%{x}%%e1@-->B` is printed
 arrows/edge-id-after-data-block-directive] [fixture:
 arrows/edge-id-after-data-block-semicolon]
 
-An edge id that starts as an arrow does touches the shape or the data block
-before it, as in `A["x"]--a@-->B`. In agentflow that is an edge id that starts
-with `--`, `-.-`, or `-..-`; one such as `x--a`, `==a`, `-.a`, or `.-a` is read
-the same after whitespace, and has one space before it. `A["x"]--a@-->B` stays
+An edge id that starts as an arrow touches the shape or the data block before
+it, as in `A["x"]--a@-->B`. In agentflow that is an edge id that starts with
+`--`, `-.-`, or `-..-`; one such as `x--a`, `==a`, `-.a`, or `.-a` is read the
+same after whitespace, and has one space before it. `A["x"]--a@-->B` stays
 attached, since every version of mermaid.js that counts draws `A["x"] --a@-->B`
 differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).

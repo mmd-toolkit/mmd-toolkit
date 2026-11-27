@@ -1187,6 +1187,10 @@ GWT 節・項目の隙間を保ちます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、本文で隠れた形を開く行を、
 周りの行と同じ段に置きます。
 Prettier は、ブロックの中の行を、何を持つ行でも同じ段に印字するためです。
+その 2 行目以降は桁を保ちます。
+Prettier も、ブロックコメントの 2 行目以降を、
+それがすべて `*` で始まるのでなければ、書かれたまま残します。
+ブロックの中の `    /* x` と `  y */` は、`  /* x` と `  y */` と印字されます。
 必須の開始部分の隙間と共通文の前方境界は原文どおりです。
 `eventmodeling`、`%%{{x}}%%`、` accDescr: D` を各行に置いた形は、
 `accDescr` の前の空白 1 つも残します。
@@ -2019,6 +2023,7 @@ EOF に達する未完ディレクティブは字句上の終端を保ちます�
 ブロック終端トークンの先読みの変更を避けます。
 
 [fixture: eventmodeling/final-newline/final-common-line-newline]
+[fixture: eventmodeling/final-newline/final-blank-run-removed]
 
 [fixture: eventmodeling/final-newline/final-native-comment-newline]
 

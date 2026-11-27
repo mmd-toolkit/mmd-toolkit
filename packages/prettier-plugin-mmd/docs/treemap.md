@@ -512,9 +512,13 @@ whitespace around the name and the value of each style away before it draws; CSS
 reads a run of whitespace as one. So a style has no whitespace before its first
 `:` and one space after it where the value is not empty, a `,` has none before
 it and one space after it, a run of spaces and tabs between two words of a style
-is one space, and the style has no whitespace at its end. The Db keeps the
-whitespace in each style, so it changes, but the figure is the same, which was
-checked by drawing the chart before and after.
+is one space, and the style has no whitespace at its end.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these spaces,
+and no whitespace at the end of a value before the `,` or the end of the line.
+The Db keeps the whitespace in each style, so it changes, but the figure is the
+same (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)),
+which was checked by drawing the chart before and after.
 
 [fixture: treemap/styles/spaced] [fixture: treemap/styles/trailing] [fixture:
 treemap/styles/trailing-before-semicolon] [fixture:
@@ -1114,7 +1118,10 @@ and
 
 An `accTitle` or `accDescr` statement is placed like a title: it is printed at
 the start of its line unless it was written indented, in which case it is
-printed one step in (see [Title](#title)).
+printed one step in (see [Title](#title)). The step is that of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), which puts a line
+inside a block one level deeper than the header, as Prettier prints the lines
+inside a block.
 
 [fixture: treemap/accessibility-lines/title-padding]
 

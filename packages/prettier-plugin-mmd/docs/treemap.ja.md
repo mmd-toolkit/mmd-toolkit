@@ -519,8 +519,12 @@ CSS は空白の連続を 1 つとして読みます。
 値が空でなければ、後に空白を 1 つ置きます。
 `,` の前には空白を置かず、後に 1 つ置きます。
 スタイルの語と語の間の空白とタブの連続は空白 1 つにし、末尾の空白は除きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、これらの空白を与え、
+値の後の `,` と行末の前には、空白を置きません。
 Db は各スタイルの空白を保つので変わりますが、描かれる図は同じです。
 これは整形前後の図を描いて確かめました。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
 
 [fixture: treemap/styles/spaced] [fixture: treemap/styles/trailing]
 [fixture: treemap/styles/trailing-before-semicolon]
@@ -1123,6 +1127,9 @@ U+2029 があるときを除きます。
 `accTitle` と `accDescr` の文は title と同じ位置に置きます。
 字下げして書かれていなければ行頭に置いて印字し、
 字下げして書かれていれば 1 段深く印字します。
+この 1 段は[規則 1](./printed-form.ja.md#1-記号の横の空白)の段です。
+ブロックの中の行をヘッダーより 1 段深く置く、
+Prettier がブロックの中の行を印字する形です。
 詳しくは [タイトル](#title) を参照してください。
 
 [fixture: treemap/accessibility-lines/title-padding]

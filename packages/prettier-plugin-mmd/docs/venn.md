@@ -703,7 +703,10 @@ whether whitespace lies between a `:` and a `#`. Each bare value is one written
 `VennLiteral`. A run of spaces and tabs between its atoms, outside the
 parentheses of an rgb/rgba token, is printed as one space: mermaid.js joins the
 atoms with one space, so the Db is the same, and whether whitespace stands
-between two atoms stays as written. A comment line inside the parentheses
+between two atoms stays as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that one space,
+as between values that follow one another: Prettier prints `margin: 1px    2px;`
+in CSS as `margin: 1px 2px;`. A comment line inside the parentheses
 (`style A fill:rgb(1,`, a line `%% ) x  y`, and `2,3)`) is removed before the
 value is read, so its characters, a `)` among them, are no part of the value and
 stay as written. Space inside an rgb/rgba token is different: changing a
@@ -1023,13 +1026,23 @@ venn-beta
 Standalone directives align with nearby statements (see
 [Indentation](#indentation)); inline directives retain their containing line,
 order and contents, and are placed in their gaps as under
-[Directives](./flowchart.md#directives). A leading directive retains the
-positive versus zero logical indentation of implicit versus explicit text,
-choosing exterior indentation before the first directive while keeping its
-internal gap relations. Embedded, multiline, semicolon-stopped and EOF
-directives keep their boundaries; no embedded data is reformatted.
+[Directives](./flowchart.md#directives), except in the gaps of a color function.
+After its `(`, before a comma, and before its `)`, where the whitespace stays as
+written (see [Colors](#colors)), the whitespace on both sides of a directive
+stays as written; after a comma, which is printed with one space after it, the
+whitespace after a directive stays as written (see
+[Style properties](#style-properties)). In a function that stays as written, in
+capitals (`RGB(`) or over lines, a directive stays as written with the function
+(see [Colors](#colors)). A leading directive retains the positive versus zero
+logical indentation of implicit versus explicit text, choosing exterior
+indentation before the first directive while keeping its internal gap relations.
+Embedded, multiline, semicolon-stopped and EOF directives keep their boundaries;
+no embedded data is reformatted.
 
-[fixture: venn/directives/unclosed-after-doubled-semicolon]
+[fixture: venn/directives/unclosed-after-doubled-semicolon] [fixture:
+venn/directives/color-function-gaps-kept] [fixture:
+venn/style-properties/word-run-directive-parenthesis-kept] [fixture:
+venn/directives/function-as-written-directive-kept]
 
 An internal gap, including between two leading directives, already supplies the
 positive marker. Only where no internal gap supplies it does an implicit line

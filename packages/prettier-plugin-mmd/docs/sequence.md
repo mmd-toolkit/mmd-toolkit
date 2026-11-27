@@ -1036,6 +1036,8 @@ note over A:n
 links A:{"a": "b"}
 accTitle:t
 A->>B::nowrap:z
+A->>B:   w
+note over A:   m
 ```
 
 Output
@@ -1050,6 +1052,8 @@ sequenceDiagram
   links A: {"a": "b"}
   accTitle: t
   A ->> B: :nowrap: z
+  A ->> B: w
+  Note over A: m
 ```
 
 ### Title
@@ -1815,11 +1819,20 @@ it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
 directive line inside a block one level deeper than the line that opens it, as
 Prettier prints the lines inside a block. A directive within a printed line is
 placed as in a flowchart: the gap is printed as without the directive, and the
-directive stands after its space and touches the unit that follows it.
+directive stands after its space and touches the unit that follows it. In the
+gaps of a color function of a `rect` or of the color of a `box`, it is placed
+otherwise: after the `(`, before a comma, and before the `)`, where the
+whitespace stays as written, the whitespace on both sides of the directive stays
+as written, and after a comma, which is printed with one space after it, the
+whitespace after the directive stays as written (see [Colors](#colors)). In a
+function that stays as written, such as one in capitals (`RGB(`), the directive
+stays as written with it.
 
 [fixture: directives/kept] [fixture: directives/section-edges-kept] [fixture:
 directives/whitespace-on-each-side] [fixture: directives/touching-kept]
-[fixture: directives/block-lines-kept]
+[fixture: directives/block-lines-kept] [fixture:
+directives/color-function-gaps-kept] [fixture:
+directives/function-as-written-directive-kept]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
