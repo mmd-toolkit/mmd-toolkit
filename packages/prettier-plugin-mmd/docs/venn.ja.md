@@ -1086,6 +1086,15 @@ venn-beta
 を参照）。
 行内のディレクティブは行、順序、内容を保ち、隙間の中では、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+ただし、色関数の隙間では違います。
+`(` の直後、コンマの前、`)` の直前では、
+空白を書かれたまま残すので（[色](#色)を参照）、
+ディレクティブの両側の空白を書かれたまま残します。
+コンマの後では（[Style properties](#style-properties) を参照）、
+コンマの後を空白 1 つにして、ディレクティブの後の空白を書かれたまま残します。
+書かれたまま残す関数（[色](#色)を参照）、
+つまり大文字の関数（`RGB(`）や行をまたぐ関数では、
+ディレクティブも関数といっしょに書かれたまま残します。
 先頭のディレクティブは暗黙と明示の text を分ける、
 論理的な字下げの正とゼロを保ちます。
 内部の隙間の関係を保ち、最初のディレクティブの前の字下げを決めます。
@@ -1093,6 +1102,9 @@ venn-beta
 埋め込みデータは整形しません。
 
 [fixture: venn/directives/unclosed-after-doubled-semicolon]
+[fixture: venn/directives/color-function-gaps-kept]
+[fixture: venn/directives/function-as-written-directive-kept]
+[fixture: venn/style-properties/word-run-directive-parenthesis-kept]
 
 先行する複数のディレクティブの間の空白も正の印です。
 内部の隙間が印にならない暗黙の行だけ、

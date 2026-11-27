@@ -1853,10 +1853,20 @@ Prettier がブロックの中の行をそう印字するためです。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
+`rect` の色関数と `box` の色の隙間では、置き方が違います。
+`(` の直後、コンマの前、`)` の直前では、
+空白を書かれたまま残すので（[色](#色)を参照）、
+ディレクティブの両側の空白を書かれたまま残します。
+コンマの後では、コンマの後を空白 1 つにして、
+ディレクティブの後の空白を書かれたまま残します。
+大文字の関数（`RGB(`）のように書かれたまま残す関数では、
+ディレクティブも関数といっしょに書かれたまま残します。
 
 [fixture: directives/kept] [fixture: directives/section-edges-kept]
 [fixture: directives/whitespace-on-each-side]
 [fixture: directives/touching-kept] [fixture: directives/block-lines-kept]
+[fixture: directives/color-function-gaps-kept]
+[fixture: directives/function-as-written-directive-kept]
 
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
