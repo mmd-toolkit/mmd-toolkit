@@ -649,16 +649,17 @@ before a comment that stands after something on its line, as Prettier prints
 that follows an `accTitle` value is the exception: the oldest version that
 counts reads it as part of the title (see
 [Accessibility lines](#accessibility-lines)). Keep bare/triple-percent marks and
-trailing comment spaces. The whitespace at the end of its line, which stays too,
-is not the form of [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark):
-rule 1 leaves it out, as Prettier does at the end of every line. Pie native
-comments end at LF, retaining LS/PS inside them, because pie does not treat them
-as separators: ending a comment at one would expose the rest of the line as a
-statement and change the Db; strings and block interiors keep percent content,
-while line common values stop at it. Common removed regions keep their complete
-swallowed source and joined continuation columns, because re-indenting a
-continuation adds spaces to the joined label. The whitespace at the start of the
-text of a comment and the runs of whitespace inside it stay as written:
+trailing comment spaces. The whitespace at the end of the line of a comment,
+which stays too, is not the form of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): rule 1 leaves it
+out, as Prettier does at the end of every line. Pie native comments end at LF,
+retaining LS/PS inside them, because pie does not treat them as separators:
+ending a comment at one would expose the rest of the line as a statement and
+change the Db; strings and block interiors keep percent content, while line
+common values stop at it. Common removed regions keep their complete swallowed
+source and joined continuation columns, because re-indenting a continuation adds
+spaces to the joined label. The whitespace at the start of the text of a comment
+and the runs of whitespace inside it stay as written:
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
 comment as written but for the whitespace at the end of its line, as Prettier
 prints `//    spaced   text` as written. A protected preheader prefix overrides

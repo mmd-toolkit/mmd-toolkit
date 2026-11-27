@@ -686,8 +686,8 @@ The whitespace at the start of the text of a comment and the runs of whitespace
 inside it stay as written:
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
 comment as written but for the whitespace at the end of its line, as Prettier
-prints `//    spaced   text` as written. The whitespace at the end of its line,
-which stays too, is not the form of
+prints `//    spaced   text` as written. The whitespace at the end of the line
+of a comment, which stays too, is not the form of
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): rule 1 leaves it
 out, as Prettier does at the end of every line. Native comments keep LS/PS as
 content; strings/blocks own percent text while line values stop before it.
