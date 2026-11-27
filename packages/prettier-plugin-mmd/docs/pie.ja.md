@@ -564,12 +564,24 @@ EOF も含む閉じの空白を保ちます。
 形の前に改行を加える、または形を別の行へ移すと、
 形が消費していた LF が文の途中の見える LF になります。
 形を削ると、消費されていた LF が現れます。
-閉じの空白を削ると、形が次の文に必要な LF を消費し、その文が拒否されます。
+形が行で文の後にあり、次の文が次の行に、またはコメント行だけを挟んであるときは、
+閉じの空白を削ると、形が次の文に必要な LF を消費し、
+そのような形を読む対象の版の mermaid.js はどれもその文を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+形が自分の行にあるとき、ヘッダーかその `showData` の後にあるとき、
+空行かディレクティブの行の前にあるとき、テキストの終わりにあるときは、
+閉じの空白を要る対象の版はありません。
 隠れた YAML の閉じ囲み記号は先頭列に置きます。
 先頭列にあるときだけ閉じとなり、字下げした閉じ囲み記号は拒否されます。
 通常の開きの前の空白は縮められ、本文の開きには字下げできます。
 内部と先頭列の閉じは元の列です。
 すでに始まった文字列・title・ブロックを優先します。
+
+[fixture: pie/hidden-yaml/yaml-after-space-comment-line]
+[fixture: pie/hidden-yaml/yaml-after-space-empty-line]
+[fixture: pie/hidden-yaml/yaml-after-space-directive-line]
 
 本文の先頭・途中の単独の形、字下げされた形、ヘッダー・`showData` の後、
 EOF の形でも、閉じの空白を保持します。
@@ -633,12 +645,19 @@ ignored
 そのような `}%%` の後に空白を加えると、
 Mermaid が読むコメントが隠れたトークンに変わるためです。
 文字列とブロックは先に適用します。
-次の文がある場合の閉じの空白と余分な LF は重要です。
+閉じの空白と余分な LF は、[隠れた YAML](#hidden-yaml)と同じ所で重要です。
+次の行に、またはコメント行だけを挟んで次の文があるときです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 EOF の閉じた形には共有の最後の LF を加えられます。
 
 [fixture: pie/hidden-directives/hidden-number-gap]
 [fixture: pie/hidden-directives/hidden-before-colon]
 [fixture: pie/hidden-directives/hidden-after-space]
+[fixture: pie/hidden-directives/hidden-after-space-comment-line]
+[fixture: pie/hidden-directives/hidden-after-space-empty-line]
+[fixture: pie/hidden-directives/hidden-after-space-directive-line]
 [fixture: pie/hidden-directives/hidden-after-extra-lf]
 [fixture: pie/hidden-directives/hidden-after-title]
 [fixture: pie/hidden-directives/hidden-after-block]
