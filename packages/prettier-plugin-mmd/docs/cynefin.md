@@ -753,13 +753,20 @@ Use shared hidden-gap and block rules for consumed LF outside node ranges,
 inline contact and closer space/tab, including EOF. Transitions and common
 statements require a spare visible LF after a suffix that consumes LF; closer
 padding can leave LF visible instead: without it, every version of mermaid.js
-that counts rejects the statement that follows (see
+that counts rejects a statement on the next line, also with comment lines
+between (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-At the end of the text no statement follows, and no version that counts needs
-the padding there. Domains and items need no visible EOL. Only the header’s own
-hidden forms use its ordinary edge-break exception; a first statement’s suffix
-remains its suffix on the header line. Preserve multiple suffixes and body forms
-after visible EOL.
+Where an empty line or a directive line stands before the next statement, and at
+the end of the text, no version that counts needs the padding. Domains and items
+need no visible EOL. Only the header’s own hidden forms use its ordinary
+edge-break exception; a first statement’s suffix remains its suffix on the
+header line. Preserve multiple suffixes and body forms after visible EOL.
+
+[fixture:
+cynefin/hidden-boundaries/boundary-suffix-directive-space-comment-line]
+[fixture: cynefin/hidden-boundaries/boundary-suffix-directive-space-empty-line]
+[fixture:
+cynefin/hidden-boundaries/boundary-suffix-directive-space-directive-line]
 
 Use the same kept-line decision for the header, domain openings and item gaps,
 including native DIRECTIVE and YAML at an item's suffix. Keep every opening on

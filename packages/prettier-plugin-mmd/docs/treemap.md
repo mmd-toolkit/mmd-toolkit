@@ -699,9 +699,10 @@ semicolons/class-terminator-beside-semicolon-directive-kept]
 
 It stays too after a U+2028 or U+2029 and then a comment line, and the line is
 printed as written. The character is no whitespace of the line rule and the
-comment line is removed, so the character is part of the style: with it, no
-version of mermaid.js that counts draws the style of the class, and without it
-every one does, so it stays (see
+comment line is removed, so the character is part of the style: with it, the
+`<style>` of the SVG that every version of mermaid.js that counts draws holds no
+rule of the class that CSS reads, and without it every one holds the rule, so it
+stays (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Dropping the `;` alone draws the same in every version that counts.
 
