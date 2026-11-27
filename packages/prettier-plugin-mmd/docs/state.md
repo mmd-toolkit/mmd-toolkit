@@ -1133,18 +1133,23 @@ notes/html-first-line-tabs] [fixture: notes/html-first-line-zero-width]
 [fixture: notes/first-tab-markup-margin]
 
 Mermaid keeps the margins in the Db, so the Db of the printed note differs from
-the Db of the written note, but it draws the same figure. Both texts of each
-fixture of this section whose printed note differs from the written one were
-drawn with pinned mermaid.js in Chromium, after the state that the note refers
-to was declared where the fixture does not declare it, and with `handDrawnSeed`
-set, since the lines of the box of a note are random otherwise. The SVG, without
-the generated ids, and the pixels were the same, except for
-`notes/over-lines-empty-id-kept`, whose note refers to an empty id and which
-pinned mermaid.js cannot draw in either form. The tests compare the Db of the
-printed text with the margins of the notes restored from the Db of the written
-text (`stateDbForFormattingComparison` in `tests/state-note-margins.ts`). When
-the pinned mermaid.js is updated, draw both texts of each fixture again before
-the exception stays.
+the Db of the written note, but it draws the same figure. Since the Db keeps the
+margins of the later lines,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps those lines as
+written, as Prettier keeps the text inside a template literal of JavaScript, and
+the alignment of a later line is not the form that rule 1 gives. The first line,
+whose margin mermaid.js trims, is a line inside a block of rule 1, one level
+deeper than the line of `note`. Both texts of each fixture of this section whose
+printed note differs from the written one were drawn with pinned mermaid.js in
+Chromium, after the state that the note refers to was declared where the fixture
+does not declare it, and with `handDrawnSeed` set, since the lines of the box of
+a note are random otherwise. The SVG, without the generated ids, and the pixels
+were the same, except for `notes/over-lines-empty-id-kept`, whose note refers to
+an empty id and which pinned mermaid.js cannot draw in either form. The tests
+compare the Db of the printed text with the margins of the notes restored from
+the Db of the written text (`stateDbForFormattingComparison` in
+`tests/state-note-margins.ts`). When the pinned mermaid.js is updated, draw both
+texts of each fixture again before the exception stays.
 
 For example, the first line of the following note uses the configured four
 spaces. Its blank-separated later paragraphs retain their two spaces: moving
@@ -1197,7 +1202,9 @@ paragraph alignment.
 
 Notes containing comments, directives, semicolons or protected joining regions
 keep their complete bodies as written. This includes semicolon-terminated
-entities.
+entities. The first line of such a body then keeps its written margin, which
+rule 1 does not give unless that margin is one level deeper than the line of
+`note` (above).
 
 [fixture: comments/text-in-note-lines-kept] [fixture:
 notes/over-lines-directive-on-header-line] [corpus fixture:

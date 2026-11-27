@@ -710,23 +710,25 @@ tf 01 evt Alpha { 	 x  }
 `{` の直後が LF で、LF の直後の `}` で閉じる通常の data と note は、
 次の条件を満たす場合、
 空でない本文行をすべて `tabWidth` 個の ASCII 空白（U+0020）で字下げします。
-本文の行は値のテキストで、規則 1 のブロックの中の行ではありません。
-mermaid.js がその字下げを描きうるからです。
-後ろの行を 1 桁目に置くと、空白 2 つ内側のときと違って描きます（下を参照）。
-規則 2 も本文の行の余白を与えません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+mermaid.js がその字下げを Db に持つかどうかで、これらの行を与えます。
+フレームが読む `data` ブロックの本文は、Db がそのフレームに持つ値で、
+各行の字下げも含みます。
+そのため、規則 1 は本文を書かれたまま残します。
+Prettier が JavaScript のテンプレートリテラルの中のテキストを残すのと同じです。
+ノートの本文と、フレームが読まない `data` ブロックの本文は、
+Db のどの欄にもなく、mermaid.js はそのどこも描きません。
+そのため、規則 1 は、その行をブロックの中の行として、
+ブロックを開く行より 1 段深く置きます。
 [pie](./pie.ja.md#description-blocks)、
 [radar](./radar.ja.md#description-blocks)、
-[cynefin](./cynefin.ja.md#description-blocks) は、説明ブロックの行を、
-文より 1 段内側の `tabWidth` 個の空白に置き、
-`tabWidth: 0` では空白を置きません。
-mermaid.js がその行の字下げを描かないので、
-[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
-それらをブロックの中の行として置きます。
-そのため、字下げを描く行の先例にはなりません。
-決まるまでリリース済みの形を残します。
-詳しくは
-[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
-を参照してください。
+[cynefin](./cynefin.ja.md#description-blocks)
+が説明ブロックの行を置くのと同じです。
+リリース済みの版は、フレームが読む `data` ブロックの本文を揃えます。
+これは、下の例外が定める種類の Db の変化です。
+また、ノートと、フレームが読まない `data` ブロックの本文は、
+下の決まりが本文を残す所で、書かれたまま残します。
+どちらも、規則 1 が与える形ではありません。
 通常の見出しの継続行が残る場合は `2 * tabWidth` 個にして、
 本文をその開始行よりさらに 1 段深くします。
 [sequence](./sequence.ja.md#字下げ)と [state](./state.ja.md#字下げ)も、
@@ -737,16 +739,20 @@ mermaid.js がその行の字下げを描かないので、
 ディレクティブの行は書かれたままだからです。
 図固有の隠れた形を含む見出しはその境界の列を保ち、本文は通常の 1 段にします。
 `useTabs` でも空白を使います。
-タブの余白でも、走らせた版の Db と描画は同じなので、空白を残す理由はなく、
-その行は一覧（D35）にあります。
+これも規則 1 が与える形ではありません。
+規則 1 は、フレームが読む本文の余白を書かれたまま残し、ほかの本文の行は、
+段ごとにタブ 1 つで字下げします。
 `tabWidth: 0` では本文を書かれたまま残します。
 余白は 0 個で、後の行の余白を除くと別の図を描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 の、後の行を第 1 列に置く形と 2 つの空白で字下げする形の行を参照してください。
-本文が 1 行のものと、後の行のどれにも余白がない本文は、
-第 1 行の余白を除いても同じに描くので、ここでは書かれたまま残しています。
-この余白も、どの規則も与えません（D35）。
+これは、フレームが読む本文に規則 1 が与える形です。
+ほかの本文には、段の幅がないので、
+規則 1 は行をブロックを開く行と同じ段に置きます。
+本文が 1 行のものと、後の行のどれにも余白がない本文は、書かれたまま残します。
+これは、フレームが読む本文に規則 1 が与える形で、
+ほかの本文には与えない形です（上を参照）。
 本文をデータ項目に分けて解析したり、JSON やコードとして整形したりはせず、
 原文の字下げの差は保ちません。
 
@@ -789,6 +795,8 @@ mermaid.js がその行の字下げを描かないので、
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+ノートと、フレームが読まない `data` ブロックは何も描かないので、
+この理由はそれらには当たりません（上を参照）。
 先頭が空行でも、その次の行が第 1 物理行になるわけではありません。
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
@@ -796,6 +804,9 @@ mermaid.js がその行の字下げを描かないので、
 [fixture: eventmodeling/data-blocks/body-later-zero-margin-kept]
 
 [fixture: eventmodeling/data-blocks/body-later-zero-margin-plain-kept]
+
+[fixture: eventmodeling/data-blocks/body-later-zero-margin-unread-kept]
+[fixture: eventmodeling/data-blocks/note-later-zero-margin-kept]
 
 [fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
 
