@@ -1,5 +1,161 @@
 # prettier-plugin-mmd
 
+## 0.9.3
+
+### Patch Changes
+
+- [#312](https://github.com/mmd-toolkit/mmd-toolkit/pull/312) [`e7063fa`](https://github.com/mmd-toolkit/mmd-toolkit/commit/e7063faddec8121bd017aba3751add71c6c3e231) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep what mermaid.js 10.9.8 draws as text before a `%%{` that no word character
+  follows, such as `%%{}%%`, in a pie chart or a gitGraph: the spaces and tabs of
+  an `accTitle` line (`accTitle: Value   %%{}%%` was printed
+  `accTitle: Value %%{}%%`), and a no-break space or another whitespace character
+  that is no space or tab in a `title` or an `accDescr:` line. Spaces and tabs in
+  a `title` or an `accDescr:` line are still printed as one space.
+
+- [#383](https://github.com/mmd-toolkit/mmd-toolkit/pull/383) [`3adc38c`](https://github.com/mmd-toolkit/mmd-toolkit/commit/3adc38ce37eff5bd81d1d3a94c862c0873c02c18) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print an `agentflow` `flow` or `connector` whose name holds a directive and is
+  followed by a `;` as it is printed without the `;`, in one formatting:
+  `flow Front fin %%{x}%% ;` at the end of a line, which kept a space at the end
+  of the line, is now printed `flow Front fin%%{x}%%`, and
+  `flow Front fin %%{x}%% ;  %% c`, which a second formatting changed, is now
+  printed `flow Front fin %%{x}%% %% c` at once.
+
+- [#281](https://github.com/mmd-toolkit/mmd-toolkit/pull/281) [`1c42af9`](https://github.com/mmd-toolkit/mmd-toolkit/commit/1c42af9719afe586b0d963b852bbb579d0bae3b3) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix the text of an `agentflow` `flow` or `connector` whose name is followed by a
+  `;` and a comment changing when it is formatted a second time:
+  `flow Front end ;  %% c` was printed `flow Front end %% c` and is now printed
+  `flow Front end%% c`.
+
+- [#282](https://github.com/mmd-toolkit/mmd-toolkit/pull/282) [`7082b91`](https://github.com/mmd-toolkit/mmd-toolkit/commit/7082b9149c78215f42cd54bf3e38084bfa4b4db7) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix an `agentflow` `flow` or `connector` name such as `Front#fin` followed by a
+  `;` and a directive being rejected by mermaid.js after formatting:
+  `flow Front#fin ;  %%{x}%%` was printed `flow Front#fin; %%{x}%%` and is now
+  printed `flow Front#fin ; %%{x}%%`.
+
+- [#277](https://github.com/mmd-toolkit/mmd-toolkit/pull/277) [`05f2eb7`](https://github.com/mmd-toolkit/mmd-toolkit/commit/05f2eb74861dffe50887ede05d226367057db84a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a comment in `c4` and `kanban` with one space before it when a U+2028
+  follows it: `Person(a,"A")  %% c` is now printed `Person(a, "A") %% c`, not
+  `Person(a, "A")  %% c`.
+
+- [#258](https://github.com/mmd-toolkit/mmd-toolkit/pull/258) [`33c77a8`](https://github.com/mmd-toolkit/mmd-toolkit/commit/33c77a89289096b3d79baf36f424e5bf6808a8ad) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Drop the `;` after the `end` of a flowchart `subgraph` or an agentflow `flow`
+  that has moved to a line of its own, so that formatting the file again changes
+  nothing: `flow F[x;]; A --> B; end ;  %% c` printed `end ; %% c` and then
+  `end %% c`, and now prints `end %% c`.
+
+- [#271](https://github.com/mmd-toolkit/mmd-toolkit/pull/271) [`e293b62`](https://github.com/mmd-toolkit/mmd-toolkit/commit/e293b62dc2270e28f476f028c4801d07baa34a11) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix the colon padding of a `gantt` task that follows a task ending in U+2028 and
+  a comment: `Other                     :a3, after a2, 1d` is now printed
+  `Other : a3, after a2, 1d`, not `Other       : a3, after a2, 1d`.
+
+- [#280](https://github.com/mmd-toolkit/mmd-toolkit/pull/280) [`c7d53e7`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c7d53e7987a6870d1b0e7041f76da164dff09099) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the text of an `ishikawa` or `treeView` node, and the `accTitle:` and
+  `accDescr:` lines of a `usecase` diagram, the same the first time you format
+  them when they end with a directive that spans several lines or holds a `;` and
+  a space or a tab follows it, or in a `usecase` line any other whitespace
+  character such as U+00A0, where the runs of spaces stayed until the second time:
+  `A  b %%{init: {`, a line break, `}}%%`, and a space is now printed
+  `A b %%{init: {`, a line break, and `}}%%`.
+
+- [#392](https://github.com/mmd-toolkit/mmd-toolkit/pull/392) [`c3232f2`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c3232f2963b97fc21d5c569475c367498f96e664) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the `;` that mermaid.js ignores between the text and the shape of a
+  `kanban` card or column, and of a `mindmap` node whose line holds another `;`:
+  `style:#a;b ;[x]` was printed `style:#a;b[x]`, which mermaid.js reads with
+  another id. 0.6.0 began to leave that `;` out with the whitespace around it,
+  since mermaid.js removes it and reads the same text, but without it mermaid.js
+  can take an earlier `;` of the line as the one that it removes. A `kanban` board
+  now keeps every such `;`, as its rules say, and a `mindmap` keeps it only where
+  another `;` would take its place, so that `style:#a ;[x]` is still printed
+  `style:#a[x]`.
+
+- [#280](https://github.com/mmd-toolkit/mmd-toolkit/pull/280) [`c7d53e7`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c7d53e7987a6870d1b0e7041f76da164dff09099) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the text of an `ishikawa` node, and the `accTitle:` and `accDescr:` lines
+  of a `usecase` diagram, with one space before the last directive where the text
+  before it holds a `;` or a directive and spaces follow that directive, so that
+  formatting the file again changes nothing: `A;  b  %%{z}%%  ` in an `ishikawa`
+  node becomes `A; b %%{z}%%`.
+
+- [#259](https://github.com/mmd-toolkit/mmd-toolkit/pull/259) [`00a7d1a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/00a7d1af6ff688f23c17d5d86926049492413840) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the `end` of an inner `subgraph` or `flow` on a line of its own when only
+  the `end` of the block around it follows it, so that formatting the file again
+  changes nothing: `flow F; flow G; A[x;] --> B; end end` printed the inner `end`
+  on the line of `B;` and moved it on the second formatting.
+
+- [#283](https://github.com/mmd-toolkit/mmd-toolkit/pull/283) [`f554403`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f554403c9c92bb062e1f0cabea452e22307d490e) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a line of `%%` that follows a comment after U+2028 or U+2029 on a `pie`
+  `title`, `accTitle:`, or `accDescr:` line, and on a `gitGraph` `accTitle:` or
+  `accDescr:` line, as written, so that older versions of mermaid.js draw the text
+  as it was written: `title`, a space, U+2028, `%%{x}%%%% c`, and a line `%%` were
+  printed with `%%{x}%%%% c` on a line of its own, and are now printed as written.
+
+- [#260](https://github.com/mmd-toolkit/mmd-toolkit/pull/260) [`5d0af98`](https://github.com/mmd-toolkit/mmd-toolkit/commit/5d0af9872e25940ec411d270afa3f3fdcd5a9f96) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the whitespace after the `;` of an ABNF comment when a U+2028 or U+2029
+  after it becomes a line break, so that the output is accepted again: in
+  `railroad-abnf-beta`, `;`, a space, U+2028, and `%% c` were printed as `;` and
+  `%% c` on two lines, which the second formatting rejected as a bare `;`, and are
+  now printed as `; ` and `%% c`.
+
+- [#274](https://github.com/mmd-toolkit/mmd-toolkit/pull/274) [`30c6c54`](https://github.com/mmd-toolkit/mmd-toolkit/commit/30c6c542771f4de71ade43182d15d36f3ada5423) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the quotes of the name of a `requirement` element that U+2028 and a comment
+  separate from its keyword, so that mermaid.js accepts the formatted text: `"e" `
+  is no longer printed `e `.
+
+- [#289](https://github.com/mmd-toolkit/mmd-toolkit/pull/289) [`dd24bdf`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd24bdfafb06eee1811a092a4315ecc5d286d49e) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix a `requirement` diagram whose formatted text was rejected when a `style`,
+  `classDef`, or `class` line ends with a string and the next line is `:::c;`, or
+  a comment that ends with `;`, followed by U+2028 and a comment.
+  `style r fill:red "r"` was printed as `style r fill: red` and `"r"` on a line of
+  its own, and is now printed as written.
+
+- [#267](https://github.com/mmd-toolkit/mmd-toolkit/pull/267) [`03539d4`](https://github.com/mmd-toolkit/mmd-toolkit/commit/03539d451f0183fc5a6ff1024be82e825ea6d3c5) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the text before an `end` that goes to a line of its own in a `sequence`
+  diagram as it is printed anywhere else.
+  `loop style:#x;; loop x; A->>B: body; end #;  %% c` printed `A->>B` as written,
+  and `A ->> B` only on the second formatting; it now prints `A ->> B` at once.
+
+- [#272](https://github.com/mmd-toolkit/mmd-toolkit/pull/272) [`606f2f7`](https://github.com/mmd-toolkit/mmd-toolkit/commit/606f2f78cb3cdad89fc442044b3c52a7bfb55d59) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the directive on the line after a `timeline` event that ends in U+2028 and
+  a comment at the first column, where it is written: `%%{y}%%` is no longer
+  printed as `       %%{y}%%`.
+
+- [#290](https://github.com/mmd-toolkit/mmd-toolkit/pull/290) [`c58640e`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c58640e5229947f8d307b0f4d5072c82ad5d4c00) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the whitespace, such as a U+00A0, before the last directive of a `title`,
+  `accTitle:`, or `accDescr:` line as one space in `pie`, `radar`, `packet`,
+  `architecture`, `gitGraph`, `cynefin`, `treemap`, `wardley`, `treeView`, `info`,
+  and `railroad` diagrams, and of an `accTitle:` or `accDescr:` line in `usecase`
+  diagrams: `title T`, U+00A0, `%%{x}%%`, and a space is now printed
+  `title T %%{x}%%`, not with the U+00A0 kept.
+
+- [#280](https://github.com/mmd-toolkit/mmd-toolkit/pull/280) [`c7d53e7`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c7d53e7987a6870d1b0e7041f76da164dff09099) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a `gantt`, `journey`, `timeline`, or `sequence` title that directives
+  precede with no space between the last directive and the text, so that
+  formatting the file again changes nothing:
+  `title %%{x}%% %%{y}%%  A b  %%{z}%%  ` becomes
+  `title %%{x}%%%%{y}%%A b %%{z}%%`. A `gantt`, `journey`, or `timeline` title
+  also prints the spaces between its words as one space.
+
+- [#280](https://github.com/mmd-toolkit/mmd-toolkit/pull/280) [`c7d53e7`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c7d53e7987a6870d1b0e7041f76da164dff09099) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a `gantt`, `journey`, `timeline`, `sequence`, `venn`, or `c4` title, and
+  the `accDescription` of a `c4` diagram, that ends with a directive and spaces
+  with one space after the keyword, so that formatting the file again changes
+  nothing: `title   A b  %%{z}%%  ` becomes `title A b %%{z}%%`.
+
+- [#273](https://github.com/mmd-toolkit/mmd-toolkit/pull/273) [`55169b8`](https://github.com/mmd-toolkit/mmd-toolkit/commit/55169b86c6f951c239f4255a10ea1f884e2d1a26) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Indent the row after a `treemap` `classDef` that ends in U+2028 and a comment by
+  four spaces: `"A": 1` is now printed `    "A": 1`, not at the first column.
+
+- [#291](https://github.com/mmd-toolkit/mmd-toolkit/pull/291) [`14d9de0`](https://github.com/mmd-toolkit/mmd-toolkit/commit/14d9de036adc3cd19bfd26f6af5bd51f5790bfa9) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a comment that follows a U+2028 or U+2029 as written on a line that holds
+  a `;`, in a `kanban`, `treemap`, `treeView`, `pie`, `info`, `gitGraph`,
+  `packet`, `architecture`, `radar`, `wardley`, `railroad`, or `cynefin` diagram:
+  `title T;`, U+2028, `%% c`, and an empty line failed with
+  `a line break within a kept line` and are now printed as written.
+
+- [#278](https://github.com/mmd-toolkit/mmd-toolkit/pull/278) [`81cfa94`](https://github.com/mmd-toolkit/mmd-toolkit/commit/81cfa94f1bbaa1d72b02fcaa0ababdd2ff2d7b24) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a directive and a comment that follow a `treemap` `title` ended by U+2028
+  without a space between them: `%%{x}%%  %% c` is now printed `%%{x}%%%% c`, not
+  `%%{x}%% %% c`.
+
+- [#279](https://github.com/mmd-toolkit/mmd-toolkit/pull/279) [`c377549`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c377549ec4bb9ac79e865685e1fd2272ca9474a2) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a comment or a directive that follows a quote, a class, or an icon in a
+  `treeView` box diagram touching it where the next node is given a branch:
+  `"a" %% c`, `─`, and `"b"` printed `"a" %% c`, `│`, and `└── "b"`, which
+  mermaid.js rejects, and now print `"a"%% c`, `│`, and `└── "b"`.
+
+- [#380](https://github.com/mmd-toolkit/mmd-toolkit/pull/380) [`86bc007`](https://github.com/mmd-toolkit/mmd-toolkit/commit/86bc0073a63df5c8302ea3b0820f8c090fba2c41) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix a node with a `@{ … }` block of several lines after a `;` that starts its
+  line outside a subgraph in a `flowchart` or an `agentflow` diagram with
+  `useTabs`: the node stayed in the column of the `;`, which is removed, and now
+  moves to the depth of the statements around it with its block, as `C` and
+  `; A@{ … }` on the next line print `A@{` one tab in, under `C`.
+
+- [#270](https://github.com/mmd-toolkit/mmd-toolkit/pull/270) [`bcfbe84`](https://github.com/mmd-toolkit/mmd-toolkit/commit/bcfbe84b613d5a3d47cb33f6ebf791184e05585e) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the one-line `accTitle:` or `accDescr:` of a `usecase` diagram as any such
+  line when a U+2028 or U+2029 and a comment line follow its text, so that
+  formatting again changes nothing: `accTitle  :   T`, the character, `%% c`, and
+  an empty line now print `accTitle: T`, `%% c`, and an empty line on separate
+  lines.
+
+- [#284](https://github.com/mmd-toolkit/mmd-toolkit/pull/284) [`75e9663`](https://github.com/mmd-toolkit/mmd-toolkit/commit/75e9663eee593ab2e7d376e5c0923eace188a43a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix a directive and a comment that follow a comment line ending at U+2028 or
+  U+2029 changing when they are formatted a second time, in `sequence`, `state`,
+  `requirement`, `timeline`, `journey`, `gantt`, `railroad`, `xychart`, and
+  `usecase` diagrams: `# c`, U+2028, `%%{x}%%  %% c` printed two spaces between
+  the directive and the comment and now prints one.
+
 ## 0.9.2
 
 ### Patch Changes
@@ -911,7 +1067,7 @@
   would start a string without its padding, and a text over lines stay as written.
 
   > **NOTE:**\
-  > Overturned in the next release: the `;` that mermaid.js ignores between the
+  > Overturned in 0.9.3: the `;` that mermaid.js ignores between the
   > text and the shape of a `kanban` card or column stays, as in `style:#a ;[x]`,
   > and so does that of a `mindmap` node whose line holds another `;`, as in
   > `style:#a;b ;[x]`.

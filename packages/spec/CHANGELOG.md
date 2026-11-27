@@ -1,5 +1,45 @@
 # @mmd-toolkit/spec
 
+## 0.5.3
+
+### Patch Changes
+
+- [#364](https://github.com/mmd-toolkit/mmd-toolkit/pull/364) [`918b2d3`](https://github.com/mmd-toolkit/mmd-toolkit/commit/918b2d3e6f5ac2a3a6723404fa99288324281932) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Cite fixtures of `accDescr {a} %% c` in `erDiagram`, `flowchart`, and
+  `swimlane-beta`, which are rejected, and of `accDescr {a} %%` in `flowchart` and
+  `swimlane-beta`, which are accepted: in the comments of `diagrams/er.md`, where
+  a `%%` after a unit is no comment, and at the id run of `diagrams/flowchart.md`,
+  where the `%%` is the vertex `%%` and a `c` after it is a second vertex on the
+  same line.
+
+- [#281](https://github.com/mmd-toolkit/mmd-toolkit/pull/281) [`1c42af9`](https://github.com/mmd-toolkit/mmd-toolkit/commit/1c42af9719afe586b0d963b852bbb579d0bae3b3) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Add the cases of a comment after an `agentflow` name that ends with `end` or
+  `global` to the section Shared units and ordered contexts of
+  `diagrams/agentflow.md`.
+
+- [#389](https://github.com/mmd-toolkit/mmd-toolkit/pull/389) [`424826a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/424826ae45fd9727c681da56a7f0944519dfa6e7) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Cite more fixtures of trailing whitespace after the `ishikawa` header, in Blank
+  lines of `diagrams/ishikawa.md` and in
+  `known-divergences/blank-line-after-header-or-comments.md`: an indented root,
+  two spaces, a CRLF, a CR, an empty line, a comment line, and a space after a
+  directive, which mermaid.js rejects, and a diagram comment or the end of the
+  text after the whitespace, which both accept.
+
+- [#395](https://github.com/mmd-toolkit/mmd-toolkit/pull/395) [`040ca26`](https://github.com/mmd-toolkit/mmd-toolkit/commit/040ca267fc7c5c1c17675d697f1eb89ea13777f6) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Cite fixtures of comment lines inside a `packet` description block in
+  `diagrams/packet.md`: a `%%` right after the opening `{` is text of the
+  description, and a `}` on a comment line goes with the comment, so the block is
+  closed by a later `}` or, without one, is rejected.
+
+- [#399](https://github.com/mmd-toolkit/mmd-toolkit/pull/399) [`0c11047`](https://github.com/mmd-toolkit/mmd-toolkit/commit/0c1104737705388172c77b1d4d6bd5d14d19ea03) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Cite fixtures of a comment line and a directive line inside a description block
+  in a subgraph, in `erDiagram`, `flowchart`, and `swimlane-beta`, in Nodes of
+  `ast.md` and in Comment lines of `common.md`: the written text of the
+  description leaves out the comment line with its indentation, and the directive
+  alone, without the indentation before it.
+
+- [#394](https://github.com/mmd-toolkit/mmd-toolkit/pull/394) [`9961486`](https://github.com/mmd-toolkit/mmd-toolkit/commit/996148657a482bdae074e15a1f0076e133bfe77c) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Say in Indentation and lines of `diagrams/treeview.md` that a space run after a
+  quoted name, a class, or an icon becomes the indentation of the next node also
+  across empty lines, comment lines, and directive lines, and that with no node
+  after it, also after a comment, it reaches the end of the text as indentation
+  without a name, which is rejected, and that two such runs do not merge across a
+  comment or those lines.
+
 ## 0.5.2
 
 ### Patch Changes
