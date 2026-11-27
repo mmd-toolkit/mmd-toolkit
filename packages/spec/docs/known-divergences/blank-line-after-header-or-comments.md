@@ -161,9 +161,9 @@ The counterparts accepted by both keep their tree: an odd count after the header
 followed by a blank, an even count between nodes followed by a blank, two
 comments before a header-line separator and node, blanks before comments or at
 the end, a header line that ends with whitespace and no node after it, one
-diagram comment on the header line followed by a node with no blank between
-them, and a comment line between a header without trailing whitespace and the
-first node.
+diagram comment on the header line followed by a node on the next physical line,
+and a comment line between a header without trailing whitespace and the first
+node, with no blank line after it.
 
 [fixture: ishikawa/gram-header-comment-blank-node] [fixture:
 ishikawa/gram-between-two-comments-blank-node] [fixture:
