@@ -973,8 +973,11 @@ before its first `:` and one space after it where the value is not empty. A
 style property gives a name its value, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) treats its first
 colon as the colon of a key: no whitespace before it and one space after it when
-the value is nonempty. The `,` between styles has no whitespace before it and
-one space after it, as Prettier prints the comma of `f(a,b)` as `f(a, b);`
+the value is nonempty. Where the value is empty, nothing but the `,` or the end
+of the line follows the `:`, and rule 1 puts no whitespace before either, as
+Prettier prints `a{color: ;}` in CSS with `color:;`. The `,` between styles has
+no whitespace before it and one space after it, as Prettier prints the comma of
+`f(a,b)` as `f(a, b);`
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)):
 `style A fill :#f00,stroke:  #333` is printed
 `style A fill: #f00, stroke: #333`.
@@ -1191,13 +1194,16 @@ and the two give the same Db. The first style follows one space in
 the same first-style gap here. A run of spaces and tabs between the words of a
 style is printed as one space, and whether whitespace stands between two words
 stays as written: `classDef c fill:#f00    stroke:#333` is printed
-`classDef c fill: #f00 stroke:#333`. A run inside a single-quoted string and
-inside a comment that is not closed stays as written, and so does the escape
-after a backslash, since CSS reads it as part of the value: the hexadecimal
-digits (at most six) and the one space or tab that follows them, or else the
-next character. A run inside a comment that is not closed stays as written
-because the Db holds it: `fill:red/* a   b` and `fill:red/* a b` differ in the
-Db, and
+`classDef c fill: #f00 stroke:#333`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+between the words of a style, which are values that follow one another: Prettier
+prints `margin: 1px    2px;` in CSS as `margin: 1px 2px;`. A run inside a
+single-quoted string and inside a comment that is not closed stays as written,
+and so does the escape after a backslash, since CSS reads it as part of the
+value: the hexadecimal digits (at most six) and the one space or tab that
+follows them, or else the next character. A run inside a comment that is not
+closed stays as written because the Db holds it: `fill:red/* a   b` and
+`fill:red/* a b` differ in the Db, and
 [the exception for styles](./compatibility.md#styles-that-are-drawn-the-same)
 names only the runs between the words of a style. The run after the escape is a
 run like any other: `font-family:a\   b` is printed `font-family: a\  b`,
@@ -1222,7 +1228,9 @@ A style that starts with the `:`, and one whose `:` follows a backslash and a
 space, are printed as any other style: no whitespace before the `:` besides the
 space that the backslash escapes, one space after it, and the runs between their
 words as one space, as CSS drops the whitespace around the `:` and reads a run
-as one. The colon after an escaped space gives the style name its value, so
+as one. Rule 1 gives the same spaces: one after the colon of a key, and one
+between values that follow one another (see above). The colon after an escaped
+space gives the style name its value, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts one space after
 the colon before a nonempty value. `style A :  red   x` is printed
 `style A : red x`, and `style A fill\ :red   x` is printed

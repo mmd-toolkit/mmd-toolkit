@@ -731,6 +731,8 @@ backslash, stay as written, since CSS reads them as part of the value: the
 hexadecimal digits and the one space or tab that follows them, or else the next
 character. The Db changes, but mermaid.js draws the same figure (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+The one space between the words of a style is the space that rule 1 gives
+between values that follow one another, as above.
 
 [fixture: styles/style-colon-spaced] [fixture: styles/style-words-run-spaced]
 [fixture: styles/style-string-runs-kept] [fixture: styles/style-url-runs-kept]
@@ -869,8 +871,8 @@ styles/class-name-runs-collapsed] [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 
 A style that starts with the `:` is printed as any other: one space after the
-`:` (rule 1, as above), and the runs between its words as one space.
-`style A :  red   x` is printed `style A : red x`.
+`:` (rule 1, as above), and the runs between its words as one space (rule 1, as
+above). `style A :  red   x` is printed `style A : red x`.
 
 [fixture: styles/style-colon-first-run-spaced]
 

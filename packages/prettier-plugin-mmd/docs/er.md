@@ -1937,18 +1937,20 @@ has no whitespace before it and one space after it
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Print a run of
 spaces or tabs between two words of a style as one space, in a style with a `:`
 and in one without: `stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`,
-and `4px    wide` becomes `4px wide`. Whether whitespace stands between two
-words stays as written: `fill #f00` and `fill#f00` are kept apart, since a word
-that touches the next stays touching, as a gap does elsewhere (see
-[Directives](#directives)), and joining the words would hide where one word
-ends. Mermaid concatenates the native style units whatever whitespace separates
-them: `stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does
-not change. For example, `fill   : navy, stroke  : black` becomes
-`fill: navy, stroke: black`. A header or exterior line break that ordinarily
-joins does not delay this spacing until another formatting. Style interiors
-containing line separators, owned trivia, and statements with a kept semicolon
-on their physical line retain the existing style layout. The keywords `style`
-and `classDef` keep the case in which they are written (see
+and `4px    wide` becomes `4px wide`. Rule 1 gives that one space, the space it
+gives between values that follow one another (see above). Whether whitespace
+stands between two words stays as written: `fill #f00` and `fill#f00` are kept
+apart, since a word that touches the next stays touching, as a gap does
+elsewhere (see [Directives](#directives)), and joining the words would hide
+where one word ends. Mermaid concatenates the native style units whatever
+whitespace separates them: `stroke-dasharray: 5 5` still means
+`stroke-dasharray:55`, so the Db does not change. For example,
+`fill   : navy, stroke  : black` becomes `fill: navy, stroke: black`. A header
+or exterior line break that ordinarily joins does not delay this spacing until
+another formatting. Style interiors containing line separators, owned trivia,
+and statements with a kept semicolon on their physical line retain the existing
+style layout. The keywords `style` and `classDef` keep the case in which they
+are written (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case)).
 
 [fixture: styles-and-classes/style-unit-padding] [fixture:
@@ -1961,8 +1963,8 @@ styles-and-classes/style-words-touching-kept] [fixture:
 styles-and-classes/style-words-directive-kept]
 
 A style that starts with the `:` is printed as any other: one space after the
-`:`, and the runs between its words as one space. `style A :  red   x` is
-printed `style A : red x`.
+`:`, and the runs between its words as one space, as rule 1 gives (see above).
+`style A :  red   x` is printed `style A : red x`.
 
 [fixture: styles-and-classes/style-colon-first-run-spaced] [fixture:
 styles-and-classes/keyword-case-kept] [fixture:

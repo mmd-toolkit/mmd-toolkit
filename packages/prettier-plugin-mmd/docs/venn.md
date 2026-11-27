@@ -703,7 +703,10 @@ whether whitespace lies between a `:` and a `#`. Each bare value is one written
 `VennLiteral`. A run of spaces and tabs between its atoms, outside the
 parentheses of an rgb/rgba token, is printed as one space: mermaid.js joins the
 atoms with one space, so the Db is the same, and whether whitespace stands
-between two atoms stays as written. A comment line inside the parentheses
+between two atoms stays as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that one space,
+as between values that follow one another: Prettier prints `margin: 1px    2px;`
+in CSS as `margin: 1px 2px;`. A comment line inside the parentheses
 (`style A fill:rgb(1,`, a line `%% ) x  y`, and `2,3)`) is removed before the
 value is read, so its characters, a `)` among them, are no part of the value and
 stay as written. Space inside an rgb/rgba token is different: changing a

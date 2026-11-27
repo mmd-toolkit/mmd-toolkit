@@ -664,6 +664,9 @@ and whether whitespace stands between two words stays as written: a run inside a
 single-quoted string, inside a comment that is not closed, and the escape after
 a backslash stay: the hexadecimal digits and the one space or tab that follows
 them, or else the next character.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+between the words of a style, which are values that follow one another: Prettier
+prints `margin: 1px    2px;` in CSS as `margin: 1px 2px;`.
 
 [fixture: single-space-gaps/style-words-run-spaced] [fixture:
 single-space-gaps/style-string-runs-kept] [fixture:
@@ -758,8 +761,9 @@ before the comma of a style statement]
 A style that starts with the `:` is printed as any other: one space after the
 `:`, and the runs between its words as one space. Prettier prints one space
 after a CSS colon, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives one space after the leading colon of a style. `style A :  red   x` is
-printed `style A : red x`.
+gives one space after the leading colon of a style. It gives the one space
+between the words too, as above. `style A :  red   x` is printed
+`style A : red x`.
 
 [fixture: single-space-gaps/style-colon-first-run-spaced]
 

@@ -985,9 +985,15 @@ does in ER and requirement diagrams: no whitespace before the first `:` of a
 style, one space after it where the value is not empty, no whitespace before the
 `,` between two styles, and one space after it.
 `style A fill :#f00,stroke:  #333` is printed
-`style A fill: #f00, stroke: #333`. A run of spaces and tabs between the words
-of a style is printed as one space (see below). A run of spaces and tabs between
-words of a swimlane style is printed as one space, with or without a `:`.
+`style A fill: #f00, stroke: #333`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this form: the
+colon of a key has no whitespace before it and one space after it (`color: red`
+in CSS), and a comma has none before it and one space after it (Prettier prints
+`font-family: a,b` as `font-family: a, b;` in CSS); see
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is). A run of
+spaces and tabs between the words of a style is printed as one space (see
+below). A run of spaces and tabs between words of a swimlane style is printed as
+one space, with or without a `:`.
 
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
@@ -1337,7 +1343,10 @@ A run of spaces and tabs between the words of a style is printed as one space in
 flowchart, agentflow, class, state, block, usecase, treemap, ER, and requirement
 diagrams, in a style with a `:` and in one without, and whether whitespace
 stands between two words stays as written: `style A fill   #f00` is printed
-`style A fill #f00`, and `style A fill#f00` stays. CSS reads a run as one
+`style A fill #f00`, and `style A fill#f00` stays.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that one space:
+the words of a style are values that follow one another, and Prettier prints
+`margin: 1px    2px;` in CSS as `margin: 1px 2px;`. CSS reads a run as one
 whitespace, so the figure is the same, except where the run is a character of
 the value, and there it stays as written: inside a string (`"…"` or `'…'`),
 inside a comment (`/* … */`), inside the parentheses of `url(`, and the escape
@@ -6470,7 +6479,8 @@ one-level and two-level indentation.
 
 Ordinary ER and requirement style units use `property: value`, with styles
 separated by a comma and one space. Property and value contents stay written,
-except that a run of spaces between value words is printed as one space (see
+except that a run of spaces between value words is printed as one space, as rule
+1 gives between values that follow one another (see
 [Styles that are drawn the same](#styles-that-are-drawn-the-same)). A plain
 joined header gets this spacing on the first pass too. Trivia, multiline style
 literals and semicolon-sensitive lines retain their existing layout.

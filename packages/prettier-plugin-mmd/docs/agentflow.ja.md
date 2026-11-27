@@ -656,6 +656,10 @@ classDefのエスケープしたコンマ、順序と反復を保ちます。
 バックスラッシュの後ろのエスケープは残します。
 エスケープは、16 進数字とその直後の空白かタブ 1 文字、
 または 16 進数字が続かないときの次の 1 文字です。
+語と語の間の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+スタイルの語は続けて並ぶ値で、
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 
 [fixture: single-space-gaps/style-words-run-spaced]
 [fixture: single-space-gaps/style-string-runs-kept]
@@ -758,6 +762,7 @@ Prettier は、コンマの前に空白を置かず、後ろに空白を 1 つ�
 Prettier は、CSS のコロンの後ろに空白を 1 つ置くので、
 `:` で始まるスタイルのコロンの後ろも、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が同じ形を与えます。
+語と語の間の空白 1 つも、上と同じく規則 1 が与えます。
 
 `style A :  red   x` は `style A : red x` と印字します。
 
