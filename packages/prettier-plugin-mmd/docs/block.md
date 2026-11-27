@@ -439,8 +439,8 @@ and its shape are one node, so that `A ("x") B` is not read as three. It is how
 the documentation of mermaid.js writes shapes. The `:` of a width touches what
 is before it and what follows (`A:3`, `B["b"]:2`). Every version that counts
 rejects whitespace after it (`A: 3`, `A : 3`), and Prettier prints no colon with
-a space on one side only, so a space before it (`A :3`, which they read the
-same) is not printed either (see
+a space before it alone, so a space before it (`A :3`, which they read the same)
+is not printed either (see
 [Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
 The `:` of `space:2` must touch.
 
@@ -636,9 +636,10 @@ that count draw it the same: `<---x` is `<--x`, and `<====` is `<===`. A line
 without the `<` that ends in `x` or `o` stays as written, since some of the
 versions that count draw `---x` and `--x`, and `---o` and `--o`, differently. So
 does a thick line that does not end in `>` (`====`), which some of them read as
-ids that differ with the length, and so does a line of `~`, which is an id in
-every version (see
+ids that differ with the length (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A line of `~` stays as written too: every version reads it as an id, and its
+length is the text of that id, which the Db keeps.
 
 [fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
 [fixture: edges/end-marker-apart-from-the-id] [fixture: edges/start-marker]

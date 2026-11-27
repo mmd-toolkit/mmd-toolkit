@@ -1034,6 +1034,8 @@ note over A:n
 links A:{"a": "b"}
 accTitle:t
 A->>B::nowrap:z
+A->>B:   w
+note over A:   m
 ```
 
 Output
@@ -1048,6 +1050,8 @@ sequenceDiagram
   links A: {"a": "b"}
   accTitle: t
   A ->> B: :nowrap: z
+  A ->> B: w
+  Note over A: m
 ```
 
 ### Title
