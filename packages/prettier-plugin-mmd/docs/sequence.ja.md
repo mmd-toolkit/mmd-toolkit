@@ -334,7 +334,6 @@ sequenceDiagram
 キーワードとそれが取るものの間に空白 1 つを与えます。
 Prettier が `return  x` を `return x;` と印字するためです。
 接しているトークンは接したまま残します。
-flowchart と同じです。
 ただし、接頭辞やブロックのキーワードの後のテキストは、空白 1 つの後に置きます。
 
 [fixture: whitespace-between-tokens/collapsed]
@@ -362,11 +361,6 @@ Prettier が `return  x` を `return x;` と印字するためです。
 
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
-規則 1 の表に、これを含む間隔の印はないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#行区切り文字) と
-[timeline](./timeline.ja.md#行区切り文字) も、
-これを含む間隔を書かれたまま印字します。
 
 [fixture: whitespace-between-tokens/block-text-beside-directive]
 [test: U+2028 between a block keyword and its text]
@@ -499,10 +493,12 @@ id と `@{` の間のディレクティブは、
 
 内容は、[複数行の値](#複数行の値)で対象となる余白と、
 1 行のブロックの両端の半角空白とタブを除いて保ちます。
-両端は[データブロック](./flowchart.ja.md#データブロック)と同じく、
-空白 1 つずつにします。
+両端は空白 1 つずつにします。
 `participant A@{"type":"queue"}` は `participant A@{ "type":"queue" }`
 になります。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+名前と値の組を並べた波括弧と同じく、両端の内側に空白を 1 つずつ置きます。
+Prettier は `x = {a:1}` を `x = { a: 1 };` と印字します。
 
 [fixture: whitespace-between-tokens/data-block-padded]
 
@@ -1042,8 +1038,6 @@ Chromium で解析すると、その文字のない形を、対象にする版�
 `:` の直後にディレクティブか、空白とタブ以外の空白文字（ノーブレークスペース、
 全角の空白、バイト順マーク、U+2028、U+2029）があり、
 テキストの位置に空白があるときは、その行を書かれたまま印字します。
-Gantt 図の[タスク](./gantt.ja.md#タスクのデータ)と、
-ユーザージャーニーの[タスク](./journey.ja.md#タスクのデータ)の行と同じです。
 対象にする版の一部は、どの種類の空白文字でも、
 `:` の後に要る 1 文字として受け取ります。
 また、行を読む前にディレクティブを取り除くので、ディレクティブの後の空白が、
@@ -1934,8 +1928,8 @@ sequenceDiagram
 
 ### フロントマターの YAML
 
-flowchart と同じです。
 `---` の行の間の YAML は、
+ほかの場所の YAML と同じく（[規則 1](./printed-form.ja.md#1-記号の横の空白)）、
 安全なときに Prettier の YAML 整形にかけます（詳しくは、
 [フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を参照）。
 
@@ -2097,10 +2091,6 @@ participant と actor のデータブロックには、
 [データブロック](./flowchart.ja.md#データブロック)を適用します。
 その行を文の 1 段内側に動かし、単独行の `}` は文の段に揃えます。
 本文の後の閉じ括弧はその行と一緒に動かします。
-本文の行の段は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
-flowchart の[データブロック](./flowchart.ja.md#データブロック)も、
-その行をそう印字します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、ブロックが文の行で開くとき、
 その独立した `}` を開く行と同じ段に置きます。
 Prettier がブロックを閉じる行を、開く行と同じ段に印字する形です。

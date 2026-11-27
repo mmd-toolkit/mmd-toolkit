@@ -16,7 +16,6 @@ mermaid.js との差をまとめます。
 ### 見出し
 
 見出しを第1列に置き、通常の最初の文を次の行へ移します。
-方言を見つけやすくするためです。
 IR は `railroad-beta`、EBNF は `railroad-ebnf-beta`、
 ABNF は `railroad-abnf-beta`、PEG は `railroad-peg-beta` を保ちます。
 コロンや指定は加えません。
@@ -27,14 +26,6 @@ mermaid.js はこの 4 つの名前を、この綴りだけで読みます。
 を参照してください。
 隠れた形、共有注釈類、保護されたセミコロン区間は共有の境界規則に従い、
 空の本文は空のままにします。
-規則 1 は見出しの次の行に記号を挙げないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[info](./info.ja.md#header)、[wardley](./wardley.ja.md#見出し)、
-[architecture](./architecture.ja.md#header) も、
-見出しで隠れた形と保護区間の境界を保ちます。
-ただし、
-ほかの規則が配置を書かれたまま残す所（保護された `style` や `classDef`
-の行など）は別です。
 
 [fixture: railroad/header/abnf-hidden]
 
@@ -125,12 +116,6 @@ Prettier がブロックの中の行をそう印字するためです。
 2行目以降は保護された本文に属するため、書かれた列を保ちます。
 最初の行の段は[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
 Prettier がブロックの中の行を印字する形です。
-後の行は書かれた列に保ちます。
-これは[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
-[wardley](./wardley.ja.md#字下げ) と [cynefin](./cynefin.ja.md#semicolons) も、
-保護区間の後の行を書かれた列に保ちます。
-ただし、
-ほかの規則が配置を書かれたまま残す所（mermaid.js が桁で読む値など）は別です。
 
 [fixture: railroad/indentation/abnf-default]
 
@@ -1517,9 +1502,7 @@ ABNF に `;` の行コメント、PEG に `#` の行コメントがあります�
 同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
 Prettier が `x = 1;   // c` を `x = 1; // c` と印字する形です。
 コメントのテキストは、末尾の空白まで書かれたまま残します。
-mermaid.js が読まないからで、
-[flowchart](./flowchart.ja.md#コメント)
-もコメントのテキストについてそう述べています。
+mermaid.js が読まないからです。
 
 通常の IR 呼出しの中では、引数前のブロックコメントを引数の行へ一緒に移します。
 コンマや閉じ括弧の前のコメントは引数の後ろに残します。
@@ -2969,7 +2952,6 @@ railroad-peg-beta
 
 通常の連続空行を最大1行にし、文書と本文の端の空行を除きます。
 通常の空白だけの行を空にし、見出しと完結した構造の無害な ASCII 余白を除きます。
-他の平坦な図種と同じ見通しにするためです。
 Prettier は空行を空にし、行末の空白とタブを除きます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、通常の空白だけの行を空にし、
 見出しと完結した構造の後の無害な ASCII の余白を除く形を与えます。
@@ -3048,14 +3030,6 @@ railroad-peg-beta
 字下げした囲み記号、整形で作ってしまう囲み記号の行、
 HTML 引用の危険がある形が書かれたままなのは、
 [フロントマター](./compatibility.ja.md#フロントマター)の理由によります。
-規則 1 は `---` の行の後ろの空白に記号を挙げないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[radar](./radar.ja.md#frontmatter-yaml)、[info](./info.ja.md#frontmatter-yaml)、
-[packet](./packet.ja.md#frontmatter-yaml)、
-[wardley](./wardley.ja.md#フロントマターの-yaml) も、
-区切りの余白を書かれたまま残します。
-ただし、
-ほかの規則が配置を書かれたまま残す所（フロントマターの危険な形など）は別です。
 整形する YAML は Prettier が YAML を印字するとおりで、
 キーのコロンは `key: value` になります（規則 1）。
 YAML の入れ子とブロックスカラーは、`tabWidth` 0 でも共有の正の最小幅を使います。

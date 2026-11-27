@@ -801,14 +801,10 @@ with body indentation under
 [Titles and accessibility statements](#titles-and-accessibility-statements). A
 directive that touches both braces of such a block stays touching them. The
 lines between the `{` and the `}` of a description block are outside the "Lines
-inside a block" row of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
-[block](./block.md#empty-description-blocks) keep the contents and line breaks
-of a block with a directive or comment line. It stands on a line of its own,
-also after the header and after another statement, where the grammar takes it:
-mermaid.js reads it as nothing wherever it stands, and the grammar takes it
-where a statement starts and after the last unit of a statement.
+inside a block" row of rule 1. It stands on a line of its own, also after the
+header and after another statement, where the grammar takes it: mermaid.js reads
+it as nothing wherever it stands, and the grammar takes it where a statement
+starts and after the last unit of a statement.
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:
@@ -856,15 +852,10 @@ multi-line-statements/point-with-styles-over-lines-joined]
 In points and accessibility line statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement. Preserve each first gap-line tail and complete directive interiors;
-multiline names and other value ranges stay whole. Rule 1 names no mark for a
-line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, where no other rule keeps
-the layout as written (where the Db holds the text with its whitespace, where
-moving a line makes mermaid.js reject the text, and the like).
+multiline names and other value ranges stay whole. A line break next to a
+comment or a directive and the whitespace before it stay; in some places another
+rule also keeps the layout as written (where the Db holds the text with its
+whitespace, where moving a line makes mermaid.js reject the text, and the like).
 
 [fixture: multi-line-statements/point-trivia-with-multiline-label] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
@@ -1157,10 +1148,10 @@ quadrantChart
 
 ### Frontmatter YAML
 
-The frontmatter is formatted as YAML by Prettier, as in the other diagrams (see
-[Frontmatter YAML](./flowchart.md#frontmatter-yaml)); a frontmatter that is no
-valid YAML stays as written. The title of the frontmatter is in the Db, and the
-printer does not touch its value.
+The frontmatter is formatted as YAML by Prettier, as Prettier does for YAML
+anywhere ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)); a
+frontmatter that is no valid YAML stays as written. The title of the frontmatter
+is in the Db, and the printer does not touch its value.
 
 [fixture: frontmatter-yaml/formatted] [fixture: frontmatter-yaml/malformed-kept]
 [fixture: frontmatter-yaml/title-and-statement] [fixture:
@@ -1208,12 +1199,8 @@ directives only loses where the U+2028 or U+2029 touches the directive and
 nothing follows it (`title`, a space, U+2028, and `%%{x}%%` is printed
 `title %%{x}%%` where a statement follows the title directly or the text ends
 after it). A gap that holds one is printed as written, and so is the text that
-holds one. Rule 1 names no mark for a gap that holds one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written. The Db
-keeps the whitespace inside a text. A text containing U+2028 or U+2029 is
-outside the exception in
+holds one. The Db keeps the whitespace inside a text. A text containing U+2028
+or U+2029 is outside the exception in
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same),
 so its internal spaces and tabs stay as written.
 

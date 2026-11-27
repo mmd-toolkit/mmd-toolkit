@@ -158,7 +158,9 @@ mindmap
 根は自分の行に、ヘッダーより 1 段深く置き、
 その下のノードは根からの段の幅を保ちます（[インデント](#インデント)を参照）。
 Db は同じです。
-根は、他の図種でヘッダーの後の文が自分の行に移るのと同じに置きます。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がこの形を与えます。
+[flowchart](./flowchart.ja.md#1-行に-1-文) と [ER 図](./er.ja.md#1-行に-1-文)
+も、ヘッダーの行に書かれた文をそれぞれの行に印字します。
 
 [fixture: root-on-header-line/moved-to-its-own-line]
 [fixture: root-on-header-line/shape-glued-to-the-header]
@@ -557,10 +559,12 @@ mindmap
 空行、コメント行、図のコメントは、
 ヘッダーの後のどこにあっても Db に影響しません。
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、空行の連なりを 1 行にし、
+ファイルやブロックの初めと終わりの空行を除きます。
 Prettier は、JavaScript、CSS、YAML、Markdown の先頭の空行を落とします。
 mindmap のテキストの先頭でも、ヘッダーの前の空行を落とす形を、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
-他の図種と同じ規則です。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
 [fixture: blank-lines/before-a-comment]
@@ -670,7 +674,6 @@ mindmap
 字下げは Db に入らず、mermaid.js の受理にも影響しません。
 `%%{` の行に特別な字下げは要りません。
 テキストと印は書かれたまま残します。
-他の図種と同じ規則です。
 
 [fixture: comments/lines-at-the-level-of-the-next-line]
 [fixture: comments/at-the-end] [fixture: comments/bare-and-brace-lines]
@@ -909,9 +912,10 @@ mindmap
 
 ### フロントマターの YAML
 
-フローチャートと同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整形し、`---` の行は、
-行末の空白とタブも含め、書かれたまま残します。
+`---` の行の間の YAML は、ほかの場所の YAML と同じく、
+Prettier の YAML 整形で整形します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+`---` の行は、行末の空白とタブも含め、書かれたまま残します。
 
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]

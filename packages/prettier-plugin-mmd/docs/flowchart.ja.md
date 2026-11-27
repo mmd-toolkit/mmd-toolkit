@@ -2070,11 +2070,6 @@ Mermaidはコロンの次行の通常の文字を値と読むので、語と同�
 [fixture: accessibility-lines/next-line-values]
 
 文中の実コメントやディレクティブがあれば短い形につなぎません。
-アクセシビリティの文では、コメントやディレクティブの前後の改行を、
-[class](./class.ja.md#複数行の文) と [C4](./c4.ja.md#アクセシビリティの行)
-の図も保ちます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-flowchart にも同じ改行を与えます。
 従来の[複数行の文](#複数行の文)の配置を保ち、
 コメントやディレクティブを含む継続行はキーワードより1段深く置きます。
 コメントやディレクティブの文字と、著者が文を区切った改行を保ちます。
@@ -2309,11 +2304,6 @@ mermaid.js は、2 行目以降が字下げされていると、その一部を�
 [fixture: multi-line-statements/click-string-over-lines-comment-and-empty-line]
 
 部品の間の U+2028 と U+2029 は、複数行の文字列の後でも、そのまま残します。
-規則 1 の表に、これを含む間隔の印はないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#行区切り文字) と
-[timeline](./timeline.ja.md#行区切り文字) も、
-これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 between the parts of a flowchart click statement with a string over lines]
 [test: U+2029 between the parts of a flowchart click statement with a string over lines]
@@ -3448,11 +3438,6 @@ swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、その間に空白を 1 つ置きます。
 その間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
-規則 1 の表に、これを含む間隔の印はないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#行区切り文字) と
-[timeline](./timeline.ja.md#行区切り文字) も、
-これを含む間隔を書かれたまま印字します。
 
 [fixture: direction/header-symbol-touching-spaced]
 [fixture: direction/header-symbol-beside-directive-kept]
@@ -3529,12 +3514,11 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 [fixture: subgraph-header/title-touches-name-kinds]
 
 mermaid.js はどちらの形も同じに読むので、形を強いるものはありません。
-ノードのラベルの `[` は id に接し（`A[t]`）、
-agentflow の見出しもタイトルに接します（`flow F[T]`）。
-agentflow の文書にあるタイトル付きの見出し 19 件は、すべてこの書き方です。
-その範囲は、
-[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
-にあります。
+ノードのラベルの `[` は id に接します（`A[t]`）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
+タイトルの `[` は、添字の `[` と同じく名前に付くからです。
+Prettier は `x [ 0 ];` を `x[0];` と印字し、
+規則 1 は `subgraph S [t]` を `subgraph S[t]` と印字する例を挙げています。
 flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 どちらも空白があります。
 1 件目は、
@@ -3558,11 +3542,6 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 [fixture: subgraph-header/title-beside-directive-runs]
 
 隙間の U+2028 と U+2029 は、そのまま残します。
-規則 1 の表に、これを含む間隔の印はないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#行区切り文字) と
-[timeline](./timeline.ja.md#行区切り文字) も、
-これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 between a subgraph name and its title]
 [test: U+2029 and spaces between a subgraph name and its title]

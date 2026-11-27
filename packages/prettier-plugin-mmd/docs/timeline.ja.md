@@ -268,10 +268,12 @@ timeline
 ### 空行
 
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、空行の連なりを 1 行にし、
+ファイルとブロックの先頭と末尾の空行を取り除きます。
 Prettier は、テキストの先頭の空行を落とします。
 `timeline` ヘッダーの前の空行を落とす形も、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
-journey と同じ規則です。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
 
@@ -639,7 +641,6 @@ period でない文（title、section、アクセシビリティの文、
 mermaid.js は、その event を、間の文をまたいで、
 その前の最後の period に付けます（diagrams/timeline.md、period と event）。
 印字はそれを動かさず、書かれた場所に、自分の行で、まわりの文と同じ段に置きます。
-このプロジェクトのどの印字も、文を別の文の前後へ動かしません。
 title の後ろの event を読む人がどう読むかは、整形の問題ではありません。
 
 [fixture: event-statements/after-title]
@@ -1063,7 +1064,9 @@ timeline %%{init: {}}%%TD
 ### accessibility の文
 
 `accTitle` と `accDescr` の `:` はキーワードに接し、後ろに空白 1 つを置きます。
-journey と同じ形です。
+このコロンの形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がキーのコロンに与える形です。
+Prettier は、`x = {a : 1}` を `x = { a: 1 };` と印字します。
 テキストの両端の空白は Db が持たないので落とします。
 `accDescr` のテキストの中の空白とタブの連なりは、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
@@ -1237,12 +1240,9 @@ period と event は、後ろの行の行頭に `:` を書く別の形で複数�
 `accTitle` と `accDescr:` の文では、注釈の改行を保ち、
 section の下でも後続の構造部分と独立した注釈行を文より 1 段深くそろえます。
 各隙間の最初の行の末尾と、指令の内部全体を保ちます。
-規則 1 は、改行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
-その前の空白を残します。
-ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+コメントやディレクティブの隣の改行と、その前の空白は残します。
+ほかの規則も配置を書かれたまま残す所があります（Db
+が空白ごとテキストを持つ所や、
 動かすと mermaid.js がテキストを拒否する所などです）。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 セミコロンの保護は、後述の行をつなぐ判定に従います。
@@ -1660,9 +1660,10 @@ timeline
 
 ### フロントマターの YAML
 
-flowchart と同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整え、`---` の行は、
-行末の空白とタブも含め、書かれたまま残します。
+`---` の行の間の YAML は、ほかの場所の YAML と同じく、
+Prettier の YAML 整形で整えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+`---` の行は、行末の空白とタブも含め、書かれたまま残します。
 
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]

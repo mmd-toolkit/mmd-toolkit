@@ -770,13 +770,10 @@ In indentation mode read the forest from AST children, including file parents.
 Print roots at one configured step and children one step beyond their parent.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the roots one
 configured level below the header, as Prettier prints the lines inside a block.
-A child stands deeper, since indentation determines parentage: items stand one
-more level below a section in [kanban](./kanban.md#indentation) diagrams, and
-under [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
-treeView children take that position. A space step is `max(1, tabWidth)`;
-useTabs uses one tab. This selects a uniform Db-equivalent width even for a deep
-first node, later shallower roots, irregular increments, duplicate names and
-empty names.
+A child stands deeper, since indentation determines parentage. A space step is
+`max(1, tabWidth)`; useTabs uses one tab. This selects a uniform Db-equivalent
+width even for a deep first node, later shallower roots, irregular increments,
+duplicate names and empty names.
 
 [fixture: treeview/indentation/indent-irregular]
 
@@ -1449,11 +1446,7 @@ treeView-beta
 ### Annotation lines
 
 In indentation mode keep later-line annotations separate and align them with
-their owner, retaining positive leading whitespace. Separate decoration lines
-stand at their owner's column in [kanban](./kanban.md#icons-and-classes)
-diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-indentation-mode annotations the same alignment. In box mode move a
+their owner, retaining positive leading whitespace. In box mode move a
 branch-prefixed annotation onto its owner's line, in source order with one
 separating space, only when no earlier description and no intervening comment,
 directive, selected semicolon or comment region prevents it. Retain the whole
@@ -1661,12 +1654,8 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 Print ordinary class components as `:::Name` and icon components as
 `icon(reference)`, including `icon()` and `icon(:file)`. Keep class/reference
-spelling. Compact marker padding groups the class visually; icon-internal
-whitespace is not grammar. Classes in [kanban](./kanban.md#icons-and-classes)
-diagrams have no spaces or tabs between `:::` and the class name, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-treeView the same compact class marker. Trivia between complete components
-retains its boundaries.
+spelling. Icon-internal whitespace is not grammar. Trivia between complete
+components retains its boundaries.
 
 [fixture: treeview/annotation-components/class-post-marker]
 
@@ -2596,11 +2585,9 @@ treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
 ### Comments
 
 In indentation mode, align standalone comment lines with the next statement, or
-the last statement at EOF, to show their association, as in
-[ishikawa](./ishikawa.md#comments), [kanban](./kanban.md#comments) and
-[mindmap](./mindmap.md#comments). A comment may move deeper or shallower,
-including before a dedent; successive comments share the target column even
-across blank lines.
+the last statement at EOF. A comment may move deeper or shallower, including
+before a dedent; successive comments share the target column even across blank
+lines.
 
 [fixture: treeview/comments/comment-standalone-aligned] [fixture:
 treeview/comments/aligned-depths] [fixture: treeview/comments/aligned-final]

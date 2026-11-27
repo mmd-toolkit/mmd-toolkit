@@ -377,7 +377,9 @@ d,e,2
 [fixture: blank-lines/around-comment-lines]
 [fixture: blank-lines/around-directive-lines]
 
-これらは他の図種の規則と同じで、sankey だけの規則を足さないためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、これらの形を与えます。
+Prettier は、コードの空行の連なりを 1 行にし、
+ファイルやブロックの初めと終わりの空行を除きます。
 mermaid.js の文書がヘッダーの後に書く空行も、本体の先頭の空行として落とします。
 Prettier は JavaScript、CSS、YAML、Markdown の先頭に空行を置きません。
 テキストの先頭でヘッダーの前にある空行を落とす形は、
@@ -520,7 +522,6 @@ mermaid.js に拒否されるからです。
 
 値の後ろの指令は、前に空白が書かれているかを残します。
 空白があれば空白 1 つを置き、接していれば接したままにします。
-他の図種と同じ規則です。
 記録の始まりの指令は、記録との間に空白が書かれているかを残します。
 接していれば接したまま、空白があれば空白 1 つにします。
 
@@ -562,9 +563,10 @@ e,f,3 %%{init: {}}%%
 
 ### フロントマターの YAML
 
-flowchart と同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整え、`---` の行は、
-行末の空白とタブも含め、書かれたまま残します。
+`---` の行の間の YAML は、ほかの場所の YAML と同じく、
+Prettier の YAML 整形で整えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+`---` の行は、行末の空白とタブも含め、書かれたまま残します。
 
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
@@ -624,7 +626,6 @@ Prettier は JavaScript、CSS、YAML、Markdown の末尾に改行を 1 つ置�
 [test: a tab at the end of the text without a line feed]
 [test: U+00A0 on a line of its own at the end of the text]
 
-テキスト末尾のコメント行は、U+00A0 も含め、
-コメントがほかの場所でそうであるように、文字を残します。
+テキスト末尾のコメント行は、U+00A0 も含め、文字を残します。
 
 [test: U+00A0 at the end of the last comment line of the text]

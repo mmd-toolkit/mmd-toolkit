@@ -1982,9 +1982,10 @@ gantt
 
 ### フロントマターの YAML
 
-flowchart と同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整形し、`---` の行は、
-末尾の空白も含めて書かれたまま残します。
+`---` の行の間の YAML は、ほかの場所の YAML と同じく、
+Prettier の YAML 整形で整形します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+`---` の行は、末尾の空白も含めて書かれたまま残します。
 
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]

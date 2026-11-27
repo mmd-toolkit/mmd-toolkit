@@ -262,10 +262,12 @@ timeline
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the body are dropped, as in a user journey. Prettier removes blank lines
-at the start of a text.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same form
-before the `timeline` header.
+end of the body are dropped.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and
+the end of a file or of a block. Prettier removes blank lines at the start of a
+text. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same
+form before the `timeline` header.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
 
@@ -621,9 +623,8 @@ accessibility statement, or an empty description block, is an event statement.
 mermaid.js gives its events to the last period before it, across the statements
 between (diagrams/timeline.md, Periods and events), and the printer does not
 move it: it stays where it was written, on a line of its own, at the level of
-the statements around it. No printer of this project moves a statement past
-another, and what the reader makes of an event that follows a title is not a
-question of formatting.
+the statements around it. What the reader makes of an event that follows a title
+is not a question of formatting.
 
 [fixture: event-statements/after-title] [fixture:
 event-statements/after-section] [fixture: event-statements/after-acc-title]
@@ -1050,9 +1051,10 @@ timeline %%{init: {}}%%TD
 ### Accessibility statements
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
-it, as in a user journey; the text has no whitespace at its ends, which the Db
-does not keep, and a run of spaces and tabs inside the text of an `accDescr` is
-printed as one space (see
+it, as [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for the
+colon of a key (Prettier prints `x = {a : 1}` as `x = { a: 1 };`); the text has
+no whitespace at its ends, which the Db does not keep, and a run of spaces and
+tabs inside the text of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 while that of an `accTitle` stays as written, since the browser shows it as a
 tooltip.
@@ -1224,16 +1226,11 @@ colon at the start of a later line, and keep their line breaks (see
 In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement, also under a section. Preserve each first gap-line tail and complete
-directive interiors. Rule 1 names no mark for a line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, where no other rule keeps
-the layout as written (where the Db holds the text with its whitespace, where
-moving a line makes mermaid.js reject the text, and the like). Joining comment
-regions keep their original layout; semicolon protection follows the joining
-decision below.
+directive interiors. A line break next to a comment or a directive and the
+whitespace before it stay; in some places another rule also keeps the layout as
+written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text, and the like). Joining comment regions keep
+their original layout; semicolon protection follows the joining decision below.
 
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
@@ -1638,9 +1635,10 @@ timeline
 
 ### Frontmatter YAML
 
-As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
-YAML formatter, and the `---` lines are kept as written, with the spaces and
-tabs at the end of each.
+The YAML between the `---` lines is formatted with Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and the `---`
+lines are kept as written, with the spaces and tabs at the end of each.
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/closing-delimiter-whitespace-kept]

@@ -207,11 +207,10 @@ info
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-For blocks that keep their braces, use the
-[shared description layout](./pie.md#description-blocks): separate the keyword
-and opening brace with one space so the block boundary is clear. Collapse
-exterior runs to one space, including plain opener whitespace across physical or
-Unicode line boundaries. The `accDescr` keyword takes a description block, so
+For blocks that keep their braces, separate the keyword and opening brace with
+one space so the block boundary is clear. Collapse exterior runs to one space,
+including plain opener whitespace across physical or Unicode line boundaries.
+The `accDescr` keyword takes a description block, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives plain
 whitespace before its opening brace the one-space gap that Prettier prints
 between a keyword and what it takes. Real opener trivia keeps its break and uses

@@ -182,9 +182,10 @@ usecase-beta
 キーワードとその値の間に与える空白 1 個です。
 Prettier が `return  x` を `return x;` と印字するためです。
 それ以外は、ER の[実体](./er.ja.md#実体)を再利用します。
-`actor` の後は空白 1 個、id と形の区切り、メタデータと class の接尾辞は詰め、
+`actor` の後は空白 1 個、id と形の区切りは詰め、
 ラベルの外側の ASCII 空白を除き、actor の項目はコンマと空白で区切ります。
 1 つの `actor` キーワードが導入する別々のアクターの出現を、見える形にします。
+メタデータと class の接尾辞は詰めて印字します。
 ステレオタイプの隙間は、[class に揃えた規則](#stereotypes)に従います。
 明示 id、楕円と長方形の綴り、markdown ラベル、接尾辞の順序、
 宣言と参照のすべての出現を保ちます。
@@ -222,7 +223,6 @@ usecase-beta
 
 ### Labels
 
-C4 の[引数の形](./c4.ja.md#引数の形)を再利用します。
 markdown はラベルの種類を変えるため、markdown ラベルは種類を保ちます。
 どのラベルも、空の引用値を含め、内部の文字を保ちます。
 ラベルの両端の改行しない空白とバックスラッシュは、Db のテキストの一部です。
@@ -498,8 +498,6 @@ usecase-beta
 
 ### Stereotypes
 
-class の[トークンの間の空白](./class.ja.md#トークンの間の空白)
-の隙間を再利用します。
 `<<` の前に空白を 1 つ置き、区切りの内側には何も置きません。
 `A[a]<<R>>` と `A[a] <<  R  >>` は `A[a] <<R>>` になります。
 mermaid.js はテキストの両端の空白を除くので、どの書き方も同じ Db になります。
@@ -522,7 +520,7 @@ mermaid.js の文書の例 5 件も、`<<...>>` を空白の後に、文字に�
 actor と use case の両方に適用し、
 関係の端点や systemBoundary 内の宣言も同じです。
 Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白です。
-どちらの整え方も Db を保つため、共有の規則に揃えます。
+どちらの整え方も Db を保ちます。
 
 [fixture: stereotypes/stereotype-inner-kept]
 [fixture: stereotypes/stereotype-padding]
@@ -592,9 +590,9 @@ Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
-flowchart の [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)
-の見出しの形を再利用します。
-タイトルの開き `[` または `(` は id に接します。
+タイトルの開き `[` または `(` は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が添字の `[` に与える形と同じく、
+id に接します（Prettier は `x [ 0 ];` を `x[0];` と印字します）。
 `systemBoundary S [t]` は `systemBoundary S["t"]` に、
 `systemBoundary S (t)` は `systemBoundary S("t")` になります。
 mermaid.js は、空白のある書き方も接する書き方も同じ境界として読みます。
@@ -801,10 +799,9 @@ usecase-beta
 ### Relationship labels and ids
 
 flowchart
-の[辺のラベルの書き方](./flowchart.ja.md#辺のラベルの書き方)を保つ考え方と、
-辺 id を詰める配置を再利用します。
-分割ラベルの外側は空白 1 個とし、明示 id は `@` と、
-分割した矢印の開始側または単独の矢印に接して置きます。
+の[辺のラベルの書き方](./flowchart.ja.md#辺のラベルの書き方)を保つ考え方を使い、
+分割ラベルの外側は空白 1 個とします。
+明示 id は `@` と、分割した矢印の開始側または単独の矢印に接して置きます。
 usecase が許す矢印の半分、markdown ラベル、空の引用ラベル、
 actor の開始キーワード、二つの端点の出現を保ちます。
 関係の始点の `actor` キーワードは、アクターを宣言します。
@@ -1122,7 +1119,7 @@ Prettier が CSS の `margin: 1px    2px;` を印字すると、
 CSS 宣言同士はコンマと空白で区切ります。
 
 宣言の最初のコロンの前には空白を置かず、後ろには空白を 1 つ置きます。
-ほかの図種と同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がキーのコロンに与える形です。
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
 Mermaid はコロンの前後の余白を保存するため Db は変わりますが、
 描かれる図は同じです。
@@ -1533,11 +1530,7 @@ Prettier がブロックの中の行をそう印字するためです。
 [fixture: arrow-id-boundaries/arrow-marker-both-gap-sides]
 
 ヘッダー行のディレクティブはヘッダーと同じ行に残します。
-ヘッダーの後のディレクティブを、ヘッダーと同じ行に残す形は、
-[flowchart](./flowchart.ja.md#ディレクティブ) と [block](./block.ja.md#指令)
-の図と同じです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
+ヘッダーの後のディレクティブは、ヘッダーと同じ行に残します。
 値側の隙間、CSS の名前と値の範囲、不透明な JSON は、
 [JSON の表](#json-tables) の余白を除いて正確に保ちます。
 独立した JSON の id、`@`、波括弧の境界も含みます。
@@ -1761,8 +1754,9 @@ id、隙間、プロパティ、CSS の拒否位置を修復しません。
 
 ### Frontmatter YAML
 
-[フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を再利用します。
-安全な設定は YAML として整形し、不正な本文、字下げした区切り、
+安全な設定は、
+ほかの場所の YAML と同じく（[規則 1](./printed-form.ja.md#1-記号の横の空白)）、
+Prettier の YAML 整形で整形し、不正な本文、字下げした区切り、
 原文または整形後の YAML の HTML タグ開始、
 整形で現れる終了区切りは読みを保ちます。
 区切りと終了行の余白、ヘッダー前のコメントとディレクティブを保ちます。

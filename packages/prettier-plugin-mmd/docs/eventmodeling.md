@@ -16,18 +16,16 @@ data boundaries constrain the line and indentation plan before it is printed.
 ### Header
 
 Keep `eventmodeling` at column one and move an ordinary first statement to the
-next line, making the header easy to find. The line that a statement stands on
-is no place of rule 1, so
+next line. The line that a statement stands on is no place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 the first statement its line: [wardley](./wardley.md#header),
 [cynefin](./cynefin.md#header), [architecture](./architecture.md#header), and
 [packet](./packet.md#header) print an ordinary first statement on the next line.
 Hidden forms, retained prefixes and protected lines use their shared rules: when
-the header line is kept, its first statement stays on that line. This gives
-diagram types the same treatment. A first common statement retains its original
-connection: moving it to line start can make identifier win and reject the
-input. Every version of mermaid.js that counts rejects
-`eventmodeling title Heading`, `eventmodeling accTitle: Heading`, and
+the header line is kept, its first statement stays on that line. A first common
+statement retains its original connection: moving it to line start can make
+identifier win and reject the input. Every version of mermaid.js that counts
+rejects `eventmodeling title Heading`, `eventmodeling accTitle: Heading`, and
 `eventmodeling accDescr: Description` with the statement on the next line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Its padding stays as written too (see [Common boundaries](#common-boundaries)).
@@ -94,14 +92,13 @@ decides, as [sequence](./sequence.md#indentation) and
 [state](./state.md#indentation) stand the statements of a block one level deeper
 than the line that opens it, and [flowchart](./flowchart.md#indentation) does
 the same for a subgraph inside a subgraph: a clause stands one step deeper than
-its `gwt`, and an item one step deeper than its clause. Ordinary structural
-continuation lines, including a line completing a `data` or `note` header, stand
-one step deeper than their statement, as under [Long lines](#long-lines). A
-safely indented block body uses one further step inside that continued header
-line (see [Data blocks](#data-blocks)). Columns do not define parents, so
-`tabWidth: 0` adds no spaces; `useTabs` adds one tab per step even at width
-zero. The width of one level is what Prettier's `tabWidth` and `useTabs` options
-say: [flowchart](./flowchart.md#indentation),
+its `gwt`. Ordinary structural continuation lines, including a line completing a
+`data` or `note` header, stand one step deeper than their statement, as under
+[Long lines](#long-lines). A safely indented block body uses one further step
+inside that continued header line (see [Data blocks](#data-blocks)). Columns do
+not define parents, so `tabWidth: 0` adds no spaces; `useTabs` adds one tab per
+step even at width zero. The width of one level is what Prettier's `tabWidth`
+and `useTabs` options say: [flowchart](./flowchart.md#indentation),
 [sequence](./sequence.md#indentation), [state](./state.md#indentation),
 [class](./class.md#indentation), and [er](./er.md#indentation) take a level from
 them, and [wardley](./wardley.md#indentation) and
@@ -233,12 +230,14 @@ name by one ordinary space, including where native whitespace originally crossed
 lines (`01 evt`). [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
 gives one space between a keyword and what it takes, as Prettier prints
 `return  x` as `return x;`, and between values that follow one another, as
-Prettier prints CSS `margin: 1px    2px;` as `margin: 1px 2px;`; a line break
-between two components is one space for the reason given under
-[Declarations and notes](#declarations-and-notes). A required identifier exactly
-`title` keeps its successful boundary: an ordinary LF remains a continuation,
-while padding after a hidden form's consumed LF stays exact. Introducing padded
-`title` there can turn the required name into EM_TITLE.
+Prettier prints CSS `margin: 1px    2px;` as `margin: 1px 2px;`. A line break
+between two components is one space.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+where the line broke, as Prettier prints `x = a +`, a line break, and `b;` as
+`x = a + b;`. A required identifier exactly `title` keeps its successful
+boundary: an ordinary LF remains a continuation, while padding after a hidden
+form's consumed LF stays exact. Introducing padded `title` there can turn the
+required name into EM_TITLE.
 
 [fixture: eventmodeling/frame-components/time-parts-glued-number-type]
 
@@ -301,9 +300,10 @@ another, one space apart (`margin: 1px    2px;` is printed `margin: 1px 2px;`),
 and Prettier prints nested brackets with none inside (`f([[ D ]])` is printed
 `f([[D]]);`). Compact ordinary component newlines too; `[[title]]` also avoids a
 padded title composite. The one space that a line break between components
-becomes is the form that rule 2 gives, for the reason under
-[Declarations and notes](#declarations-and-notes). Preserve hidden forms and
-trivia in their owned gaps, and never qualify a single reference name: a
+becomes is the form that
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives, as Prettier
+prints `x = a +`, a line break, and `b;` as `x = a + b;`. Preserve hidden forms
+and trivia in their owned gaps, and never qualify a single reference name: a
 reference holds one identifier, and a dot with another segment is rejected.
 
 [fixture: eventmodeling/data-references/reference-padded]
@@ -485,12 +485,11 @@ resetframe 02 command Beta
 
 A declaration or note header split by a comment or directive keeps the trivia
 and the line completing the header one level inside its keyword. The line break
-next to the comment or directive stays, for the reasons under
-[Long lines](#long-lines). Where the data-body rules allow margin changes, put
-the body one further level inside that opening line. Keep the written order,
-value continuations and required hidden boundaries. The closer still stays at
-column one, since every version of mermaid.js that counts rejects it indented
-(see [Data blocks](#data-blocks)).
+next to the comment or directive stays. Where the data-body rules allow margin
+changes, put the body one further level inside that opening line. Keep the
+written order, value continuations and required hidden boundaries. The closer
+still stays at column one, since every version of mermaid.js that counts rejects
+it indented (see [Data blocks](#data-blocks)).
 
 [fixture: eventmodeling/declarations-and-notes/header-completion-comments]
 
@@ -520,24 +519,21 @@ note
 ```
 
 Separate declaration and note components with one ordinary space:
-`entity Shop.Buy`, `data D` and `note 01`. Rule 1 names no mark for a line break
-between the components of a statement, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [gantt](./gantt.md#multi-line-statements),
-[journey](./journey.md#multi-line-statements), and
-[quadrant](./quadrant.md#multi-line-statements) print a statement that
-mermaid.js reads over several lines on one line, with one space between the
-components of the statement, and none beside the dot of a qualified name (see
+`entity Shop.Buy`, `data D` and `note 01`. A statement that mermaid.js reads
+over several lines is printed on one line, with one space between the components
+of the statement, and none beside the dot of a qualified name (see
 [Qualified names](#qualified-names)), where no other rule keeps the layout as
 written (a comment between the components, which the paragraph above covers, a
 slash comment that spans the line break, and a line that holds an ignored `;`).
-Put a block opener on its header line after one space. Rule 1 gives it: Prettier
-prints one space before the `{` that opens a block, whether it was written
-touching its header or on the next line (`class A{}` and `class A`, a line
-break, `{}` are both printed `class A {}` in JavaScript). Values and closing
-boundaries follow the data rules. A required name `title` keeps its safe
-preceding boundary, as for frames. `eventmodeling data`, a line break and
-`title {` stay, since every version of mermaid.js that counts rejects
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+where the line broke, as Prettier prints `x = a +`, a line break, and `b;` as
+`x = a + b;`. Put a block opener on its header line after one space. Rule 1
+gives it: Prettier prints one space before the `{` that opens a block, whether
+it was written touching its header or on the next line (`class A{}` and
+`class A`, a line break, `{}` are both printed `class A {}` in JavaScript).
+Values and closing boundaries follow the data rules. A required name `title`
+keeps its safe preceding boundary, as for frames. `eventmodeling data`, a line
+break and `title {` stay, since every version of mermaid.js that counts rejects
 `eventmodeling data title {` on one line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
@@ -567,8 +563,8 @@ entity Shop.Buy
 
 A GWT header continued after a comment or directive uses ordinary continuation
 indentation: the trivia and source-frame line stand one level inside `gwt`. Keep
-their written order and comment form. Clause keywords still use one level and
-items two, for the reason under [Indentation](#indentation); the source-frame
+their written order and comment form. Clause keywords still use one level, for
+the reason under [Indentation](#indentation), and items two; the source-frame
 line is not a new top-level statement.
 
 [fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
@@ -581,8 +577,8 @@ line stays on that line: `given evt A %%{{tail}}%%` stays on one line.
 [fixture:
 eventmodeling/gwt-clauses-and-items/clause-after-header-directive-with-tail-directive]
 
-Put `gwt 99` at column one, each clause keyword one step deeper and every item
-another step deeper, for the reason under [Indentation](#indentation). This
+Put `gwt 99` at column one, each clause keyword one step deeper, for the reason
+under [Indentation](#indentation), and every item another step deeper. This
 shows the authored clause/item relationship without inventing closing
 punctuation. Keep required given/then, optional when, item order, repetition and
 type words. Ordinary item components use one space, as
@@ -1221,7 +1217,7 @@ Align ordinary standalone comments with their owning body; between GWT items
 this is item depth. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
 puts a comment line at the level of the lines around it, as Prettier prints the
 lines inside a block. The clauses and items of a GWT are parts of its statement
-and no lines inside a block, so there
+and no lines inside a block, so before a clause
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), [block](./block.md#comments),
@@ -1263,15 +1259,14 @@ gives the form of U+2028 and U+2029 before a comment, and the form that the
 released version prints, one space, stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 When units split into separate lines, attach intervening inline comments to the
-following unit, in the same direction as directives. Use this shared placement
-so the same comments are treated alike across diagram types. Keep marks,
-contents, trailing padding and block-comment continuation columns. Native `//`
-and `%%` run through LS/PS to physical LF. A `%%` comment line inside a data
-block, a note, an `accDescr` block, a slash block comment or a hidden form is
-part of that text. Its columns stay written except for the block-body margin
-adjustment in [Data blocks](#data-blocks), since in a `data` block that a frame
-reads the Db holds them as a part of the value. Boundaries needed for metadata
-or a required `title` take precedence. Slash comments are not moved before the
+following unit, in the same direction as directives. Keep marks, contents,
+trailing padding and block-comment continuation columns. Native `//` and `%%`
+run through LS/PS to physical LF. A `%%` comment line inside a data block, a
+note, an `accDescr` block, a slash block comment or a hidden form is part of
+that text. Its columns stay written except for the block-body margin adjustment
+in [Data blocks](#data-blocks), since in a `data` block that a frame reads the
+Db holds them as a part of the value. Boundaries needed for metadata or a
+required `title` take precedence. Slash comments are not moved before the
 header, where detection would reject them. A comment line before the header
 stands at column one.
 
@@ -1497,8 +1492,8 @@ interiors, positions inside values and unfinished EOF endings. Standalone starts
 align with the owning body.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a directive line
 at the level of the lines around it, as Prettier prints every line inside a
-block at one level, whatever it holds. Between the clauses and items of a GWT,
-which are parts of its statement and no lines inside a block,
+block at one level, whatever it holds. Before a clause of a GWT, since the
+clause is a part of the statement and no line inside a block,
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#directives) puts a directive on a line of its
 own at the level of the statement after it. Common boundaries retain the full
@@ -1706,16 +1701,12 @@ entity Shop.Buy
 ### Long lines
 
 Do not wrap by `printWidth`. Ordinary whitespace-only component newlines follow
-their spacing rules, while trivia continuations retain structural depth. Rule 1
-names no mark for a line break next to a comment or a directive, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep such a line break. The later
-lines of a statement and the comment or directive lines between them stand one
-level deeper than the statement, and the `}` that closes a block whose `{`
-stands on a later line stands at the level of the statement. A later line that
-another rule keeps as written does not move:
+their spacing rules, while trivia continuations retain structural depth. A line
+break next to a comment or a directive stays. The later lines of a statement and
+the comment or directive lines between them stand one level deeper than the
+statement, and the `}` that closes a block whose `{` stands on a later line
+stands at the level of the statement. A later line that another rule keeps as
+written does not move:
 
 - a line inside a value or a hidden form, whose contents stay as said below;
 - the line after a hidden form, whose gap stays as written (see

@@ -100,14 +100,9 @@ erDiagram
 [規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 各属性は実体の行より 1 段深く、閉じる `}` はその行と同じ段に置きます。
 Prettier がブロックの中の行と閉じる行をその深さに印字するためです。
-規則 1 は、
-ブロックの `{` の前に空白 1 つを置きます（Prettier は `function f(){}` を
-`function f() {}` と印字します）。
-開始する波括弧を置く行の形は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
-[class](./class.ja.md#メンバーの本体)、[requirement](./requirement.ja.md#本体)、
-[state](./state.ja.md#複合状態)が、本体の `{` を、
-`{` が名前に接して書かれていても、開く行に空白 1 つの後に置くためです。
+規則 1 は、`{` を、実体の行に、空白 1 つの後に置きます。
+Prettier は、`function f(){}` を `function f() {}` と印字し、`class A`、改行、
+`{}` を `class A {}` と印字します。
 2 つの行を結ぶコメント領域を含む属性は、
 全体を書かれたまま残します（[属性の空白](#属性の空白)を参照）。
 
@@ -118,7 +113,7 @@ Prettier がブロックの中の行と閉じる行をその深さに印字す�
 1 行に書かれたブロックや、最初の属性が `{` の行に、
 最後の属性が `}` の行にあるブロックも、こう分けます。
 mermaid.js は属性ブロックを改行に関係なく読むので、同じ属性を読みます。
-[class](./class.ja.md#メンバーの本体)と [state](./state.ja.md#複合状態)も、
+[state](./state.ja.md#複合状態)も、
 1 行に書かれた本体を同じように分けます（規則 2）。
 
 [fixture: attribute-blocks/split] [corpus fixture: er/gram-attributes-one-line]
@@ -485,12 +480,6 @@ Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字し�
 規則 1 は、チルダの語とバッククォートの語の内側を決めません。
 詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
 を参照してください。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が空白 1
-つを与えます。
-[class](./class.ja.md#メンバーの行) は欄の中の、
-[architecture](./architecture.ja.md#label-content) はラベルのテキストの中の、
-空白とタブの連なりを、mermaid.js がその連なりを描かずにテキストを描く場合に、
-空白 1 つで印字します。
 
 [fixture: attribute-spacing/tilde-word-runs-collapsed]
 [fixture: attribute-spacing/backquoted-word-runs-collapsed]
@@ -513,8 +502,7 @@ Prettier は CSS の `margin: 1px`、改行、
 型、名前、引用符付きコメントの内部は、Db が書かれたまま持つので、
 書かれたまま残します。
 2 つの行を結ぶコメント領域を含む属性は、全体を書かれたまま残します（下を参照）。
-コメント行やディレクティブの隣の改行が残る理由は、
-[複数行の文](#複数行の文)に書いてあります。
+コメント行やディレクティブの隣の改行は残ります。
 
 [fixture: attribute-spacing/comment-line-inside-kept]
 [fixture: attribute-spacing/directive-inside-kept]
@@ -1166,9 +1154,11 @@ erDiagram
 
 ### 空行
 
-class 図と同じです。
 連続する空行は 1 つにし、図、属性ブロック、
 subgraph の先頭と末尾の空行は落とします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、空行の連なりを 1 行にし、
+ファイルとブロックの先頭と末尾の空行を取り除きます。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/block-edges-dropped]
 [fixture: blank-lines/header-and-end-of-text-dropped]
@@ -1546,12 +1536,7 @@ flowchart の `A( text )` を `A(text)` としています。
 前のクラスに接して後ろに空白を 1 つ置く `,` で区切ります。
 Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 `A ::: c1 , c2` は `A:::c1, c2` にします。
-規則 1 は `:::` を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[class](./class.ja.md#トークンの間の空白)と
-[state](./state.ja.md#トークンの間の空白)は、`:::` を、
-前の名前にも後ろのクラスにも接して印字します（`class A ::: c` は `class A:::c`
-に、state 図の `A ::: c` は `A:::c` にします）。
+`:::` は前の名前に接します。
 
 [fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
 
@@ -1858,16 +1843,15 @@ Prettier が `return  x` を `return x;` と印字するのと同じです。
 [fixture: direction/case-kept] [fixture: direction/case-bt-rl-kept]
 
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
-[requirement](./requirement.ja.md#方向)、[class](./class.ja.md#複数行の文)、
-[state](./state.ja.md#複数行の文)も、
-次の行に書かれた `direction` の値を 1 行で印字します（規則 2）。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+`direction` とその値の間に空白 1 つを与えます。
+Prettier が `return  x` を `return x;` と印字するのと同じです。
 
 [fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
 
 ディレクティブやコメント行がある方向の行は改行を残し、
 構造の続きの行を 1 段深く置きます。
-改行が残る理由は[複数行の文](#複数行の文)に書いてあります。
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -2388,8 +2372,9 @@ Prettier がブロックの中の行をそう印字するためです。
 [fixture: comments/before-header]
 
 テキストの末尾のコメント行は、行に単独で置き、改行を足します。
-[gantt](./gantt.ja.md#コメント) と [journey](./journey.ja.md#コメント)
-も同じです。
+足す改行は、[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+テキストの末尾に与える改行 1 つです。
+Prettier は、ファイルを改行 1 つで終えます。
 
 [fixture: comments/after-last-statement-without-line-break]
 [fixture: comments/after-header-without-line-break]
@@ -2459,15 +2444,10 @@ Prettier がブロックの中の行をそう印字するためです。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
-規則 1 は、隙間のディレクティブの印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[class](./class.ja.md#ディレクティブ)、
-[sequence](./sequence.ja.md#ディレクティブ)、
-[state](./state.ja.md#ディレクティブ)も、隙間を同じように印字します。
 ほかの規則が配置を書かれたまま残す所は別です。
 閉じていないディレクティブ（次の段落で挙げます）と、
 コメント領域が結ぶ行（[複数行の文](#複数行の文)を参照）です。
-U+2028 や U+2029 を含む隙間は、この 3 つが印字する隙間ではありません。
+U+2028 や U+2029 を含む隙間は、そう印字する隙間ではありません。
 class、sequence、state、flowchart は、その隙間を書かれたまま残します。
 ER が印字する形には、ER も隙間を書かれたまま残す所のほかに先例がないので、
 規則 2 は何も決めず、リリース済みの版が印字する形を、決まるまで残します。
@@ -2515,14 +2495,8 @@ U+2028 や U+2029 の後ろにディレクティブとコメントしか続か�
 4 つ目の形は、`direction` の後ろ、`accTitle` のコロンの後ろ、
 `style` や `classDef` の文のキーワードの後ろで、隙間を書かれたままにします。
 この形は規則 2 が与えます。
-flowchart、class、state は、U+2028 や U+2029 を含む隙間を、これらの場所で、
-書かれたまま残します（[flowchart](./flowchart.ja.md#ディレクティブ)、
-[class](./class.ja.md#トークンの間の空白)、
-[state](./state.ja.md#トークンの間の空白)）。
-sequence、journey、timeline は、`accTitle` のコロンの後ろで、
-書かれたまま残します（[sequence](./sequence.ja.md#トークンの間の空白)、
-[journey](./journey.ja.md#行区切り文字)、
-[timeline](./timeline.ja.md#行区切り文字)）。
+flowchart は、U+2028 や U+2029 を含む隙間を、これらの場所で、
+書かれたまま残します（[flowchart](./flowchart.ja.md#ディレクティブ)）。
 ほかの場所は、ここでは述べません。
 
 [fixture: directives/kept] [fixture: directives/before-header]
@@ -2775,7 +2749,6 @@ erDiagram
 
 ### フロントマター YAML
 
-flowchart と同じです。
 `---` の行の間の YAML は Prettier の YAML 整形で整形するので、
 その中の印はどれも、Prettier がその横に印字する空白を持ちます。
 詳しくは [規則 1](./printed-form.ja.md#1-記号の横の空白) を参照してください。
@@ -3229,13 +3202,9 @@ mermaid.js が複数行にわたって読む文は、改行が、
 コメント行やディレクティブがある文は改行を残し、
 構造の続きの行と間の注釈を 1 段深く置きます。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
-規則 1 は、改行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
-その前の空白を残します。
-ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所と、
-動かすと mermaid.js がテキストを拒否する所です）。
+コメントやディレクティブの隣の改行と、その前の空白は残します。
+ほかの規則も配置を書かれたまま残す所があります（Db
+が空白ごとテキストを持つ所と、動かすと mermaid.js がテキストを拒否する所です）。
 コメントで結合される領域は、それがつなぐ行を原文のまま残します（下を参照）。
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、

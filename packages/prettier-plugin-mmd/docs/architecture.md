@@ -759,15 +759,11 @@ is printed as one space, also where the comment holds a `;` (see
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
 
-Rule 1 names no mark for a gap beside a directive, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: the other diagram types of
-[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
-print a run of spaces and tabs before a directive as one space and leave out the
-spaces at the end of the line (item 1). The other items say what the released
-version prints for the gaps and the characters that the rules do not decide, and
-a form that the other diagram types print differently stays as it is until it is
-decided (see
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) leaves out the spaces
+at the end of the line (item 1), as Prettier ends no line with whitespace. The
+other items say what the released version prints for the gaps and the characters
+that the rules do not decide, and a form that the other diagram types print
+differently stays as it is until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 Where a U+2028 or U+2029 stands inside the text, or the value holds directives
@@ -794,12 +790,9 @@ of the line holds no directive, comment, `;`, wide space, U+2028, or U+2029, and
 the line is not undecided, the spaces and tabs between the directives and the
 rest of the text are left out, with the spaces and tabs at the end of the line:
 `title %%{x}%%  T  ` is printed `title %%{x}%%T`, and
-`title %%{x}%%%%{y}%%  T  ` is printed `title %%{x}%%%%{y}%%T`.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as the Title of [a sequence diagram](./sequence.md#title) does, which
-prints `title %%{init: {}}%% T` as `title %%{init: {}}%%T`: mermaid.js removes
-the directives before it reads the text, and it draws the title without the
-whitespace at its start (see
+`title %%{x}%%%%{y}%%  T  ` is printed `title %%{x}%%%%{y}%%T`. mermaid.js
+removes the directives before it reads the text, and it draws the title without
+the whitespace at its start (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 The other titles that hold a directive before their text are not stated: a
 directive that touches the keyword, a second whitespace character before the
@@ -2647,15 +2640,11 @@ is printed as one space, also where the comment holds a `;` (see
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
 
-Rule 1 names no mark for a gap beside a directive, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: the other diagram types of
-[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
-print a run of spaces and tabs before a directive as one space and leave out the
-spaces at the end of the line (item 1). The other items say what the released
-version prints for the gaps and the characters that the rules do not decide, and
-a form that the other diagram types print differently stays as it is until it is
-decided (see
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) leaves out the spaces
+at the end of the line (item 1), as Prettier ends no line with whitespace. The
+other items say what the released version prints for the gaps and the characters
+that the rules do not decide, and a form that the other diagram types print
+differently stays as it is until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 Where a U+2028 or U+2029 stands inside the text, or the value holds directives
@@ -3827,21 +3816,16 @@ Prettier prints one space between a keyword and the `{` of its block
 Whitespace-only interiors become `{}` because no text needs surrounding space.
 Plain opener whitespace can join; real trivia keeps its break.
 
-Rule 1 names no mark for a line break next to a comment or a directive, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep such a line break, where no
-other rule keeps the layout as written. A U+2028 or U+2029 after `accDescr`,
-with or without a space before it, is printed as a line break when a comment
-follows it, with the comment on a line of its own one level deeper, and as one
-space when only a directive follows it and the `{` stands on a later line, with
-the directive on the line of `accDescr`. When a comment follows the directive,
-the directive and the comment stand on a line of their own one level deeper, as
-the comment does. Where the `{` follows the directive on its line, the line
-stays as written. Rule 2 gives no one form for the separator: the formatter, run
-on `accDescr`, a U+2028, and a comment, prints them as written in sequence,
-gantt, and journey, and prints a line break in radar, as it does in
+A line break next to a comment or a directive stays. A U+2028 or U+2029 after
+`accDescr`, with or without a space before it, is printed as a line break when a
+comment follows it, with the comment on a line of its own one level deeper, and
+as one space when only a directive follows it and the `{` stands on a later
+line, with the directive on the line of `accDescr`. When a comment follows the
+directive, the directive and the comment stand on a line of their own one level
+deeper, as the comment does. Where the `{` follows the directive on its line,
+the line stays as written. Rule 2 gives no one form for the separator: the
+formatter, run on `accDescr`, a U+2028, and a comment, prints them as written in
+sequence, gantt, and journey, and prints a line break in radar, as it does in
 architecture, so the released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 

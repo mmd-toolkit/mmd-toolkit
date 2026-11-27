@@ -172,9 +172,8 @@ that a `columns` statement sets, and the documentation of mermaid.js writes them
 so (`a b c`, `a["A label"] b:2 c:2 d`, `Start(("Start")) space:2`). Putting each
 node on a line of its own would hide the rows, and the number of columns would
 have to be counted again from the `columns` statement. No rule of
-[How the printed form is decided](./printed-form.md) gives this form: rule 2
-gives the form of the other diagram types, a statement on a line of its own,
-which hides the rows. The released form stays until it is decided (see
+[How the printed form is decided](./printed-form.md) gives this form. The
+released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: rows/documentation-row-with-widths] [fixture: rows/space-in-a-row]
@@ -476,22 +475,17 @@ printed with the space.
 
 A comment line or a directive there keeps its line, and a U+2028 or U+2029 stays
 where it is, as it does in a gap inside a statement (see
-[Line separators](#line-separators)). Rule 1 names no mark for a line break next
-to a comment or a directive, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep such a line break. Before the
-first direction, before a `,`, and before the `)`, a comment line or a directive
-line stays where it is written, at column one or indented, and the next line is
-not indented, since the whitespace there is in the Db (see above); after a `,`,
-where the whitespace is in no direction, the comment line or the directive line
-and the next line stand one level deeper. A directive on the line of the
-direction stays touching or separated as written after the `(`, before a `,`,
-and before the `)`, since the whitespace there is in the Db
-(`(right %%{x}%%, down)` and `(right%%{x}%%, down)` stay). After a `,` the gap
-is printed as without the directive, and the directive stands after its space
-and touches the unit that follows it, as under [Directives](#directives):
+[Line separators](#line-separators)). A line break next to a comment or a
+directive stays. Before the first direction, before a `,`, and before the `)`, a
+comment line or a directive line stays where it is written, at column one or
+indented, and the next line is not indented, since the whitespace there is in
+the Db (see above); after a `,`, where the whitespace is in no direction, the
+comment line or the directive line and the next line stand one level deeper. A
+directive on the line of the direction stays touching or separated as written
+after the `(`, before a `,`, and before the `)`, since the whitespace there is
+in the Db (`(right %%{x}%%, down)` and `(right%%{x}%%, down)` stay). After a `,`
+the gap is printed as without the directive, and the directive stands after its
+space and touches the unit that follows it, as under [Directives](#directives):
 `(right,  %%{x}%%  down)` and `(right,%%{x}%%down)` are printed
 `(right, %%{x}%%down)`. Where the gap holds a U+2028 or U+2029, it stays as
 written, a directive in it included: `(right,`, U+2028, and ` %%{x}%% down)`
@@ -1340,14 +1334,10 @@ block-beta
 Keep directives in their authored gaps. Within a printed line, a directive is
 placed as under [Directives](./flowchart.md#directives): the gap is printed as
 without the directive, and the directive stands after its space and touches the
-unit that follows it. Rule 1 names no mark for a directive in a gap, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [flowchart](./flowchart.md#directives), [Gantt](./gantt.md#directives),
-and [journey](./journey.md#directives) print it so, and the flowchart rules give
-the reason: mermaid.js removes a directive before it reads the text, so the
-whitespace that remains is that of the two sides together. A directive on a line
-of its own stands at the level of the statement after it, and one before the
-header stands at the first column, as a comment line does.
+unit that follows it. mermaid.js removes a directive before it reads the text,
+so the whitespace that remains is that of the two sides together. A directive on
+a line of its own stands at the level of the statement after it, and one before
+the header stands at the first column, as a comment line does.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
 directive line inside a block one level deeper than the line that opens it, as
 Prettier prints the lines inside a block.
@@ -1587,14 +1577,10 @@ block-beta
 ### Line separators
 
 U+2028 and U+2029 are whitespace between the units of a block diagram, as a
-space is, and a gap that holds one on a line is printed as written, as in the
-other diagrams (see [Line separators](./journey.md#line-separators)). Rule 1
-names no mark for a gap that holds one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: the other diagrams print it so. Where the printer puts a line break
-instead of the gap, or the gap ends a line, they are dropped with it. A comment
-line after one of them joins the lines of the source that mermaid.js reads as
-one (see
+space is, and a gap that holds one on a line is printed as written. Where the
+printer puts a line break instead of the gap, or the gap ends a line, they are
+dropped with it. A comment line after one of them joins the lines of the source
+that mermaid.js reads as one (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
 where text follows it, and the whitespace and the line breaks of the statements
 on those lines are kept as written. What follows the comment line decides the

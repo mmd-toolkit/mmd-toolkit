@@ -439,8 +439,10 @@ requirementDiagram
 
 関係文は、左の名前、`-` または `<-`、関係、`->` または `-`、右の名前の間を、
 書かれ方によらず空白 1 つにします。
-単位を離す書き方は mermaid.js の文書の形で、
-ER 図の関係文も単位の間は空白 1 つです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+Prettier が `x = a+b` を `x = a + b;` と印字するのと同じく、
+2 つのものの間に置く、ほかの記号の両側に空白を 1 つずつ置きます。
+単位を離す書き方は mermaid.js の文書の形です。
 引用符のない名前は `-` の前で終わるので、空白で名前は変わりません。
 
 [fixture: relationship-spacing/spaces-and-touching]
@@ -529,10 +531,10 @@ requirementDiagram
 ### クラスの並び
 
 requirement、element、名前とクラスだけの文で、`:::` の後に書くクラスは、
-最初のクラスは `:::` に接し、クラスを区切る `,` は前のクラスに接して、
+最初のクラスは `:::` に接し、クラスを区切る `,` は、
+ER 図のクラスの間の `,` と同じく、前のクラスに接して、
 後ろに空白を 1 つ置きます。
 `requirement r ::: a , b {` は `requirement r:::a, b {` と印字します。
-これは ER 図のクラスと同じです。
 
 [fixture: class-lists/in-requirement-and-element]
 [fixture: class-lists/shorthand]
@@ -626,11 +628,6 @@ style の文脈が LF で終わる場合、文の末尾の空白は落としま�
 そのため、`fill #f00` と `fill#f00` は区別して残します。
 [ディレクティブ](#ディレクティブ)を参照してください。
 語をつなぐと、どこで語が終わるかが見えなくなるからです。
-[flowchart](./flowchart.ja.md#トークンの間の空白) と
-[block](./block.ja.md#スタイル) の図も、スタイルの語が接するか、
-空白で離れるかを保ちます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この語の間の隙間の形を与えます。
 Mermaid は、区切る空白にかかわらずスタイルの単位をつなげて読むため、
 `stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` で、Db は変わりません。
 `fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
@@ -1041,7 +1038,9 @@ requirementDiagram
 ### 空行
 
 連続する空行は 1 つにし、図の先頭と末尾、本体の先頭と末尾の空行は落とします。
-他の図種と同じ規則です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は空行の連なりを 1 つにし、
+ファイルやブロックの初めと終わりの空行を落とします。
 空白だけの行は、見出しの後、本体の中、文と文の間、コメント行の周り、
 テキストの末尾で、空行です。
 空白文字の種類は問わず、改ページ、垂直タブ、U+00A0、U+3000、U+2028、
@@ -1134,9 +1133,7 @@ requirementDiagram
 requirement と element の本体の行では本体の項目です。
 `{` の直後、フィールドの前、文字列かキーワードの値の後、`}` の前、
 単独の行にあるものがそうです。
-どれも自分の行に置きます。
-ER 図が mermaid.js の読まないテキストをブロックの中の自分の行に置き、
-本体のフィールドが 1 行に 1 つなのと同じです。
+どれも自分の行に置き、本体のフィールドは 1 行に 1 つ置きます。
 
 [fixture: empty-description-blocks/as-statement]
 [fixture: empty-description-blocks/after-header]
@@ -1259,14 +1256,6 @@ requirementDiagram
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の、図のタイトルと説明の行を参照してください。
-規則 1 は、コメント行の隣の改行に記号を定めないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-場合ごとに決めます。
-コロンの前にコメント行があるときは、[journey](./journey.ja.md#複数行の文)、
-[quadrant](./quadrant.ja.md#複数行の文)、
-[timeline](./timeline.ja.md#複数行の文) が `accDescr` の改行を残します。
-テキストの前にコメント行があるときは、この 3 つの図が `accTitle` の改行を残し、
-[flowchart](./flowchart.ja.md#アクセシビリティの行) も同じです。
 
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
@@ -2020,9 +2009,10 @@ requirementDiagram
 
 ### フロントマターの YAML
 
-フローチャートと同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整形し、`---` の行は、
-行末の空白とタブも含め、書かれたまま残します。
+`---` の行の間の YAML は、
+ほかの場所の YAML と同じく（[規則 1](./printed-form.ja.md#1-記号の横の空白)）、
+Prettier の YAML 整形で整形します。
+`---` の行は、行末の空白とタブも含め、書かれたまま残します。
 
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]

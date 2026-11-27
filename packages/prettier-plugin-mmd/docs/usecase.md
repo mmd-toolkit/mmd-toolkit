@@ -165,10 +165,10 @@ usecase-beta
 
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space after
 `actor`, as Prettier prints `return  x` as `return x;`. Reuse
-[ER's compact entity layout](./er.md#entities) for tight id/shape delimiters and
-metadata/class suffixes, no exterior ASCII label padding, and comma-space
-between actor items, which shows the separate actor occurrences that one `actor`
-keyword introduces. Stereotype spacing follows
+[ER's compact entity layout](./er.md#entities) for tight id/shape delimiters, no
+exterior ASCII label padding, and comma-space between actor items, which shows
+the separate actor occurrences that one `actor` keyword introduces.
+Metadata/class suffixes are printed tight. Stereotype spacing follows
 [its class-based rule](#stereotypes). Keep explicit ids, ellipse/rectangle
 spelling, markdown labels, suffix order and every declaration/reference
 occurrence; a name and a label are printed in the form that the examples use
@@ -205,16 +205,15 @@ usecase-beta
 
 ### Labels
 
-Reuse [C4's authored value forms](./c4.md#argument-forms): a markdown label
-keeps its kind, since markdown changes the label type, and every label keeps its
-interior characters, including empty quoted values. No-break spaces at a label's
-ends and literal backslashes are part of its Db text; entity decoding and HTML
-stripping also change the text mermaid.js records. Those characters therefore
-stay as written. The figure and the Db differ for a label with no-break spaces
-at its ends, a label with two literal backslashes, `A("a &amp; b")`, and
-`A("<b>x</b>")`, compared with the same label without the no-break spaces,
-without the backslashes, with the entity decoded, and with the HTML stripped
-(see
+A markdown label keeps its kind, since markdown changes the label type, and
+every label keeps its interior characters, including empty quoted values.
+No-break spaces at a label's ends and literal backslashes are part of its Db
+text; entity decoding and HTML stripping also change the text mermaid.js
+records. Those characters therefore stay as written. The figure and the Db
+differ for a label with no-break spaces at its ends, a label with two literal
+backslashes, `A("a &amp; b")`, and `A("<b>x</b>")`, compared with the same label
+without the no-break spaces, without the backslashes, with the entity decoded,
+and with the HTML stripped (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The padding inside the backquotes of a markdown label is part of its Db label
 too, so it stays (see
@@ -454,12 +453,10 @@ usecase-beta
 
 ### Stereotypes
 
-Reuse the spacing of annotations attached to
-[class statements](./class.md#whitespace-between-tokens): one space stands
-before the `<<`, and nothing stands inside the delimiters. Thus `A[a]<<R>>` and
-`A[a] <<  R  >>` are printed `A[a] <<R>>`. mermaid.js trims the text, so every
-spelling gives the same Db, and the five examples of its documentation write
-`<<...>>` after a space and touching its text
+One space stands before the `<<`, and nothing stands inside the delimiters. Thus
+`A[a]<<R>>` and `A[a] <<  R  >>` are printed `A[a] <<R>>`. mermaid.js trims the
+text, so every spelling gives the same Db, and the five examples of its
+documentation write `<<...>>` after a space and touching its text
 ([the examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L141-L144),
 [two more](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L546-L549)).
 Beside a directive, the whitespace is printed as the table of
@@ -473,8 +470,7 @@ stereotype-comment-region-padding-kept]
 
 Actors and use cases follow the same rule, including relationship endpoints and
 declarations inside system boundaries. Mermaid trims the interior ends;
-whitespace before `<<` is structural. Both spacing choices keep the Db, so
-usecase follows the shared rule.
+whitespace before `<<` is structural. Both spacing choices keep the Db.
 
 [fixture: stereotypes/stereotype-inner-kept] [fixture:
 stereotypes/stereotype-padding] [fixture: stereotypes/declaration-suffixes]
@@ -534,9 +530,10 @@ level of its boundary opener, as Prettier prints the lines inside a block.
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
-Reuse the heading form of [flowchart subgraphs](./flowchart.md#subgraph-header):
-the opener of the title, `[` or `(`, touches the id, so `systemBoundary S [t]`
-is printed `systemBoundary S["t"]` and `systemBoundary S (t)` is printed
+The opener of the title, `[` or `(`, touches the id, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the `[` of an
+index (Prettier prints `x [ 0 ];` as `x[0];`), so `systemBoundary S [t]` is
+printed `systemBoundary S["t"]` and `systemBoundary S (t)` is printed
 `systemBoundary S("t")`. mermaid.js reads the spaced and the touching spellings
 as the same boundary. The spaces and tabs inside the brackets or the parentheses
 are dropped, since mermaid.js trims them (it keeps a no-break space, which
@@ -722,17 +719,17 @@ usecase-beta
 ### Relationship labels and ids
 
 Reuse
-[flowchart's authored edge-label principle](./flowchart.md#link-label-form) and
-tight edge-id attachment: keep split labels with one exterior gap, and print an
-explicit id touching `@` and its opening/sole arrow. Usecase keeps only its
-allowed split halves, markdown labels, empty quoted labels, actor source
-keywords and both endpoint occurrences; a plain label is printed in quotes (see
-[Quotes](#quotes)). The `actor` keyword at a relationship source declares an
-actor; mermaid.js otherwise reads an unresolved endpoint as an implicit use
-case. Removing the keyword from an otherwise unresolved source therefore changes
-its kind in the Db. Explicit ids remain available to later metadata/class/style
-targets. A pipe or class-style colon label would be another grammar, and a chain
-is never split into valid relationships.
+[flowchart's authored edge-label principle](./flowchart.md#link-label-form):
+keep split labels with one exterior gap. Print an explicit id touching `@` and
+its opening/sole arrow. Usecase keeps only its allowed split halves, markdown
+labels, empty quoted labels, actor source keywords and both endpoint
+occurrences; a plain label is printed in quotes (see [Quotes](#quotes)). The
+`actor` keyword at a relationship source declares an actor; mermaid.js otherwise
+reads an unresolved endpoint as an implicit use case. Removing the keyword from
+an otherwise unresolved source therefore changes its kind in the Db. Explicit
+ids remain available to later metadata/class/style targets. A pipe or
+class-style colon label would be another grammar, and a chain is never split
+into valid relationships.
 
 [fixture: relationship-labels-and-ids/split-labels] [fixture:
 relationship-labels-and-ids/edge-id-tight] [fixture:
@@ -1025,7 +1022,9 @@ between values that follow one another (CSS `margin: 1px    2px;` is printed
 `margin: 1px 2px;`); a comma touches the target or class name before it and has
 one space after it, with one gap between lists and before the first declaration;
 CSS declarations use comma-space. A declaration has no whitespace before its
-first colon and one space after it, as in the other diagram types (see
+first colon and one space after it, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the colon of a
+key (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 Mermaid stores the padding before and after the colon, so the Db changes, but it
 draws the same figure. A name that ends with `stroke` is the exception, since a
@@ -1417,12 +1416,9 @@ arrows/semantic-operator-directives] [fixture:
 arrow-id-boundaries/arrow-marker-both-gap-sides]
 
 Header-line directives remain with the header. A directive after the header
-stays on the header's line, as in [flowchart](./flowchart.md#directives) and
-[block](./block.md#directives) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this gap its form. Value-side gaps, CSS name/value spans and opaque JSON remain
-exact apart from [JSON table margins](#json-tables), including separate JSON
-id/`@`/brace boundaries.
+stays on the header's line. Value-side gaps, CSS name/value spans and opaque
+JSON remain exact apart from [JSON table margins](#json-tables), including
+separate JSON id/`@`/brace boundaries.
 
 [fixture: classes-and-styles/css-name-multiline-directive] [fixture:
 json-tables/json-prefix-id-at-multiline-directive]
@@ -1639,12 +1635,13 @@ that touch, and a line of whitespace after the text of an accTitle line]
 
 ### Frontmatter YAML
 
-Reuse [guarded frontmatter](./flowchart.md#frontmatter-yaml): safe configuration
-is formatted as YAML, while malformed bodies, indented delimiters, HTML tag
-starts in written/formatted YAML and formatted delimiter hazards retain their
-reading. Keep delimiters and closing padding, comments and directives before the
-header; frontmatter title is not an accessibility statement, and usecase clears
-the common title at this pin. YAML uses the shared positive minimum even with
+Safe configuration is formatted with Prettier's YAML formatter, as Prettier does
+for YAML anywhere ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)),
+while malformed bodies, indented delimiters, HTML tag starts in
+written/formatted YAML and formatted delimiter hazards retain their reading.
+Keep delimiters and closing padding, comments and directives before the header;
+frontmatter title is not an accessibility statement, and usecase clears the
+common title at this pin. YAML uses the shared positive minimum even with
 `tabWidth: 0`, while the body remains zero. HTML cross-frontmatter cases use the
 specified body-only reading without rewriting body quotes to imitate raw
 Mermaid.

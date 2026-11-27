@@ -269,10 +269,10 @@ kanban
 ### Shapes
 
 The opener and the closer of a shape are printed as written. The closer need not
-match the opener: `S[x)` is accepted, and `S[x]` would give the same Db, as in
-[mindmap](./mindmap.md#shapes). This holds for every family of shapes (`S[x]`,
-`A(y)`, `B((z))`, `C{{q}}`, `D)w(`, `E))v((`, and the dash spellings
-`F-)"bang"(-` and `G(-"cloud"-)`), and for a shape with no id (`[S]`).
+match the opener: `S[x)` is accepted, and `S[x]` would give the same Db. This
+holds for every family of shapes (`S[x]`, `A(y)`, `B((z))`, `C{{q}}`, `D)w(`,
+`E))v((`, and the dash spellings `F-)"bang"(-` and `G(-"cloud"-)`), and for a
+shape with no id (`[S]`).
 
 [fixture: shapes/mismatched] [fixture: shapes/matching-closer] [fixture:
 shapes/shape-families] [fixture: shapes/shape-alone] [fixture:
@@ -429,14 +429,11 @@ kanban
 
 A decoration line decorates the node line written last before it, whatever its
 indentation, so its indentation is no part of the Db. The printer puts every
-decoration line at the column of the node line it decorates, as the
-documentation of mermaid.js writes them and as in
-[mindmap](./mindmap.md#decorations), so that the attachment shows. In ` S`,
-`   A`, and `::icon(x)` at the first column, the icon decorates `A` and is
-printed with 4 characters of indentation, those of an item; after a node line
-that is shallower than the first node, which is an item too, the icon follows
-that node (`    S`, `  A`, and ` ::icon(x)` print `A` and the icon with 4
-characters).
+decoration line at the column of the node line it decorates. In ` S`, `   A`,
+and `::icon(x)` at the first column, the icon decorates `A` and is printed with
+4 characters of indentation, those of an item; after a node line that is
+shallower than the first node, which is an item too, the icon follows that node
+(`    S`, `  A`, and ` ::icon(x)` print `A` and the icon with 4 characters).
 
 [fixture: icons-and-classes/aligned] [fixture:
 icons-and-classes/decorations-align] [fixture:
@@ -594,7 +591,7 @@ data-blocks/one-line-padded-long-directive-blanks] [fixture:
 data-blocks/multiline-directive-blanks-kept]
 
 Apply the movement and safety conditions of
-[Data blocks](./flowchart.md#data-blocks): when a newline immediately follows
+[Data blocks](./flowchart.md#data-blocks). When a newline immediately follows
 `@{`, shift every body line by the same number of ASCII spaces to put the
 shallowest text one level inside its node. A section's body is two levels below
 the header, an item's three; nested YAML keeps its relative indentation. A
@@ -846,9 +843,7 @@ kanban
 A standalone comment is a comment line (`%% note`), a line of `%%` alone, or a
 line `%%{ }%%`. It is printed at the column of the statement after it, at the
 end of the board at the column of the last statement, and before the header at
-the first column; its mark and its text are kept as written. In the body this
-shows which statement the comment is about, as in
-[mindmap](./mindmap.md#comments).
+the first column; its mark and its text are kept as written.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
 comment line inside a block one level deeper than the line that opens it, as
 Prettier prints the lines inside a block. In `kanban`, `%% c1`, ` S`,
@@ -1349,15 +1344,17 @@ kanban
 
 ### Frontmatter YAML
 
-The YAML between the `---` lines is formatted by Prettier's YAML formatter, and
-the `---` lines are kept as written, as in the other diagram types (see
-[Frontmatter](./compatibility.md#frontmatter)). A frontmatter that is not valid
-YAML, one whose `---` lines are indented, one that holds a `<` which may start
-an HTML tag, and one whose formatted YAML would hold a `---` line stay as
-written. Whitespace after the closing `---` stays too. A comment or a directive
-between the frontmatter and the header stays, at the first column; the board
-after it is formatted as usual. YAML formatting does not reach a data block;
-only its eligible margins move (see [Data blocks](#data-blocks)).
+The YAML between the `---` lines is formatted by Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and the `---`
+lines are kept as written (see [Frontmatter](./compatibility.md#frontmatter)). A
+frontmatter that is not valid YAML, one whose `---` lines are indented, one that
+holds a `<` which may start an HTML tag, and one whose formatted YAML would hold
+a `---` line stay as written. Whitespace after the closing `---` stays too. A
+comment or a directive between the frontmatter and the header stays, at the
+first column; the board after it is formatted as usual. YAML formatting does not
+reach a data block; only its eligible margins move (see
+[Data blocks](#data-blocks)).
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/frontmatter-malformed] [fixture:
