@@ -411,7 +411,11 @@ flowchart LR
 [corpus fixture: flowchart/semicolon-after-end-name-2a3a795c]
 [fixture: statements-one-per-line/name-semicolon-after-directive-line]
 
-名前の後の改行を読むのは `end` と `click` だけで、一覧のほかの単語は、
+名前の後の改行を読むのは、`end`、`click`、`call`、`href` です。
+`end` は、上のとおり改行を名前に取り込みます。
+`click`、`call`、`href` は改行と合わせて 1 つの単位になり、
+入力が拒否されるので、その後の `;` は残します。
+一覧のほかの単語 `accTitle`、`accDescr`、`direction` は、
 文のテキストと一覧を共用しているために入っています。
 そこで `;` を残しても、mermaid.js が読むものは変わりません。
 
@@ -419,6 +423,9 @@ flowchart LR
 [corpus fixture: flowchart/name-semicolon-whitespace-0c9483e4]
 [corpus fixture: flowchart/name-semicolon-whitespace-0fd5a434]
 [corpus fixture: flowchart/name-semicolon-whitespace-05fd0f99]
+[corpus fixture: flowchart/lex-click-keyword-line-feed]
+[corpus fixture: flowchart/lex-call-keyword-line-feed]
+[corpus fixture: flowchart/lex-href-keyword-line-feed]
 
 `Front pend` と `Front endx` は、単語で終わりません。
 
@@ -930,7 +937,8 @@ flowchart LR
 行を、書いた人によらず 1 つの形にするためです。
 接しているトークンは、下の規則（矢印の空白）がなければ接したままにします。
 mermaid.js には、接しているときだけ読むトークンがあります。
-`A%%{init: {}}%%B-->C` は id `AB` です。
+`A:::c` はクラス `c` の頂点 `A` で、
+`A@{ shape: rect } :::c` のように `:::` の前に空白があると、拒否されます。
 接するトークンの間に空白を書く規則は、その場所ごとの例外を要するからです。
 `&` と両側の頂点の間に空白があるときは、`&` は 2 つの間に立つ印なので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
@@ -938,6 +946,8 @@ mermaid.js には、接しているときだけ読むトークンがあります
 
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
+[corpus fixture: flowchart/lex-triple-colon-after-id]
+[corpus fixture: flowchart/gram-data-space-class]
 
 subgraph の名前（タイトルになる）の中の空白とタブの連なりは、
 mermaid.js がタイトルを幅なしで描くときは空白 1 つにして印字し、
