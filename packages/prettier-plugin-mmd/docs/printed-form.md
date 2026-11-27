@@ -124,7 +124,11 @@ without their indentation, and its comment and directive lines, which it
 removes. So do the first line of the body of a note of a state diagram, which
 mermaid.js reads without its indentation, and the later lines of a note that
 those rules align, whose indentation mermaid.js keeps in the Db but does not
-draw. The closing `}` of a description block stands at the level of the line
+draw. The line breaks between the lines of text of a description block stay,
+since mermaid.js keeps them in the value, and the empty lines among its lines
+follow the row Blank lines: a run of them becomes one, and none stands at the
+start or the end of the block, as Prettier prints the statements of a function
+body. The closing `}` of a description block stands at the level of the line
 that opens it.
 
 A keyword stands between two things (`a in b`) or before what it takes

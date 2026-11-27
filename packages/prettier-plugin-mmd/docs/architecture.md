@@ -3892,11 +3892,16 @@ the end of the last line of text is dropped where the closer stands on a line of
 its own, and is printed as one space where the closer follows it on that line.
 Rule 1 gives the level of the description text and comment lines: mermaid.js
 draws no indentation of them, so they are lines inside a block and stand one
-level inside the statement. No rule gives the line breaks, the empty lines, the
-whitespace at the end of each line, and the last line of the block: those types
-print them in the same way, but in each of them these forms are a question of
-the list of undecided forms (D38 and D39), so their printing is no decided form,
-and the released form stays until it is decided (see
+level inside the statement. Rule 1 keeps the line breaks between the lines of
+text, since mermaid.js keeps them in the value and joining two lines changes the
+description, and the row Blank lines of rule 1 gives the empty lines among them:
+a run of them becomes one, and none stands at the start or the end of the block.
+The released version keeps a run of empty lines and the empty lines at the start
+and the end of the block as written, which that row does not give. No rule gives
+the whitespace at the end of each line and the last line of the block: those
+types print them in the same way, but in each of them these forms are a question
+of the list of undecided forms (D38 and D39), so their printing is no decided
+form, and the released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Directives and shared removed comment regions keep their complete source. A
 separate closer aligns with the statement; the first closing brace still ends
