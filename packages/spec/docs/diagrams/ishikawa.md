@@ -493,7 +493,18 @@ ishikawa/div-between-comment-directive-blank-node] [fixture:
 ishikawa/div-header-two-comments-common-gap] [fixture:
 ishikawa/div-between-comment-common-gap-blank-node] [fixture:
 ishikawa/div-header-padding-multiline-directive-text] [fixture:
-ishikawa/div-header-comment-multiline-directive-ls]
+ishikawa/div-header-comment-multiline-directive-ls] [fixture:
+ishikawa/div-header-trailing-space-indented-node] [fixture:
+ishikawa/div-header-trailing-two-spaces-node] [fixture:
+ishikawa/div-header-trailing-space-crlf-node] [fixture:
+ishikawa/div-header-trailing-space-blank-node] [fixture:
+ishikawa/div-header-directive-space-node] [fixture:
+ishikawa/lex-header-space-comment-indented-node] [fixture:
+ishikawa/lex-header-trailing-space-lf-eof] [fixture:
+ishikawa/div-header-trailing-space-cr-node] [fixture:
+ishikawa/div-header-trailing-space-comment-line-node] [fixture:
+ishikawa/header-spaces-eof] [fixture: ishikawa/header-tab-eof] [fixture:
+ishikawa/gram-leading-comment-line]
 
 The inputs rejected only because mermaid.js pairs these blanks and diagram
 comments differently fall under

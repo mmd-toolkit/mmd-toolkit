@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "blank-line-after-header-or-comments, counterparts accepted by both: trailing header whitespace and a line feed at the end of the text, with no node; both accept it with no root."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}
