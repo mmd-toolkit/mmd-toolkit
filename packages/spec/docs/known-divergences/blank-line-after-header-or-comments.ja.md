@@ -126,6 +126,11 @@ Ishikawa
    [fixture: ishikawa/div-header-two-comments-blank-cr]
    [fixture: ishikawa/div-header-two-comments-blank-crlf]
    [fixture: ishikawa/div-header-two-comments-common-gap]
+   [fixture: ishikawa/div-header-trailing-space-indented-node]
+   [fixture: ishikawa/div-header-trailing-two-spaces-node]
+   [fixture: ishikawa/div-header-trailing-space-crlf-node]
+   [fixture: ishikawa/div-header-trailing-space-blank-node]
+   [fixture: ishikawa/div-header-directive-space-node]
 
 2. 見出しの後の図のコメントが奇数個で、
    最後のコメントを終える U+2028 または U+2029 の後に、
@@ -169,6 +174,8 @@ Ishikawa
 [fixture: ishikawa/gram-last-whitespace-line]
 [fixture: ishikawa/gram-last-comment-blank-line]
 [fixture: ishikawa/gram-header-two-comments-ps-node]
+[fixture: ishikawa/lex-header-space-comment-indented-node]
+[fixture: ishikawa/lex-header-trailing-space-lf-eof]
 
 ソースの末尾が見出しだけで、書かれた改行も他の内容も続かない形は引き続き拒否し、
 この差異には含めません。
