@@ -2152,10 +2152,12 @@ subgraph の中では、mermaid.js はそのようなブロックのテキスト
 mermaid.js がディレクティブを取り除いても、その前の空白は節点に残ります。
 節点が持たないものは、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
-テキストの 1 行目と、mermaid.js が字下げごと取り除くコメント行と、
-ブロックの頭と終わりのディレクティブの行は、ブロックの中の行として、
-ブロックを開く行より 1 段深く置き、ブロックの頭と終わりには、
-空行も空白だけの行も置きません。
+節点が持たないのは、テキストの 1 行目の字下げと、
+mermaid.js が字下げごと取り除くコメント行と、
+ブロックの頭と終わりのディレクティブの行です。
+規則 1 は、1 行目と、コメント行と、そのディレクティブの行を、
+ブロックの中の行として、ブロックを開く行より 1 段深く置き、
+ブロックの頭と終わりには、空行も空白だけの行も置きません。
 リリース済みの版は、それらの行を書かれた所に残し、
 それらの空行と空白だけの行も残します。
 これは規則 1 が与える形ではありません。
@@ -2174,6 +2176,8 @@ mermaid.js がディレクティブを取り除いても、その前の空白は
 [fixture: er/accessibility-statements/whitespace-lines-at-the-ends-in-subgraph-kept]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-blank-lines]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-edge-blank-lines]
+[corpus fixture: er/lex-subgraph-nodes-acc-descr-block-comment-line]
+[corpus fixture: er/lex-subgraph-nodes-acc-descr-block-directive-line]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 [fixture: accessibility-statements/block-trailing-whitespace]
 [fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]

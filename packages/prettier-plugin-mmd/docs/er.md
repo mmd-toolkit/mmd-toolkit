@@ -2146,15 +2146,16 @@ the indentation of the later lines of text, a line of whitespace only and a run
 of empty lines among the lines of text, and the indentation of a directive line
 among them, which stays in the node when mermaid.js removes the directive. What
 the node does not hold is printed by
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): the first line of
-text, a comment line, which mermaid.js removes with its indentation, and a
-directive line at the start or the end of the block stand one level deeper than
-the line that opens the block, as lines inside a block, and no empty line and no
-line of whitespace only stands at the start or the end of the block. The
-released version keeps those lines where they are written, and keeps those empty
-lines and lines of whitespace only, which rule 1 does not give. The whitespace
-at the end of the last line of text is dropped, or printed as one space before a
-closer on that line, as above.
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): the indentation of
+the first line of text, a comment line, which mermaid.js removes with its
+indentation, and a directive line at the start or the end of the block. Rule 1
+puts the first line, the comment lines, and those directive lines one level
+deeper than the line that opens the block, as lines inside a block, and no empty
+line and no line of whitespace only stands at the start or the end of the block.
+The released version keeps those lines where they are written, and keeps those
+empty lines and lines of whitespace only, which rule 1 does not give. The
+whitespace at the end of the last line of text is dropped, or printed as one
+space before a closer on that line, as above.
 
 [fixture: er/accessibility-statements/blank-lines-at-the-ends-kept] [fixture:
 er/accessibility-statements/blank-line-run-kept] [fixture:
@@ -2169,6 +2170,8 @@ er/accessibility-statements/directive-lines-at-the-ends-in-subgraph-kept]
 er/accessibility-statements/whitespace-lines-at-the-ends-in-subgraph-kept]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-blank-lines] [corpus
 fixture: er/db-subgraph-nodes-acc-descr-block-edge-blank-lines] [corpus fixture:
+er/lex-subgraph-nodes-acc-descr-block-comment-line] [corpus fixture:
+er/lex-subgraph-nodes-acc-descr-block-directive-line] [corpus fixture:
 er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
