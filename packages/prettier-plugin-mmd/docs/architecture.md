@@ -4113,10 +4113,11 @@ columns stay. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
 both: the line that opens a hidden form stands at the level of the lines around
 it, as every line inside a block does, whatever it holds, and its later lines
 keep their columns, as Prettier keeps the later lines of a block comment as
-written (in a block, `    /* x` and `  y */` are printed `  /* x` and `  y */`).
-Keep three-fence matches, separate forms, later qualifying closers and internal
-global cuts. Earlier values retain ownership of hidden-looking text; no native
-gap is invented inside icons or modifiers.
+written where they do not all start with `*` (in a block, `    /* x` and
+`  y */` are printed `  /* x` and `  y */`). Keep three-fence matches, separate
+forms, later qualifying closers and internal global cuts. Earlier values retain
+ownership of hidden-looking text; no native gap is invented inside icons or
+modifiers.
 
 [fixture: architecture/hidden-forms/body-directive]
 

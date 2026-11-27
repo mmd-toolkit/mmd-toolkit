@@ -1144,11 +1144,12 @@ and closing lookahead padding; ordinary body openers align with their body.
 opens a hidden form in the body at the level of the lines around it, as Prettier
 prints every line inside a block at one level, whatever it holds. Its later
 lines keep their columns, as Prettier keeps the later lines of a block comment
-as written (in a block, `    /* x` and `  y */` are printed `  /* x` and
-`  y */`). Required opening gaps and common successors keep their authored
-boundaries. `eventmodeling`, `%%{{x}}%%` and ` accDescr: D` on lines of their
-own stay, with one space before `accDescr`, since every version of mermaid.js
-that counts rejects the line without that space (see
+as written where they do not all start with `*` (in a block, `    /* x` and
+`  y */` are printed `  /* x` and `  y */`). Required opening gaps and common
+successors keep their authored boundaries. `eventmodeling`, `%%{{x}}%%` and
+` accDescr: D` on lines of their own stay, with one space before `accDescr`,
+since every version of mermaid.js that counts rejects the line without that
+space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A fallback percent comment stays a comment.
 

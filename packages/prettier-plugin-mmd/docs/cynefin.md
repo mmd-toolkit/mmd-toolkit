@@ -678,10 +678,11 @@ their containing body; interiors and closers keep their columns.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: the line
 that opens a hidden form stands at the level of the lines around it, as every
 line inside a block does, whatever it holds, and its later lines keep their
-columns, as Prettier keeps the later lines of a block comment as written (in a
-block, `    /* x` and `  y */` are printed `  /* x` and `  y */`). Item-leading
-forms and the following label align at item depth after retained LF. Keep whole
-matches, later qualifying closers, separate matches and fallback comments.
+columns, as Prettier keeps the later lines of a block comment as written where
+they do not all start with `*` (in a block, `    /* x` and `  y */` are printed
+`  /* x` and `  y */`). Item-leading forms and the following label align at item
+depth after retained LF. Keep whole matches, later qualifying closers, separate
+matches and fallback comments.
 
 [fixture: cynefin/hidden-forms/hidden-domain-name]
 
