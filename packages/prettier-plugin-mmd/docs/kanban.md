@@ -1280,10 +1280,14 @@ alone is a node, and `:::c;d` has a `;` in the class. The printer keeps every
 `;`, the ones that the line rule of mermaid.js ignores included (see
 [Line rule and kept lines](#line-rule-and-kept-lines)); dropping one, or
 splitting a line at it, would change the text that the Db holds or which `;` the
-line rule ignores. A `;` right after a shape is not part of the shape and is
-rejected (`S[x];`).
+line rule ignores. The `;` that the rule ignores between the text of a card and
+its shape stays with the whitespace before it (`style:#a ;[x]`): without it,
+`style:#a;b ;[x]` would be `style:#a;b[x]`, whose id the rule reads as
+`style:#ab`. A `;` right after a shape is not part of the shape and is rejected
+(`S[x];`).
 
-[fixture: semicolons/values] [fixture: semicolons/semicolon-remove]
+[fixture: semicolons/values] [fixture: semicolons/semicolon-remove] [fixture:
+semicolons/ignored-before-shape-kept]
 
 Input
 ([semicolons/values-input.mmd](../tests/fixtures/kanban/semicolons/values-input.mmd)):

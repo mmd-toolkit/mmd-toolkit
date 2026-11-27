@@ -300,6 +300,17 @@ Db はその空白を id の一部として持ちますが、描かれるノー�
 [fixture: node-text/trailing-whitespace-dropped]
 [fixture: node-text/space-before-a-shape-dropped]
 
+id と形の間の、mermaid.js の行の規則が無視する `;` は、前の空白とともに残し、
+後ろの空白は、形の前の空白と同じく除きます。
+`style:#a ; [x]` は `style:#a ;[x]` と印字します。
+mermaid.js は `style:#` を持つ行の最後の `;` を無視するので（仕様の
+[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)）、
+その `;` がないと、前の `;` を無視することがあります。
+`style:#a;b[x]` の id は `style:#ab` で、
+`style:#a;b ;[x]` の id はそうではありません。
+
+[fixture: node-text/ignored-semicolon-before-shape-kept]
+
 ノードのテキストの中の空白は残します。
 最大の幅に達したノードのテキストは折り返され、空白の連なりをそのまま描きます。
 折り返すかどうかはフォントと幅の設定で決まり、整形器はそれを知りません。

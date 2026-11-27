@@ -16,7 +16,6 @@ import {
   printPaddedLiteral,
   printShapeWithoutPadding,
   trimBlanksEnd,
-  withoutIgnoredSemicolonsEnd,
 } from "./padded-text.ts"
 import type { Source } from "./source.ts"
 import { isWhitespace } from "./source.ts"
@@ -149,10 +148,12 @@ function printMindmapText(
   const { id, shape } = line
   const head = id === null ? "" : trimBlanksEnd(source.text.slice(...id.range))
   if (shape === null) return head === "" ? undefined : head
+  // The text runs to the shape: a `;` that the line rule ignores between them
+  // stays, as every `;` of a line does (docs/mindmap.md, Node text).
   return (
     (id === null
       ? head
-      : trimBlanksEnd(withoutIgnoredSemicolonsEnd(source, id.range))) +
+      : trimBlanksEnd(source.text.slice(id.range[0], shape.range[0]))) +
     printShapeWithoutPadding(source, shape)
   )
 }

@@ -302,6 +302,17 @@ whitespace at its end (see
 [fixture: node-text/trailing-whitespace-dropped] [fixture:
 node-text/space-before-a-shape-dropped]
 
+A `;` between the id and the shape that the line rule of mermaid.js ignores
+stays with the whitespace before it, and the whitespace after it goes as the
+space before a shape does: `style:#a ; [x]` is printed `style:#a ;[x]`.
+mermaid.js ignores the last `;` of a line that holds `style:#` (the
+specification's
+[`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)),
+so without that `;` it can ignore an earlier one: `style:#a;b[x]` has the id
+`style:#ab`, and `style:#a;b ;[x]` has not.
+
+[fixture: node-text/ignored-semicolon-before-shape-kept]
+
 The whitespace inside a node text stays: a node text that reaches its maximum
 width wraps and draws its runs, and whether it does depends on the font and on
 the width setting, which the formatter does not know. 11.17.2, 12.0.0, and
