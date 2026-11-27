@@ -11,10 +11,15 @@ escaped fixed tests.
 ### Header
 
 Keep the authored `packet` or `packet-beta` keyword at column one. Move an
-ordinary first statement below it, as in the other diagram types. Only `packet`
-requires a following boundary; never create a glued spelling. Hidden boundaries
-and protected header/body groups take precedence. Keep the authored synonym:
-some versions that count read `packet-beta` only (see
+ordinary first statement below it, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives:
+a [flowchart](./flowchart.md#statements-one-per-line) and an
+[ER diagram](./er.md#statements-one-per-line) print a statement written on the
+line of the header on a line of its own. A header at column one is easier to
+find than an indented one. Only `packet` requires a following boundary; never
+create a glued spelling. Hidden boundaries and protected header/body groups take
+precedence. Keep the authored synonym: some versions that count read
+`packet-beta` only (see
 [The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
@@ -36,12 +41,13 @@ packet
 
 ### Indentation
 
-Place ordinary statements and standalone comments/global directives one
-configured step below the header. The body is flat: published rows add no source
-nesting. `tabWidth: 0` gives zero spaces, and `useTabs` gives one tab even at
-width zero, because packet columns have no grammatical meaning. Other value
-continuation columns, hidden closers and retained prefixes stay written; YAML
-uses the shared positive minimum.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+statements and standalone comments/global directives one configured step below
+the header, as Prettier prints the lines inside a block. The body is flat:
+published rows add no source nesting. `tabWidth: 0` gives zero spaces, and
+`useTabs` gives one tab even at width zero, because packet columns have no
+grammatical meaning. Other value continuation columns, hidden closers and
+retained prefixes stay written; YAML uses the shared positive minimum.
 
 [fixture: packet/indentation/indent-default]
 
@@ -66,10 +72,15 @@ packet
 
 ### Statements one per line
 
-Print each ordinary statement on its own line, as the other diagram types do. A
-common line value owns apparent later keywords through physical EOL; do not
-split that text. Semicolons are not packet separators. Invalid adjacent blocks
-or block/common forms follow the shared failure path rather than being repaired.
+Print each ordinary statement on its own line, as a
+[flowchart](./flowchart.md#statements-one-per-line) prints each statement on a
+line of its own, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form), which
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+here. A common line value owns apparent later keywords through physical EOL; do
+not split that text. Semicolons are not packet separators. Invalid adjacent
+blocks or block/common forms follow the shared failure path rather than being
+repaired.
 
 [fixture: packet/statements-one-per-line/inline-title]
 
@@ -144,10 +155,12 @@ packet
 ### Range dash
 
 Print ordinary range gaps with no spaces, as `0-15`, so the numeric range reads
-as one visual unit. Preserve global trivia and hidden boundaries instead of
-tightening them: a consumed LF is not an ordinary space. For
-`0%%{!left}%% -%%{!right}%% 2:"Hidden dash"`, the space before `-` stays, since
-some of the versions of mermaid.js that count reject
+as one visual unit. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+puts no whitespace beside the `-` that joins the start and the end of a range of
+numbers, since `0 - 15` reads as a subtraction. Preserve global trivia and
+hidden boundaries instead of tightening them: a consumed LF is not an ordinary
+space. For `0%%{!left}%% -%%{!right}%% 2:"Hidden dash"`, the space before `-`
+stays, since some of the versions of mermaid.js that count reject
 `0%%{!left}%%-%%{!right}%%2:"Hidden dash"` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
@@ -447,9 +460,16 @@ the line breaks in the description, and a line of whitespace only becomes an
 empty line. A run of blank lines between two lines of text stays as written. The
 whitespace at the end of the last line of text is dropped where the closer
 stands on a line of its own, and is printed as one space where the closer
-follows it on that line. A separate closer aligns with the statement. Directives
-and shared removed comment regions keep their complete source. Quotes,
-backslashes and hidden-looking text do not protect the first closing brace.
+follows it on that line. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. Directives and shared removed comment regions keep their
+complete source. Quotes, backslashes and hidden-looking text do not protect the
+first closing brace.
+
+[fixture: packet/description-blocks/brace-on-a-later-line]
 
 [corpus fixture: packet/common-block-bare]
 
@@ -525,7 +545,10 @@ packet
 ### Comments
 
 Ordinary standalone comments align one body step in, or at column one before the
-header. Inline comments keep their line. A comment that touches stays touching.
+header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+depth of a standalone comment line inside the diagram body, as Prettier prints
+the lines inside a block. Inline comments keep their line. A comment that
+touches stays touching.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing padding.
@@ -565,9 +588,11 @@ directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
 contact is broken. Ordinary standalone starts align one body step in; multiline
-interiors and EOF-reaching endings stay written. Common removal supplies no
-separator, and deleting init can change row configuration. Native hidden
-DIRECTIVE stays a separate owned node.
+interiors and EOF-reaching endings stay written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. Common removal supplies no separator, and deleting init can
+change row configuration. Native hidden DIRECTIVE stays a separate owned node.
 
 [fixture: packet/global-directives/header-to-body]
 
@@ -815,19 +840,18 @@ packet
 ### Blank lines
 
 Collapse ordinary internal ASCII blank runs to one blank line and remove
-ordinary document/body edge blanks, also around comments, for visible grouping
-without excess space. Prettier prints at most one blank line between items and
-none at block edges in JavaScript, CSS, YAML and Markdown, so
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the ordinary
-blank-line form. The LF consumed by a hidden form is a separate grammatical
-boundary. Keep value, block, directive and hidden interiors, common-region joins
-and retained prefixes: those breaks belong to content or source roles. After a
-hidden form consumes LF, keep one spare LF only when a following statement needs
-it. At the document end use one configured final newline; directly after the
-header remove blank lines, since the header needs no EOL before its first
-statement. Elsewhere apply the ordinary blank-line rules after the spare LF:
-collapse a run to one blank line and clear whitespace-only lines. The spare LF
-meets the grammar; later blanks express grouping, just as after comments.
+ordinary document/body edge blanks, also around comments. Prettier prints at
+most one blank line between items and none at block edges in JavaScript, CSS,
+YAML and Markdown, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the ordinary blank-line form. The LF consumed by a hidden form is a
+separate grammatical boundary. Keep value, block, directive and hidden
+interiors, common-region joins and retained prefixes: those breaks belong to
+content or source roles. After a hidden form consumes LF, keep one spare LF only
+when a following statement needs it. At the document end use one configured
+final newline; directly after the header remove blank lines, since the header
+needs no EOL before its first statement. Elsewhere apply the ordinary blank-line
+rules after the spare LF: collapse a run to one blank line and clear
+whitespace-only lines. The spare LF meets the grammar.
 
 A hidden boundary or semicolon protection can keep a statement on the header's
 line; the gap after that statement's hidden suffix still lies between

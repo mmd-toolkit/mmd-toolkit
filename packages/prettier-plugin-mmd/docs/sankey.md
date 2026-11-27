@@ -20,23 +20,25 @@ organized and checked is described in
 ### Indentation
 
 The header, the records, the comment lines, and the directive lines all stand at
-the first column, whatever the `useTabs` and `tabWidth` options say. A sankey
-diagram is a list of records in the form of CSV, and two kinds of its lines
-cannot be indented: mermaid.js rejects a space before a quote, so a record that
-starts with a string has no indentation, and a line of only a directive is a
-line of whitespace once the directive is removed, which is a field without a
-comma (diagrams/sankey.md, Characters and Diagram and records). It rejects a tab
-anywhere, so a tab could not indent the others. One column for every line avoids
-a mix of columns.
+the first column, whatever the `useTabs` and `tabWidth` options say. A header at
+the first column is easier to find than an indented one. A sankey diagram is a
+list of records in the form of CSV, and two kinds of its lines cannot be
+indented: mermaid.js rejects a space before a quote, so a record that starts
+with a string has no indentation, and a line of only a directive is a line of
+whitespace once the directive is removed, which is a field without a comma
+(diagrams/sankey.md, Characters and Diagram and records). It rejects a tab
+anywhere, so a tab could not indent the others.
 
 [fixture: indentation/header-and-records-at-the-first-column] [fixture:
 indentation/quoted-first-record-at-the-first-column] [fixture:
 indentation/written-indentation-dropped] [fixture: indentation/tab-width-4]
 [fixture: indentation/use-tabs]
 
-The indentation of a comment line is no part of the Db and could be kept, but it
-is dropped too, so that every line stands in one column, and a directive line
-stands there in any case.
+The indentation of a comment line is no part of the Db.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a comment line
+at the level of the lines around it, as Prettier prints the lines inside a
+block, so it stands at the first column with the records, where a directive line
+stands in any case.
 
 [fixture: indentation/comment-lines-at-the-first-column] [fixture:
 indentation/directive-lines-at-the-first-column]
@@ -361,11 +363,13 @@ way.
 [fixture: blank-lines/around-comment-lines] [fixture:
 blank-lines/around-directive-lines]
 
-These are the rules of the other diagram types, so that this diagram type has no
-rule of its own: the empty line that the documentation of mermaid.js writes
-after the header is dropped like any other at the start of the body. Prettier
-leaves no blank line at the start of JavaScript, CSS, YAML, and Markdown texts.
-Under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), the formatter
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these rules:
+Prettier prints a run of empty lines as one and drops the empty lines at the
+start and the end of a file or of a block in code. The empty line that the
+documentation of mermaid.js writes after the header is dropped like any other at
+the start of the body. Prettier leaves no blank line at the start of JavaScript,
+CSS, YAML, and Markdown texts. Under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), the formatter
 therefore drops empty lines at the start of the text, before the header.
 
 Input
@@ -501,10 +505,9 @@ it would leave a line of whitespace, which mermaid.js rejects.
 [fixture: directives/kept]
 
 A directive after a value keeps whether whitespace is written before it: where
-it is, one space stands there, and where it touches, it keeps touching, as in
-the other diagram types. A directive at the start of a record keeps whether
-whitespace is written between it and the record: touching stays touching, and
-whitespace becomes one space.
+it is, one space stands there, and where it touches, it keeps touching. A
+directive at the start of a record keeps whether whitespace is written between
+it and the record: touching stays touching, and whitespace becomes one space.
 
 [fixture: directives/after-the-value] [fixture:
 directives/at-the-start-of-a-record]
@@ -543,9 +546,10 @@ e,f,3 %%{init: {}}%%
 
 ### Frontmatter YAML
 
-As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
-YAML formatter, and the `---` lines are kept as written, with the spaces and
-tabs at the end of each.
+The YAML between the `---` lines is formatted with Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and the `---`
+lines are kept as written, with the spaces and tabs at the end of each.
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/closing-delimiter-whitespace-kept] [fixture:
@@ -603,7 +607,6 @@ without a line feed] [test: U+2028 at the end of the text without a line feed]
 without a line feed] [test: a tab at the end of the text without a line feed]
 [test: U+00A0 on a line of its own at the end of the text]
 
-A comment line at the end of the text keeps its characters, a U+00A0 included,
-as a comment does elsewhere.
+A comment line at the end of the text keeps its characters, a U+00A0 included.
 
 [test: U+00A0 at the end of the last comment line of the text]

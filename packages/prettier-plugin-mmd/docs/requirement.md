@@ -21,13 +21,11 @@ organized and checked is described in
 The statements after the header stand one level deeper than the header. The
 fields of a requirement or an element stand one level deeper than the line of
 the statement, one on each line, and the `}` that closes the body stands on a
-line of its own, at the level of that line. Statements stand one level below the
-header and body contents one level below their opening statement in
-[ER diagrams](./er.md#indentation) and
-[sequence diagrams](./sequence.md#indentation), with the closing mark aligned
-with the opening statement;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the statements, fields, and `}` these same levels.
+line of its own, at the level of that line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, and the fields of a
+requirement or an element one level deeper than the statement's line and its
+closing `}` at that line's level, as Prettier prints the lines inside a block.
 
 [fixture: indentation/statements-and-bodies]
 
@@ -44,13 +42,15 @@ was indented with.
 [fixture: indentation/written-indentation-dropped]
 
 The header stands at the first column, also where whitespace was written before
-it.
+it. A header at the first column is easier to find than an indented one.
 
 [fixture: indentation/header-leading-whitespace]
 
 The lines of a text that is kept as written, such as the lines of an `accDescr`
-block, keep their columns, and the `}` that closes a block stands at the level
-of its statement.
+block, keep their columns. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: indentation/description-block-lines-kept]
 
@@ -115,8 +115,10 @@ requirementDiagram
 ### Bodies
 
 When a header continues across trivia, align the physical line containing its
-opening brace with the initial keyword, so the body remains one level deeper. Do
-not change a value spanning that line or protected source boundaries.
+opening brace with the initial keyword.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the body one
+level deeper, as Prettier prints the lines inside a block. Do not change a value
+spanning that line or protected source boundaries.
 
 [fixture: bodies/header-completion-after-comment] [fixture:
 multi-line-statements/header-directive-continuation]
@@ -431,10 +433,11 @@ requirementDiagram
 ### Relationship spacing
 
 A relationship has one space between its units: the left name, the `-` or `<-`,
-the relation, the `->` or `-`, and the right name, however it was written. The
-documentation of mermaid.js writes the units apart, as the relationships of an
-ER diagram have one space between their units, and an unquoted name ends before
-the `-`, so the space does not change the name.
+the relation, the `->` or `-`, and the right name, however it was written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space on
+each side of another mark between two things, as Prettier prints `x = a+b` as
+`x = a + b;`. The documentation of mermaid.js writes the units apart, and an
+unquoted name ends before the `-`, so the space does not change the name.
 
 [fixture: relationship-spacing/spaces-and-touching] [fixture:
 relationship-spacing/one-space-between-units] [fixture:
@@ -522,9 +525,9 @@ requirementDiagram
 
 The classes after `:::`, in a requirement, in an element, and in a statement of
 a name and its classes, the first class touches the `:::`, and the `,` between
-them touches the class before it and has one space after it:
-`requirement r ::: a , b {` is printed `requirement r:::a, b {`, as the classes
-of an ER diagram are.
+them touches the class before it and has one space after it, as the `,` between
+the classes of an ER diagram does: `requirement r ::: a , b {` is printed
+`requirement r:::a, b {`.
 
 [fixture: class-lists/in-requirement-and-element] [fixture:
 class-lists/shorthand]
@@ -611,18 +614,13 @@ style with a `:` and in one without: `stroke-dasharray:  5    5` becomes
 whitespace stands between two words stays as written: `fill #f00` and `fill#f00`
 are kept apart, since a word that touches the next stays touching, as a gap does
 elsewhere (see [Directives](#directives)), and joining the words would hide
-where one word ends. The words of a style keep their contact or separation in
-[flowcharts](./flowchart.md#whitespace-between-tokens) and
-[block diagrams](./block.md#styles);
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same distinction between touching and separated style words. Mermaid
-concatenates the native style units whatever whitespace separates them:
-`stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does not
-change. For example, `fill   : navy, stroke  : black` becomes
-`fill: navy, stroke: black`. A style that starts with the `:` has no whitespace
-before it and one space after it, as any other: `style r :  red   x` is printed
-`style r : red x`. The gaps between words of a style that starts with `:` become
-one space.
+where one word ends. Mermaid concatenates the native style units whatever
+whitespace separates them: `stroke-dasharray: 5 5` still means
+`stroke-dasharray:55`, so the Db does not change. For example,
+`fill   : navy, stroke  : black` becomes `fill: navy, stroke: black`. A style
+that starts with the `:` has no whitespace before it and one space after it, as
+any other: `style r :  red   x` is printed `style r : red x`. The gaps between
+words of a style that starts with `:` become one space.
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 
@@ -871,11 +869,15 @@ requirementDiagram
 
 Nothing separates two statements of a requirement diagram, and mermaid.js reads
 statements that follow one another on a line. A line of two statements is hard
-to read, and the other diagram types print one statement on a line too. Each
-statement is printed on a line of its own: a statement after the `}` of a body,
-an empty description block after the header or after a statement that ends with
-a `}` or with a string, and the statement that a string at the end of a `style`,
-`classDef`, or `class` statement starts.
+to read, and [flowchart](./flowchart.md#statements-one-per-line),
+[sequence](./sequence.md#statements-one-per-line), and
+[state](./state.md#statements-one-per-line) diagrams print one statement on a
+line too;
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form. Each statement is printed on a line of its own: a statement after the
+`}` of a body, an empty description block after the header or after a statement
+that ends with a `}` or with a string, and the statement that a string at the
+end of a `style`, `classDef`, or `class` statement starts.
 
 [fixture: statements-one-per-line/header-then-empty-description-block] [fixture:
 statements-one-per-line/after-closing-brace] [fixture:
@@ -1033,11 +1035,14 @@ requirementDiagram
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the diagram and of a body are dropped, as in the other diagram types. A
-line of whitespace only is an empty line after the header, in a body, between
-statements, around a comment line, and at the end of the text, whatever the
-whitespace character is, a form feed, a vertical tab, U+00A0, U+3000, U+2028,
-and U+2029 included: Prettier prints a whitespace-only line as an empty line, so
+end of the diagram and of a body are dropped.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and
+the end of a file or of a block. A line of whitespace only is an empty line
+after the header, in a body, between statements, around a comment line, and at
+the end of the text, whatever the whitespace character is, a form feed, a
+vertical tab, U+00A0, U+3000, U+2028, and U+2029 included: Prettier prints a
+whitespace-only line as an empty line, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form,
 where no other rule keeps the whitespace as written (the lines of a value or of
 a block of text, and the like).
@@ -1122,8 +1127,7 @@ An empty block, `accDescr {}`, changes nothing. Where a statement starts it is a
 statement of its own, and on a line of the body of a requirement or an element
 it is an item of the body: right after the `{`, before a field, after a field
 whose value is a string or a keyword, before the `}`, and alone. Each stands on
-a line of its own, as an ER diagram puts a text that mermaid.js does not read in
-a block, and the fields of a body stand one on each line.
+a line of its own, and the fields of a body stand one on each line.
 
 [fixture: empty-description-blocks/as-statement] [fixture:
 empty-description-blocks/after-header] [fixture:
@@ -1150,6 +1154,9 @@ empty-description-blocks/in-body-over-lines-joined]
 A block containing comments or directives keeps their contents and line breaks;
 standalone trivia is one level inside the block and a separate `}` aligns with
 `accDescr`, including an empty block within a requirement or element body.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level where the opening `{` stands on the statement's line, as Prettier prints
+the closing line at the level of the line that opens a block.
 
 [fixture: empty-description-blocks/in-body-with-directive-line] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
@@ -1234,16 +1241,7 @@ colon of a key (the title and the description of a diagram in
 `accTitle: text`: no whitespace before the colon and one space after it, also
 where the colon or the text was written on a later line, except that a comment
 line before the colon or before the text keeps what follows it on a line of its
-own, one level deeper. Rule 1 names no mark for a line break next to a comment
-line, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, one case at a time. With a comment line before the colon,
-[journey](./journey.md#multi-line-statements),
-[quadrant](./quadrant.md#multi-line-statements), and
-[timeline](./timeline.md#multi-line-statements) keep the line breaks of an
-`accDescr`. With a comment line before the text, the same three keep the line
-breaks of an `accTitle`, and so does
-[flowchart](./flowchart.md#accessibility-lines).
+own, one level deeper.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [fixture:
@@ -1254,12 +1252,16 @@ accessibility-statements/description-text-with-comment-line-kept]
 Later text lines of an `accDescr { ... }` block stand one level inside its
 statement, replacing only ASCII spaces and tabs immediately after LF. mermaid.js
 discards the indentation after a line feed from the description. Line breaks and
-directive interiors stay written. Keep line breaks and interior blank lines, and
-the whitespace at the end of each line of text except the last one; a line of
-whitespace only becomes an empty line. The whitespace at the end of the last
-line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. Its `}` stands at
-the level of its statement.
+directive interiors stay written. The lines of the description's body text are
+outside the "Lines inside a block" row of rule 1. Keep line breaks and interior
+blank lines, and the whitespace at the end of each line of text except the last
+one; a line of whitespace only becomes an empty line. The whitespace at the end
+of the last line of text is dropped where the closer stands on a line of its
+own, and is printed as one space where the closer follows it on that line. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
@@ -1690,14 +1692,10 @@ requirementdiagram
 A comment starts with `%%`, `#`, or `%`, where a unit starts, and runs to the
 end of the line. A comment on a line of its own stands at the level of the
 statement after it, in a body at the level of the fields, and its text and its
-mark are kept as written. Rule 1 gives no form here, since its table does not
-name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [c4](./c4.md#comments) and [quadrant](./quadrant.md#comments) align a
-standalone comment with the following statement, or with the last statement at
-the end of the text, and [c4](./c4.md#indentation) aligns one in a body with the
-statements around it.
+mark are kept as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/lines-at-statement-level] [fixture:
 comments/single-mark-lines-kept]
@@ -1822,10 +1820,12 @@ requirementDiagram
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, in a body at the level of the fields, and a directive on the line of a
-statement is placed as in a flowchart: the gap is printed as without the
-directive, and the directive stands after its space and touches the unit that
-follows it.
+it, in a body at the level of the fields.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive on the line of a statement
+is placed as in a flowchart: the gap is printed as without the directive, and
+the directive stands after its space and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/in-body] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]
@@ -1991,9 +1991,10 @@ requirementDiagram
 
 ### Frontmatter YAML
 
-As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
-YAML formatter, and the `---` lines are kept as written, with the spaces and
-tabs at the end of each.
+The YAML between the `---` lines is formatted with Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). The `---` lines
+are kept as written, with the spaces and tabs at the end of each.
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/closing-delimiter-whitespace-kept]

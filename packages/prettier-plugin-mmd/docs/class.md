@@ -20,7 +20,9 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, as Prettier prints the lines
+inside a block.
 
 [fixture: indentation/written-indentation-dropped] [fixture:
 indentation/header-v2-kept]
@@ -30,6 +32,9 @@ The `{` of a namespace stands on the line of its name, after one space, as the
 statements of the namespace stand one level deeper than that line, and its `}`
 stands on a line of its own at the level of that line, also when the namespace
 was written on one line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+of the namespace one level deeper than the line that opens it and its closing
+`}` at that line's level, as Prettier prints the lines inside a block.
 
 [fixture: indentation/namespaces] [fixture:
 indentation/namespace-brace-after-one-space] [fixture:
@@ -105,6 +110,9 @@ space, as the documentation of mermaid.js writes it; each member line stands on
 a line of its own, one level deeper; and the `}` stands on a line of its own at
 the level of the class, unless a directive stands before it on its line:
 `%%{init: {}}%% }` stays as it is written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the member lines
+one level deeper than the line of the class and the separate closing `}` at the
+level of the class, as Prettier prints the lines inside a block.
 
 [fixture: member-bodies/directive-on-closing-brace-line-kept] [fixture:
 member-bodies/split] [fixture: member-bodies/opening-brace-after-one-space]
@@ -240,8 +248,11 @@ classDiagram
 
 ### Blank lines
 
-As in a flowchart: a run of empty lines becomes one, and empty lines at the
-start and the end of a namespace or a member body are dropped.
+A run of empty lines becomes one, and empty lines at the start and the end of a
+namespace or a member body are dropped.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and
+the end of a file or of a block.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/namespace-edges-dropped]
 [fixture: blank-lines/edges-around-comment-and-directive-lines-dropped]
@@ -309,12 +320,8 @@ parts could make a keyword, as in `class no te`, which declares `note`, while
 whitespace-between-tokens/name-parts-keyword-kept]
 
 The `:::` of a CSS class touches the name before it and the class after it:
-`class A :::c` and `class A ::: c` are printed `class A:::c`, as in an ER
-diagram. mermaid.js reads every spelling as the same class, so nothing forces
-the form; the four examples of its documentation write
-`class Animal:::someclass`, `class Animal:::pink`, and
-`class Animal:::styleClass`, with and without a body
-([here](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L833)).
+`class A :::c` and `class A ::: c` are printed `class A:::c`. mermaid.js reads
+every spelling as the same class, so nothing forces the form.
 
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
@@ -783,8 +790,9 @@ under
 A sequence diagram writes the `:` touching what comes before it (see
 [Colons in the sequence rules](./sequence.md#colons)); each follows the
 documentation of its diagram type. The `:` after `accTitle` and `accDescr`
-touches the keyword and has one space after it, as in the other diagram types
-and in the documentation of mermaid.js.
+touches the keyword and has one space after it, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for the colon
+of a key (Prettier prints `x = {a : 1}` as `x = { a: 1 };`).
 
 [fixture: labels/accessibility-text-runs-collapsed] [fixture:
 multi-line-statements/joined] [fixture: multi-line-statements/acc-descr-joined]
@@ -1019,6 +1027,9 @@ classDiagram
 
 A comment on a line of its own stands at the level of the statements around it,
 or of the member lines in a body, and its text is kept as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/kept] [fixture: comments/before-header] [fixture:
 comments/in-namespace] [fixture: comments/last-in-body] [fixture:
@@ -1094,10 +1105,12 @@ comments/empty-line-after-comment-kept]
 
 ### Directives
 
-As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive on the line of a statement is placed as in
-a flowchart: the gap is printed as without the directive, and the directive
-stands after its space and touches the unit that follows it.
+A directive on a line of its own stands at the level of the statements around
+it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive on the line of a statement
+is placed as in a flowchart: the gap is printed as without the directive, and
+the directive stands after its space and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/in-namespace] [fixture: directives/after-header-on-same-line]
@@ -1453,15 +1466,18 @@ classDiagram
 ### Multi-line values
 
 As in [flowchart's top-level descriptions](./flowchart.md#multi-line-values),
-align the lines of an `accDescr { ... }` body one step inside its statement,
-with a separate `}` at the statement's level. Mermaid discards this indentation
-from the description. In an `accDescr` body, mermaid.js keeps spaces and tabs
-after text and before an interior line break in the description's Db text, so
-they stay as written. A string, a backquoted name, and a generic type written
-over several lines are kept as written too. Line feeds and indentation inside a
-note string or a backquoted class name are part of the note text or class name
-in mermaid.js's Db. Joining or reindenting those lines changes that text, so
-they stay as written.
+align the lines of an `accDescr { ... }` body one step inside its statement. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. Mermaid
+discards this indentation from the description. In an `accDescr` body,
+mermaid.js keeps spaces and tabs after text and before an interior line break in
+the description's Db text, so they stay as written. A string, a backquoted name,
+and a generic type written over several lines are kept as written too. Line
+feeds and indentation inside a note string or a backquoted class name are part
+of the note text or class name in mermaid.js's Db. Joining or reindenting those
+lines changes that text, so they stay as written.
 
 [corpus fixture: class/lex-string-multi-line]
 
@@ -1809,6 +1825,9 @@ line with another statement or with the header, before it or after it:
 its own is rejected, as mermaid.js rejects it. Such a line keeps its statements
 together; a class with a body on that line is printed as any class, with its
 members one level deeper and its `}` at the level of the line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the members of
+that class one level deeper than the line that opens its body and its closing
+`}` at that line's level, as Prettier prints the lines inside a block.
 
 [fixture: empty-description-blocks/before-class-with-body-indented] [fixture:
 empty-description-blocks/kept-with-statement] [fixture:

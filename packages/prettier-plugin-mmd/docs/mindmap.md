@@ -157,8 +157,11 @@ The first node, the root, may stand on the line of the header; its indentation
 is the whitespace after the header, which is none for `mindmap((x))`. It is
 printed on a line of its own, one level deeper than the header, and the nodes
 below it keep their steps beyond the root (see [Indentation](#indentation)): the
-Db is the same, and the root stands as the statements of the other diagram types
-do after the header, which move to a line of their own too.
+Db is the same, and
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as a [flowchart](./flowchart.md#statements-one-per-line) and an
+[ER diagram](./er.md#statements-one-per-line) print a statement written on the
+line of the header on a line of its own.
 
 [fixture: root-on-header-line/moved-to-its-own-line] [fixture:
 root-on-header-line/shape-glued-to-the-header] [fixture:
@@ -546,9 +549,11 @@ mindmap
 
 Empty lines, comment lines, and diagram comments change nothing in the Db
 wherever they stand after the header. Runs of empty lines become one empty line,
-and empty lines at the start and the end of the body are dropped, as in the
-other diagram types. Prettier drops blank lines at the start of JavaScript, CSS,
-YAML, and Markdown, so
+and empty lines at the start and the end of the body are dropped.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and
+the end of a file or of a block. Prettier drops blank lines at the start of
+JavaScript, CSS, YAML, and Markdown, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) also drops empty
 lines at the start of a mindmap, before its header.
 
@@ -658,7 +663,7 @@ A comment line, a line `%%` alone, and a line `%%{ }%%` stand at the level of
 the line after them, and at the end of the body at that of the last line. Their
 indentation is no part of the Db and does not change what mermaid.js accepts,
 and a `%%{` line needs no particular indentation. Their text and mark are kept
-as written. This is the rule of the other diagram types.
+as written.
 
 [fixture: comments/lines-at-the-level-of-the-next-line] [fixture:
 comments/at-the-end] [fixture: comments/bare-and-brace-lines] [fixture:
@@ -893,9 +898,10 @@ mindmap
 
 ### Frontmatter YAML
 
-As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
-YAML formatter, and the `---` lines are kept as written, with the spaces and
-tabs at the end of each.
+The YAML between the `---` lines is formatted with Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). The `---` lines
+are kept as written, with the spaces and tabs at the end of each.
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/closing-delimiter-whitespace-kept]

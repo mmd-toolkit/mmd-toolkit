@@ -94,12 +94,14 @@ gitGraph
 
 ### Indentation
 
-Put the header at column one and ordinary body statements, standalone comments
-and global directives one configured step below it. The flat history has no
-extra level after branch. `tabWidth: 0` gives zero spaces; `useTabs` gives one
-tab even at width zero, because gitgraph columns have no grammatical meaning.
-This does not alter other value continuation columns, hidden closers or
-protected segments.
+Put the header at column one. A header at column one is easier to find than an
+indented one. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts
+ordinary body statements, standalone comments and global directives one
+configured step below the header, as Prettier prints the lines inside a block.
+The flat history has no extra level after branch. `tabWidth: 0` gives zero
+spaces; `useTabs` gives one tab even at width zero, because gitgraph columns
+have no grammatical meaning. This does not alter other value continuation
+columns, hidden closers or protected segments.
 
 [fixture: gitgraph/indentation/indent-two] [fixture:
 gitgraph/indentation/indent-four] [fixture: gitgraph/indentation/indent-zero]
@@ -121,11 +123,17 @@ gitGraph
 
 ### Statements one per line
 
-Print each ordinary body statement on its own line, as the other diagram types
-do. A line common value still owns apparent later operations and semicolons;
-quoted semicolons remain text. Gitgraph has no separator semicolon. Invalid
-adjacent statements and block-following semicolons are parser failures, covered
-by the corpus, and are never repaired.
+Print each ordinary body statement on its own line, as a
+[flowchart](./flowchart.md#statements-one-per-line) prints each statement on a
+line of its own, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form), which
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+here; a statement written on the line of the header moves too, as in a flowchart
+and an [ER diagram](./er.md#statements-one-per-line). A line common value still
+owns apparent later operations and semicolons; quoted semicolons remain text.
+Gitgraph has no separator semicolon. Invalid adjacent statements and
+block-following semicolons are parser failures, covered by the corpus, and are
+never repaired.
 
 [fixture: gitgraph/statements-one-per-line/eol-header-inline] [fixture:
 gitgraph/statements-one-per-line/eol-title-owns-text] [fixture:
@@ -144,9 +152,9 @@ gitGraph
 ### Blank lines
 
 Collapse ordinary blank runs to one blank line and remove ordinary document/body
-edge blanks, retaining visible grouping around comments too. Prettier keeps at
-most one blank line between items and none at the start or end of a block or the
-text, treating lines of spaces and tabs as blank lines.
+edge blanks, including around comments. Prettier keeps at most one blank line
+between items and none at the start or end of a block or the text, treating
+lines of spaces and tabs as blank lines.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the same form
 to ordinary blank lines, including those beside comments. Quoted values,
 description blocks, directive/hidden interiors and retained prefixes keep their
@@ -156,7 +164,7 @@ it. At the document end use one configured final newline; directly after the
 header remove blank lines, since the header needs no EOL before its first
 statement. Elsewhere apply the ordinary blank-line rules after the spare LF:
 collapse a run to one blank line and clear whitespace-only lines. The spare LF
-meets the grammar; later blanks express grouping, just as after comments.
+meets the grammar.
 
 A hidden boundary or semicolon protection can keep a statement on the header's
 line; the gap after that statement's hidden suffix still lies between
@@ -491,9 +499,12 @@ and
 
 [fixture: title-and-common-values/title-directives-end-blanks-dropped]
 
-Shared accessibility layout prints `accTitle: value` / `accDescr: value` and
-empty blocks as `{}`. Where only directives follow the text of the value of such
-a line, they are printed as they are after the text of a title (see
+`accTitle: value` and `accDescr: value` take the colon of a key
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): Prettier prints
+`x = {a : 1}` as `x = { a: 1 };`), and an empty block is printed `{}`, as rule 1
+gives for braces that hold nothing (Prettier prints `x = { }` as `x = {};`).
+Where only directives follow the text of the value of such a line, they are
+printed as they are after the text of a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped] [fixture:
@@ -509,11 +520,12 @@ tab before an empty directive after the accDescr line of a gitGraph]
 
 A whitespace character that is no space or tab before a `%%`, or before a `%%{`
 that no word character follows after its whitespace, that follows an `accDescr`
-value stays where it is, with the spaces and tabs beside it printed as one space
-each, as in a pie chart (see
-[Accessibility lines](./pie.md#accessibility-lines)). The `title` of a gitGraph
-is printed as in the other diagrams, whatever stands before a `%%` after it: the
-oldest version that counts rejects it (see
+value stays where it is, as in a pie chart (see
+[Accessibility lines](./pie.md#accessibility-lines)), and the spaces and tabs
+beside it are printed as one space each. The `title` of a gitGraph is printed as
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
+gives, whatever stands before a `%%` after it: the oldest version that counts
+rejects it (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
 
 [test: a no-break space before a comment after the accDescr line of a gitGraph]
@@ -531,16 +543,23 @@ For blocks that keep their braces, put one ordinary space between `accDescr` and
 their gaps. Prettier prints one space before the `{` that opens a block
 (`class A{}` is printed `class A {}`), so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that space,
-also where the block holds text. A separate closer aligns with its statement.
-Ordinary description body and standalone comment lines align one level inside
-it: the Db removes indentation after LF. Keep line breaks and interior blank
-lines, and the whitespace at the end of each line of text except the last one; a
-line of whitespace only becomes an empty line. The whitespace at the end of the
-last line of text is dropped where the closer stands on a line of its own, and
-is printed as one space where the closer follows it on that line. Directives and
-shared removed comment regions keep their complete source. Whitespace-only
-interiors print `{}` because there is no text for interior whitespace to
-surround; tabs, line breaks and Unicode whitespace follow the same rule.
+also where the block holds text. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. Ordinary description body and standalone comment lines align
+one level inside it: the Db removes indentation after LF. Keep line breaks and
+interior blank lines, and the whitespace at the end of each line of text except
+the last one; a line of whitespace only becomes an empty line. The whitespace at
+the end of the last line of text is dropped where the closer stands on a line of
+its own, and is printed as one space where the closer follows it on that line.
+Directives and shared removed comment regions keep their complete source.
+Whitespace-only interiors print `{}` because there is no text for interior
+whitespace to surround; tabs, line breaks and Unicode whitespace follow the same
+rule.
+
+[fixture: gitgraph/title-and-common-values/brace-on-a-later-line]
 
 [fixture: title-and-common-values/block-touching-with-text-fixed] [fixture:
 title-and-common-values/empty-whitespace-interiors] [test: gitgraph Unicode and
@@ -656,13 +675,16 @@ gitGraph
 ### Comments
 
 Align ordinary standalone comments one body step down, or at column one before
-the header. Inline comments stay on the same line. A comment that touches stays
-touching. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
-space before a comment that stands after something on its line, as Prettier
-prints `x = 1;   // c` as `x = 1; // c`. Keep marks, content and trailing
-whitespace. Native comments keep LS/PS as content; strings/blocks own percent
-text while line values stop before it. Common removed regions retain complete
-source spans. Retained prefixes override ordinary alignment.
+the header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+depth of a standalone comment line inside the diagram body, as Prettier prints
+the lines inside a block. Inline comments stay on the same line. A comment that
+touches stays touching.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. Keep marks, content and trailing whitespace.
+Native comments keep LS/PS as content; strings/blocks own percent text while
+line values stop before it. Common removed regions retain complete source spans.
+Retained prefixes override ordinary alignment.
 
 [fixture: gitgraph/comments/comment-placement] [fixture:
 gitgraph/comments/comment-bare-triple] [fixture:
@@ -693,8 +715,11 @@ place a directive as under [Directives](./flowchart.md#directives). When
 formatting splits units that were on the same line, a directive in their gap
 moves with the following unit: its right boundary stays touching or separated,
 while its left contact is broken. Ordinary standalone starting indentation
-becomes one body step. Preserve directives inside strings, word/colon boundaries
-and EOF-reaching unclosed forms. Their opaque text and independent configuration
+becomes one body step.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. Preserve directives inside strings, word/colon boundaries and
+EOF-reaching unclosed forms. Their opaque text and independent configuration
 effect must not be reconstructed. Atomic cuts remain specified failures.
 
 [fixture: gitgraph/global-directives/header-to-body]

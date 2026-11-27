@@ -22,15 +22,15 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header, and the comment lines among them, stand one
-level deeper than the header. A level is what Prettier's `useTabs` and
-`tabWidth` options say: two spaces by default. The indentation written in the
-input is not kept: whitespace at the start of a line is nothing to mermaid.js,
-so the printer chooses it from the structure alone, and every text has one form.
-Nothing in the grammar forbids indenting a statement, and the documentation of
-mermaid.js writes the statements one level deeper than the header, as the other
-diagrams do (see [Indentation](./flowchart.md#indentation) in the flowchart
-rules). The header, and a comment line before it, stand at the first column.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header, and the comment lines among them, one level deeper than the
+header, as Prettier prints the lines inside a block. A level is what Prettier's
+`useTabs` and `tabWidth` options say: two spaces by default. The indentation
+written in the input is not kept: whitespace at the start of a line is nothing
+to mermaid.js, so the printer chooses it from the structure alone, and every
+text has one form. Nothing in the grammar forbids indenting a statement. The
+header, and a comment line before it, stand at the first column. A header at the
+first column is easier to find than an indented one.
 
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/written-indentation-dropped] [fixture:
@@ -707,9 +707,12 @@ A block on one line follows
 [fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 
 In a block with a text over several lines, indent the body one level inside the
-statement and align a separate `}` with the statement: mermaid.js discards
-indentation after LF from the description. A block that is not closed makes the
-input rejected, so it is not printed.
+statement: mermaid.js discards indentation after LF from the description. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. A block that
+is not closed makes the input rejected, so it is not printed.
 
 [fixture: titles-and-accessibility-statements/block-lines-kept] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
@@ -796,15 +799,12 @@ Unicode and tab interiors]
 A block with a directive or a comment line keeps its contents and line breaks,
 with body indentation under
 [Titles and accessibility statements](#titles-and-accessibility-statements). A
-directive that touches both braces of such a block stays touching them. Rule 1
-names no mark for a line inside a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
-[block](./block.md#empty-description-blocks) keep the contents and line breaks
-of a block with a directive or comment line. It stands on a line of its own,
-also after the header and after another statement, where the grammar takes it:
-mermaid.js reads it as nothing wherever it stands, and the grammar takes it
-where a statement starts and after the last unit of a statement.
+directive that touches both braces of such a block stays touching them. The
+lines between the `{` and the `}` of a description block are outside the "Lines
+inside a block" row of rule 1. It stands on a line of its own, also after the
+header and after another statement, where the grammar takes it: mermaid.js reads
+it as nothing wherever it stands, and the grammar takes it where a statement
+starts and after the last unit of a statement.
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:
@@ -852,15 +852,14 @@ multi-line-statements/point-with-styles-over-lines-joined]
 In points and accessibility line statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement. Preserve each first gap-line tail and complete directive interiors;
-multiline names and other value ranges stay whole. Rule 1 names no mark for a
-line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, where no other rule keeps
-the layout as written (where the Db holds the text with its whitespace, where
-moving a line makes mermaid.js reject the text, and the like).
+multiline names and other value ranges stay whole. A line break next to a
+comment or a directive stays, and so does the whitespace before it, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives:
+[sequence](./sequence.md#multi-line-statements) keeps the whitespace before the
+first line break of each gap, which can make mermaid.js read later lines as part
+of the same statement. In some places another rule also keeps the layout as
+written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text, and the like).
 
 [fixture: multi-line-statements/point-trivia-with-multiline-label] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
@@ -1016,9 +1015,11 @@ A comment starts with `%%` where a unit starts and runs to the end of the line.
 A comment on a line of its own stands at the level of the statement after it,
 and its text and its mark are kept as written: a comment line after the last
 statement stays after it, and one before the header stands at the first column.
-A `%%` inside a title, an accessibility text, a description block, or a string
-is a character of it, and inside the brackets of a point it makes the input
-rejected.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone comment line inside the diagram body, as Prettier prints the lines
+inside a block. A `%%` inside a title, an accessibility text, a description
+block, or a string is a character of it, and inside the brackets of a point it
+makes the input rejected.
 
 [fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
 comments/comment-line-at-the-end] [fixture:
@@ -1091,6 +1092,9 @@ without the directive, and the directive stands after its space and touches the
 unit that follows it. A directive on a line of its own stands at the level of
 the statement after it, and a directive between two statements on a line moves
 with the statement after it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block.
 
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
 [fixture: directives/directive-line-before-the-header] [fixture:
@@ -1148,10 +1152,10 @@ quadrantChart
 
 ### Frontmatter YAML
 
-The frontmatter is formatted as YAML by Prettier, as in the other diagrams (see
-[Frontmatter YAML](./flowchart.md#frontmatter-yaml)); a frontmatter that is no
-valid YAML stays as written. The title of the frontmatter is in the Db, and the
-printer does not touch its value.
+The frontmatter is formatted as YAML by Prettier, as Prettier does for YAML
+anywhere ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)); a
+frontmatter that is no valid YAML stays as written. The title of the frontmatter
+is in the Db, and the printer does not touch its value.
 
 [fixture: frontmatter-yaml/formatted] [fixture: frontmatter-yaml/malformed-kept]
 [fixture: frontmatter-yaml/title-and-statement] [fixture:
@@ -1199,12 +1203,8 @@ directives only loses where the U+2028 or U+2029 touches the directive and
 nothing follows it (`title`, a space, U+2028, and `%%{x}%%` is printed
 `title %%{x}%%` where a statement follows the title directly or the text ends
 after it). A gap that holds one is printed as written, and so is the text that
-holds one. Rule 1 names no mark for a gap that holds one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written. The Db
-keeps the whitespace inside a text. A text containing U+2028 or U+2029 is
-outside the exception in
+holds one. The Db keeps the whitespace inside a text. A text containing U+2028
+or U+2029 is outside the exception in
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same),
 so its internal spaces and tabs stay as written.
 

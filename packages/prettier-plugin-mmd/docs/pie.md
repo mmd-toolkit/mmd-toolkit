@@ -12,9 +12,10 @@ output reparsing. Invisible-character examples are escaped test cases.
 An exact lower-case `pie` starts at column one;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `pie` and a written `showData`, as Prettier prints `return  x` as
-`return x;`. An ordinary inline first statement moves below it. Hidden
-predecessors of the flag retain their position and consumed breaks; moving them
-would end the flag opportunity.
+`return x;`. An ordinary inline first statement moves below it. A header at
+column one is easier to find than an indented one. Hidden predecessors of the
+flag retain their position and consumed breaks; moving them would end the flag
+opportunity.
 
 [fixture: pie/header/header-space] [fixture: pie/header/header-absent] [fixture:
 pie/header/flag-hidden-yaml] [fixture: pie/header/flag-hidden-directive]
@@ -37,13 +38,13 @@ pie showData
 
 ### Indentation
 
-Reuse [XY chart indentation](./xychart.md#indentation): ordinary statements and
-standalone comments/directives stand one configured step below the header, as
-the other diagram types do. A pie section is a slice and adds no nested level.
-`tabWidth: 0` gives zero body spaces; `useTabs` gives one tab, including with
-width zero, because pie columns have no grammatical meaning. Other value
-continuation columns and hidden closers retain their source columns; YAML alone
-uses the shared positive minimum.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+statements and standalone comments/directives one configured step below the
+header, as Prettier prints the lines inside a block. A pie section is a slice
+and adds no nested level. `tabWidth: 0` gives zero body spaces; `useTabs` gives
+one tab, including with width zero, because pie columns have no grammatical
+meaning. Other value continuation columns and hidden closers retain their source
+columns; YAML alone uses the shared positive minimum.
 
 [fixture: pie/indentation/indent-default] [fixture: pie/indentation/indent-four]
 [fixture: pie/indentation/indent-zero] [fixture: pie/indentation/indent-tabs]
@@ -121,11 +122,12 @@ pie
 
 ### Labels
 
-Reuse [XY chart authored strings](./xychart.md#quotes): keep complete quoted
-source spans. Preserve escapes without decoding, empty and whitespace-only
-labels, entities/HTML and hidden-looking percent text; a string between `'` is
-printed between `"`, unless its text holds a `'`, a `"`, a backslash, a line
-break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+Keep complete quoted source spans:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints a text that
+the tree holds whole as written inside. Preserve escapes without decoding, empty
+and whitespace-only labels, entities/HTML and hidden-looking percent text; a
+string between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
+backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. Keep converted-label collisions as separate
 occurrences; the resolved Map is not source.
@@ -154,8 +156,8 @@ pie
 
 ### Numbers
 
-Reuse [XY chart authored numbers](./xychart.md#numbers): a NumericLiteral that
-is a plain decimal is printed in the shortest form (`1.50` is `1.5`, `2.0` is
+A NumericLiteral that is a plain decimal is printed in the shortest form, as in
+[XY chart authored numbers](./xychart.md#numbers) (`1.50` is `1.5`, `2.0` is
 `2`; see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and every other source span is printed rather than its converted double. Keep
@@ -329,9 +331,10 @@ space or tab, one of those named in [Title](#title), before a `%%` or such a
 `%%{` that follows an `accDescr` value, which that version draws as a part of
 the description (`accDescr: Value`, a no-break space, and `%% note`), while the
 spaces and tabs beside it are printed as one space each, and a value with a
-directive in it is printed as in the other diagrams; a comment after the `}` of
-a description block keeps the block, since the text of the form with the colon
-would take the comment (see
+directive in it is printed as
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
+gives; a comment after the `}` of a description block keeps the block, since the
+text of the form with the colon would take the comment (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
 Hidden forms and protected textual groups retain their gaps. Where only
 directives follow the text of the value, they are printed with one space before
@@ -447,12 +450,11 @@ Empty whitespace-only interiors print `{}` because no text needs surrounding
 whitespace. Prettier prints empty braces without interior whitespace, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives `{}` for a
 description block whose interior contains only whitespace. Keep comment-only
-blocks with comments one level inside and a separate closer at statement level.
-In `accDescr {%% c` followed by `}` or `D}` on the next line, `%% c` stays after
-`{` as description text, since moving it to its own line one level inside the
-block, with `D` and `}` also on separate lines in the second case, makes
-mermaid.js read it as a comment, leaving the description empty or just `D`,
-respectively (see
+blocks with comments one level inside. In `accDescr {%% c` followed by `}` or
+`D}` on the next line, `%% c` stays after `{` as description text, since moving
+it to its own line one level inside the block, with `D` and `}` also on separate
+lines in the second case, makes mermaid.js read it as a comment, leaving the
+description empty or just `D`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
 statement. Keep line breaks and interior blank lines, and the whitespace at the
@@ -460,10 +462,16 @@ end of each line of text except the last one. A run of blank lines between two
 lines of text stays as written. A line of whitespace only becomes an empty line.
 The whitespace at the end of the last line of text is dropped where the closer
 stands on a line of its own, and is printed as one space where the closer
-follows it on that line. A separate `}` aligns with the statement. Directives
-and shared removed comment regions keep their complete source. Trivia-bearing
-interiors keep their trivia. The first closing brace still closes the block,
-even inside quote/backslash/hidden-looking text.
+follows it on that line. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. Directives and shared removed comment regions keep their
+complete source. Trivia-bearing interiors keep their trivia. The first closing
+brace still closes the block, even inside quote/backslash/hidden-looking text.
+
+[fixture: pie/description-blocks/brace-on-a-later-line]
 
 [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/blank-line-run-kept] [fixture:
@@ -633,10 +641,13 @@ pie
 An inline comment stays on its line. An inline comment that touches stays
 touching. Standalone comments align with body statements, or at column one
 before the header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-gives one space before a comment that stands after something on its line, as
-Prettier prints `x = 1;   // c` as `x = 1; // c`. The whitespace before a `%%`
-or a `%%{}%%` that follows an `accTitle` value is the exception: the oldest
-version that counts reads it as part of the title (see
+gives the depth of a standalone comment line inside the diagram body, as
+Prettier prints the lines inside a block.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+before a comment that stands after something on its line, as Prettier prints
+`x = 1;   // c` as `x = 1; // c`. The whitespace before a `%%` or a `%%{}%%`
+that follows an `accTitle` value is the exception: the oldest version that
+counts reads it as part of the title (see
 [Accessibility lines](#accessibility-lines)). Keep bare/triple-percent marks and
 trailing comment spaces. Pie native comments end at LF, retaining LS/PS inside
 them, because pie does not treat them as separators: ending a comment at one
@@ -751,9 +762,8 @@ spare LF only when a following statement needs it. At the document end use one
 configured final newline; directly after the header remove blank lines, since
 the header needs no EOL before its first statement. Elsewhere apply the ordinary
 blank-line rules after the spare LF: collapse a run to one blank line and clear
-whitespace-only lines. The spare LF meets the grammar; later blanks express
-grouping, just as after comments. Prettier treats a line containing only spaces
-and tabs as a blank line, so
+whitespace-only lines. The spare LF meets the grammar. Prettier treats a line
+containing only spaces and tabs as a blank line, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) clears those spaces
 and tabs and leaves at most one ordinary blank line after the required spare LF.
 Unicode-only invalid body lines remain corpus failures.
@@ -834,9 +844,8 @@ pie showData
 
 ### Multiline values and order
 
-Reuse [flowchart value columns](./flowchart.md#multi-line-values) and
-[shared no wrapping](./flowchart.md#line-wrapping): a line is not wrapped, as in
-a flowchart, a form decided under
+Reuse [shared no wrapping](./flowchart.md#line-wrapping): a line is not wrapped,
+as in a flowchart, a form decided under
 [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) that
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 a pie chart too. Keep physical label lines, their continuation columns and
@@ -945,8 +954,10 @@ Output (escaped):
 
 ### Frontmatter yaml
 
-Reuse [guarded frontmatter](./flowchart.md#frontmatter-yaml), because only real
-leading YAML supplies title/configuration. Format safe YAML, preserve delimiter
+Guard the frontmatter, because only real leading YAML supplies
+title/configuration. Format safe YAML with Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Preserve delimiter
 padding, and keep malformed, indented, HTML-hazard and delimiter-producing
 bodies as written. YAML uses at least one indentation character at tabWidth
 zero. Preserving hidden preheader text is shared by diagram types whose

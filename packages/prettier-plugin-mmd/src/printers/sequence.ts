@@ -8,7 +8,7 @@ import type {
 import type { MermaidAst } from "../parser.ts"
 import { printedToken } from "./spelling.ts"
 import { printAtoms } from "./atoms.ts"
-import type { StatementListsOf } from "./data-blocks.ts"
+import type { DiagramStatements, StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import type { BlockRules, PrintedBlock } from "./blocks.ts"
 import {
@@ -40,6 +40,15 @@ import {
 } from "./sequence-layout.ts"
 import type { Source } from "./source.ts"
 import { findTokenEndingBefore, findTokenStartingAt } from "./source.ts"
+
+/**
+ * The statements of a sequence diagram (see `DiagramStatements`): no
+ * statement is dropped.
+ */
+const sequenceStatements: DiagramStatements = {
+  listsOf: statementListsOf,
+  isDroppedAtTopLevel: () => false,
+}
 
 /**
  * Prints the body of a sequence diagram and the nodes below it, to the end
@@ -98,7 +107,7 @@ export function printSequence(
             statement: indentationOf(options, depth),
             tabWidth: options.tabWidth,
             useTabs: options.useTabs,
-            statementListsOf,
+            diagramStatements: sequenceStatements,
           },
         ),
         {
@@ -312,9 +321,9 @@ function sequenceBlockRules(
     writtenIndentationOf: writtenIndentationRule(
       source,
       options.useTabs,
-      statementListsOf,
+      sequenceStatements,
     ),
-    isDroppedAtTopLevel: () => false,
+    isDroppedAtTopLevel: sequenceStatements.isDroppedAtTopLevel,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
   }

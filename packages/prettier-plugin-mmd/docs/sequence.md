@@ -18,11 +18,15 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header. The
-statements of a block (`loop`, `alt`, `opt`, `par`, `par_over`, `critical`,
-`break`, `rect`) and the participants of a `box` stand one level deeper than the
-line that opens it; `else`, `and`, `option`, and `end` stand at the level of
-that line.
+The statements after the header stand one level deeper than the header.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, the statements of a block
+(`loop`, `alt`, `opt`, `par`, `par_over`, `critical`, `break`, `rect`) and the
+participants of a `box` one level deeper than the line that opens it and `end`
+at the level of that line, as Prettier prints the lines inside a block. `else`,
+`and`, and `option` close one body of a block and open the next, and rule 1 puts
+them at the level of that line too, as Prettier prints `} else {` at the level
+of `if`.
 
 [fixture: indentation/blocks] [fixture: indentation/sections] [fixture:
 indentation/other-blocks-kept]
@@ -349,11 +353,7 @@ space between a block or section keyword and its text, as Prettier prints
 whitespace-between-tokens/block-text-touching-spaced]
 
 A directive in the gap is placed as under [Directives](#directives), and a
-U+2028 or U+2029 stays where it is. Rule 1 names no mark for a gap that holds
-one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+U+2028 or U+2029 stays where it is.
 
 [fixture: whitespace-between-tokens/block-text-beside-directive] [test: U+2028
 between a block keyword and its text] [test: U+2029 between a wrap prefix and
@@ -479,9 +479,11 @@ A directive between the id and `@{` is placed as under
 
 Its contents stay written except for the eligible margins in
 [Multi-line values](#multi-line-values) and the spaces and tabs at the ends of a
-block on one line, which become one space each, as in
-[Data blocks](./flowchart.md#data-blocks): `participant A@{"type":"queue"}`
+block on one line, which become one space each: `participant A@{"type":"queue"}`
 becomes `participant A@{ "type":"queue" }`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+inside each end, as it gives for braces that hold names with their values:
+Prettier prints `x = {a:1}` as `x = { a: 1 };`.
 
 [fixture: whitespace-between-tokens/data-block-padded]
 
@@ -994,21 +996,20 @@ keeps it.
 Where a directive or a whitespace character other than a space and a tab (a
 no-break space, an ideographic space, a byte order mark, U+2028, U+2029) follows
 the `:` directly, with whitespace in the place of the text, the line is printed
-as written, as the line of a task of a [Gantt chart](./gantt.md#task-data) or a
-[user journey](./journey.md#task-data) is. A version that counts takes a
-whitespace character of any kind for the character that it needs after the `:`,
-and removes a directive before it reads the line, so the whitespace after a
-directive is that character. The printer drops whitespace at the end of a line
-and prints another whitespace character as a space, so it would leave `A->>B:`,
-which such a version rejects: `A->>B:%%{init: {}}%%` followed by two spaces is
-accepted by every version that counts, and the text without the spaces is
-rejected by some of them. A space or a tab right after the `:` is the character
-that such a version needs, so the line is printed as usual and the rest is left
-out: `A->>B: %%{init: {}}%%` followed by two spaces is printed
-`A ->> B: %%{init: {}}%%`. The space immediately after `:` already supplies the
-character that mermaid.js needs. The spaces and tabs after the directive are
-then line-end whitespace, which Prettier removes;
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form.
+as written. A version that counts takes a whitespace character of any kind for
+the character that it needs after the `:`, and removes a directive before it
+reads the line, so the whitespace after a directive is that character. The
+printer drops whitespace at the end of a line and prints another whitespace
+character as a space, so it would leave `A->>B:`, which such a version rejects:
+`A->>B:%%{init: {}}%%` followed by two spaces is accepted by every version that
+counts, and the text without the spaces is rejected by some of them. A space or
+a tab right after the `:` is the character that such a version needs, so the
+line is printed as usual and the rest is left out: `A->>B: %%{init: {}}%%`
+followed by two spaces is printed `A ->> B: %%{init: {}}%%`. The space
+immediately after `:` already supplies the character that mermaid.js needs. The
+spaces and tabs after the directive are then line-end whitespace, which Prettier
+removes; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that
+form.
 
 [fixture: colons/directive-then-whitespace-kept] [test: U+00A0 as the entire
 text of a message] [test: U+3000 as the entire text of a note] [test: U+FEFF as
@@ -1184,6 +1185,9 @@ sequenceDiagram
 
 A comment on a line of its own, `%%`, `#`, or `%`, stands at the level of the
 statements around it, and its text is kept as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: comments/kept] [corpus fixture:
 sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
@@ -1807,9 +1811,11 @@ sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment]
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, and a directive within a printed line is placed as in a flowchart: the gap
-is printed as without the directive, and the directive stands after its space
-and touches the unit that follows it.
+it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive within a printed line is
+placed as in a flowchart: the gap is printed as without the directive, and the
+directive stands after its space and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/section-edges-kept] [fixture:
 directives/whitespace-on-each-side] [fixture: directives/touching-kept]
@@ -1884,9 +1890,10 @@ sequenceDiagram
 
 ### Frontmatter YAML
 
-As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
-YAML formatter where that is safe (see
-[Frontmatter YAML](./flowchart.md#frontmatter-yaml)).
+The YAML between the `---` lines is formatted with Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), where that is safe
+(see [Frontmatter YAML](./flowchart.md#frontmatter-yaml)).
 
 [fixture: frontmatter-yaml/formatted] [fixture: frontmatter-yaml/malformed-kept]
 [fixture: frontmatter-yaml/indented-delimiters-kept] [fixture:
@@ -1995,12 +2002,15 @@ the comment would be part of the description (see
 
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
-Align the lines of an `accDescr { ... }` body one step inside its statement,
-with a separate `}` at the statement's level. mermaid.js discards the
-indentation after a line feed from the description. Mermaid.js records spaces at
-the end of an internal description line as part of the description in the Db,
-and every version of mermaid.js that counts puts another description text in the
-SVG without them, so those spaces stay as written (see
+Align the lines of an `accDescr { ... }` body one step inside its statement. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. mermaid.js
+discards the indentation after a line feed from the description. Mermaid.js
+records spaces at the end of an internal description line as part of the
+description in the Db, and every version of mermaid.js that counts puts another
+description text in the SVG without them, so those spaces stay as written (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: sequence/db-acc-descr-block-blank-lines]
@@ -2011,8 +2021,11 @@ multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:
 multi-line-values/data-block-in-block-indented]
 
 A block without text, whose lines are only comment lines, holds no value: its
-comment lines stand one level deeper than the `accDescr`, and its separate `}`
-at the level of the `accDescr`.
+comment lines stand one level deeper than the `accDescr`. A separate `}` aligns
+with its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives this depth when the `{` stands on the `accDescr` line: it puts the closing
+line at the level of the opening line, as Prettier prints the closing line of a
+block.
 
 [fixture: multi-line-values/accdescr-block-comment-only] [fixture:
 multi-line-values/accdescr-block-without-text-kept]
@@ -2034,11 +2047,11 @@ For participant and actor data blocks, apply
 [Data blocks](./flowchart.md#data-blocks) only when exactly one body line holds
 text. Move that line one level inside the statement and align a separate `}`
 with the statement; a closer after text stays with that line.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the level of that line and of a separate `}`, as
-[Data blocks](./flowchart.md#data-blocks) of a flowchart print them so. This
-applies at the top level and inside `loop`, except with `useTabs`, where the
-statement is printed as written, a form decided under
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+separate closing `}` when the block opens on the statement's line: the closing
+line stands at the level of the opening line, as Prettier prints the closing
+line of a block. This applies at the top level and inside `loop`, except with
+`useTabs`, where the statement is printed as written, a form decided under
 [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) that
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 a sequence diagram too (see [Data blocks](./flowchart.md#data-blocks)), unless

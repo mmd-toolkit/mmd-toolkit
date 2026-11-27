@@ -121,12 +121,11 @@ venn-beta
 [fixture: venn/indentation/tab-width-0-internal-marker]
 [fixture: venn/indentation/tab-width-0-use-tabs]
 
-`set`、`union`、`style`、`title` の文は、
-ヘッダーより設定の1段だけ深く置きます（`tabWidth`、`useTabs`）。
-ほかの図の種類の文と同じで、mermaid.js の文書の例も同じです。
-文書の 8 つの例では、これらの文の 39 行がすべて字下げされ、
-1列目の行はありません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、`set`、`union`、`style`、
+`title` の文は、ヘッダーより設定の1段だけ深く置きます（`tabWidth`、`useTabs`）。
+Prettier がブロックの中の行をそう印字するためです。
 暗黙の text は、さらに1段深くします。
+`tabWidth: 0` では、上で述べた理由で、その1段を 1 文字にします。
 mermaid.js は `set`、`union`、`style`、`title` の前の字下げを読み飛ばすので、
 字下げは読みを変えません。
 モードが有効な間は、`text` の前の空白が暗黙の text を選ぶので、
@@ -136,7 +135,13 @@ mermaid.js は `set`、`union`、`style`、`title` の前の字下げを読み�
 モードが有効な間は正の字下げが暗黙の構文を選び、入れ子は表しません。
 宣言がモードを有効にし、後の通常の行頭の文が解除し、次の宣言が再び有効にします。
 文の前のコメント行とディレクティブの行は、その文と同じ位置に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、本文の文がすべて `set`、
+`union`、`style`、`title` のとき、単独のコメント行とディレクティブ行は、
+ヘッダーより 1 段深く置きます。
+最初の文の前と最後の文の後も同じです。
+Prettier がブロックの中の行をそう印字するためです。
 
+[corpus fixture: venn/db-indent-width]
 [fixture: venn/indentation/ordinary-statements-stand-one-step-deep]
 [fixture: venn/indentation/explicit-text-stays-at-the-header]
 [fixture: venn/indentation/comment-and-directive-lines-follow-the-statement]
@@ -194,12 +199,6 @@ venn-beta
 title は行の残りを値として取るので、title の後の文に見える語は分けられません。
 飲み込まれる断片は書かれた行の隣とともに保ちます。
 同じ行に残る文の間に空白があるときは、空白 1 つです。
-規則 1 は、2 つの文の間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#トークンの間の空白) と
-[er](./er.ja.md#トークンの間の空白) も、
-2 つのトークンの間の空白とタブの連なりを空白 1 つで印字し、
-接するトークンは接したままにします。
 
 [corpus fixture: venn/db-indent-after-same-line-explicit-text]
 [fixture: venn/statements-one-per-line/directive-in-declaration-group]
@@ -239,8 +238,7 @@ venn-beta
 
 ### Blank lines
 
-通常の空行の列は1行にまとめ、本文の両端の空行を除いて、
-余分な空間を減らしてまとまりを残します。
+通常の空行の列は1行にまとめ、本文の両端の空行を除きます。
 Prettier は JavaScript、CSS、YAML、Markdown で、
 通常の空行を項目の間で最大 1 行にし、ブロックとテキストの両端から除きます。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
@@ -301,6 +299,7 @@ venn-beta
 ### Comments
 
 単独のコメントは次の文にそろえ、末尾では最後の文にそろえます。
+その段の理由は、[Indentation](#indentation) を参照してください。
 接する後続コメントは接したまま残します。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)は、
 同じ行の何かの後ろにあるコメントの前に空白 1 つを与えます。
@@ -506,8 +505,9 @@ mermaid.js がテキストとして Db に保存します。
 小文字の `rgb(`（数 3 個）か `rgba(`（数 4 個）のとき、
 コンマごとの後ろに空白を 1 つ置いて印字します。
 `style A fill:rgb(1,2,3)` は `style A fill: rgb(1, 2, 3)` と印字します。
-mermaid.js の文書の例には、Venn 図の色関数がありません。
-空白を置く形は、sequence 図の例と、ほかの図の種類のスタイルの形です。
+コンマの後の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+Prettier は `f(a,b)` を `f(a, b);` と印字します。
 詳しくは、
 [同じに描かれる色](./compatibility.ja.md#同じに描かれる色) を参照してください。
 コンマの前、開き括弧 `(` の直後、閉じ括弧 `)` の直前の空白は、書かれたままです。
@@ -741,11 +741,10 @@ Prettier は `f(a,b)` を `f(a, b);` と印字します。
 プロパティは `key: value` と印字します。
 コロンの前に空白はなく、後に空白が 1 つあります。
 プロパティの区切りはコンマと空白 1 つです。
-ほかの図の種類のスタイルと同じ形で、
 `style A fill: #f00, stroke: #000` となります。
 mermaid.js の文書は、プロパティの 3 つの例を `fill:#ff6b6b` と書いていますが、
-コロンの後の隙間は、スタイルを持つほかの 10 の図の種類と同じ種類の隙間なので、
-それに合わせます。
+プロパティのコロンはキーのコロンなので（スタイルの `fill: #f00`）、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がその後ろに空白 1 つを与えます。
 Db はプロパティを対応表として持ち、空白を持ちません。
 印字するセミコロンが残る行では、
 コロンの後の隙間は書かれたままにします（`style A fill:#f00;%% c`）。
@@ -1107,7 +1106,6 @@ venn-beta
 後の文に接するディレクティブがある場合は、接触関係を保つため行を分けません。
 ディレクティブは区切りを与えずに除かれるので、
 ディレクティブと隣のテキストの接触関係が読みを決めるためです。
-これは class・flowchart・gantt・timeline・block と同じです。
 kanban がディレクティブごと移すのは、
 ディレクティブの後ろの空白がそこでは節点の字下げになるためで、
 Venn のヘッダー行の文にはその役割がありません。

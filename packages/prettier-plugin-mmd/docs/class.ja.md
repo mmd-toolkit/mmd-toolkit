@@ -22,7 +22,9 @@ fixture の置き方と確かめ方は、
 
 ### 字下げ
 
-ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、ヘッダーの後の文は、
+ヘッダーより 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: indentation/written-indentation-dropped]
 [fixture: indentation/header-v2-kept]
@@ -30,6 +32,9 @@ fixture の置き方と確かめ方は、
 namespace の `{` は、空白 1 つの後に、その名前の行に置きます。
 namespace の文は、それを開く行より 1 段深く置き、その `}` は、その行と同じ段に、
 行に単独で置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+namespace の文は開く行より 1 段深く、閉じる `}` は開く行と同じ段に置きます。
+Prettier がブロックの中の行と閉じる行をその深さに印字するためです。
 `{` の前の空白 1 つは、メンバーの本体の `{` と同じで、
 mermaid.js の文書の書き方でもあります。
 namespace が 1 行に書かれていても同じです。
@@ -111,6 +116,10 @@ classDiagram
 クラスのメンバーの本体の `{` は、空白 1 つの後に、クラスの行に残します。
 メンバーの行は、それぞれ 1 段深く、行に単独で置きます。
 `}` は、クラスと同じ段に、行に単独で置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+メンバーの行はクラスの行より 1 段深く、
+独立した閉じる `}` はクラスの行と同じ段に置きます。
+Prettier がブロックの中の行と閉じる行をその深さに印字するためです。
 `{` の前の空白 1 つは、mermaid.js の文書の書き方です。
 ただし、行の `}` の前にディレクティブがあるときは、
 書かれたまま残します（`%%{init: {}}%% }`）。
@@ -253,9 +262,11 @@ classDiagram
 
 ### 空行
 
-flowchart と同じです。
 空行の連続は 1 つにし、
 namespace とメンバーの本体の先頭と末尾の空行は取り除きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、空行の連なりを 1 行にし、
+ファイルやブロックの初めと終わりの空行を除きます。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/namespace-edges-dropped]
 [fixture: blank-lines/edges-around-comment-and-directive-lines-dropped]
@@ -327,13 +338,7 @@ Prettier が `return  x` を `return x;` と印字するためです。
 
 クラスの `:::` は、前の名前にも後ろの CSS クラスにも接します。
 `class A :::c` と `class A ::: c` は `class A:::c` になります。
-ER 図と同じです。
 mermaid.js はどの書き方も同じクラスとして読むので、形を強いるものはありません。
-mermaid.js の文書の例 4 件は、本体なしと本体ありで `class Animal:::someclass`、
-`class Animal:::pink`、`class Animal:::styleClass` と書いています。
-その範囲は、
-[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L833)
-にあります。
 
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
@@ -840,8 +845,11 @@ classDiagram
 sequence 図では `:` を前のものに接して書きます（詳しくは、
 [sequence 図の整形規則のコロン](./sequence.ja.md#コロン) を参照）。
 どちらも、その図種のドキュメントの書き方に従っています。
-`accTitle` と `accDescr` の後の `:` は、他の図種と mermaid.js の文書と同じく、
-キーワードに接し、後に空白を 1 つ置きます。
+`accTitle` と `accDescr` の後の `:` は、キーワードに接し、
+後に空白を 1 つ置きます。
+キーのコロンの形は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます（Prettier は
+`x = {a : 1}` を `x = { a: 1 };` と印字します）。
 
 [fixture: labels/accessibility-text-runs-collapsed]
 [fixture: multi-line-statements/joined]
@@ -1093,6 +1101,9 @@ classDiagram
 
 行に単独のコメントは、周りの文、本体の中ではメンバーの行と同じ段に置き、
 本文は書かれたまま残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のコメント行は、ブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: comments/kept] [fixture: comments/before-header]
 [fixture: comments/in-namespace] [fixture: comments/last-in-body]
@@ -1174,8 +1185,10 @@ mermaid.js は、文の後のコメントの後の改行をコメントの一部
 
 ### ディレクティブ
 
-flowchart と同じです。
 行に単独のディレクティブは周りの文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のディレクティブ行は、ブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 文の行の中では、flowchart と同じく、隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 
@@ -1543,8 +1556,11 @@ classDiagram
 ### 複数行の値
 
 [flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
-`accDescr { ... }` の本文行は文より 1 段深くそろえ、
-独立した `}` は文と同じ段に置きます。
+`accDescr { ... }` の本文行は文より 1 段深くそろえます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 Mermaid が説明からこの字下げを除くためです。
 説明本文の途中の改行前では、テキストに続く空白とタブも、
 mermaid.js が Db の説明に含めるので、書かれたまま残します。
@@ -1902,6 +1918,10 @@ Prettier は、何も持たない括弧の内側に何も置かず（`x = { }` �
 そうした行は、文を一緒に残します。
 その行に本体を持つクラスは、ほかのクラスと同じように印字し、
 メンバーは 1 段深く、`}` はその行と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+その行に本体を持つクラスのメンバーは開く行より 1 段深く、
+閉じる `}` はその行と同じ段に置きます。
+Prettier がブロックの中の行と閉じる行をその深さに印字するためです。
 
 [fixture: empty-description-blocks/before-class-with-body-indented]
 [fixture: empty-description-blocks/kept-with-statement]

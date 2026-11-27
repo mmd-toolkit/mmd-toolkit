@@ -11,10 +11,10 @@ Formatting rules for cynefin-beta and cynefin-beta:, following the
 
 ### Header
 
-Put cynefin-beta at column one. A colon right after the header word is removed:
-mermaid.js reads `cynefin-beta:` and `cynefin-beta` as the same header, and the
-examples in its documentation write the header without the colon 3 times against
-none (see
+Put cynefin-beta at column one. A header at column one is easier to find than an
+indented one. A colon right after the header word is removed: mermaid.js reads
+`cynefin-beta:` and `cynefin-beta` as the same header, and the examples in its
+documentation write the header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
@@ -114,15 +114,13 @@ cynefin-beta
 
 ### Indentation
 
-Use one configured step for body statements and two for domain items. Columns do
-not define parents: the authored item lists do. In [ER](./er.md#indentation) and
-[state](./state.md#indentation) diagrams, statements stand one level below the
-header, and entity attributes or composite-state statements stand one further
-level inside their owner.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-body statements one level of indentation and domain items one additional level.
-tabWidth zero adds no spaces; useTabs adds one tab per step even at width zero.
-Other value continuations and protected interiors retain their written columns.
+Use one configured step for body statements.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts body statements
+one level deeper than the header and domain items one level deeper than their
+domain line, as Prettier prints the lines inside a block. Columns do not define
+parents: the authored item lists do. tabWidth zero adds no spaces; useTabs adds
+one tab per step even at width zero. Other value continuations and protected
+interiors retain their written columns.
 
 [fixture: cynefin/indentation/indent-two]
 
@@ -148,17 +146,19 @@ cynefin-beta
 
 ### Domains and items
 
-Put the domain word on its own line and each item one step deeper, as the other
-diagram types nest a block. The grammar requires no EOL between a domain and its
-items, adjacent strings or adjacent domains, so splitting these units keeps the
-Db. Keep empty strings, repeated items and multiline strings. For an empty
-string, mermaid.js records an empty-labeled item, and for repeated items it
-records a separate list entry for each occurrence. Removing an empty item or a
-duplicate changes the domain's item list in the Db. Comments, directives, blanks
-and hidden forms between items leave the sequence open. Protected or hidden
-inline neighbors take precedence; add no closing delimiter. The Cynefin grammar
-has no braces around a domain, and mermaid.js rejects braces used as domain
-delimiters, so no closing delimiter is added.
+Put the domain word on its own line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts each item one
+level deeper than its domain line, as Prettier prints the lines inside a block.
+The grammar requires no EOL between a domain and its items, adjacent strings or
+adjacent domains, so splitting these units keeps the Db. Keep empty strings,
+repeated items and multiline strings. For an empty string, mermaid.js records an
+empty-labeled item, and for repeated items it records a separate list entry for
+each occurrence. Removing an empty item or a duplicate changes the domain's item
+list in the Db. Comments, directives, blanks and hidden forms between items
+leave the sequence open. Protected or hidden inline neighbors take precedence;
+add no closing delimiter. The Cynefin grammar has no braces around a domain, and
+mermaid.js rejects braces used as domain delimiters, so no closing delimiter is
+added.
 
 [corpus fixture: cynefin/gram-domain-braces]
 
@@ -212,11 +212,11 @@ cynefin-beta
 
 ### Component spacing
 
-Separate ordinary domain/item components that remain on one line by one space,
-making the components distinct. A global directive within a printed line is
-placed as under [Global directives](#global-directives), and so are split gaps.
-Hidden closing padding retains its protected text. A kept `;` protects no other
-text than the stretch of the line rule (see [Semicolons](#semicolons)).
+Separate ordinary domain/item components that remain on one line by one space. A
+global directive within a printed line is placed as under
+[Global directives](#global-directives), and so are split gaps. Hidden closing
+padding retains its protected text. A kept `;` protects no other text than the
+stretch of the line rule (see [Semicolons](#semicolons)).
 
 [fixture: cynefin/component-spacing/domain-hidden-contact]
 
@@ -611,17 +611,24 @@ prints whitespace-only description interiors as `{}`. For blocks that keep their
 braces, [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one
 space between the keyword and the opening brace, as Prettier prints `class A{}`
 as `class A {}`. Join plain opener whitespace, as Prettier prints `class A`, a
-line break, and `{}` as `class A {}` too, and align a separate closer with the
-statement. Ordinary description body and standalone comment lines align one
-level inside it. Keep line breaks and interior blank lines, and the whitespace
-at the end of each line of text except the last one; a line of whitespace only
-becomes an empty line. A block description's line breaks form part of its value
-in mermaid.js, so joining description lines with spaces changes the Db. The
-whitespace at the end of the last line of text is dropped where the closer
-stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Directives and shared removed comment regions keep
-their complete source. Comments/directives inside empty blocks retain their
-shared layout. Native-looking text inside a value remains value text.
+line break, and `{}` as `class A {}` too. A separate `}` aligns with its
+statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
+depth: it puts the closing line at the level of the line that holds the `{`, as
+Prettier prints the closing line of a block, and that line is the `accDescr`
+line or, where a comment or a directive stands before the `{`, a later line at
+the level of the statement. Ordinary description body and standalone comment
+lines align one level inside it. Keep line breaks and interior blank lines, and
+the whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. A block description's line breaks form
+part of its value in mermaid.js, so joining description lines with spaces
+changes the Db. The whitespace at the end of the last line of text is dropped
+where the closer stands on a line of its own, and is printed as one space where
+the closer follows it on that line. Directives and shared removed comment
+regions keep their complete source. Comments/directives inside empty blocks
+retain their shared layout. Native-looking text inside a value remains value
+text.
+
+[fixture: cynefin/description-blocks/brace-on-a-later-line]
 
 [corpus fixture: cynefin/line-block-values]
 
@@ -908,9 +915,12 @@ unit: its right boundary stays touching or separated, while its left contact is
 broken. Ordinary standalone lines align with their body, including item depth
 between items. Ordinary standalone directives stand at the depth of their
 surrounding body, including the additional body level between domain items.
-Multiline interiors and unfinished EOF endings remain written. Reordering
-directives or editing their JSON can change the text that common removal joins;
-native hidden directives remain separate forms.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. Multiline interiors and unfinished EOF
+endings remain written. Reordering directives or editing their JSON can change
+the text that common removal joins; native hidden directives remain separate
+forms.
 
 [fixture: cynefin/global-directives/header-to-body]
 
@@ -944,8 +954,11 @@ cynefin-beta
 ### Comments
 
 Align ordinary standalone comments with their body, item comments at item depth
-and prefix comments at column one. Inline comments keep their line, and a run of
-spaces and tabs before one becomes one space.
+and prefix comments at column one.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. Inline comments keep their line, and a
+run of spaces and tabs before one becomes one space.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
@@ -1189,8 +1202,14 @@ the form that [Line wrapping](./flowchart.md#line-wrapping) decides under
 domain/item splitting, retain physical string and transition-label contents,
 continuation columns and interior blanks. Description bodies use the shared
 indentation above. Reflow or reindentation can change the Db, and wrapping
-transition components can reject. A separate description closer uses the shared
-alignment rule.
+transition components can reject. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement.
+
+[fixture: cynefin/description-blocks/brace-on-a-later-line]
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
 

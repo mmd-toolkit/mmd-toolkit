@@ -94,6 +94,20 @@ export interface StatementList {
  */
 export type StatementListsOf = (node: Node) => readonly StatementList[]
 
+/**
+ * The statements of a diagram type, as the depth of a statement is read from
+ * them (see `standsAtDepthOfItsLine`).
+ */
+export interface DiagramStatements {
+  /** The lists of statements that each node holds. */
+  readonly listsOf: StatementListsOf
+  /**
+   * Whether the printer drops a statement of the list that the diagram holds,
+   * as `BlockRules.isDroppedAtTopLevel` says: nothing is printed for it.
+   */
+  readonly isDroppedAtTopLevel: (statement: Node) => boolean
+}
+
 /** A stretch of the source text: from `start` up to, not including, `end`. */
 interface Stretch {
   readonly start: number
@@ -116,7 +130,8 @@ interface StatementStretches {
   /**
    * The offsets where the things start that the whitespace at the start of a
    * line is written for: a statement, the head of a list, and the `end` of a
-   * container.
+   * container. A statement that the printer drops at the top level is not one:
+   * nothing is printed for it, at any depth.
    */
   readonly starts: ReadonlySet<number>
 }
@@ -127,23 +142,31 @@ const stretchesBySource = new WeakMap<Source, StatementStretches>()
 /**
  * The stretches of the lists of statements that the nodes of the source hold,
  * and the offsets where things start (see {@link StatementStretches}). One
- * diagram type has one `statementListsOf`.
+ * diagram type has one `DiagramStatements`.
  */
 function statementStretchesOf(
   source: Source,
-  statementListsOf: StatementListsOf,
+  diagramStatements: DiagramStatements,
 ): StatementStretches {
   const cached = stretchesBySource.get(source)
   if (cached !== undefined) return cached
   const holders = findNodes(
     source.root.body,
-    (node) => statementListsOf(node).length > 0,
+    (node) => diagramStatements.listsOf(node).length > 0,
   )
-  const lists = holders.flatMap(statementListsOf)
+  const lists = holders.flatMap(diagramStatements.listsOf)
   const starts = new Set<number>()
-  for (const list of lists) {
-    starts.add(list.head)
-    for (const statement of list.statements) starts.add(statement.range[0])
+  for (const holder of holders) {
+    for (const list of diagramStatements.listsOf(holder)) {
+      starts.add(list.head)
+      for (const statement of list.statements) {
+        if (
+          holder !== source.root.body ||
+          !diagramStatements.isDroppedAtTopLevel(statement)
+        )
+          starts.add(statement.range[0])
+      }
+    }
   }
   // The diagram itself has no `end`.
   for (const holder of holders) {
@@ -180,9 +203,11 @@ function statementStretchesOf(
  * as written. Anything else that a line can start with, the rest of a
  * statement from an earlier line, of a directive, or of a comment, or a kind
  * that is not listed, is a thing the whitespace was not written for, and the
- * statement is moved. The line is the physical line, since a directive that
- * runs over lines holds the rest of it. The statement is deeper than the first
- * thing in `subgraph s; A@{`, where the header comes first, and shallower in
+ * statement is moved. So is a `;` of its own that the printer drops at the top
+ * level: nothing is printed for it, so the whitespace before it is written for
+ * no depth. The line is the physical line, since a directive that runs over
+ * lines holds the rest of it. The statement is deeper than the first thing in
+ * `subgraph s; A@{`, where the header comes first, and shallower in
  * `B; end; A@{`, where the statement `B` inside the container comes first; the
  * printer then puts the statement on a line of its own at its own depth. The
  * statement is at the depth of the line in `C; A@{` and in `end; A@{`, where
@@ -192,7 +217,7 @@ function statementStretchesOf(
 function standsAtDepthOfItsLine(
   source: Source,
   range: Range,
-  statementListsOf: StatementListsOf,
+  diagramStatements: DiagramStatements,
 ): boolean {
   const lineStart = source.text.lastIndexOf("\n", range[0] - 1) + 1
   let first = lineStart
@@ -205,7 +230,7 @@ function standsAtDepthOfItsLine(
     first = directive.range[1]
   }
   if (first === range[0]) return true
-  const { lists, starts } = statementStretchesOf(source, statementListsOf)
+  const { lists, starts } = statementStretchesOf(source, diagramStatements)
   const closed = closedBlockStartingBefore(source, first, lineStart)
   if (closed === undefined && !starts.has(first)) return false
   return depthAt(lists, closed ?? first) === depthAt(lists, range[0])
@@ -256,10 +281,11 @@ export interface DataBlockPlacement {
    */
   readonly decidesIndentation?: boolean
   /**
-   * The lists of statements that a node of the tree holds, for a subgraph or a
-   * section of an `alt` (see `standsAtDepthOfItsLine`).
+   * The statements of the diagram type: the lists of statements that a node of
+   * the tree holds, for a subgraph or a section of an `alt`, and those that the
+   * printer drops at the top level (see `standsAtDepthOfItsLine`).
    */
-  readonly statementListsOf: StatementListsOf
+  readonly diagramStatements: DiagramStatements
   /**
    * Whether the layout holds the statement as one atom that is printed as
    * written, as a kanban node is, so the blocks lie inside it and not in atoms
@@ -494,11 +520,11 @@ function keepsStatementAsWritten(
   source: Source,
   range: Range,
   useTabs: boolean | undefined,
-  statementListsOf: StatementListsOf,
+  diagramStatements: DiagramStatements,
 ): boolean {
   if (
     useTabs !== true ||
-    !standsAtDepthOfItsLine(source, range, statementListsOf)
+    !standsAtDepthOfItsLine(source, range, diagramStatements)
   )
     return false
   const all = dataBlocksOf(source)
@@ -522,9 +548,9 @@ export function writtenIndentationOfBlockStatement(
   source: Source,
   range: Range,
   useTabs: boolean | undefined,
-  statementListsOf: StatementListsOf,
+  diagramStatements: DiagramStatements,
 ): string | undefined {
-  if (!keepsStatementAsWritten(source, range, useTabs, statementListsOf))
+  if (!keepsStatementAsWritten(source, range, useTabs, diagramStatements))
     return undefined
   const start = lineStartOf(source, range[0])
   let end = start
@@ -542,16 +568,16 @@ export function writtenIndentationOfBlockStatement(
 export function writtenIndentationRule(
   source: Source,
   useTabs: boolean | undefined,
-  statementListsOf: StatementListsOf,
+  diagramStatements: DiagramStatements,
 ): (statement: Node) => string | undefined {
   return (statement) =>
-    statementListsOf(statement).length > 0
+    diagramStatements.listsOf(statement).length > 0
       ? undefined
       : writtenIndentationOfBlockStatement(
           source,
           statement.range,
           useTabs,
-          statementListsOf,
+          diagramStatements,
         )
 }
 
@@ -576,7 +602,7 @@ function printStatementAsWritten(
       source,
       range,
       placement.useTabs,
-      placement.statementListsOf,
+      placement.diagramStatements,
     )
   )
     return undefined

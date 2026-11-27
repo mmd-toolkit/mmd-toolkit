@@ -23,8 +23,10 @@ statements after a `section`, up to the next `section`, one level deeper still:
 the tasks, click statements, settings, and every other statement. The `section`
 itself stands at the first level. The tree of a Gantt chart is flat, with no
 block of statements, so the level of a statement is decided by its place among
-the others. The tasks of a section stand inside it, as the documentation of
-mermaid.js writes them in a Gantt chart and in a user journey.
+the others. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the
+statements after the header one level deeper than the header, and the tasks,
+click statements, settings, and every other statement of a section one level
+deeper than its `section` line, as Prettier prints the lines inside a block.
 
 [fixture: indentation/sections-and-tasks-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
@@ -45,18 +47,16 @@ was indented with.
 [fixture: indentation/written-indentation-dropped]
 
 The header stands at the first column, also where whitespace was written before
-it.
+it. A header at the first column is easier to find than an indented one.
 
 [fixture: indentation/header-leading-whitespace]
 
 Values kept as written retain their columns. Description-body lines instead
-stand one step inside their statement, with a separate `}` at its level (see
-[Multi-line values](#multi-line-values)).
-[Class diagrams](./class.md#multi-line-values) and
-[flowcharts](./flowchart.md#multi-line-values) align the separate closing brace
-of a description block with its statement;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt description blocks the same closing brace position.
+stand one step inside their statement (see
+[Multi-line values](#multi-line-values)). A separate `}` aligns with its
+statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
+depth when the `{` stands on the `accDescr` line: it puts the closing line at
+the level of the opening line, as Prettier prints the closing line of a block.
 
 [fixture: indentation/description-block-under-a-section]
 
@@ -857,13 +857,10 @@ A directive between the keyword and the value stays where it is (see
 
 A value written on a later line is printed after the keyword on one line; a
 comment line between them makes the statement printed as written (see
-[Multi-line statements](#multi-line-statements)). Rule 1 names no mark for a
-line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#title) prints a `title`, a line break, and the
-text that follows on one line, and [xychart](./xychart.md#multi-line-statements)
-prints a statement that mermaid.js reads over several lines on one line, with
-one space in place of the line break.
+[Multi-line statements](#multi-line-statements)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+where the line broke, as Prettier prints `x = a +`, a line break, and `b;` as
+`x = a + b;`.
 
 [fixture: titles-and-sections/comment-line-inside-kept]
 
@@ -1317,13 +1314,11 @@ another description text in the SVG (see
 accessibility-statements/block-then-percent-kept]
 
 In a block with a text over several lines, indent the body one level inside the
-statement and align a separate `}` with the statement: mermaid.js discards
-indentation after LF from the description.
-[Class diagrams](./class.md#multi-line-values) and
-[flowcharts](./flowchart.md#multi-line-values) align the separate closing brace
-of a description block with its statement;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-Gantt description blocks the same closing brace position.
+statement: mermaid.js discards indentation after LF from the description. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1404,9 +1399,12 @@ empty-description-blocks/blank-lines-inside]
 
 A block with a directive or a comment line keeps its contents and line breaks,
 with body indentation under
-[Accessibility statements](#accessibility-statements). Rule 1 gives no form
-here, since its table does not name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)).
+[Accessibility statements](#accessibility-statements). Rule 1 does not decide
+the depth of these comment lines at a block boundary. A separate closer stands
+at statement level. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives the closer that level where the opening `{` stands on the statement's
+line, as Prettier prints the closing line at the level of the line that opens a
+block.
 
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 
@@ -1689,22 +1687,15 @@ comments/single-percent-kept] [fixture: comments/bare-percent-lines]
 A comment line stands at the level of the statement after it, so a comment
 before a `section` stands at its level, and one before a task stands at the
 level of the task; at the end of the text it stands at the level of the last
-statement. Rule 1 gives no form here, since its table does not name the start of
-a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [quadrant](./quadrant.md#comments) and [ishikawa](./ishikawa.md#comments)
-put a comment line on a line of its own at the level of the statement or the
-node after it.
+statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a
+standalone comment line inside a block one level deeper than the line that opens
+it, as Prettier prints the lines inside a block.
 
 [fixture: comments/levels-around-sections] [fixture:
 directives/levels-around-sections]
 
 A comment line before the header stands at the first column, and one at the end
 of the text stays on a line of its own, with the line break added.
-[Quadrant](./quadrant.md#comments) and [ishikawa](./ishikawa.md#comments)
-diagrams keep a final comment on its own line after the last statement;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the final Gantt comment the same position.
 
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
@@ -1834,7 +1825,9 @@ A directive on a line of its own stands at the level of the statements around
 it, and a directive within a printed line is placed as under
 [Directives](./flowchart.md#directives) of a flowchart: the gap is printed as
 without the directive, and the directive stands after its space and touches the
-unit that follows it.
+unit that follows it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+puts a standalone directive line inside a block one level deeper than the line
+that opens it, as Prettier prints the lines inside a block.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
@@ -1929,9 +1922,10 @@ gantt
 
 ### Frontmatter YAML
 
-As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
-YAML formatter, and the `---` lines are kept as written, with the spaces and
-tabs at the end of each.
+The YAML between the `---` lines is formatted with Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and the `---`
+lines are kept as written, with the spaces and tabs at the end of each.
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/closing-delimiter-whitespace-kept]

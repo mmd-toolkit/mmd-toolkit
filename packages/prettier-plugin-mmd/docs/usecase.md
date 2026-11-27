@@ -71,8 +71,11 @@ usecase-beta
 
 ### Indentation
 
-Use structural indentation: one configured step below the header, two for
-boundary declarations, and `end` aligned with its opener.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts statements one
+configured step below the header, as Prettier prints the lines inside a block.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts boundary
+declarations one configured step deeper than the boundary opener and `end` at
+the level of its opener, as Prettier prints the lines inside a block.
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -162,10 +165,10 @@ usecase-beta
 
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space after
 `actor`, as Prettier prints `return  x` as `return x;`. Reuse
-[ER's compact entity layout](./er.md#entities) for tight id/shape delimiters and
-metadata/class suffixes, no exterior ASCII label padding, and comma-space
-between actor items, which shows the separate actor occurrences that one `actor`
-keyword introduces. Stereotype spacing follows
+[ER's compact entity layout](./er.md#entities) for tight id/shape delimiters, no
+exterior ASCII label padding, and comma-space between actor items, which shows
+the separate actor occurrences that one `actor` keyword introduces.
+Metadata/class suffixes are printed tight. Stereotype spacing follows
 [its class-based rule](#stereotypes). Keep explicit ids, ellipse/rectangle
 spelling, markdown labels, suffix order and every declaration/reference
 occurrence; a name and a label are printed in the form that the examples use
@@ -202,16 +205,15 @@ usecase-beta
 
 ### Labels
 
-Reuse [C4's authored value forms](./c4.md#argument-forms): a markdown label
-keeps its kind, since markdown changes the label type, and every label keeps its
-interior characters, including empty quoted values. No-break spaces at a label's
-ends and literal backslashes are part of its Db text; entity decoding and HTML
-stripping also change the text mermaid.js records. Those characters therefore
-stay as written. The figure and the Db differ for a label with no-break spaces
-at its ends, a label with two literal backslashes, `A("a &amp; b")`, and
-`A("<b>x</b>")`, compared with the same label without the no-break spaces,
-without the backslashes, with the entity decoded, and with the HTML stripped
-(see
+A markdown label keeps its kind, since markdown changes the label type, and
+every label keeps its interior characters, including empty quoted values.
+No-break spaces at a label's ends and literal backslashes are part of its Db
+text; entity decoding and HTML stripping also change the text mermaid.js
+records. Those characters therefore stay as written. The figure and the Db
+differ for a label with no-break spaces at its ends, a label with two literal
+backslashes, `A("a &amp; b")`, and `A("<b>x</b>")`, compared with the same label
+without the no-break spaces, without the backslashes, with the entity decoded,
+and with the HTML stripped (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The padding inside the backquotes of a markdown label is part of its Db label
 too, so it stays (see
@@ -451,12 +453,10 @@ usecase-beta
 
 ### Stereotypes
 
-Reuse the spacing of annotations attached to
-[class statements](./class.md#whitespace-between-tokens): one space stands
-before the `<<`, and nothing stands inside the delimiters. Thus `A[a]<<R>>` and
-`A[a] <<  R  >>` are printed `A[a] <<R>>`. mermaid.js trims the text, so every
-spelling gives the same Db, and the five examples of its documentation write
-`<<...>>` after a space and touching its text
+One space stands before the `<<`, and nothing stands inside the delimiters. Thus
+`A[a]<<R>>` and `A[a] <<  R  >>` are printed `A[a] <<R>>`. mermaid.js trims the
+text, so every spelling gives the same Db, and the five examples of its
+documentation write `<<...>>` after a space and touching its text
 ([the examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L141-L144),
 [two more](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L546-L549)).
 Beside a directive, the whitespace is printed as the table of
@@ -470,8 +470,7 @@ stereotype-comment-region-padding-kept]
 
 Actors and use cases follow the same rule, including relationship endpoints and
 declarations inside system boundaries. Mermaid trims the interior ends;
-whitespace before `<<` is structural. Both spacing choices keep the Db, so
-usecase follows the shared rule.
+whitespace before `<<` is structural. Both spacing choices keep the Db.
 
 [fixture: stereotypes/stereotype-inner-kept] [fixture:
 stereotypes/stereotype-padding] [fixture: stereotypes/declaration-suffixes]
@@ -522,16 +521,19 @@ usecase-beta
 
 ### System boundaries
 
-Openings, declaration bodies and aligned `end` use separate lines, including
-empty boundaries and empty quoted names. An empty boundary with `end` on the
-line of its opening (`systemBoundary S end`) is rejected (see
+Openings, declaration bodies and `end` use separate lines, including empty
+boundaries and empty quoted names. An empty boundary with `end` on the line of
+its opening (`systemBoundary S end`) is rejected (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts `end` at the
+level of its boundary opener, as Prettier prints the lines inside a block.
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
-Reuse the heading form of [flowchart subgraphs](./flowchart.md#subgraph-header):
-the opener of the title, `[` or `(`, touches the id, so `systemBoundary S [t]`
-is printed `systemBoundary S["t"]` and `systemBoundary S (t)` is printed
+The opener of the title, `[` or `(`, touches the id, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the `[` of an
+index (Prettier prints `x [ 0 ];` as `x[0];`), so `systemBoundary S [t]` is
+printed `systemBoundary S["t"]` and `systemBoundary S (t)` is printed
 `systemBoundary S("t")`. mermaid.js reads the spaced and the touching spellings
 as the same boundary. The spaces and tabs inside the brackets or the parentheses
 are dropped, since mermaid.js trims them (it keeps a no-break space, which
@@ -717,8 +719,10 @@ usecase-beta
 ### Relationship labels and ids
 
 Reuse
-[flowchart's authored edge-label principle](./flowchart.md#link-label-form) and
-tight edge-id attachment: keep split labels with one exterior gap, and print an
+[flowchart's authored edge-label principle](./flowchart.md#link-label-form):
+keep split labels, with one space on each side of each half, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for another
+mark between two things (Prettier prints `x = a+b` as `x = a + b;`). Print an
 explicit id touching `@` and its opening/sole arrow. Usecase keeps only its
 allowed split halves, markdown labels, empty quoted labels, actor source
 keywords and both endpoint occurrences; a plain label is printed in quotes (see
@@ -775,13 +779,14 @@ Keep the first property on its written opening or following line.
 [fixture: native-metadata/metadata-first-gap-standalone-directive]
 
 Ordinary property/comment/directive lines stand one level below the containing
-statement; a separate closing brace aligns with that statement. Ordinary
-metadata property, comment and directive lines use the same layout as
-[requirement fields](./requirement.md#indentation) and
-[ER attributes](./er.md#indentation): one level below the containing statement,
-with a separate closing brace aligned to that statement. Under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
-ordinary metadata lines take this layout.
+statement; a separate closing brace aligns with that statement. When the
+metadata opener stands on the line of the containing statement,
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+property lines one level below that line and the separate closing brace at its
+level, as Prettier prints the lines inside a block. A standalone comment or
+directive inside the metadata block follows that level under
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), as the lines inside
+a block in those languages do.
 
 [fixture: native-metadata/metadata-comma-comment-close] [fixture:
 native-metadata/metadata-closer-directive-own-line]
@@ -890,9 +895,12 @@ When `{` is immediately followed by a newline, shift all body lines by the same
 number of ASCII spaces so the shallowest text stands one level inside the JSON
 statement. Relative indentation, including nested objects, stays unchanged. A
 separate `}` aligns with the statement; a closer after text stays on that line.
-JSON strings cannot contain raw newlines: Mermaid rejects them with
-`Bad control character in string literal`, so this movement cannot change a
-string's contents.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of
+that separate closing `}` when the block opens on the statement's line: the
+closing line stands at the level of the opening line, as Prettier prints the
+closing line of a block. JSON strings cannot contain raw newlines: Mermaid
+rejects them with `Bad control character in string literal`, so this movement
+cannot change a string's contents.
 
 [fixture: json-tables/closing-deeper-kept] [fixture:
 json-tables/closing-equal-depth] [fixture: json-tables/zero-and-shallow]
@@ -1016,7 +1024,9 @@ between values that follow one another (CSS `margin: 1px    2px;` is printed
 `margin: 1px 2px;`); a comma touches the target or class name before it and has
 one space after it, with one gap between lists and before the first declaration;
 CSS declarations use comma-space. A declaration has no whitespace before its
-first colon and one space after it, as in the other diagram types (see
+first colon and one space after it, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the colon of a
+key (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 Mermaid stores the padding before and after the colon, so the Db changes, but it
 draws the same figure. A name that ends with `stroke` is the exception, since a
@@ -1134,11 +1144,13 @@ direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 [fixture: direction-and-accessibility/acctitle-inner-gap-kept] [fixture:
 direction-and-accessibility/acc-descr-line-trailing-spaces-kept]
 
-In description blocks, align body lines one step inside the statement and a
-separate `}` with the statement, including a block whose only content is a
-comment line. mermaid.js discards the indentation after a line feed from the
-description. Structural indentation keeps the same layout with zero width or
-tabs.
+In description blocks, align body lines one step inside the statement, including
+a block whose only content is a comment line. A separate `}` aligns with its
+statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this
+depth when the `{` stands on the `accDescr` line: it puts the closing line at
+the level of the opening line, as Prettier prints the closing line of a block.
+mermaid.js discards the indentation after a line feed from the description.
+Structural indentation keeps the same layout with zero width or tabs.
 
 [fixture: direction-and-accessibility/a11y-closer-aligned] [fixture:
 direction-and-accessibility/a11y-closer-tabs] [fixture:
@@ -1146,8 +1158,12 @@ direction-and-accessibility/a11y-closer-zero] [fixture:
 direction-and-accessibility/a11y-directive-padding] [fixture:
 direction-and-accessibility/a11y-comment-empty-tabs]
 
-The whitespace before the `}` is no text, so the `}` stays aligned with the
-statement in every pass, also after a comment line.
+The whitespace before the `}` is no text. The `}` stays aligned with the
+statement in every pass, also after a comment line. A separate `}` aligns with
+its statement. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives
+this depth when the `{` stands on the `accDescr` line: it puts the closing line
+at the level of the opening line, as Prettier prints the closing line of a
+block.
 
 [fixture: direction-and-accessibility/block-comment-line-after-the-text]
 
@@ -1307,13 +1323,12 @@ usecase-beta
 ### Blank lines
 
 Reuse [class blank grouping](./class.md#blank-lines): collapse ordinary blank
-runs to one and drop diagram/boundary-edge blanks, because one blank separates
-groups and more add nothing. ASCII space/tab-only lines are ordinary blanks,
-including after native bare comments and around standalone directives. Values,
-native metadata, JSON, directives and protected common-region joins keep their
-own blank lines. A blank line inside a markdown label is part of the label that
-mermaid.js keeps in the Db, and removing it is no kind of change of the Db that
-formatting may make (see
+runs to one and drop diagram/boundary-edge blanks. ASCII space/tab-only lines
+are ordinary blanks, including after native bare comments and around standalone
+directives. Values, native metadata, JSON, directives and protected
+common-region joins keep their own blank lines. A blank line inside a markdown
+label is part of the label that mermaid.js keeps in the Db, and removing it is
+no kind of change of the Db that formatting may make (see
 [The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)).
 No C4 recovery-gap or Ishikawa blank-pairing rule is imported.
 
@@ -1338,15 +1353,12 @@ usecase-beta
 
 ### Comments
 
-Reuse [standalone comment alignment](./class.md#comments): comments align with
-nearby statements, with declarations before boundary `end`, retaining all
-comment text and terminal HWS. Rule 1 gives no form here, since its table does
-not name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [block](./block.md#comments) and [er](./er.md#comments) put a comment
-line at the level of the statements around it. Comments before the header stand
-at column one.
+Comments align with nearby statements, with declarations before boundary `end`,
+retaining all comment text and terminal HWS.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. Comments before the header stand at
+column one.
 
 [fixture: system-boundaries/boundary-header-comment-empty] [test: usecase:
 terminal-comment-tab]
@@ -1397,18 +1409,18 @@ separator. Keep directive contents, order and multiline columns; align
 standalone directives, and place a directive within a printed line as under
 [flowchart's Directives](./flowchart.md#directives). A directive on a line of
 its own stands at the level of the surrounding statements.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block.
 
 [fixture: system-boundaries/boundary-id-title-directed-gap] [fixture:
 arrows/semantic-operator-directives] [fixture:
 arrow-id-boundaries/arrow-marker-both-gap-sides]
 
 Header-line directives remain with the header. A directive after the header
-stays on the header's line, as in [flowchart](./flowchart.md#directives) and
-[block](./block.md#directives) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-this gap its form. Value-side gaps, CSS name/value spans and opaque JSON remain
-exact apart from [JSON table margins](#json-tables), including separate JSON
-id/`@`/brace boundaries.
+stays on the header's line. Value-side gaps, CSS name/value spans and opaque
+JSON remain exact apart from [JSON table margins](#json-tables), including
+separate JSON id/`@`/brace boundaries.
 
 [fixture: classes-and-styles/css-name-multiline-directive] [fixture:
 json-tables/json-prefix-id-at-multiline-directive]
@@ -1625,15 +1637,16 @@ that touch, and a line of whitespace after the text of an accTitle line]
 
 ### Frontmatter YAML
 
-Reuse [guarded frontmatter](./flowchart.md#frontmatter-yaml): safe configuration
-benefits from YAML formatting, while malformed bodies, indented delimiters, HTML
-tag starts in written/formatted YAML and formatted delimiter hazards retain
-their reading. Keep delimiters and closing padding, comments and directives
-before the header; frontmatter title is not an accessibility statement, and
-usecase clears the common title at this pin. YAML uses the shared positive
-minimum even with `tabWidth: 0`, while the body remains zero. HTML
-cross-frontmatter cases use the specified body-only reading without rewriting
-body quotes to imitate raw Mermaid.
+Safe configuration is formatted with Prettier's YAML formatter, as Prettier does
+for YAML anywhere ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)),
+while malformed bodies, indented delimiters, HTML tag starts in
+written/formatted YAML and formatted delimiter hazards retain their reading.
+Keep delimiters and closing padding, comments and directives before the header;
+frontmatter title is not an accessibility statement, and usecase clears the
+common title at this pin. YAML uses the shared positive minimum even with
+`tabWidth: 0`, while the body remains zero. HTML cross-frontmatter cases use the
+specified body-only reading without rewriting body quotes to imitate raw
+Mermaid.
 
 [fixture: frontmatter-yaml/frontmatter-safe] [corpus fixture:
 usecase/div-frontmatter-malformed] [fixture:

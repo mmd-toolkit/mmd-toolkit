@@ -21,10 +21,10 @@ fixture の置き方と確かめ方は、
 ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
 複合状態の文は、それを開く行より 1 段深く置き、その `}` は、その行と同じ段に、
 行に単独で置きます。
-[sequence](./sequence.ja.md#字下げ) の図では、ヘッダーの後の文を 1 段深く置き、
-ブロックの内容を開始行より 1 段深く置き、閉じる行を開始行と同じ段に置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-state 図の文と複合状態の内容と `}` にも、この段を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ヘッダーの後の文はヘッダーより 1 段深く、複合状態の文は開く行より 1 段深く、
+閉じる `}` は開く行と同じ段に置きます。
+Prettier がブロックの中の行と閉じる行をその深さに印字するためです。
 
 [fixture: indentation/composite-states]
 
@@ -70,8 +70,10 @@ stateDiagram-v2
 
 ### 複合状態
 
-注釈を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
-本文がさらに 1 段深く見えるようにします。
+注釈を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+本文はさらに 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 その行をまたぐ値や保護された原文の境界は変えません。
 引用符で囲んだ別名の説明は、内側の改行と余白を Db に含みます。
 それらを変えると保存された説明が変わるので、注釈を挟んで見出しが続く場合も、
@@ -211,10 +213,8 @@ mermaid.js が無視する、`{` の前の `state` も、書かれたまま残�
 
 名前のない `state` は、mermaid.js が受理して何も読まない独立した文なので、
 周りの文と同じ段に印字します。
-[class](./class.ja.md#字下げ) と [sequence](./sequence.ja.md#字下げ) の図では、
-ヘッダーの後の文を、それより 1 段深く置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-名前のない `state` も周りの文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、この段を与えます。
+Prettier は、ブロックの中の行を、何を持つ行でも同じ段に印字するためです。
 
 [fixture: composite-states/state-keyword-alone]
 [corpus fixture: state/lex-state-keyword-alone]
@@ -505,8 +505,10 @@ stateDiagram-v2
 
 ### 空行
 
-flowchart と同じです。
 空行の連続は 1 つにし、本体の先頭と末尾の空行は取り除きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、空行の連なりを 1 行にし、
+ファイルやブロックの初めと終わりの空行を除きます。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/end-of-text-dropped]
 [fixture: blank-lines/around-comments-and-directives]
@@ -556,6 +558,7 @@ Prettier が `return  x` を `return x;` と印字するためです。
 接しているトークンは接したまま残します。
 flowchart と同じです。
 （[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)）。
+
 ただし、別名の定義の語と擬似状態の印は、
 空白 1 つを置きます（[別名](#別名)と[擬似状態](#擬似状態)を参照）。
 
@@ -566,11 +569,7 @@ flowchart と同じです。
 遷移の中や単独の行にある状態参照の `:::` は、
 前の状態にも後ろのクラスにも接します。
 `A :::c` と `A ::: c` は `A:::c` になります。
-ER 図と同じです。
 mermaid.js はどの書き方も同じ状態として読むので、形を強いるものはありません。
-ER 図の `:::` はすでにこの形で印字しており、mermaid.js の文書の例 5 件も、
-この書き方です。
-（[`Still:::notMoving` など](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)）。
 
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
@@ -590,11 +589,6 @@ Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字し�
 
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 は、そのまま残します。
-規則 1 の表に、これを含む間隔の印はないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#行区切り文字) と
-[timeline](./timeline.ja.md#行区切り文字) も、
-これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 before the `:::` of a state]
 [test: U+2029 after the `:::` of a state]
@@ -1325,7 +1319,9 @@ Mermaid は本文内部の改行の後にある行頭空白を、元の `notes[]
 パーサー、仕様、記録済み Mermaid の読み取りは変えません。
 ほかの複数行のノート本文は、整列できる先頭行の余白を除き、書かれた列を保ちます。
 両端の空行や空白だけの行も含みます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 `end note` はノートと同じ段に置きます。
+Prettier がブロックの中の行をそう印字するためです。
 見出しの id の後の空白は落とします。
 その行のコメントやディレクティブの後の空白は、書かれたまま残します。
 
@@ -1345,11 +1341,9 @@ Mermaid は本文内部の改行の後にある行頭空白を、元の `notes[]
 たとえば `note right of A text` では、本文の最初の行は id の行にあり、
 Mermaid が余白を除くのはその行だけです。
 後の行の余白は本文の一部なので、書かれたまま残し、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
 `end note` はノートと同じ段に置きます。
-[flowchart](./flowchart.ja.md#複数行の値) は、説明ブロックを閉じる波括弧を、
-その文と同じ段の独立した行に置きます。
-独立した行の `end note` も、閉じるノートと同じ段に置く形を、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: notes/over-lines-text-on-id-line-kept]
 
@@ -1366,8 +1360,10 @@ id が空の場合も同じです。
 
 [fixture: notes/blank-text-kept]
 
-独立したノートの引用符は書かれたまま残し、その間の本文も空白ごと残します。
-flowchart の引用符で囲むラベルの内部と同じです。
+独立したノートの引用符は書かれたまま残します。
+その間の本文は、空白ごと残します。
+[規則 1](./printed-form.ja.md#木が丸ごと持つテキスト)により、
+木が丸ごと持つテキストは、その中を書かれたまま印字するからです。
 `note ""floating" as N` の本文は `floating` で、
 `note "  floating   text  " as N` はそのまま残します。
 mermaid.js は、その空白によらず同じテキストを読み、同じノートを描きます。
@@ -1385,11 +1381,6 @@ Prettier が 2 つのものの間のキーワードに置く空白と同じく�
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が前後に空白 1 つを与えます。
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
-規則 1 の表に、これを含む間隔の印はないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[journey](./journey.ja.md#行区切り文字) と
-[timeline](./timeline.ja.md#行区切り文字) も、
-これを含む間隔を書かれたまま印字します。
 
 [fixture: notes/floating-note-as-gaps-spaced]
 [fixture: notes/floating-note-as-beside-directive]
@@ -1584,16 +1575,10 @@ stateDiagram-v2
 
 行に単独のコメント（`%%` か `#`）は、周りの文と同じ段に置き、
 本文は書かれたまま残します。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[flowchart](./flowchart.ja.md#コメント)、[class](./class.ja.md#コメント)、
-[sequence](./sequence.ja.md#コメント)も、
-コメント行を周りの文と同じ段に置きます。
-[class](./class.ja.md#コメント) と [sequence](./sequence.ja.md#コメント)
-の図は、行に単独のコメントの本文で、先頭と語の間の隙間を書かれたまま残します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-state 図にもこの形を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中のコメント行をそう印字するためです。
+行に単独のコメントの本文で、先頭と語の間の隙間は書かれたまま残します。
 
 [fixture: comments/kept] [fixture: comments/text-kept]
 [fixture: comments/before-closing-brace]
@@ -1648,6 +1633,10 @@ stateDiagram-v2
 ### ディレクティブ
 
 行に単独のディレクティブは周りの文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のディレクティブ行は、
+そのブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
@@ -1817,8 +1806,11 @@ stateDiagram-v2
 
 ### 複数行の値
 
-`accDescr { ... }` の本文行は文より 1 段深くそろえ、
-独立した `}` は文と同じ段に置きます。
+`accDescr { ... }` の本文行は文より 1 段深くそろえます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 mermaid.js は説明から行送り後の字下げを除きます。
 
 [fixture: multi-line-values/kept]

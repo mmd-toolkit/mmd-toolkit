@@ -20,13 +20,11 @@ organized and checked is described in
 
 The statements after the header stand one level deeper than the header. The
 statements of a composite state stand one level deeper than the line that opens
-it, and its `}` stands on a line of its own at the level of that line. In
-[sequence](./sequence.md#indentation) diagrams, statements stand one level below
-the header, block contents one level below their opening line, and closers at
-that line's level.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-state statements, the contents of composite states, and their closing braces the
-same levels.
+it, and its `}` stands on a line of its own at the level of that line.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the statements
+after the header one level deeper than the header, and the statements of a
+composite state one level deeper than the line that opens it and its closing `}`
+at that line's level, as Prettier prints the lines inside a block.
 
 [fixture: indentation/composite-states]
 
@@ -73,11 +71,13 @@ stateDiagram-v2
 ### Composite states
 
 When a header continues across trivia, align the physical line containing its
-opening brace with the initial keyword, so the body remains one level deeper. Do
-not change a value spanning that line or protected source boundaries. A quoted
-alias description includes its internal line breaks and margins in the Db.
-Changing them changes the stored description, so they stay as written when a
-header continues across trivia.
+opening brace with the initial keyword.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the body one
+level deeper, as Prettier prints the lines inside a block. Do not change a value
+spanning that line or protected source boundaries. A quoted alias description
+includes its internal line breaks and margins in the Db. Changing them changes
+the stored description, so they stay as written when a header continues across
+trivia.
 
 [corpus fixture: state/lex-string-line-separator-then-comment-line]
 
@@ -207,11 +207,9 @@ one line the id is `A state`.
 state/gram-ignored-state-before-alias-body-next-line]
 
 A `state` with no name, which mermaid.js accepts and reads as nothing, is a
-statement of its own, printed at the level of the statements around it. In
-[class](./class.md#indentation) and [sequence](./sequence.md#indentation)
-diagrams, statements after the header stand one level deeper than it.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-therefore places a nameless `state` at the level of the surrounding statements.
+statement of its own, printed at the level of the statements around it.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it that level,
+as Prettier prints every line inside a block at one level, whatever it holds.
 
 [fixture: composite-states/state-keyword-alone] [corpus fixture:
 state/lex-state-keyword-alone]
@@ -491,8 +489,10 @@ stateDiagram-v2
 
 ### Blank lines
 
-As in a flowchart: a run of empty lines becomes one, and empty lines at the
-start and the end of a body are dropped.
+A run of empty lines becomes one, and empty lines at the start and the end of a
+body are dropped. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives it: Prettier prints a run of empty lines as one and drops the empty lines
+at the start and the end of a file or of a block.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/end-of-text-dropped]
 [fixture: blank-lines/around-comments-and-directives] [fixture:
@@ -549,11 +549,8 @@ whitespace-between-tokens/touching-class-kept]
 
 The `:::` of a state reference, in a transition or on a line of its own, touches
 the state before it and the class after it: `A :::c` and `A ::: c` are printed
-`A:::c`, as in an ER diagram. mermaid.js reads every spelling as the same state,
-so nothing forces the form; the printer already prints the `:::` of an ER
-diagram this way, and the five examples of the documentation of mermaid.js write
-it so
-([`Still:::notMoving` and the others](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)).
+`A:::c`. mermaid.js reads every spelling as the same state, so nothing forces
+the form.
 
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
@@ -572,11 +569,7 @@ between them, as between values that follow one another: Prettier prints
 [fixture: whitespace-between-tokens/css-class-in-definition-kept]
 
 A directive in the gap is placed as under [Directives](#directives), and a
-U+2028 or U+2029 stays where it is. Rule 1 names no mark for a gap that holds
-one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+U+2028 or U+2029 stays where it is.
 
 [test: U+2028 before the `:::` of a state] [test: U+2029 after the `:::` of a
 state]
@@ -1245,7 +1238,9 @@ Mermaid preserves leading whitespace after internal newlines in raw
 Db exception, with rendering preserved; parser, specification and recorded
 Mermaid readings stay unchanged. Other multiline note bodies retain their
 written columns apart from the eligible first-row margin, including empty or
-whitespace-only edge lines. `end note` stands at the level of the note. The
+whitespace-only edge lines.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts `end note` at
+the level of the note, as Prettier prints the lines inside a block. The
 whitespace after the id on the header line is dropped; after a comment or
 directive on that line it stays as written.
 
@@ -1263,12 +1258,9 @@ A note over lines with no text, as in `note right of A` followed by a line
 When the text of a note over lines starts on the line of its id, as in
 `note right of A text`, the first row of the text is on that line, and Mermaid
 trims only the margin of that row: the margins of the later rows are part of the
-text and stay as written, and `end note` stands at the level of the note. The
-separate closing braces of description blocks in
-[flowchart](./flowchart.md#multi-line-values) stand at the level of their
-statement.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the separate `end note` the same level as the note it closes.
+text and stay as written, and
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts `end note` at
+the level of the note, as Prettier prints the lines inside a block.
 
 [fixture: notes/over-lines-text-on-id-line-kept]
 
@@ -1285,8 +1277,9 @@ nothing after it, whose text is the `:` alone.
 
 [fixture: notes/blank-text-kept]
 
-The quotes of a floating note are kept as written, and so is the text between
-them with its whitespace, as the inside of a quoted label is in flowchart:
+The quotes of a floating note are kept as written. The text between them is kept
+with its whitespace, as a text that the tree holds whole is printed as written
+inside ([rule 1](./printed-form.md#a-text-that-the-tree-holds-whole)):
 `note ""floating" as N` has the text `floating`, and
 `note "  floating   text  " as N` stays. mermaid.js reads the same text and
 draws the same note whatever the whitespace there; the Db and the pixels were
@@ -1302,11 +1295,7 @@ the id of an alias definition are printed in the same way (see
 id, like a keyword between two things in Prettier;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that keyword
 one space on each side. A directive in the gap is placed as under
-[Directives](#directives), and a U+2028 or U+2029 stays where it is. Rule 1
-names no mark for a gap that holds one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+[Directives](#directives), and a U+2028 or U+2029 stays where it is.
 
 [fixture: notes/floating-note-as-gaps-spaced] [fixture:
 notes/floating-note-as-beside-directive] [test: U+2028 before the `as` of a
@@ -1496,17 +1485,11 @@ stateDiagram-v2
 ### Comments
 
 A comment on a line of its own, `%%` or `#`, stands at the level of the
-statements around it, and its text is kept as written. Rule 1 gives no form
-here, since its table does not name the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [flowchart](./flowchart.md#comments), [class](./class.md#comments), and
-[sequence](./sequence.md#comments) put a comment line at the level of the
-statements around it. The leading and internal gaps in standalone comment text
-stay as written in [class](./class.md#comments) and
-[sequence](./sequence.md#comments) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-state comments the same form.
+statements around it, and its text is kept as written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+comment line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. The leading and internal gaps in
+standalone comment text stay as written.
 
 [fixture: comments/kept] [fixture: comments/text-kept] [fixture:
 comments/before-closing-brace]
@@ -1561,9 +1544,11 @@ stateDiagram-v2
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, and a directive within a printed line is placed as in a flowchart: the gap
-is printed as without the directive, and the directive stands after its space
-and touches the unit that follows it.
+it. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
+directive line inside a block one level deeper than the line that opens it, as
+Prettier prints the lines inside a block. A directive within a printed line is
+placed as in a flowchart: the gap is printed as without the directive, and the
+directive stands after its space and touches the unit that follows it.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-statement] [fixture: directives/whitespace-on-each-side]
@@ -1725,9 +1710,12 @@ stateDiagram-v2
 
 ### Multi-line values
 
-Align the lines of an `accDescr { ... }` body one step inside its statement,
-with a separate `}` at the statement's level. mermaid.js discards the
-indentation after a line feed from the description.
+Align the lines of an `accDescr { ... }` body one step inside its statement. A
+separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
+the `{` stands on the `accDescr` line: it puts the closing line at the level of
+the opening line, as Prettier prints the closing line of a block. mermaid.js
+discards the indentation after a line feed from the description.
 
 [fixture: multi-line-values/kept] [fixture:
 multi-line-values/accdescr-block-single-line] [fixture:

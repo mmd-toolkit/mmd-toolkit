@@ -79,7 +79,12 @@ usecase-beta
 
 ### Indentation
 
-ヘッダーの下を設定の 1 段、境界内の宣言を 2 段とし、`end` は開始文に揃えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+文はヘッダーより設定の 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+境界内の宣言を開始文より 1 段深くし、`end` は開始文に揃えます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
@@ -177,9 +182,10 @@ usecase-beta
 キーワードとその値の間に与える空白 1 個です。
 Prettier が `return  x` を `return x;` と印字するためです。
 それ以外は、ER の[実体](./er.ja.md#実体)を再利用します。
-`actor` の後は空白 1 個、id と形の区切り、メタデータと class の接尾辞は詰め、
+`actor` の後は空白 1 個、id と形の区切りは詰め、
 ラベルの外側の ASCII 空白を除き、actor の項目はコンマと空白で区切ります。
 1 つの `actor` キーワードが導入する別々のアクターの出現を、見える形にします。
+メタデータと class の接尾辞は詰めて印字します。
 ステレオタイプの隙間は、[class に揃えた規則](#stereotypes)に従います。
 明示 id、楕円と長方形の綴り、markdown ラベル、接尾辞の順序、
 宣言と参照のすべての出現を保ちます。
@@ -217,7 +223,6 @@ usecase-beta
 
 ### Labels
 
-C4 の[引数の形](./c4.ja.md#引数の形)を再利用します。
 markdown はラベルの種類を変えるため、markdown ラベルは種類を保ちます。
 どのラベルも、空の引用値を含め、内部の文字を保ちます。
 ラベルの両端の改行しない空白とバックスラッシュは、Db のテキストの一部です。
@@ -493,8 +498,6 @@ usecase-beta
 
 ### Stereotypes
 
-class の[トークンの間の空白](./class.ja.md#トークンの間の空白)
-の隙間を再利用します。
 `<<` の前に空白を 1 つ置き、区切りの内側には何も置きません。
 `A[a]<<R>>` と `A[a] <<  R  >>` は `A[a] <<R>>` になります。
 mermaid.js はテキストの両端の空白を除くので、どの書き方も同じ Db になります。
@@ -517,7 +520,7 @@ mermaid.js の文書の例 5 件も、`<<...>>` を空白の後に、文字に�
 actor と use case の両方に適用し、
 関係の端点や systemBoundary 内の宣言も同じです。
 Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白です。
-どちらの整え方も Db を保つため、共有の規則に揃えます。
+どちらの整え方も Db を保ちます。
 
 [fixture: stereotypes/stereotype-inner-kept]
 [fixture: stereotypes/stereotype-padding]
@@ -575,18 +578,21 @@ usecase-beta
 
 ### System boundaries
 
-開始文、宣言の本文、揃えた `end` を別々の行に置きます。
+開始文、宣言の本文、`end` を別々の行に置きます。
 空の境界や空の引用名も同じです。
 `end` を開始文の行に置いた空の境界（`systemBoundary S end`）は拒否されます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+`end` は境界の開始文と同じ段に置きます。
+Prettier がブロックの中の行をそう印字するためです。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 
-flowchart の [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)
-の見出しの形を再利用します。
-タイトルの開き `[` または `(` は id に接します。
+タイトルの開き `[` または `(` は、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が添字の `[` に与える形と同じく、
+id に接します（Prettier は `x [ 0 ];` を `x[0];` と印字します）。
 `systemBoundary S [t]` は `systemBoundary S["t"]` に、
 `systemBoundary S (t)` は `systemBoundary S("t")` になります。
 mermaid.js は、空白のある書き方も接する書き方も同じ境界として読みます。
@@ -793,10 +799,12 @@ usecase-beta
 ### Relationship labels and ids
 
 flowchart
-の[辺のラベルの書き方](./flowchart.ja.md#辺のラベルの書き方)を保つ考え方と、
-辺 id を詰める配置を再利用します。
-分割ラベルの外側は空白 1 個とし、明示 id は `@` と、
-分割した矢印の開始側または単独の矢印に接して置きます。
+の[辺のラベルの書き方](./flowchart.ja.md#辺のラベルの書き方)を保つ考え方を使い、
+分割ラベルの外側は空白 1 個とします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+2 つのものの間のほかの記号に与える形です（Prettier は `x = a+b` を `x = a + b;`
+と印字します）。
+明示 id は `@` と、分割した矢印の開始側または単独の矢印に接して置きます。
 usecase が許す矢印の半分、markdown ラベル、空の引用ラベル、
 actor の開始キーワード、二つの端点の出現を保ちます。
 関係の始点の `actor` キーワードは、アクターを宣言します。
@@ -857,12 +865,14 @@ YAML や flowchart、Agentflow の不透明なメタデータの整形は当て�
 
 通常のプロパティ、コメント、ディレクティブの行は含む文より 1 段深くし、
 独立した閉じ波括弧はその文に揃えます。
-通常のメタデータのプロパティ、コメント、ディレクティブの行は、
-含む文より 1 段深くし、独立した閉じ波括弧はその文に揃えます。
-[requirement のフィールド](./requirement.ja.md#インデント) と
-[ER の属性](./er.ja.md#字下げ) も、同じ配置を印字します。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
+メタデータの開始記号が含む文の行にあるとき、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+通常のプロパティの行はその行より 1 段深くし、
+独立した閉じ波括弧はその行に揃えます。
+Prettier がブロックの中の行をそう印字するためです。
+メタデータのブロックの中の単独のコメントやディレクティブの行も、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+それらの言語のブロックの中の行と同じくその段に置きます。
 
 [fixture: native-metadata/metadata-comma-comment-close]
 [fixture: native-metadata/metadata-closer-directive-own-line]
@@ -975,6 +985,9 @@ Db の検査は共有のデータブロックの経路に従います。
 
 入れ子のオブジェクトを含め、行どうしの字下げの差を保ちます。
 単独行の `}` は文の段に揃え、本文の後の閉じ括弧はその行に残します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、ブロックが文の行で開くとき、
+その独立した `}` を開く行と同じ段に置きます。
+Prettier がブロックを閉じる行を、開く行と同じ段に印字する形です。
 JSON の文字列には生の改行を入れられず、
 Mermaid が `Bad control character in string literal` として拒否するため、
 移動で文字列の内容は変わりません。
@@ -1109,7 +1122,7 @@ Prettier が CSS の `margin: 1px    2px;` を印字すると、
 CSS 宣言同士はコンマと空白で区切ります。
 
 宣言の最初のコロンの前には空白を置かず、後ろには空白を 1 つ置きます。
-ほかの図種と同じです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がキーのコロンに与える形です。
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
 Mermaid はコロンの前後の余白を保存するため Db は変わりますが、
 描かれる図は同じです。
@@ -1239,7 +1252,11 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 [fixture: direction-and-accessibility/acctitle-inner-gap-kept]
 [fixture: direction-and-accessibility/acc-descr-line-trailing-spaces-kept]
 
-説明ブロックは、本文行を文より 1 段深くし、独立した `}` を文の字下げに揃えます。
+説明ブロックは、本文行を文より 1 段深くします。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 コメント行だけが入ったブロックも同じ配置です。
 mermaid.js は説明から行送り後の字下げを除きます。
 構造の字下げは、幅 0 やタブでも同じ配置を保ちます。
@@ -1250,8 +1267,12 @@ mermaid.js は説明から行送り後の字下げを除きます。
 [fixture: direction-and-accessibility/a11y-directive-padding]
 [fixture: direction-and-accessibility/a11y-comment-empty-tabs]
 
-`}` の前の空白はテキストではないので、コメント行の後でも、
-毎回の整形で `}` を文と同じ段にそろえます。
+`}` の前の空白はテキストではありません。
+コメント行の後でも、毎回の整形で `}` を文と同じ段にそろえます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: direction-and-accessibility/block-comment-line-after-the-text]
 
@@ -1410,7 +1431,6 @@ usecase-beta
 
 class の[空行](./class.ja.md#空行)を再利用し、通常の空行の連続を 1 行にし、
 図と境界の本文の両端の空行を除きます。
-1 行でまとまりを区切れ、それ以上は意味を加えないためです。
 ASCII 空白とタブだけの行も通常の空行です。
 裸の固有コメントの後や、独立したディレクティブの前後も同じです。
 値、固有のメタデータ、JSON、ディレクティブ、保護された共通領域の結合は、
@@ -1444,14 +1464,11 @@ usecase-beta
 
 ### Comments
 
-[コメント](./class.ja.md#コメント)を再利用します。
 周囲の文、境界の `end` の前では宣言に揃えます。
 末尾の水平空白を含むコメント全体を保ちます。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表は、行頭の空白を挙げていないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[block](./block.ja.md#コメント) と [er](./er.ja.md#コメント)も、
-コメントを宣言や周りの文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のコメント行は、そのブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中のコメント行をそう印字するためです。
 ヘッダー前のコメントは先頭列に置きます。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
@@ -1504,6 +1521,10 @@ usecase-beta
 除去は区切りを補いません。
 内容、順序、複数行の列を保ち、独立したディレクティブは揃えます。
 独立したディレクティブを、周囲の文と同じ段に置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のディレクティブ行は、
+そのブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 
@@ -1512,11 +1533,7 @@ usecase-beta
 [fixture: arrow-id-boundaries/arrow-marker-both-gap-sides]
 
 ヘッダー行のディレクティブはヘッダーと同じ行に残します。
-ヘッダーの後のディレクティブを、ヘッダーと同じ行に残す形は、
-[flowchart](./flowchart.ja.md#ディレクティブ) と [block](./block.ja.md#指令)
-の図と同じです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-この配置を与えます。
+ヘッダーの後のディレクティブは、ヘッダーと同じ行に残します。
 値側の隙間、CSS の名前と値の範囲、不透明な JSON は、
 [JSON の表](#json-tables) の余白を除いて正確に保ちます。
 独立した JSON の id、`@`、波括弧の境界も含みます。
@@ -1740,8 +1757,9 @@ id、隙間、プロパティ、CSS の拒否位置を修復しません。
 
 ### Frontmatter YAML
 
-[フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を再利用します。
-安全な設定は YAML 整形で読みやすくし、不正な本文、字下げした区切り、
+安全な設定は、
+ほかの場所の YAML と同じく（[規則 1](./printed-form.ja.md#1-記号の横の空白)）、
+Prettier の YAML 整形で整形し、不正な本文、字下げした区切り、
 原文または整形後の YAML の HTML タグ開始、
 整形で現れる終了区切りは読みを保ちます。
 区切りと終了行の余白、ヘッダー前のコメントとディレクティブを保ちます。

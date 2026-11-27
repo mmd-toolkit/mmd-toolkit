@@ -52,11 +52,7 @@ agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 `agentflow-beta%%{init: {}}%% TD` は `agentflow-beta %%{init: {}}%%TB`
 になります。
 通常の後続文は本文へ移し、ディレクティブの付着はディレクティブの節に従います。
-[flowchart](./flowchart.ja.md#ディレクティブ) と
-[class](./class.ja.md#ディレクティブ) の図では、見出しの末尾に接し、
-後ろに方向がないディレクティブを、接したまま保ちます。
-そのようなディレクティブが agentflow の見出しに接する形は、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+見出しの末尾に接し、後ろに方向がないディレクティブは、接したまま保ちます。
 
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated]
@@ -85,14 +81,12 @@ agentflow-beta
 ### Indentation
 
 字下げは木から決め、元の桁位置では所属を決めません。
-見出しと flow/global の本文を 1 段深くし、`end` を開始語にそろえます。
-[sequence](./sequence.ja.md#字下げ) と [state](./state.ja.md#字下げ) の図は、
-ヘッダーの後の文をヘッダーより 1 段深く置きます。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が、
-agentflow の文にも同じ段を与えます。
-[state](./state.ja.md#字下げ) の複合状態は、`}` を開始行と同じ段に置きます。
-flow と global を閉じる `end` の字下げも、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が同じ形を与えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、見出しの本文を、
+見出しより 1 段深くします。
+Prettier がブロックの中の行をそう印字するためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+flow/global の本文を開始語より 1 段深くし、`end` を開始語にそろえます。
+Prettier がブロックの中の行をそう印字するためです。
 connector には本文がありません。
 `useTabs`では1段をタブ1つにします。
 agentflowは共有の意味を持つ字下げ幅を使い、
@@ -167,18 +161,17 @@ agentflow-beta TB
 ### Names and headings
 
 通常の1断片の名前に明示的なタイトルがある場合は、
-[subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従い、
 タイトルの `[` を名前に接します。
 `flow F [T]` は `flow F[T]` に、
 `connector F [T]` は `connector F[T]` になります。
-agentflow の文書にあるタイトル付きの見出し 19 件は、すべてこの書き方です。
-その範囲は、
-[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
-にあります。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの形を与えます。
+タイトルの `[` は、添字の `[` と同じく名前に付くからです。
+Prettier は `x [ 0 ];` を `x[0];` と印字します。
 どちらの形でも Db は同じです。
 タイトルの括弧の内側の空白は落とし、`[ T ]` は `[T]` に、
 `["x" ]` は `["x"]` にします。
-flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+丸括弧と角括弧に与える形です（Prettier は `f( a )` を `f(a);` と印字します）。
 タイトルが別に読まれる所（`[ /x/ ]` と `[ x@ ]`）には、
 両端の内側に空白を 1 つずつ残します。
 詳しくは
@@ -677,8 +670,10 @@ Prettier は、コンマの前に空白を置かず、後ろに空白を 1 つ�
 
 [fixture: single-space-gaps/style-stroke-before-colon-spaced]
 
-[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
 `style` のスタイルの末尾のバックスラッシュの後の空白は読まれません。
+その後の `,` の前には、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がコンマに与えるとおり、
+空白を置きません（Prettier は `f(a,b)` を `f(a, b);` と印字します）。
 
 [fixture: single-space-gaps/style-backslash-space-dropped]
 
@@ -769,8 +764,10 @@ agentflow-beta TB
 
 ### Arrows
 
-[矢印の前後の空白](./flowchart.ja.md#矢印の前後の空白)と同じく、
 矢印の外側に空白1つずつを置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+2 つのものの間のほかの記号に与える形です（Prettier は `x = a+b` を `x = a + b;`
+と印字します）。
 辺IDは@と矢印に接し、ディレクティブとの接触を保ちます。
 Dbの上限を超えるものも含め、ダッシュとドットの数を保ちます。
 上限未満では、長さを変えると別の矢印になります。
@@ -925,10 +922,12 @@ agentflow-beta TB
 
 ### Labels
 
-[ラベルの内側の空白](./flowchart.ja.md#ラベルの内側の空白)と同じく、
 Mermaidが捨てる通常の裸のラベルの外側空白を取り除きます。
-内部と引用形式・Markdown 形式のラベルの文字は保ちます。
-空白とタブだけのラベルは、空白 1 つに印字します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が丸括弧と角括弧に与えるとおり、
+括弧の内側に空白を置きません（Prettier は `f( a )` を `f(a);` と印字します）。
+[ラベルの内側の空白](./flowchart.ja.md#ラベルの内側の空白)と同じく、
+内部と引用形式・Markdown 形式のラベルの文字は保ち、空白とタブだけのラベルは、
+空白 1 つに印字します。
 引用符のラベルの中の空白の連なりも保ちます。
 mermaid.js はそれを頂点のテキストに持ち、折り返すほど長いラベルは、
 連なりを空白 1 つより広く描くからです。
@@ -1008,7 +1007,9 @@ Db はラベルのテキストをそのまま持ちます。
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
-flowchartと同じ理由で、`[ T ]`を含め括弧の内側の空白を落とします。
+`[ T ]`を含め括弧の内側の空白を落とします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、
+丸括弧と角括弧に与える形です（Prettier は `f( a )` を `f(a);` と印字します）。
 
 [fixture: names-and-headings/name-heading-touches-title]
 
@@ -1113,6 +1114,9 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 `flow` の本文でも同じです。
 入れ子の YAML の字下げの差を保ち、単独行の `}` は文の段に揃え、
 本文の後の閉じ括弧はその行と一緒に動かします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、ブロックが文の行で開くとき、
+その独立した `}` を開く行と同じ段に置きます。
+Prettier がブロックを閉じる行を、開く行と同じ段に印字する形です。
 
 [fixture: metadata-blocks/zero-and-shallow]
 [fixture: metadata-blocks/deep-nested-yaml]
@@ -1121,9 +1125,10 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 
 ほかの移動条件と理由は、
 [データブロック](./flowchart.ja.md#データブロック)に従います。
-開きの行に本文があるブロック、内部のディレクティブ、行全体を保つ行、
-幅 0 の字下げ、文の最初の行より後から始まるブロックは、書かれたまま残します。
+開きの行に本文があるブロックと、行全体を保つ行は、書かれたまま残します。
 `useTabs` では、複数行のブロックを持つ文全体を書かれたまま印字します。
+このほか、内部のディレクティブ、幅 0 の字下げ、
+文の最初の行より後から始まるブロックも、書かれたまま残します。
 前後のコメント、ディレクティブ、空の説明、空行、
 区切りはそれぞれの規則に従います。
 
@@ -1141,8 +1146,10 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 [fixture: metadata-blocks/container-header]
 
 `useTabs` では、文と違い、見出しを書かれたまま印字しません。
-コンテナの `end` は、プリンタが見出しに与える字下げに置かれるので、
-見出しもその字下げにし、`useTabs` でないときと同じく、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、コンテナの `end` は、
+プリンタが見出しに与える字下げに置かれます。
+Prettier がブロックの中の行をそう印字するためです。
+そのため、見出しもその字下げにし、`useTabs` でないときと同じく、
 ブロックの行も見出しと一緒に動かします。
 
 [fixture: metadata-blocks/use-tabs-container-header-indented]
@@ -1150,17 +1157,22 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 `flow G; A@{ … }` の `A@{ … }` のように、見出しと同じ行でその後ろにある文は、
 コンテナの中の文です。
 行頭に書かれた字下げは見出しの字下げなので、その文も書かれたまま印字しません。
-[データブロック](./flowchart.ja.md#データブロック)を参照してください。
 `B; end; A@{ … }` の `A@{ … }` のように、
 コンテナの中の文が先にある `end` の後の文も同じです。
 `B -->` の次の行の `C; A@{ … }` のように、
-そこに挙げたもの以外で始まる行の文も同じです。
+[データブロック](./flowchart.ja.md#データブロック)に挙げたもの以外で、
+行が始まる文も同じです。
 複数行にわたるディレクティブの残りで始まる行の文も、そうです。
+最上位で行の頭にある単独の `;` の後の文も同じで、
+`; A@{ … }` の `A@{ … }` がそうです。
+整形器はその `;` を落とすので、
+その前の空白はどの深さのためにも書かれていません。
 
 [fixture: metadata-blocks/use-tabs-container-header-statement-moved]
 [fixture: metadata-blocks/use-tabs-statement-before-end-moved]
 [fixture: metadata-blocks/use-tabs-edge-continuation-moved]
 [fixture: metadata-blocks/use-tabs-directive-continuation-moved]
+[fixture: metadata-blocks/use-tabs-dropped-semicolon-moved]
 
 矢印の改行後のブロックは、文の最初の行より後から始まるため桁を残し、
 1 行でも複数行でも、ブロックを 2 つ持つ文は、どちらも桁を残します。
@@ -1382,9 +1394,11 @@ agentflow-beta TB
 
 ### Blank lines
 
-[空行](./flowchart.ja.md#空行)と同じく、空行1つで文を区切れるので、
-それ以上の連続する空行を1つにします。
+連続する空行を1つにします。
 空白だけの行も同じで、文書とflow/globalの本文の両端の空行を落とします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+Prettier は、空行の連なりを 1 行にし、
+ファイルやブロックの初めと終わりの空行を除きます。
 値、データ、ディレクティブの内部の空行を保ちます。
 引用符付きのラベルの内部の空行は、
 mermaid.js の Db ではラベルの文字に含まれるので、
@@ -1421,6 +1435,9 @@ agentflow-beta TB
 [fixture: comments/comment-looking-values] [fixture: comments/comments-align]
 
 独立したコメントを近隣の文に揃え、著者の全文と末尾空白を保ちます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のコメント行は、ブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
 ただし、文の後ろのコメントは、
 `;` を含む場合にだけ末尾の空白とタブを落とします（`A %% c;  ` は `A %% c;`
 と印字します）。
@@ -1471,7 +1488,11 @@ agentflow-beta TB
 ### Directives
 
 除去で区切りが生まれないため、内容、順序、後続行の桁位置を保ちます。
-独立したディレクティブを揃え、同じ印字行の中のディレクティブは、
+独立したディレクティブを揃えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)により、
+ブロックの中の単独のディレクティブ行は、ブロックを開く行より 1 段深く置きます。
+Prettier がブロックの中の行をそう印字するためです。
+同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 独立したディレクティブは、前後の文と同じ段に揃えます。
 通常の隙間に空白を置く場合は、行内のディレクティブをその空白の後ろに置き、
@@ -1546,7 +1567,7 @@ frontmatterには保護付きYAML整形を使え、CR/LF変換も共通のまま
 
 ### Direction
 
-[方向](./flowchart.ja.md#方向)と
+[方向](./flowchart.ja.md#方向)の `TD` と、
 [字下げ](./flowchart.ja.md#字下げ)の例外と同じ理由です。
 コンテナー内のTDは観測でき、字下げでアクセシビリティより先に方向文を読めます。
 語、方向の値、前後の無視される文字と、書かれた改行を保ちます。
@@ -1657,12 +1678,9 @@ flowchartと異なり、コロンの後のコメントらしい行も値の文�
 文中にディレクティブがあれば通常の結合をせず、従来の複数行の文の配置を保ちます。
 継続行とディレクティブ行をキーワードより1段深く置き、
 文字と著者の改行を保ちます。
-規則 1 は、改行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
-その前の空白を残します。
-ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+コメントやディレクティブの隣の改行と、その前の空白を残します。
+ほかの規則も配置を書かれたまま残す所があります（Db
+が空白ごとテキストを持つ所や、
 動かすと mermaid.js がテキストを拒否する所などです）。
 
 [fixture: accessibility/inline-directive-kept]
@@ -1763,6 +1781,10 @@ global 本文の原文を変えると、後続の flow のメンバーが変わ�
 [fixture: accessibility/global-description-membership-kept]
 
 単独行の閉じ括弧は、0桁目でも字下げされていても`accDescr`に揃えます。
+独立した行の `}` は文と同じ段に置きます。
+`{` が `accDescr` の行にあるときは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)がこの深さを与えます。
+Prettier がブロックを閉じる行を、そのブロックを開く行と同じ段に印字する形です。
 
 [fixture: accessibility/block-close-column-zero]
 [fixture: accessibility/block-close-indented]
@@ -1852,8 +1874,8 @@ agentflow-beta TB
 [fixture: accessibility/next-line-values]
 [fixture: accessibility/empty-block-lines]
 
-[複数行の文](./flowchart.ja.md#複数行の文)と、
-[複数行の値](./flowchart.ja.md#複数行の値)を同じ理由で再利用します。
+複数行に書かれた文は改行を保ちます。
+[複数行の値](./flowchart.ja.md#複数行の値)を再利用します。
 [アクセシビリティ](#accessibility) の説明本文の字下げを除き、
 値の後続行の桁位置は文字だからです。
 通常の継続トークンはさらに1段深くします。
@@ -2223,9 +2245,11 @@ agentflow-beta TB
 
 ### Frontmatter YAML
 
-[フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)と
-[フロントマター](./compatibility.ja.md#フロントマター)を同じ理由で再利用します。
-安全なYAMLは通常整形し、危険な文字は読みを保つため残します。
+YAML は、ほかの場所の YAML と同じく、Prettier の YAML 整形で整形します。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+危険な文字は、読みを保つため残します。
+詳しくは [フロントマター](./compatibility.ja.md#フロントマター)
+を参照してください。
 区切り行とその空白、不正なYAML、字下げされた区切り、HTMLタグの開始、
 整形で区切りが現れる場合を保ちます。
 YAMLにはsignificantIndentationWidthの共通の最小幅1を使います。

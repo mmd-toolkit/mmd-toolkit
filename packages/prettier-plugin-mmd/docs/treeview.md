@@ -16,9 +16,10 @@ the Markdown host in fences. See [compatibility](./compatibility.md).
 
 Put `treeView-beta` at column one and ordinary body items on following lines.
 This gives the header its own line without repairing trailing header padding,
-inline names or rejected spellings. Ordinary body items follow on later lines,
-as each statement of a [flowchart](./flowchart.md#statements-one-per-line)
-stands on a line of its own;
+inline names or rejected spellings. A header at column one is easier to find
+than an indented one. Ordinary body items follow on later lines, as each
+statement of a [flowchart](./flowchart.md#statements-one-per-line) stands on a
+line of its own;
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 treeView the same body layout. Empty bodies stay empty; attached directives
 retain their boundary.
@@ -767,10 +768,9 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 In indentation mode read the forest from AST children, including file parents.
 Print roots at one configured step and children one step beyond their parent.
-Sections and items stand one configured level below the header and one more
-below a section in [kanban](./kanban.md#indentation) diagrams. Under
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have),
-treeView roots and children take those positions. A space step is
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the roots one
+configured level below the header, as Prettier prints the lines inside a block.
+A child stands deeper, since indentation determines parentage. A space step is
 `max(1, tabWidth)`; useTabs uses one tab. This selects a uniform Db-equivalent
 width even for a deep first node, later shallower roots, irregular increments,
 duplicate names and empty names.
@@ -1446,11 +1446,7 @@ treeView-beta
 ### Annotation lines
 
 In indentation mode keep later-line annotations separate and align them with
-their owner, retaining positive leading whitespace. Separate decoration lines
-stand at their owner's column in [kanban](./kanban.md#icons-and-classes)
-diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-indentation-mode annotations the same alignment. In box mode move a
+their owner, retaining positive leading whitespace. In box mode move a
 branch-prefixed annotation onto its owner's line, in source order with one
 separating space, only when no earlier description and no intervening comment,
 directive, selected semicolon or comment region prevents it. Retain the whole
@@ -1659,11 +1655,8 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 Print ordinary class components as `:::Name` and icon components as
 `icon(reference)`, including `icon()` and `icon(:file)`. Keep class/reference
 spelling. Compact marker padding groups the class visually; icon-internal
-whitespace is not grammar. Classes in [kanban](./kanban.md#icons-and-classes)
-diagrams have no spaces or tabs between `:::` and the class name, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-treeView the same compact class marker. Trivia between complete components
-retains its boundaries.
+whitespace is not grammar. Trivia between complete components retains its
+boundaries.
 
 [fixture: treeview/annotation-components/class-post-marker]
 
@@ -2425,18 +2418,26 @@ even when originally touching, to distinguish the keyword from its body.
 Prettier puts one space before the brace that opens a block, so plain whitespace
 between `accDescr` and `{` becomes one space under
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark). Join plain opener
-whitespace, align ordinary body lines one step inside the statement, preserve
-trivia contents, and align separate closers with the statement. Mermaid discards
-indentation after LF from the description. The body uses the configured
-indentation, including tabs and the positive minimum step at width zero. In box
-mode remove ordinary keyword/opener prefixes and place the common statement at
-column one, while keeping the body's authored columns: indenting a plain
-physical line can make box syntax reject it. Value-owned box geometry still
-keeps its complete brace span. The first effective `}` remains the closer.
-Unsafe removal follows Branch prefixes, including common-value tabs. A sole mode
-selector in the opener gap keeps just that gap, as described in Decorations. The
-whitespace before the `}` is no text, so the `}` stays aligned with the
-statement in every pass, also after a comment line.
+whitespace, align ordinary body lines one step inside the statement, and
+preserve trivia contents. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. The lines of the description's body text are outside the
+"Lines inside a block" row of rule 1. Mermaid discards indentation after LF from
+the description. The body uses the configured indentation, including tabs and
+the positive minimum step at width zero. In box mode remove ordinary
+keyword/opener prefixes and place the common statement at column one, while
+keeping the body's authored columns: indenting a plain physical line can make
+box syntax reject it. Value-owned box geometry still keeps its complete brace
+span. The first effective `}` remains the closer. Unsafe removal follows Branch
+prefixes, including common-value tabs. A sole mode selector in the opener gap
+keeps just that gap, as described in Decorations. The whitespace before the `}`
+is no text, so the `}` stays aligned with the statement in every pass, also
+after a comment line.
+
+[fixture: treeview/description-blocks/brace-on-a-later-line]
 
 [fixture: treeview/description-blocks/block-comment-line-after-the-text]
 
@@ -2585,11 +2586,9 @@ treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
 ### Comments
 
 In indentation mode, align standalone comment lines with the next statement, or
-the last statement at EOF, to show their association, as in
-[ishikawa](./ishikawa.md#comments), [kanban](./kanban.md#comments) and
-[mindmap](./mindmap.md#comments). A comment may move deeper or shallower,
-including before a dedent; successive comments share the target column even
-across blank lines.
+the last statement at EOF, to show their association. A comment may move deeper
+or shallower, including before a dedent; successive comments share the target
+column even across blank lines.
 
 [fixture: treeview/comments/comment-standalone-aligned] [fixture:
 treeview/comments/aligned-depths] [fixture: treeview/comments/aligned-final]

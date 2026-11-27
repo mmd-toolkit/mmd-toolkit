@@ -20,6 +20,7 @@ fixture の置き方と確かめ方は、
 
 ヘッダー、記録、コメント行、指令の行は、
 `useTabs` と `tabWidth` の指定に関わらず、すべて 1 列目に置きます。
+1 列目のヘッダーは、字下げしたヘッダーより見つけやすくなります。
 sankey は CSV の形の記録の並びで、その行のうち 2 種類は字下げできません。
 mermaid.js は引用符の前の空白を拒否するので、
 文字列で始まる記録は字下げできません。
@@ -27,15 +28,17 @@ mermaid.js は引用符の前の空白を拒否するので、
 それはコンマのない欄として拒否されます（diagrams/sankey.md、
 「文字」と「図と記録」）。
 タブはどこでも拒否されるので、ほかの行をタブで字下げすることもできません。
-すべての行を 1 列目にすれば、列が混ざりません。
 
 [fixture: indentation/header-and-records-at-the-first-column]
 [fixture: indentation/quoted-first-record-at-the-first-column]
 [fixture: indentation/written-indentation-dropped]
 [fixture: indentation/tab-width-4] [fixture: indentation/use-tabs]
 
-コメント行の字下げは Db に入らないので残すこともできますが、それも落として、
-すべての行を 1 列目にそろえます。
+コメント行の字下げは Db に入りません。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+コメント行を周りの行と同じ段に置きます。
+Prettier がブロックの中の行を印字する形で、
+コメント行はレコードと同じ 1 列目に立ちます。
 指令の行はどの場合も 1 列目です。
 
 [fixture: indentation/comment-lines-at-the-first-column]
@@ -374,7 +377,9 @@ d,e,2
 [fixture: blank-lines/around-comment-lines]
 [fixture: blank-lines/around-directive-lines]
 
-これらは他の図種の規則と同じで、sankey だけの規則を足さないためです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が、これらの形を与えます。
+Prettier は、コードの空行の連なりを 1 行にし、
+ファイルやブロックの初めと終わりの空行を除きます。
 mermaid.js の文書がヘッダーの後に書く空行も、本体の先頭の空行として落とします。
 Prettier は JavaScript、CSS、YAML、Markdown の先頭に空行を置きません。
 テキストの先頭でヘッダーの前にある空行を落とす形は、
@@ -517,7 +522,6 @@ mermaid.js に拒否されるからです。
 
 値の後ろの指令は、前に空白が書かれているかを残します。
 空白があれば空白 1 つを置き、接していれば接したままにします。
-他の図種と同じ規則です。
 記録の始まりの指令は、記録との間に空白が書かれているかを残します。
 接していれば接したまま、空白があれば空白 1 つにします。
 
@@ -559,9 +563,10 @@ e,f,3 %%{init: {}}%%
 
 ### フロントマターの YAML
 
-flowchart と同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整え、`---` の行は、
-行末の空白とタブも含め、書かれたまま残します。
+`---` の行の間の YAML は、ほかの場所の YAML と同じく、
+Prettier の YAML 整形で整えます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与える形です。
+`---` の行は、行末の空白とタブも含め、書かれたまま残します。
 
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
@@ -621,7 +626,6 @@ Prettier は JavaScript、CSS、YAML、Markdown の末尾に改行を 1 つ置�
 [test: a tab at the end of the text without a line feed]
 [test: U+00A0 on a line of its own at the end of the text]
 
-テキスト末尾のコメント行は、U+00A0 も含め、
-コメントがほかの場所でそうであるように、文字を残します。
+テキスト末尾のコメント行は、U+00A0 も含め、文字を残します。
 
 [test: U+00A0 at the end of the last comment line of the text]

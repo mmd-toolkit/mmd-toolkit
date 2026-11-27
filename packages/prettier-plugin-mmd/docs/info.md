@@ -9,8 +9,9 @@ Invisible characters and physical CR examples are escaped test cases.
 
 ### Header
 
-Print exact `info` at column one and a written `showInfo` after one space. Join
-ordinary whitespace and line breaks before the flag;
+Print exact `info` at column one and a written `showInfo` after one space. A
+header at column one is easier to find than an indented one. Join ordinary
+whitespace and line breaks before the flag;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 between `info` and its flag, as Prettier prints `return  x` as `return x;`;
 never add or remove the flag. Comments, global directives, hidden forms and
@@ -41,8 +42,9 @@ info
 
 ### Indentation
 
-Place ordinary body statements and standalone comments/directives one configured
-step below the header, as the other diagram types do. `tabWidth: 0` gives zero
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary body
+statements and standalone comments/directives one configured step below the
+header, as Prettier prints the lines inside a block. `tabWidth: 0` gives zero
 spaces; `useTabs` gives one tab even at width zero, because info columns have no
 grammatical meaning. Value continuation columns, hidden interiors/closers and
 retained prefixes follow their preservation rules. YAML uses the shared positive
@@ -205,11 +207,10 @@ info
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-For blocks that keep their braces, use the
-[shared description layout](./pie.md#description-blocks): separate the keyword
-and opening brace with one space so the block boundary is clear. Collapse
-exterior runs to one space, including plain opener whitespace across physical or
-Unicode line boundaries. The `accDescr` keyword takes a description block, so
+For blocks that keep their braces, separate the keyword and opening brace with
+one space so the block boundary is clear. Collapse exterior runs to one space,
+including plain opener whitespace across physical or Unicode line boundaries.
+The `accDescr` keyword takes a description block, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives plain
 whitespace before its opening brace the one-space gap that Prettier prints
 between a keyword and what it takes. Real opener trivia keeps its break and uses
@@ -221,15 +222,22 @@ Empty whitespace-only blocks print `{}` because no text needs surrounding
 spaces. Prettier prints empty braces without interior whitespace, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives a
 whitespace-only description block the form `{}`. Comment-only blocks keep their
-comments one level inside; a standalone closer aligns with the statement.
-Ordinary description body and standalone comment lines align one level inside
-the statement; LF indentation is absent from the Db. Keep line breaks and
-interior blank lines, and the whitespace at the end of each line of text except
-the last one; a line of whitespace only becomes an empty line. The whitespace at
-the end of the last line of text is dropped where the closer stands on a line of
-its own, and is printed as one space where the closer follows it on that line.
-Directives and shared removed comment regions keep their complete source. Quotes
-and backslashes do not protect the first closing brace.
+comments one level inside. A separate `}` aligns with its statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
+puts the closing line at the level of the line that holds the `{`, as Prettier
+prints the closing line of a block, and that line is the `accDescr` line or,
+where a comment or a directive stands before the `{`, a later line at the level
+of the statement. Ordinary description body and standalone comment lines align
+one level inside the statement; LF indentation is absent from the Db. Keep line
+breaks and interior blank lines, and the whitespace at the end of each line of
+text except the last one; a line of whitespace only becomes an empty line. The
+whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. Directives and shared removed comment regions keep
+their complete source. Quotes and backslashes do not protect the first closing
+brace.
+
+[fixture: info/description-blocks/brace-on-a-later-line]
 
 [fixture: info/description-blocks/block-gap-presence] [fixture:
 description-blocks/block-trailing-whitespace-closer-on-the-text-line]
@@ -433,10 +441,11 @@ info showInfo
 
 ### Comments
 
-Use [shared comment placement](./pie.md#comments) to keep attachment and source:
-ordinary standalone body comments start one step in, and inline comments stay on
-their line. Preheader comments start at column one. A run of spaces and tabs
-before an inline comment becomes one space.
+Ordinary standalone body comments start one step in, and inline comments stay on
+their line. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+depth of a standalone comment line inside the diagram body, as Prettier prints
+the lines inside a block. Preheader comments start at column one. A run of
+spaces and tabs before an inline comment becomes one space.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
@@ -482,10 +491,12 @@ directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
 contact is broken. Align only an ordinary standalone start one body step in.
-Keep complete component boundaries and value-internal directives, multiline
-contents, malformed init arguments and EOF-reaching endings. Do not gather,
-reformat or delete them: an init directive can change configuration even though
-info’s Db remains empty.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. Keep complete component boundaries and value-internal
+directives, multiline contents, malformed init arguments and EOF-reaching
+endings. Do not gather, reformat or delete them: an init directive can change
+configuration even though info’s Db remains empty.
 
 [fixture: info/global-directives/header-to-body]
 
@@ -579,9 +590,8 @@ info
 ### Blank lines
 
 Collapse ordinary internal ASCII blank runs to one and remove ordinary
-document/body edge blanks, preserving visible grouping without excess space.
-Prettier prints at most one blank line between statements and none at the start
-or end of a text or block, so
+document/body edge blanks. Prettier prints at most one blank line between
+statements and none at the start or end of a text or block, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives ordinary ASCII
 blank lines the same limits. Apply this around comments too. Values, directives,
 hidden interiors, common-region joins and retained prefixes keep their breaks,
@@ -590,8 +600,7 @@ spare LF only when a following statement needs it. At the document end use one
 configured final newline; directly after the header remove blank lines, since
 the header needs no EOL before its first statement. Elsewhere apply the ordinary
 blank-line rules after the spare LF: collapse a run to one blank line and clear
-whitespace-only lines. The spare LF meets the grammar; later blanks express
-grouping, just as after comments.
+whitespace-only lines. The spare LF meets the grammar.
 
 A hidden boundary or semicolon protection can keep a statement on the header's
 line; the gap after that statement's hidden suffix still lies between

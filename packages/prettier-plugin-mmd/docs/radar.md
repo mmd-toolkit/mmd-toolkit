@@ -12,18 +12,17 @@ preserved text and differences from mermaid.js.
 ### Header
 
 Print `radar-beta` at column one and put an ordinary first statement on the next
-line so the heading is easy to find. Where a statement stands is no place of
-rule 1, so
+line so the heading is easy to find. The line that a statement stands on is no
+place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the first statement its line, as [pie](./pie.md#header),
-[packet](./packet.md#header), [architecture](./architecture.md#header),
-[treemap](./treemap.md#header), [cynefin](./cynefin.md#header), and
-[gitgraph](./gitgraph.md#header) print an ordinary first statement on the next
-line, where no other rule keeps the boundary as written, as the hidden forms,
-global trivia and protected semicolon segments below do. A colon right after the
-header word is removed, together with the whitespace before it: mermaid.js reads
-`radar-beta:` and `radar-beta` as the same header, and the examples in its
-documentation write the header without the colon 3 times against none (see
+the first statement its line, as [packet](./packet.md#header),
+[architecture](./architecture.md#header), and [cynefin](./cynefin.md#header)
+print an ordinary first statement on the next line, where no other rule keeps
+the boundary as written, as the hidden forms, global trivia and protected
+semicolon segments below do. A colon right after the header word is removed,
+together with the whitespace before it: mermaid.js reads `radar-beta:` and
+`radar-beta` as the same header, and the examples in its documentation write the
+header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
@@ -57,12 +56,10 @@ written), but in it these are a question of the list of undecided forms (D50),
 so no rule gives the contact of two directives, and the released form stays
 until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
-[gitgraph](./gitgraph.md#header) prints `gitGraph %%{x}%%:` as
-`gitGraph%%{x}%%:`. The colon stays before an unclosed directive too:
-`radar-beta:%%{x y`, a line break, and `axis North` stay as written, since
-mermaid.js takes the directive out with the line break after it and would read
-the header and `axis` as one word, and every version of mermaid.js that counts
-rejects that text (see
+The colon stays before an unclosed directive too: `radar-beta:%%{x y`, a line
+break, and `axis North` stay as written, since mermaid.js takes the directive
+out with the line break after it and would read the header and `axis` as one
+word, and every version of mermaid.js that counts rejects that text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Hidden forms, global trivia and protected semicolon segments keep their source
 boundaries instead. Empty bodies remain empty.
@@ -124,11 +121,12 @@ radar-beta
 
 ### Indentation
 
-Use the shared flat-body printer: ordinary statements, standalone comments and
-Root directives stand one configured step in. The default is two spaces;
-tabWidth four uses four spaces, and tabWidth zero uses zero spaces because
-columns have no grammatical meaning. useTabs uses one tab, even at width zero.
-Prettier prints a nested block of JavaScript with no indentation at
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts ordinary
+statements, standalone comments and Root directives one configured step below
+the header, as Prettier prints the lines inside a block. The default is two
+spaces; tabWidth four uses four spaces, and tabWidth zero uses zero spaces
+because columns have no grammatical meaning. useTabs uses one tab, even at width
+zero. Prettier prints a nested block of JavaScript with no indentation at
 `--tab-width 0`, and with one tab per level at `--use-tabs`, also at
 `--tab-width 0`. Entry continuation lines use two steps; written value columns,
 hidden interiors/closers and retained prefixes keep their own rules.
@@ -159,8 +157,8 @@ radar-beta
 ### Statements one per line
 
 Print each ordinary axis, curve, options or common statement on its own line to
-expose the authored statement units. Where a statement stands is no place of
-rule 1, so
+expose the authored statement units. The line that a statement stands on is no
+place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [er](./er.md#statements-one-per-line),
 [gantt](./gantt.md#statements-one-per-line), and
@@ -322,16 +320,19 @@ comma or inside a named entry, where mermaid.js rejects one. Keep newlines
 holding comments or Root directives; ordinary continuation lines and comments
 use two indentation steps, while a separate `}` aligns with its statement. A
 comment takes the rest of its line, so joining the next entry onto it would put
-the entry into the comment. The start of a line is no place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) puts
-the separate `}` at the level of its statement, as the `}` of an attribute block
-does in [er](./er.md#attribute-blocks) and the `}` of a description block in
-[flowchart](./flowchart.md#multi-line-values). No rule gives the line breaks
-that hold a directive, or the other authored entry newlines of a commented list,
-which stay as written: [xychart](./xychart.md#multi-line-statements) keeps the
-line breaks that hold a comment or a directive, but in it this is a question of
-the list of undecided forms (D45), so its printing is no decided form, and the
-released form stays until it is decided (see
+the entry into the comment.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the entries
+inside the braced list one level deeper than the statement that opens it and the
+separate `}` at the level of that statement, as Prettier prints the lines inside
+a block, with the closing line at the level of the opening line. A comment or
+Root directive line between entries of the same depth stands at their level, as
+Prettier prints a comment line at the level of the lines around it. No rule
+gives the line breaks that hold a directive, or the other authored entry
+newlines of a commented list, which stay as written:
+[xychart](./xychart.md#multi-line-statements) keeps the line breaks that hold a
+comment or a directive, but in it this is a question of the list of undecided
+forms (D45), so its printing is no decided form, and the released form stays
+until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Hidden boundaries, value lines and protected semicolon segments remain written,
 including their continuation columns. No continuation indentation is added
@@ -659,15 +660,11 @@ is printed as one space, also where the comment holds a `;` (see
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
 
-Rule 1 names no mark for a gap beside a directive, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: the other diagram types of
-[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
-print a run of spaces and tabs before a directive as one space and leave out the
-spaces at the end of the line (item 1). The other items say what the released
-version prints for the gaps and the characters that the rules do not decide, and
-a form that the other diagram types print differently stays as it is until it is
-decided (see
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) leaves out the spaces
+at the end of the line (item 1), as Prettier ends no line with whitespace. The
+other items say what the released version prints for the gaps and the characters
+that the rules do not decide, and a form that the other diagram types print
+differently stays as it is until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 Where a U+2028 or U+2029 stands inside the text, or the value holds directives
@@ -694,12 +691,9 @@ of the line holds no directive, comment, `;`, wide space, U+2028, or U+2029, and
 the line is not undecided, the spaces and tabs between the directives and the
 rest of the text are left out, with the spaces and tabs at the end of the line:
 `title %%{x}%%  T  ` is printed `title %%{x}%%T`, and
-`title %%{x}%%%%{y}%%  T  ` is printed `title %%{x}%%%%{y}%%T`.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as the Title of [a sequence diagram](./sequence.md#title) does, which
-prints `title %%{init: {}}%% T` as `title %%{init: {}}%%T`: mermaid.js removes
-the directives before it reads the text, and it draws the title without the
-whitespace at its start (see
+`title %%{x}%%%%{y}%%  T  ` is printed `title %%{x}%%%%{y}%%T`. mermaid.js
+removes the directives before it reads the text, and it draws the title without
+the whitespace at its start (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 The other titles that hold a directive before their text are not stated: a
 directive that touches the keyword, a second whitespace character before the
@@ -2338,12 +2332,12 @@ radar-beta
 
 ### Accessibility lines
 
-Reuse shared `accTitle: value` and `accDescr: value`, except as the paragraphs
-below state, as the [paragraph on a directive before the text](#title) states,
-and as the [Semicolons](#semicolons) section states: the colon touches its
-keyword, and one space precedes a trimmed nonempty value. The colon is the colon
-of a key: the line gives the diagram its one title or description, so none
-stands before it and one follows (step 2 of
+Print `accTitle: value` and `accDescr: value`, except as the paragraphs below
+state, as the [paragraph on a directive before the text](#title) states, and as
+the [Semicolons](#semicolons) section states: the colon touches its keyword, and
+one space precedes a trimmed nonempty value. The colon is the colon of a key:
+the line gives the diagram its one title or description, so none stands before
+it and one follows (step 2 of
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is), and the row of
 its table for the title and the description of a diagram). Empty values end at
 the colon; never join a next-line value. Consistent outer spacing does not
@@ -2405,15 +2399,11 @@ is printed as one space, also where the comment holds a `;` (see
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
 
-Rule 1 names no mark for a gap beside a directive, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: the other diagram types of
-[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
-print a run of spaces and tabs before a directive as one space and leave out the
-spaces at the end of the line (item 1). The other items say what the released
-version prints for the gaps and the characters that the rules do not decide, and
-a form that the other diagram types print differently stays as it is until it is
-decided (see
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) leaves out the spaces
+at the end of the line (item 1), as Prettier ends no line with whitespace. The
+other items say what the released version prints for the gaps and the characters
+that the rules do not decide, and a form that the other diagram types print
+differently stays as it is until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 Where a U+2028 or U+2029 stands inside the text, or the value holds directives
@@ -3516,12 +3506,13 @@ printed in the form with the colon: the formatter, run on a flowchart, prints
 [A description block on one line](./compatibility.md#a-description-block-on-one-line)
 states for every diagram type that accepts a block, and keeps the line break
 after a directive that stands between them. Preserve comment/directive-only
-interiors. Rule 1 names no mark for a line inside a block. For a block that
-holds only comment lines, rule 2 decides, as
+interiors. Rule 1 does not decide the depth of comment lines at the boundary of
+a description block. For a block that holds only comment lines, rule 2 decides
+the depth of those boundary comment lines, as
 [flowchart](./flowchart.md#multi-line-values) keeps the comment lines of a block
-without text and puts them one level inside the block, with its `}` at the level
-of the `accDescr`. No rule gives the interior of a block that holds a directive:
-[flowchart](./flowchart.md#multi-line-values),
+without text and puts them one level inside the block. A separate `}` stands at
+the level of the `accDescr`. No rule gives the interior of a block that holds a
+directive: [flowchart](./flowchart.md#multi-line-values),
 [xychart](./xychart.md#empty-description-blocks), and
 [quadrant](./quadrant.md#empty-description-blocks) keep its contents and line
 breaks, but their documents give that form no reason, and it is a question of
@@ -3529,19 +3520,21 @@ the list of undecided forms (D34), so their printing is no decided form, and the
 released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Ordinary description body and standalone comment lines align one level inside
-the statement: the Db removes indentation after LF. The start of a line is no
-place of rule 1, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: at the top level, [flowchart](./flowchart.md#multi-line-values),
-[class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
-align the lines of an `accDescr { ... }` body one step inside its statement.
-Keep line breaks and interior blank lines, and the whitespace at the end of each
-line of text except the last one; a line of whitespace only becomes an empty
-line. The whitespace at the end of the last line of text is dropped where the
-closer stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Align a separate opener or closer with the statement.
-Directives and shared removed comment regions keep their complete source. The
-first closing brace still ends the value.
+the statement: the Db removes indentation after LF. Rule 1 does not decide the
+indentation of description text. Keep line breaks and interior blank lines, and
+the whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. Align a separate
+opener or closer with the statement.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
+level, as Prettier prints the closing line at the level of the line that opens a
+block: the line that holds the `{` is the statement's line or, where a comment
+or a directive stands before the `{`, a later line at the level of the
+statement. Directives and shared removed comment regions keep their complete
+source. The first closing brace still ends the value.
+
+[fixture: radar/description-blocks/brace-on-a-later-line]
 
 [fixture: radar/description-blocks/block-touching-with-text-fixed] [fixture:
 radar/description-blocks/block-empty-fixed] [fixture:
@@ -3644,11 +3637,11 @@ radar-beta
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. A comment on a line of its own stands at the level of the statements
-around it, as under [Comments](./flowchart.md#comments) of a flowchart, and as
-Prettier prints the comment lines of code (a `//` line in a block is printed at
-the level of the statements around it). Inline comments keep their line. A
-comment that touches stays touching.
+header. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+depth of a standalone comment line inside the diagram body, as Prettier prints
+the lines inside a block. A comment on a line of its own stands at the level of
+the statements around it. Inline comments keep their line. A comment that
+touches stays touching.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`. Preserve marks, content and trailing padding.
@@ -3694,10 +3687,13 @@ under [Directives](./flowchart.md#directives). When formatting splits units that
 were on the same line, a directive in their gap moves with the following unit:
 its right boundary stays touching or separated, while its left contact is
 broken. Ordinary standalone starts use one body step; multiline interiors and
-EOF-reaching unfinished endings remain written. Never format these as JSON or
-gather them elsewhere: removal joins surrounding text, so deleting a
-component-boundary space can reject an accepted keyword/value pair. Native
-RadarIgnoredText directives are separate authored nodes.
+EOF-reaching unfinished endings remain written.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+standalone directive line inside the diagram body, as Prettier prints the lines
+inside a block. Never format these as JSON or gather them elsewhere: removal
+joins surrounding text, so deleting a component-boundary space can reject an
+accepted keyword/value pair. Native RadarIgnoredText directives are separate
+authored nodes.
 
 [fixture: radar/global-directives/header-to-body]
 
@@ -3992,10 +3988,9 @@ radar-beta
 
 Keep at most one ordinary ASCII blank line between statements or trivia, and
 remove ordinary document/body/header-edge blanks. Whitespace-only lines become
-empty. This retains grouping without excess space.
-[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the empty
-lines: Prettier prints a run of empty lines as one and drops the empty lines at
-the start and at the end of a file or of a block in code, and
+empty. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the
+empty lines: Prettier prints a run of empty lines as one and drops the empty
+lines at the start and at the end of a file or of a block in code, and
 [gantt](./gantt.md#blank-lines), [journey](./journey.md#blank-lines),
 [pie](./pie.md#blank-lines), and [sankey](./sankey.md#blank-lines) print a run
 of empty lines as one and drop the empty lines at the start and at the end of a
