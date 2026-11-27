@@ -4224,8 +4224,11 @@ host supplies fence/list/quote indentation and EOL; it trims final payload-line
 padding, including final hidden padding. Interior common-suffix padding remains
 necessary before another statement: the versions of mermaid.js that were run
 reject `accTitle: T%%{!s}%%` followed by a line break and a statement when the
-space after the hidden form is taken away. This keeps one payload rule while
-testing host output/idempotence separately from payload Db and written text.
+space after the hidden form is taken away. This is one of the places where
+mermaid.js decides against the whitespace of rule 1 (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
+This keeps one payload rule while testing host output/idempotence separately
+from payload Db and written text.
 
 [test: radar Markdown: top-level]
 

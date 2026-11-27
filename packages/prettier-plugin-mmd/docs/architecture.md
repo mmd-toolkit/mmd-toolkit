@@ -4193,6 +4193,9 @@ statement. Before `service following`, the space after
 `service space_suffix%%{}%%` stays, since every version of mermaid.js that
 counts rejects the same lines without that space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+This is one of the places where mermaid.js decides against the whitespace of
+rule 1 (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
 Only the header's own hidden forms need no spare LF. A statement retained on the
 header line still has a statement boundary after its suffix. Keep multiple
 suffix owners and forms after visible EOL distinct; exterior excess blanks use

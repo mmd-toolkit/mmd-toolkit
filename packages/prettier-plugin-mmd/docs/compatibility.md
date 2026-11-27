@@ -430,6 +430,7 @@ The table also names the pinned version where it needs the kept form.
 | [Wardley](./wardley.md#names-and-quotes)                                                                                                        | `component Alpha  beta` beside `component Alpha beta`                                                                                                                        | the run of the first name as one space                                           | none                                                                 | 11.14.0, 11.17.2, 12.0.0, 12.3.0 draw one component in place of two                                                                        | [fixture: wardley/names-and-quotes/names-differing-by-a-run]                                                                                                          |
 | [Wardley](./wardley.md#trailing-whitespace)                                                                                                     | a space and a tab at the end of a line inside a quoted note                                                                                                                  | the line without them                                                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.3.0 holds them in the text of the note                                                                                                  | [fixture: wardley/trailing-whitespace/trailing-string]                                                                                                                |
 | [Wardley](./compatibility.md#the-quotes-of-a-text)                                                                                              | `component "title" [0.3, 0.6]`                                                                                                                                               | `component title [0.3, 0.6]`                                                     | [3](./printed-form.md#3-a-spelling)                                  | 11.14.0, 11.17.2, 12.0.0 and 12.3.0 reject the form without quotes                                                                         | [fixture: wardley/name-boundaries/quoted-title]                                                                                                                       |
+| [Wardley](./wardley.md#hidden-boundaries)                                                                                                       | `component Space[0.3,0.6]%%{!end}%%` with a space before LF and a next component                                                                                             | the same lines without that space                                                | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.14.0, 11.17.2, 12.0.0, 12.3.0 reject the form without the space                                                                         | [fixture: wardley/hidden-boundaries/hidden-closing-space]                                                                                                             |
 | [treeView](./treeview.md#names)                                                                                                                 | `"name"` in quotes                                                                                                                                                           | `name`                                                                           | [3](./printed-form.md#3-a-spelling)                                  | 11.14.0 reads a name in quotes only                                                                                                        | [fixture: treeview/names/quoted-name-kept]                                                                                                                            |
 | [treeView](./treeview.md#names)                                                                                                                 | `A B`, with three spaces between `A` and `B`                                                                                                                                 | `A B`, with one space between them                                               | none                                                                 | 11.17.2, 12.0.0, 12.3.0 draw different style and viewBox; 12.3.0 changes `nodes[0].name`                                                   | [fixture: treeview/names/name-bare-internal]                                                                                                                          |
 | [treeView](./treeview.md#title)                                                                                                                 | `title T`, U+2028, U+0085, and `%%{x}%%%% c` on one line                                                                                                                     | `title T` and a line that starts with U+0085                                     | none                                                                 | 11.14.0 rejects the other form; 11.17.2, 12.0.0, 12.3.0 draw another figure; 12.3.0 adds a node to the Db                                  | [test: treeview: a U+2028 or U+2029 and a U+0085 around the last directive of a title, with the text ending]                                                          |
@@ -6413,6 +6414,97 @@ the start or at the end of the printed line. See
 [Directives](./flowchart.md#directives).
 
 [fixture: flowchart/directives/line-edge-whitespace]
+
+## Directives at the end of a line
+
+mermaid.js removes a directive and reads the text before it as if the directive
+were not there. Where it reads that text up to the end of the line as a value, a
+space before a directive at the end of the line ends the value with that space,
+and in some places it rejects the space. A directive after the last unit of such
+a line therefore stays touching that unit, where
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) would put one space
+before it (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
+The pinned mermaid.js was run with a directive at the end of a line of a fixture
+of the corpus, after every kind of statement of the tree, after every kind of
+node that ends a line in a fixture, and after every header that a fixture
+writes, touching it and after one space; these are the places where the two
+differ.
+
+The pinned mermaid.js reads the space into the value at the end of these lines:
+in a mindmap, the text of a node without a shape, as in `child%%{wrap}%%`, the
+class of a `:::` line, and the text after the header on its line; in a kanban
+diagram, the text of a column or of a card without a shape, and the text after
+the header on its line; in a timeline, the title, a section, a period, an event,
+and the text after the header on its line; in a user journey, the title and a
+section; in a Gantt chart, the title, a section, `dateFormat`, `axisFormat`,
+`tickInterval`, and `todayMarker`; in a sequence diagram, a C4 diagram, and a
+Venn diagram, the title; in an eventmodeling diagram, `accTitle:` and
+`accDescr:` on the line of the header, and the `{` and the `}` of the body of a
+`data` block that a frame reads; in a flowchart, the id of a subgraph without a
+title; and in a treeView diagram, a class annotation and an icon annotation of a
+node. The value of a `style`, a `classDef`, or a `linkStyle` takes the space
+too, but at the end of a style, which the comparison does not take (see
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
+
+[fixture: mindmap/directives/line-end-text-touching-kept] [fixture:
+mindmap/directives/header-text-touching-kept] [fixture:
+kanban/directives/line-end-text-touching-kept] [fixture:
+kanban/directives/header-text-touching-kept] [fixture:
+timeline/directives/line-end-value-touching-kept] [fixture:
+timeline/directives/header-text-touching-kept] [fixture:
+journey/directives/line-end-value-touching-kept] [fixture:
+gantt/directives/line-end-value-touching-kept] [fixture:
+gantt/directives/axis-format-touching-kept] [fixture:
+sequence/directives/line-end-value-touching-kept] [fixture:
+c4/directives/line-end-title-touching-kept] [fixture:
+venn/directives/title-touching-kept] [fixture:
+eventmodeling/global-directives/header-acc-title-touching-kept] [fixture:
+eventmodeling/global-directives/header-acc-descr-touching-kept] [fixture:
+eventmodeling/global-directives/data-block-braces-touching-kept] [fixture:
+flowchart/directives/line-end-subgraph-touching-kept] [fixture:
+treeview/directives/line-end-annotation-touching-kept]
+
+It rejects the space after the header of a mindmap, a kanban diagram, a
+requirement diagram, a sankey diagram, an ishikawa diagram, and a treeView
+diagram, and after the header of a treemap before a `title`, `accTitle`, or
+`accDescr` line; after the name, the value, and the class of an item of a
+treemap, and after the `}` of a description block that ends a treemap; after
+`autonumber` and its numbers, and after the `}` of the data block of a
+participant, in a sequence diagram; after the `]` of the title of a subgraph,
+after a `class` statement, after a `click` statement, whether it ends with a
+link, a call, a tooltip, or a target, and after `linkStyle default` with
+`interpolate`, in a flowchart and a swimlane diagram; after the `]` of the title
+of a flow, after a `class`, a `click`, or a `connector` statement, in an
+agentflow diagram; after a `style` statement of an ER diagram; after the `}` of
+a description block of a quadrant chart; after a value in quotes, `risk`, and
+`verifymethod` in a requirement diagram; after the `;` that ends a rule of an
+ABNF railroad diagram; after a node name in quotes in a treeView diagram; and
+after the closing `---` of a hidden YAML block of a packet diagram.
+
+[fixture: treemap/directives/carried] [fixture:
+treemap/directives/line-end-value-touching-kept] [fixture:
+treemap/directives/header-touching-kept] [fixture:
+treemap/directives/description-block-closer-touching-kept] [fixture:
+sequence/directives/line-end-value-touching-kept] [fixture:
+sequence/directives/data-block-touching-kept] [fixture:
+flowchart/directives/line-end-subgraph-touching-kept] [fixture:
+flowchart/directives/line-end-swimlane-title-touching-kept] [fixture:
+flowchart/directives/line-end-statement-touching-kept] [fixture:
+flowchart/directives/line-end-swimlane-statement-touching-kept] [fixture:
+agentflow/directives/line-end-flow-title-touching-kept] [fixture:
+agentflow/directives/line-end-statement-touching-kept] [fixture:
+er/directives/style-touching-kept] [fixture:
+quadrant/directives/description-block-closer-touching-kept] [fixture:
+requirement/directives/line-end-touching-kept] [fixture:
+railroad/global-directives/rule-end-touching-kept] [fixture:
+treeview/directives/header-touching-kept] [fixture:
+treeview/directives/line-end-annotation-touching-kept] [fixture:
+mindmap/directives/header-touching-kept] [fixture:
+kanban/directives/header-touching-kept] [fixture:
+sankey/directives/header-touching-kept] [fixture:
+ishikawa/inline-directives/header-touching-kept] [fixture:
+packet/hidden-yaml/closer-directive-touching-kept]
 
 ## Structural continuations around comments and directives
 

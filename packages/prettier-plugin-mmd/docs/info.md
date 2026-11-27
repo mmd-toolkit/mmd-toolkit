@@ -379,6 +379,9 @@ spare-LF and EOF boundaries. For example, mermaid.js rejects removing the
 trailing space after `title Topic%%{}%%` when `accTitle: Access` follows on the
 next line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+This is one of the places where mermaid.js decides against the whitespace of
+rule 1 (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
 Forms after visible EOL belong to the body. Keep fallback comments classified as
 comments: adding a boundary to a glued closer could revive a swallowed flag.
 

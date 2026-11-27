@@ -831,6 +831,9 @@ follows on the next line, `commit%%{}%% ` keeps its final space, since
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives `commit%%{}%%`,
 which some of the versions of mermaid.js that count reject (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+This is one of the places where mermaid.js decides against the whitespace of
+rule 1 (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
 This native form is distinct from a global directive. Keep
 empty/punctuation/multiline contents and earlier string/block ownership. A
 nonqualifying closer can remain inside the form until a later closer, or fall

@@ -651,6 +651,10 @@ Mermaid が読むコメントが隠れたトークンに変わるためです。
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 EOF の閉じた形には共有の最後の LF を加えられます。
+これは、mermaid.js が規則 1 の空白を許さない所の 1 つです。
+詳しくは
+[mermaid.js が空白を許さない所](./printed-form.ja.md#mermaidjs-が空白を許さない所)
+を参照してください。
 
 [fixture: pie/hidden-directives/hidden-number-gap]
 [fixture: pie/hidden-directives/hidden-before-colon]
