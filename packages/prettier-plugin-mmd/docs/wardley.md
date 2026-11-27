@@ -3853,7 +3853,9 @@ contact and closer space/tab, including EOF padding. A suffix that consumes LF
 needs a spare visible LF before another statement; closer padding can instead
 keep the first LF visible. This is one of the places where mermaid.js decides
 against the whitespace of rule 1 (see
-[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Only the header's own forms use its no-visible-EOL exception, even when the
 first statement remains on its line. Pipeline openers and children require their
 visible LF too; forms after visible EOL belong to body. Preserve multiple

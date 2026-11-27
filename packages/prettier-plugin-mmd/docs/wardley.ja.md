@@ -3037,6 +3037,9 @@ wardley-beta
 詳しくは
 [mermaid.js が空白を許さない所](./printed-form.ja.md#mermaidjs-が空白を許さない所)
 を参照してください。
+版ごとの事実は
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+にあります。
 見出しに可視 EOL が不要な例外は、見出し自身の形だけに適用します。
 最初の文が同じ行に残っても、その文には本文側の規則を使います。
 pipeline の開始記号と子文にも可視 LF を保ちます。
