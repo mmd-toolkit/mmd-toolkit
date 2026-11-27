@@ -125,7 +125,9 @@ here and rejected by mermaid.js:
    ishikawa/div-header-trailing-two-spaces-node] [fixture:
    ishikawa/div-header-trailing-space-crlf-node] [fixture:
    ishikawa/div-header-trailing-space-blank-node] [fixture:
-   ishikawa/div-header-directive-space-node]
+   ishikawa/div-header-directive-space-node] [fixture:
+   ishikawa/div-header-trailing-space-cr-node] [fixture:
+   ishikawa/div-header-trailing-space-comment-line-node]
 
 2. After the header, an odd diagram-comment count ending at U+2028 or U+2029
    before a node on the same physical line is accepted.
@@ -169,7 +171,8 @@ ishikawa/gram-last-whitespace-line] [fixture:
 ishikawa/gram-last-comment-blank-line] [fixture:
 ishikawa/gram-header-two-comments-ps-node] [fixture:
 ishikawa/lex-header-space-comment-indented-node] [fixture:
-ishikawa/lex-header-trailing-space-lf-eof]
+ishikawa/lex-header-trailing-space-lf-eof] [fixture: ishikawa/header-spaces-eof]
+[fixture: ishikawa/header-tab-eof] [fixture: ishikawa/gram-leading-comment-line]
 
 The header alone at the end of the source, with no written line break or other
 following content, is still rejected; removed directives and the appended line
