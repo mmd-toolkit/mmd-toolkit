@@ -1933,18 +1933,22 @@ agentflow-beta TB
 ### Trailing whitespace
 
 Reuse [Style trailing whitespace](./flowchart.md#style-trailing-whitespace): the
-tests compare styles without their trailing whitespace, while an all-whitespace
-style still needs a written whitespace character. Remove harmless exterior and
-trailing style padding; keep all-whitespace styles, including the last style
-after commas (including escaped classDef commas), directives, ignored semicolons
-and split empty-description groups. Extra first-style whitespace is leading
-value text and stays. Name endings follow Names and headings. The padding before
-a label comment that the label goes on after, strings, data, comments,
-directives and later value columns stay. Forbidden class/callback/title padding
-remains rejected; the size guard overrides trimming. For the quoted vertex label
-with `before`, a comment-looking line, and `after` at the 50000-unit boundary,
-`A` stays at column zero: every version of mermaid.js that counts drops the
-comment-looking line from the label when two spaces precede `A` (see
+tests compare styles without the spaces, tabs, and form feeds at their end,
+which CSS reads as whitespace, and the `style` of a node also without the other
+whitespace at its end, which the printer leaves out there (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)),
+while an all-whitespace style still needs a written whitespace character. Remove
+harmless exterior and trailing style padding; keep all-whitespace styles,
+including the last style after commas (including escaped classDef commas),
+directives, ignored semicolons and split empty-description groups. Extra
+first-style whitespace is leading value text and stays. Name endings follow
+Names and headings. The padding before a label comment that the label goes on
+after, strings, data, comments, directives and later value columns stay.
+Forbidden class/callback/title padding remains rejected; the size guard
+overrides trimming. For the quoted vertex label with `before`, a comment-looking
+line, and `after` at the 50000-unit boundary, `A` stays at column zero: every
+version of mermaid.js that counts drops the comment-looking line from the label
+when two spaces precede `A` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: trailing-whitespace/trailing-comment] [fixture:
