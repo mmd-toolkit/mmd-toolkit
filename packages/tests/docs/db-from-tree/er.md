@@ -456,6 +456,9 @@ around it. A subgraph has these values.
   er/db-subgraph-acc-title-inside] [fixture: er/db-subgraph-acc-descr-inside]
   [fixture: er/db-subgraph-acc-descr-block-inside] [fixture:
   er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
+  er/db-subgraph-nodes-acc-descr-block-blank-lines] [fixture:
+  er/db-subgraph-nodes-acc-descr-block-edge-blank-lines] [fixture:
+  er/db-subgraph-nodes-acc-descr-block-whitespace-line] [fixture:
   er/config-security-level-other-subgraph-node-acc-title] [fixture:
   er/db-subgraph-nodes-all-statements]
 

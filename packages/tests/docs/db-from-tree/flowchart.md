@@ -322,7 +322,9 @@ defines, the value of an accessibility statement as it is (the line feeds of a
 description are not collapsed here); an empty statement outside a subgraph
 changes nothing.
 
-[fixture: flowchart/gram-empty-statement-top-level]
+[fixture: flowchart/gram-empty-statement-top-level] [fixture:
+flowchart/db-subgraph-member-acc-descr-block-blank-lines] [fixture:
+flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]
 
 Members that are empty or all whitespace are left out. Of the others, only the
 first of equal members is kept, except that every member `__proto__` is kept,
