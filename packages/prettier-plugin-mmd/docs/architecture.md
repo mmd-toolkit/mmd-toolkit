@@ -3887,18 +3887,14 @@ released form stays until it is decided (see
 Ordinary description body and standalone comment lines align one level inside
 the statement, since the Db removes indentation after LF. Keep line breaks and
 interior blank lines, and the whitespace at the end of each line of text except
-the last one; a line of whitespace only becomes an empty line. The line breaks
-and the blank lines between the lines of text, a run of them too, stay as
-written: [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the
-text of a description block as written, as Prettier keeps the text of a template
-literal. The whitespace at the end of the last line of text is dropped where the
-closer stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Rule 2 gives the level of the description text and
-boundary comment lines: the formatter, run on a block of each of flowchart,
-sequence, state, gantt, journey, timeline, pie, and radar, puts the text lines
-and the comment lines of the block one level inside the statement and a separate
-closer at the level of the statement, and the sections of
-[flowchart](./flowchart.md#multi-line-values),
+the last one; a line of whitespace only becomes an empty line. The whitespace at
+the end of the last line of text is dropped where the closer stands on a line of
+its own, and is printed as one space where the closer follows it on that line.
+Rule 2 gives the level of the description text and boundary comment lines: the
+formatter, run on a block of each of flowchart, sequence, state, gantt, journey,
+timeline, pie, and radar, puts the text lines and the comment lines of the block
+one level inside the statement and a separate closer at the level of the
+statement, and the sections of [flowchart](./flowchart.md#multi-line-values),
 [sequence](./sequence.md#multi-line-values),
 [state](./state.md#multi-line-values),
 [gantt](./gantt.md#accessibility-statements), and

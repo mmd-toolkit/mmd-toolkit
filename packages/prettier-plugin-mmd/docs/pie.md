@@ -458,14 +458,16 @@ description empty or just `D`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
 statement. Keep line breaks and interior blank lines, and the whitespace at the
-end of each line of text except the last one. A run of blank lines between two
-lines of text stays as written:
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-description block as written, as Prettier keeps the text of a template literal.
-A line of whitespace only becomes an empty line. The whitespace at the end of
-the last line of text is dropped where the closer stands on a line of its own,
-and is printed as one space where the closer follows it on that line. A separate
-`}` aligns with its statement.
+end of each line of text except the last one. Rule 1 keeps the line breaks
+between the lines of text, since mermaid.js keeps them in the value and joining
+two lines changes the description, and the row Blank lines of rule 1 gives the
+empty lines among them: a run of them becomes one, and none stands at the start
+or the end of the block. A run of blank lines between two lines of text stays as
+written, and so do the empty lines at the start and the end of the block, which
+that row does not give. A line of whitespace only becomes an empty line. The
+whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
 puts the closing line at the level of the line that holds the `{`, as Prettier
 prints the closing line of a block, and that line is the `accDescr` line or,
@@ -474,7 +476,8 @@ of the statement. Directives and shared removed comment regions keep their
 complete source. Trivia-bearing interiors keep their trivia. The first closing
 brace still closes the block, even inside quote/backslash/hidden-looking text.
 
-[fixture: pie/description-blocks/brace-on-a-later-line]
+[fixture: pie/description-blocks/blank-lines-at-the-ends-kept] [fixture:
+pie/description-blocks/brace-on-a-later-line]
 
 [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/blank-line-run-kept] [fixture:

@@ -2651,7 +2651,8 @@ treeview/comments/comment-quoted-inline-blank-line] [fixture:
 treeview/comments/comment-inline-carried] [corpus fixture:
 treeview/tail-quoted-space-comment] [fixture:
 treeview/comments/comment-quoted-inline-indented-next] [corpus fixture:
-treeview/gram-quoted-tail-space-comment-end-of-text]
+treeview/gram-quoted-tail-space-comment-end-of-text] [corpus fixture:
+treeview/gram-quoted-tail-space-comment-next-indent]
 
 Move meaningful indentation runs once to their assigned node. In a drawable box
 diagram remove a native comment's structural prefix and draw that assigned

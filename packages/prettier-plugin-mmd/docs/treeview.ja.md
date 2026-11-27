@@ -2666,6 +2666,7 @@ mermaid.js は字下げしたコメント行も受理しますが、
 [corpus fixture: treeview/tail-quoted-space-comment]
 [fixture: treeview/comments/comment-quoted-inline-indented-next]
 [corpus fixture: treeview/gram-quoted-tail-space-comment-end-of-text]
+[corpus fixture: treeview/gram-quoted-tail-space-comment-next-indent]
 
 有意な字下げ連なりは割り当て済みのノードへ 1 回だけ移します。
 描き直せる罫線の図では、図種固有のコメントの構造の前置部分を外し、

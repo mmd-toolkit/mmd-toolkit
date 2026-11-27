@@ -2127,22 +2127,25 @@ which states the level and why replacing the indentation keeps the Db). Keep
 line breaks and interior blank lines, and the whitespace at the end of each line
 of text except the last one (the Db of the pinned version holds it: `x`, two
 spaces, a line break, and `y` give another accDescr than `x`, a line break, and
-`y`); a line of whitespace only becomes an empty line. The line breaks and the
-blank lines between the lines of text, a run of them too, stay as written:
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-description block as written, as Prettier keeps the text of a template literal.
-The whitespace at the end of the last line of text is dropped where the closer
-stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Inside a subgraph, keep the original body columns
-because the raw description also participates in its membership reading:
-mermaid.js reads the lines, with their columns, as a node of the subgraph, so
-aligning them changes the Db (see
+`y`); a line of whitespace only becomes an empty line. Rule 1 keeps the line
+breaks between the lines of text, since mermaid.js keeps them in the value and
+joining two lines changes the description, and the row Blank lines of rule 1
+gives the empty lines among them: a run of them becomes one, and none stands at
+the start or the end of the block. The released version keeps a run of empty
+lines and the empty lines at the start and the end of the block as written,
+which that row does not give. The whitespace at the end of the last line of text
+is dropped where the closer stands on a line of its own, and is printed as one
+space where the closer follows it on that line. Inside a subgraph, keep the
+original body columns because the raw description also participates in its
+membership reading: mermaid.js reads the lines, with their columns, as a node of
+the subgraph, so aligning them changes the Db (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
 there a line of whitespace only stays as written, and the whitespace at the end
 of the last line of text is dropped, or printed as one space before a closer on
 that line, as above.
 
-[fixture: er/accessibility-statements/blank-line-run-kept] [corpus fixture:
+[fixture: er/accessibility-statements/blank-lines-at-the-ends-kept] [fixture:
+er/accessibility-statements/blank-line-run-kept] [corpus fixture:
 er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]

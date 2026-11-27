@@ -3749,11 +3749,13 @@ text stands there too, one level inside the statement, as
 [quadrant](./quadrant.md#titles-and-accessibility-statements) indents the body
 of such a block. Keep line breaks and interior blank lines, and the whitespace
 at the end of each line of text except the last one; a line of whitespace only
-becomes an empty line. The line breaks and the blank lines between the lines of
-text, a run of them too, stay as written:
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-description block as written, as Prettier keeps the text of a template literal.
-The whitespace at the end of the last line of text is dropped where the closer
+becomes an empty line. Rule 1 keeps the line breaks between the lines of text,
+since mermaid.js keeps them in the value and joining two lines changes the
+description, and the row Blank lines of rule 1 gives the empty lines among them:
+a run of them becomes one, and none stands at the start or the end of the block.
+The released version keeps a run of empty lines and the empty lines at the start
+and the end of the block as written, which that row does not give. The
+whitespace at the end of the last line of text is dropped where the closer
 stands on a line of its own, and is printed as one space where the closer
 follows it on that line. Directives and shared removed comment regions keep
 their complete source, including in a block that contains only a directive, and
@@ -3776,7 +3778,8 @@ the list of undecided forms (D34), so their printing is no decided form, and the
 released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
-[fixture: wardley/accessibility/blank-line-run-kept] [fixture:
+[fixture: wardley/accessibility/blank-lines-at-the-ends-kept] [fixture:
+wardley/accessibility/blank-line-run-kept] [fixture:
 wardley/accessibility/brace-on-a-later-line]
 
 [fixture: wardley/accessibility/description-closer] [fixture:

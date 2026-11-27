@@ -1161,14 +1161,15 @@ prints `class A{}` as `class A {}`. Whitespace-only interiors become `{}`
 because no text needs surrounding padding. Join plain opener whitespace, keep
 comment/directive contents and their boundaries, and align body lines one step
 inside the statement while retaining internal blank lines. Mermaid discards
-indentation after LF from the description. The line breaks between the lines of
-text, and the blank lines among them, stay as written:
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-description block as written, as Prettier keeps the text of a template literal,
-and joining two lines of text would change the accessibility description that
-every version of mermaid.js that counts draws. The body uses the configured
-indentation, including tabs and the positive minimum step at width zero. Align a
-separate opener with its statement. A separate `}` aligns with its statement.
+indentation after LF from the description. Rule 1 keeps the line breaks between
+the lines of text, since mermaid.js keeps them in the value and joining two
+lines changes the description, and the row Blank lines of rule 1 gives the empty
+lines among them: a run of them becomes one, and none stands at the start or the
+end of the block. The released version keeps a run of empty lines and the empty
+lines at the start and the end of the block as written, which that row does not
+give. The body uses the configured indentation, including tabs and the positive
+minimum step at width zero. Align a separate opener with its statement. A
+separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
 puts the closing line at the level of the line that holds the `{`, as Prettier
 prints the closing line of a block, and that line is the `accDescr` line or,
@@ -1177,7 +1178,8 @@ of the statement. The first `}` still closes the block. A block that was not
 written indented is printed at the start of its line, with its body one step
 inside it (see [Title](#title)).
 
-[fixture: treemap/description-blocks/brace-on-a-later-line]
+[fixture: treemap/description-blocks/blank-lines-at-the-ends-kept] [fixture:
+treemap/description-blocks/brace-on-a-later-line]
 
 [fixture: treemap/description-blocks/block-touching-with-text-fixed] [fixture:
 treemap/description-blocks/empty]

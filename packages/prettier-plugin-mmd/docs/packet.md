@@ -454,20 +454,23 @@ block that holds only comment and directive lines stays on a line of its own: on
 the line of the `{`, every version of mermaid.js that counts reads the comment
 as the text of the description (`accDescr {%% removed comment` has the
 description `%% removed comment`), and a `}` after the comment on its line is
-part of the comment, so that the block has no `}` and every version that counts
-rejects the input. The directive lines of such a block keep their lines as
-written: [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the
-text of a description block as written, as Prettier keeps the text of a template
-literal. A bare `%%` line inside a description block is accessible-description
-text in the mermaid.js Db, so the block retains it: removing it changes the
-description. Ordinary description body and standalone comment lines align one
-level inside the statement, since the Db removes indentation after LF. Keep line
-breaks and interior blank lines, and the whitespace at the end of each line of
-text except the last one: mermaid.js keeps the line breaks in the description,
-and a line of whitespace only becomes an empty line. A run of blank lines
-between two lines of text stays as written:
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-description block as written, as Prettier keeps the text of a template literal.
+part of the comment, so that the block ends at a `}` on a later line, and where
+none follows, every version that counts rejects the input. The directive lines
+of such a block stay on lines of their own:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts each line inside
+a block on a line of its own. A bare `%%` line inside a description block is
+accessible-description text in the mermaid.js Db, so the block retains it:
+removing it changes the description. Ordinary description body and standalone
+comment lines align one level inside the statement, since the Db removes
+indentation after LF. Keep line breaks and interior blank lines, and the
+whitespace at the end of each line of text except the last one: mermaid.js keeps
+the line breaks in the description, and a line of whitespace only becomes an
+empty line. Rule 1 keeps the line breaks between the lines of text, since
+mermaid.js keeps them in the value and joining two lines changes the
+description, and the row Blank lines of rule 1 gives the empty lines among them:
+a run of them becomes one, and none stands at the start or the end of the block.
+A run of blank lines between two lines of text stays as written, and so do the
+empty lines at the start and the end of the block, which that row does not give.
 The whitespace at the end of the last line of text is dropped where the closer
 stands on a line of its own, and is printed as one space where the closer
 follows it on that line. A separate `}` aligns with its statement.
@@ -479,7 +482,8 @@ of the statement. Directives and shared removed comment regions keep their
 complete source. Quotes, backslashes and hidden-looking text do not protect the
 first closing brace.
 
-[fixture: packet/description-blocks/brace-on-a-later-line]
+[fixture: packet/description-blocks/blank-lines-at-the-ends-kept] [fixture:
+packet/description-blocks/brace-on-a-later-line]
 
 [corpus fixture: packet/common-block-bare]
 
@@ -494,7 +498,10 @@ description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 [fixture: packet/description-blocks/blank-line-run-kept]
 
 [fixture: packet/description-blocks/description-trivia] [fixture:
-packet/description-blocks/comment-and-directive-lines]
+packet/description-blocks/comment-and-directive-lines] [corpus fixture:
+packet/lex-description-comment-after-open] [corpus fixture:
+packet/lex-description-close-on-comment-line] [corpus fixture:
+packet/lex-description-close-on-comment-line-later-close]
 
 [corpus fixture: packet/lex-description-directive-only]
 

@@ -3523,12 +3523,14 @@ Ordinary description body and standalone comment lines align one level inside
 the statement: the Db removes indentation after LF. Rule 1 does not decide the
 indentation of description text. Keep line breaks and interior blank lines, and
 the whitespace at the end of each line of text except the last one; a line of
-whitespace only becomes an empty line. The line breaks and the blank lines
-between the lines of text, a run of them too, stay as written:
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) keeps the text of a
-description block as written, as Prettier keeps the text of a template literal.
-The whitespace at the end of the last line of text is dropped where the closer
-stands on a line of its own, and is printed as one space where the closer
+whitespace only becomes an empty line. Rule 1 keeps the line breaks between the
+lines of text, since mermaid.js keeps them in the value and joining two lines
+changes the description, and the row Blank lines of rule 1 gives the empty lines
+among them: a run of them becomes one, and none stands at the start or the end
+of the block. The released version keeps a run of empty lines and the empty
+lines at the start and the end of the block as written, which that row does not
+give. The whitespace at the end of the last line of text is dropped where the
+closer stands on a line of its own, and is printed as one space where the closer
 follows it on that line. Align a separate opener or closer with the statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
 level, as Prettier prints the closing line at the level of the line that opens a
@@ -3537,7 +3539,8 @@ or a directive stands before the `{`, a later line at the level of the
 statement. Directives and shared removed comment regions keep their complete
 source. The first closing brace still ends the value.
 
-[fixture: radar/description-blocks/blank-line-run-kept] [fixture:
+[fixture: radar/description-blocks/blank-lines-at-the-ends-kept] [fixture:
+radar/description-blocks/blank-line-run-kept] [fixture:
 radar/description-blocks/brace-on-a-later-line]
 
 [fixture: radar/description-blocks/block-touching-with-text-fixed] [fixture:
