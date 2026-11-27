@@ -3851,12 +3851,15 @@ wardley-beta
 Use the shared hidden-gap and block rules for consumed LF outside ranges, inline
 contact and closer space/tab, including EOF padding. A suffix that consumes LF
 needs a spare visible LF before another statement; closer padding can instead
-keep the first LF visible. Only the header's own forms use its no-visible-EOL
-exception, even when the first statement remains on its line. Pipeline openers
-and children require their visible LF too; forms after visible EOL belong to
-body. Preserve multiple suffixes and YAML boundaries without adding indentation
-inside protected text. When a hidden form keeps the header line, keep the
-pipeline opening on that line too.
+keep the first LF visible. This is one of the places where mermaid.js decides
+against the whitespace of rule 1 (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
+Only the header's own forms use its no-visible-EOL exception, even when the
+first statement remains on its line. Pipeline openers and children require their
+visible LF too; forms after visible EOL belong to body. Preserve multiple
+suffixes and YAML boundaries without adding indentation inside protected text.
+When a hidden form keeps the header line, keep the pipeline opening on that line
+too.
 
 [fixture: wardley/hidden-boundaries/meeting-inline-directive-directive]
 

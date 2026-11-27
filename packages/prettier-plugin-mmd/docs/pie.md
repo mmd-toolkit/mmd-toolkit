@@ -601,7 +601,9 @@ Strings and blocks retain earlier lexical priority. Closing spaces and spare LF
 remain significant where they are under [Hidden yaml](#hidden-yaml): before a
 statement on the next line, also with comment lines between (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
-a closed form at EOF can gain the shared final LF.
+a closed form at EOF can gain the shared final LF. This is one of the places
+where mermaid.js decides against the whitespace of rule 1 (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
 
 [fixture: pie/hidden-directives/hidden-number-gap] [fixture:
 pie/hidden-directives/hidden-before-colon] [fixture:

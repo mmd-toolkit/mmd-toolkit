@@ -6519,6 +6519,50 @@ mermaid.js の行の規則が隙間の空白を読む可能性のある所と、
 
 [fixture: flowchart/directives/line-edge-whitespace]
 
+## 行の終わりのディレクティブ
+
+mermaid.js は、ディレクティブを取り除き、その前のテキストを、
+ディレクティブがないものとして読みます。
+そのテキストを行の終わりまでの値として読む所では、
+行の終わりのディレクティブの前の空白で、その値が終わります。
+また、その空白を拒否する所もあります。
+そのため、そのような行の最後の単位の後のディレクティブは、
+その単位に接したまま置きます。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)なら、
+その前に空白 1 つを置く所です。
+詳しくは
+[mermaid.js が空白を許さない所](./printed-form.ja.md#mermaidjs-が空白を許さない所)
+を参照してください。
+
+固定版の mermaid.js は、次の行の終わりの空白を値に読みます。
+mindmap の、形のないノードのテキスト（`child%%{wrap}%%`）と、
+`:::` の行のクラス、kanban 図の、形のない列とカードのテキスト、timeline の題、
+セクション、期間、出来事、user journey の題とセクション、gantt の題、
+セクション、`dateFormat`、`tickInterval`、`todayMarker`、
+シーケンス図と C4 図の題、flowchart の、題のない subgraph の id です。
+
+[fixture: mindmap/directives/line-end-text-touching-kept]
+[fixture: kanban/directives/line-end-text-touching-kept]
+[fixture: timeline/directives/line-end-value-touching-kept]
+[fixture: journey/directives/line-end-value-touching-kept]
+[fixture: gantt/directives/line-end-value-touching-kept]
+[fixture: sequence/directives/line-end-value-touching-kept]
+[fixture: c4/directives/line-end-title-touching-kept]
+[fixture: flowchart/directives/line-end-subgraph-touching-kept]
+
+次の所では、その空白を拒否します。
+treemap の項目の名前、値、クラスの後（`"A"`、`"B": 1`、`"A":::c`）、
+シーケンス図の `autonumber` とその数の後、
+flowchart と swimlane 図の subgraph の題の `]` の後、
+agentflow 図の flow の題の `]` の後です。
+
+[fixture: treemap/directives/carried]
+[fixture: treemap/directives/line-end-value-touching-kept]
+[fixture: sequence/directives/line-end-value-touching-kept]
+[fixture: flowchart/directives/line-end-subgraph-touching-kept]
+[fixture: flowchart/directives/line-end-swimlane-title-touching-kept]
+[fixture: agentflow/directives/line-end-flow-title-touching-kept]
+
 ## コメントやディレクティブの前後の構造の継続行
 
 構造の部分の間にある普通のコメントとディレクティブは必要な改行を残し、

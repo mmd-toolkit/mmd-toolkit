@@ -762,6 +762,9 @@ padding can leave LF visible instead: without it, every version of mermaid.js
 that counts rejects a statement on the next line, also with comment lines
 between (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+This is one of the places where mermaid.js decides against the whitespace of
+rule 1 (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
 Where an empty line or a directive line stands before the next statement, and at
 the end of the text, no version that counts needs the padding. Domains and items
 need no visible EOL. Only the header’s own hidden forms use its ordinary

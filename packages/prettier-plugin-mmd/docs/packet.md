@@ -700,6 +700,9 @@ forms and global cuts. The space after the last hidden form of a statement stays
 where another statement follows on the next line: without it the hidden form
 takes the line break, and the versions that count reject the next statement (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+This is one of the places where mermaid.js decides against the whitespace of
+rule 1 (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
 Glued nonqualifying or unclosed forms can remain native Comments: adding a
 boundary could change their classification.
 

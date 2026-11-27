@@ -6405,6 +6405,48 @@ the start or at the end of the printed line. See
 
 [fixture: flowchart/directives/line-edge-whitespace]
 
+## Directives at the end of a line
+
+mermaid.js removes a directive and reads the text before it as if the directive
+were not there. Where it reads that text up to the end of the line as a value, a
+space before a directive at the end of the line ends the value with that space,
+and in some places it rejects the space. A directive after the last unit of such
+a line therefore stays touching that unit, where
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) would put one space
+before it (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
+
+The pinned mermaid.js reads the space into the value at the end of these lines:
+in a mindmap, the text of a node without a shape, as in `child%%{wrap}%%`, and
+the class of a `:::` line; in a kanban diagram, the text of a column or of a
+card without a shape; in a timeline, the title, a section, a period, and an
+event; in a user journey, the title and a section; in a Gantt chart, the title,
+a section, `dateFormat`, `tickInterval`, and `todayMarker`; in a sequence
+diagram and in a C4 diagram, the title; and in a flowchart, the id of a subgraph
+without a title.
+
+[fixture: mindmap/directives/line-end-text-touching-kept] [fixture:
+kanban/directives/line-end-text-touching-kept] [fixture:
+timeline/directives/line-end-value-touching-kept] [fixture:
+journey/directives/line-end-value-touching-kept] [fixture:
+gantt/directives/line-end-value-touching-kept] [fixture:
+sequence/directives/line-end-value-touching-kept] [fixture:
+c4/directives/line-end-title-touching-kept] [fixture:
+flowchart/directives/line-end-subgraph-touching-kept]
+
+It rejects the space after the name, the value, and the class of an item of a
+treemap (`"A"`, `"B": 1`, `"A":::c`), after `autonumber` and its numbers in a
+sequence diagram, after the `]` of the title of a subgraph of a flowchart and of
+a swimlane diagram, and after the `]` of the title of a flow of an agentflow
+diagram.
+
+[fixture: treemap/directives/carried] [fixture:
+treemap/directives/line-end-value-touching-kept] [fixture:
+sequence/directives/line-end-value-touching-kept] [fixture:
+flowchart/directives/line-end-subgraph-touching-kept] [fixture:
+flowchart/directives/line-end-swimlane-title-touching-kept] [fixture:
+agentflow/directives/line-end-flow-title-touching-kept]
+
 ## Structural continuations around comments and directives
 
 Ordinary comments and directives between structural parts retain their required

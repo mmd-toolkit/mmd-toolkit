@@ -114,8 +114,17 @@ last unit of a line, it is that of the row A comment after something on its
 line: one space before the directive and none after it at the end of the line,
 as `x = a;/*c*/` is printed `x = a; /*c*/`, `x = a;   /*c*/   ` is printed
 `x = a; /*c*/`, and `x = a /*c*/ /*d*/` is printed `x = a; /*c*/ /*d*/`. Where
+that last unit opens a block whose lines stand one level deeper, as a `{` does
+and as the `(` of a railroad `sequence`, `choice`, `optional`, `oneOrMore`, or
+`zeroOrMore` written over lines does, the directive stands on a line of its own
+inside the block, as Prettier moves a block comment after a `{` at the end of a
+line into the block: `x = { /*c*/`, a line break, `a: 1,`, a line break, and
+`};` is printed `x = {`, then `/*c*/` and `a: 1,` one level in on lines of their
+own, and `};`, and so are `if (a) { /*c*/` and `a {   /*c*/` of CSS. Where
 mermaid.js reads the whitespace on the two sides of a directive as one gap of an
-exact width, it decides instead (see
+exact width, where it reads the text before a directive at the end of a line as
+a value up to the end of the line, and where it rejects a text without the
+whitespace after a hidden form at the end of a line, it decides instead (see
 [Where mermaid.js decides against the whitespace](#where-mermaidjs-decides-against-the-whitespace)).
 The text inside a template literal of JavaScript stays as written, and so does
 the text of a value that spreads over several lines. The lines between the `{`
@@ -318,6 +327,23 @@ of an exact width, a space stands on one side only: the unit `note for` of a
 class diagram reads exactly one whitespace character, and mermaid.js rejects
 `note %%{init: {}}%% for A "t"`, so `note%%{init: {}}%% for A "t"` is printed
 `note %%{init: {}}%%for A "t"` (see [Directives](./flowchart.md#directives)).
+
+Where mermaid.js reads the text before a directive at the end of a line as a
+value up to the end of the line, a space before the directive would end the
+value with it, so the directive stays touching the last unit of the line, and so
+it does where mermaid.js rejects a space there: `title T%%{wrap}%%` of a
+timeline keeps its directive touching `T`, since mermaid.js reads the title `T `
+from `title T %%{wrap}%%`.
+[Directives at the end of a line](./compatibility.md#directives-at-the-end-of-a-line)
+names these places.
+
+Where a hidden form (`%%{!x}%%`) ends a statement and another statement follows
+on the next line, the whitespace after the hidden form stays in the diagram
+types where mermaid.js rejects the text without it, as after
+`service a %%{!h}%%` of an architecture diagram before `service b` on the next
+line.
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
+has a row for each of them.
 
 In a flowchart, a swimlane diagram, and an agentflow diagram, where mermaid.js
 reads a label otherwise without the whitespace at its start, or rejects it (a
