@@ -4,10 +4,11 @@ import type {
   AgentflowStatement,
   AgentflowFlowStatement,
   AgentflowGlobalStatement,
+  Node,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
-import type { StatementListsOf } from "./data-blocks.ts"
+import type { DiagramStatements, StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import { keepsStyleTerminator } from "./kept-lines.ts"
@@ -107,7 +108,7 @@ export function printAgentflow(
       statement: indentationOf(bodyOptions, depth),
       tabWidth: options.tabWidth,
       useTabs: options.useTabs,
-      statementListsOf,
+      diagramStatements: agentflowStatements(source),
     },
   )
   return printAtoms(source, layout, {
@@ -168,6 +169,26 @@ function holdsStatements(node: MermaidAst): boolean {
 }
 
 /**
+ * Whether a statement of the diagram is dropped: a `;` of its own, which adds
+ * no meaning, unless a style terminator on a later line still ends the style
+ * before a removed comment (docs/agentflow.md, Semicolons).
+ */
+function isDroppedAtTopLevel(source: Source, statement: Node): boolean {
+  return (
+    statement.type === "AgentflowEmptyStatement" &&
+    !keepsStyleTerminator(source, statement.range[0])
+  )
+}
+
+/** The statements of an agentflow diagram (see `DiagramStatements`). */
+function agentflowStatements(source: Source): DiagramStatements {
+  return {
+    listsOf: statementListsOf,
+    isDroppedAtTopLevel: (statement) => isDroppedAtTopLevel(source, statement),
+  }
+}
+
+/**
  * Prints a container: the `flow` or `global` line, the statements one level deeper,
  * and the `end` line.
  */
@@ -205,7 +226,7 @@ function printContainer(
         tabWidth,
         useTabs: options.useTabs,
         decidesIndentation: true,
-        statementListsOf,
+        diagramStatements: agentflowStatements(source),
       },
     ),
     {
@@ -237,11 +258,9 @@ function agentflowBlockRules(
     writtenIndentationOf: writtenIndentationRule(
       source,
       options.useTabs,
-      statementListsOf,
+      agentflowStatements(source),
     ),
-    isDroppedAtTopLevel: (statement) =>
-      statement.type === "AgentflowEmptyStatement" &&
-      !keepsStyleTerminator(source, statement.range[0]),
+    isDroppedAtTopLevel: (statement) => isDroppedAtTopLevel(source, statement),
     dropsTrailingLineSeparators: true,
     keepsWhitespaceLineAfterComment: false,
     // A real comment after a separator needs no retained semicolon, unlike
