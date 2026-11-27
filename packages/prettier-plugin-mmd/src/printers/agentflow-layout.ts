@@ -16,6 +16,7 @@ import {
   addShapeRules,
   breaksBetweenParts,
   addBlankCallbackRule,
+  findGraphEndKeyword,
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
@@ -30,11 +31,14 @@ import {
   keptAsWritten,
   walk,
 } from "./layout.ts"
-import { readGapElement, readRunOnItsLine } from "./gap.ts"
+import { readGap, readGapElement, readRunOnItsLine } from "./gap.ts"
+import type { ItemRun } from "./gap.ts"
 import {
   endsEntityName,
   holdsJoiningRegion,
   isDroppedSemicolon,
+  keepsStyleTerminator,
+  lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
@@ -44,6 +48,7 @@ import {
   normalizeStyleList,
 } from "./statement-rules.ts"
 import {
+  findFirstIndex,
   findStructuralToken,
   findTriviaBetween,
   isSpaceOrTab,
@@ -176,39 +181,13 @@ export function layoutContainerHeader(
     } else if (node.title === null && node.data.length === 0) {
       // A name that holds a directive or a comment keeps its text as written,
       // but a `;` that the printer drops is no text of the name, nor are the
-      // spaces and tabs around it: a `;` that the line rule ignores at the end
-      // of the name where whitespace follows it, and a `;` that separates
-      // statements right after the name, which ends the name, so that
-      // mermaid.js reads the spaces and tabs before it with the name, and
-      // trims them. The name is then printed as the text without the `;` is:
-      // the spaces and tabs stand in the gap, which prints them as its rule
-      // gives, one space before a comment, and where nothing follows on the
-      // line, the directives at the end of the name stand after it, and the
-      // whitespace before them goes, as it does at the end of any name
-      // (docs/agentflow.md, Names and headings).
-      let trimmed = nameEnd
-      while (trimmed > nameStart && isSpaceOrTab(source.text[trimmed - 1]))
-        trimmed--
-      const ignoredAtEnd =
-        trimmed > nameStart &&
-        source.ignoredSemicolons.has(trimmed - 1) &&
-        isDroppedSemicolon(source, trimmed - 1)
-      if (ignoredAtEnd || dropsSeparatorAfterName(source, name)) {
-        nameEnd = ignoredAtEnd ? trimmed - 1 : trimmed
-        while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
-          nameEnd--
-        if (ignoredAtEnd || endsItsLine(source, name.range[1])) {
-          endingDirectives = findEndingDirectives(source, nameStart, nameEnd)
-          if (endingDirectives.length > 0) {
-            rules.set(endingDirectives[0].start, "none")
-            nameEnd = endingDirectives[0].start
-            while (
-              nameEnd > nameStart &&
-              isSpaceOrTab(source.text[nameEnd - 1])
-            )
-              nameEnd--
-          }
-        }
+      // spaces and tabs around it (see `readNameBeforeDroppedSemicolon`).
+      const before = readNameBeforeDroppedSemicolon(source, name, nameStart)
+      if (before !== undefined) {
+        nameEnd = before.end
+        endingDirectives = before.endingDirectives
+        const first = endingDirectives.at(0)
+        if (first !== undefined) rules.set(first.start, "none")
       }
     }
     // A whitespace-only name still needs its written character.
@@ -282,63 +261,174 @@ export function layoutContainerHeader(
 export const agentflowDropsSeparatorsBeforeComments = true
 
 /**
- * Whether the printed line ends at `offset`: nothing that is printed follows
- * on its line (see `readRunOnItsLine`), or a statement does, which the printer
- * puts on a line of its own (docs/agentflow.md, Statements one per line).
+ * Whether the printer drops a statement of the list that the diagram holds: a
+ * `;` of its own, which adds no meaning, unless a style terminator on a later
+ * line still ends the style before a removed comment (docs/agentflow.md,
+ * Semicolons). The statements of a `flow` or a `global` are all printed.
  */
-function endsItsLine(source: Source, offset: number): boolean {
-  const run = readRunOnItsLine(source, offset, {
-    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
-  })
-  return run === null || run === undefined
+export function isDroppedAtTopLevel(source: Source, statement: Node): boolean {
+  return (
+    statement.type === "AgentflowEmptyStatement" &&
+    !keepsStyleTerminator(source, statement.range[0])
+  )
 }
 
 /**
- * Whether a `;` that separates statements follows the name right after its
- * last character, and the printer drops it: the line is not kept as written,
- * and no item but a comment follows the `;` on its line (see
- * `keepsSemicolon`). Not after a name whose last word, before the directives
- * at its end, is the keyword `end` or `global`: that keyword takes the
- * whitespace after it with or without the `;`, so that whitespace is the
- * name's own and stays as written (docs/agentflow.md, Names and headings).
+ * Where the text of a name that holds a directive or a comment ends, and the
+ * directives at its end that stand after it, where the printer drops a `;`
+ * after the name; undefined where it drops none. The `;` is no text of the
+ * name, nor are the spaces and tabs around it: a `;` that the line rule
+ * ignores at the end of the name where whitespace follows it, and a `;` that
+ * separates statements right after the name (see `dropsSeparatorAt`), which
+ * ends the name, so that mermaid.js reads the spaces and tabs before it with
+ * the name, and trims them. The name is then printed as the text without the
+ * `;` is: the spaces and tabs stand in the gap, which prints them as its rule
+ * gives, one space before a comment, and where the printed line ends after the
+ * name (see `readPrintedRunAfter`), the directives at the end of the name
+ * stand after it, and the whitespace before them goes, as it does at the end
+ * of any name. Not for a `;` that separates statements after a name whose last
+ * word, before the directives at its end, is the keyword `end` or `global`:
+ * that keyword takes the whitespace after it with or without the `;`, so that
+ * whitespace is the name's own and stays as written (docs/agentflow.md, Names
+ * and headings).
  */
-function dropsSeparatorAfterName(source: Source, name: AgentflowName): boolean {
-  const semicolon = name.range[1]
-  if (source.text[semicolon] !== ";") return false
-  let textEnd = semicolon
-  while (textEnd > name.range[0] && isSpaceOrTab(source.text[textEnd - 1]))
-    textEnd--
-  textEnd =
-    findEndingDirectives(source, name.range[0], textEnd).at(0)?.start ?? textEnd
-  while (textEnd > name.range[0] && isSpaceOrTab(source.text[textEnd - 1]))
-    textEnd--
-  if (endsWithSpaceTakingKeyword(source.text.slice(name.range[0], textEnd)))
-    return false
-  const kept = findAgentflowKeptLines(source)
-  const line = lineStartOf(source, name.range[0])
+function readNameBeforeDroppedSemicolon(
+  source: Source,
+  name: AgentflowName,
+  nameStart: number,
+):
+  | { readonly end: number; readonly endingDirectives: readonly Atom[] }
+  | undefined {
+  const written = trimSpacesAndTabsBefore(source, nameStart, name.range[1])
+  const ignoredAtEnd =
+    written > nameStart &&
+    source.ignoredSemicolons.has(written - 1) &&
+    isDroppedSemicolon(source, written - 1)
+  if (!ignoredAtEnd && !dropsSeparatorAt(source, name.range[1]))
+    return undefined
+  const end = ignoredAtEnd
+    ? trimSpacesAndTabsBefore(source, nameStart, written - 1)
+    : written
+  const endingDirectives = findEndingDirectives(source, nameStart, end)
+  const first = endingDirectives.at(0)
+  const textEnd =
+    first === undefined
+      ? end
+      : trimSpacesAndTabsBefore(source, nameStart, first.start)
+  if (!ignoredAtEnd) {
+    if (endsWithSpaceTakingKeyword(source.text.slice(name.range[0], textEnd)))
+      return undefined
+    if (readPrintedRunAfter(source, name.range[1]) !== null)
+      return { end, endingDirectives: [] }
+  }
+  return { end: textEnd, endingDirectives }
+}
+
+/** `end` moved back over the spaces and tabs before it, down to `start`. */
+function trimSpacesAndTabsBefore(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  let position = end
+  while (position > start && isSpaceOrTab(source.text[position - 1])) position--
+  return position
+}
+
+/**
+ * Whether the printer drops the `;` at `offset`, which separates statements:
+ * its line is not kept (see `isOnKeptLine`), and no item but a comment follows
+ * the `;` on its line (see `keepsSemicolon`).
+ */
+function dropsSeparatorAt(source: Source, offset: number): boolean {
   return (
-    !kept.verbatim.has(line) &&
-    !kept.joined.has(line) &&
-    !keepsSemicolon(source, semicolon, semicolon)
+    source.text[offset] === ";" &&
+    !isOnKeptLine(source, offset) &&
+    !keepsSemicolon(source, offset, offset)
   )
+}
+
+/**
+ * Whether the line that holds `offset` is kept: printed as written, or with
+ * its statements together (see `findAgentflowKeptLines`).
+ */
+function isOnKeptLine(source: Source, offset: number): boolean {
+  const kept = findAgentflowKeptLines(source)
+  const line = lineStartOf(source, offset)
+  return kept.verbatim.has(line) || kept.joined.has(line)
+}
+
+/** The offsets where the printer starts lines (see `findLineStarts`). */
+const lineStartsBySource = new WeakMap<Source, readonly number[]>()
+
+/**
+ * The offsets, in order, where the things start that the printer puts on lines
+ * of their own (docs/agentflow.md, Statements one per line): the statements
+ * that it prints, which are all but those that it drops at the top level (see
+ * `isDroppedAtTopLevel`), and the `end` of each `flow` and `global`.
+ */
+function findLineStarts(source: Source): readonly number[] {
+  const cached = lineStartsBySource.get(source)
+  if (cached !== undefined) return cached
+  const diagram = source.root.body
+  const topLevel = new Set<Node>(
+    diagram.type === "AgentflowDiagram" ? diagram.body : [],
+  )
+  const starts: number[] = []
+  walk(diagram, (node) => {
+    const classified = classifyAgentflowStatement(node)
+    if (classified === null) return
+    if (!topLevel.has(node) || !isDroppedAtTopLevel(source, node))
+      starts.push(node.range[0])
+    if (classified.kind === "container")
+      starts.push(findGraphEndKeyword(source, node).range[0])
+  })
+  starts.sort((left, right) => left - right)
+  lineStartsBySource.set(source, starts)
+  return starts
+}
+
+/**
+ * The items that the printer prints after `offset` on the line of `offset`;
+ * null where it prints none there. Where a thing that the printer puts on a
+ * line of its own follows on the line (see `findLineStarts`), the line holds
+ * what the gap before that thing leaves with the thing before it, as the block
+ * printer reads the gap (see `readGap`); a `;` of its own that the printer
+ * prints is such a thing, an empty statement, and the run of the whole line
+ * would read it as a `;` that separates statements. Elsewhere it is the run
+ * of the rest of the line (see `readRunOnItsLine`).
+ */
+function readPrintedRunAfter(source: Source, offset: number): ItemRun | null {
+  const options = {
+    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
+  }
+  const lineStarts = findLineStarts(source)
+  const next = lineStarts.at(
+    findFirstIndex(lineStarts, (start) => start >= offset),
+  )
+  if (next !== undefined && next < lineEndOf(source, offset))
+    return readGap(source, offset, next, false, options).trailing
+  // Any text after `offset` on its line starts a line of its own (see
+  // `findLineStarts`), so the run here holds the rest of the line.
+  return readRunOnItsLine(source, offset, options) ?? null
 }
 
 /**
  * Whether the printed run after the name, which starts at `nameEnd`, keeps the
  * `;` at `semicolon`, which separates statements: the gap prints it as an item
  * where an item that is not a comment follows it on its line (see `toRun`,
- * which decides it once), because without the `;` the whitespace before that
- * item would be read with the statement before it.
+ * which decides it once, and `readPrintedRunAfter`), because without the `;`
+ * the whitespace before that item would be read with the statement before it.
  */
 function keepsSemicolon(
   source: Source,
   nameEnd: number,
   semicolon: number,
 ): boolean {
-  const run = readRunOnItsLine(source, nameEnd, {
-    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
-  })
-  return run?.separators.includes(semicolon) === true
+  return (
+    readPrintedRunAfter(source, nameEnd)?.separators.includes(semicolon) ===
+    true
+  )
 }
 
 /**
@@ -403,17 +493,11 @@ export function findNamePrintedEnd(
     )
       return name.range[1]
     const next = readGapElement(source, name.range[1]).element
-    const kept = findAgentflowKeptLines(source)
-    const line = lineStartOf(source, name.range[1])
     // Before a removed separator, a whitespace-only final Label becomes
     // exterior line whitespace. Print the name as that output is read, so
     // the next format cannot remove another fragment (docs/agentflow.md,
     // Names and headings; diagrams/agentflow.md, Names, strings, and click text).
-    if (
-      next.kind === "separator" &&
-      !kept.joined.has(line) &&
-      !kept.verbatim.has(line)
-    )
+    if (next.kind === "separator" && !isOnKeptLine(source, name.range[1]))
       return last.range[0]
     return name.range[1]
   }
@@ -539,18 +623,12 @@ function findCommentAfterDroppedSemicolon(
     findTriviaBetween(source, name.range[0], name.range[1]).length > 0
   )
     return undefined
-  let textEnd = name.range[1]
-  while (textEnd > name.range[0] && isSpaceOrTab(source.text[textEnd - 1]))
-    textEnd--
+  const textEnd = trimSpacesAndTabsBefore(source, name.range[0], name.range[1])
   if (!endsWithSpaceTakingKeyword(source.text.slice(name.range[0], textEnd)))
     return undefined
-  const kept = findAgentflowKeptLines(source)
-  const line = lineStartOf(source, name.range[1])
-  if (kept.joined.has(line) || kept.verbatim.has(line)) return undefined
-  const run = readRunOnItsLine(source, name.range[1], {
-    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
-  })
-  if (run == null || run.separators.length > 0) return undefined
+  if (isOnKeptLine(source, name.range[1])) return undefined
+  const run = readPrintedRunAfter(source, name.range[1])
+  if (run === null || run.separators.length > 0) return undefined
   const first = findTriviaBetween(source, run.range[0], run.range[0] + 1).at(0)
   return first?.type === "Comment" ? first.range[0] : undefined
 }

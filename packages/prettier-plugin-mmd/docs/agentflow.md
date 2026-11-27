@@ -290,13 +290,25 @@ text without the `;` is. So `flow Front fin %%{init: {}}%% ;  %% c` is printed
 `flow Front fin %%{init: {}}%% %% c`, with the one space before a comment, and
 `flow Front fin %%{init: {}}%% ;` followed by a line break or by a statement is
 printed `flow Front fin%%{init: {}}%%`, the directive at the end of the name
-standing as it does above. A name whose last word before the directive is `end`
-or `global` keeps that whitespace, which the keyword takes with or without the
-`;` (see below).
+standing as it does above. A second `;` is a statement of its own in the body of
+a `flow` or a `global`, an empty statement, which stands on a line of its own
+with what follows it on its line (see [Semicolons](#semicolons)):
+`flow Front fin %%{init: {}}%% ; ;  %% c` is printed
+`flow Front fin%%{init: {}}%%`, and `; %% c` on the next line. At the top level
+the printer drops it, so `connector C fin %%{init: {}}%% ; ;  %% c` is printed
+`connector C fin %%{init: {}}%% %% c`. A name whose last word before the
+directive is `end` or `global` keeps that whitespace, which the keyword takes
+with or without the `;` (see below).
 
 [fixture: names-and-headings/directive-name-dropped-semicolon-before-comment]
 [fixture: names-and-headings/directive-name-dropped-semicolon-at-line-end]
 [fixture: names-and-headings/directive-name-dropped-semicolon-before-statement]
+[fixture:
+names-and-headings/directive-name-dropped-semicolon-before-empty-statement]
+[fixture:
+names-and-headings/heading-end-keyword-directive-semicolon-comment-kept]
+[fixture:
+names-and-headings/heading-global-keyword-directive-semicolon-comment-kept]
 
 A name that ends with the keyword `end` or `global` takes the whitespace after
 it, also before a comment: `flow Front end %% c` is printed

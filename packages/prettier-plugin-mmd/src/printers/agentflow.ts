@@ -4,14 +4,12 @@ import type {
   AgentflowStatement,
   AgentflowFlowStatement,
   AgentflowGlobalStatement,
-  Node,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import type { DiagramStatements, StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
-import { keepsStyleTerminator } from "./kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
   openingLine,
@@ -23,6 +21,7 @@ import {
   agentflowDropsSeparatorsBeforeComments,
   classifyAgentflowStatement,
   findNamePrintedEnd,
+  isDroppedAtTopLevel,
   layoutStatement,
   layoutContainerHeader,
 } from "./agentflow-layout.ts"
@@ -166,18 +165,6 @@ function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
 /** Whether the node holds statements of its own. */
 function holdsStatements(node: MermaidAst): boolean {
   return statementListsOf(node).length > 0
-}
-
-/**
- * Whether a statement of the diagram is dropped: a `;` of its own, which adds
- * no meaning, unless a style terminator on a later line still ends the style
- * before a removed comment (docs/agentflow.md, Semicolons).
- */
-function isDroppedAtTopLevel(source: Source, statement: Node): boolean {
-  return (
-    statement.type === "AgentflowEmptyStatement" &&
-    !keepsStyleTerminator(source, statement.range[0])
-  )
 }
 
 /** The statements of an agentflow diagram (see `DiagramStatements`). */
