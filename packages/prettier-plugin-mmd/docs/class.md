@@ -248,8 +248,11 @@ classDiagram
 
 ### Blank lines
 
-As in a flowchart: a run of empty lines becomes one, and empty lines at the
-start and the end of a namespace or a member body are dropped.
+A run of empty lines becomes one, and empty lines at the start and the end of a
+namespace or a member body are dropped.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and
+the end of a file or of a block.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/namespace-edges-dropped]
 [fixture: blank-lines/edges-around-comment-and-directive-lines-dropped]
@@ -317,12 +320,8 @@ parts could make a keyword, as in `class no te`, which declares `note`, while
 whitespace-between-tokens/name-parts-keyword-kept]
 
 The `:::` of a CSS class touches the name before it and the class after it:
-`class A :::c` and `class A ::: c` are printed `class A:::c`, as in an ER
-diagram. mermaid.js reads every spelling as the same class, so nothing forces
-the form; the four examples of its documentation write
-`class Animal:::someclass`, `class Animal:::pink`, and
-`class Animal:::styleClass`, with and without a body
-([here](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L833)).
+`class A :::c` and `class A ::: c` are printed `class A:::c`. mermaid.js reads
+every spelling as the same class, so nothing forces the form.
 
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
@@ -800,8 +799,9 @@ under
 A sequence diagram writes the `:` touching what comes before it (see
 [Colons in the sequence rules](./sequence.md#colons)); each follows the
 documentation of its diagram type. The `:` after `accTitle` and `accDescr`
-touches the keyword and has one space after it, as in the other diagram types
-and in the documentation of mermaid.js.
+touches the keyword and has one space after it, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for the colon
+of a key (Prettier prints `x = {a : 1}` as `x = { a: 1 };`).
 
 [fixture: labels/accessibility-text-runs-collapsed] [fixture:
 multi-line-statements/joined] [fixture: multi-line-statements/acc-descr-joined]

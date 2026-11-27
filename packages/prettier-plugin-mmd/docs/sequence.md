@@ -353,11 +353,7 @@ space between a block or section keyword and its text, as Prettier prints
 whitespace-between-tokens/block-text-touching-spaced]
 
 A directive in the gap is placed as under [Directives](#directives), and a
-U+2028 or U+2029 stays where it is. Rule 1 names no mark for a gap that holds
-one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+U+2028 or U+2029 stays where it is.
 
 [fixture: whitespace-between-tokens/block-text-beside-directive] [test: U+2028
 between a block keyword and its text] [test: U+2029 between a wrap prefix and
@@ -483,9 +479,11 @@ A directive between the id and `@{` is placed as under
 
 Its contents stay written except for the eligible margins in
 [Multi-line values](#multi-line-values) and the spaces and tabs at the ends of a
-block on one line, which become one space each, as in
-[Data blocks](./flowchart.md#data-blocks): `participant A@{"type":"queue"}`
+block on one line, which become one space each: `participant A@{"type":"queue"}`
 becomes `participant A@{ "type":"queue" }`.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space
+inside each end, as it gives for braces that hold names with their values:
+Prettier prints `x = {a:1}` as `x = { a: 1 };`.
 
 [fixture: whitespace-between-tokens/data-block-padded]
 
@@ -996,21 +994,20 @@ keeps it.
 Where a directive or a whitespace character other than a space and a tab (a
 no-break space, an ideographic space, a byte order mark, U+2028, U+2029) follows
 the `:` directly, with whitespace in the place of the text, the line is printed
-as written, as the line of a task of a [Gantt chart](./gantt.md#task-data) or a
-[user journey](./journey.md#task-data) is. A version that counts takes a
-whitespace character of any kind for the character that it needs after the `:`,
-and removes a directive before it reads the line, so the whitespace after a
-directive is that character. The printer drops whitespace at the end of a line
-and prints another whitespace character as a space, so it would leave `A->>B:`,
-which such a version rejects: `A->>B:%%{init: {}}%%` followed by two spaces is
-accepted by every version that counts, and the text without the spaces is
-rejected by some of them. A space or a tab right after the `:` is the character
-that such a version needs, so the line is printed as usual and the rest is left
-out: `A->>B: %%{init: {}}%%` followed by two spaces is printed
-`A ->> B: %%{init: {}}%%`. The space immediately after `:` already supplies the
-character that mermaid.js needs. The spaces and tabs after the directive are
-then line-end whitespace, which Prettier removes;
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that form.
+as written. A version that counts takes a whitespace character of any kind for
+the character that it needs after the `:`, and removes a directive before it
+reads the line, so the whitespace after a directive is that character. The
+printer drops whitespace at the end of a line and prints another whitespace
+character as a space, so it would leave `A->>B:`, which such a version rejects:
+`A->>B:%%{init: {}}%%` followed by two spaces is accepted by every version that
+counts, and the text without the spaces is rejected by some of them. A space or
+a tab right after the `:` is the character that such a version needs, so the
+line is printed as usual and the rest is left out: `A->>B: %%{init: {}}%%`
+followed by two spaces is printed `A ->> B: %%{init: {}}%%`. The space
+immediately after `:` already supplies the character that mermaid.js needs. The
+spaces and tabs after the directive are then line-end whitespace, which Prettier
+removes; [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that
+form.
 
 [fixture: colons/directive-then-whitespace-kept] [test: U+00A0 as the entire
 text of a message] [test: U+3000 as the entire text of a note] [test: U+FEFF as
@@ -1891,9 +1888,10 @@ sequenceDiagram
 
 ### Frontmatter YAML
 
-As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
-YAML formatter where that is safe (see
-[Frontmatter YAML](./flowchart.md#frontmatter-yaml)).
+The YAML between the `---` lines is formatted with Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), where that is safe
+(see [Frontmatter YAML](./flowchart.md#frontmatter-yaml)).
 
 [fixture: frontmatter-yaml/formatted] [fixture: frontmatter-yaml/malformed-kept]
 [fixture: frontmatter-yaml/indented-delimiters-kept] [fixture:
@@ -2047,10 +2045,7 @@ For participant and actor data blocks, apply
 [Data blocks](./flowchart.md#data-blocks) only when exactly one body line holds
 text. Move that line one level inside the statement and align a separate `}`
 with the statement; a closer after text stays with that line.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the level of that line, as [Data blocks](./flowchart.md#data-blocks) of a
-flowchart print it so, and
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the depth of a
 separate closing `}` when the block opens on the statement's line: the closing
 line stands at the level of the opening line, as Prettier prints the closing
 line of a block. This applies at the top level and inside `loop`, except with

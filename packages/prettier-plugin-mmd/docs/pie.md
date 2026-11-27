@@ -122,11 +122,12 @@ pie
 
 ### Labels
 
-Reuse [XY chart authored strings](./xychart.md#quotes): keep complete quoted
-source spans. Preserve escapes without decoding, empty and whitespace-only
-labels, entities/HTML and hidden-looking percent text; a string between `'` is
-printed between `"`, unless its text holds a `'`, a `"`, a backslash, a line
-break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+Keep complete quoted source spans:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) prints a text that
+the tree holds whole as written inside. Preserve escapes without decoding, empty
+and whitespace-only labels, entities/HTML and hidden-looking percent text; a
+string between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
+backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. Keep converted-label collisions as separate
 occurrences; the resolved Map is not source.
@@ -155,8 +156,8 @@ pie
 
 ### Numbers
 
-Reuse [XY chart authored numbers](./xychart.md#numbers): a NumericLiteral that
-is a plain decimal is printed in the shortest form (`1.50` is `1.5`, `2.0` is
+A NumericLiteral that is a plain decimal is printed in the shortest form, as in
+[XY chart authored numbers](./xychart.md#numbers) (`1.50` is `1.5`, `2.0` is
 `2`; see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and every other source span is printed rather than its converted double. Keep
@@ -330,9 +331,10 @@ space or tab, one of those named in [Title](#title), before a `%%` or such a
 `%%{` that follows an `accDescr` value, which that version draws as a part of
 the description (`accDescr: Value`, a no-break space, and `%% note`), while the
 spaces and tabs beside it are printed as one space each, and a value with a
-directive in it is printed as in the other diagrams; a comment after the `}` of
-a description block keeps the block, since the text of the form with the colon
-would take the comment (see
+directive in it is printed as
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
+gives; a comment after the `}` of a description block keeps the block, since the
+text of the form with the colon would take the comment (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
 Hidden forms and protected textual groups retain their gaps. Where only
 directives follow the text of the value, they are printed with one space before
@@ -842,9 +844,8 @@ pie showData
 
 ### Multiline values and order
 
-Reuse [flowchart value columns](./flowchart.md#multi-line-values) and
-[shared no wrapping](./flowchart.md#line-wrapping): a line is not wrapped, as in
-a flowchart, a form decided under
+Reuse [shared no wrapping](./flowchart.md#line-wrapping): a line is not wrapped,
+as in a flowchart, a form decided under
 [rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form) that
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 a pie chart too. Keep physical label lines, their continuation columns and
@@ -953,8 +954,10 @@ Output (escaped):
 
 ### Frontmatter yaml
 
-Reuse [guarded frontmatter](./flowchart.md#frontmatter-yaml), because only real
-leading YAML supplies title/configuration. Format safe YAML, preserve delimiter
+Guard the frontmatter, because only real leading YAML supplies
+title/configuration. Format safe YAML with Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Preserve delimiter
 padding, and keep malformed, indented, HTML-hazard and delimiter-producing
 bodies as written. YAML uses at least one indentation character at tabWidth
 zero. Preserving hidden preheader text is shared by diagram types whose

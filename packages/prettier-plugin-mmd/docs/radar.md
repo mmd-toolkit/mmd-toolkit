@@ -15,15 +15,14 @@ Print `radar-beta` at column one and put an ordinary first statement on the next
 line so the heading is easy to find. The line that a statement stands on is no
 place of rule 1, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the first statement its line, as [pie](./pie.md#header),
-[packet](./packet.md#header), [architecture](./architecture.md#header),
-[treemap](./treemap.md#header), [cynefin](./cynefin.md#header), and
-[gitgraph](./gitgraph.md#header) print an ordinary first statement on the next
-line, where no other rule keeps the boundary as written, as the hidden forms,
-global trivia and protected semicolon segments below do. A colon right after the
-header word is removed, together with the whitespace before it: mermaid.js reads
-`radar-beta:` and `radar-beta` as the same header, and the examples in its
-documentation write the header without the colon 3 times against none (see
+the first statement its line, as [packet](./packet.md#header),
+[architecture](./architecture.md#header), and [cynefin](./cynefin.md#header)
+print an ordinary first statement on the next line, where no other rule keeps
+the boundary as written, as the hidden forms, global trivia and protected
+semicolon segments below do. A colon right after the header word is removed,
+together with the whitespace before it: mermaid.js reads `radar-beta:` and
+`radar-beta` as the same header, and the examples in its documentation write the
+header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
@@ -57,12 +56,10 @@ written), but in it these are a question of the list of undecided forms (D50),
 so no rule gives the contact of two directives, and the released form stays
 until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
-[gitgraph](./gitgraph.md#header) prints `gitGraph %%{x}%%:` as
-`gitGraph%%{x}%%:`. The colon stays before an unclosed directive too:
-`radar-beta:%%{x y`, a line break, and `axis North` stay as written, since
-mermaid.js takes the directive out with the line break after it and would read
-the header and `axis` as one word, and every version of mermaid.js that counts
-rejects that text (see
+The colon stays before an unclosed directive too: `radar-beta:%%{x y`, a line
+break, and `axis North` stay as written, since mermaid.js takes the directive
+out with the line break after it and would read the header and `axis` as one
+word, and every version of mermaid.js that counts rejects that text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Hidden forms, global trivia and protected semicolon segments keep their source
 boundaries instead. Empty bodies remain empty.
@@ -663,15 +660,11 @@ is printed as one space, also where the comment holds a `;` (see
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
 
-Rule 1 names no mark for a gap beside a directive, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: the other diagram types of
-[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
-print a run of spaces and tabs before a directive as one space and leave out the
-spaces at the end of the line (item 1). The other items say what the released
-version prints for the gaps and the characters that the rules do not decide, and
-a form that the other diagram types print differently stays as it is until it is
-decided (see
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) leaves out the spaces
+at the end of the line (item 1), as Prettier ends no line with whitespace. The
+other items say what the released version prints for the gaps and the characters
+that the rules do not decide, and a form that the other diagram types print
+differently stays as it is until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 Where a U+2028 or U+2029 stands inside the text, or the value holds directives
@@ -698,12 +691,9 @@ of the line holds no directive, comment, `;`, wide space, U+2028, or U+2029, and
 the line is not undecided, the spaces and tabs between the directives and the
 rest of the text are left out, with the spaces and tabs at the end of the line:
 `title %%{x}%%  T  ` is printed `title %%{x}%%T`, and
-`title %%{x}%%%%{y}%%  T  ` is printed `title %%{x}%%%%{y}%%T`.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as the Title of [a sequence diagram](./sequence.md#title) does, which
-prints `title %%{init: {}}%% T` as `title %%{init: {}}%%T`: mermaid.js removes
-the directives before it reads the text, and it draws the title without the
-whitespace at its start (see
+`title %%{x}%%%%{y}%%  T  ` is printed `title %%{x}%%%%{y}%%T`. mermaid.js
+removes the directives before it reads the text, and it draws the title without
+the whitespace at its start (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 The other titles that hold a directive before their text are not stated: a
 directive that touches the keyword, a second whitespace character before the
@@ -2342,12 +2332,12 @@ radar-beta
 
 ### Accessibility lines
 
-Reuse shared `accTitle: value` and `accDescr: value`, except as the paragraphs
-below state, as the [paragraph on a directive before the text](#title) states,
-and as the [Semicolons](#semicolons) section states: the colon touches its
-keyword, and one space precedes a trimmed nonempty value. The colon is the colon
-of a key: the line gives the diagram its one title or description, so none
-stands before it and one follows (step 2 of
+Print `accTitle: value` and `accDescr: value`, except as the paragraphs below
+state, as the [paragraph on a directive before the text](#title) states, and as
+the [Semicolons](#semicolons) section states: the colon touches its keyword, and
+one space precedes a trimmed nonempty value. The colon is the colon of a key:
+the line gives the diagram its one title or description, so none stands before
+it and one follows (step 2 of
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is), and the row of
 its table for the title and the description of a diagram). Empty values end at
 the colon; never join a next-line value. Consistent outer spacing does not
@@ -2409,15 +2399,11 @@ is printed as one space, also where the comment holds a `;` (see
 before a comment that stands after something on its line, as Prettier prints
 `x = 1;   // c` as `x = 1; // c`.
 
-Rule 1 names no mark for a gap beside a directive, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: the other diagram types of
-[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
-print a run of spaces and tabs before a directive as one space and leave out the
-spaces at the end of the line (item 1). The other items say what the released
-version prints for the gaps and the characters that the rules do not decide, and
-a form that the other diagram types print differently stays as it is until it is
-decided (see
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) leaves out the spaces
+at the end of the line (item 1), as Prettier ends no line with whitespace. The
+other items say what the released version prints for the gaps and the characters
+that the rules do not decide, and a form that the other diagram types print
+differently stays as it is until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 Where a U+2028 or U+2029 stands inside the text, or the value holds directives

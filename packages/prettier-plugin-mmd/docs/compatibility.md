@@ -1565,10 +1565,8 @@ journey, a timeline, a sequence diagram, and a C4 diagram. Where only directives
 follow the text, each keeps whether spaces or tabs precede it, a run becoming
 one space, and the spaces and tabs after the last one are dropped like any
 spaces and tabs at the end of the line, so the line is printed alike whether or
-not spaces and tabs follow its last directive, as a directive at the end of a
-line is in the other diagrams (see [Directives](./flowchart.md#directives)),
-unless a directive of the line holds a line break, a `;`, a U+2028, or a U+2029
-(see
+not spaces and tabs follow its last directive, unless a directive of the line
+holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](#directives-that-hold-a-line-break-or-a-semicolon)):
 `title T  %%{x}%%  %%{y}%%` and `title T  %%{x}%%  %%{y}%%  ` are both printed
 `title T %%{x}%% %%{y}%%`, `title T%%{x}%%%%{y}%%  ` is printed
@@ -1593,8 +1591,6 @@ except that a task whose description holds a directive stays as written (see
 alias. Trailing directives in [mindmap](./mindmap.md#directives) nodes print
 with one space where spaces or tabs preceded them and keep touching where none
 did, and so do those of [kanban](./kanban.md#trailing-whitespace) cards.
-[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the same gaps before trailing directives here, as the mindmap does.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
 and tabs after the last directive, as at other line ends. The runs of spaces and
 tabs inside a date format, an axis format, or the value of an `accTitle:` line
@@ -4072,16 +4068,15 @@ their ids or texts, so two nodes that get the same text by the change are still
 two nodes, drawn as before. A text that becomes a string was drawn differently.
 
 A kanban board follows the same rules for the texts of its cards, the labels of
-its columns and cards, and its icons and classes (see
-[Kanban](./kanban.md#shapes)). Prettier prints no padding inside brackets or
-parentheses, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
-removes the spaces and tabs just inside the brackets of a kanban column or card
-label and the parentheses of an icon where those margins draw the same. The id
-of a column is the exception: mermaid.js tells two columns apart by it.
-`todo [A]` and `todo[B]` are two columns, drawn apart, and with the space gone
-they were drawn differently. The id of a card is not compared, and `id1 [x]` and
-`id1[x]` were drawn the same, also where two cards got the same id by the
-change.
+its columns and cards, and its icons (see [Kanban](./kanban.md#shapes)).
+Prettier prints no padding inside brackets or parentheses, so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes the spaces
+and tabs just inside the brackets of a kanban column or card label and the
+parentheses of an icon where those margins draw the same. The id of a column is
+the exception: mermaid.js tells two columns apart by it. `todo [A]` and
+`todo[B]` are two columns, drawn apart, and with the space gone they were drawn
+differently. The id of a card is not compared, and `id1 [x]` and `id1[x]` were
+drawn the same, also where two cards got the same id by the change.
 
 [fixture: kanban/shapes/card-id-before-shape-dropped] [fixture:
 kanban/shapes/id-before-shape]
@@ -4570,12 +4565,12 @@ instead of `"`, a number with a zero at the end, the words of a relationship of
 an ER diagram instead of its symbols, an accessibility description in a block on
 one line instead of after a colon, a text in quotes instead of without them, an
 arrow longer than it needs to be. The printer writes such a spelling in one
-form. For the whitespace between tokens the form is the one that the other
-diagram types print for the same kind of gap (see the sections above). For a
-spelling, the form is the one that the examples in the documentation of the
-pinned mermaid.js use at least twice as often as any other form. Where no form
-is used that often, or the examples use none, the spelling is kept as written. A
-line that the printer prints as written has these spellings in one form too:
+form. For the whitespace between tokens, the form is the one that
+[How the printed form is decided](./printed-form.md) gives. For a spelling, the
+form is the one that the examples in the documentation of the pinned mermaid.js
+use at least twice as often as any other form. Where no form is used that often,
+or the examples use none, the spelling is kept as written. A line that the
+printer prints as written has these spellings in one form too:
 `NOTE OVER A:%%{init: {}}%%  ;ACTOR B` is printed
 `Note over A:%%{init: {}}%%  ;actor B`, the whitespace, the `;`, and the
 directive staying as they are, except that the quotes of a text stay as written
@@ -7862,11 +7857,11 @@ them as they are written. See [Names](./requirement.md#names),
   A requirement field's colon has one following space under
   [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), which also removes
   trailing spaces and tabs from unquoted values and class lines. The ID-to-class
-  gap has one space under
-  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have), as
-  in [flowchart](./flowchart.md#whitespace-between-tokens) and
-  [state](./state.md#whitespace-between-tokens) diagrams. Runs between words of
-  a value, a class, or a string become one space.
+  gap has one space, as
+  [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for values
+  that follow one another (Prettier prints `margin: 1px    2px;` in CSS as
+  `margin: 1px 2px;`). Runs between words of a value, a class, or a string
+  become one space.
 
   [fixture: requirement/names/inner-whitespace-kept] [fixture:
   requirement/fields/value-inner-runs-collapsed] [fixture:
@@ -9460,8 +9455,7 @@ directive becomes one space, and the whitespace before the directive is left out
 where none stood after the directive, and stays where some stood. Inside the
 text, the whitespace beside a directive stays. The versions that count draw the
 written and the printed forms the same. Protected common comment regions retain
-their complete values. This reuses the
-[class statement-annotation rule](./class.md#whitespace-between-tokens).
+their complete values.
 
 | Written after `actor ` | Printed               |
 | ---------------------- | --------------------- |
@@ -10880,7 +10874,7 @@ line; when units split, the directive moves with the following unit.
 Common-value intervals override this ordinary placement. Comments keep their
 marks and contents; native line comments include LS/PS. When units split,
 intervening inline comments and directives move with the following unit in
-source order. This shared placement treats comments alike across diagram types.
+source order.
 
 [fixture: eventmodeling/comments/mixed-directive-order] [fixture:
 eventmodeling/semicolons/gwt-protected-opening-kept] [fixture:

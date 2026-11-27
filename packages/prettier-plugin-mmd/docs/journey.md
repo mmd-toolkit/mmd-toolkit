@@ -208,10 +208,12 @@ journey
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the body are dropped, as in the other diagram types. Prettier removes
-blank lines at the start of the text, so
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes blank lines
-before the header.
+end of the body are dropped.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and
+the end of a file or of a block. Prettier removes blank lines at the start of
+the text, so [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) removes
+blank lines before the header.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
 
@@ -307,10 +309,10 @@ under
 So `Make tea : 5: Me` is printed `Make tea: 5: Me`. The padding that lines the
 colons up stays: in a section where some description has two spaces or tabs, or
 more, before its colon, every task of the section stays as written (the tasks
-before the first `section` are a section), as the tasks of a Gantt chart whose
-names are padded are lined up. A description that ends with a whitespace
-character other than a space or a tab (`A\u3000 : 5` with U+3000), a description
-that holds a directive, and a task over several lines also stay as written.
+before the first `section` are a section). A description that ends with a
+whitespace character other than a space or a tab (`A\u3000 : 5` with U+3000), a
+description that holds a directive, and a task over several lines also stay as
+written.
 
 [fixture: task-data/description-blank-dropped] [fixture:
 task-data/description-blank-dropped-per-section] [fixture:
@@ -537,13 +539,10 @@ titles-and-sections/one-space-after-keyword]
 
 A value written on a later line is printed after the keyword on one line; a
 comment line between them makes the statement printed as written (see
-[Multi-line statements](#multi-line-statements)). Rule 1 names no mark for a
-line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#title) prints a `title`, a line break, and the
-text that follows on one line, and [xychart](./xychart.md#multi-line-statements)
-prints a statement that mermaid.js reads over several lines on one line, with
-one space in place of the line break.
+[Multi-line statements](#multi-line-statements)).
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+where the line broke, as Prettier prints `x = a +`, a line break, and `b;` as
+`x = a + b;`.
 
 [fixture: titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept]
@@ -643,7 +642,9 @@ journey
 ### Accessibility statements
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
-it, as in a Gantt chart; the text has no whitespace at its ends.
+it, as [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for the
+colon of a key (Prettier prints `x = {a : 1}` as `x = { a: 1 };`); the text has
+no whitespace at its ends.
 
 [fixture: accessibility-statements/colon-touches-keyword] [fixture:
 accessibility-statements/text-whitespace-dropped]
@@ -809,18 +810,18 @@ multi-line-statements/value-on-next-line-joined]
 In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement, also under a section. Preserve each first gap-line tail and complete
-directive interiors. Rule 1 names no mark for a line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[timeline](./timeline.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, where no other rule keeps
-the layout as written (where the Db holds the text with its whitespace, where
-moving a line makes mermaid.js reject the text, and the like). Joining comment
-regions keep their original layout. A `;` does not keep a statement over several
-lines from being joined: no `;` separates statements in a journey, and the first
-line of such a statement holds only its keyword, so joining its lines cannot
-change which `;` the line rule ignores.
+directive interiors. A line break next to a comment or a directive stays, and so
+does the whitespace before it, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives:
+[sequence](./sequence.md#multi-line-statements) keeps the whitespace before the
+first line break of each gap, which can make mermaid.js read later lines as part
+of the same statement. In some places another rule also keeps the layout as
+written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text, and the like). Joining comment regions keep
+their original layout. A `;` does not keep a statement over several lines from
+being joined: no `;` separates statements in a journey, and the first line of
+such a statement holds only its keyword, so joining its lines cannot change
+which `;` the line rule ignores.
 
 [fixture: multi-line-statements/semicolon-value-joined] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
@@ -1137,9 +1138,10 @@ journey
 
 ### Frontmatter YAML
 
-As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
-YAML formatter, and the `---` lines are kept as written, with the spaces and
-tabs at the end of each.
+The YAML between the `---` lines is formatted with Prettier's YAML formatter, as
+Prettier does for YAML anywhere
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), and the `---`
+lines are kept as written, with the spaces and tabs at the end of each.
 
 [fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/closing-delimiter-whitespace-kept]

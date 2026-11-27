@@ -11,11 +11,15 @@ escaped fixed tests.
 ### Header
 
 Keep the authored `packet` or `packet-beta` keyword at column one. Move an
-ordinary first statement below it, as in the other diagram types. A header at
-column one is easier to find than an indented one. Only `packet` requires a
-following boundary; never create a glued spelling. Hidden boundaries and
-protected header/body groups take precedence. Keep the authored synonym: some
-versions that count read `packet-beta` only (see
+ordinary first statement below it, as
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives:
+a [flowchart](./flowchart.md#statements-one-per-line) and an
+[ER diagram](./er.md#statements-one-per-line) print a statement written on the
+line of the header on a line of its own. A header at column one is easier to
+find than an indented one. Only `packet` requires a following boundary; never
+create a glued spelling. Hidden boundaries and protected header/body groups take
+precedence. Keep the authored synonym: some versions that count read
+`packet-beta` only (see
 [The names of a header](./compatibility.md#the-names-of-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
@@ -68,10 +72,15 @@ packet
 
 ### Statements one per line
 
-Print each ordinary statement on its own line, as the other diagram types do. A
-common line value owns apparent later keywords through physical EOL; do not
-split that text. Semicolons are not packet separators. Invalid adjacent blocks
-or block/common forms follow the shared failure path rather than being repaired.
+Print each ordinary statement on its own line, as a
+[flowchart](./flowchart.md#statements-one-per-line) prints each statement on a
+line of its own, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form), which
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+here. A common line value owns apparent later keywords through physical EOL; do
+not split that text. Semicolons are not packet separators. Invalid adjacent
+blocks or block/common forms follow the shared failure path rather than being
+repaired.
 
 [fixture: packet/statements-one-per-line/inline-title]
 

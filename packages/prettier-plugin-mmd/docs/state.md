@@ -489,8 +489,10 @@ stateDiagram-v2
 
 ### Blank lines
 
-As in a flowchart: a run of empty lines becomes one, and empty lines at the
-start and the end of a body are dropped.
+A run of empty lines becomes one, and empty lines at the start and the end of a
+body are dropped. [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)
+gives it: Prettier prints a run of empty lines as one and drops the empty lines
+at the start and the end of a file or of a block.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/end-of-text-dropped]
 [fixture: blank-lines/around-comments-and-directives] [fixture:
@@ -547,11 +549,8 @@ whitespace-between-tokens/touching-class-kept]
 
 The `:::` of a state reference, in a transition or on a line of its own, touches
 the state before it and the class after it: `A :::c` and `A ::: c` are printed
-`A:::c`, as in an ER diagram. mermaid.js reads every spelling as the same state,
-so nothing forces the form; the printer already prints the `:::` of an ER
-diagram this way, and the five examples of the documentation of mermaid.js write
-it so
-([`Still:::notMoving` and the others](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)).
+`A:::c`. mermaid.js reads every spelling as the same state, so nothing forces
+the form.
 
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
@@ -570,11 +569,7 @@ between them, as between values that follow one another: Prettier prints
 [fixture: whitespace-between-tokens/css-class-in-definition-kept]
 
 A directive in the gap is placed as under [Directives](#directives), and a
-U+2028 or U+2029 stays where it is. Rule 1 names no mark for a gap that holds
-one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+U+2028 or U+2029 stays where it is.
 
 [test: U+2028 before the `:::` of a state] [test: U+2029 after the `:::` of a
 state]
@@ -1289,8 +1284,9 @@ nothing after it, whose text is the `:` alone.
 
 [fixture: notes/blank-text-kept]
 
-The quotes of a floating note are kept as written, and so is the text between
-them with its whitespace, as the inside of a quoted label is in flowchart:
+The quotes of a floating note are kept as written. The text between them is kept
+with its whitespace, as a text that the tree holds whole is printed as written
+inside ([rule 1](./printed-form.md#a-text-that-the-tree-holds-whole)):
 `note ""floating" as N` has the text `floating`, and
 `note "  floating   text  " as N` stays. mermaid.js reads the same text and
 draws the same note whatever the whitespace there; the Db and the pixels were
@@ -1306,11 +1302,7 @@ the id of an alias definition are printed in the same way (see
 id, like a keyword between two things in Prettier;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives that keyword
 one space on each side. A directive in the gap is placed as under
-[Directives](#directives), and a U+2028 or U+2029 stays where it is. Rule 1
-names no mark for a gap that holds one, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [journey](./journey.md#line-separators) and
-[timeline](./timeline.md#line-separators) print such a gap as written.
+[Directives](#directives), and a U+2028 or U+2029 stays where it is.
 
 [fixture: notes/floating-note-as-gaps-spaced] [fixture:
 notes/floating-note-as-beside-directive] [test: U+2028 before the `as` of a
@@ -1504,10 +1496,7 @@ statements around it, and its text is kept as written.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts a standalone
 comment line inside a block one level deeper than the line that opens it, as
 Prettier prints the lines inside a block. The leading and internal gaps in
-standalone comment text stay as written in [class](./class.md#comments) and
-[sequence](./sequence.md#comments) diagrams;
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-state comments the same form.
+standalone comment text stay as written.
 
 [fixture: comments/kept] [fixture: comments/text-kept] [fixture:
 comments/before-closing-brace]

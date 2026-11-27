@@ -123,11 +123,17 @@ gitGraph
 
 ### Statements one per line
 
-Print each ordinary body statement on its own line, as the other diagram types
-do. A line common value still owns apparent later operations and semicolons;
-quoted semicolons remain text. Gitgraph has no separator semicolon. Invalid
-adjacent statements and block-following semicolons are parser failures, covered
-by the corpus, and are never repaired.
+Print each ordinary body statement on its own line, as a
+[flowchart](./flowchart.md#statements-one-per-line) prints each statement on a
+line of its own, a form decided under
+[rule 4](./printed-form.md#4-where-none-of-these-rules-gives-a-form), which
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+here; a statement written on the line of the header moves too, as in a flowchart
+and an [ER diagram](./er.md#statements-one-per-line). A line common value still
+owns apparent later operations and semicolons; quoted semicolons remain text.
+Gitgraph has no separator semicolon. Invalid adjacent statements and
+block-following semicolons are parser failures, covered by the corpus, and are
+never repaired.
 
 [fixture: gitgraph/statements-one-per-line/eol-header-inline] [fixture:
 gitgraph/statements-one-per-line/eol-title-owns-text] [fixture:
@@ -493,9 +499,12 @@ and
 
 [fixture: title-and-common-values/title-directives-end-blanks-dropped]
 
-Shared accessibility layout prints `accTitle: value` / `accDescr: value` and
-empty blocks as `{}`. Where only directives follow the text of the value of such
-a line, they are printed as they are after the text of a title (see
+`accTitle: value` and `accDescr: value` take the colon of a key
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): Prettier prints
+`x = {a : 1}` as `x = { a: 1 };`), and an empty block is printed `{}`, as rule 1
+gives for braces that hold nothing (Prettier prints `x = { }` as `x = {};`).
+Where only directives follow the text of the value of such a line, they are
+printed as they are after the text of a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped] [fixture:
@@ -511,11 +520,12 @@ tab before an empty directive after the accDescr line of a gitGraph]
 
 A whitespace character that is no space or tab before a `%%`, or before a `%%{`
 that no word character follows after its whitespace, that follows an `accDescr`
-value stays where it is, with the spaces and tabs beside it printed as one space
-each, as in a pie chart (see
-[Accessibility lines](./pie.md#accessibility-lines)). The `title` of a gitGraph
-is printed as in the other diagrams, whatever stands before a `%%` after it: the
-oldest version that counts rejects it (see
+value stays where it is, as in a pie chart (see
+[Accessibility lines](./pie.md#accessibility-lines)), and the spaces and tabs
+beside it are printed as one space each. The `title` of a gitGraph is printed as
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
+gives, whatever stands before a `%%` after it: the oldest version that counts
+rejects it (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
 
 [test: a no-break space before a comment after the accDescr line of a gitGraph]

@@ -184,12 +184,7 @@ harmless: the rule is local to the syntax, not a search for the final normalized
 state. A title takes the rest of its line as its value, so statement-looking
 words after `title` cannot be split out, and swallowed fragments stay with their
 written line neighbours. Where whitespace stands between statements that stay
-together on a line, it is one space: rule 1 names no mark between two
-statements, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [flowchart](./flowchart.md#whitespace-between-tokens) and
-[er](./er.md#whitespace-between-tokens) print a run of spaces and tabs between
-two tokens as one space and keep tokens that touch touching.
+together on a line, it is one space.
 
 [corpus fixture: venn/db-indent-after-same-line-explicit-text] [fixture:
 venn/statements-one-per-line/directive-in-declaration-group] [corpus fixture:
@@ -474,9 +469,8 @@ colors/words-that-are-not-colors-as-written]
 A color function that stands alone as the value of a property, `rgb(` with three
 numbers or `rgba(` with four, in lower case, is printed with one space after
 each comma: `style A fill:rgb(1,2,3)` is printed `style A fill: rgb(1, 2, 3)`.
-The examples in the documentation of mermaid.js have no color function in a Venn
-diagram; the space is the form of the examples of the sequence diagram and of
-the styles of the other diagram types (see
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the one space
+after the comma, as Prettier prints `f(a,b)` as `f(a, b);` (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 The whitespace before a comma, immediately after the opening `(`, and
 immediately before the closing `)` stays as written, and so does a function in
@@ -697,13 +691,13 @@ after the comma, as Prettier prints `f(a,b)` as `f(a, b);`.
 [fixture: style-properties/word-run-directive-parenthesis-kept]
 
 A property is printed `key: value`, with no space before the colon and one after
-it, and the properties are separated by a comma and one space, as the styles of
-the other diagram types are printed (`style A fill: #f00, stroke: #000`). The
-documentation of mermaid.js writes `fill:#ff6b6b` in its three examples of a
-property; the gap after the colon is the same kind of gap as in the styles of
-the other ten diagram types that have them, so it follows them, and the Db holds
-the properties as a map, without the whitespace. On a line with a `;` that the
-printer keeps, the gap after the colon stays as written
+it, and the properties are separated by a comma and one space
+(`style A fill: #f00, stroke: #000`). The documentation of mermaid.js writes
+`fill:#ff6b6b` in its three examples of a property; the colon of a property is
+the colon of a key (`fill: #f00` in a style), so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space after
+it, and the Db holds the properties as a map, without the whitespace. On a line
+with a `;` that the printer keeps, the gap after the colon stays as written
 (`style A fill:#f00;%% c`), since the line rule of mermaid.js ignores a `;` by
 whether whitespace lies between a `:` and a `#`. Each bare value is one written
 `VennLiteral`. A run of spaces and tabs between its atoms, outside the
@@ -1050,14 +1044,13 @@ the following statement moves to a new line; its written gap before the
 directive becomes one space or stays touching. If a directive touches the
 following statement, the line remains together to preserve that relation:
 removing a directive supplies no separator, so the touching relation between a
-directive and its neighbour decides what is read. This is the same as in class,
-flowchart, gantt, timeline and block diagrams. Kanban moves the directive along
-only because the whitespace after a directive becomes node indentation there; a
-statement on a Venn header line has no such role. A semicolon-kept line also
-keeps its header attachment. The whitespace after the argument of a directive
-that is not closed is taken with it, also on a line that follows a protected
-comment gap, so it stays: `%%{x y text A t` keeps the space between `y` and
-`text`.
+directive and its neighbour decides what is read. Kanban moves the directive
+along only because the whitespace after a directive becomes node indentation
+there; a statement on a Venn header line has no such role. A semicolon-kept line
+also keeps its header attachment. The whitespace after the argument of a
+directive that is not closed is taken with it, also on a line that follows a
+protected comment gap, so it stays: `%%{x y text A t` keeps the space between
+`y` and `text`.
 
 [fixture:
 venn/directives/directive-unclosed-argument-space-after-percent-brace-comment]

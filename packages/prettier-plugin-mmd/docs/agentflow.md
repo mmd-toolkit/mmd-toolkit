@@ -45,11 +45,8 @@ stays absent, symbol directions stay written, a direction that stands after a
 directive which follows the header is printed like any other (`TD` as `TB`, and
 `agentflow-beta%%{init: {}}%% TD` as `agentflow-beta %%{init: {}}%%TB`), and
 next-line LR remains a vertex. Ordinary header followers move into the body;
-directive attachment follows Directives. [Flowchart](./flowchart.md#directives)
-and [class](./class.md#directives) diagrams keep a directive that touches the
-end of the header, with no direction after it, touching it, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) keeps
-such a directive touching an agentflow header too.
+directive attachment follows Directives. A directive that touches the end of the
+header, with no direction after it, stays touching it.
 
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated] [fixture:
@@ -155,16 +152,16 @@ agentflow-beta TB
 
 ### Names and headings
 
-Reuse [Subgraph header](./flowchart.md#subgraph-header) for an ordinary
-single-part name with an explicit title: the `[` of the title touches the name,
-so `flow F [T]` is printed `flow F[T]`, and so is `connector F [T]`. All 19
-headings with a title in
-[the documentation of agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
-are written so, and the Db is the same for both forms. The whitespace inside the
-brackets of the title is dropped, so `[ T ]` is printed `[T]` and `["x" ]` is
-printed `["x"]`, as in flowchart; Agentflow has no reason to choose a different
-form. One space stays inside each end where the title would be read otherwise
-(`[ /x/ ]` and `[ x@ ]`; see
+For an ordinary single-part name with an explicit title, the `[` of the title
+touches the name, so `flow F [T]` is printed `flow F[T]`, and so is
+`connector F [T]`. The `[` of the title attaches to the name as the `[` of an
+index does ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark); Prettier
+prints `x [ 0 ];` as `x[0];`). The Db is the same for both forms. The whitespace
+inside the brackets of the title is dropped, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for parentheses
+and square brackets (Prettier prints `f( a )` as `f(a);`), so `[ T ]` is printed
+`[T]` and `["x" ]` is printed `["x"]`. One space stays inside each end where the
+title would be read otherwise (`[ /x/ ]` and `[ x@ ]`; see
 [Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
 A directive at an edge of the title touches the bracket and the title, as the
 gap has no space: `flow F[ %%{x}%% T ]` is printed `flow F[%%{x}%%T]`, and
@@ -686,8 +683,10 @@ the commas between the styles of a node.
 
 [fixture: single-space-gaps/style-stroke-before-colon-spaced]
 
-A space after a backslash that ends a style of a `style` is read as nothing, as
-in [flowchart](./flowchart.md#whitespace-between-tokens).
+A space after a backslash that ends a style of a `style` is read as nothing, and
+no whitespace stands before the comma after it, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for a comma
+(Prettier prints `f(a,b)` as `f(a, b);`).
 
 [fixture: single-space-gaps/style-backslash-space-dropped]
 
@@ -771,14 +770,16 @@ agentflow-beta TB
 
 ### Arrows
 
-Reuse [Arrow spacing](./flowchart.md#arrow-spacing): one exterior space on each
-side of an arrow; an edge id touches its @ and arrow. Keep directive touching
-and exact dash/dot counts, including counts beyond the Db cap. Below the cap a
-shorter or longer arrow is another arrow (`A---->B` printed as `A --> B` is read
-differently); beyond the cap the Db is the same, and a Db-equal capped arrow is
-not shortened. Agentflow has only sequence `-->`, failure `--x`, and reference
-`-.-`, with their extensions. Reference length counts dots. A following x may be
-vertex text; no unsupported arrow family is introduced.
+One exterior space stands on each side of an arrow, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for another
+mark between two things (Prettier prints `x = a+b` as `x = a + b;`). An edge id
+touches its @ and arrow. Keep directive touching and exact dash/dot counts,
+including counts beyond the Db cap. Below the cap a shorter or longer arrow is
+another arrow (`A---->B` printed as `A --> B` is read differently); beyond the
+cap the Db is the same, and a Db-equal capped arrow is not shortened. Agentflow
+has only sequence `-->`, failure `--x`, and reference `-.-`, with their
+extensions. Reference length counts dots. A following x may be vertex text; no
+unsupported arrow family is introduced.
 
 [fixture: arrows/arrow-cap-spelling] [fixture:
 arrows/arrow-length-change-unsafe] [fixture: arrows/arrow-lengths] [fixture:
@@ -917,12 +918,14 @@ agentflow-beta TB
 
 ### Labels
 
-Reuse [Label inner whitespace](./flowchart.md#label-inner-whitespace): Mermaid
-discards ordinary bare exterior padding, whereas internal and quoted/markdown
-label text stays, and a label of spaces and tabs only is printed as one space. A
-run of spaces inside a quoted label stays: mermaid.js holds it in the text of
-the vertex, and a label long enough to wrap is drawn with the run wider than one
-space (see
+Ordinary bare exterior padding, which Mermaid discards, is dropped, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives no whitespace
+inside parentheses and square brackets (Prettier prints `f( a )` as `f(a);`).
+Reuse [Label inner whitespace](./flowchart.md#label-inner-whitespace) for the
+rest: internal and quoted/markdown label text stays, and a label of spaces and
+tabs only is printed as one space. A run of spaces inside a quoted label stays:
+mermaid.js holds it in the text of the vertex, and a label long enough to wrap
+is drawn with the run wider than one space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Keep one leading/trailing space for slash, backslash, dash, quote characters,
 and when `@` in the first word would make it read as an edge id (see
@@ -987,7 +990,9 @@ ends the label of a vertex or of an edge] [fixture: labels/entity-kept]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace
-inside their brackets, including `[ T ]`, for the same reason as flowchart.
+inside their brackets, including `[ T ]`, as
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for parentheses
+and square brackets (Prettier prints `f( a )` as `f(a);`).
 
 [fixture: names-and-headings/name-heading-touches-title]
 
@@ -1088,11 +1093,12 @@ metadata-blocks/deep-nested-yaml] [fixture: metadata-blocks/closing-after-text]
 [fixture: metadata-blocks/connector-multiline]
 
 The other shared movement conditions and their reasons are in
-[Data blocks](./flowchart.md#data-blocks): keep inline-opening blocks, embedded
-directives, kept lines, zero-width indentation, blocks starting after the
-statement's first line as written, and, with `useTabs`, the statement that holds
-a block of several lines as a whole. Surrounding comments, directives, empty
-descriptions, blank lines and separators follow their own rules.
+[Data blocks](./flowchart.md#data-blocks): keep inline-opening blocks and kept
+lines as written, and, with `useTabs`, the statement that holds a block of
+several lines as a whole. Keep embedded directives, zero-width indentation, and
+blocks starting after the statement's first line as written too. Surrounding
+comments, directives, empty descriptions, blank lines and separators follow
+their own rules.
 
 [fixture: metadata-blocks/inline-and-directive-kept] [fixture:
 metadata-blocks/kept-body-line] [fixture: metadata-blocks/zero-width-kept]
@@ -1117,16 +1123,20 @@ of its block move with it, as without `useTabs`.
 A statement that stands after the header on its line, as `A@{ … }` does in
 `flow G; A@{ … }`, is a statement inside the container, and the indentation
 written at the start of the line is that of the header, so the statement is not
-printed as written either (see [Data blocks](./flowchart.md#data-blocks)). So is
-a statement after an `end` when a statement of the container comes first, as
-`A@{ … }` in `B; end; A@{ … }`, and a statement on a line that starts with
-anything else than the things listed there, as `C; A@{ … }` does after `B -->`,
-or after the rest of a directive that runs over lines.
+printed as written either. So is a statement after an `end` when a statement of
+the container comes first, as `A@{ … }` in `B; end; A@{ … }`, and a statement on
+a line that starts with anything else than the things listed in
+[Data blocks](./flowchart.md#data-blocks), as `C; A@{ … }` does after `B -->`,
+or after the rest of a directive that runs over lines. So is a statement after a
+`;` of its own that starts the line at the top level, as `A@{ … }` in
+`; A@{ … }`: the printer drops the `;`, so the whitespace before it is written
+for no depth.
 
 [fixture: metadata-blocks/use-tabs-container-header-statement-moved] [fixture:
 metadata-blocks/use-tabs-statement-before-end-moved] [fixture:
 metadata-blocks/use-tabs-edge-continuation-moved] [fixture:
-metadata-blocks/use-tabs-directive-continuation-moved]
+metadata-blocks/use-tabs-directive-continuation-moved] [fixture:
+metadata-blocks/use-tabs-dropped-semicolon-moved]
 
 A block after an arrow's newline retains its columns because it starts after the
 statement's first line, and a statement with two blocks, of one line or of
@@ -1356,13 +1366,15 @@ agentflow-beta TB
 
 ### Blank lines
 
-Reuse [Blank lines](./flowchart.md#blank-lines). Collapse ordinary and
-whitespace-only runs to one and drop document/body-edge blanks, including inside
-flows/globals. Preserve blanks inside values, metadata and directives. An empty
-line inside a quoted label is part of that label in mermaid.js's Db, so removing
-the line changes the label text. Agentflow comments leave LF and do not consume
-following blanks; no blank-line-pairing divergence applies. Default size
-branches override ordinary blank layout.
+Collapse ordinary and whitespace-only runs to one and drop document/body-edge
+blanks, including inside flows/globals.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it: Prettier
+prints a run of empty lines as one and drops the empty lines at the start and
+the end of a file or of a block. Preserve blanks inside values, metadata and
+directives. An empty line inside a quoted label is part of that label in
+mermaid.js's Db, so removing the line changes the label text. Agentflow comments
+leave LF and do not consume following blanks; no blank-line-pairing divergence
+applies. Default size branches override ordinary blank layout.
 
 [corpus fixture: agentflow/lex-brace-string-keeps-blank-line]
 
@@ -1520,7 +1532,7 @@ use the count of Unicode characters.
 
 ### Direction
 
-Reuse [Direction](./flowchart.md#direction) and the
+Reuse the `TD` of [Direction](./flowchart.md#direction) and the
 [Indentation](./flowchart.md#indentation) exception for the same reasons: TD is
 observable within a container, and indentation can make a line become a
 direction statement before its accessibility text is read. Keep the written
@@ -1630,14 +1642,10 @@ join it as such and leave the next statement separate.
 A directive inside the statement declines ordinary joining and keeps the
 previous multiline statement layout: continuation and directive lines stand one
 level deeper than the keyword, with their text and authored line breaks
-retained. Rule 1 names no mark for a line break, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#multi-line-statements),
-[gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, where no other rule keeps
-the layout as written (where the Db holds the text with its whitespace, where
-moving a line makes mermaid.js reject the text, and the like).
+retained. A line break next to a comment or a directive and the whitespace
+before it stay; in some places another rule also keeps the layout as written
+(where the Db holds the text with its whitespace, where moving a line makes
+mermaid.js reject the text, and the like).
 
 [fixture: accessibility/inline-directive-kept] [fixture:
 accessibility/next-line-directive-kept] [fixture:
@@ -1826,13 +1834,13 @@ trivia instead follow [Accessibility](#accessibility), joining their lines.
 [fixture: accessibility/next-line-values] [fixture:
 accessibility/empty-block-lines]
 
-Reuse [Multi-line statements](./flowchart.md#multi-line-statements) and
-[Multi-line values](./flowchart.md#multi-line-values) for the same reason: later
-value columns are characters except for the description-body indentation
-described in [Accessibility](#accessibility). Indent ordinary continuation
-tokens one additional step; keep string/markdown/split text, Name, metadata,
-directive and multiline click continuation columns. An extra whitespace
-character in a click gap after the ids and the callback can reject (see
+A statement written over several lines keeps its line breaks. Reuse
+[Multi-line values](./flowchart.md#multi-line-values): later value columns are
+characters except for the description-body indentation described in
+[Accessibility](#accessibility). Indent ordinary continuation tokens one
+additional step; keep string/markdown/split text, Name, metadata, directive and
+multiline click continuation columns. An extra whitespace character in a click
+gap after the ids and the callback can reject (see
 [Click statements](#click-statements)). Agentflow folds only line whitespace
 immediately before the next LF after a closing brace; later blank LFs remain.
 Keep those raw value lines, including LS/PS/VT/FF/NBSP, and never align an
@@ -2182,9 +2190,10 @@ agentflow-beta TB
 
 ### Frontmatter YAML
 
-Reuse [Frontmatter YAML](./flowchart.md#frontmatter-yaml) and shared
-[Frontmatter](./compatibility.md#frontmatter): safe YAML benefits from normal
-formatting while hazardous text must retain its reading. Preserve delimiter
+The YAML is formatted with Prettier's YAML formatter, as Prettier does for YAML
+anywhere ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), while
+hazardous text must retain its reading (see
+[Frontmatter](./compatibility.md#frontmatter)). Preserve delimiter
 lines/padding; retain malformed YAML, indented delimiters, HTML-tag starts and
 formatted delimiter hazards. YAML uses the shared significantIndentationWidth
 minimum of one even at tabWidth zero, as do Agentflow bodies. Frontmatter

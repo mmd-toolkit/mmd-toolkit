@@ -169,13 +169,16 @@ the causes keep their indentation.
 [fixture: ishikawa/root-on-header-line/header-root-irregular-kept] [fixture:
 ishikawa/root-on-header-line/header-root-directive-irregular-kept]
 
-This agrees with the other printers' header/body convention while keeping the
-Db. A root that contains semicolons moves whole as well: the Ishikawa header
-adds no `style` or `classDef` trigger to the shared line rule. Header comments
-and directive attachment follow their narrower rules; apparent statements inside
-the root are never split. Semicolons inside a root do not separate Ishikawa
-nodes in mermaid.js, so splitting apparent statements there would change the
-node text or add nodes to the Db.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this form, as a [flowchart](./flowchart.md#statements-one-per-line) and an
+[ER diagram](./er.md#statements-one-per-line) print a statement written on the
+line of the header on a line of its own, and the Db stays the same. A root that
+contains semicolons moves whole as well: the Ishikawa header adds no `style` or
+`classDef` trigger to the shared line rule. Header comments and directive
+attachment follow their narrower rules; apparent statements inside the root are
+never split. Semicolons inside a root do not separate Ishikawa nodes in
+mermaid.js, so splitting apparent statements there would change the node text or
+add nodes to the Db.
 
 [fixture: ishikawa/root-on-header-line/header-root] [fixture:
 ishikawa/root-on-header-line/header-root-kept] [fixture:
@@ -562,8 +565,7 @@ Leading directive gaps instead count toward the node's chosen depth indentation,
 excluding directive characters and removed common comment regions: retain the
 gaps while they fit, shorten from the last gap backwards when necessary, and
 supply the remainder before the first directive using configured characters.
-This reuses kanban's allocation policy, keeps multiline contents and
-continuation columns, and avoids preserving arbitrary source indentation.
+This keeps multiline contents and continuation columns.
 
 [fixture: ishikawa/inline-directives/directive-leading] [fixture:
 ishikawa/inline-directives/directive-leading-wide] [fixture:
@@ -995,11 +997,9 @@ the next node's chosen depth and supplying only the remaining characters.
 Mermaid counts that separator as one character of the next node's indentation,
 so the printed total must be the node's chosen depth indentation: a shallower
 total makes the node a sibling of the previous cause instead of its child, which
-changes the Db. Keeping the separator, rather than replacing it with a line feed
-(which keeps the tree too), follows kanban's boundary-preserving choice and
-needs no separate policy that repairs Mermaid's comment/blank pairing. An LF
-comment ending instead starts a new line without contributing an indentation
-character.
+changes the Db. The separator is kept rather than replaced with a line feed,
+which keeps the tree too. An LF comment ending instead starts a new line without
+contributing an indentation character.
 
 [fixture: ishikawa/line-separators/lf-comment-boundary] [test: ishikawa:
 ls-comment-boundary] [test: ishikawa: kept-comment-ls-before] [test: ishikawa:

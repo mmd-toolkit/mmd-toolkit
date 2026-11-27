@@ -139,7 +139,12 @@ gitGraph
 
 ### Statements one per line
 
-通常の本文の文は、ほかの図種と同じく 1 行ずつ印字します。
+通常の本文の文は、1 行ずつ印字します。
+[flowchart](./flowchart.ja.md#1-行に-1-文) が文をそれぞれの行に印字する、
+[規則 4](./printed-form.ja.md#4-どの決まりも形を決めない所)で決めた形を、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がここに与えます。
+見出しの行に書かれた文も、
+flowchart と [ER 図](./er.ja.md#1-行に-1-文) と同じく、それぞれの行に移します。
 共通の行値に見かけの操作語やセミコロンがあっても値のままです。
 引用符内のセミコロンも文字です。
 gitgraph に区切りのセミコロンはありません。
@@ -527,8 +532,11 @@ U+2029 があるときを除きます。
 
 [fixture: title-and-common-values/title-directives-end-blanks-dropped]
 
-共通のアクセシビリティ配置で `accTitle: value`・`accDescr: value`、
-空ブロックは `{}` と印字します。
+`accTitle: value` と `accDescr: value` は、
+キーのコロンの形で印字します（[規則 1](./printed-form.ja.md#1-記号の横の空白)。
+Prettier は `x = {a : 1}` を `x = { a: 1 };` と印字します）。
+空ブロックは、規則 1 が何も入れない波括弧に与えるとおり、
+`{}` と印字します（Prettier は `x = { }` を `x = {};` と印字します）。
 これらの行の値のテキストの後にディレクティブだけが続くときは、
 題の場合と同じように印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -543,12 +551,12 @@ U+2029 があるときを除きます。
 
 gitGraph の `accDescr` の値の後の `%%` か、`%%{` の後ろに、
 空白を除いて語の文字が続かないもの（`%%{}%%` など）の前の、
-空白でもタブでもない空白文字は、pie 図と同じに、その場に残し、
+空白でもタブでもない空白文字は、その場に残します。
+pie 図の [Accessibility lines](./pie.ja.md#accessibility-lines) と同じです。
 その両側の空白とタブは、それぞれ空白 1 つにして印字します。
-詳しくは [Accessibility lines](./pie.ja.md#accessibility-lines)
-を参照してください。
 gitGraph の `title` は、後ろの `%%` の前に何があっても、
-ほかの図と同じに印字します。
+[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+のとおりに印字します。
 対象にする版のうち最も古い版が、それを拒否するからです。
 詳しくは
 [最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
