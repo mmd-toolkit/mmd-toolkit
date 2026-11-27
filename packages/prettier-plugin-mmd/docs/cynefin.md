@@ -674,9 +674,15 @@ cynefin-beta
 Print every CynefinIgnoredText once from its source span at its AST owner:
 retained prefix, body, domain-name suffix, item prefix/suffix, transition named
 gap or common suffix. Its value omits common removals. Opening lines align with
-their containing body; interiors and closers keep their columns. Item-leading
-forms and the following label align at item depth after retained LF. Keep whole
-matches, later qualifying closers, separate matches and fallback comments.
+their containing body; interiors and closers keep their columns.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: the line
+that opens a hidden form stands at the level of the lines around it, as every
+line inside a block does, whatever it holds, and its later lines keep their
+columns, as Prettier keeps the later lines of a block comment as written where
+they do not all start with `*` (in a block, `    /* x` and `  y */` are printed
+`  /* x` and `  y */`). Item-leading forms and the following label align at item
+depth after retained LF. Keep whole matches, later qualifying closers, separate
+matches and fallback comments.
 
 [fixture: cynefin/hidden-forms/hidden-domain-name]
 

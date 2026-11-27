@@ -749,10 +749,15 @@ header/option/name/textAfter/body owner as the complete source span, including
 internal common trivia. Preserve consumed LF outside its range and closing
 padding, also at EOF or before trivia/another form. Exterior spare LF and edge
 blanks follow [Blank lines](#blank-lines). Do not add LF before it. A body
-opener may indent one step; internal and closing columns stay. Empty bodies,
-three fences, later qualifying closers and multiple forms remain opaque. Earlier
-strings/blocks/line values retain ownership. Moving or trimming these boundaries
-can reject an accepted history.
+opener may indent one step; internal and closing columns stay.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives both: the line
+that opens a hidden form stands at the level of the lines around it, as every
+line inside a block does, whatever it holds, and its later lines keep their
+columns, as Prettier keeps the later lines of a block comment as written where
+they do not all start with `*` (in a block, `    /* x` and `  y */` are printed
+`  /* x` and `  y */`). Empty bodies, three fences, later qualifying closers and
+multiple forms remain opaque. Earlier strings/blocks/line values retain
+ownership. Moving or trimming these boundaries can reject an accepted history.
 
 [corpus fixture: gitgraph/lex-yaml-invalid-body] [corpus fixture:
 gitgraph/lex-hidden-yaml-before-option-value] [fixture:

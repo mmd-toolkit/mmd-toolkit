@@ -9041,19 +9041,27 @@ error/as-written/directive-kept] [corpus fixture: common/error-pseudo-diagram]
 The Db of a kanban board has no indentation: it tells a section from an item by
 comparing the indentation of a node with that of the first node. So the printer
 chooses the indentation, one step for a section and two for an item, and keeps
-what decides the roles. A run of whitespace inside a label, an icon, or a class
-text remains value text, and the spaces and tabs at the ends of a bare label, an
-icon, and a class text are dropped, and so are those after the bare id of a
-card, while those after the bare id of a column stay, and a bare label, an icon,
-or a class text of spaces and tabs only keeps one space (`A[ ]`) (see
+what decides the roles.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives these steps:
+the header opens a block with no closing line, and so does a section, so a
+section stands one level deeper than the header and an item one level deeper
+than its section, as Prettier prints the lines inside a block. A run of
+whitespace inside a label, an icon, or a class text remains value text, and the
+spaces and tabs at the ends of a bare label, an icon, and a class text are
+dropped, and so are those after the bare id of a card, while those after the
+bare id of a column stay, and a bare label, an icon, or a class text of spaces
+and tabs only keeps one space (`A[ ]`) (see
 [Trailing whitespace](./kanban.md#trailing-whitespace)). Brackets have no inner
 padding under [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark), so
 eligible spaces and tabs at the edges of a bare kanban label are dropped. The
 same rule removes trailing line whitespace, so exterior spaces and tabs after a
-bare card id are dropped. Decorations align with their node; an inline-directive
-line keeps its directives and the gaps beside them, and the printer chooses the
-whitespace before the first one. A data block with invalid YAML is accepted by
-the parser as opaque text, although mermaid.js rejects it (known divergence
+bare card id are dropped. Decorations align with their node; a decoration line
+is a line inside the block of its section, and rule 1 puts every line inside a
+block at the level of the lines around it, whatever it holds; an
+inline-directive line keeps its directives and the gaps beside them, and the
+printer chooses the whitespace before the first one. A data block with invalid
+YAML is accepted by the parser as opaque text, although mermaid.js rejects it
+(known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 and the printer retains its opaque content with only eligible margin movement.
 See the [kanban rules](./kanban.md).
