@@ -373,6 +373,8 @@ subgraph の外の空の文は、何も変えません。
 [fixture: flowchart/gram-empty-statement-top-level]
 [fixture: flowchart/db-subgraph-member-acc-descr-block-blank-lines]
 [fixture: flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]
+[fixture: flowchart/db-subgraph-member-acc-descr-block-whitespace-line]
+[fixture: flowchart/db-swimlane-subgraph-member-acc-descr-block-whitespace-line]
 
 空やすべて空白のメンバーは除きます。
 残りでは、等しいメンバーは最初のものだけを残します。

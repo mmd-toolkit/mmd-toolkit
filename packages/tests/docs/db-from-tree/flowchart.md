@@ -324,7 +324,9 @@ changes nothing.
 
 [fixture: flowchart/gram-empty-statement-top-level] [fixture:
 flowchart/db-subgraph-member-acc-descr-block-blank-lines] [fixture:
-flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]
+flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines] [fixture:
+flowchart/db-subgraph-member-acc-descr-block-whitespace-line] [fixture:
+flowchart/db-swimlane-subgraph-member-acc-descr-block-whitespace-line]
 
 Members that are empty or all whitespace are left out. Of the others, only the
 first of equal members is kept, except that every member `__proto__` is kept,
