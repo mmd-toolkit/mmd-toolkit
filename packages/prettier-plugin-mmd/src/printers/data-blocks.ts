@@ -128,12 +128,13 @@ interface StatementStretches {
    */
   readonly lists: readonly Stretch[]
   /**
-   * The offsets where the things start that the whitespace at the start of a
-   * line is written for: a statement, the head of a list, and the `end` of a
-   * container. A statement that the printer drops at the top level is not one:
-   * nothing is printed for it, at any depth.
+   * The offsets, in order, where the things start that the whitespace at the
+   * start of a line is written for: a statement, the head of a list, and the
+   * `end` of a container. A statement that the printer drops at the top level
+   * is not one: nothing is printed for it, at any depth. The printer puts each
+   * of them at the start of a line.
    */
-  readonly starts: ReadonlySet<number>
+  readonly starts: readonly number[]
 }
 
 /** The stretches of the statements of each source, found once. */
@@ -183,10 +184,26 @@ function statementStretchesOf(
         ? []
         : [{ start: first.range[0], end: last.range[1] }]
     }),
-    starts,
+    starts: [...starts].sort((left, right) => left - right),
   }
   stretchesBySource.set(source, stretches)
   return stretches
+}
+
+/**
+ * The first offset from `start` up to, not including, `end` where a thing
+ * starts that the printer puts at the start of a line (see
+ * `StatementStretches.starts`); undefined where none starts there.
+ */
+export function findLineStartBetween(
+  source: Source,
+  diagramStatements: DiagramStatements,
+  start: number,
+  end: number,
+): number | undefined {
+  const { starts } = statementStretchesOf(source, diagramStatements)
+  const found = starts.at(findFirstIndex(starts, (offset) => offset >= start))
+  return found !== undefined && found < end ? found : undefined
 }
 
 /**
@@ -230,9 +247,14 @@ function standsAtDepthOfItsLine(
     first = directive.range[1]
   }
   if (first === range[0]) return true
-  const { lists, starts } = statementStretchesOf(source, diagramStatements)
+  const { lists } = statementStretchesOf(source, diagramStatements)
   const closed = closedBlockStartingBefore(source, first, lineStart)
-  if (closed === undefined && !starts.has(first)) return false
+  if (
+    closed === undefined &&
+    findLineStartBetween(source, diagramStatements, first, first + 1) ===
+      undefined
+  )
+    return false
   return depthAt(lists, closed ?? first) === depthAt(lists, range[0])
 }
 

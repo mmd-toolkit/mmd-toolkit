@@ -289,6 +289,38 @@ mermaid.js が名前を trim するので Db は同じであり、
 [fixture: names-and-headings/heading-with-comment-and-directive-directive-before-ignored-semicolon-after-whitespace-dropped]
 [fixture: names-and-headings/heading-with-comment-and-directive-connector-ignored-semicolon-after-whitespace-dropped]
 
+ディレクティブを含む名前のすぐ後で文を区切る `;` も、同じように落とします。
+その前の空白とタブもいっしょです。
+mermaid.js がそれを名前とともに読むのは、`;` が名前を終えるからで、
+読んだ後に切り詰めます。
+名前は、`;` のないテキストと同じ形で印字します。
+`flow Front fin %%{init: {}}%% ;  %% c` は、コメントの前を空白 1 つにして、
+`flow Front fin %%{init: {}}%% %% c` に印字します。
+`flow Front fin %%{init: {}}%% ;` の後に改行か文が続くときは、
+`flow Front fin%%{init: {}}%%` に印字します。
+名前の末尾のディレクティブは、上と同じ形で並べます。
+`flow` や `global` の本体では、2 つ目の `;` はそれだけで 1 つの文、空の文です。
+空の文は、その行で後に続くものといっしょに、自分の行に立ちます。
+詳しくは [Semicolons](#semicolons) を参照してください。
+`flow Front fin %%{init: {}}%% ; ;  %% c` は、
+`flow Front fin%%{init: {}}%%` と、次の行の `; %% c` に印字します。
+最上位では、印字はこの文を落とします。
+そのため、
+`connector C fin %%{init: {}}%% ; ;  %% c` は
+`connector C fin %%{init: {}}%% %% c` に印字します。
+ディレクティブの前の最後の語が `end` か `global` の名前は、その空白を残します。
+`;` があってもなくても、そのキーワードが空白を取るからです（下を参照）。
+
+[fixture: names-and-headings/directive-name-dropped-semicolon-before-comment]
+[fixture: names-and-headings/directive-name-dropped-semicolon-at-line-end]
+[fixture: names-and-headings/directive-name-dropped-semicolon-before-statement]
+[fixture:
+names-and-headings/directive-name-dropped-semicolon-before-empty-statement]
+[fixture:
+names-and-headings/heading-end-keyword-directive-semicolon-comment-kept]
+[fixture:
+names-and-headings/heading-global-keyword-directive-semicolon-comment-kept]
+
 `end` か `global` のキーワードで終わる名前は、その後の空白を、
 コメントの前でも取り込みます。
 `flow Front end %% c` は `flow Front end%% c` と印字します。

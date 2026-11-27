@@ -19,6 +19,8 @@ import {
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
+import type { DiagramStatements, StatementListsOf } from "./data-blocks.ts"
+import { findLineStartBetween } from "./data-blocks.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -30,11 +32,14 @@ import {
   keptAsWritten,
   walk,
 } from "./layout.ts"
-import { readGapElement, readRunOnItsLine } from "./gap.ts"
+import { readGap, readGapElement, readRunOnItsLine } from "./gap.ts"
+import type { ItemRun } from "./gap.ts"
 import {
   endsEntityName,
   holdsJoiningRegion,
   isDroppedSemicolon,
+  keepsStyleTerminator,
+  lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
@@ -175,30 +180,14 @@ export function layoutContainerHeader(
         nameEnd = name.range[1]
     } else if (node.title === null && node.data.length === 0) {
       // A name that holds a directive or a comment keeps its text as written,
-      // but a `;` that the line rule ignores and that the printer drops lies at
-      // its end where whitespace follows the `;`, and it is no text of the
-      // name with the spaces and tabs around it. The name is then read as it
-      // is without the whitespace after the `;`: the directives at its end
-      // stand after it, and the whitespace before them goes, as it does at the
-      // end of any name (docs/agentflow.md, Names and headings).
-      let trimmed = nameEnd
-      while (trimmed > nameStart && isSpaceOrTab(source.text[trimmed - 1]))
-        trimmed--
-      if (
-        trimmed > nameStart &&
-        source.ignoredSemicolons.has(trimmed - 1) &&
-        isDroppedSemicolon(source, trimmed - 1)
-      ) {
-        nameEnd = trimmed - 1
-        while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
-          nameEnd--
-        endingDirectives = findEndingDirectives(source, nameStart, nameEnd)
-        if (endingDirectives.length > 0) {
-          rules.set(endingDirectives[0].start, "none")
-          nameEnd = endingDirectives[0].start
-          while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
-            nameEnd--
-        }
+      // but a `;` that the printer drops is no text of the name, nor are the
+      // spaces and tabs around it (see `readNameBeforeDroppedSemicolon`).
+      const before = readNameBeforeDroppedSemicolon(source, name, nameStart)
+      if (before !== undefined) {
+        nameEnd = before.end
+        endingDirectives = before.endingDirectives
+        const first = endingDirectives.at(0)
+        if (first !== undefined) rules.set(first.start, "none")
       }
     }
     // A whitespace-only name still needs its written character.
@@ -272,21 +261,168 @@ export function layoutContainerHeader(
 export const agentflowDropsSeparatorsBeforeComments = true
 
 /**
+ * Whether the printer drops a statement of the list that the diagram holds: a
+ * `;` of its own, which adds no meaning, unless a style terminator on a later
+ * line still ends the style before a removed comment (docs/agentflow.md,
+ * Semicolons). The statements of a `flow` or a `global` are all printed.
+ */
+export function isDroppedAtTopLevel(source: Source, statement: Node): boolean {
+  return (
+    statement.type === "AgentflowEmptyStatement" &&
+    !keepsStyleTerminator(source, statement.range[0])
+  )
+}
+
+/**
+ * Where the text of a name that holds a directive or a comment ends, and the
+ * directives at its end that stand after it, where the printer drops a `;`
+ * after the name; undefined where it drops none. The `;` is no text of the
+ * name, nor are the spaces and tabs around it: a `;` that the line rule
+ * ignores at the end of the name where whitespace follows it, and a `;` that
+ * separates statements right after the name (see `dropsSeparatorAt`), which
+ * ends the name, so that mermaid.js reads the spaces and tabs before it with
+ * the name, and trims them. The name is then printed as the text without the
+ * `;` is: the spaces and tabs stand in the gap, which prints them as its rule
+ * gives, one space before a comment, and where the printed line ends after the
+ * name (see `readPrintedRunAfter`), the directives at the end of the name
+ * stand after it, and the whitespace before them goes, as it does at the end
+ * of any name. Not for a `;` that separates statements after a name whose last
+ * word, before the directives at its end, is the keyword `end` or `global`:
+ * that keyword takes the whitespace after it with or without the `;`, so that
+ * whitespace is the name's own and stays as written (docs/agentflow.md, Names
+ * and headings).
+ */
+function readNameBeforeDroppedSemicolon(
+  source: Source,
+  name: AgentflowName,
+  nameStart: number,
+):
+  | { readonly end: number; readonly endingDirectives: readonly Atom[] }
+  | undefined {
+  const written = trimSpacesAndTabsBefore(source, nameStart, name.range[1])
+  const ignoredAtEnd =
+    written > nameStart &&
+    source.ignoredSemicolons.has(written - 1) &&
+    isDroppedSemicolon(source, written - 1)
+  if (!ignoredAtEnd && !dropsSeparatorAt(source, name.range[1]))
+    return undefined
+  const end = ignoredAtEnd
+    ? trimSpacesAndTabsBefore(source, nameStart, written - 1)
+    : written
+  const endingDirectives = findEndingDirectives(source, nameStart, end)
+  const first = endingDirectives.at(0)
+  const textEnd =
+    first === undefined
+      ? end
+      : trimSpacesAndTabsBefore(source, nameStart, first.start)
+  if (!ignoredAtEnd) {
+    if (endsWithSpaceTakingKeyword(source.text.slice(name.range[0], textEnd)))
+      return undefined
+    if (readPrintedRunAfter(source, name.range[1]) !== null)
+      return { end, endingDirectives: [] }
+  }
+  return { end: textEnd, endingDirectives }
+}
+
+/** `end` moved back over the spaces and tabs before it, down to `start`. */
+function trimSpacesAndTabsBefore(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  let position = end
+  while (position > start && isSpaceOrTab(source.text[position - 1])) position--
+  return position
+}
+
+/**
+ * Whether the printer drops the `;` at `offset`, which separates statements:
+ * its line is not kept (see `isOnKeptLine`), and no item but a comment follows
+ * the `;` on its line (see `keepsSemicolon`).
+ */
+function dropsSeparatorAt(source: Source, offset: number): boolean {
+  return (
+    source.text[offset] === ";" &&
+    !isOnKeptLine(source, offset) &&
+    !keepsSemicolon(source, offset, offset)
+  )
+}
+
+/**
+ * Whether the line that holds `offset` is kept: printed as written, or with
+ * its statements together (see `findAgentflowKeptLines`).
+ */
+function isOnKeptLine(source: Source, offset: number): boolean {
+  const kept = findAgentflowKeptLines(source)
+  const line = lineStartOf(source, offset)
+  return kept.verbatim.has(line) || kept.joined.has(line)
+}
+
+/** The lists of statements that the node holds, the diagram included. */
+export function statementListsOf(
+  node: MermaidAst,
+): ReturnType<StatementListsOf> {
+  if (node.type === "AgentflowDiagram") {
+    return [{ head: node.range[0], statements: node.body }]
+  }
+  const classified = classifyAgentflowStatement(node)
+  return classified?.kind === "container"
+    ? [{ head: node.range[0], statements: classified.statement.body }]
+    : []
+}
+
+/** The statements of an agentflow diagram (see `DiagramStatements`). */
+export function agentflowStatements(source: Source): DiagramStatements {
+  return {
+    listsOf: statementListsOf,
+    isDroppedAtTopLevel: (statement) => isDroppedAtTopLevel(source, statement),
+  }
+}
+
+/**
+ * The items that the printer prints after `offset` on the line of `offset`;
+ * null where it prints none there. Where a thing that the printer puts at the
+ * start of a line follows on the line (see `findLineStartBetween`): a
+ * statement that it prints, or the `end` of a `flow` or a `global`, the line
+ * holds what the gap before that thing leaves with the thing before it, as the
+ * block printer reads the gap (see `readGap`); a `;` of its own that the
+ * printer prints is such a thing, an empty statement, and the run of the whole
+ * line would read it as a `;` that separates statements. Elsewhere it is the
+ * run of the rest of the line (see `readRunOnItsLine`).
+ */
+function readPrintedRunAfter(source: Source, offset: number): ItemRun | null {
+  const options = {
+    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
+  }
+  const next = findLineStartBetween(
+    source,
+    agentflowStatements(source),
+    offset,
+    lineEndOf(source, offset),
+  )
+  if (next !== undefined)
+    return readGap(source, offset, next, false, options).trailing
+  // Any text after `offset` on its line starts a line of its own (see
+  // `findLineStartBetween`), so the run here holds the rest of the line.
+  return readRunOnItsLine(source, offset, options) ?? null
+}
+
+/**
  * Whether the printed run after the name, which starts at `nameEnd`, keeps the
  * `;` at `semicolon`, which separates statements: the gap prints it as an item
  * where an item that is not a comment follows it on its line (see `toRun`,
- * which decides it once), because without the `;` the whitespace before that
- * item would be read with the statement before it.
+ * which decides it once, and `readPrintedRunAfter`), because without the `;`
+ * the whitespace before that item would be read with the statement before it.
  */
 function keepsSemicolon(
   source: Source,
   nameEnd: number,
   semicolon: number,
 ): boolean {
-  const run = readRunOnItsLine(source, nameEnd, {
-    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
-  })
-  return run?.separators.includes(semicolon) === true
+  return (
+    readPrintedRunAfter(source, nameEnd)?.separators.includes(semicolon) ===
+    true
+  )
 }
 
 /**
@@ -351,17 +487,11 @@ export function findNamePrintedEnd(
     )
       return name.range[1]
     const next = readGapElement(source, name.range[1]).element
-    const kept = findAgentflowKeptLines(source)
-    const line = lineStartOf(source, name.range[1])
     // Before a removed separator, a whitespace-only final Label becomes
     // exterior line whitespace. Print the name as that output is read, so
     // the next format cannot remove another fragment (docs/agentflow.md,
     // Names and headings; diagrams/agentflow.md, Names, strings, and click text).
-    if (
-      next.kind === "separator" &&
-      !kept.joined.has(line) &&
-      !kept.verbatim.has(line)
-    )
+    if (next.kind === "separator" && !isOnKeptLine(source, name.range[1]))
       return last.range[0]
     return name.range[1]
   }
@@ -487,18 +617,12 @@ function findCommentAfterDroppedSemicolon(
     findTriviaBetween(source, name.range[0], name.range[1]).length > 0
   )
     return undefined
-  let textEnd = name.range[1]
-  while (textEnd > name.range[0] && isSpaceOrTab(source.text[textEnd - 1]))
-    textEnd--
+  const textEnd = trimSpacesAndTabsBefore(source, name.range[0], name.range[1])
   if (!endsWithSpaceTakingKeyword(source.text.slice(name.range[0], textEnd)))
     return undefined
-  const kept = findAgentflowKeptLines(source)
-  const line = lineStartOf(source, name.range[1])
-  if (kept.joined.has(line) || kept.verbatim.has(line)) return undefined
-  const run = readRunOnItsLine(source, name.range[1], {
-    dropsSeparatorsBeforeComments: agentflowDropsSeparatorsBeforeComments,
-  })
-  if (run == null || run.separators.length > 0) return undefined
+  if (isOnKeptLine(source, name.range[1])) return undefined
+  const run = readPrintedRunAfter(source, name.range[1])
+  if (run === null || run.separators.length > 0) return undefined
   const first = findTriviaBetween(source, run.range[0], run.range[0] + 1).at(0)
   return first?.type === "Comment" ? first.range[0] : undefined
 }
