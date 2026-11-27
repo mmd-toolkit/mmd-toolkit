@@ -912,8 +912,8 @@
 
   > **NOTE:**\
   > Overturned in the next release: the `;` that mermaid.js ignores between the
-  > text and the shape of a `kanban` card stays, as in `style:#a ;[x]`, and so
-  > does that of a `mindmap` node whose line holds another `;`, as in
+  > text and the shape of a `kanban` card or column stays, as in `style:#a ;[x]`,
+  > and so does that of a `mindmap` node whose line holds another `;`, as in
   > `style:#a;b ;[x]`.
 
 - [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space between a keyword and the text or string after it in `quadrant`,

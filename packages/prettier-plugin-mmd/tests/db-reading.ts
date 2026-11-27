@@ -242,8 +242,7 @@ const styleStatementTypes: ReadonlySet<string> = new Set([
  * diagram of `semicolonSeparatorDiagramTypes`, and in the others the `;` that
  * the line rule ignores right after a `classDef` or `style` statement, and the
  * last character of such a statement, and in a mindmap the `;` that the line
- * rule ignores between the text of a node and its shape, which the printer
- * leaves out where the rule then ignores no other `;` (docs/mindmap.md, Node
+ * rule ignores between the text of a node and its shape (docs/mindmap.md, Node
  * text). Every other `;`, including grammatical punctuation and text, stays.
  */
 function droppableSemicolonsOf(text: string, root: Root): ReadonlySet<number> {
