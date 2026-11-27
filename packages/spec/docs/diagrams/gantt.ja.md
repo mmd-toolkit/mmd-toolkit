@@ -331,9 +331,10 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
 [fixture: gantt/lex-directive-at-end-of-section-line]
 [fixture: gantt/lex-directive-glued-at-end-of-section]
 
-閉じていないディレクティブはテキストの残りを取ります。
+閉じないディレクティブは、その引数の後で終わります。
 [ディレクティブの位置](../common.ja.md#ディレクティブの位置)
 を参照してください。
+`%%{init: {}` の自由形式の引数は、テキストの残りを取ります。
 `a : 1d %%{init: {}` に行 `b : 2d` が続くものは、
 終わりが `1d` の 1 つのタスク `a ` を持ち、`gantt`、行 `%%{init: {}`、
 行 `a : 1d` はタスクを持たず、

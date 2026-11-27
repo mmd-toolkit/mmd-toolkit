@@ -269,8 +269,9 @@ journey/lex-directive-glued-at-end-of-section] [fixture:
 journey/lex-directive-after-acc-title-text] [fixture:
 journey/lex-directive-after-person]
 
-An unclosed directive takes the rest of the text (see
-[Where a directive is](../common.md#where-a-directive-is)): `A: 5 %%{init: {}`
+An unclosed directive ends after its argument (see
+[Where a directive is](../common.md#where-a-directive-is)), and the free-text
+argument of `%%{init: {}` takes the rest of the text: `A: 5 %%{init: {}`
 followed by a line `B: 3` has the one task `A` with the score `5`, `journey`, a
 line `%%{init: {}`, and a line `A: 1` has no task, and `title T %%{init: {}`
 followed by a task line has the title `T ` and no task.

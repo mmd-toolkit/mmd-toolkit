@@ -2845,6 +2845,7 @@ Prettier がブロックの閉じ行を開始行と同じ段に印字するの�
 `{` のある行は、文の行か、`{` の前にコメントかディレクティブがあるときは、
 文と同じ段の後の行です。
 
+[fixture: architecture/description-blocks/blank-line-run-kept]
 [fixture: architecture/description-blocks/brace-on-a-later-line]
 
 [fixture: architecture/description-blocks/asymmetric]

@@ -405,9 +405,10 @@ requirement/lex-directive-after-close-brace-space] [fixture:
 requirement/lex-directive-after-class-string-space] [fixture:
 requirement/lex-directive-after-style-space]
 
-An unclosed directive takes the rest of the text (see
-[Where a directive is](../common.md#where-a-directive-is)): `id: 1 %%{init: {}`
-inside a body leaves the body unclosed, and the input is rejected, while
+An unclosed directive ends after its argument (see
+[Where a directive is](../common.md#where-a-directive-is)), and the free-text
+argument of `%%{init: {}` takes the rest of the text: `id: 1 %%{init: {}` inside
+a body leaves the body unclosed, and the input is rejected, while
 `style r fill:red %%{init: {}` followed by more lines has the style `fill:red`,
 because the line feed read after the last character leaves the style context.
 

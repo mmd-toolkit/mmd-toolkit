@@ -338,7 +338,7 @@ mermaid.js は部分をつなぎます。
 `A%%{init: {}}%%` に `:2`、`-->B`、改行が続くもの、
 `space:` にそれと `2` が続くもの、
 形やブロック矢印の文字列と開き・閉じの間のものがそうです。
-閉じないディレクティブはテキストの終わりまで続きます。
+閉じないディレクティブは、その引数の後で終わります。
 [ディレクティブの位置](../common.ja.md#ディレクティブの位置)
 を参照してください。
 
@@ -380,7 +380,7 @@ mermaid.js は部分をつなぎます。
 [fixture: block/db-directive-after-end-of-text]
 [fixture: block/gram-directive-unclosed]
 [fixture: block/db-directive-unclosed-end-of-text]
-[fixture: block/gram-directive-unclosed-word-next-line]
+[fixture: block/gram-directive-unclosed-free-text-takes-next-line]
 [fixture: block/gram-directive-empty] [fixture: block/gram-directive-only]
 [fixture: block/db-label-directive] [fixture: block/db-label-directive-line]
 [fixture: block/db-edge-label-directive] [fixture: block/db-tail-node-directive]

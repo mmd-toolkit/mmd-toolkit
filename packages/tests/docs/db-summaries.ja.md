@@ -7685,8 +7685,18 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   どの名前のディレクティブも取り除かれ、複数行にわたっても、
   2 つ続いても同じです。
   単語を持たない `%%{}%%` はディレクティブでなく、中を読めず拒否されます。
-  閉じていないディレクティブは、テキストの残りごと取り除きます。
-  テキストの終わりでは他を取らず、文の前にあると図に文が残らず、拒否されます。
+  閉じていないディレクティブは、引数が語の文字で始まるときは、
+  その語の終わりまでと、その後ろの空白だけを取ります。
+  語が次の行にあっても同じで、その後ろのテキストは読まれます。
+  `A`、`%%{x`、`B`、`C` をそれぞれ 1 行に書くと、`B` を取り、
+  ブロックは `A` と `C` です。
+  引数がほかの文字で始まるときは自由なテキストで、
+  U+2028 か U+2029 まで（その文字も取ります）か、
+  テキストの終わりまでを取ります。
+  `%%{x` の代わりに `%%{init: {}` と書くと、ブロックは `A` だけです。
+  `%%{init: {}` に続けて U+2028 か U+2029 と `B` を同じ行に書くと、
+  ブロックは `A`、`B`、`C` です。
+  テキストの終わりでは他を取らず、文をすべて取ると図に文が残らず、拒否されます。
   文字列の中で行を単独で占めるディレクティブは、前後の改行を残します。
   見出しの後ろがディレクティブだけのテキストは拒否されます。
 
@@ -7717,7 +7727,12 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   [fixture: block/db-directive-after-end-of-text]
   [fixture: block/gram-directive-unclosed]
   [fixture: block/db-directive-unclosed-end-of-text]
-  [fixture: block/gram-directive-unclosed-word-next-line]
+  [fixture: block/gram-directive-unclosed-free-text-takes-next-line]
+  [fixture: block/db-directive-unclosed-word-argument-takes-next-word]
+  [fixture: block/db-directive-unclosed-free-text-takes-rest]
+  [fixture: block/db-directive-unclosed-free-text-stops-at-line-separator]
+  [fixture: block/db-directive-unclosed-free-text-stops-at-paragraph-separator]
+  [fixture: block/gram-directive-unclosed-word-argument-takes-only-statement]
   [fixture: block/gram-directive-empty] [fixture: block/gram-directive-only]
   [fixture: block/db-label-directive] [fixture: block/db-label-directive-line]
   [fixture: block/db-edge-label-directive]

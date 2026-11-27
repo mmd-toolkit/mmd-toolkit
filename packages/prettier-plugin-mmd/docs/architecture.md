@@ -3913,7 +3913,8 @@ that opens a block: the line that holds the `{` is the statement's line or,
 where a comment or a directive stands before the `{`, a later line at the level
 of the statement.
 
-[fixture: architecture/description-blocks/brace-on-a-later-line]
+[fixture: architecture/description-blocks/blank-line-run-kept] [fixture:
+architecture/description-blocks/brace-on-a-later-line]
 
 [fixture: architecture/description-blocks/asymmetric] [fixture:
 architecture/description-blocks/directive-line-between-keyword-and-brace]

@@ -1846,11 +1846,18 @@ text.
 [fixture: directives/between-units] [fixture: directives/between-units-runs]
 [fixture: directives/inside-values-kept]
 
-A directive that is not closed takes the rest of the text, and is kept as
-written.
+A directive that is not closed is kept as written, with the text that goes on
+its line. An argument that starts with a word character ends with that word,
+also on the next line, and the directive takes the whitespace after it, line
+breaks included, so the text after it goes on the line of the directive (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)):
+`%%{x`, `y`, and `element e {` keep the element `e`. Any other argument, as in
+`%%{init: {`, runs to the end of the text, and the directive takes the rest of
+the text.
 
 [fixture: directives/unclosed-at-end-of-text-kept] [fixture:
-directives/unclosed-after-statement-kept]
+directives/unclosed-after-statement-kept] [fixture:
+directives/unclosed-takes-the-next-word]
 
 Input
 ([directives/kept-input.mmd](../tests/fixtures/requirement/directives/kept-input.mmd)):

@@ -589,12 +589,20 @@ Db で LF 後の字下げが取り除かれるためです。
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。
+規則 1 は、テキストの行の間の改行を残します。
+mermaid.js がそれを値に残し、2 つの行をつなぐと説明が変わるからです。
+その間の空行は、規則 1 の「空行」の行が与えます。
+空行の連なりは 1 つにし、ブロックの頭と終わりには空行を置きません。
+リリース済みの版は、空行の連なりと、
+ブロックの頭と終わりの空行を書かれたまま残し、
+これはその行が与える形ではありません。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 空白だけの内側は、囲む空白を要する本文がないため `{}` と印字します。
 タブ、改行、Unicode の空白も同じです。
 
+[fixture: gitgraph/title-and-common-values/blank-lines-at-the-ends-kept]
 [fixture: gitgraph/title-and-common-values/brace-on-a-later-line]
 
 [fixture: title-and-common-values/block-touching-with-text-fixed]
@@ -602,6 +610,8 @@ Db で LF 後の字下げが取り除かれるためです。
 [test: gitgraph Unicode and tab interiors]
 [fixture: title-and-common-values/block-trailing-whitespace]
 [fixture: title-and-common-values/block-trailing-whitespace-closer-on-the-text-line]
+[fixture: gitgraph/title-and-common-values/blank-line-kept]
+[fixture: gitgraph/title-and-common-values/blank-line-run-kept]
 
 コメントやディレクティブだけのブロックも注釈類を残します。
 フロントマターの代替の扱いを含む反復・空値・出現位置を保持します。

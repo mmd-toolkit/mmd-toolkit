@@ -454,6 +454,12 @@ export const treemapCases: readonly TreemapCase[] = [
     options: {},
   },
   {
+    name: "treemap/title/title-text-line-separator-unclosed-directive-word-kept",
+    input: 'treemap\ntitle T \u2028 %%{x\n\ny\n"A":1\n',
+    output: 'treemap\ntitle T \u2028 %%{x\n\ny\n"A":1\n',
+    options: {},
+  },
+  {
     name: "treemap/title/title-text-line-separator-directive-comment-before-two-comment-lines-kept",
     input: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%% d\n%% e\n"A":1\n',
     output: 'treemap\ntitle T \u2028 %%{x}%%  %% c\n%% d\n%% e\n"A":1\n',

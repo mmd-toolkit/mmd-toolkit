@@ -1329,12 +1329,18 @@ classDiagram
 [fixture: directives/semicolon-after-word-argument-directive-kept]
 [fixture: directives/ignored-semicolon-next-to-another-kept]
 
-自由なテキストの引数を持つ閉じていないディレクティブはテキストの終わりまで続き、
+自由なテキストの引数を持つ閉じていないディレクティブは、
+U+2028 か U+2029 で先に止まらない限り、テキストの終わりまで続き、
 その後の `;` はその一部です。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
 それが連れていく行は、書かれたまま印字します。
 
 [fixture: directives/semicolon-after-unclosed-directive-kept]
 [fixture: directives/semicolon-on-next-line-after-unclosed-directive-kept]
+[fixture: directives/unclosed-free-text-takes-the-rest]
+[corpus fixture: class/unclosed-directive-separator-whitespace-5cfdfca6]
 
 ### 色
 

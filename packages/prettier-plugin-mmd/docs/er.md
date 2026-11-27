@@ -2129,23 +2129,77 @@ which states the level and why replacing the indentation keeps the Db). Keep
 line breaks and interior blank lines, and the whitespace at the end of each line
 of text except the last one (the Db of the pinned version holds it: `x`, two
 spaces, a line break, and `y` give another accDescr than `x`, a line break, and
-`y`); a line of whitespace only becomes an empty line. The whitespace at the end
-of the last line of text is dropped where the closer stands on a line of its
-own, and is printed as one space where the closer follows it on that line.
-Inside a subgraph, keep the original body columns because the raw description
-also participates in its membership reading: mermaid.js reads the lines, with
-their columns, as a node of the subgraph, so aligning them changes the Db (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
-there a line of whitespace only stays as written, and the whitespace at the end
-of the last line of text is dropped, or printed as one space before a closer on
-that line, as above.
+`y`); a line of whitespace only becomes an empty line. Rule 1 keeps the line
+breaks between the lines of text, since mermaid.js keeps them in the value and
+joining two lines changes the description, and the row Blank lines of rule 1
+gives the empty lines among them: a run of them becomes one, and none stands at
+the start or the end of the block. The released version keeps a run of empty
+lines and the empty lines at the start and the end of the block as written,
+which that row does not give. The whitespace at the end of the last line of text
+is dropped where the closer stands on a line of its own, and is printed as one
+space where the closer follows it on that line. Inside a subgraph, mermaid.js
+also reads the text of such a block, without the whitespace at its ends, as a
+node of the subgraph, with the columns of its later lines (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+What the node holds stays as written, since changing it changes the Db in a way
+that no kind of exception allows (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)):
+the indentation of the later lines of text, a line of whitespace only and a run
+of empty lines among the lines of text, and the indentation of a directive line
+among them, which stays in the node when mermaid.js removes the directive. What
+the node does not hold is printed by
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): the indentation of
+the first line of text, a comment line, which mermaid.js removes with its
+indentation, and a directive line at the start or the end of the block. Rule 1
+puts the first line, the comment lines, and those directive lines one level
+deeper than the line that opens the block, as lines inside a block, and no empty
+line and no line of whitespace only stands at the start or the end of the block.
+The released version keeps those lines where they are written and keeps those
+empty lines, and it keeps a line of whitespace only at the start as written and
+prints one at the end as an empty line, which rule 1 does not give. The
+whitespace at the end of the last line of text is dropped, or printed as one
+space before a closer on that line, as above.
 
-[corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
+[fixture: er/accessibility-statements/blank-lines-at-the-ends-kept] [fixture:
+er/accessibility-statements/blank-line-run-kept] [fixture:
+er/accessibility-statements/blank-line-run-in-subgraph-kept] [fixture:
+er/accessibility-statements/first-line-in-subgraph-kept] [fixture:
+er/accessibility-statements/blank-lines-at-the-ends-in-subgraph-kept] [fixture:
+er/accessibility-statements/comment-lines-in-subgraph-kept] [fixture:
+er/accessibility-statements/directive-line-in-subgraph-kept] [fixture:
+er/accessibility-statements/directive-lines-at-the-ends-in-subgraph-kept]
+[fixture: er/accessibility-statements/whitespace-line-in-subgraph-kept]
+[fixture:
+er/accessibility-statements/whitespace-lines-at-the-ends-in-subgraph-kept]
+[corpus fixture: er/db-subgraph-nodes-acc-descr-block-blank-lines] [corpus
+fixture: er/db-subgraph-nodes-acc-descr-block-edge-blank-lines] [corpus fixture:
+er/lex-subgraph-nodes-acc-descr-block-comment-line] [corpus fixture:
+er/lex-subgraph-nodes-acc-descr-block-directive-line] [corpus fixture:
+er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
 accessibility-statements/block-trailing-whitespace] [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
 [fixture: accessibility-statements/block-trailing-whitespace-in-a-subgraph]
 [fixture:
 accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
+
+A directive that is not closed in such a block is printed as in
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins),
+which also says what the released version keeps where the closer goes on the
+line of the directive. Inside a subgraph, the line of the directive itself is
+printed as any other directive line of the block, as above, and the released
+version keeps it where it is written, also at the start or the end of the block,
+which rule 1 does not give.
+
+[fixture: accessibility-statements/unclosed-directive-line-at-the-start]
+[fixture: accessibility-statements/unclosed-directive-line-among-the-text]
+[fixture:
+accessibility-statements/unclosed-directive-line-before-the-closer-kept]
+[fixture:
+accessibility-statements/unclosed-directive-line-at-the-start-in-subgraph-kept]
+[fixture:
+accessibility-statements/unclosed-directive-line-among-the-text-in-subgraph-kept]
+[fixture:
+accessibility-statements/unclosed-directive-line-before-the-closer-in-subgraph-kept]
 
 A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
@@ -2680,11 +2734,18 @@ its name of an ER diagram: the gap stays as written] [test: U+2029 and a
 directive with a space after it in the gap between the type and the name of an
 ER attribute]
 
-A directive that is not closed takes the rest of the text, and is kept as
-written.
+A directive that is not closed is kept as written, with the text that goes on
+its line. An argument that starts with a word character ends with that word,
+also on the next line, and the directive takes the whitespace after it, line
+breaks included, so the text after it goes on the line of the directive (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)):
+`A`, `%%{x`, `B`, and `C` give the entities `A` and `C`. Any other argument, as
+in `%%{init: {`, runs to the end of the text, and the directive takes the rest
+of the text.
 
 [fixture: directives/unclosed-at-end-of-text-kept] [fixture:
-directives/unclosed-after-statement-kept]
+directives/unclosed-after-statement-kept] [fixture:
+directives/unclosed-takes-the-next-word]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;

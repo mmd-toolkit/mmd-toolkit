@@ -524,10 +524,18 @@ directive touches it (see [Commas](#commas) for a field of spaces only).
 [fixture: directives/next-to-commas]
 
 A directive inside a field or a string is part of the text and stays. A
-directive that is not closed takes the rest of the text, and is kept as written.
+directive that is not closed is kept as written, with the text that goes on its
+line. An argument that starts with a word character ends with that word, also on
+the next line, and the directive takes the whitespace after it, line breaks
+included, so the text after it goes on the line of the directive (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)):
+`%%{x`, `y`, and `c,d,2` keep the link from `c` to `d`. Any other argument, as
+in `%%{init: {`, runs to the end of the text, and the directive takes the rest
+of the text.
 
 [fixture: directives/inside-fields-kept] [fixture:
-directives/unclosed-at-the-end-kept]
+directives/unclosed-at-the-end-kept] [fixture:
+directives/unclosed-takes-the-next-word]
 
 Input
 ([directives/after-the-value-input.mmd](../tests/fixtures/sankey/directives/after-the-value-input.mmd)):

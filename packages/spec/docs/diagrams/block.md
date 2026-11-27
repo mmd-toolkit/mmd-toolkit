@@ -303,7 +303,7 @@ header, an arrow, a direction of a block arrow, or the name of a class of
 A directive between two units, also glued to them, is allowed: `A%%{init: {}}%%`
 followed by `:2`, `-->B`, or a line feed, `space:` followed by it and `2`, and
 one between the string of a shape or a block arrow and its opening or closing. A
-directive that is not closed runs to the end of the text (see
+directive that is not closed ends after its argument (see
 [Where a directive is](../common.md#where-a-directive-is)).
 
 [fixture: block/div-directive-in-id] [fixture:
@@ -338,7 +338,7 @@ block/db-directive-spaces-around] [fixture: block/db-directive-class-def-line]
 [fixture: block/db-directive-after-end-of-text] [fixture:
 block/gram-directive-unclosed] [fixture:
 block/db-directive-unclosed-end-of-text] [fixture:
-block/gram-directive-unclosed-word-next-line] [fixture:
+block/gram-directive-unclosed-free-text-takes-next-line] [fixture:
 block/gram-directive-empty] [fixture: block/gram-directive-only] [fixture:
 block/db-label-directive] [fixture: block/db-label-directive-line] [fixture:
 block/db-edge-label-directive] [fixture: block/db-tail-node-directive] [fixture:

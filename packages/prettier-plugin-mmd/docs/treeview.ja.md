@@ -2667,6 +2667,20 @@ mermaid.js は字下げしたコメント行も受理しますが、
 
 [test: treeview/comments/standalone-ls] [test: treeview/comments/standalone-ps]
 
+名前の閉じる引用符に接したコメントは、接したままにします。
+対象にする mermaid.js の版はどれも、引用符と `%%` の間の空白を、空行を挟んでも、
+次のノードの字下げとして読み、そのノードを名前の子にします。
+後にノードがないとき、また次のノードが字下げされているときは、入力を拒否します。
+
+[fixture: treeview/comments/comment-quoted-inline]
+[fixture: treeview/comments/comment-quoted-inline-final]
+[fixture: treeview/comments/comment-quoted-inline-blank-line]
+[fixture: treeview/comments/comment-inline-carried]
+[corpus fixture: treeview/tail-quoted-space-comment]
+[fixture: treeview/comments/comment-quoted-inline-indented-next]
+[corpus fixture: treeview/gram-quoted-tail-space-comment-end-of-text]
+[corpus fixture: treeview/gram-quoted-tail-space-comment-next-indent]
+
 有意な字下げ連なりは割り当て済みのノードへ 1 回だけ移します。
 描き直せる罫線の図では、図種固有のコメントの構造の前置部分を外し、
 その枝をノードの名前の行へ 1 回だけ描きます。

@@ -389,7 +389,7 @@ ELK の配置のパッケージのどのリリースも、
 | [gantt](./gantt.ja.md#タイトルとセクション)                                                                                           | `title` と空白とタブだけ                                                                                                                 | 後ろに何もない `title`                                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 がほかの形を拒否する                                                             | [fixture: gantt/titles-and-sections/title-blank-kept]                                                                                                                 |
 | [gantt](./gantt.ja.md#複数行の文)                                                                                                     | `click style`、改行、`href "x:#y;#z"` と、task `style`                                                                                   | 1 行にした文                                                              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が、task を別のアドレスにリンクする                                              | [fixture: gantt/multi-line-statements/semicolon-joining-changes-link-kept]                                                                                            |
 | [ER](./er.ja.md#トークンの間の空白)                                                                                                   | `class-A a`                                                                                                                              | `class -A a`                                                              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を入れた形を拒否する                                                                                      | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                               |
-| [ER](./er.ja.md#アクセシビリティの文)                                                                                                 | subgraph の中の `accDescr` ブロックの行の列（`a` と、2 つ深い `b`）                                                                      | 行をそろえた形                                                            | なし                                                  | 12.3.0 が、行を列ごと subgraph の節点として読む                                                                          | [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]                                                                                                          |
+| [ER](./er.ja.md#アクセシビリティの文)                                                                                                 | subgraph の中の `accDescr` ブロックの行の列（`a` と、2 つ深い `b`）                                                                      | 行をそろえた形                                                            | なし                                                  | 12.3.0 が、行を列ごと subgraph のノードとして読む                                                                        | [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]                                                                                                          |
 | [ER](./er.ja.md#トークンの間の空白)                                                                                                   | `subgraph-x`、`end-x`                                                                                                                    | `subgraph -x`、`end` と単独の行の `-x`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が空白を入れた形を拒否し、11.7.0 が違って描く                                                                     | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                              |
 | [ER](./er.ja.md#方向)                                                                                                                 | `DIRECTION lr`                                                                                                                           | `direction LR`                                                            | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、その行をエンティティとして読む                                                                                | [fixture: er/direction/case-kept]                                                                                                                                     |
 | [ER](./er.ja.md#subgraph)                                                                                                             | `SUBGRAPH S` と `END`                                                                                                                    | `subgraph S` と `end`                                                     | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が、エンティティとして読む                                                                              | [fixture: er/subgraphs/end-case-kept]                                                                                                                                 |
@@ -2087,7 +2087,14 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 | `\u2028T`                                       | `T`                                                        | 書かれたまま                                      |
 | `\u2029T`                                       | `T`                                                        | 書かれたまま                                      |
 
-閉じていないディレクティブはタイトルの残りを取ります。
+タイトルの中の閉じていないディレクティブは、
+[閉じていないディレクティブがつなぐ行](#閉じていないディレクティブがつなぐ行)
+のとおりに、後ろのテキストを取り込みます。
+後ろに語があれば、次の行にあってもそれが引数になり、
+その語より後のテキストはタイトルの行に乗ります。
+レーダーチャートの `axis` の後の `a, b` がその例です。
+後ろのテキストが語の文字で始まらないとき（円グラフの `"a": 1` など）は、
+テキストの残りを取り込みます。
 `title T %%{x` と `title T%%{x` は、どの型でも変えません。
 次の表は、その前の空白が印字される形を、
 タイトルの後に文が続くかどうかで示します。
@@ -6974,6 +6981,38 @@ ER 図の `"style:#x" end; %%{x: w B` は、書かれたまま残ります。
 
 [fixture: flowchart/directives/unclosed-free-text-takes-the-rest]
 [fixture: flowchart/directives/unclosed-word-argument-stops-after-word]
+
+どの図種の説明ブロック `accDescr { ... }` でも、
+そのようなディレクティブの行はブロックの中の行です。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+それをブロックを開く行より 1 段深く置きます。
+ただし、subgraph のノードがその字下げを持つときは除きます。
+詳しくは、
+ER の[アクセシビリティの文](./er.ja.md#アクセシビリティの文)を参照してください。
+その行に乗るものは、書かれたまま残します。
+`a` の行、`%%{x` の行、`b` の行、`}` の行が続くときは、引数は `b` で、
+`}` はディレクティブの行に乗ります。
+`%%{x` の行の次が `}` の行のときは、`}` は語ではないので、
+引数は自由なテキストになり、`}` とテキストの残りを取り込みます。
+そのため、ブロックは閉じません。
+flowchart、swimlane、agentflow、sequence、state、xychart は、
+説明が空のブロックとして読み、
+treeView は `accDescr {` をノードの名前として読み、ほかの図種は拒否します。
+リリース済みの版は、`}` がディレクティブの行に乗るときは、
+開く行より後のブロックの行をすべて書かれたまま残します。
+ディレクティブが `}` を取り込むときは、ディレクティブの行を文の段に印字し、
+agentflow はブロックを書かれたまま残します。
+規則 1 はどちらも与えません。
+
+[fixture: er/accessibility-statements/unclosed-directive-line-at-the-start]
+[fixture: er/accessibility-statements/unclosed-directive-line-among-the-text]
+[fixture: er/accessibility-statements/unclosed-directive-line-before-the-closer-kept]
+[fixture: flowchart/directives/compat-unclosed-directive-takes-the-closer]
+[fixture: flowchart/directives/swimlane-compat-unclosed-directive-takes-the-closer]
+[fixture: agentflow/directives/compat-unclosed-directive-takes-the-closer-kept]
+[fixture: sequence/directives/compat-unclosed-directive-takes-the-closer]
+[fixture: state/directives/compat-unclosed-directive-takes-the-closer]
+[fixture: xychart/directives/compat-unclosed-directive-takes-the-closer]
 
 U+2028 か U+2029 を含む空白は、ディレクティブがどこにあっても、
 ディレクティブと一緒に、書かれたまま印字します。

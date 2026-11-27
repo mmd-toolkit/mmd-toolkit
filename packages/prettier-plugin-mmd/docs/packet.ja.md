@@ -479,7 +479,16 @@ Prettier が `class A{}` を `class A {}` と印字するのと同じです。
 Prettier は空のオブジェクトや配列の内側に空白を置かないため、
 空白だけの説明本文も `{}` になり、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、この形を与えます。
-コメント・ディレクティブだけの内側は注釈類を残します。
+コメント行とディレクティブの行だけを持つブロックのコメント行は、
+自分の行に置いたままにします。
+`{` の行に置くと、対象にする mermaid.js の版はどれも、
+そのコメントを説明のテキストとして読み（`accDescr {%% removed comment` の説明は
+`%% removed comment` です）、コメントの行の `}` はコメントの一部になり、
+ブロックは後の行の `}` で閉じます。
+後の行に `}` がなければ、対象にする版はどれも入力を拒否します。
+そのようなブロックのディレクティブの行は、自分の行に置いたままにします。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+ブロックの中の各行を自分の行に置くからです。
 説明ブロック内の `%%` だけの行は、
 mermaid.js の Db に説明の文字列として記録されます。
 その行を除くと説明が変わるため、説明ブロック内に残します。
@@ -487,7 +496,13 @@ mermaid.js の Db に説明の文字列として記録されます。
 Db で LF 後の字下げが取り除かれるためです。
 改行と内部の空行は保ちます。
 mermaid.js は説明の中の改行を保ちます。
-2 つのテキスト行の間の空行の連なりは、書かれたまま残します。
+規則 1 は、テキストの行の間の改行を残します。
+mermaid.js がそれを値に残し、2 つの行をつなぐと説明が変わるからです。
+その間の空行は、規則 1 の「空行」の行が与えます。
+空行の連なりは 1 つにし、ブロックの頭と終わりには空行を置きません。
+リリース済みの版は、空行の連なりと、
+ブロックの頭と終わりの空行を書かれたまま残し、
+これはその行が与える形ではありません。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
@@ -502,6 +517,7 @@ Prettier がブロックを閉じる行を印字する形です。
 引用符、バックスラッシュ、
 隠れた形に見える文字列も最初の閉じ波括弧を保護しません。
 
+[fixture: packet/description-blocks/blank-lines-at-the-ends-kept]
 [fixture: packet/description-blocks/brace-on-a-later-line]
 
 [corpus fixture: packet/common-block-bare]
@@ -517,6 +533,10 @@ Prettier がブロックを閉じる行を印字する形です。
 [fixture: packet/description-blocks/blank-line-run-kept]
 
 [fixture: packet/description-blocks/description-trivia]
+[fixture: packet/description-blocks/comment-and-directive-lines]
+[corpus fixture: packet/lex-description-comment-after-open]
+[corpus fixture: packet/lex-description-close-on-comment-line]
+[corpus fixture: packet/lex-description-close-on-comment-line-later-close]
 
 [corpus fixture: packet/lex-description-directive-only]
 

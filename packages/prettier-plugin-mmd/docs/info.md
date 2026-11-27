@@ -230,14 +230,21 @@ where a comment or a directive stands before the `{`, a later line at the level
 of the statement. Ordinary description body and standalone comment lines align
 one level inside the statement; LF indentation is absent from the Db. Keep line
 breaks and interior blank lines, and the whitespace at the end of each line of
-text except the last one; a line of whitespace only becomes an empty line. The
-whitespace at the end of the last line of text is dropped where the closer
-stands on a line of its own, and is printed as one space where the closer
+text except the last one; a line of whitespace only becomes an empty line. Rule
+1 keeps the line breaks between the lines of text, as it keeps each line inside
+a block on a line of its own, and the row Blank lines of rule 1 gives the empty
+lines among them: a run of them becomes one, and none stands at the start or the
+end of the block. The released version keeps a run of empty lines and the empty
+lines at the start and the end of the block as written, which that row does not
+give. The whitespace at the end of the last line of text is dropped where the
+closer stands on a line of its own, and is printed as one space where the closer
 follows it on that line. Directives and shared removed comment regions keep
 their complete source. Quotes and backslashes do not protect the first closing
 brace.
 
-[fixture: info/description-blocks/brace-on-a-later-line]
+[fixture: info/description-blocks/blank-lines-at-the-ends-kept] [fixture:
+info/blank-lines/blank-values-kept] [fixture:
+info/description-blocks/brace-on-a-later-line]
 
 [fixture: info/description-blocks/block-gap-presence] [fixture:
 description-blocks/block-trailing-whitespace-closer-on-the-text-line]

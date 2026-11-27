@@ -1243,11 +1243,14 @@ printed as written: a `;` after a directive that a word argument ends
 directives/ignored-semicolon-next-to-another-kept]
 
 A directive with a free-text argument that is not closed runs to the end of the
-text, and the `;` after it is part of it: the lines it joins are printed as
-written.
+text, unless a U+2028 or U+2029 stops it first (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)),
+and the `;` after it is part of it: the lines it joins are printed as written.
 
 [fixture: directives/semicolon-after-unclosed-directive-kept] [fixture:
-directives/semicolon-on-next-line-after-unclosed-directive-kept]
+directives/semicolon-on-next-line-after-unclosed-directive-kept] [fixture:
+directives/unclosed-free-text-takes-the-rest] [corpus fixture:
+class/unclosed-directive-separator-whitespace-5cfdfca6]
 
 ### Colors
 

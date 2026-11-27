@@ -1037,14 +1037,25 @@ section か leaf が直後に続くときは、行を書かれたまま残しま
 その行が書かれたまま残す行であるときは、後に何が続いても書かれたまま残します。
 その文字の後の空白と、ディレクティブとコメントの間の空白を保ち、
 その文字で行を終えません。
-その文字の後に閉じていないディレクティブがあるときは、
-それがテキストの残りを取るので、同じくその文字で行を終えません。
+その文字の後に閉じていないディレクティブがあり、
+その後ろのテキストが語の文字で始まらないときは、
+ディレクティブがテキストの残りを取るので、同じくその文字で行を終えません。
 `title T`、その文字、`%%{x`、空行、`"A":1` は、`title T %%{x`、空行、
 `"A":1` と印字します。
+後ろに語があるときは、ディレクティブはその語を引数として、
+その後ろの空白とともに取り込み、その後ろのテキストはタイトルの行に乗ります。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
+そのため、mermaid.js はその文字の前後の空白をタイトルに残し、
+その行は書かれたまま残ります。
+`"A":1` の前に `y` があると、タイトルは `T`、空白、その文字、空白、
+`"A":1` になります。
 
 [test: treemap/title/title-text-ignored-semicolon-line-separator-directive-comment-kept]
 [test: treemap/title/title-text-two-ignored-semicolons-line-separator-directive-comment-kept]
 [test: treemap/title/title-text-line-separator-unclosed-directive-joins-rest]
+[test: treemap/title/title-text-line-separator-unclosed-directive-word-kept]
 
 コメントの後がそれ以外の形のとき、たとえば空行とテキストの終わりのときや、
 空行とディレクティブだけの行のときは、ここでは述べません。
@@ -1186,6 +1197,13 @@ Prettier は `class A{}` を `class A {}` と印字します。
 コメントやディレクティブの中身と境界、内部の空行は保ちます。
 本文行は文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
+規則 1 は、テキストの行の間の改行を残します。
+mermaid.js がそれを値に残し、2 つの行をつなぐと説明が変わるからです。
+その間の空行は、規則 1 の「空行」の行が与えます。
+空行の連なりは 1 つにし、ブロックの頭と終わりには空行を置きません。
+リリース済みの版は、空行の連なりと、
+ブロックの頭と終わりの空行を書かれたまま残し、
+これはその行が与える形ではありません。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 別行の開始記号は文の列にそろえます。
 独立した行の `}` は文と同じ段に置きます。
@@ -1199,6 +1217,7 @@ Prettier がブロックを閉じる行を印字する形です。
 本文はその 1 段内側に置きます。
 詳しくは [タイトル](#title) を参照してください。
 
+[fixture: treemap/description-blocks/blank-lines-at-the-ends-kept]
 [fixture: treemap/description-blocks/brace-on-a-later-line]
 
 [fixture: treemap/description-blocks/block-touching-with-text-fixed]
@@ -1213,6 +1232,7 @@ Prettier がブロックを閉じる行を印字する形です。
 [fixture: treemap/description-blocks/right-touching]
 
 [fixture: treemap/description-blocks/continuation]
+[fixture: treemap/description-blocks/blank-line-run-kept]
 
 [fixture: treemap/description-blocks/body-tabs]
 

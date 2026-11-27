@@ -1116,10 +1116,20 @@ Prettier がブロックの中の行をそう印字するためです。
 [fixture: directives/between-units] [fixture: directives/inside-values-kept]
 [fixture: directives/over-lines-kept]
 
-閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。
+閉じていないディレクティブは、その行に乗るテキストとともに書かれたまま残します。
+語の文字で始まる引数は、次の行にあってもその語で終わり、
+ディレクティブはその後ろの空白を改行ごと取り込みます。
+そのため、その後ろのテキストはディレクティブの行に乗ります。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
+`%%{x`、`y`、`section S` では、セクション `S` が残ります。
+`%%{init: {` のようにそれ以外の引数はテキストの終わりまで続き、
+ディレクティブはテキストの残りを取り込みます。
 
 [fixture: directives/unclosed-at-end-of-text-kept]
 [fixture: directives/unclosed-after-statement-kept]
+[fixture: directives/unclosed-takes-the-next-word]
 
 入力
 ([directives/levels-around-sections-input.mmd](../tests/fixtures/journey/directives/levels-around-sections-input.mmd)):

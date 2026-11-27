@@ -3749,16 +3749,22 @@ text stands there too, one level inside the statement, as
 [quadrant](./quadrant.md#titles-and-accessibility-statements) indents the body
 of such a block. Keep line breaks and interior blank lines, and the whitespace
 at the end of each line of text except the last one; a line of whitespace only
-becomes an empty line. The whitespace at the end of the last line of text is
-dropped where the closer stands on a line of its own, and is printed as one
-space where the closer follows it on that line. Directives and shared removed
-comment regions keep their complete source, including in a block that contains
-only a directive, and trivia keeps its shared continuation layout. Rule 1 does
-not decide the depth of comment lines at the boundary of a description block.
-For a block that holds only comment lines, rule 2 decides the depth of those
-boundary comment lines, as [flowchart](./flowchart.md#multi-line-values) keeps
-the comment lines of a block without text and puts them one level inside the
-block. A separate `}` stands at the level of the `accDescr`.
+becomes an empty line. Rule 1 keeps the line breaks between the lines of text,
+since mermaid.js keeps them in the value and joining two lines changes the
+description, and the row Blank lines of rule 1 gives the empty lines among them:
+a run of them becomes one, and none stands at the start or the end of the block.
+The released version keeps a run of empty lines and the empty lines at the start
+and the end of the block as written, which that row does not give. The
+whitespace at the end of the last line of text is dropped where the closer
+stands on a line of its own, and is printed as one space where the closer
+follows it on that line. Directives and shared removed comment regions keep
+their complete source, including in a block that contains only a directive, and
+trivia keeps its shared continuation layout. Rule 1 does not decide the depth of
+comment lines at the boundary of a description block. For a block that holds
+only comment lines, rule 2 decides the depth of those boundary comment lines, as
+[flowchart](./flowchart.md#multi-line-values) keeps the comment lines of a block
+without text and puts them one level inside the block. A separate `}` stands at
+the level of the `accDescr`.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the closer that
 level, as Prettier prints the closing line at the level of the line that opens a
 block: the line that holds the `{` is the statement's line or, where a comment
@@ -3772,7 +3778,9 @@ the list of undecided forms (D34), so their printing is no decided form, and the
 released form stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
-[fixture: wardley/accessibility/brace-on-a-later-line]
+[fixture: wardley/accessibility/blank-lines-at-the-ends-kept] [fixture:
+wardley/accessibility/blank-line-run-kept] [fixture:
+wardley/accessibility/brace-on-a-later-line]
 
 [fixture: wardley/accessibility/description-closer] [fixture:
 wardley/accessibility/description-comment-only] [fixture:

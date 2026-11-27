@@ -251,13 +251,14 @@ the openers and closers of shapes, are no text units.
 **Trivia between units.** A comment line, and a directive on a line of its own,
 are removed before the lexer reads the text (see
 [Comment lines](../common.md#comment-lines)); a comment line goes with its line
-feed, while a directive leaves its line empty. An unclosed directive takes the
-rest of the text (see
-[Where a directive is](../common.md#where-a-directive-is)): `  a`, a line
-`%%{x`, and a line `  b` have no node b. On a line that matches the `style` rule
-(see [`style` and `classDef` lines](../common.md#style-and-classdef-lines)), the
-last `;` is ignored, and the lexer reads through it inside every text unit and
-string unit: `style:#x;y` is the node `style:#xy`, `a[style:#x;y]` and
+feed, while a directive leaves its line empty. An unclosed directive ends after
+its argument (see [Where a directive is](../common.md#where-a-directive-is)):
+`  a`, a line `%%{x`, and a line `  b` have no node b, because the directive
+takes the word `b` on the next line as its argument. On a line that matches the
+`style` rule (see
+[`style` and `classDef` lines](../common.md#style-and-classdef-lines)), the last
+`;` is ignored, and the lexer reads through it inside every text unit and string
+unit: `style:#x;y` is the node `style:#xy`, `a[style:#x;y]` and
 `a["style:#x;y"]` have the text `style:#xy`, and `::icon(style:#x;y)` and
 `:::style:#x;y` the icon and the class `style:#xy`. Only the last `;` of the
 line is ignored, so with two the first may end an entity: `style:#x;y;z` is the

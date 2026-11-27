@@ -1684,7 +1684,8 @@ mermaid.js と同じく参加者 A と `Cparticipant D` を宣言します。
   [fixture: sequence/tokens-ignored-semicolon-separator-unclosed-directive-paragraph-separator]
 
 - 自由なテキストの引数が行終端に出会う閉じていないディレクティブは、
-  テキストの残りを取ります。
+  その行終端を越えて続きます（[ディレクティブの位置](#ディレクティブの位置)
+  を参照）。
   名前か `:` の直後の U+2028 か U+2029 を空白として取り込み、
   その後から自由なテキストの引数が始まるディレクティブも同じです。
   `%%{wrap`、U+2028、`;participant D` では、

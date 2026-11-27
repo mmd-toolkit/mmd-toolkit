@@ -403,12 +403,11 @@ header, the orientation, the keywords, a `number`, `-->`, the brackets, `,`,
   xychart/div-directive-in-range-number] [fixture:
   xychart/db-directive-in-arrow]
 
-- A directive that is not closed runs to the end of the text, and its argument
-  may start on the next line (see
-  [Where a directive is](../common.md#where-a-directive-is)): `%%{init` at the
-  end of the text, after a statement or after the header, takes nothing else,
-  while `title T %%{init` followed by a line `line [1]` takes the word `line` as
-  its argument, and the rest of that line is rejected.
+- A directive that is not closed ends after its argument, which may start on the
+  next line (see [Where a directive is](../common.md#where-a-directive-is)):
+  `%%{init` at the end of the text, after a statement or after the header, takes
+  nothing else, while `title T %%{init` followed by a line `line [1]` takes the
+  word `line` as its argument, and the rest of that line is rejected.
 
   [fixture: xychart/db-directive-unclosed-at-end] [fixture:
   xychart/db-directive-unclosed-after-header] [fixture:

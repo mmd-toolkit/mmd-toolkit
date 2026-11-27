@@ -1029,15 +1029,23 @@ A line that is a kept line, because a `;` that the line rule ignores comes
 before the character, as in `title style:#x;`, stays as written whatever
 follows: the whitespace after the character and between the directive and the
 comment is kept, and the line is not broken at the character. A directive that
-is not closed after the character takes the rest of the text, so the line is not
-broken at the character either: `title T`, the character, `%%{x`, a blank line,
-and `"A":1` print `title T %%{x`, a blank line, and `"A":1`.
+is not closed after the character takes the rest of the text where the text
+after it does not start with a word character, so the line is not broken at the
+character either: `title T`, the character, `%%{x`, a blank line, and `"A":1`
+print `title T %%{x`, a blank line, and `"A":1`. Where a word follows, the
+directive takes that word as its argument and the whitespace after it, and the
+text after it goes on the line of the title (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)),
+so mermaid.js keeps the whitespace around the character in the title, and the
+line stays as written: with `y` before `"A":1`, the title is `T`, a space, the
+character, a space, and `"A":1`.
 
 [test:
 treemap/title/title-text-ignored-semicolon-line-separator-directive-comment-kept]
 [test:
 treemap/title/title-text-two-ignored-semicolons-line-separator-directive-comment-kept]
 [test: treemap/title/title-text-line-separator-unclosed-directive-joins-rest]
+[test: treemap/title/title-text-line-separator-unclosed-directive-word-kept]
 
 The other ways in which the comment can be followed, such as an empty line and
 the end of the text, or an empty line and a bare directive line, are not stated
@@ -1172,9 +1180,15 @@ prints `class A{}` as `class A {}`. Whitespace-only interiors become `{}`
 because no text needs surrounding padding. Join plain opener whitespace, keep
 comment/directive contents and their boundaries, and align body lines one step
 inside the statement while retaining internal blank lines. Mermaid discards
-indentation after LF from the description. The body uses the configured
-indentation, including tabs and the positive minimum step at width zero. Align a
-separate opener with its statement. A separate `}` aligns with its statement.
+indentation after LF from the description. Rule 1 keeps the line breaks between
+the lines of text, since mermaid.js keeps them in the value and joining two
+lines changes the description, and the row Blank lines of rule 1 gives the empty
+lines among them: a run of them becomes one, and none stands at the start or the
+end of the block. The released version keeps a run of empty lines and the empty
+lines at the start and the end of the block as written, which that row does not
+give. The body uses the configured indentation, including tabs and the positive
+minimum step at width zero. Align a separate opener with its statement. A
+separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth: it
 puts the closing line at the level of the line that holds the `{`, as Prettier
 prints the closing line of a block, and that line is the `accDescr` line or,
@@ -1183,7 +1197,8 @@ of the statement. The first `}` still closes the block. A block that was not
 written indented is printed at the start of its line, with its body one step
 inside it (see [Title](#title)).
 
-[fixture: treemap/description-blocks/brace-on-a-later-line]
+[fixture: treemap/description-blocks/blank-lines-at-the-ends-kept] [fixture:
+treemap/description-blocks/brace-on-a-later-line]
 
 [fixture: treemap/description-blocks/block-touching-with-text-fixed] [fixture:
 treemap/description-blocks/empty]
@@ -1196,7 +1211,8 @@ treemap/description-blocks/empty]
 
 [fixture: treemap/description-blocks/right-touching]
 
-[fixture: treemap/description-blocks/continuation]
+[fixture: treemap/description-blocks/continuation] [fixture:
+treemap/description-blocks/blank-line-run-kept]
 
 [fixture: treemap/description-blocks/body-tabs]
 

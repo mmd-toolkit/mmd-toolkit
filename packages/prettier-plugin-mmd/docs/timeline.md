@@ -1351,12 +1351,19 @@ multi-line-values/description-zero-width]
 
 Keep line breaks and interior blank lines, and the whitespace at the end of each
 line of text except the last one; a line of whitespace only becomes an empty
-line. The whitespace at the end of the last line of text is dropped where the
-closer stands on a line of its own, and is printed as one space where the closer
-follows it on that line. Text on the opening line stays there, and empty lines
-inside the text stay empty.
+line. Rule 1 keeps the line breaks between the lines of text, since mermaid.js
+keeps them in the value and joining two lines changes the description, and the
+row Blank lines of rule 1 gives the empty lines among them: a run of them
+becomes one, and none stands at the start or the end of the block. The released
+version keeps a run of empty lines and the empty lines at the start and the end
+of the block as written, which that row does not give. The whitespace at the end
+of the last line of text is dropped where the closer stands on a line of its
+own, and is printed as one space where the closer follows it on that line. Text
+on the opening line stays there, and empty lines inside the text stay empty.
 
-[fixture: multi-line-values/description-line-ending-whitespace] [fixture:
+[fixture: timeline/multi-line-values/blank-lines-at-the-ends-kept] [fixture:
+timeline/multi-line-values/blank-line-run-kept] [fixture:
+multi-line-values/description-line-ending-whitespace] [fixture:
 multi-line-values/block-trailing-whitespace] [fixture:
 multi-line-values/block-trailing-whitespace-closer-on-the-text-line]
 
@@ -1587,11 +1594,18 @@ part of that text.
 [fixture: directives/between-units] [fixture: directives/inside-values-kept]
 [fixture: directives/over-lines-kept]
 
-A directive that is not closed takes the rest of the text, and is kept as
-written.
+A directive that is not closed is kept as written, with the text that goes on
+its line. An argument that starts with a word character ends with that word,
+also on the next line, and the directive takes the whitespace after it, line
+breaks included, so the text after it goes on the line of the directive (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)):
+`%%{x`, `y`, and `section S` keep the section `S`. Any other argument, as in
+`%%{init: {`, runs to the end of the text, and the directive takes the rest of
+the text.
 
 [fixture: directives/unclosed-at-end-of-text-kept] [fixture:
-directives/unclosed-after-statement-kept]
+directives/unclosed-after-statement-kept] [fixture:
+directives/unclosed-takes-the-next-word]
 
 Input
 ([directives/levels-around-sections-input.mmd](../tests/fixtures/timeline/directives/levels-around-sections-input.mmd)):

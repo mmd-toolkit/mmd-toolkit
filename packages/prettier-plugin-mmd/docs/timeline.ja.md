@@ -1370,10 +1370,19 @@ Db の設定処理はこの字下げを捨てるので、section の中でも、
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。
+規則 1 は、テキストの行の間の改行を残します。
+mermaid.js がそれを値に残し、2 つの行をつなぐと説明が変わるからです。
+その間の空行は、規則 1 の「空行」の行が与えます。
+空行の連なりは 1 つにし、ブロックの頭と終わりには空行を置きません。
+リリース済みの版は、空行の連なりと、
+ブロックの頭と終わりの空行を書かれたまま残し、
+これはその行が与える形ではありません。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 開始行のテキストはその行に残し、テキスト内の空行も空行のまま残します。
 
+[fixture: timeline/multi-line-values/blank-lines-at-the-ends-kept]
+[fixture: timeline/multi-line-values/blank-line-run-kept]
 [fixture: multi-line-values/description-line-ending-whitespace]
 [fixture: multi-line-values/block-trailing-whitespace]
 [fixture: multi-line-values/block-trailing-whitespace-closer-on-the-text-line]
@@ -1613,10 +1622,20 @@ Prettier がブロックの中の行をそう印字するためです。
 [fixture: directives/between-units] [fixture: directives/inside-values-kept]
 [fixture: directives/over-lines-kept]
 
-閉じていない指令はテキストの残りを取り、書かれたまま残します。
+閉じていない指令は、その行に乗るテキストとともに書かれたまま残します。
+語の文字で始まる引数は、次の行にあってもその語で終わり、
+指令はその後ろの空白を改行ごと取り込みます。
+そのため、その後ろのテキストは指令の行に乗ります。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
+`%%{x`、`y`、`section S` では、セクション `S` が残ります。
+`%%{init: {` のようにそれ以外の引数はテキストの終わりまで続き、
+指令はテキストの残りを取り込みます。
 
 [fixture: directives/unclosed-at-end-of-text-kept]
 [fixture: directives/unclosed-after-statement-kept]
+[fixture: directives/unclosed-takes-the-next-word]
 
 入力
 ([directives/levels-around-sections-input.mmd](../tests/fixtures/timeline/directives/levels-around-sections-input.mmd)):

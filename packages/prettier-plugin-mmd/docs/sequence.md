@@ -1720,15 +1720,18 @@ characters as escapes too (see
   U+2028 and U+2029 after a data block that is read as a name] [test: autonumber
   5, U+2028, and a `#` comment] [test: autonumber 5, U+2029, and a `#` comment]
 
-- Right after a directive that is not closed. The text of such a directive stops
-  before the character, which is no whitespace to it: with the character printed
-  as a space or a line break, the directive would reach the rest of the text.
-  This holds in every diagram type.
+- Right after a directive that is not closed. The free text of such a directive,
+  as in `%%{init: {}`, stops before the character: with the character printed as
+  a space or a line break, the free text would reach the rest of the text. After
+  a word argument, as in `%%{wrap foo`, the character is whitespace to the
+  directive, as a space and a line break are, and the next line goes on the line
+  of the directive. This holds in every diagram type.
 
   [test: U+2028 after a directive that is not closed] [test: U+2029 after a
-  directive that is not closed] [test: a `;` after U+2029 after a directive that
-  is not closed] [test: a standalone open directive before U+2028 and a
-  semicolon] [test: a standalone open directive before U+2029 and a semicolon]
+  directive that is not closed] [test: U+2028 after a directive that is not
+  closed, before two lines] [test: a `;` after U+2029 after a directive that is
+  not closed] [test: a standalone open directive before U+2028 and a semicolon]
+  [test: a standalone open directive before U+2029 and a semicolon]
 
 - As the whitespace character that follows `title`: `title`, U+2028, and ` ;`
   stays as written, with the `;`.

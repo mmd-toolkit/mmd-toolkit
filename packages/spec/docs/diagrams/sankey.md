@@ -204,7 +204,7 @@ a `string`. The other units, the header and `,`, are no text units.
 **Trivia between units.** The trivia of [common.md](../common.md) meet the units
 of this diagram as follows. A lone CR and CRLF are line terminators, read as a
 line feed (see [Line terminators](../common.md#line-terminators)), also inside a
-string. An unclosed directive takes the rest of the text (see
+string. An unclosed directive ends after its argument (see
 [Where a directive is](../common.md#where-a-directive-is)): `a,b,1` and a space
 and `%%{init` at the end of the text is the record `a,b,1` and a space, and
 before a line `c,d,2` it takes `c` as its argument, which leaves `,d,2` after

@@ -1539,13 +1539,13 @@ which `;` is ignored:
   [fixture:
   sequence/tokens-ignored-semicolon-separator-unclosed-directive-paragraph-separator]
 
-- An unclosed directive whose free-text argument meets a line terminator takes
-  the rest of the text, and so does one whose free-text argument starts after
-  the separator, as when a U+2028 or U+2029 right after its name or its `:` is
-  taken as whitespace: in `%%{wrap`, U+2028, and `;participant D`, the argument
-  is `;participant D` and all that follows. The last `;` of the segment is then
-  the one between `C` and `participant E`, and the participants are A and
-  `Cparticipant E`.
+- An unclosed directive whose free-text argument meets a line terminator goes on
+  across it (see [Where a directive is](#where-a-directive-is)), and so does one
+  whose free-text argument starts after the separator, as when a U+2028 or
+  U+2029 right after its name or its `:` is taken as whitespace: in `%%{wrap`,
+  U+2028, and `;participant D`, the argument is `;participant D` and all that
+  follows. The last `;` of the segment is then the one between `C` and
+  `participant E`, and the participants are A and `Cparticipant E`.
 
   [fixture:
   sequence/tokens-ignored-semicolon-separator-unclosed-directive-line-feed]
