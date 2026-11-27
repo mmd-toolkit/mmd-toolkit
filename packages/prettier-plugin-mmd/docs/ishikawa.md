@@ -208,8 +208,10 @@ An ordinary root stands one configured positive step below the header where the
 written indentation shows the tree by nesting alone, as when it is shallower
 than all causes or has none. A root deeper than its causes keeps the whitespace
 written before it, and so do the causes (see [Indentation](#indentation)). Root
-indentation chooses no parent, so column one would be Db-equal; the chosen step
-follows the body convention of the other printers.
+indentation chooses no parent, so column one would be Db-equal;
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the step: the
+header opens a block with no closing line, and the root, a line inside it,
+stands one level deeper, as Prettier prints the lines inside a block.
 
 [fixture: ishikawa/root-indentation/root-alone] [fixture:
 ishikawa/root-indentation/root-deeper] [fixture:

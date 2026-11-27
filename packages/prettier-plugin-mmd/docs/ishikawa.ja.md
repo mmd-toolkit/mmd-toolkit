@@ -216,8 +216,10 @@ ishikawa
 根がすべての原因より浅いときや、原因がないときがそうです。
 原因より深い根は（[Indentation](#indentation) を参照）、書かれた前の空白を残し、
 原因も同じです。
-根の字下げは親を決めないため、1 列目でも Db は同じですが、
-他の印字処理の本文の約束に揃えます。
+根の字下げは親を決めないため、1 列目でも Db は同じです。
+1 段は [規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+ヘッダーは閉じる行のないブロックを開き、その中の行である根は 1 段深く立ちます。
+Prettier がブロックの中の行を印字する形です。
 
 [fixture: ishikawa/root-indentation/root-alone]
 [fixture: ishikawa/root-indentation/root-deeper]
