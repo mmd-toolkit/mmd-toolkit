@@ -1029,15 +1029,20 @@ venn-beta
 Standalone directives align with nearby statements (see
 [Indentation](#indentation)); inline directives retain their containing line,
 order and contents, and are placed in their gaps as under
-[Directives](./flowchart.md#directives), except after a comma of a color
-function, where the whitespace after a directive stays as written (see
+[Directives](./flowchart.md#directives), except in the gaps of a color function.
+After its `(`, before a comma, and before its `)`, where the whitespace stays as
+written (see [Colors](#colors)), the whitespace on both sides of a directive
+stays as written; after a comma, which is printed with one space after it, the
+whitespace after a directive stays as written (see
 [Style properties](#style-properties)). A leading directive retains the positive
 versus zero logical indentation of implicit versus explicit text, choosing
 exterior indentation before the first directive while keeping its internal gap
 relations. Embedded, multiline, semicolon-stopped and EOF directives keep their
 boundaries; no embedded data is reformatted.
 
-[fixture: venn/directives/unclosed-after-doubled-semicolon]
+[fixture: venn/directives/unclosed-after-doubled-semicolon] [fixture:
+venn/directives/color-function-gaps-kept] [fixture:
+venn/style-properties/word-run-directive-parenthesis-kept]
 
 An internal gap, including between two leading directives, already supplies the
 positive marker. Only where no internal gap supplies it does an implicit line

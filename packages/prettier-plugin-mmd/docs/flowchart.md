@@ -407,9 +407,13 @@ statements-one-per-line/name-semicolon-after-directive-line]
 In a name, `end`, `click`, `call`, and `href` read the line break after them:
 `end` takes it into the name, as above, and `click`, `call`, and `href` with the
 line break are a unit that makes the input rejected, so the `;` after them
-stays. The other words of the list, `accTitle`, `accDescr`, and `direction`, are
-there because the list is shared with the text of a statement, and keeping a `;`
-there changes nothing that mermaid.js reads.
+stays. A name is read in the units of a statement, where `click`, `call`, and
+`href` are keywords with the whitespace after them, a line feed included, as
+after the id of a vertex (see
+[The statement context](../../spec/docs/diagrams/flowchart.md#the-statement-context)).
+The other words of the list, `accTitle`, `accDescr`, and `direction`, are there
+because the list is shared with the text of a statement, and keeping a `;` there
+changes nothing that mermaid.js reads.
 
 [fixture: statements-one-per-line/semicolon-after-name-word-kept] [corpus
 fixture: flowchart/name-semicolon-whitespace-0c9483e4] [corpus fixture:
@@ -931,9 +935,9 @@ removed keeps the argument list as written, like any other blank argument.
 Within a line, a run of spaces and tabs between two tokens becomes one space, so
 that a line has one form whoever wrote it, and tokens that touch keep touching,
 except where a rule below says otherwise (Arrow spacing): mermaid.js reads some
-tokens only when they touch, as `A:::c`, which is the vertex `A` with the class
-`c`, while `A@{ shape: rect } :::c`, with whitespace before the `:::`, is
-rejected, and a rule that wrote a space between touching tokens would need an
+tokens only when they touch, as `A@{ shape: rect }`, which gives the vertex `A`
+the shape `rect`, while `A @{ shape: rect }`, with whitespace before the `@{`,
+is rejected, and a rule that wrote a space between touching tokens would need an
 exception for every such place. Where whitespace already separates `&` from both
 vertices, `&` stands between two things;
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives one space on
@@ -941,8 +945,8 @@ each side.
 
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed] [corpus fixture:
-flowchart/lex-triple-colon-after-id] [corpus fixture:
-flowchart/gram-data-space-class]
+flowchart/gram-data-shape-known] [corpus fixture:
+flowchart/gram-data-space-before]
 
 A run of spaces and tabs inside the name of a subgraph, which becomes its title,
 is printed as one space where mermaid.js draws the title without a width, and

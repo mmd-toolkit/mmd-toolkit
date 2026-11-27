@@ -415,6 +415,10 @@ flowchart LR
 `end` は、上のとおり改行を名前に取り込みます。
 `click`、`call`、`href` は改行と合わせて 1 つの単位になり、
 入力が拒否されるので、その後の `;` は残します。
+名前は文と同じ単位で読みます。
+文では（[文の文脈](../../spec/docs/diagrams/flowchart.ja.md#文の文脈)を参照）、
+頂点の id の後と同じく、`click`、`call`、`href` は、
+改行を含む空白が後に続くとキーワードになります。
 一覧のほかの単語 `accTitle`、`accDescr`、`direction` は、
 文のテキストと一覧を共用しているために入っています。
 そこで `;` を残しても、mermaid.js が読むものは変わりません。
@@ -937,8 +941,8 @@ flowchart LR
 行を、書いた人によらず 1 つの形にするためです。
 接しているトークンは、下の規則（矢印の空白）がなければ接したままにします。
 mermaid.js には、接しているときだけ読むトークンがあります。
-`A:::c` はクラス `c` の頂点 `A` で、
-`A@{ shape: rect } :::c` のように `:::` の前に空白があると、拒否されます。
+`A@{ shape: rect }` は形が `rect` の頂点 `A` で、
+`A @{ shape: rect }` のように `@{` の前に空白があると、拒否されます。
 接するトークンの間に空白を書く規則は、その場所ごとの例外を要するからです。
 `&` と両側の頂点の間に空白があるときは、`&` は 2 つの間に立つ印なので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が、
@@ -946,8 +950,8 @@ mermaid.js には、接しているときだけ読むトークンがあります
 
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
-[corpus fixture: flowchart/lex-triple-colon-after-id]
-[corpus fixture: flowchart/gram-data-space-class]
+[corpus fixture: flowchart/gram-data-shape-known]
+[corpus fixture: flowchart/gram-data-space-before]
 
 subgraph の名前（タイトルになる）の中の空白とタブの連なりは、
 mermaid.js がタイトルを幅なしで描くときは空白 1 つにして印字し、
