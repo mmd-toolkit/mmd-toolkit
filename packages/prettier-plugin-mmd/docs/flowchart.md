@@ -2851,9 +2851,27 @@ A quoted string written over several lines keeps its columns.
 At the top level, align the lines of an `accDescr { ... }` body one step inside
 its statement. mermaid.js discards the indentation after a line feed from the
 description. Inside a subgraph, keep the columns of a block with text, because
-its raw text is also stored among the subgraph's members.
+its raw text is also stored among the subgraph's members: mermaid.js reads the
+later lines, with their columns, as a node of the subgraph, so aligning them
+changes the Db. A line of whitespace only and a run of empty lines among them
+stay as written there too, and so does the indentation of a directive line among
+them, which stays in the node when mermaid.js removes the directive: the node
+holds them. The indentation of the first line of text and the empty lines and
+the lines of whitespace only at the start and the end of such a block are no
+part of the node, which mermaid.js reads without the whitespace at its ends:
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) puts the first line
+one level deeper than the line that opens the block, as a line inside a block,
+and leaves out those empty lines, and the released version keeps them as
+written, which rule 1 does not give.
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-blank-line-run-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-whitespace-line-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-directive-line-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-edge-blank-lines-kept]
+[corpus fixture: flowchart/db-subgraph-member-acc-descr-block-blank-lines]
+[corpus fixture:
+flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]
 
 A separate `}` aligns with its statement.
 [Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this depth when
@@ -2864,7 +2882,10 @@ the opening line, as Prettier prints the closing line of a block.
 multi-line-values/accdescr-block-closing-brace-aligned]
 
 Comment contents inside such a block are kept, with their columns following the
-same top-level or subgraph rule.
+same top-level or subgraph rule. Inside a subgraph, mermaid.js removes a comment
+line with its indentation, so the node does not hold it: rule 1 puts the comment
+line one level deeper than the line that opens the block, and the released
+version keeps its column, which rule 1 does not give.
 
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
 

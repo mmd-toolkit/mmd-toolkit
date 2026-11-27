@@ -114,14 +114,16 @@ exact width, it decides instead (see
 [Where mermaid.js decides against the whitespace](#where-mermaidjs-decides-against-the-whitespace)).
 The text inside a template literal of JavaScript stays as written, and so does a
 line of a value that spreads over several lines where mermaid.js holds the
-indentation of that line in the value, the Db: the later lines of the body of a
+indentation of that line in the value, the Db, such as the later lines of a
+string of a flowchart label written over lines, the later lines of the body of a
 note of a state diagram, the lines of the body of an eventmodeling `data` block
 that a frame reads, the lines of the arguments of a `click` call written over
 lines, the line of its `)` among them, and the later lines of a description
 block inside a `subgraph` of a flowchart, a swimlane diagram, or an ER diagram,
 whose text mermaid.js also reads, without the whitespace at its ends, as a node
-of the subgraph, with the indentation of its later lines and the empty lines
-among its lines of text. Where the formatter aligns such lines, as the rules of
+of the subgraph, with the indentation of its later lines and of its directive
+lines, its lines of whitespace only, and the empty lines among its lines of
+text. Where the formatter aligns such lines, as the rules of
 [Notes](./state.md#notes) align the later lines of a note and those of
 [Data blocks](./eventmodeling.md#data-blocks) the body of a `data` block, the Db
 changes in a kind that
@@ -132,7 +134,8 @@ row, and it stands one level deeper than the line that opens the block, whatever
 its written indentation, as every line inside a block does. So do the lines
 between the `{` and the `}` of a description block: its text lines, which
 mermaid.js reads without their indentation but for the later lines inside such a
-`subgraph`, and its comment and directive lines, which it removes. So do the
+`subgraph`, its comment lines, which it removes with their indentation, and,
+outside such a `subgraph`, its directive lines, which it removes. So do the
 first line of the body of a note of a state diagram, which mermaid.js reads
 without its indentation; the lines of the body of an eventmodeling note and of a
 `data` block that no frame reads, which no field of the Db holds; and a comment
@@ -142,9 +145,11 @@ description block stay, since mermaid.js keeps them in the value, and the empty
 lines among its lines follow the row Blank lines: a run of them becomes one, and
 none stands at the start or the end of the block, as Prettier prints the
 statements of a function body. Inside such a `subgraph`, a run of empty lines
-between two lines of text stays as written, since the node of the subgraph holds
-it. The closing `}` of a description block stands at the level of the line that
-opens it.
+and a line of whitespace only between two lines of text stay as written, since
+the node of the subgraph holds them, while the empty lines and the lines of
+whitespace only at the start and the end of the block, and the indentation of
+its first line of text, are no part of the node. The closing `}` of a
+description block stands at the level of the line that opens it.
 
 A keyword stands between two things (`a in b`) or before what it takes
 (`return x`, `typeof y`, `throw e`, and in CSS `@media screen` and

@@ -2953,8 +2953,28 @@ flowchart LR
 mermaid.js は説明から行送り後の字下げを除きます。
 subgraph の中では、本文があるブロックの原文が字下げごとメンバーに入るため、
 元の列を保ちます。
+mermaid.js は後ろの行を列ごと subgraph のノードとして読むので、
+そろえると Db が変わります。
+その間の空白だけの行と空行の連なりも、そこでは書かれたまま残します。
+その間のディレクティブの行の字下げも同じです。
+mermaid.js がディレクティブを取り除いても、その字下げはノードに残ります。
+どれも、ノードが持つからです。
+テキストの 1 行目の字下げと、
+そのようなブロックの頭と終わりの空行と空白だけの行は、ノードにありません。
+mermaid.js は、端の空白を除いてノードを読むからです。
+[規則 1](./printed-form.ja.md#1-記号の横の空白)は、
+1 行目をブロックの中の行として、ブロックを開く行より 1 段深く置き、
+その空行を除きます。
+リリース済みの版はそれらを書かれたまま残し、
+これは規則 1 が与える形ではありません。
 
 [fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-blank-line-run-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-whitespace-line-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-directive-line-kept]
+[fixture: multi-line-values/accdescr-block-subgraph-edge-blank-lines-kept]
+[corpus fixture: flowchart/db-subgraph-member-acc-descr-block-blank-lines]
+[corpus fixture: flowchart/db-swimlane-subgraph-member-acc-descr-block-blank-lines]
 
 独立した行の `}` は文と同じ段に置きます。
 `{` が `accDescr` の行にあるときは、
@@ -2966,6 +2986,11 @@ Prettier がブロックを閉じる行を、そのブロックを開く行と�
 
 そうしたブロックのコメントの内容も保ち、
 列は同じトップレベルまたは subgraph の規則に従います。
+subgraph の中では、mermaid.js はコメント行を字下げごと取り除くので、
+ノードはそれを持ちません。
+規則 1 はコメント行をブロックを開く行より 1 段深く置き、
+リリース済みの版はその列を残します。
+これは規則 1 が与える形ではありません。
 
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
 
