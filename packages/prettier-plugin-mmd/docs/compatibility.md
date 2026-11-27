@@ -8617,9 +8617,7 @@ U+2028 before a comment line, an empty line, and a statement] [test: a treemap
 classDef that ends with U+2028 before a comment line at the end of the text]
 [test: a treemap classDef that ends with U+2028 before a comment line and a
 directive line at the end of the text] [test: a treemap classDef that ends with
-U+2028 before two comment lines and a directive line at the end of the text]
-[test: a treemap classDef that ends with U+2028 before a comment line, an empty
-line, and a statement]
+U+2028 before a comment line, an empty line, and a statement]
 
 In an ER diagram, what else the formatter prints on a statement of such a line,
 as the colors of a style, the words of a relationship, and the quotes of a name

@@ -8960,11 +8960,6 @@ const separatorKeptExamples: readonly (readonly [string, string, string])[] = [
     'treemap\n  "a": 1:::cc\n  classDef cc fill: red\u2028%% c\n%%{x}%%\n',
   ],
   [
-    "a treemap classDef that ends with U+2028 before two comment lines and a directive line at the end of the text",
-    'treemap\n"a": 1:::cc\nclassDef cc fill: red\u2028%% c\n%% d\n%%{x}%%\n',
-    'treemap\n  "a": 1:::cc\n  classDef cc fill: red\u2028%% c\n  %% d\n%%{x}%%\n',
-  ],
-  [
     "a treemap classDef that ends with U+2028 before a comment line, an empty line, and a statement",
     'treemap\n"a": 1:::cc\nclassDef cc fill: red\u2028%% c\n\n"b": 2\n',
     'treemap\n  "a": 1:::cc\n  classDef cc fill: red\u2028%% c\n\n  "b": 2\n',

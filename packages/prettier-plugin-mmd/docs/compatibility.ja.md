@@ -8767,7 +8767,6 @@ flowchart の `style` の値も、それを残します。
 [test: a swimlane style that ends with U+2028 before a comment line, an empty line, and a statement]
 [test: a treemap classDef that ends with U+2028 before a comment line at the end of the text]
 [test: a treemap classDef that ends with U+2028 before a comment line and a directive line at the end of the text]
-[test: a treemap classDef that ends with U+2028 before two comment lines and a directive line at the end of the text]
 [test: a treemap classDef that ends with U+2028 before a comment line, an empty line, and a statement]
 
 ER 図では、そのような行の文について、スタイルの色、関係の語、
