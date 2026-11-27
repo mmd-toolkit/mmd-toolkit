@@ -595,6 +595,13 @@ two words stays as written; a run inside a string, a comment, or the parentheses
 of `url(`, and the escape after a backslash, stay as written, since CSS reads
 them as part of the value: the hexadecimal digits and the one space or tab that
 follows them, or else the next character.
+[Rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives this form: the
+colon of a key has no whitespace before it and one space after it (`color: red`
+in CSS), a comma has none before it and one space after it (Prettier prints
+`font-family: a,b` as `font-family: a, b;` in CSS), and one space stands between
+values that follow one another (Prettier prints `margin: 1px    2px;` in CSS as
+`margin: 1px 2px;`); see
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is).
 
 [fixture: whitespace-between-tokens/style-words-run-spaced] [fixture:
 whitespace-between-tokens/style-string-runs-kept] [fixture:
@@ -691,8 +698,8 @@ keyword-case/accessibility-alias-direction-one-form]
 
 A style that starts with the `:`, and one whose `:` follows a backslash and a
 space, are printed as any other style: one space after the `:`, and the runs
-between their words as one space. After a nonempty name ending in an escaped
-space, `:` is a key colon, so
+between their words as one space, as rule 1 gives (see above). After a nonempty
+name ending in an escaped space, `:` is a key colon, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives it one
 following space when the value is nonempty. `style A :  red   x` is printed
 `style A : red x`.

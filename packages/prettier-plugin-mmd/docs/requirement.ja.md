@@ -621,6 +621,10 @@ style の文脈が LF で終わる場合、文の末尾の空白は落としま�
 空白 1 つで印字します。
 `stroke-dasharray:  5    5` は `stroke-dasharray: 5 5` に、
 `4px    wide` は `4px wide` になります。
+語と語の間の空白 1 つは、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が与えます。
+スタイルの語は続けて並ぶ値で、
+Prettier は CSS の `margin: 1px    2px;` を `margin: 1px 2px;` と印字します。
 語と語の間に空白があるかどうかは、書かれたまま残します。
 ほかの隙間と同じように、接する語は接したままです。
 そのため、`fill #f00` と `fill#f00` は区別して残します。
@@ -670,7 +674,8 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 [fixture: styles-and-classes/ignored-style-terminator-dropped]
 
 `:` を含まないスタイル（`4px` など）は、プロパティと値の組ではないので、
-語の間の空白の連続を空白 1 つで印字するほかは、書かれたまま残します。
+語の間の空白の連続を空白 1 つで印字するほかは（上の規則 1）、
+書かれたまま残します。
 文のほかのスタイルは、通常どおり間隔を整えます。
 
 [fixture: styles-and-classes/style-without-colon]

@@ -1937,6 +1937,7 @@ Prettier が CSS の `margin: 1px    2px` を `margin: 1px 2px`
 空白 1 つで印字します。
 `stroke-dasharray:  5    5` は `stroke-dasharray: 5 5` に、
 `4px    wide` は `4px wide` になります。
+この空白 1 つも、上と同じく、続けて並ぶ値の間に規則 1 が与える空白です。
 語と語の間に空白があるかどうかは、書かれたまま残します。
 ほかの隙間と同じように、接する語は接したままです。
 そのため、`fill #f00` と `fill#f00` は区別して残します。
@@ -1963,6 +1964,7 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 
 `:` で始まるスタイルも、ほかのスタイルと同じく、`:` の後に空白を 1 つ置き、
 語と語の間の空白とタブの連続は空白 1 つで印字します。
+これも上の規則 1 の形です。
 `style A :  red   x` は `style A : red x` と印字します。
 
 [fixture: styles-and-classes/style-colon-first-run-spaced]
