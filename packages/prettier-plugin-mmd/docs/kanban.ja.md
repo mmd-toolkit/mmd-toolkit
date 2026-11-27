@@ -420,7 +420,7 @@ kanban
 開きの `(-` の後の文字列は、引用符を外します。
 mermaid.js は `card8(-x)` を `card8(-"x")` と同じに読むからです。
 `:` と `;` を持つラベルは、
-[規則 3](./printed-form.ja.md#3-綴り)により引用符を保ちます。
+[規則 3](./printed-form.ja.md#3-綴り)の直しにより引用符を保ちます。
 引用符がないと、`A[aStyle:#x;yb]` はスタイルを持つカードに見えるからです。
 markdown 文字列は書かれたまま残します。
 文字列とダッシュの間にディレクティブがあっても、変わりません。
@@ -432,6 +432,7 @@ mermaid.js は、テキストを読む前にそれらを取り除くので、
 [fixture: quotes/labels-that-need-quotes]
 [fixture: quotes/dash-closer-after-a-directive-kept]
 [fixture: quotes/dash-opener-string-unquoted]
+[fixture: line-rule-and-kept-lines/lex-label-style-rule-upper]
 
 入力
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-input.mmd)):

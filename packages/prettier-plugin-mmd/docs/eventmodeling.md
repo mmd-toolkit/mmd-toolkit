@@ -81,10 +81,10 @@ stand at column one too, since every version that counts rejects them indented
 (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-The pinned Mermaid requires `data` and `note` block closers at column one; the
-formatter aligns their headers there and keeps peer statements at the same level
-to avoid suggesting a hierarchy, and so that each closer stands at the column of
-the line that opens its block, as
+Every version of mermaid.js that counts requires `data` and `note` block closers
+at column one; the formatter aligns their headers there and keeps peer
+statements at the same level to avoid suggesting a hierarchy, and so that each
+closer stands at the column of the line that opens its block, as
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives for an
 eventmodeling diagram. Reconsider this choice if the pinned Mermaid later
 accepts whitespace before block closers, checking that raw body values and
