@@ -448,9 +448,10 @@ mermaid.js がそれを 1 つの名前として読むからです。
 [fixture: requirement/lex-directive-after-class-string-space]
 [fixture: requirement/lex-directive-after-style-space]
 
-閉じていないディレクティブはテキストの残りを取ります。
+閉じないディレクティブは、その引数の後で終わります。
 [ディレクティブの位置](../common.ja.md#ディレクティブの位置)
 を参照してください。
+`%%{init: {}` の自由形式の引数は、テキストの残りを取ります。
 本体の中の `id: 1 %%{init: {}` は本体を閉じないままにするので、
 入力は拒否されます。
 一方、

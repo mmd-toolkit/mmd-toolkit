@@ -305,9 +305,10 @@ A closed directive at the end of a line ends nothing, and the whitespace before
 it is a character of the text before it where the text keeps whitespace:
 `a %%{init: {}}%%` has the period `a `, and `title T %%{init: {}}%%` the title
 `T `, while `accTitle: T  %%{init: {}}%%` has the accessibility title `T`, which
-is read without the whitespace at its ends. An unclosed directive takes the rest
-of the text (see [Where a directive is](../common.md#where-a-directive-is)):
-`a`, a space, and `%%{init: {}` followed by a line `b` has the one period `a `.
+is read without the whitespace at its ends. An unclosed directive ends after its
+argument (see [Where a directive is](../common.md#where-a-directive-is)), and
+the free-text argument of `%%{init: {}` takes the rest of the text: `a`, a
+space, and `%%{init: {}` followed by a line `b` has the one period `a `.
 
 [fixture: timeline/lex-directive-at-end-of-period-line] [fixture:
 timeline/lex-directive-at-end-of-title-line] [fixture:

@@ -310,9 +310,10 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
 [fixture: journey/lex-directive-after-acc-title-text]
 [fixture: journey/lex-directive-after-person]
 
-閉じていないディレクティブはテキストの残りを取ります。
+閉じないディレクティブは、その引数の後で終わります。
 [ディレクティブの位置](../common.ja.md#ディレクティブの位置)
 を参照してください。
+`%%{init: {}` の自由形式の引数は、テキストの残りを取ります。
 `A: 5 %%{init: {}` に行 `B: 3` が続くものは、
 スコアが `5` の 1 つのタスク `A` を持ち、`journey`、行 `%%{init: {}`、
 行 `A: 1` はタスクを持たず、

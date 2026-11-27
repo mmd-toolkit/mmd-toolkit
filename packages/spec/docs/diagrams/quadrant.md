@@ -679,10 +679,9 @@ other units, the header, the keywords, the arrow, `:::`, a `class-name`, `-`,
   quadrant/div-directive-in-class-marker] [fixture:
   quadrant/div-directive-inside]
 
-- A directive that is not closed runs to the end of the text, and its argument
-  may start on the next line (see
-  [Where a directive is](../common.md#where-a-directive-is)): `%%{init` at the
-  end of a line takes the word at the start of the next line.
+- A directive that is not closed ends after its argument, which may start on the
+  next line (see [Where a directive is](../common.md#where-a-directive-is)):
+  `%%{init` at the end of a line takes the word at the start of the next line.
 
   [fixture: quadrant/gram-directive-word-unclosed-takes-keyword] [fixture:
   quadrant/gram-directive-colon-unclosed-takes-keyword] [fixture:

@@ -289,8 +289,9 @@ gantt/lex-directive-glued-at-end-of-title] [fixture:
 gantt/lex-directive-at-end-of-section-line] [fixture:
 gantt/lex-directive-glued-at-end-of-section]
 
-An unclosed directive takes the rest of the text (see
-[Where a directive is](../common.md#where-a-directive-is)): `a : 1d %%{init: {}`
+An unclosed directive ends after its argument (see
+[Where a directive is](../common.md#where-a-directive-is)), and the free-text
+argument of `%%{init: {}` takes the rest of the text: `a : 1d %%{init: {}`
 followed by a line `b : 2d` has the one task `a ` with the end `1d`, `gantt`, a
 line `%%{init: {}`, and a line `a : 1d` has no task, and `title T %%{init: {}`
 followed by a task line has the title `T ` and no task.

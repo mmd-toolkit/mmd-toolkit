@@ -524,9 +524,10 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
 [fixture: er/tokens-closed-directive-end-of-classdef-line]
 [fixture: er/tokens-closed-directive-end-of-style-line]
 
-閉じないディレクティブはテキストの残りを取ります。
+閉じないディレクティブは、その引数の後で終わります。
 [ディレクティブの位置](../common.ja.md#ディレクティブの位置)
 を参照してください。
+`%%{init: {}` の自由形式の引数は、テキストの残りを取ります。
 `A ||--o{ B : x %%{init: {}` と行 `C` は、
 ディレクティブの前に空白があってもなくても実体 C を持たず、
 `erDiagram %%{init: {}` と行 `A` は実体を持たず、

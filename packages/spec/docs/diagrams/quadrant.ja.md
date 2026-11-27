@@ -752,7 +752,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   [fixture: quadrant/div-directive-in-class-marker]
   [fixture: quadrant/div-directive-inside]
 
-- 閉じないディレクティブはテキストの終わりまで続き、
+- 閉じないディレクティブは、その引数の後で終わり、
   その引数は次の行で始まることがあります。
   [ディレクティブの位置](../common.ja.md#ディレクティブの位置)
   を参照してください。

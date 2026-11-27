@@ -496,8 +496,9 @@ er/tokens-closed-directive-end-of-acc-title] [fixture:
 er/tokens-closed-directive-end-of-classdef-line] [fixture:
 er/tokens-closed-directive-end-of-style-line]
 
-An unclosed directive takes the rest of the text (see
-[Where a directive is](../common.md#where-a-directive-is)):
+An unclosed directive ends after its argument (see
+[Where a directive is](../common.md#where-a-directive-is)), and the free-text
+argument of `%%{init: {}` takes the rest of the text:
 `A ||--o{ B : x %%{init: {}` followed by a line `C` has no entity C, with
 whitespace before the directive or without, `erDiagram %%{init: {}` followed by
 a line `A` has no entity, and `classDef a fill:red%%{init: {}` followed by a

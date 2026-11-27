@@ -466,7 +466,7 @@ mermaid.js がディレクティブを除いた後にテキストを読むのと
   [fixture: xychart/div-directive-in-range-number]
   [fixture: xychart/db-directive-in-arrow]
 
-- 閉じていないディレクティブはテキストの終わりまで続き、
+- 閉じないディレクティブは、その引数の後で終わり、
   その引数は次の行で始まってもかまいません。
   [ディレクティブの位置](../common.ja.md#ディレクティブの位置)
   を参照してください。
